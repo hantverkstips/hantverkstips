@@ -22,3 +22,7 @@ Thumbs.db
 *.log
 .vscode/*
 !.vscode/extensions.json
+
+.vercel
+.env*
+!.env.example
