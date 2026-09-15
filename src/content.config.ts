@@ -1,62 +1,207 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection, z, type SchemaContext } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { PELARE_SLUGS } from './lib/pelare';
 
-// Gemensamt frontmatter för alla textsidor. Se docs/ARKITEKTUR.md.
-const artikel = z.object({
-  title: z.string(),
-  description: z.string().max(160),
-  publicerad: z.coerce.date(),
-  uppdaterad: z.coerce.date().optional(),
-  kategori: z.string(),
-  produkter: z.array(z.string()).default([]),
-  forfattare: z.string().default('redaktionen'),
-  bild: z.string().optional(),
-  utkast: z.boolean().default(false),
-});
+// Scheman för content collections. Fälten dokumenteras i docs/ARKITEKTUR.md.
+// Ändra här först, uppdatera dokumentet, sedan innehållsfilerna.
 
+const pelareEnum = z.enum(PELARE_SLUGS);
+
+// Produkter en artikel nämner. Antingen bara slug, eller slug med redaktörens rad
+// "för vem" och etikett, som produktkortet visar i blocket "Produkterna vi nämner".
+const produktRef = z.union([
+  z.string(),
+  z.object({
+    slug: z.string(),
+    forVem: z.string().optional(),
+    etikett: z.string().optional(),
+  }),
+]);
+
+// Gemensamt frontmatter för alla textsidor. image() validerar sökvägen vid bygget
+// och ger mallen width/height till <Image>. Sökvägen är relativ från innehållsfilen:
+// bild: ../../assets/bilder/fukt/kallare.jpg
+const artikel = ({ image }: SchemaContext) =>
+  z.object({
+    title: z.string(),
+    description: z.string().max(160),
+    publicerad: z.coerce.date(),
+    uppdaterad: z.coerce.date().optional(),
+    // Pelaren styr URL:en: /[pelare]/[slug]/. Se docs/INNEHALLSARKITEKTUR.md avsnitt 3.
+    pelare: pelareEnum,
+    // Produktkategori artikeln hör till (slug i src/content/kategorier/). Valfri:
+    // en altanguide har ingen kategori förrän kap- och gersågar finns.
+    kategori: z.string().optional(),
+    produkter: z.array(produktRef).default([]),
+    forfattare: z.string().default('redaktionen'),
+    // Eget foto eller eget diagram. Aldrig leverantörsbild. Ligger under "Kort svar".
+    bild: image().optional(),
+    bildtext: z.string().optional(),
+    // Källförteckning, visas sist på sidan.
+    kallor: z.array(z.object({ titel: z.string(), url: z.string().url().optional() })).default([]),
+    // Utkast visas i npm run dev, utesluts i npm run build. Se src/lib/innehall.ts.
+    utkast: z.boolean().default(false),
+  });
+
+// Guider: projektguide, problemguide, köpguide. Mallen varierar på typ.
 const guider = defineCollection({
   loader: glob({ base: './src/content/guider', pattern: '**/*.{md,mdx}' }),
-  schema: artikel,
+  schema: (ctx) =>
+    artikel(ctx).extend({
+      typ: z.enum(['projektguide', 'problemguide', 'kopguide']),
+      // Projektguidens lista "Det här behöver du". Verktyg har köpknapp, material har inte.
+      behover: z
+        .object({
+          verktyg: z.array(z.object({ produkt: z.string(), varfor: z.string() })).default([]),
+          material: z.array(z.object({ namn: z.string(), varfor: z.string() })).default([]),
+        })
+        .optional(),
+    }),
 });
 
-const tester = defineCollection({
-  loader: glob({ base: './src/content/tester', pattern: '**/*.{md,mdx}' }),
-  schema: artikel.extend({
-    // Slug på den produkt testet handlar om. Måste finnas i databasen.
-    produkt: z.string(),
-    betyg: z.number().min(1).max(5).optional(),
-  }),
-});
-
-const jamforelser = defineCollection({
-  loader: glob({ base: './src/content/jamforelser', pattern: '**/*.{md,mdx}' }),
-  schema: artikel.extend({
-    produkter: z.array(z.string()).min(2),
-  }),
-});
-
+// Kunskap: ingen reklammärkning, inga produktkort. typ är alltid kunskap.
 const kunskap = defineCollection({
   loader: glob({ base: './src/content/kunskap', pattern: '**/*.{md,mdx}' }),
-  schema: artikel,
+  schema: (ctx) =>
+    artikel(ctx).extend({
+      typ: z.literal('kunskap').default('kunskap'),
+    }),
 });
 
-// En fil per kategori. Styr bäst i test-sidan och vilka specs som visas.
+// Tester och granskningar. Ingen poängskala, inga stjärnor (docs/DESIGN.md).
+const tester = defineCollection({
+  loader: glob({ base: './src/content/tester', pattern: '**/*.{md,mdx}' }),
+  schema: (ctx) =>
+    artikel(ctx)
+      .omit({ pelare: true })
+      .extend({
+        // Slug på produkten testet handlar om. Måste finnas i databasen.
+        produkt: z.string(),
+        // Brödsmulan går via kategorin, inte pelaren. Krävs här.
+        kategori: z.string(),
+        // test: vi har haft produkten och mätt. granskning: datablad och tredjepartsmätningar.
+        // Vi skriver aldrig "vi testade" på en granskning.
+        etikett: z.enum(['test', 'granskning']),
+        testad: z.coerce.date().optional(),
+        // Omdömesblocket överst. En mening, sedan köp om och köp inte om.
+        omdome: z.string(),
+        kopOm: z.string(),
+        kopInteOm: z.string(),
+        // Tabellen "Vi mätte" mot "Tillverkaren uppger". Kolumnen vi är tom på granskningar.
+        matningar: z
+          .array(
+            z.object({
+              etikett: z.string(),
+              enhet: z.string().optional(),
+              vi: z.string().optional(),
+              tillverkaren: z.string().optional(),
+            }),
+          )
+          .default([]),
+        // Alternativ som visas under H2 "Alternativ". Rubriken säger varför.
+        alternativ: z.array(z.object({ produkt: z.string(), varfor: z.string() })).default([]),
+      }),
+});
+
+// Jämförelser, X mot Y. Platt URL under /jamforelser/.
+const jamforelser = defineCollection({
+  loader: glob({ base: './src/content/jamforelser', pattern: '**/*.{md,mdx}' }),
+  schema: (ctx) =>
+    artikel(ctx)
+      .omit({ pelare: true })
+      .extend({
+        kategori: z.string(),
+        produkter: z.array(produktRef).min(2),
+      }),
+});
+
+// Pelarhubbar. En fil per pelare med handskriven text. Slug måste finnas i src/lib/pelare.ts.
+// Huben publiceras när den har minst fem sidor att länka till.
+const pelare = defineCollection({
+  loader: glob({ base: './src/content/pelare', pattern: '**/*.{md,mdx}' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string().max(160),
+    // En mening för "Börja här" på startsidan.
+    ingress: z.string(),
+    // Två till tre viktiga sidor som startsidan länkar till (sökvägar).
+    viktiga: z.array(z.object({ titel: z.string(), href: z.string() })).max(3).default([]),
+    uppdaterad: z.coerce.date().optional(),
+    utkast: z.boolean().default(false),
+  }),
+});
+
+// En fil per produktkategori. Styr bäst i test-sidan och vilka specs som visas.
 const kategorier = defineCollection({
   loader: glob({ base: './src/content/kategorier', pattern: '**/*.{md,mdx}' }),
   schema: z.object({
     namn: z.string(),
     title: z.string(),
     description: z.string().max(160),
+    // Ingressen under H1. Meta-beskrivningen (description) återanvänds inte som ingress.
+    ingress: z.string(),
+    // Pelare kategorin hör till. Kategorisidan länkar till hubbarna, hubbarna till kategorin.
+    pelare: z.array(pelareEnum).min(1),
     // Specs från produkter.specs (jsonb) som visas i tabeller, i ordning.
     specs: z.array(
       z.object({
         nyckel: z.string(),
         etikett: z.string(),
         enhet: z.string().optional(),
+        // Vilket värde som är bäst i jämförelsetabellen. Saknas: markeras inte.
+        bast: z.enum(['hogst', 'lagst']).optional(),
       }),
     ),
+    // "Våra val". Etiketterna skrivs av redaktören och säger något konkret,
+    // aldrig "premium" eller "budget". Första valet är "Vårt val" på startsidan.
+    val: z
+      .array(z.object({ produkt: z.string(), etikett: z.string(), forVem: z.string().optional() }))
+      .max(3)
+      .default([]),
+    // Sökväg till köpguiden och slug på kalkylatorn, för blocket "Så väljer du".
+    kopguide: z.string().optional(),
+    kalkylator: z.string().optional(),
+    forfattare: z.string().default('redaktionen'),
+    uppdaterad: z.coerce.date().optional(),
     utkast: z.boolean().default(false),
   }),
 });
 
-export const collections = { guider, tester, jamforelser, kunskap, kategorier };
+// Om-sidor under /om/ plus startsidans text (id startsida, renderas av index.astro).
+const sidor = defineCollection({
+  loader: glob({ base: './src/content/sidor', pattern: '**/*.{md,mdx}' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string().max(160),
+    uppdaterad: z.coerce.date().optional(),
+    // Vilken strukturerad data sidan får. Organization bara på /om/.
+    strukturdata: z.enum(['Organization', 'Article', 'ingen']).default('ingen'),
+    // Bara för startsida: artikeln under "Just nu", vald av chefredaktören.
+    justNu: z
+      .object({
+        samling: z.enum(['guider', 'kunskap', 'tester', 'jamforelser']),
+        id: z.string(),
+      })
+      .optional(),
+    utkast: z.boolean().default(false),
+  }),
+});
+
+// Författare. Brödtexten är den längre presentationen på författarsidan.
+const forfattare = defineCollection({
+  loader: glob({ base: './src/content/forfattare', pattern: '**/*.{md,mdx}' }),
+  schema: ({ image }) =>
+    z.object({
+      namn: z.string(),
+      yrke: z.string(),
+      // Året personen började i yrket. Författarrutan skriver "Snickare sedan 2004".
+      sedan: z.number().int().min(1950).max(2100).optional(),
+      // Kvadratiskt foto, 1:1. Saknas: initialer i författarrutan.
+      bild: image().optional(),
+      // En rad för författarrutan. Fakta, inte adjektiv.
+      presentation: z.string(),
+      utkast: z.boolean().default(false),
+    }),
+});
+
+export const collections = { guider, kunskap, tester, jamforelser, pelare, kategorier, sidor, forfattare };

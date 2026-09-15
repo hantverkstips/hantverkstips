@@ -1,22 +1,71 @@
 ---
 /**
  * Enda tillåtna sättet att länka till en butik. Går alltid via /go/.
- * Innehållsfiler använder: <Kopknapp produkt="woods-mrd20" />
+ * Innehållsfiler skriver: <Kopknapp produkt="woods-mrd20" />
+ * Sidmallar anger modul; sidtyp och position kommer från Astro.locals om de utelämnas.
+ * Full anatomi (pris, tillstånd, utseende) i docs/SPEC-SIDMALLAR.md.
  */
+import { goLank, type KlickModul, type Sidtyp } from '../../lib/affiliate';
+import { formateraDatumKort, formateraPris } from '../../lib/format';
+
 interface Props {
   produkt: string;
   butik?: string;
   text?: string;
+  /** Var på sidan knappen sitter. Standard avslut (sist på sidan). */
+  modul?: KlickModul;
+  /** Sätts normalt av sidmallen via Astro.locals.sidtyp. */
+  sidtyp?: Sidtyp;
+  /** Löpnummer på sidan. Räknas upp automatiskt om den utelämnas. */
+  position?: number;
+  /** Pris i kronor från erbjudanden.pris. Saknas: "Se pris hos ..." */
+  pris?: number | null;
+  /** erbjudanden.uppdaterad. Visas som "pris 12 sep". */
+  prisDatum?: Date | string | null;
+  /** Butikens namn från databasen. */
+  butikNamn?: string;
+  /** Sekundär stil när lagerstatus är negativ. */
+  slut?: boolean;
 }
 
-const { produkt, butik, text = 'Se pris hos Proffsmagasinet' } = Astro.props;
-const href = butik ? `/go/${produkt}/?butik=${butik}` : `/go/${produkt}/`;
+const {
+  produkt,
+  butik,
+  modul = 'avslut',
+  pris = null,
+  prisDatum = null,
+  butikNamn = 'Proffsmagasinet',
+  slut = false,
+} = Astro.props;
+
+const sidtyp = Astro.props.sidtyp ?? Astro.locals.sidtyp;
+const position = Astro.props.position ?? (Astro.locals.kopknappPosition = (Astro.locals.kopknappPosition ?? 0) + 1);
+
+const href = goLank(produkt, { butik, modul, sidtyp, position });
+const datum = prisDatum ? new Date(prisDatum) : null;
+const harPris = typeof pris === 'number' && pris > 0;
+
+const text =
+  Astro.props.text ?? (slut ? `Slut i lager hos ${butikNamn}` : harPris ? `Till ${butikNamn}` : `Se pris hos ${butikNamn}`);
 ---
 
-<a
-  href={href}
-  rel="sponsored nofollow"
-  class="inline-block rounded-md bg-accent px-5 py-3 font-medium text-white no-underline hover:bg-accent-2"
->
-  {text}
-</a>
+<div class="kopknapp">
+  {harPris && (
+    <p class="m-0 mb-2 font-semibold tabular-nums text-blyerts">
+      {slut && <span class="font-normal text-blyerts-2">senast </span>}{formateraPris(pris)}
+    </p>
+  )}
+  <a
+    href={href}
+    rel="sponsored nofollow"
+    class:list={[
+      'inline-block min-h-11 rounded-md px-5 py-3 font-semibold no-underline',
+      slut ? 'border border-blyerts text-blyerts' : 'bg-penna text-papper',
+    ]}
+  >
+    {text}
+  </a>
+  <p class="m-0 mt-2 text-finstilt text-blyerts-2">
+    Annonslänk{datum && harPris ? ` · pris ${formateraDatumKort(datum)}` : ''}
+  </p>
+</div>
