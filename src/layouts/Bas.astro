@@ -1,15 +1,68 @@
 ---
+/**
+ * Baslayout: sidhuvud, reklamband, brödsmulor, innehåll, sidfot.
+ * Ingen klient-JavaScript. Mobilmenyn är ett <details>.
+ *
+ * sidtyp sätts inte här utan av rutten, överst i dess frontmatter, eftersom
+ * slot-innehåll renderas före layoutens frontmatter.
+ */
 import '../styles/global.css';
+import ikoner from '../assets/brand/riktning-1/ikoner.svg?raw';
+import ordmarke from '../assets/brand/riktning-1/ordmarke-inline.svg?raw';
+import { kategoriUrl, pelareUrl, publicerade, type Brodsmula } from '../lib/innehall';
+import { KALKYLATORER } from '../lib/kalkyl/register';
+import { PELARE } from '../lib/pelare';
+import { brodsmulor as brodsmulorData } from '../lib/strukturdata';
+import Brodsmulor from '../components/ui/Brodsmulor.astro';
+import Ikon from '../components/ui/Ikon.astro';
+import Reklamband from '../components/ui/Reklamband.astro';
+import StrukturData from '../components/ui/StrukturData.astro';
 
 interface Props {
   title: string;
   description: string;
-  /** Sätt true på alla sidor med affiliatelänkar. Visar reklammärkning. */
+  /** Visar Reklamband. Sätts av rutten efter sidtyp och innehåll. */
   reklam?: boolean;
+  butikNamn?: string;
+  /** Utelämnas på startsidan. */
+  brodsmulor?: Brodsmula[];
+  /** main får sidbredd i stället för läsbredd. Kategori, jämförelse, kalkylator. */
+  bred?: boolean;
+  noindex?: boolean;
 }
 
-const { title, description, reklam = false } = Astro.props;
+const { title, description, reklam = false, butikNamn, brodsmulor, bred = false, noindex = false } = Astro.props;
+
 const canonical = new URL(Astro.url.pathname, Astro.site);
+
+const hubbar = await publicerade('pelare');
+const kategorier = await publicerade('kategorier');
+
+const publiceradeHubbar = PELARE.flatMap((p) => {
+  const entry = hubbar.find((h) => h.id === p.slug);
+  return entry ? [{ slug: p.slug, namn: p.namn, kort: p.kort, ikon: p.ikon }] : [];
+});
+
+const HUVUDMENY = [
+  { namn: 'Fukt', href: '/fukt/', ikon: 'fukt' },
+  { namn: 'Altan', href: '/altan/', ikon: 'altan' },
+  { namn: 'Verktyg', href: '/verktyg/', ikon: 'verktyg' },
+  { namn: 'Räkna själv', href: '/rakna/', ikon: 'kalkylator' },
+  { namn: 'Så testar vi', href: '/om/sa-testar-vi/', ikon: null },
+] as const;
+
+const OM_SAJTEN = [
+  { namn: 'Om oss', href: '/om/' },
+  { namn: 'Så testar vi', href: '/om/sa-testar-vi/' },
+  { namn: 'Så tjänar vi pengar', href: '/om/sa-tjanar-vi-pengar/' },
+  { namn: 'Författare', href: '/forfattare/redaktionen/' },
+  { namn: 'Kontakt', href: '/om/kontakt/' },
+  { namn: 'Integritet', href: '/om/integritet/' },
+];
+
+const menyKategorier = kategorier.slice(0, 4);
+const ar = new Date().getFullYear();
+const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:decoration-2';
 ---
 
 <!doctype html>
@@ -20,34 +73,184 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/zilla-slab-latin-600.woff2" />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/atkinson-hyperlegible-latin-400.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/atkinson-hyperlegible-latin-700.woff2"
+    />
+    {brodsmulor && brodsmulor.length > 0 && <StrukturData data={brodsmulorData(brodsmulor)} />}
     <slot name="head" />
   </head>
-  <body class="min-h-dvh flex flex-col">
-    <header class="border-b border-linje">
-      <div class="mx-auto max-w-sidbredd px-4 py-3 flex items-center justify-between">
-        <a href="/" class="font-semibold text-lg tracking-tight no-underline text-blaeck">hantverkstips.se</a>
-        <nav aria-label="Huvudmeny" class="text-sm">
-          <a href="/luftavfuktare/" class="text-blaeck-2 hover:text-blaeck">Luftavfuktare</a>
+
+  <body class="min-h-dvh flex flex-col bg-papper text-blyerts text-brod lg:text-brod-lg">
+    <a href="#innehall" class="hoppa">Hoppa till innehåll</a>
+
+    <Fragment set:html={ikoner} />
+
+    <header class="relative border-b border-linje">
+      <div class="mx-auto max-w-sidbredd px-4 sm:px-6 lg:px-8 h-14 lg:h-16 flex items-center justify-between">
+        <a href="/" class="ordmarke" aria-label="Hantverkstips, till startsidan">
+          <Fragment set:html={ordmarke} />
+        </a>
+
+        <nav aria-label="Huvudmeny" class="hidden lg:flex items-center gap-6 text-liten">
+          {
+            HUVUDMENY.map((m) => (
+              <a href={m.href} class="text-blyerts no-underline hover:underline hover:decoration-penna">
+                {m.namn}
+              </a>
+            ))
+          }
         </nav>
+
+        <details class="meny lg:hidden">
+          <summary class="flex min-h-11 items-center gap-2 px-2 font-bold text-blyerts">
+            <Ikon namn="meny" storlek={24} />
+            Meny
+          </summary>
+          <div
+            class="absolute left-0 right-0 top-full z-50 border-b border-linje bg-papper shadow-lyft px-4 sm:px-6"
+          >
+            <ul class="m-0 p-0 list-none">
+              {
+                HUVUDMENY.map((m) => (
+                  <li class="border-b border-linje">
+                    <a href={m.href} class="flex h-12 items-center gap-3 text-blyerts no-underline">
+                      {m.ikon && <Ikon namn={m.ikon} storlek={24} />}
+                      {m.namn}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+
+            {
+              menyKategorier.length > 0 && (
+                <>
+                  <hr class="border-0 border-t border-linje m-0" />
+                  <p class="m-0 pt-3 text-etikett uppercase text-blyerts-2">Bäst i test</p>
+                  <ul class="m-0 p-0 list-none">
+                    {menyKategorier.map((k) => (
+                      <li class="border-b border-linje">
+                        <a href={kategoriUrl(k.id)} class="flex h-12 items-center text-blyerts no-underline">
+                          {k.data.namn}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )
+            }
+
+            <ul class="m-0 p-0 pb-2 list-none">
+              <li>
+                <a href="/om/" class="flex h-12 items-center text-blyerts no-underline">Om Hantverkstips</a>
+              </li>
+            </ul>
+          </div>
+        </details>
       </div>
     </header>
 
-    {reklam && (
-      <div class="bg-yta-2 border-b border-linje text-sm text-blaeck-2">
-        <p class="mx-auto max-w-sidbredd px-4 py-2 m-0">
-          Sidan innehåller reklamlänkar. Köper du via en länk får vi provision från butiken, utan att priset för dig ändras.
-        </p>
-      </div>
-    )}
+    {reklam && <Reklamband butikNamn={butikNamn} />}
 
-    <main class="flex-1 mx-auto w-full max-w-sidbredd px-4 py-8">
+    <main
+      id="innehall"
+      tabindex="-1"
+      class:list={[
+        'flex-1 w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12',
+        bred ? 'max-w-sidbredd' : 'max-w-lasbredd',
+      ]}
+    >
+      {brodsmulor && brodsmulor.length > 0 && (
+        <div class="mb-6">
+          <Brodsmulor lista={brodsmulor} />
+        </div>
+      )}
       <slot />
     </main>
 
-    <footer class="border-t border-linje text-sm text-blaeck-2">
-      <div class="mx-auto max-w-sidbredd px-4 py-6">
-        <p class="m-0">© {new Date().getFullYear()} hantverkstips.se</p>
+    <footer class="mt-12 lg:mt-24 bg-blyerts text-papper text-liten">
+      <div class="mx-auto max-w-sidbredd px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+        <div class="ordmarke" style="--color-blyerts: var(--color-papper)">
+          <Fragment set:html={ordmarke} />
+        </div>
+
+        <div class="mt-8 grid gap-8 lg:grid-cols-4">
+          <div>
+            <p class="m-0 mb-2 text-etikett uppercase">Ämnen</p>
+            <ul class="m-0 p-0 list-none">
+              {
+                publiceradeHubbar.map((p) => (
+                  <li class="mb-2">
+                    <a href={pelareUrl(p.slug)} class={sidfotLank}>
+                      {p.namn}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+
+          <div>
+            <p class="m-0 mb-2 text-etikett uppercase">Bäst i test</p>
+            <ul class="m-0 p-0 list-none">
+              {
+                kategorier.map((k) => (
+                  <li class="mb-2">
+                    <a href={kategoriUrl(k.id)} class={sidfotLank}>
+                      {k.data.namn}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+
+          <div>
+            <p class="m-0 mb-2 text-etikett uppercase">Räkna själv</p>
+            <ul class="m-0 p-0 list-none">
+              {
+                KALKYLATORER.map((k) => (
+                  <li class="mb-2">
+                    <a href={`/rakna/${k.slug}/`} class={sidfotLank}>
+                      {k.namn}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+
+          <div>
+            <p class="m-0 mb-2 text-etikett uppercase">Om sajten</p>
+            <ul class="m-0 p-0 list-none">
+              {
+                OM_SAJTEN.map((o) => (
+                  <li class="mb-2">
+                    <a href={o.href} class={sidfotLank}>
+                      {o.namn}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+
+        <p class="m-0 mt-8">© {ar} Hantverkstips</p>
       </div>
     </footer>
   </body>

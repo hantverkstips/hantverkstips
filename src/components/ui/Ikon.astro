@@ -1,0 +1,36 @@
+---
+/**
+ * Ikon ur spriten som layouten inlineat. Alltid dekorativ: texten bredvid bär
+ * betydelsen. Färgen kommer från currentColor. Se docs/DESIGN.md avsnitt 6.
+ */
+export type IkonNamn =
+  | 'fukt'
+  | 'altan'
+  | 'tak'
+  | 'grund'
+  | 'isolering'
+  | 'verktyg'
+  | 'el'
+  | 'kalkylator'
+  | 'meny'
+  | 'stang'
+  | 'sok'
+  | 'pil-hoger'
+  | 'extern-lank'
+  | 'varning'
+  | 'info'
+  | 'check';
+
+interface Props {
+  namn: IkonNamn;
+  /** Px. Standard 24. */
+  storlek?: number;
+  class?: string;
+}
+
+const { namn, storlek = 24, class: klass } = Astro.props;
+---
+
+<svg width={storlek} height={storlek} aria-hidden="true" class:list={['shrink-0', klass]}>
+  <use href={`#ikon-${namn}`} />
+</svg>

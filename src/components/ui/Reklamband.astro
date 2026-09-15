@@ -1,0 +1,22 @@
+---
+/**
+ * Reklammärkning enligt docs/AFFILIATE.md avsnitt 5. Formuleringen är fastställd
+ * och ändras inte. Bandet ligger direkt under sidhuvudet, ovanför första
+ * köpknappen, och går inte att stänga.
+ */
+interface Props {
+  butikNamn?: string;
+}
+
+const { butikNamn = 'Proffsmagasinet' } = Astro.props;
+---
+
+<div class="bg-papper-2 border-b border-linje">
+  <p class="mx-auto max-w-lasbredd px-4 sm:px-6 lg:px-8 py-3 m-0 text-liten text-blyerts">
+    Reklam. Sidan innehåller annonslänkar till {butikNamn}. Handlar du via dem får vi provision, priset för dig är
+    detsamma.{' '}
+    <a href="/om/sa-tjanar-vi-pengar/" class="text-penna underline decoration-1 underline-offset-2 hover:decoration-2">
+      Så tjänar vi pengar.
+    </a>
+  </p>
+</div>

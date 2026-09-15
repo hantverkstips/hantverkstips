@@ -1,0 +1,30 @@
+---
+/**
+ * Rubrik med signaturstrecket. Strecket ritas av klassen .pennstreck i
+ * global.css (mask i token penna), så komponenten bygger ingen egen variant.
+ * Skickas som h2 i components till <Content> så att alla H2 i innehållet får det.
+ * Astro skickar id som prop, och den måste vidarebefordras för att
+ * innehållsförteckningen ska hitta rubriken.
+ *
+ * niva 3 renderar en H3 utan streck: DESIGN.md förbjuder pennstreck under H3.
+ */
+interface Props {
+  id?: string;
+  niva?: 2 | 3;
+  class?: string;
+}
+
+const { id, niva = 2, class: klass } = Astro.props;
+---
+
+{
+  niva === 3 ? (
+    <h3 id={id} class:list={['font-sans text-h3 lg:text-h3-lg mt-8 mb-2 text-blyerts', klass]}>
+      <slot />
+    </h3>
+  ) : (
+    <h2 id={id} class:list={['pennstreck font-serif text-h2 lg:text-h2-lg mt-12 lg:mt-16 mb-3 text-blyerts', klass]}>
+      <slot />
+    </h2>
+  )
+}

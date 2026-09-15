@@ -1,0 +1,46 @@
+---
+/**
+ * Brödsmulor följer URL:en. Sista posten saknar länk. Under lg visas bara de
+ * två sista nivåerna. Strukturerad data sköts av Bas.astro, inte här.
+ */
+import type { Brodsmula } from '../../lib/innehall';
+
+interface Props {
+  lista: Brodsmula[];
+}
+
+const { lista } = Astro.props;
+---
+
+{
+  lista.length > 0 && (
+    <nav aria-label="Brödsmulor" class="text-liten text-blyerts-2">
+      <ol class="brodsmulor flex flex-wrap items-center gap-x-2 gap-y-1 m-0 p-0 list-none">
+        {lista.map((b, i) => (
+          <li class="flex items-center gap-x-2">
+            {b.href && i < lista.length - 1 ? (
+              <a href={b.href} class="text-blyerts-2 underline decoration-1 underline-offset-2 hover:decoration-2">
+                {b.namn}
+              </a>
+            ) : (
+              <span aria-current="page">{b.namn}</span>
+            )}
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )
+}
+
+<style>
+  .brodsmulor li + li::before {
+    content: "/";
+    color: var(--color-linje);
+  }
+
+  @media (max-width: 1023px) {
+    .brodsmulor li:not(:nth-last-child(-n + 2)) {
+      display: none;
+    }
+  }
+</style>

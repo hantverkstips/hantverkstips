@@ -1,0 +1,19 @@
+---
+/**
+ * JSON-LD. Inte klient-JS: webbläsaren kör inte application/ld+json, och
+ * kontrollen i docs/SPEC-SIDMALLAR.md avsnitt 10 undantar den.
+ */
+interface Props {
+  data: object | object[];
+}
+
+const { data } = Astro.props;
+
+const nyttolast = Array.isArray(data)
+  ? { '@context': 'https://schema.org', '@graph': data }
+  : { '@context': 'https://schema.org', ...(data as Record<string, unknown>) };
+
+const json = JSON.stringify(nyttolast).replace(/</g, '\\u003c');
+---
+
+<script type="application/ld+json" is:inline set:html={json} />
