@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+/*
+  Designtokens. Detta är en startpunkt; designansvarig äger och justerar.
+  Alla komponenter använder tokens via Tailwind (bg-yta, text-blaeck, osv).
+  Inga hårdkodade färger i komponenter.
+*/
+@theme {
+  /* Färger. Facktidning: mörk text, ljus yta, en accent för handling. */
+  --color-yta: #fafaf7;
+  --color-yta-2: #f1f0ea;
+  --color-linje: #d9d7cf;
+  --color-blaeck: #1c1b18;
+  --color-blaeck-2: #55534c;
+  --color-accent: #c2410c;
+  --color-accent-2: #9a3412;
+  --color-ok: #15803d;
+  --color-varning: #b45309;
+
+  /* Typografi. System-stack tills designansvarig valt typsnitt. */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+
+  /* Radier och skuggor. Sparsamt. */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --shadow-kort: 0 1px 2px rgb(0 0 0 / 0.06);
+
+  /* Innehållsbredd. Läsbar radlängd. */
+  --container-lasbredd: 44rem;
+  --container-sidbredd: 72rem;
+}
+
+html {
+  background: var(--color-yta);
+  color: var(--color-blaeck);
+  font-family: var(--font-sans);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  line-height: 1.6;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}

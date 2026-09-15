@@ -1,0 +1,32 @@
+# hantverkstips.se
+
+Affiliate-hub för hantverksverktyg. Organisk trafik via guider, tester, jämförelser och egna verktyg (kalkylatorer). Intäkter via affiliatelänkar till proffsmagasinet.se. Fokus på dyrare produkter: luftavfuktare, lasermätare, kap- och gersågar, proffsmaskiner. Inte småsaker.
+
+## Läs först
+
+- [docs/PROJEKTBRIEF.md](docs/PROJEKTBRIEF.md) – vad vi bygger, för vem, varför, och vad som räknas som klart
+- [docs/STILGUIDE.md](docs/STILGUIDE.md) – hur all text skrivs. Bindande för allt publikt innehåll
+- [docs/ARKITEKTUR.md](docs/ARKITEKTUR.md) – stack, mappstruktur, datamodell, konventioner
+- [docs/ARBETSFLODE.md](docs/ARBETSFLODE.md) – hur teamet av agenter samarbetar och validerar
+
+## Stack
+
+Astro (content collections, MDX) · React-öar för interaktiva verktyg · Tailwind · Supabase (Postgres + Auth) · Vercel. Språk i kod: TypeScript. Språk i innehåll, dokumentation och commit-meddelanden: svenska.
+
+## Regler som gäller alla agenter
+
+1. Publikt innehåll följer STILGUIDE.md utan undantag. Text som låter maskinskriven publiceras inte.
+2. Inga påståenden om produkter utan källa eller egen mätning. Osäkert = skriv inte.
+3. Alla affiliatelänkar går via `/go/[slug]`, aldrig direkt till butiken. Attribut `rel="sponsored nofollow"`.
+4. Varje sida med affiliatelänkar har synlig reklammärkning ovanför första länken.
+5. Inget JavaScript till klienten utan att en React-ö faktiskt behövs. Statisk HTML är standard.
+6. Kör `npm run build` innan något räknas som klart. Bygget ska vara grönt.
+7. Commit ofta, små commits, på svenska, i imperativ: "Lägg till guide om avfuktare i källare".
+
+## Kommandon
+
+```
+npm run dev       # lokal utveckling
+npm run build     # produktionsbygge, måste vara grönt
+npm run preview   # förhandsgranska bygget
+```

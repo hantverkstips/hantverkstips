@@ -1,0 +1,24 @@
+# beroenden
+node_modules/
+
+# bygge
+dist/
+.astro/
+.vercel/
+.output/
+
+# miljö
+.env
+.env.*
+!.env.example
+
+# supabase lokalt
+supabase/.branches/
+supabase/.temp/
+
+# os och editor
+.DS_Store
+Thumbs.db
+*.log
+.vscode/*
+!.vscode/extensions.json

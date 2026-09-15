@@ -1,0 +1,22 @@
+---
+/**
+ * Enda tillåtna sättet att länka till en butik. Går alltid via /go/.
+ * Innehållsfiler använder: <Kopknapp produkt="woods-mrd20" />
+ */
+interface Props {
+  produkt: string;
+  butik?: string;
+  text?: string;
+}
+
+const { produkt, butik, text = 'Se pris hos Proffsmagasinet' } = Astro.props;
+const href = butik ? `/go/${produkt}/?butik=${butik}` : `/go/${produkt}/`;
+---
+
+<a
+  href={href}
+  rel="sponsored nofollow"
+  class="inline-block rounded-md bg-accent px-5 py-3 font-medium text-white no-underline hover:bg-accent-2"
+>
+  {text}
+</a>

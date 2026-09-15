@@ -1,0 +1,54 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Sätt true på alla sidor med affiliatelänkar. Visar reklammärkning. */
+  reklam?: boolean;
+}
+
+const { title, description, reklam = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <slot name="head" />
+  </head>
+  <body class="min-h-dvh flex flex-col">
+    <header class="border-b border-linje">
+      <div class="mx-auto max-w-sidbredd px-4 py-3 flex items-center justify-between">
+        <a href="/" class="font-semibold text-lg tracking-tight no-underline text-blaeck">hantverkstips.se</a>
+        <nav aria-label="Huvudmeny" class="text-sm">
+          <a href="/luftavfuktare/" class="text-blaeck-2 hover:text-blaeck">Luftavfuktare</a>
+        </nav>
+      </div>
+    </header>
+
+    {reklam && (
+      <div class="bg-yta-2 border-b border-linje text-sm text-blaeck-2">
+        <p class="mx-auto max-w-sidbredd px-4 py-2 m-0">
+          Sidan innehåller reklamlänkar. Köper du via en länk får vi provision från butiken, utan att priset för dig ändras.
+        </p>
+      </div>
+    )}
+
+    <main class="flex-1 mx-auto w-full max-w-sidbredd px-4 py-8">
+      <slot />
+    </main>
+
+    <footer class="border-t border-linje text-sm text-blaeck-2">
+      <div class="mx-auto max-w-sidbredd px-4 py-6">
+        <p class="m-0">© {new Date().getFullYear()} hantverkstips.se</p>
+      </div>
+    </footer>
+  </body>
+</html>
