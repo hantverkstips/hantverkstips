@@ -3,7 +3,8 @@
  * Enda tillåtna sättet att länka till en butik. Går alltid via /go/.
  * Innehållsfiler skriver: <Kopknapp produkt="woods-mrd20" />
  * Sidmallar anger modul; sidtyp och position kommer från Astro.locals om de utelämnas.
- * Full anatomi (pris, tillstånd, utseende) i docs/SPEC-SIDMALLAR.md.
+ * Full anatomi (pris, tillstånd, utseende) i docs/SPEC-SIDMALLAR.md avsnitt 2.2
+ * och docs/DESIGN.md avsnitt 6.
  */
 import { goLank, type KlickModul, type Sidtyp } from '../../lib/affiliate';
 import { formateraDatumKort, formateraPris } from '../../lib/format';
@@ -26,6 +27,7 @@ interface Props {
   butikNamn?: string;
   /** Sekundär stil när lagerstatus är negativ. */
   slut?: boolean;
+  class?: string;
 }
 
 const {
@@ -36,6 +38,7 @@ const {
   prisDatum = null,
   butikNamn = 'Proffsmagasinet',
   slut = false,
+  class: klass,
 } = Astro.props;
 
 const sidtyp = Astro.props.sidtyp ?? Astro.locals.sidtyp;
@@ -49,18 +52,22 @@ const text =
   Astro.props.text ?? (slut ? `Slut i lager hos ${butikNamn}` : harPris ? `Till ${butikNamn}` : `Se pris hos ${butikNamn}`);
 ---
 
-<div class="kopknapp">
-  {harPris && (
-    <p class="m-0 mb-2 font-semibold tabular-nums text-blyerts">
-      {slut && <span class="font-normal text-blyerts-2">senast </span>}{formateraPris(pris)}
-    </p>
-  )}
+<div class:list={['kopknapp', klass]}>
+  {
+    harPris && (
+      <p class="m-0 mb-2 font-bold tabular-nums text-brod text-blyerts">
+        {slut && <span class="font-normal text-blyerts-2">senast </span>}
+        {formateraPris(pris)}
+      </p>
+    )
+  }
   <a
     href={href}
     rel="sponsored nofollow"
     class:list={[
-      'inline-block min-h-11 rounded-md px-5 py-3 font-semibold no-underline',
-      slut ? 'border border-blyerts text-blyerts' : 'bg-penna text-papper',
+      'inline-flex min-h-11 items-center justify-center rounded-md px-5 py-3 font-bold no-underline',
+      'hover:bg-blyerts hover:text-papper',
+      slut ? 'border-2 border-blyerts text-blyerts' : 'bg-penna text-papper',
     ]}
   >
     {text}

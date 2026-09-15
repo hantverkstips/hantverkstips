@@ -1,0 +1,204 @@
+---
+/**
+ * Alla produkter i en kategori mot samma mått, från databasen. Kolumner är
+ * produkter, rader är egenskaper ur kategorifilen. Enheter står i radrubriken,
+ * bästa värdet är både fetstil och ok-färg. Se docs/SPEC-SIDMALLAR.md avsnitt 2.4.
+ */
+import { getEntry } from 'astro:content';
+import type { KlickModul } from '../../lib/affiliate';
+import { formateraPris } from '../../lib/format';
+import {
+  arSlut,
+  billigasteErbjudande,
+  hamtaProdukter,
+  lokalBild,
+  produktNamn,
+  varnaSaknadProdukt,
+  type Produkt,
+} from '../../lib/produkter';
+import Kopknapp from './Kopknapp.astro';
+
+interface Props {
+  /** Slugs i kolumnordning. */
+  produkter: string[];
+  /** Kategorislug, ger specs och enheter. */
+  kategori: string;
+  kopknappar?: boolean;
+  etiketter?: Record<string, string>;
+  rekommenderade?: string[];
+  modul?: KlickModul;
+}
+
+const {
+  produkter: slugs,
+  kategori: kategoriSlug,
+  kopknappar = true,
+  etiketter = {},
+  rekommenderade = [],
+  modul = 'tabell',
+} = Astro.props;
+
+const produkter = await hamtaProdukter(slugs);
+for (const slug of slugs) {
+  if (!produkter.some((p) => p.slug === slug)) varnaSaknadProdukt(slug, Astro.url.pathname);
+}
+
+const kategori = await getEntry('kategorier', kategoriSlug);
+const specs = kategori?.data.specs ?? [];
+
+if (produkter.length < 2) {
+  console.warn(`[Jamforelsetabell] färre än två produkter på ${Astro.url.pathname}`);
+}
+
+const erbjudanden = new Map(produkter.map((p) => [p.slug, billigasteErbjudande(p)]));
+const harNagotPris = produkter.some((p) => {
+  const e = erbjudanden.get(p.slug);
+  return typeof e?.pris === 'number' && e.pris > 0;
+});
+const harEtiketter = produkter.some((p) => Boolean(etiketter[p.slug]));
+
+/** Bästa numeriska värdet i raden. NaN räknas inte. */
+function bastaSlugs(nyckel: string, bast: 'hogst' | 'lagst' | undefined): Set<string> {
+  if (!bast) return new Set();
+  const tal = produkter
+    .map((p) => ({ slug: p.slug, v: Number(p.specs[nyckel]) }))
+    .filter((x) => Number.isFinite(x.v));
+  if (tal.length === 0) return new Set();
+  const basta = tal.reduce((a, b) => (bast === 'hogst' ? (b.v > a.v ? b : a) : b.v < a.v ? b : a));
+  return new Set(tal.filter((x) => x.v === basta.v).map((x) => x.slug));
+}
+
+function varde(p: Produkt, nyckel: string): string | null {
+  const v = p.specs[nyckel];
+  if (v === undefined || v === null || v === '') return null;
+  return String(v);
+}
+
+function kolumnKlass(slug: string): string {
+  return rekommenderade.includes(slug) ? 'bg-papper-2' : '';
+}
+---
+
+{
+  produkter.length >= 2 && (
+    <div class="my-8">
+      <p class="lg:hidden m-0 mb-2 text-liten text-blyerts-2">Dra i sidled för att se alla</p>
+      <div class="tabell-behallare border border-linje rounded-sm">
+        <table class="w-full border-collapse text-liten tabular-nums">
+          <caption class="sr-only">Jämförelse av {kategori?.data.namn ?? kategoriSlug}</caption>
+          <tbody>
+            <tr class="border-b border-linje">
+              <th scope="row" class="sticky left-0 bg-papper-2 border-r border-linje p-3 text-left align-top font-normal text-blyerts-2">
+                Bild
+              </th>
+              {produkter.map((p) => (
+                <th scope="col" class:list={['min-w-[150px] p-3 align-top', kolumnKlass(p.slug)]}>
+                  {lokalBild(p) ? (
+                    <div class="bg-vit border border-linje rounded-sm p-1 w-20">
+                      <img
+                        src={lokalBild(p)!}
+                        alt={produktNamn(p)}
+                        width="80"
+                        height="60"
+                        loading="lazy"
+                        decoding="async"
+                        class="block w-full h-15 object-contain"
+                      />
+                    </div>
+                  ) : (
+                    <div class="bg-papper-2 border border-linje rounded-sm w-20 h-15 flex items-center justify-center text-center p-1">
+                      <span class="text-etikett uppercase text-blyerts-2">{p.marke ?? p.namn}</span>
+                    </div>
+                  )}
+                </th>
+              ))}
+            </tr>
+
+            <tr class="border-b border-linje">
+              <th scope="row" class="sticky left-0 bg-papper-2 border-r border-linje p-3 text-left align-top font-normal text-blyerts-2">
+                Produkt
+              </th>
+              {produkter.map((p) => (
+                <th scope="col" class:list={['min-w-[150px] p-3 text-left align-top', kolumnKlass(p.slug)]}>
+                  <span class="font-sans text-h3 font-bold text-blyerts">{produktNamn(p)}</span>
+                </th>
+              ))}
+            </tr>
+
+            {harEtiketter && (
+              <tr class="border-b border-linje">
+                <th scope="row" class="sticky left-0 bg-papper-2 border-r border-linje p-3 text-left align-top font-normal text-blyerts-2">
+                  Vårt omdöme
+                </th>
+                {produkter.map((p) => (
+                  <td class:list={['min-w-[150px] p-3 align-top', kolumnKlass(p.slug)]}>
+                    {etiketter[p.slug] ? (
+                      <span class="text-etikett uppercase text-penna">{etiketter[p.slug]}</span>
+                    ) : (
+                      <span class="text-blyerts-2">ej angivet</span>
+                    )}
+                  </td>
+                ))}
+              </tr>
+            )}
+
+            {specs.map((s) => {
+              const basta = bastaSlugs(s.nyckel, s.bast);
+              return (
+                <tr class="border-b border-linje">
+                  <th scope="row" class="sticky left-0 bg-papper-2 border-r border-linje p-3 text-left align-top font-normal text-blyerts-2">
+                    {s.etikett}
+                    {s.enhet ? `, ${s.enhet}` : ''}
+                  </th>
+                  {produkter.map((p) => {
+                    const v = varde(p, s.nyckel);
+                    return (
+                      <td
+                        class:list={[
+                          'min-w-[150px] p-3 align-top',
+                          kolumnKlass(p.slug),
+                          basta.has(p.slug) ? 'font-bold text-ok' : 'text-blyerts',
+                        ]}
+                      >
+                        {v ?? <span class="text-blyerts-2">ej angivet</span>}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+
+            {harNagotPris && (
+              <tr>
+                <th scope="row" class="sticky left-0 bg-papper-2 border-r border-linje p-3 text-left align-top font-normal text-blyerts-2">
+                  Pris
+                </th>
+                {produkter.map((p) => {
+                  const e = erbjudanden.get(p.slug) ?? null;
+                  return (
+                    <td class:list={['min-w-[150px] p-3 align-top', kolumnKlass(p.slug)]}>
+                      {kopknappar ? (
+                        <Kopknapp
+                          produkt={p.slug}
+                          modul={modul}
+                          pris={e?.pris ?? null}
+                          prisDatum={e?.uppdaterad ?? null}
+                          butikNamn={e?.butikNamn}
+                          slut={arSlut(e)}
+                        />
+                      ) : typeof e?.pris === 'number' ? (
+                        <span class="font-bold text-blyerts">{formateraPris(e.pris)}</span>
+                      ) : (
+                        <span class="text-blyerts-2">ej angivet</span>
+                      )}
+                    </td>
+                  );
+                })}
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
+}
