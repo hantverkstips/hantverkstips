@@ -83,21 +83,22 @@ function kolumnKlass(slug: string): string {
   produkter.length >= 2 && (
     <div class="my-8">
       <p class="lg:hidden m-0 mb-2 text-liten text-blyerts-2">Dra i sidled för att se alla</p>
-      <div class="tabell-behallare border border-linje rounded-sm">
-        <table class="w-full border-collapse text-liten tabular-nums">
-          <caption class="sr-only">Jämförelse av {kategori?.data.namn ?? kategoriSlug}</caption>
+      <div class="tabell-yta">
+        <div class="tabell-behallare border border-linje rounded-sm">
+          <table class="w-full border-collapse text-liten tabular-nums">
+            <caption class="sr-only">Jämförelse av {kategori?.data.namn ?? kategoriSlug}</caption>
           <tbody>
+            {/* En huvudrad med bild och namn. Hörncellen är tom: "Bild" och
+                "Produkt" som radrubriker säger inget läsaren inte redan ser. */}
             <tr class="border-b border-linje">
-              <th scope="row" class="sticky left-0 bg-papper-2 border-r border-linje p-3 text-left align-top font-normal text-blyerts-2">
-                Bild
-              </th>
+              <td class="sticky left-0 bg-papper-2 border-r border-linje p-3" />
               {produkter.map((p) => (
-                <th scope="col" class:list={['min-w-[150px] p-3 align-top', kolumnKlass(p.slug)]}>
+                <th scope="col" class:list={['min-w-[150px] p-3 text-left align-top', kolumnKlass(p.slug)]}>
                   {lokalBild(p) ? (
                     <div class="bg-vit border border-linje rounded-sm p-1 w-20">
                       <img
                         src={lokalBild(p)!}
-                        alt={produktNamn(p)}
+                        alt=""
                         width="80"
                         height="60"
                         loading="lazy"
@@ -110,17 +111,7 @@ function kolumnKlass(slug: string): string {
                       <span class="text-etikett uppercase text-blyerts-2">{p.marke ?? p.namn}</span>
                     </div>
                   )}
-                </th>
-              ))}
-            </tr>
-
-            <tr class="border-b border-linje">
-              <th scope="row" class="sticky left-0 bg-papper-2 border-r border-linje p-3 text-left align-top font-normal text-blyerts-2">
-                Produkt
-              </th>
-              {produkter.map((p) => (
-                <th scope="col" class:list={['min-w-[150px] p-3 text-left align-top', kolumnKlass(p.slug)]}>
-                  <span class="font-sans text-h3 font-bold text-blyerts">{produktNamn(p)}</span>
+                  <span class="mt-2 block font-sans text-h3 font-bold text-blyerts">{produktNamn(p)}</span>
                 </th>
               ))}
             </tr>
@@ -181,6 +172,7 @@ function kolumnKlass(slug: string): string {
                         <Kopknapp
                           produkt={p.slug}
                           modul={modul}
+                          bredd="full"
                           pris={e?.pris ?? null}
                           prisDatum={e?.uppdaterad ?? null}
                           butikNamn={e?.butikNamn}
@@ -197,7 +189,8 @@ function kolumnKlass(slug: string): string {
               </tr>
             )}
           </tbody>
-        </table>
+          </table>
+        </div>
       </div>
     </div>
   )

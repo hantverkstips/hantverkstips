@@ -62,6 +62,7 @@ const kortKlass = [
   'border border-linje rounded-sm p-4 lg:p-6',
   rekommenderad ? 'bg-papper-2' : 'bg-papper',
 ];
+const harBild = bild !== null;
 const bildBredd = variant === 'kompakt' ? 96 : 400;
 const bildHojd = variant === 'kompakt' ? 72 : 300;
 ---
@@ -74,8 +75,8 @@ const bildHojd = variant === 'kompakt' ? 72 : 300;
     </div>
   ) : (
     <div class:list={kortKlass}>
-      <div class:list={['flex gap-4', variant === 'full' ? 'flex-col lg:flex-row lg:gap-6' : 'flex-row']}>
-        <div class:list={[variant === 'full' ? 'lg:w-2/5 shrink-0' : 'shrink-0']}>
+      <div class:list={['flex gap-4', harBild && variant === 'full' ? 'flex-col lg:flex-row lg:gap-6' : 'flex-row']}>
+        <div class:list={[harBild && variant === 'full' ? 'lg:w-2/5 shrink-0' : 'shrink-0']}>
           {bild ? (
             <div class="bg-vit border border-linje rounded-sm p-2">
               <img
@@ -92,12 +93,8 @@ const bildHojd = variant === 'kompakt' ? 72 : 300;
               />
             </div>
           ) : (
-            <div
-              class:list={[
-                'bg-papper-2 border border-linje rounded-sm flex items-center justify-center text-center p-2',
-                variant === 'kompakt' ? 'w-24 h-18' : 'w-full aspect-4/3',
-              ]}
-            >
+            /* Utan bild blir rutan alltid kompakt, aldrig en tom 4:3-yta i full bredd. */
+            <div class="bg-papper-2 border border-linje rounded-sm flex items-center justify-center text-center p-2 w-24 h-18">
               <span class="text-etikett uppercase text-blyerts-2">{produkt.marke ?? produkt.namn}</span>
             </div>
           )}
@@ -121,30 +118,33 @@ const bildHojd = variant === 'kompakt' ? 72 : 300;
               ))}
             </dl>
           )}
-
-          <div class="mt-4">
-            <Kopknapp
-              produkt={produkt.slug}
-              modul={modul}
-              pris={erbjudande?.pris ?? null}
-              prisDatum={erbjudande?.uppdaterad ?? null}
-              butikNamn={erbjudande?.butikNamn}
-              slut={arSlut(erbjudande)}
-            />
-          </div>
-
-          {visaTestlank && test && (
-            <p class="m-0 mt-3">
-              <a
-                href={testUrl(test)}
-                class="inline-flex min-h-11 items-center text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
-              >
-                Läs testet
-              </a>
-            </p>
-          )}
         </div>
       </div>
+
+      {/* Köpknappen ligger under bild och text, full bredd på mobil, så att
+          knapptexten aldrig bryts av den 96 px breda bilden bredvid. */}
+      <div class="mt-4">
+        <Kopknapp
+          produkt={produkt.slug}
+          modul={modul}
+          bredd="full"
+          pris={erbjudande?.pris ?? null}
+          prisDatum={erbjudande?.uppdaterad ?? null}
+          butikNamn={erbjudande?.butikNamn}
+          slut={arSlut(erbjudande)}
+        />
+      </div>
+
+      {visaTestlank && test && (
+        <p class="m-0 mt-3">
+          <a
+            href={testUrl(test)}
+            class="inline-flex min-h-11 items-center text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+          >
+            Läs testet
+          </a>
+        </p>
+      )}
     </div>
   )
 }

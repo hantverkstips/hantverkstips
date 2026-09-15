@@ -4,6 +4,7 @@
  * inte (butiken säljer inte virke). Rader med linje emellan, inga kort, ingen
  * tabell. Se docs/DESIGN.md avsnitt 6 och SPEC-SIDMALLAR avsnitt 2.11.
  */
+import { formateraPris } from '../../lib/format';
 import { arSlut, billigasteErbjudande, hamtaProdukter, produktNamn } from '../../lib/produkter';
 import Kopknapp from './Kopknapp.astro';
 import Pennstreck from './Pennstreck.astro';
@@ -50,10 +51,21 @@ const visa = verktyg.length > 0 || material.length > 0;
                   <p class="m-0 mt-1 text-brod text-blyerts-2">{r.varfor}</p>
                 </div>
                 {r.produkt && (
-                  <div class="mt-3 lg:mt-0 lg:w-1/3">
+                  /* Mobil: priset till vänster, knappen fyller resten av raden.
+                     Därför renderas priset här och inte inuti Kopknapp. */
+                  <div class="mt-3 lg:mt-0 lg:w-1/3 flex items-start gap-4">
+                    {typeof r.erbjudande?.pris === 'number' && r.erbjudande.pris > 0 && (
+                      <p class="m-0 shrink-0 font-bold tabular-nums text-brod text-blyerts">
+                        {arSlut(r.erbjudande) && <span class="font-normal text-blyerts-2">senast </span>}
+                        {formateraPris(r.erbjudande.pris)}
+                      </p>
+                    )}
                     <Kopknapp
+                      class="flex-1 min-w-0"
                       produkt={r.produkt.slug}
                       modul="behovslista"
+                      bredd="full"
+                      visaPris={false}
                       pris={r.erbjudande?.pris ?? null}
                       prisDatum={r.erbjudande?.uppdaterad ?? null}
                       butikNamn={r.erbjudande?.butikNamn}

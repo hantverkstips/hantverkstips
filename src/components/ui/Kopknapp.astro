@@ -27,6 +27,10 @@ interface Props {
   butikNamn?: string;
   /** Sekundär stil när lagerstatus är negativ. */
   slut?: boolean;
+  /** full gör knappen block och full bredd på mobil, auto från sm. Standard auto. */
+  bredd?: 'auto' | 'full';
+  /** Prisraden ovanför knappen. Sätt false när anroparen placerar priset själv. */
+  visaPris?: boolean;
   class?: string;
 }
 
@@ -38,6 +42,8 @@ const {
   prisDatum = null,
   butikNamn = 'Proffsmagasinet',
   slut = false,
+  bredd = 'auto',
+  visaPris = true,
   class: klass,
 } = Astro.props;
 
@@ -54,7 +60,7 @@ const text =
 
 <div class:list={['kopknapp', klass]}>
   {
-    harPris && (
+    visaPris && harPris && (
       <p class="m-0 mb-2 font-bold tabular-nums text-brod text-blyerts">
         {slut && <span class="font-normal text-blyerts-2">senast </span>}
         {formateraPris(pris)}
@@ -65,8 +71,9 @@ const text =
     href={href}
     rel="sponsored nofollow"
     class:list={[
-      'inline-flex min-h-11 items-center justify-center rounded-md px-5 py-3 font-bold no-underline',
+      'min-h-11 items-center justify-center rounded-md px-5 py-3 font-bold no-underline text-center',
       'hover:bg-blyerts hover:text-papper',
+      bredd === 'full' ? 'flex w-full sm:inline-flex sm:w-auto' : 'inline-flex',
       slut ? 'border-2 border-blyerts text-blyerts' : 'bg-penna text-papper',
     ]}
   >
