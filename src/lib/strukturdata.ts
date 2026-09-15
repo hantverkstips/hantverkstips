@@ -4,7 +4,15 @@
  */
 import symbolUrl from '../assets/brand/riktning-1/symbol.svg?url';
 import type { Brodsmula } from './innehall';
-import { billigasteErbjudande, hogstaPris, lagstaPris, lokalBild, produktNamn, type Produkt } from './produkter';
+import {
+  arSlut,
+  billigasteErbjudande,
+  hogstaPris,
+  lagstaPris,
+  lokalBild,
+  produktNamn,
+  type Produkt,
+} from './produkter';
 
 export const SAJT = 'https://hantverkstips.se';
 
@@ -39,7 +47,8 @@ export interface ArtikelData {
   url: string;
   titel: string;
   beskrivning: string;
-  publicerad: Date;
+  /** Utelämnas på sidor utan publiceringsdatum (hubbar, om-sidor). */
+  publicerad?: Date;
   uppdaterad?: Date;
   forfattareSlug: string;
   forfattareNamn: string;
@@ -47,18 +56,23 @@ export interface ArtikelData {
 }
 
 export function artikel(a: ArtikelData): object {
+  const andrad = a.uppdaterad ?? a.publicerad;
   return {
     '@type': 'Article',
     headline: a.titel,
     description: a.beskrivning,
-    datePublished: a.publicerad.toISOString(),
-    dateModified: (a.uppdaterad ?? a.publicerad).toISOString(),
+    // Inget datum hittas på: saknas publiceringsdatum utelämnas fältet hellre
+    // än att sättas till byggtidpunkten, som ändras vid varje bygge.
+    ...(a.publicerad ? { datePublished: a.publicerad.toISOString() } : {}),
+    ...(andrad ? { dateModified: andrad.toISOString() } : {}),
     author: {
       '@type': 'Person',
       name: a.forfattareNamn,
       url: `${SAJT}/forfattare/${a.forfattareSlug}/`,
     },
-    publisher: { '@id': `${SAJT}/#organisation` },
+    // Noden skrivs ut i sin helhet: en @id-referens till /#organisation pekar på
+    // en nod som bara finns på startsidan och /om/.
+    publisher: organisation(),
     mainEntityOfPage: absolut(a.url),
     ...(a.bildUrl ? { image: absolut(a.bildUrl) } : {}),
   };
@@ -80,10 +94,9 @@ export function produkt(p: ProduktData): object {
   const billigast = billigasteErbjudande(p.produkt);
   const medPris = p.produkt.erbjudanden.filter((e) => typeof e.pris === 'number' && e.pris > 0);
 
-  const tillganglighet =
-    billigast && billigast.lagerstatus && /slut/i.test(billigast.lagerstatus)
-      ? 'https://schema.org/OutOfStock'
-      : 'https://schema.org/InStock';
+  // Samma tolkning av lagerstatus som Kopknapp gör, så att sidan och markupen
+  // aldrig säger olika saker.
+  const tillganglighet = arSlut(billigast) ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock';
 
   return {
     '@type': 'Product',

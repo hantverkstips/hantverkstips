@@ -82,18 +82,14 @@ function varnaEnGang(): void {
 }
 
 /**
- * Ett Supabase-fel som betyder att schemat inte finns behandlas som "ingen databas":
- * bygget ska gå igenom mot en tom projektinstans. Andra fel stoppar bygget.
+ * Ett Supabase-fel som betyder att tabellen inte finns behandlas som "ingen databas":
+ * bygget ska gå igenom mot ett tomt projekt. Allt annat stoppar bygget, så att
+ * en kolumn som bytt namn inte tyst ger en sajt full av platshållare.
  */
-function schematSaknas(fel: { code?: string; message?: string }): boolean {
+function tabellenSaknas(fel: { code?: string; message?: string }): boolean {
   const kod = fel.code ?? '';
   const text = fel.message ?? '';
-  return (
-    kod === '42P01' ||
-    kod === 'PGRST205' ||
-    kod === 'PGRST202' ||
-    /Could not find the table|does not exist|schema cache/i.test(text)
-  );
+  return kod === '42P01' || kod === 'PGRST205' || text.includes('Could not find the table');
 }
 
 export function databasFinns(): boolean {
@@ -144,7 +140,7 @@ export async function allaProdukter(): Promise<Map<string, Produkt>> {
 
   const { data, error } = await db.from('produkter').select(VALJ).eq('aktiv', true);
   if (error) {
-    if (schematSaknas(error)) {
+    if (tabellenSaknas(error)) {
       varnaEnGang();
       cache = { tid: Date.now(), produkter: new Map() };
       return cache.produkter;
@@ -222,7 +218,7 @@ export async function hamtaButik(slug = 'proffsmagasinet'): Promise<Butik | null
 
   const { data, error } = await db.from('butiker').select('slug, namn');
   if (error) {
-    if (schematSaknas(error)) {
+    if (tabellenSaknas(error)) {
       varnaEnGang();
       butikCache = { tid: Date.now(), butiker: new Map() };
       return null;

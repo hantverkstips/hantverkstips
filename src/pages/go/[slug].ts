@@ -62,7 +62,13 @@ export const GET: APIRoute = async ({ params, url, request, redirect }) => {
   try {
     if (referrer) {
       const r = new URL(referrer);
-      sida = r.hostname.endsWith('hantverkstips.se') || r.hostname === 'localhost' ? r.pathname : null;
+      // Exakt domän eller en riktig underdomän. Bara endsWith skulle släppa
+      // igenom till exempel fakehantverkstips.se.
+      const egenDoman =
+        r.hostname === 'hantverkstips.se' ||
+        r.hostname.endsWith('.hantverkstips.se') ||
+        r.hostname === 'localhost';
+      sida = egenDoman ? r.pathname.slice(0, 200) : null;
     }
   } catch {
     sida = null;
