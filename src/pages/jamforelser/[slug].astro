@@ -1,0 +1,186 @@
+---
+/**
+ * Jämförelse, X mot Y. Tabellen är svaret och ligger direkt efter metaraden.
+ * Se docs/SPEC-SIDMALLAR.md avsnitt 4.5.
+ */
+import { getEntry, render } from 'astro:content';
+import Bas from '../../layouts/Bas.astro';
+import { formateraDatum, isoDatum } from '../../lib/format';
+import {
+  artikelUrl,
+  jamforelseUrl,
+  kategoriUrl,
+  normaliseraProdukter,
+  publicerade,
+  slugify,
+  typEtikett,
+} from '../../lib/innehall';
+import { hamtaButik } from '../../lib/produkter';
+import { artikel as artikelData } from '../../lib/strukturdata';
+import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Forfattarruta from '../../components/ui/Forfattarruta.astro';
+import Innehallsforteckning from '../../components/ui/Innehallsforteckning.astro';
+import Jamforelsetabell from '../../components/ui/Jamforelsetabell.astro';
+import Kopknapp from '../../components/ui/Kopknapp.astro';
+import Markering from '../../components/ui/Markering.astro';
+import Pennstreck from '../../components/ui/Pennstreck.astro';
+import Produktkort from '../../components/ui/Produktkort.astro';
+import StrukturData from '../../components/ui/StrukturData.astro';
+import Varning from '../../components/ui/Varning.astro';
+import Verktygskort from '../../components/ui/Verktygskort.astro';
+
+export async function getStaticPaths() {
+  const jamforelser = await publicerade('jamforelser');
+  return jamforelser.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+Astro.locals.sidtyp = 'jamforelse';
+
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content, headings } = await render(entry);
+
+const produkter = normaliseraProdukter(d.produkter);
+const kategori = await getEntry('kategorier', d.kategori);
+const butik = await hamtaButik();
+
+const forfattare = await getEntry('forfattare', d.forfattare);
+const forfattareNamn = forfattare?.data.namn ?? 'Redaktionen';
+
+const rubriker = [
+  ...headings.filter((h) => h.depth === 2).map((h) => ({ slug: h.slug, text: h.text })),
+  ...(produkter.length > 0 ? [{ slug: slugify('Produkterna vi nämner'), text: 'Produkterna vi nämner' }] : []),
+];
+
+const relaterat = [
+  ...(await publicerade('guider')).filter((e) => e.data.kategori === d.kategori),
+  ...(await publicerade('kunskap')).filter((e) => e.data.kategori === d.kategori),
+].map((e) => ({ etikett: typEtikett(e.data.typ), namn: e.data.title, href: artikelUrl(e) }));
+
+const strukturdata = artikelData({
+  url: jamforelseUrl(entry),
+  titel: d.title,
+  beskrivning: d.description,
+  publicerad: d.publicerad,
+  uppdaterad: d.uppdaterad,
+  forfattareSlug: d.forfattare,
+  forfattareNamn,
+});
+---
+
+<Bas
+  title={`${d.title} · Hantverkstips`}
+  description={d.description}
+  reklam={true}
+  butikNamn={butik?.namn}
+  brodsmulor={[
+    { namn: 'Hantverkstips', href: '/' },
+    { namn: kategori?.data.namn ?? d.kategori, href: kategoriUrl(d.kategori) },
+    { namn: d.title },
+  ]}
+  bred={true}
+>
+  <StrukturData slot="head" data={strukturdata} />
+
+  <div class="mx-auto w-full max-w-lasbredd">
+    <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-penna">Jämförelse</p>
+    <h1 class="m-0 mt-2 font-serif text-h1 lg:text-h1-lg">{d.title}</h1>
+    <p class="m-0 mt-3 text-liten text-blyerts-2">
+      Publicerad <time datetime={isoDatum(d.publicerad)}>{formateraDatum(d.publicerad)}</time>{
+        d.uppdaterad && (
+          <>
+            , uppdaterad <time datetime={isoDatum(d.uppdaterad)}>{formateraDatum(d.uppdaterad)}</time>
+          </>
+        )
+      } · Av {forfattareNamn}
+    </p>
+
+    <Innehallsforteckning rubriker={rubriker} />
+  </div>
+
+  <Jamforelsetabell produkter={produkter.map((p) => p.slug)} kategori={d.kategori} />
+
+  <div class="mx-auto w-full max-w-lasbredd">
+    <div class="prosa mt-8">
+      <Content
+        components={{
+          h2: Pennstreck,
+          Faktaruta,
+          Varning,
+          Verktygskort,
+          Markering,
+          Kopknapp,
+          Produktkort,
+          Jamforelsetabell,
+        }}
+      />
+    </div>
+
+    {
+      produkter.length > 0 && (
+        <section>
+          <Pennstreck id={slugify('Produkterna vi nämner')}>Produkterna vi nämner</Pennstreck>
+          <div class="grid gap-4">
+            {produkter.map((p) => (
+              <Produktkort
+                produkt={p.slug}
+                variant="kompakt"
+                etikett={p.etikett}
+                forVem={p.forVem}
+                modul="avslut"
+              />
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    {
+      d.kallor.length > 0 && (
+        <section>
+          <Pennstreck id={slugify('Källor')}>Källor</Pennstreck>
+          <ol class="m-0 pl-6 list-decimal text-brod text-blyerts-2">
+            {d.kallor.map((k) => (
+              <li class="mb-2">
+                {k.url ? (
+                  <a
+                    href={k.url}
+                    rel="nofollow"
+                    class="text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+                  >
+                    {k.titel}
+                  </a>
+                ) : (
+                  k.titel
+                )}
+              </li>
+            ))}
+          </ol>
+        </section>
+      )
+    }
+
+    {
+      relaterat.length > 0 && (
+        <section>
+          <Pennstreck id={slugify('Läs vidare')}>Läs vidare</Pennstreck>
+          <ul class="m-0 p-0 list-none">
+            {relaterat.map((r) => (
+              <li class="border-t border-linje py-3">
+                <p class="m-0 text-etikett uppercase text-blyerts-2">{r.etikett}</p>
+                <a
+                  href={r.href}
+                  class="inline-flex min-h-11 items-center text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+                >
+                  {r.namn}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <Forfattarruta forfattare={d.forfattare} publicerad={d.publicerad} uppdaterad={d.uppdaterad} />
+  </div>
+</Bas>

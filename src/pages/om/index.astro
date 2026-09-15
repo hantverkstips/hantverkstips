@@ -1,0 +1,12 @@
+---
+/**
+ * /om/. Renderar sidan med id om ur samlingen sidor.
+ */
+import { getEntry } from 'astro:content';
+import Sida from '../../components/vyer/Sida.astro';
+
+const entry = await getEntry('sidor', 'om');
+if (!entry) throw new Error('src/content/sidor/om.mdx saknas');
+---
+
+<Sida entry={entry} url="/om/" brodsmulor={[{ namn: 'Hantverkstips', href: '/' }, { namn: entry.data.title }]} />

@@ -1,0 +1,352 @@
+---
+/**
+ * Produkttest eller granskning. En produkt, ett omdöme, egna siffror.
+ * Ingen poängskala, inga stjärnor. Se docs/SPEC-SIDMALLAR.md avsnitt 4.4.
+ */
+import { getEntry, render } from 'astro:content';
+import Bas from '../../layouts/Bas.astro';
+import { formateraDatum, isoDatum } from '../../lib/format';
+import { artikelUrl, kategoriUrl, publicerade, slugify, testUrl, typEtikett } from '../../lib/innehall';
+import {
+  arSlut,
+  billigasteErbjudande,
+  hamtaButik,
+  hamtaProdukt,
+  lokalBild,
+  produktNamn,
+  varnaSaknadProdukt,
+} from '../../lib/produkter';
+import { produkt as produktData } from '../../lib/strukturdata';
+import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Forfattarruta from '../../components/ui/Forfattarruta.astro';
+import Innehallsforteckning from '../../components/ui/Innehallsforteckning.astro';
+import Jamforelsetabell from '../../components/ui/Jamforelsetabell.astro';
+import Kopknapp from '../../components/ui/Kopknapp.astro';
+import Markering from '../../components/ui/Markering.astro';
+import Pennstreck from '../../components/ui/Pennstreck.astro';
+import Produktkort from '../../components/ui/Produktkort.astro';
+import StrukturData from '../../components/ui/StrukturData.astro';
+import Varning from '../../components/ui/Varning.astro';
+import Verktygskort from '../../components/ui/Verktygskort.astro';
+
+export async function getStaticPaths() {
+  const tester = await publicerade('tester');
+  return tester.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+Astro.locals.sidtyp = 'test';
+
+const { entry } = Astro.props;
+const d = entry.data;
+const arTest = d.etikett === 'test';
+
+const { Content, headings } = await render(entry);
+
+const produkt = await hamtaProdukt(d.produkt);
+if (!produkt) varnaSaknadProdukt(d.produkt, Astro.url.pathname);
+
+const kategori = await getEntry('kategorier', d.kategori);
+const butik = await hamtaButik();
+const erbjudande = produkt ? billigasteErbjudande(produkt) : null;
+const bild = produkt ? lokalBild(produkt) : null;
+const namn = produkt ? produktNamn(produkt) : d.produkt;
+
+const forfattare = await getEntry('forfattare', d.forfattare);
+const forfattareNamn = forfattare?.data.namn ?? 'Redaktionen';
+
+// Etiketten "Vårt val" bara när produkten är kategorifilens första val.
+const vartVal = kategori?.data.val[0]?.produkt === d.produkt;
+
+const alternativ = d.alternativ;
+
+const specs = kategori?.data.specs ?? [];
+
+const EGEN_RUBRIK_SA_TESTADE = headings.some((h) => h.depth === 2 && /^så\s+(testade|granskade)\s+vi$/i.test(h.text));
+
+const rubriker = [
+  ...headings.filter((h) => h.depth === 2).map((h) => ({ slug: h.slug, text: h.text })),
+  ...(alternativ.length > 0 ? [{ slug: slugify('Alternativ'), text: 'Alternativ' }] : []),
+  { slug: slugify('Specifikationer'), text: 'Specifikationer' },
+  ...(EGEN_RUBRIK_SA_TESTADE ? [] : [{ slug: slugify('Så testade vi'), text: 'Så testade vi' }]),
+];
+
+// Relaterat: guider och kunskap i samma kategori.
+const relaterat = [
+  ...(await publicerade('guider')).filter((e) => e.data.kategori === d.kategori),
+  ...(await publicerade('kunskap')).filter((e) => e.data.kategori === d.kategori),
+].map((e) => ({ etikett: typEtikett(e.data.typ), namn: e.data.title, href: artikelUrl(e) }));
+
+const strukturdata = produkt
+  ? produktData({
+      produkt,
+      url: testUrl(entry),
+      etikett: d.etikett,
+      omdome: d.omdome,
+      forfattareNamn,
+      publicerad: d.publicerad,
+    })
+  : null;
+---
+
+<Bas
+  title={`${d.title} · Hantverkstips`}
+  description={d.description}
+  reklam={true}
+  butikNamn={butik?.namn}
+  brodsmulor={[
+    { namn: 'Hantverkstips', href: '/' },
+    { namn: kategori?.data.namn ?? d.kategori, href: kategoriUrl(d.kategori) },
+    { namn: d.title },
+  ]}
+  bred={true}
+>
+  {strukturdata && <StrukturData slot="head" data={strukturdata} />}
+
+  <div class="lg:grid lg:grid-cols-[minmax(0,44rem)_16rem] lg:gap-12 lg:justify-center">
+    <div class="min-w-0">
+      <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-penna">{typEtikett('test', d.etikett)}</p>
+      <h1 class="m-0 mt-2 font-serif text-h1 lg:text-h1-lg">{d.title}</h1>
+      <p class="m-0 mt-3 text-liten text-blyerts-2">
+        {
+          arTest && d.testad && (
+            <>
+              Testad <time datetime={isoDatum(d.testad)}>{formateraDatum(d.testad)}</time> ·{' '}
+            </>
+          )
+        }Publicerad <time datetime={isoDatum(d.publicerad)}>{formateraDatum(d.publicerad)}</time>{
+          d.uppdaterad && (
+            <>
+              , uppdaterad <time datetime={isoDatum(d.uppdaterad)}>{formateraDatum(d.uppdaterad)}</time>
+            </>
+          )
+        } · Av {forfattareNamn}
+      </p>
+
+      <section class="mt-8 border border-linje rounded-sm bg-papper p-4 lg:p-6">
+        {
+          (
+            <div class="lg:flex lg:gap-6">
+              <div class="lg:w-2/5 shrink-0">
+                {bild ? (
+                  <div class="bg-vit border border-linje rounded-sm p-2">
+                    <img
+                      src={bild}
+                      alt={namn}
+                      width="400"
+                      height="300"
+                      decoding="async"
+                      class="block w-full aspect-4/3 h-auto object-contain"
+                    />
+                  </div>
+                ) : (
+                  <div class="bg-papper-2 border border-linje rounded-sm w-full aspect-4/3 flex flex-col items-center justify-center gap-1 p-2 text-center">
+                    <span class="text-etikett uppercase text-blyerts-2">{produkt?.marke ?? namn}</span>
+                    {!produkt && <span class="text-liten text-blyerts-2">Produktdata saknas i bygget</span>}
+                  </div>
+                )}
+              </div>
+
+              <div class="mt-4 lg:mt-0 min-w-0 flex-1">
+                {vartVal && <p class="m-0 mb-1 text-etikett lg:text-etikett-lg uppercase text-penna">Vårt val</p>}
+                <p class="m-0 text-ingress lg:text-ingress-lg">{d.omdome}</p>
+
+                {d.matningar.length > 0 && (
+                  <table class="mt-4 w-full border-collapse text-liten tabular-nums">
+                    <caption class="sr-only">Mätvärden för {namn}</caption>
+                    <thead>
+                      <tr class="border-b border-linje text-left">
+                        <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">
+                          Egenskap
+                        </th>
+                        {arTest && (
+                          <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">
+                            Vi mätte
+                          </th>
+                        )}
+                        <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">
+                          Tillverkaren uppger
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {d.matningar.map((m) => (
+                        <tr class="border-b border-linje">
+                          <th scope="row" class="p-2 text-left font-normal text-blyerts-2">
+                            {m.etikett}
+                            {m.enhet ? `, ${m.enhet}` : ''}
+                          </th>
+                          {arTest && <td class="p-2 text-blyerts">{m.vi ?? <span class="text-blyerts-2">ej mätt</span>}</td>}
+                          <td class="p-2 text-blyerts">
+                            {m.tillverkaren ?? <span class="text-blyerts-2">ej angivet</span>}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+
+                <Faktaruta variant="kopom" kopOm={d.kopOm} kopInteOm={d.kopInteOm} />
+
+                {produkt && (
+                  <Kopknapp
+                    produkt={produkt.slug}
+                    modul="kort_full"
+                    pris={erbjudande?.pris ?? null}
+                    prisDatum={erbjudande?.uppdaterad ?? null}
+                    butikNamn={erbjudande?.butikNamn}
+                    slut={arSlut(erbjudande)}
+                  />
+                )}
+              </div>
+            </div>
+          )
+        }
+      </section>
+
+      <div class="lg:hidden">
+        <Innehallsforteckning rubriker={rubriker} />
+      </div>
+
+      <div class="prosa mt-8">
+        <Content
+          components={{
+            h2: Pennstreck,
+            Faktaruta,
+            Varning,
+            Verktygskort,
+            Markering,
+            Kopknapp,
+            Produktkort,
+            Jamforelsetabell,
+          }}
+        />
+      </div>
+
+      {
+        alternativ.length > 0 && (
+          <section>
+            <Pennstreck id={slugify('Alternativ')}>Alternativ</Pennstreck>
+            <div class="grid gap-4">
+              {alternativ.map((a) => (
+                <Produktkort produkt={a.produkt} variant="kompakt" etikett={a.varfor} modul="kort_kompakt" />
+              ))}
+            </div>
+          </section>
+        )
+      }
+
+      <section>
+        <Pennstreck id={slugify('Specifikationer')}>Specifikationer</Pennstreck>
+        <table class="w-full border-collapse text-liten tabular-nums">
+          <caption class="sr-only">Specifikationer för {namn}</caption>
+          <tbody>
+            {
+              specs.map((s) => (
+                <tr class="border-b border-linje">
+                  <th scope="row" class="p-3 text-left align-top font-normal text-blyerts-2">
+                    {s.etikett}
+                    {s.enhet ? `, ${s.enhet}` : ''}
+                  </th>
+                  <td class="p-3 align-top text-blyerts">
+                    {produkt && produkt.specs[s.nyckel] !== undefined && produkt.specs[s.nyckel] !== null ? (
+                      String(produkt.specs[s.nyckel])
+                    ) : (
+                      <span class="text-blyerts-2">ej angivet</span>
+                    )}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </section>
+
+      {
+        !EGEN_RUBRIK_SA_TESTADE && (
+          <section>
+            <Pennstreck id={slugify('Så testade vi')}>Så testade vi</Pennstreck>
+            <p class="m-0 text-brod lg:text-brod-lg">
+              Metoden i sin helhet står på sidan{' '}
+              <a
+                href="/om/sa-testar-vi/"
+                class="text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+              >
+                Så testar vi
+              </a>
+              .
+            </p>
+          </section>
+        )
+      }
+
+      {
+        d.kallor.length > 0 && (
+          <section>
+            <Pennstreck id={slugify('Källor')}>Källor</Pennstreck>
+            <ol class="m-0 pl-6 list-decimal text-brod text-blyerts-2">
+              {d.kallor.map((k) => (
+                <li class="mb-2">
+                  {k.url ? (
+                    <a
+                      href={k.url}
+                      rel="nofollow"
+                      class="text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+                    >
+                      {k.titel}
+                    </a>
+                  ) : (
+                    k.titel
+                  )}
+                </li>
+              ))}
+            </ol>
+          </section>
+        )
+      }
+
+      {
+        produkt && (
+          <div class="mt-12">
+            <Kopknapp
+              produkt={produkt.slug}
+              modul="avslut"
+              pris={erbjudande?.pris ?? null}
+              prisDatum={erbjudande?.uppdaterad ?? null}
+              butikNamn={erbjudande?.butikNamn}
+              slut={arSlut(erbjudande)}
+            />
+          </div>
+        )
+      }
+
+      {
+        relaterat.length > 0 && (
+          <section>
+            <Pennstreck id={slugify('Läs vidare')}>Läs vidare</Pennstreck>
+            <ul class="m-0 p-0 list-none">
+              {relaterat.map((r) => (
+                <li class="border-t border-linje py-3">
+                  <p class="m-0 text-etikett uppercase text-blyerts-2">{r.etikett}</p>
+                  <a
+                    href={r.href}
+                    class="inline-flex min-h-11 items-center text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+                  >
+                    {r.namn}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+
+      <Forfattarruta forfattare={d.forfattare} publicerad={d.publicerad} uppdaterad={d.uppdaterad} />
+    </div>
+
+    <aside class="hidden lg:block">
+      <div class="sticky top-20">
+        <Innehallsforteckning rubriker={rubriker} />
+      </div>
+    </aside>
+  </div>
+</Bas>

@@ -1,0 +1,26 @@
+---
+/**
+ * /om/[slug]/. Alla sidor i samlingen sidor utom om och startsida.
+ */
+import { publicerade } from '../../lib/innehall';
+import Sida from '../../components/vyer/Sida.astro';
+
+export async function getStaticPaths() {
+  const sidor = await publicerade('sidor');
+  return sidor
+    .filter((e) => e.id !== 'om' && e.id !== 'startsida')
+    .map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+---
+
+<Sida
+  entry={entry}
+  url={`/om/${entry.id}/`}
+  brodsmulor={[
+    { namn: 'Hantverkstips', href: '/' },
+    { namn: 'Om', href: '/om/' },
+    { namn: entry.data.title },
+  ]}
+/>
