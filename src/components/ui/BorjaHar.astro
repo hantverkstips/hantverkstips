@@ -1,0 +1,54 @@
+---
+/**
+ * Sajtens karta på startsidan. En rad per publicerad pelarhub, aldrig kolumner,
+ * aldrig kort. Härifrån får hubbarna sin interna länkkraft.
+ */
+import { publicerade, pelareUrl } from '../../lib/innehall';
+import { PELARE } from '../../lib/pelare';
+import Ikon from './Ikon.astro';
+import Pennstreck from './Pennstreck.astro';
+
+const hubbar = await publicerade('pelare');
+const rader = PELARE.flatMap((pelare) => {
+  const entry = hubbar.find((h) => h.id === pelare.slug);
+  return entry ? [{ pelare, entry }] : [];
+});
+---
+
+{
+  rader.length > 0 && (
+    <section>
+      <Pennstreck id="borja-har">Börja här</Pennstreck>
+      <ul class="m-0 p-0 list-none">
+        {rader.map((r, i) => (
+          <li class:list={['py-6', i > 0 && 'border-t border-linje']}>
+            <div class="flex items-center gap-3">
+              <Ikon namn={r.pelare.ikon} storlek={24} class="text-blyerts" />
+              <h3 class="m-0 font-sans text-h3 lg:text-h3-lg">
+                <a
+                  href={pelareUrl(r.pelare.slug)}
+                  class="text-blyerts underline decoration-1 underline-offset-2 hover:decoration-2"
+                >
+                  {r.pelare.kort}
+                </a>
+              </h3>
+            </div>
+            <p class="m-0 mt-2 text-brod lg:text-brod-lg">{r.entry.data.ingress}</p>
+            {r.entry.data.viktiga.length > 0 && (
+              <p class="m-0 mt-2 text-brod text-blyerts-2">
+                {r.entry.data.viktiga.map((v, j) => (
+                  <>
+                    {j > 0 && ', '}
+                    <a href={v.href} class="text-penna underline decoration-1 underline-offset-2 hover:decoration-2">
+                      {v.titel}
+                    </a>
+                  </>
+                ))}
+              </p>
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}

@@ -1,0 +1,38 @@
+---
+/**
+ * Länken till en kalkylator. Ett per sida, aldrig två. Inget diagram i fas 1.
+ * Okänd slug ger byggfel, så att en felskriven referens i en innehållsfil syns.
+ */
+import { hittaKalkylator } from '../../lib/kalkyl/register';
+import Ikon from './Ikon.astro';
+
+interface Props {
+  kalkylator: string;
+}
+
+const { kalkylator } = Astro.props;
+const k = hittaKalkylator(kalkylator);
+if (!k) {
+  throw new Error(`[Verktygskort] Okänd kalkylator "${kalkylator}". Lägg till den i src/lib/kalkyl/register.ts`);
+}
+const href = `/rakna/${k.slug}/`;
+---
+
+<div class="my-8 border border-linje rounded-sm bg-papper p-4 lg:p-6">
+  <p class="m-0 flex items-center gap-2 text-etikett lg:text-etikett-lg uppercase text-blyerts">
+    <Ikon namn="kalkylator" storlek={24} />
+    Räkna själv
+  </p>
+  <h3 class="m-0 mt-2 font-sans text-h3 lg:text-h3-lg">
+    <a href={href} class="text-blyerts underline decoration-1 underline-offset-2 hover:decoration-2">{k.namn}</a>
+  </h3>
+  <p class="m-0 mt-1 text-brod lg:text-brod-lg text-blyerts-2">{k.rad}</p>
+  <p class="m-0 mt-2">
+    <a
+      href={href}
+      class="inline-flex min-h-11 items-center text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+    >
+      Till kalkylatorn
+    </a>
+  </p>
+</div>

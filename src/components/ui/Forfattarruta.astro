@@ -1,0 +1,80 @@
+---
+/**
+ * Visar att en människa med erfarenhet skrivit. Underlag för Article-markup.
+ * Foto 64 x 64, kvadratiskt med 2 px radie, aldrig runt. Utan foto: initialer.
+ */
+import { Image } from 'astro:assets';
+import { getEntry } from 'astro:content';
+import { formateraDatum, isoDatum } from '../../lib/format';
+
+interface Props {
+  forfattare: string;
+  publicerad?: Date;
+  uppdaterad?: Date;
+}
+
+const { forfattare, publicerad, uppdaterad } = Astro.props;
+
+const post = (await getEntry('forfattare', forfattare)) ?? (await getEntry('forfattare', 'redaktionen'));
+
+const namn = post?.data.namn ?? 'Redaktionen';
+const initialer = namn
+  .split(/\s+/)
+  .slice(0, 2)
+  .map((ord) => ord.charAt(0).toUpperCase())
+  .join('');
+
+const rad = post?.data.sedan
+  ? `${post.data.yrke} sedan ${post.data.sedan}. ${post.data.presentation}`
+  : (post?.data.presentation ?? '');
+---
+
+<div class="mt-12 border-t border-linje py-6 flex gap-4">
+  {
+    post?.data.bild ? (
+      <Image src={post.data.bild} alt={namn} width={64} height={64} class="rounded-sm shrink-0" />
+    ) : (
+      <div class="w-16 h-16 shrink-0 bg-papper-2 rounded-sm flex items-center justify-center">
+        <span class="text-etikett uppercase text-blyerts-2">{initialer}</span>
+      </div>
+    )
+  }
+
+  <div class="min-w-0">
+    <p class="m-0 font-bold text-brod text-blyerts">
+      {
+        post ? (
+          <a
+            href={`/forfattare/${post.id}/`}
+            class="text-blyerts underline decoration-1 underline-offset-2 hover:decoration-2"
+          >
+            {namn}
+          </a>
+        ) : (
+          namn
+        )
+      }
+    </p>
+    {rad && <p class="m-0 mt-1 text-brod text-blyerts-2">{rad}</p>}
+    {
+      publicerad && (
+        <p class="m-0 mt-1 text-liten text-blyerts-2">
+          Publicerad <time datetime={isoDatum(publicerad)}>{formateraDatum(publicerad)}</time>
+          {uppdaterad && (
+            <>
+              , uppdaterad <time datetime={isoDatum(uppdaterad)}>{formateraDatum(uppdaterad)}</time>
+            </>
+          )}
+        </p>
+      )
+    }
+    <p class="m-0 mt-2">
+      <a
+        href="/om/sa-testar-vi/"
+        class="inline-flex min-h-11 items-center text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+      >
+        Så testar vi
+      </a>
+    </p>
+  </div>
+</div>

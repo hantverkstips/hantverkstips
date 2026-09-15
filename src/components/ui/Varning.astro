@@ -1,0 +1,19 @@
+---
+/**
+ * Säkerhet och dyra misstag. Inte för "tänk på att". Fyra px linje till vänster
+ * i varning, ingen bakgrund, ingen ikon. Det enda blocket med linje till vänster,
+ * så läsaren lär sig att mönstret betyder varning. docs/DESIGN.md avsnitt 6.
+ */
+interface Props {
+  rubrik?: string;
+}
+
+const { rubrik = 'Varning' } = Astro.props;
+---
+
+<div class="my-8 border-l-4 border-varning pl-4 py-4 text-brod lg:text-brod-lg">
+  <p class="m-0 mb-1 text-etikett lg:text-etikett-lg uppercase text-varning">{rubrik}</p>
+  <div class="prosa">
+    <slot />
+  </div>
+</div>
