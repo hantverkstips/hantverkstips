@@ -1,0 +1,58 @@
+---
+/**
+ * Om-sidor och startsidans syskon i samlingen sidor. Gemensam vy så att båda
+ * rutterna under /om/ blir tio rader var.
+ */
+import { render, type CollectionEntry } from 'astro:content';
+import Bas from '../../layouts/Bas.astro';
+import { formateraDatum, isoDatum } from '../../lib/format';
+import type { Brodsmula } from '../../lib/innehall';
+import { artikel as artikelData, organisation } from '../../lib/strukturdata';
+import Faktaruta from '../ui/Faktaruta.astro';
+import Markering from '../ui/Markering.astro';
+import Pennstreck from '../ui/Pennstreck.astro';
+import StrukturData from '../ui/StrukturData.astro';
+import Varning from '../ui/Varning.astro';
+
+interface Props {
+  entry: CollectionEntry<'sidor'>;
+  brodsmulor: Brodsmula[];
+  url: string;
+}
+
+const { entry, brodsmulor, url } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+
+const strukturdata =
+  d.strukturdata === 'Organization'
+    ? organisation()
+    : d.strukturdata === 'Article'
+      ? artikelData({
+          url,
+          titel: d.title,
+          beskrivning: d.description,
+          publicerad: d.uppdaterad ?? new Date(),
+          uppdaterad: d.uppdaterad,
+          forfattareSlug: 'redaktionen',
+          forfattareNamn: 'Redaktionen',
+        })
+      : null;
+---
+
+<Bas title={`${d.title} · Hantverkstips`} description={d.description} brodsmulor={brodsmulor}>
+  {strukturdata && <StrukturData slot="head" data={strukturdata} />}
+
+  <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">{d.title}</h1>
+  {
+    d.uppdaterad && (
+      <p class="m-0 mt-3 text-liten text-blyerts-2">
+        Uppdaterad <time datetime={isoDatum(d.uppdaterad)}>{formateraDatum(d.uppdaterad)}</time>
+      </p>
+    )
+  }
+
+  <div class="prosa mt-6">
+    <Content components={{ h2: Pennstreck, Faktaruta, Varning, Markering }} />
+  </div>
+</Bas>

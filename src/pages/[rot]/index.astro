@@ -1,0 +1,39 @@
+---
+/**
+ * Rotnamnrymden delas av pelare och kategorier. En rutt, getStaticPaths avgör
+ * vilket. Pelarslugs vinner alltid: en kategori får inte heta som en pelare,
+ * och bygget stoppar vid kollision. Se docs/SPEC-SIDMALLAR.md avsnitt 4.2.
+ */
+import { publicerade } from '../../lib/innehall';
+import { arPelare, RESERVERADE_ROTSLUGS } from '../../lib/pelare';
+import Kategorisida from '../../components/vyer/Kategorisida.astro';
+import PelarHub from '../../components/vyer/PelarHub.astro';
+
+export async function getStaticPaths() {
+  const hubbar = await publicerade('pelare');
+  const kategorier = await publicerade('kategorier');
+
+  for (const h of hubbar) {
+    if (!arPelare(h.id)) {
+      throw new Error(`src/content/pelare/${h.id}: okänd pelare, lägg till i src/lib/pelare.ts`);
+    }
+  }
+  for (const k of kategorier) {
+    if (arPelare(k.id)) throw new Error(`Kategorin ${k.id} kolliderar med pelaren med samma slug`);
+    if ((RESERVERADE_ROTSLUGS as readonly string[]).includes(k.id)) {
+      throw new Error(`Kategorin ${k.id} använder en reserverad sökväg`);
+    }
+  }
+
+  return [
+    ...hubbar.map((entry) => ({ params: { rot: entry.id }, props: { typ: 'pelare' as const, entry } })),
+    ...kategorier.map((entry) => ({ params: { rot: entry.id }, props: { typ: 'kategori' as const, entry } })),
+  ];
+}
+
+const props = Astro.props;
+// Kategorisidan har köpknappar. Sidtypen måste sättas före slot-innehållet renderas.
+if (props.typ === 'kategori') Astro.locals.sidtyp = 'kategori';
+---
+
+{props.typ === 'pelare' ? <PelarHub entry={props.entry} /> : <Kategorisida entry={props.entry} />}

@@ -1,0 +1,32 @@
+---
+/**
+ * Guider och kunskap under pelaren: /[pelare]/[slug]/.
+ * Två dynamiska segment, så rutten kolliderar inte med [rot]/index.astro.
+ */
+import { publicerade } from '../../lib/innehall';
+import Artikel from '../../components/vyer/Artikel.astro';
+
+export async function getStaticPaths() {
+  const guider = await publicerade('guider');
+  const kunskap = await publicerade('kunskap');
+  const alla = [...guider, ...kunskap];
+
+  const sedda = new Set<string>();
+  for (const e of alla) {
+    const nyckel = `${e.data.pelare}/${e.id}`;
+    if (sedda.has(nyckel)) throw new Error(`Två artiklar har adressen /${nyckel}/`);
+    sedda.add(nyckel);
+  }
+
+  return alla.map((entry) => ({ params: { rot: entry.data.pelare, slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+
+// Sidtypen styr klickspårningen och måste sättas före slot-innehållet renderas.
+if (entry.data.typ === 'kopguide') Astro.locals.sidtyp = 'guide';
+else if (entry.data.typ === 'problemguide') Astro.locals.sidtyp = 'problemguide';
+else if (entry.data.typ === 'projektguide') Astro.locals.sidtyp = 'projektguide';
+---
+
+<Artikel entry={entry} />

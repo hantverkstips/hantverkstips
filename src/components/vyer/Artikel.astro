@@ -1,0 +1,239 @@
+---
+/**
+ * Guider (köp, problem, projekt) och kunskap. Ordningen är gemensam, det som
+ * skiljer är vilka komponenter innehållet får skriva och vilket block som
+ * kommer efter texten. Se docs/SPEC-SIDMALLAR.md avsnitt 4.3.
+ */
+import { Image } from 'astro:assets';
+import { getEntry, render } from 'astro:content';
+import Bas from '../../layouts/Bas.astro';
+import { formateraDatum, isoDatum } from '../../lib/format';
+import {
+  artikelUrl,
+  brodsmulorForArtikel,
+  kategoriUrl,
+  normaliseraProdukter,
+  pelareUrl,
+  publicerade,
+  typEtikett,
+  type Artikel as ArtikelPost,
+} from '../../lib/innehall';
+import { hittaPelare } from '../../lib/pelare';
+import { hamtaButik } from '../../lib/produkter';
+import { artikel as artikelData } from '../../lib/strukturdata';
+import DetHarBehoverDu from '../ui/DetHarBehoverDu.astro';
+import Faktaruta from '../ui/Faktaruta.astro';
+import Forfattarruta from '../ui/Forfattarruta.astro';
+import Innehallsforteckning from '../ui/Innehallsforteckning.astro';
+import Jamforelsetabell from '../ui/Jamforelsetabell.astro';
+import Kopknapp from '../ui/Kopknapp.astro';
+import Markering from '../ui/Markering.astro';
+import Pennstreck from '../ui/Pennstreck.astro';
+import Produktkort from '../ui/Produktkort.astro';
+import StrukturData from '../ui/StrukturData.astro';
+import Varning from '../ui/Varning.astro';
+import Verktygskort from '../ui/Verktygskort.astro';
+
+interface Props {
+  entry: ArtikelPost;
+}
+
+const { entry } = Astro.props;
+const d = entry.data;
+const typ = d.typ;
+
+const { Content, headings } = await render(entry);
+const rubriker = headings.filter((h) => h.depth === 2).map((h) => ({ slug: h.slug, text: h.text }));
+
+const produkter = normaliseraProdukter(d.produkter);
+const behover = 'behover' in d && d.behover ? d.behover : { verktyg: [], material: [] };
+
+const reklam =
+  typ === 'kopguide'
+    ? true
+    : typ === 'problemguide'
+      ? produkter.length > 0
+      : typ === 'projektguide'
+        ? behover.verktyg.length > 0 || produkter.length > 0
+        : false;
+
+const butik = reklam ? await hamtaButik() : null;
+
+const forfattare = await getEntry('forfattare', d.forfattare);
+const forfattareNamn = forfattare?.data.namn ?? 'Redaktionen';
+
+const kunskapskomponenter = {
+  h2: Pennstreck,
+  Faktaruta,
+  Varning,
+  Verktygskort,
+  Markering,
+};
+const komponenter =
+  typ === 'kunskap' ? kunskapskomponenter : { ...kunskapskomponenter, Kopknapp, Produktkort, Jamforelsetabell };
+
+// Relaterat: kategorisidan, huben och de två senaste andra artiklarna i pelaren.
+const alla = [...(await publicerade('guider')), ...(await publicerade('kunskap'))];
+const andra = alla
+  .filter((e) => e.data.pelare === d.pelare && e.id !== entry.id)
+  .sort((a, b) => b.data.publicerad.getTime() - a.data.publicerad.getTime())
+  .slice(0, 2);
+
+const kategori = d.kategori ? await getEntry('kategorier', d.kategori) : undefined;
+const pelare = hittaPelare(d.pelare);
+
+const relaterat = [
+  ...(kategori ? [{ namn: `Alla ${kategori.data.namn.toLowerCase()} vi testat`, href: kategoriUrl(kategori.id) }] : []),
+  ...(pelare ? [{ namn: pelare.namn, href: pelareUrl(d.pelare) }] : []),
+  ...andra.map((e) => ({ namn: e.data.title, href: artikelUrl(e) })),
+];
+
+const bild = d.bild;
+const arSvg = bild?.format === 'svg';
+
+const strukturdata = artikelData({
+  url: artikelUrl(entry),
+  titel: d.title,
+  beskrivning: d.description,
+  publicerad: d.publicerad,
+  uppdaterad: d.uppdaterad,
+  forfattareSlug: d.forfattare,
+  forfattareNamn,
+  bildUrl: bild?.src,
+});
+---
+
+<Bas
+  title={`${d.title} · Hantverkstips`}
+  description={d.description}
+  reklam={reklam}
+  butikNamn={butik?.namn}
+  brodsmulor={brodsmulorForArtikel(entry)}
+  bred={true}
+>
+  <StrukturData slot="head" data={strukturdata} />
+
+  <div class="lg:grid lg:grid-cols-[minmax(0,44rem)_16rem] lg:gap-12 lg:justify-center">
+    <div class="min-w-0">
+      <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-penna">{typEtikett(typ)}</p>
+      <h1 class="m-0 mt-2 font-serif text-h1 lg:text-h1-lg">{d.title}</h1>
+      <p class="m-0 mt-3 text-liten text-blyerts-2">
+        Publicerad <time datetime={isoDatum(d.publicerad)}>{formateraDatum(d.publicerad)}</time>{
+          d.uppdaterad && (
+            <>
+              , uppdaterad <time datetime={isoDatum(d.uppdaterad)}>{formateraDatum(d.uppdaterad)}</time>
+            </>
+          )
+        } · Av {forfattareNamn}
+      </p>
+
+      {
+        bild && (
+          <figure class="m-0 mt-6">
+            {arSvg ? (
+              <img
+                src={bild.src}
+                alt={d.bildtext ?? ''}
+                width={bild.width}
+                height={bild.height}
+                decoding="async"
+                class="block w-full h-auto rounded-sm border border-linje"
+              />
+            ) : (
+              <Image
+                src={bild}
+                alt={d.bildtext ?? ''}
+                widths={[375, 704]}
+                sizes="(min-width: 1024px) 704px, 100vw"
+                class="block w-full h-auto rounded-sm border border-linje"
+              />
+            )}
+            {d.bildtext && <figcaption class="mt-2 text-liten text-blyerts-2">{d.bildtext}</figcaption>}
+          </figure>
+        )
+      }
+
+      <div class="lg:hidden">
+        <Innehallsforteckning rubriker={rubriker} />
+      </div>
+
+      <div class="prosa mt-6">
+        <Content components={komponenter} />
+      </div>
+
+      {
+        typ === 'kopguide' && produkter.length > 0 && (
+          <section>
+            <Pennstreck id="produkterna-vi-namner">Produkterna vi nämner</Pennstreck>
+            <div class="grid gap-4">
+              {produkter.map((p) => (
+                <Produktkort
+                  produkt={p.slug}
+                  variant="kompakt"
+                  etikett={p.etikett}
+                  forVem={p.forVem}
+                  modul="avslut"
+                />
+              ))}
+            </div>
+          </section>
+        )
+      }
+
+      {typ === 'projektguide' && <DetHarBehoverDu verktyg={behover.verktyg} material={behover.material} />}
+
+      {
+        d.kallor.length > 0 && (
+          <section>
+            <Pennstreck id="kallor">Källor</Pennstreck>
+            <ol class="m-0 pl-6 list-decimal text-brod text-blyerts-2">
+              {d.kallor.map((k) => (
+                <li class="mb-2">
+                  {k.url ? (
+                    <a
+                      href={k.url}
+                      rel="nofollow"
+                      class="text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+                    >
+                      {k.titel}
+                    </a>
+                  ) : (
+                    k.titel
+                  )}
+                </li>
+              ))}
+            </ol>
+          </section>
+        )
+      }
+
+      {
+        relaterat.length >= 2 && (
+          <section>
+            <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
+            <ul class="m-0 p-0 list-none">
+              {relaterat.map((r) => (
+                <li class="border-t border-linje">
+                  <a
+                    href={r.href}
+                    class="flex min-h-11 items-center py-2 text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+                  >
+                    {r.namn}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+
+      <Forfattarruta forfattare={d.forfattare} publicerad={d.publicerad} uppdaterad={d.uppdaterad} />
+    </div>
+
+    <aside class="hidden lg:block">
+      <div class="sticky top-20">
+        <Innehallsforteckning rubriker={rubriker} />
+      </div>
+    </aside>
+  </div>
+</Bas>
