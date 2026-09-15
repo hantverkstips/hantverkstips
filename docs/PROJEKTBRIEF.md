@@ -45,7 +45,18 @@ Kategorier läggs till baserat på sökvolym, provision och ordervärde. Affilia
 
 Vi skriver **inte** om: handverktyg under 500 kr, förbrukningsmaterial, småprylar. Undantag görs bara om en artikel behövs för att stötta ett kluster.
 
+## Vad sajten är, och vad den inte är
+
+Hantverkstips är en kunskapshub om att bygga, renovera och sköta hus. Affiliate är intäkten, inte identiteten. Merparten av artiklarna handlar om problem och projekt, inte om produkter: fukt i källaren och vad man gör åt den, hur man bygger en altan som håller, vilka taktyper som passar var, hur man isolerar en krypgrund, när man behöver ett proffs. Produktsidorna är en minoritet av sidorna men står för intäkten, och de får sin trafik och trovärdighet från kunskapsinnehållet runt omkring.
+
+En läsare som kommer in på "hur bygger jag altan" ska känna att sajten är en erfaren kompis, inte en butik. Verktygen till projektet dyker upp där de behövs i texten, aldrig före resonemanget.
+
+Ämnesområden (byggs ut efter hand): Fukt och inomhusklimat · Altan, uteplats och trädäck · Tak · Grund och källare · Isolering och energi · Verktyg och maskiner (affiliate-tyngdpunkten) · El och säkerhet (bara det en lekman får göra).
+
 ## Innehållstyper
+
+- **Projektguider.** "Så bygger du altan steg för steg". Långt, praktiskt, med egna illustrationer. Verktygslista med länkar i slutet, inte i början.
+- **Problemguider.** "Fukt i källaren: orsaker och vad du gör". Diagnos först, åtgärd sedan, produkt sist om alls.
 
 - **Köpguider.** "Så väljer du luftavfuktare till källaren". Problemet först, produkten sist. Ryggraden i SEO-arbetet.
 - **Tester och recensioner.** En produkt i taget, med egna mätningar eller mycket noggrann källgranskning. Ärliga nackdelar. Tydlig "köp om / köp inte om".
