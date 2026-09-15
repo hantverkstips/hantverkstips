@@ -104,7 +104,7 @@ En sida som inte klarar alla fem publiceras inte. Ingen "vi fixar det sen".
 
 ## Affiliatenätverk
 
-Uteslutande **Tradedoubler**. Sajten är ännu inte godkänd i Proffsmagasinets program (per 2026-09-15), så villkor, provisioner, cookie-tid och feedformat är okända tills dess. Databasen är byggd generiskt och anpassas när feeden finns. Affiliateansvarig dokumenterar i `docs/AFFILIATE.md` när godkännandet kommit.
+Uteslutande **Adtraction**. Sajten är ännu inte godkänd i Proffsmagasinets program (per 2026-09-15), så villkor, provisioner, cookie-tid och feedformat är okända tills dess. Databasen är byggd generiskt och anpassas när feeden finns. Affiliateansvarig dokumenterar i `docs/AFFILIATE.md` när godkännandet kommit.
 
 ## Öppna frågor
 

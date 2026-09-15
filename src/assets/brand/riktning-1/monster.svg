@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 24" width="48" height="24">
+  <!-- Riktning 1, Anteckningsboken. Linjerat papper, kakelbart 48 x 24.
+       Tokens: papper #f5efe3, linje #c9bca3, penna #ad3519 -->
+  <rect width="48" height="24" fill="#f5efe3"/>
+  <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+  <path d="M6,0 V24" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+</svg>

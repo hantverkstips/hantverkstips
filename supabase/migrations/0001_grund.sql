@@ -1,11 +1,11 @@
 -- Grundschema för hantverkstips.se. Se docs/ARKITEKTUR.md.
--- Utökas när Tradedoublers feedformat är känt.
+-- Utökas när Adtractions feedformat är känt.
 
 create table butiker (
   id                 bigint generated always as identity primary key,
   slug               text not null unique,
   namn               text not null,
-  affiliate_natverk  text not null default 'tradedoubler',
+  affiliate_natverk  text not null default 'adtraction',
   cookie_dagar       integer,
   provision_procent  numeric(5,2),
   skapad             timestamptz not null default now()

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 172 36" width="172" height="36" role="img" aria-label="Hantverkstips">
+  <!-- Riktning 2, Ritningen. Ordmärket är ritat som banor i ritningsbokstäver
+       (enkellinje, ISO 3098-karaktär), inget typsnitt behövs. Versalhöjd 20, x-höjd 14,
+       linje 3 med runda ändar. Måttlinjen under ordet kan tas bort vid 24 px höjd
+       (gruppen id="matt"). Tokens: ritblaeck #1c4a80, matt #b83015 -->
+  <g fill="none" stroke="#1c4a80" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <!-- H -->
+    <path d="M3.5,4 V24 M15.5,4 V24 M3.5,14 H15.5"/>
+    <!-- a -->
+    <path d="M31.5,10 V24"/>
+    <circle cx="26.25" cy="17.25" r="5.25"/>
+    <!-- n -->
+    <path d="M37.5,10 V24 M37.5,15 Q37.5,10 42,10 Q46.5,10 46.5,15 V24"/>
+    <!-- t -->
+    <path d="M55,5 V20 Q55,24 59,24 M52,10 H59"/>
+    <!-- v -->
+    <path d="M63,10 L68,24 L73,10"/>
+    <!-- e -->
+    <path d="M76.5,17 H86.5 A5,5 0 1 0 85.04,20.54"/>
+    <!-- r -->
+    <path d="M91.5,10 V24 M91.5,16 Q91.5,10 97.5,10"/>
+    <!-- k -->
+    <path d="M101.5,4 V24 M109.5,10 L101.5,18 M105,14.5 L110,24"/>
+    <!-- s -->
+    <path d="M122,12 Q121,10 118,10 Q114.5,10 114.5,13.5 Q114.5,17 118,17 Q121.5,17 121.5,20.5 Q121.5,24 118,24 Q115,24 114,22"/>
+    <!-- t -->
+    <path d="M129,5 V20 Q129,24 133,24 M126,10 H133"/>
+    <!-- i -->
+    <path d="M137.5,10 V24"/>
+    <!-- p -->
+    <path d="M142.5,10 V30"/>
+    <circle cx="147.75" cy="17.25" r="5.25"/>
+    <!-- s -->
+    <path d="M165,12 Q164,10 161,10 Q157.5,10 157.5,13.5 Q157.5,17 161,17 Q164.5,17 164.5,20.5 Q164.5,24 161,24 Q158,24 157,22"/>
+  </g>
+  <circle cx="137.5" cy="5" r="1.7" fill="#1c4a80"/>
+  <!-- måttlinje -->
+  <g id="matt" fill="none" stroke="#b83015" stroke-width="1" stroke-linecap="butt">
+    <path d="M2,33.5 H168"/>
+    <path d="M2,31 V36 M168,31 V36"/>
+    <path d="M0.5,35 L3.5,32 M166.5,35 L169.5,32"/>
+  </g>
+</svg>

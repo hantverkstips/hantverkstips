@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Hus i genomskärning i platta färgfält. Källaren är gul mot svart mark. Röda pilar visar fukt som kommer in genom väggen och golvet. Stor siffra: 78 procent luftfuktighet.">
+  <!-- Riktning 3, Magasinet. Platta färgfält, ingen kontur, en stor siffra bär bilden.
+       Text i Familjen Grotesk 700 (Google Fonts, OFL), reserv: Arial Black, sans-serif.
+       Tokens: vit #ffffff, grus #efeeea, svart #111111, svart-2 #4a4a48, gul #f5c400, signal #c62914 -->
+  <rect width="600" height="360" fill="#ffffff"/>
+
+  <!-- Rubrikrad -->
+  <rect x="0" y="0" width="600" height="36" fill="#111111"/>
+  <text x="24" y="24" font-family="'Familjen Grotesk', 'Arial Black', sans-serif" font-weight="700" font-size="14" letter-spacing="2" fill="#ffffff">KÄLLARE I GENOMSKÄRNING</text>
+  <text x="576" y="24" text-anchor="end" font-family="'Familjen Grotesk', 'Arial Black', sans-serif" font-weight="700" font-size="14" letter-spacing="2" fill="#f5c400">FUKT</text>
+
+  <!-- Mark -->
+  <rect x="0" y="180" width="600" height="180" fill="#111111"/>
+
+  <!-- Hus ovan mark -->
+  <rect x="180" y="96" width="240" height="84" fill="#efeeea"/>
+  <path d="M168,98 L300,46 L432,98 Z" fill="#111111"/>
+  <rect x="350" y="52" width="18" height="30" fill="#111111"/>
+  <rect x="216" y="118" width="32" height="30" fill="#111111"/>
+  <rect x="352" y="118" width="32" height="30" fill="#111111"/>
+  <rect x="290" y="140" width="20" height="40" fill="#111111"/>
+
+  <!-- Källarrum -->
+  <rect x="192" y="180" width="216" height="120" fill="#f5c400"/>
+
+  <!-- Fukt in genom väggen -->
+  <g fill="#c62914">
+    <path d="M132,200 H176 V192 L196,206 L176,220 V212 H132 Z"/>
+    <path d="M132,230 H176 V222 L196,236 L176,250 V242 H132 Z"/>
+    <path d="M132,260 H176 V252 L196,266 L176,280 V272 H132 Z"/>
+    <!-- fukt upp genom plattan -->
+    <path d="M294,340 V316 H286 L300,298 L314,316 H306 V340 Z"/>
+    <path d="M374,340 V316 H366 L380,298 L394,316 H386 V340 Z"/>
+    <!-- droppar och pöl -->
+    <path d="M206,214 C206,214 200,221 200,225 A6,6 0 0 0 212,225 C212,221 206,214 206,214 Z"/>
+    <path d="M206,250 C206,250 200,257 200,261 A6,6 0 0 0 212,261 C212,257 206,250 206,250 Z"/>
+    <rect x="192" y="292" width="60" height="8"/>
+  </g>
+
+  <!-- Nyckeltal -->
+  <g font-family="'Familjen Grotesk', 'Arial Black', sans-serif" font-weight="700" fill="#111111" text-anchor="end">
+    <text x="396" y="256" font-size="60" letter-spacing="-2">78 %</text>
+    <text x="396" y="274" font-size="11" letter-spacing="1.5" fill="#4a4a48">LUFTFUKTIGHET</text>
+    <text x="396" y="288" font-size="11" letter-spacing="1.5" fill="#4a4a48">I AUGUSTI</text>
+  </g>
+
+  <!-- Bildtexter på marken -->
+  <g font-family="'Familjen Grotesk', 'Arial Black', sans-serif" font-weight="700" font-size="12" letter-spacing="1.5" fill="#ffffff">
+    <text x="24" y="196">MARKFUKT</text>
+    <text x="24" y="330" fill="#f5c400">2,2 M TAKHÖJD · 40 KVM</text>
+    <text x="576" y="330" text-anchor="end" fill="#c62914">INGEN DRÄNERING</text>
+  </g>
+</svg>

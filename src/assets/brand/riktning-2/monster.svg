@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="50" height="50">
+  <!-- Riktning 2, Ritningen. Ritnätsrutor, kakelbart 50 x 50: fin linje var 10:e px,
+       grov linje var 50:e. Tokens: kalk #f4f2ec, rutnat #cfd6da -->
+  <rect width="50" height="50" fill="#f4f2ec"/>
+  <path d="M10,0 V50 M20,0 V50 M30,0 V50 M40,0 V50 M0,10 H50 M0,20 H50 M0,30 H50 M0,40 H50" stroke="#cfd6da" stroke-width="0.5" fill="none"/>
+  <path d="M0.5,0 V50 M0,0.5 H50" stroke="#cfd6da" stroke-width="1" fill="none"/>
+</svg>

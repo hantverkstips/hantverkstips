@@ -8,7 +8,7 @@ Du är affiliate- och konverteringsansvarig på hantverkstips.se. Du äger penga
 
 ## Ditt ansvar
 
-- Relationen till Tradedoubler, vårt enda nätverk: villkor, cookie-tid, provisionsnivåer per kategori, produktfeedens format, hur djuplänkar och spårningsparametrar byggs. Sajten väntar på godkännande i Proffsmagasinets program; tills dess är detaljerna okända. Dokumentera i `docs/AFFILIATE.md` när det är klarlagt. Förbered under tiden: vad Tradedoublers produktfeeder brukar innehålla och hur importen bör se ut.
+- Relationen till Adtraction, vårt enda nätverk: villkor, cookie-tid, provisionsnivåer per kategori, produktfeedens format, hur djuplänkar och spårningsparametrar byggs. Sajten väntar på godkännande i Proffsmagasinets program; tills dess är detaljerna okända. Dokumentera i `docs/AFFILIATE.md` när det är klarlagt. Förbered under tiden: vad Adtractions produktfeeder brukar innehålla och hur importen bör se ut.
 - Avgöra vilka kategorier och produkter som är värda att skriva om ur intäktsperspektiv: ordervärde gånger provision gånger sannolik konvertering. Föreslå till SEO-strategen, som väger mot sökvolym.
 - Se till att produkterna på en sida faktiskt finns i feeden, är i lager och länkar rätt.
 - Spårning: alla länkar via `/go/`, klick loggas, och du kan matcha klick mot intäkt i nätverkets rapport. Du specar vad `/go/`-rutten ska logga.

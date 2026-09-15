@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="Hantverkstips, H med måttlinje">
+  <!-- Riktning 2, Ritningen. Ett H där tvärstrecket är en måttlinje med pilspetsar.
+       Tokens: ritblaeck #1c4a80, matt #b83015 -->
+  <path d="M6,3 V29 M26,3 V29" fill="none" stroke="#1c4a80" stroke-width="4" stroke-linecap="butt"/>
+  <path d="M8,16 H24" fill="none" stroke="#b83015" stroke-width="1.5"/>
+  <path d="M8,16 L13,13.2 V18.8 Z M24,16 L19,13.2 V18.8 Z" fill="#b83015"/>
+  <path d="M3,6.5 H9 M23,6.5 H29" fill="none" stroke="#b83015" stroke-width="1"/>
+</svg>

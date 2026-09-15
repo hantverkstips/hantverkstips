@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="Hantverkstips, H med gul bjälke">
+  <!-- Riktning 3, Magasinet. Svart kvadrat, två vita stolpar, en gul bjälke.
+       Tokens: svart #111111, vit #ffffff, gul #f5c400 -->
+  <rect width="32" height="32" fill="#111111"/>
+  <rect x="6" y="5" width="6" height="22" fill="#ffffff"/>
+  <rect x="20" y="5" width="6" height="22" fill="#ffffff"/>
+  <rect x="6" y="13" width="20" height="6" fill="#f5c400"/>
+</svg>

@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Sektionsritning av ett hus med källare. Markfukt trycker in genom källarväggen och kapillärt genom plattan. Måttsatt: 6,4 meter bred, 2,2 meter takhöjd, 78 procent relativ luftfuktighet inomhus.">
+  <!-- Riktning 2, Ritningen. Sektion på kalkerpapper med rutnät, skraffering och måttlinjer.
+       Text i Barlow Semi Condensed 600 (Google Fonts, OFL), reserv: Arial Narrow, sans-serif.
+       Tokens: kalk #f4f2ec, kalk-2 #e9e6dd, rutnat #cfd6da, blaeck #1e2a38, ritblaeck #1c4a80,
+       blaeck-2 #55637a, matt #b83015 -->
+  <defs>
+    <pattern id="rutor" width="50" height="50" patternUnits="userSpaceOnUse">
+      <path d="M10,0 V50 M20,0 V50 M30,0 V50 M40,0 V50 M0,10 H50 M0,20 H50 M0,30 H50 M0,40 H50" stroke="#cfd6da" stroke-width="0.5" fill="none"/>
+      <path d="M0.5,0 V50 M0,0.5 H50" stroke="#cfd6da" stroke-width="1" fill="none"/>
+    </pattern>
+    <pattern id="mark" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <path d="M0,4 H8" stroke="#1c4a80" stroke-width="0.6" fill="none"/>
+    </pattern>
+    <pattern id="betong" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+      <path d="M0,3 H6" stroke="#1c4a80" stroke-width="0.6" fill="none"/>
+    </pattern>
+    <marker id="pil" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#b83015"/>
+    </marker>
+    <marker id="tick" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M2,8 L8,2" stroke="#b83015" stroke-width="1.2" fill="none"/>
+    </marker>
+  </defs>
+
+  <rect width="600" height="360" fill="#f4f2ec"/>
+  <rect width="600" height="360" fill="url(#rutor)"/>
+  <rect x="8" y="8" width="584" height="344" fill="none" stroke="#1c4a80" stroke-width="1"/>
+
+  <!-- Mark (skrafferad) -->
+  <g fill="url(#mark)">
+    <rect x="40" y="170" width="150" height="170"/>
+    <rect x="430" y="170" width="130" height="170"/>
+    <rect x="190" y="312" width="240" height="28"/>
+  </g>
+  <!-- Betongväggar och platta -->
+  <g fill="url(#betong)" stroke="#1c4a80" stroke-width="1.5">
+    <rect x="190" y="170" width="12" height="142"/>
+    <rect x="418" y="170" width="12" height="142"/>
+    <rect x="190" y="300" width="240" height="12"/>
+  </g>
+  <!-- Källarrum -->
+  <rect x="202" y="170" width="216" height="130" fill="#e9e6dd" fill-opacity="0.5"/>
+
+  <!-- Hus ovan mark -->
+  <g fill="none" stroke="#1c4a80" stroke-width="1.5" stroke-linejoin="miter">
+    <path d="M40,170 H560"/>
+    <path d="M190,170 V72 M430,170 V72 M176,72 L310,20 L444,72"/>
+    <path d="M190,170 H430"/>
+    <path d="M360,52 V30 H378 V45"/>
+    <path d="M228,100 H262 V130 H228 Z M245,100 V130 M228,115 H262"/>
+    <path d="M358,100 H392 V130 H358 Z M375,100 V130 M358,115 H392"/>
+    <path d="M300,140 H320 V170"/>
+  </g>
+  <!-- Bjälklag -->
+  <rect x="190" y="164" width="240" height="6" fill="#1c4a80" fill-opacity="0.18" stroke="#1c4a80" stroke-width="1"/>
+
+  <!-- Kalkbakgrund bakom etiketter som ligger över skraffering (ritas före pilarna) -->
+  <g fill="#f4f2ec">
+    <rect x="44" y="186" width="118" height="30"/>
+    <rect x="286" y="338" width="50" height="14"/>
+    <rect x="344" y="318" width="80" height="24"/>
+  </g>
+
+  <!-- Fuktflöden (mått-röd) -->
+  <g fill="none" stroke="#b83015" stroke-width="1.5" marker-end="url(#pil)">
+    <path d="M130,205 H186"/>
+    <path d="M130,240 H186"/>
+    <path d="M130,275 H186"/>
+    <path d="M240,338 V318"/>
+    <path d="M280,338 V318"/>
+    <path d="M320,338 V318"/>
+  </g>
+  <!-- Kondens på insidan -->
+  <g fill="#b83015">
+    <path d="M208,222 L205,227 A3,3 0 1 0 211,227 Z"/>
+    <path d="M208,252 L205,257 A3,3 0 1 0 211,257 Z"/>
+    <path d="M208,282 L205,287 A3,3 0 1 0 211,287 Z"/>
+  </g>
+
+  <!-- Måttlinjer -->
+  <g fill="none" stroke="#b83015" stroke-width="1">
+    <!-- takhöjd, höger -->
+    <path d="M430,170 H478 M430,300 H478"/>
+    <path d="M470,170 V300" marker-start="url(#tick)" marker-end="url(#tick)"/>
+    <!-- bredd, under plattan -->
+    <path d="M202,300 V350 M418,300 V350"/>
+    <path d="M202,346 H418" marker-start="url(#tick)" marker-end="url(#tick)"/>
+    <!-- väggtjocklek -->
+    <path d="M190,150 V160 M202,150 V160"/>
+    <path d="M190,156 H202"/>
+  </g>
+
+  <!-- Etiketter -->
+  <g font-family="'Barlow Semi Condensed', 'Arial Narrow', sans-serif" font-weight="600" fill="#1e2a38">
+    <text x="486" y="239" font-size="16">2,2 m</text>
+    <text x="310" y="349" font-size="14" text-anchor="middle">6,4 m</text>
+    <text x="164" y="146" font-size="12" fill="#55637a">200 mm</text>
+    <text x="238" y="214" font-size="30" fill="#1c4a80">78 % RF</text>
+    <text x="238" y="234" font-size="14" fill="#55637a">14 °C, augusti, ca 40 kvm</text>
+    <text x="48" y="198" font-size="13" fill="#b83015">MARKFUKT</text>
+    <text x="48" y="212" font-size="11" fill="#55637a">100 % RF utanför väggen</text>
+    <text x="348" y="328" font-size="10" fill="#b83015">KAPILLÄRSUGNING</text>
+    <text x="348" y="339" font-size="10" fill="#b83015">GENOM PLATTAN</text>
+  </g>
+
+  <!-- Namnruta -->
+  <g>
+    <rect x="8" y="8" width="230" height="36" fill="#f4f2ec" stroke="#1c4a80" stroke-width="1"/>
+    <path d="M8,26 H238 M120,8 V44" stroke="#1c4a80" stroke-width="0.75" fill="none"/>
+    <g font-family="'Barlow Semi Condensed', 'Arial Narrow', sans-serif" font-weight="600" font-size="11" fill="#1c4a80">
+      <text x="14" y="21">HANTVERKSTIPS</text>
+      <text x="126" y="21">KÄLLARE, SEKTION A</text>
+      <text x="14" y="38" fill="#55637a">FUKT I KÄLLAREN</text>
+      <text x="126" y="38" fill="#55637a">SKALA 1:50 · BLAD 1</text>
+    </g>
+  </g>
+</svg>

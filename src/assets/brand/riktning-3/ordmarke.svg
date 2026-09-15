@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 64" width="460" height="64" role="img" aria-label="Hantverkstips">
+  <!-- Riktning 3, Magasinet. Symbol i 64 px plus versal text i Familjen Grotesk 700
+       (Google Fonts, OFL, svensk ritad). Konverteras till banor när riktningen är vald.
+       Reserv: Arial Black, sans-serif. Tokens: svart #111111, vit #ffffff, gul #f5c400 -->
+  <rect width="64" height="64" fill="#111111"/>
+  <rect x="12" y="10" width="12" height="44" fill="#ffffff"/>
+  <rect x="40" y="10" width="12" height="44" fill="#ffffff"/>
+  <rect x="12" y="26" width="40" height="12" fill="#f5c400"/>
+  <text x="80" y="45" font-family="'Familjen Grotesk', 'Arial Black', sans-serif" font-weight="700" font-size="36" letter-spacing="0.5" fill="#111111">HANTVERKSTIPS</text>
+</svg>

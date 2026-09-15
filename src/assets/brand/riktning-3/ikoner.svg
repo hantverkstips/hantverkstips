@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <!-- Riktning 3, Magasinet. 16 ikoner, 24 x 24, fyllda former, raka hörn.
+       De sju pelarikonerna står på en gul sockel (2 x 20 x 3, token gul #f5c400).
+       Gränssnittsikoner är enfärgade. fill = currentColor, sätts till token svart #111111 via CSS.
+       Sök och check använder linje 3 med raka ändar så de har samma tyngd som de fyllda. -->
+
+  <symbol id="ikon-fukt" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12,1 C12,1 5.5,9 5.5,13.5 A6.5,6.5 0 0 0 18.5,13.5 C18.5,9 12,1 12,1 Z"/>
+    <rect x="2" y="20" width="20" height="3" fill="#f5c400"/>
+  </symbol>
+
+  <symbol id="ikon-altan" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M2,8 H22 V11 H2 Z M2,13 H22 V16 H2 Z M5,16 H8 V20 H5 Z M16,16 H19 V20 H16 Z M5,1 H8 V8 H5 Z M16,1 H19 V8 H16 Z M8,2.5 H16 V4.5 H8 Z"/>
+    <rect x="2" y="20" width="20" height="3" fill="#f5c400"/>
+  </symbol>
+
+  <symbol id="ikon-tak" viewBox="0 0 24 24" fill="currentColor" fill-rule="evenodd">
+    <path d="M12,1 L23,11 H19 V19 H5 V11 H1 Z M10,12 H14 V19 H10 Z"/>
+    <path d="M15,3 H18 V7.5 L15,4.8 Z"/>
+    <rect x="2" y="20" width="20" height="3" fill="#f5c400"/>
+  </symbol>
+
+  <symbol id="ikon-grund" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M1,4 H23 V6 H16 V11 H21 V19 H3 V11 H8 V6 H1 Z"/>
+    <rect x="2" y="20" width="20" height="3" fill="#f5c400"/>
+  </symbol>
+
+  <symbol id="ikon-isolering" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M2,1 H5 V19 H2 Z M19,1 H22 V19 H19 Z"/>
+    <path d="M7,3 L17,6.3 L7,9.6 L17,12.9 L7,16.2 L17,19.5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="butt" stroke-linejoin="miter"/>
+    <rect x="2" y="20" width="20" height="3" fill="#f5c400"/>
+  </symbol>
+
+  <symbol id="ikon-verktyg" viewBox="0 0 24 24" fill="currentColor">
+    <g transform="rotate(-45 12 11)">
+      <rect x="3" y="5" width="18" height="7"/>
+      <rect x="10.5" y="12" width="3" height="10"/>
+    </g>
+    <rect x="2" y="20" width="20" height="3" fill="#f5c400"/>
+  </symbol>
+
+  <symbol id="ikon-el" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M14,0.5 L4,12 H10.5 L9,19 L20,7.5 H13.5 Z"/>
+    <rect x="2" y="20" width="20" height="3" fill="#f5c400"/>
+  </symbol>
+
+  <symbol id="ikon-kalkylator" viewBox="0 0 24 24" fill="currentColor" fill-rule="evenodd">
+    <path d="M4,2 H20 V22 H4 Z M7,5 H17 V9 H7 Z M7,12 H9 V14 H7 Z M11,12 H13 V14 H11 Z M15,12 H17 V14 H15 Z M7,16 H9 V18 H7 Z M11,16 H13 V18 H11 Z M15,16 H17 V18 H15 Z"/>
+  </symbol>
+
+  <symbol id="ikon-meny" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M2,4 H22 V7 H2 Z M2,10.5 H22 V13.5 H2 Z M2,17 H22 V20 H2 Z"/>
+  </symbol>
+
+  <symbol id="ikon-stang" viewBox="0 0 24 24" fill="currentColor">
+    <g transform="rotate(45 12 12)">
+      <rect x="2" y="10.5" width="20" height="3"/>
+      <rect x="10.5" y="2" width="3" height="20"/>
+    </g>
+  </symbol>
+
+  <symbol id="ikon-sok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="butt">
+    <circle cx="10" cy="10" r="6.5"/>
+    <path d="M15,15 L22,22"/>
+  </symbol>
+
+  <symbol id="ikon-pil-hoger" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M2,10.5 H14 V5 L22,12 L14,19 V13.5 H2 Z"/>
+  </symbol>
+
+  <symbol id="ikon-extern-lank" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M3,5 H11 V8 H6 V18 H16 V13 H19 V21 H3 Z"/>
+    <path d="M13,3 H21 V11 H18 V8.1 L11.6,14.5 L9.5,12.4 L15.9,6 H13 Z"/>
+  </symbol>
+
+  <symbol id="ikon-varning" viewBox="0 0 24 24" fill="currentColor" fill-rule="evenodd">
+    <path d="M12,2 L23,21 H1 Z M11,9 H13 V15 H11 Z M11,17 H13 V19 H11 Z"/>
+  </symbol>
+
+  <symbol id="ikon-info" viewBox="0 0 24 24" fill="currentColor" fill-rule="evenodd">
+    <path d="M12,2 A10,10 0 1 0 12,22 A10,10 0 1 0 12,2 Z M11,10 H13 V17 H11 Z M11,6 H13 V8 H11 Z"/>
+  </symbol>
+
+  <symbol id="ikon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="butt" stroke-linejoin="miter">
+    <path d="M3,12.5 L9,18.5 L21,6.5"/>
+  </symbol>
+</svg>
