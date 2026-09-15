@@ -1,15 +1,285 @@
 ---
+/**
+ * Startsidan är en uppslagen anteckningsbok, inte en landningssida. Inget hero,
+ * ingen bakgrundsbild, inga köpknappar, inget reklamband.
+ * Blockordningen följer docs/INNEHALLSARKITEKTUR.md avsnitt 5.
+ */
+import { Image } from 'astro:assets';
+import { getEntry, render } from 'astro:content';
 import Bas from '../layouts/Bas.astro';
+import { formateraDatum, formateraPris, isoDatum } from '../lib/format';
+import {
+  arPublicerad,
+  artikelUrl,
+  jamforelseUrl,
+  kategoriUrl,
+  publicerade,
+  slugify,
+  testUrl,
+  typEtikett,
+} from '../lib/innehall';
+import { KALKYLATORER, sasongensKalkylator } from '../lib/kalkyl/register';
+import { billigasteErbjudande, hamtaProdukt, produktNamn } from '../lib/produkter';
+import { organisation } from '../lib/strukturdata';
+import BorjaHar from '../components/ui/BorjaHar.astro';
+import Markering from '../components/ui/Markering.astro';
+import Pennstreck from '../components/ui/Pennstreck.astro';
+import StrukturData from '../components/ui/StrukturData.astro';
+import Verktygskort from '../components/ui/Verktygskort.astro';
+
+const startsida = await getEntry('sidor', 'startsida');
+if (!startsida) throw new Error('src/content/sidor/startsida.mdx saknas');
+const { Content } = await render(startsida);
+
+const sasong = sasongensKalkylator(new Date().getMonth() + 1);
+
+// Just nu: chefredaktörens val. Utkast länkas aldrig från en publicerad sida.
+const justNuRef = startsida.data.justNu;
+let justNu: { etikett: string; titel: string; href: string; beskrivning: string; datum: Date; bild?: ImageMetadata } | null =
+  null;
+if (justNuRef) {
+  if (justNuRef.samling === 'tester') {
+    const e = await getEntry('tester', justNuRef.id);
+    if (e && arPublicerad(e)) {
+      justNu = {
+        etikett: typEtikett('test', e.data.etikett),
+        titel: e.data.title,
+        href: testUrl(e),
+        beskrivning: e.data.description,
+        datum: e.data.publicerad,
+        bild: e.data.bild,
+      };
+    }
+  } else if (justNuRef.samling === 'jamforelser') {
+    const e = await getEntry('jamforelser', justNuRef.id);
+    if (e && arPublicerad(e)) {
+      justNu = {
+        etikett: 'Jämförelse',
+        titel: e.data.title,
+        href: jamforelseUrl(e),
+        beskrivning: e.data.description,
+        datum: e.data.publicerad,
+        bild: e.data.bild,
+      };
+    }
+  } else if (justNuRef.samling === 'guider') {
+    const e = await getEntry('guider', justNuRef.id);
+    if (e && arPublicerad(e)) {
+      justNu = {
+        etikett: typEtikett(e.data.typ),
+        titel: e.data.title,
+        href: artikelUrl(e),
+        beskrivning: e.data.description,
+        datum: e.data.publicerad,
+        bild: e.data.bild,
+      };
+    }
+  } else {
+    const e = await getEntry('kunskap', justNuRef.id);
+    if (e && arPublicerad(e)) {
+      justNu = {
+        etikett: typEtikett(e.data.typ),
+        titel: e.data.title,
+        href: artikelUrl(e),
+        beskrivning: e.data.description,
+        datum: e.data.publicerad,
+        bild: e.data.bild,
+      };
+    }
+  }
+}
+
+// Bäst i test just nu: en rad per kategori med kategorifilens första val.
+const kategorier = await publicerade('kategorier');
+const bastITest = await Promise.all(
+  kategorier.map(async (k) => {
+    const val = k.data.val[0];
+    const produkt = val ? await hamtaProdukt(val.produkt) : null;
+    const erbjudande = produkt ? billigasteErbjudande(produkt) : null;
+    return {
+      namn: k.data.namn,
+      href: kategoriUrl(k.id),
+      produktNamn: produkt ? produktNamn(produkt) : (val?.produkt ?? null),
+      pris: erbjudande?.pris ?? null,
+    };
+  }),
+);
+
+// Senaste guider och tester: sex senaste av alla textsamlingar.
+const senaste = [
+  ...(await publicerade('guider')).map((e) => ({
+    etikett: typEtikett(e.data.typ),
+    titel: e.data.title,
+    href: artikelUrl(e),
+    beskrivning: e.data.description,
+    datum: e.data.publicerad,
+  })),
+  ...(await publicerade('kunskap')).map((e) => ({
+    etikett: typEtikett(e.data.typ),
+    titel: e.data.title,
+    href: artikelUrl(e),
+    beskrivning: e.data.description,
+    datum: e.data.publicerad,
+  })),
+  ...(await publicerade('tester')).map((e) => ({
+    etikett: typEtikett('test', e.data.etikett),
+    titel: e.data.title,
+    href: testUrl(e),
+    beskrivning: e.data.description,
+    datum: e.data.publicerad,
+  })),
+  ...(await publicerade('jamforelser')).map((e) => ({
+    etikett: 'Jämförelse',
+    titel: e.data.title,
+    href: jamforelseUrl(e),
+    beskrivning: e.data.description,
+    datum: e.data.publicerad,
+  })),
+]
+  .sort((a, b) => b.datum.getTime() - a.datum.getTime())
+  .slice(0, 6);
 ---
 
 <Bas
-  title="Hantverkstips: välj rätt verktyg innan du köper"
-  description="Köpguider, tester och kalkylatorer för luftavfuktare, lasermätare, sågar och proffsmaskiner. Skrivet av folk som använt dem."
+  title="Hantverkstips, bygg och renovera utan att köpa fel"
+  description={startsida.data.description}
+  bred={true}
 >
+  <StrukturData slot="head" data={organisation()} />
+
+  <div class="lg:grid lg:grid-cols-3 lg:gap-12">
+    <div class="lg:col-span-2 max-w-lasbredd">
+      <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">{startsida.data.title}</h1>
+      <div class="prosa mt-4 text-ingress lg:text-ingress-lg">
+        <Content components={{ Markering }} />
+      </div>
+    </div>
+    <div class="lg:col-span-1">
+      <Verktygskort kalkylator={sasong.slug} />
+    </div>
+  </div>
+
   <div class="max-w-lasbredd">
-    <h1 class="text-4xl font-semibold tracking-tight leading-tight">Välj rätt verktyg innan du köper.</h1>
-    <p class="text-lg text-blaeck-2 mt-4">
-      Sajten är under uppbyggnad. Första kategorin blir luftavfuktare.
-    </p>
+    <BorjaHar />
+
+    {
+      justNu && (
+        <section>
+          <p class="mt-12 lg:mt-16 m-0 text-etikett lg:text-etikett-lg uppercase text-penna">{justNu.etikett}</p>
+          {justNu.bild && (
+            <Image
+              src={justNu.bild}
+              alt=""
+              widths={[375, 704]}
+              sizes="(min-width: 1024px) 704px, 100vw"
+              class="mt-3 block w-full h-auto rounded-sm border border-linje"
+            />
+          )}
+          <h2 class="m-0 mt-3 font-serif text-h2 lg:text-h2-lg">
+            <a href={justNu.href} class="text-blyerts no-underline hover:underline hover:decoration-penna">
+              {justNu.titel}
+            </a>
+          </h2>
+          <p class="m-0 mt-2 text-ingress lg:text-ingress-lg">{justNu.beskrivning}</p>
+          <p class="m-0 mt-2 text-liten text-blyerts-2">
+            <time datetime={isoDatum(justNu.datum)}>{formateraDatum(justNu.datum)}</time>
+          </p>
+        </section>
+      )
+    }
+
+    {
+      bastITest.length > 0 && (
+        <section>
+          <Pennstreck id={slugify('Bäst i test just nu')}>Bäst i test just nu</Pennstreck>
+          <ul class="m-0 p-0 list-none">
+            {bastITest.map((b, i) => (
+              <li class:list={['py-4', i > 0 && 'border-t border-linje']}>
+                <h3 class="m-0 font-sans text-h3 lg:text-h3-lg">
+                  <a href={b.href} class="text-blyerts underline decoration-1 underline-offset-2 hover:decoration-2">
+                    {b.namn}
+                  </a>
+                </h3>
+                {b.produktNamn && (
+                  <p class="m-0 mt-1 text-brod text-blyerts-2">
+                    Vårt val: {b.produktNamn}
+                    {b.pris !== null && <> · {formateraPris(b.pris)}</>}
+                  </p>
+                )}
+                <p class="m-0 mt-1">
+                  <a
+                    href={b.href}
+                    class="inline-flex min-h-11 items-center text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+                  >
+                    Alla vi testat
+                  </a>
+                </p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      senaste.length > 0 && (
+        <section>
+          <Pennstreck id={slugify('Senaste guider och tester')}>Senaste guider och tester</Pennstreck>
+          <ul class="m-0 p-0 list-none grid gap-6 lg:grid-cols-2">
+            {senaste.map((s) => (
+              <li>
+                <p class="m-0 text-etikett uppercase text-blyerts-2">{s.etikett}</p>
+                <h3 class="m-0 mt-1 font-sans text-h3 lg:text-h3-lg">
+                  <a href={s.href} class="text-blyerts underline decoration-1 underline-offset-2 hover:decoration-2">
+                    {s.titel}
+                  </a>
+                </h3>
+                <p class="m-0 mt-1 text-brod text-blyerts-2">{s.beskrivning}</p>
+                <p class="m-0 mt-1 text-liten text-blyerts-2">
+                  <time datetime={isoDatum(s.datum)}>{formateraDatum(s.datum)}</time>
+                </p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <section>
+      <Pennstreck id={slugify('Räkna själv')}>Räkna själv</Pennstreck>
+      <ul class="m-0 p-0 list-none">
+        {
+          KALKYLATORER.map((k, i) => (
+            <li class:list={['py-3', i > 0 && 'border-t border-linje']}>
+              <a
+                href={`/rakna/${k.slug}/`}
+                class="inline-flex min-h-11 items-center font-bold text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+              >
+                {k.namn}
+              </a>
+              <p class="m-0 text-brod text-blyerts-2">{k.rad}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section>
+      <Pennstreck id={slugify('Så jobbar vi')}>Så jobbar vi</Pennstreck>
+      <p class="m-0 text-brod lg:text-brod-lg">
+        Vi testar själva när vi kan och granskar tillverkarnas data när vi inte kan.{' '}
+        <a href="/om/sa-testar-vi/" class="text-penna underline decoration-1 underline-offset-2 hover:decoration-2">
+          Så testar vi
+        </a>
+        . Sajten finansieras av annonslänkar, och hur det påverkar det vi skriver står på{' '}
+        <a
+          href="/om/sa-tjanar-vi-pengar/"
+          class="text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+        >
+          Så tjänar vi pengar
+        </a>
+        .
+      </p>
+    </section>
   </div>
 </Bas>

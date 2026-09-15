@@ -1,0 +1,45 @@
+---
+/**
+ * Vercel serverar den här sidan för okända adresser.
+ */
+import Bas from '../layouts/Bas.astro';
+import { pelareUrl, publicerade } from '../lib/innehall';
+import { PELARE } from '../lib/pelare';
+
+const hubbar = await publicerade('pelare');
+const publiceradeHubbar = PELARE.flatMap((p) => (hubbar.some((h) => h.id === p.slug) ? [p] : []));
+---
+
+<Bas
+  title="Sidan finns inte · Hantverkstips"
+  description="Adressen finns inte på Hantverkstips. Börja från en av ämnessidorna eller kalkylatorerna."
+  noindex={true}
+>
+  <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">Sidan finns inte</h1>
+  <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
+    Adressen kan ha ändrats. Börja från en av de här sidorna.
+  </p>
+
+  <ul class="m-0 mt-6 p-0 list-none">
+    {
+      publiceradeHubbar.map((p) => (
+        <li class="border-t border-linje">
+          <a
+            href={pelareUrl(p.slug)}
+            class="flex min-h-11 items-center py-2 text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+          >
+            {p.namn}
+          </a>
+        </li>
+      ))
+    }
+    <li class="border-t border-linje">
+      <a
+        href="/rakna/"
+        class="flex min-h-11 items-center py-2 text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+      >
+        Räkna själv
+      </a>
+    </li>
+  </ul>
+</Bas>
