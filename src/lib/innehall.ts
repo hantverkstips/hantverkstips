@@ -68,6 +68,21 @@ export function normaliseraProdukter(lista: (string | ProduktRef)[]): ProduktRef
   return lista.map((p) => (typeof p === 'string' ? { slug: p } : p));
 }
 
+/**
+ * Ankare för rubriker som mallen själv renderar, så att innehållsförteckningen
+ * kan länka till dem. Astros egna slugs från MDX behåller å, ä och ö; de här
+ * skrivs om till a och o eftersom de blir en del av adressen i länkar vi bygger.
+ */
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/å/g, 'a')
+    .replace(/ä/g, 'a')
+    .replace(/ö/g, 'o')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 /** Etikett som visas i listor: "Köpguide", "Test", osv. */
 export function typEtikett(typ: string, testEtikett?: 'test' | 'granskning'): string {
   switch (typ) {
