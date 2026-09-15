@@ -2,6 +2,9 @@
 /**
  * Länken till en kalkylator. Ett per sida, aldrig två. Inget diagram i fas 1.
  * Okänd slug ger byggfel, så att en felskriven referens i en innehållsfil syns.
+ *
+ * Rubriken är ett <p> i H3-stil, inte en H3: kortet kan stå före sidans första
+ * H2 (startsidans öppning) och en riktig H3 där ger fel rubrikordning.
  */
 import { hittaKalkylator } from '../../lib/kalkyl/register';
 import Ikon from './Ikon.astro';
@@ -23,9 +26,9 @@ const href = `/rakna/${k.slug}/`;
     <Ikon namn="kalkylator" storlek={24} />
     Räkna själv
   </p>
-  <h3 class="m-0 mt-2 font-sans text-h3 lg:text-h3-lg">
+  <p class="m-0 mt-2 font-sans text-h3 lg:text-h3-lg font-bold">
     <a href={href} class="text-blyerts underline decoration-1 underline-offset-2 hover:decoration-2">{k.namn}</a>
-  </h3>
+  </p>
   <p class="m-0 mt-1 text-brod lg:text-brod-lg text-blyerts-2">{k.rad}</p>
   <p class="m-0 mt-2">
     <a

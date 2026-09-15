@@ -6,24 +6,35 @@
  * Astro skickar id som prop, och den måste vidarebefordras för att
  * innehållsförteckningen ska hitta rubriken.
  *
+ * utanLuft tar bort marginalen ovanför. Anroparen kan inte lösa det med en
+ * mt-0-klass: båda hamnar i Tailwinds verktygslager och mt-12 vinner.
+ *
  * niva 3 renderar en H3 utan streck: DESIGN.md förbjuder pennstreck under H3.
  */
 interface Props {
   id?: string;
   niva?: 2 | 3;
+  utanLuft?: boolean;
   class?: string;
 }
 
-const { id, niva = 2, class: klass } = Astro.props;
+const { id, niva = 2, utanLuft = false, class: klass } = Astro.props;
 ---
 
 {
   niva === 3 ? (
-    <h3 id={id} class:list={['font-sans text-h3 lg:text-h3-lg mt-8 mb-2 text-blyerts', klass]}>
+    <h3 id={id} class:list={['font-sans text-h3 lg:text-h3-lg mb-2 text-blyerts', !utanLuft && 'mt-8', klass]}>
       <slot />
     </h3>
   ) : (
-    <h2 id={id} class:list={['pennstreck font-serif text-h2 lg:text-h2-lg mt-12 lg:mt-16 mb-3 text-blyerts', klass]}>
+    <h2
+      id={id}
+      class:list={[
+        'pennstreck font-serif text-h2 lg:text-h2-lg mb-3 text-blyerts',
+        !utanLuft && 'mt-12 lg:mt-16',
+        klass,
+      ]}
+    >
       <slot />
     </h2>
   )

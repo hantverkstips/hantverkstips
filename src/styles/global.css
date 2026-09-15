@@ -299,10 +299,60 @@ body {
     content: "";
   }
 
+  /* Desktopmenyns 15 px. Storleken används bara här och har därför ingen token. */
+  .huvudmeny {
+    font-size: 0.9375rem;
+  }
+
+  /*
+    Tvåspaltsmallen: brödtext i läsbredd med innehållsförteckningen i höger spalt.
+    Blocket är 63 rem (44 + 3 gap + 16) och centreras i sidbredden, så att
+    brödsmulor, rubrik, tabeller och produktavsnitt får samma vänsterkant.
+  */
+  .tvaspalt {
+    width: 100%;
+  }
+  @media (min-width: 64rem) {
+    .tvaspalt {
+      max-width: 63rem;
+      margin-inline: auto;
+    }
+    .tvaspalt-rad {
+      display: grid;
+      grid-template-columns: minmax(0, 44rem) 16rem;
+      gap: 3rem;
+      align-items: start;
+    }
+  }
+
   /* Jämförelsetabellen scrollar i sidled inom behållaren, aldrig hela sidan. */
   .tabell-behallare {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+  }
+  /* Tonad högerkant som visar att tabellen fortsätter. Enda tillåtna gradienten,
+     se DESIGN.md avsnitt 6. Utgår från lg, där tabellen oftast får plats. */
+  .tabell-yta {
+    position: relative;
+  }
+  .tabell-yta::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 24px;
+    background-image: linear-gradient(
+      to right,
+      color-mix(in srgb, var(--color-papper) 0%, transparent),
+      var(--color-papper)
+    );
+    pointer-events: none;
+  }
+  @media (min-width: 64rem) {
+    .tabell-yta::after {
+      content: none;
+    }
   }
 
   /*
@@ -340,6 +390,14 @@ body {
   }
   .prosa li + li {
     margin-top: 8px;
+  }
+  /* Inuti linjerat papper går alla avstånd i multiplar av 24 px, annars
+     glider texten av linjerna. Se DESIGN.md avsnitt 2, sista punkten. */
+  .linjerat .prosa > * + * {
+    margin-top: 24px;
+  }
+  .linjerat .prosa li + li {
+    margin-top: 0;
   }
   .prosa h3 {
     font-family: var(--font-sans);

@@ -3,6 +3,12 @@
  * Faktaruta på linjerat papper. Enligt docs/DESIGN.md avsnitt 6 ligger alla tre
  * varianterna på .linjerat: "Kort svar" är den färgade ytan från Magasinet i
  * Anteckningsbokens hand. Innehåller aldrig köpknappar eller produktkort.
+ *
+ * Allt inuti rutan sätts med radavstånd 24 px och marginaler i multiplar av 24,
+ * så att raderna landar på linjerna i bakgrunden.
+ *
+ * Kortsvarets rubrik renderas som <p> i H3-stil: rutan ligger före sidans
+ * första H2, och en riktig H3 där ger fel rubrikordning.
  */
 interface Props {
   variant?: 'kortsvar' | 'fakta' | 'kopom';
@@ -15,25 +21,29 @@ interface Props {
 
 const { variant = 'fakta', kopOm, kopInteOm } = Astro.props;
 const rubrik = Astro.props.rubrik ?? (variant === 'kortsvar' ? 'Kort svar' : undefined);
+const rubrikKlass = 'm-0 mb-6 font-sans text-h3 lg:text-h3-lg leading-6 text-blyerts';
 ---
 
-<div class="linjerat my-8 text-brod lg:text-brod-lg">
-  {rubrik && <h3 class="m-0 mb-2 font-sans text-h3 lg:text-h3-lg text-blyerts">{rubrik}</h3>}
+<div class="linjerat my-8 text-brod lg:text-brod-lg leading-6">
+  {
+    rubrik &&
+      (variant === 'kortsvar' ? <p class={rubrikKlass}>{rubrik}</p> : <h3 class={rubrikKlass}>{rubrik}</h3>)
+  }
 
   {
     variant === 'kopom' ? (
-      <div class="grid gap-4 lg:grid-cols-2">
+      <div class="grid gap-6 lg:grid-cols-2">
         <div>
-          <p class="m-0 mb-1 text-etikett lg:text-etikett-lg uppercase text-blyerts">Köp om</p>
-          <p class="m-0">{kopOm}</p>
+          <p class="m-0 text-etikett lg:text-etikett-lg leading-6 uppercase text-blyerts">Köp om</p>
+          <p class="m-0 leading-6">{kopOm}</p>
         </div>
         <div>
-          <p class="m-0 mb-1 text-etikett lg:text-etikett-lg uppercase text-blyerts">Köp inte om</p>
-          <p class="m-0">{kopInteOm}</p>
+          <p class="m-0 text-etikett lg:text-etikett-lg leading-6 uppercase text-blyerts">Köp inte om</p>
+          <p class="m-0 leading-6">{kopInteOm}</p>
         </div>
       </div>
     ) : (
-      <div class="prosa">
+      <div class="prosa leading-6">
         <slot />
       </div>
     )

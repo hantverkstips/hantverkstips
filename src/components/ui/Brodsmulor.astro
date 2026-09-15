@@ -42,5 +42,10 @@ const { lista } = Astro.props;
     .brodsmulor li:not(:nth-last-child(-n + 2)) {
       display: none;
     }
+
+    /* Den första synliga posten på mobil får inget inledande snedstreck. */
+    .brodsmulor li:nth-last-child(2)::before {
+      content: none;
+    }
   }
 </style>
