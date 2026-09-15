@@ -34,6 +34,10 @@ const artikel = ({ image }: SchemaContext) =>
     kategori: z.string().optional(),
     produkter: z.array(produktRef).default([]),
     forfattare: z.string().default('redaktionen'),
+    // Sidans korta svar. Mallen renderar det som Faktaruta variant kortsvar direkt
+    // efter metaraden, före bilden. Skrivs i frontmatter, aldrig i brödtexten,
+    // så att mallen styr placeringen och strukturen blir densamma på varje sida.
+    kortSvar: z.string().optional(),
     // Eget foto eller eget diagram. Aldrig leverantörsbild. Ligger under "Kort svar".
     bild: image().optional(),
     bildtext: z.string().optional(),
