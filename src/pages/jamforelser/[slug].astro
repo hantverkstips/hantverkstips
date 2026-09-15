@@ -7,6 +7,7 @@ import { getEntry, render } from 'astro:content';
 import Bas from '../../layouts/Bas.astro';
 import { formateraDatum, isoDatum } from '../../lib/format';
 import {
+  arPublicerad,
   artikelUrl,
   jamforelseUrl,
   kategoriUrl,
@@ -17,6 +18,7 @@ import {
 } from '../../lib/innehall';
 import { hamtaButik } from '../../lib/produkter';
 import { artikel as artikelData } from '../../lib/strukturdata';
+import Brodsmulor from '../../components/ui/Brodsmulor.astro';
 import Faktaruta from '../../components/ui/Faktaruta.astro';
 import Forfattarruta from '../../components/ui/Forfattarruta.astro';
 import Innehallsforteckning from '../../components/ui/Innehallsforteckning.astro';
@@ -41,8 +43,16 @@ const d = entry.data;
 const { Content, headings } = await render(entry);
 
 const produkter = normaliseraProdukter(d.produkter);
-const kategori = await getEntry('kategorier', d.kategori);
+// Brödsmulan går via kategorisidan, så den får bara länkas om den byggs.
+const kategoriPost = await getEntry('kategorier', d.kategori);
+const kategori = kategoriPost && arPublicerad(kategoriPost) ? kategoriPost : undefined;
 const butik = await hamtaButik();
+
+const brodsmulor = [
+  { namn: 'Hantverkstips', href: '/' },
+  ...(kategori ? [{ namn: kategori.data.namn, href: kategoriUrl(d.kategori) }] : []),
+  { namn: d.title },
+];
 
 const forfattare = await getEntry('forfattare', d.forfattare);
 const forfattareNamn = forfattare?.data.namn ?? 'Redaktionen';
@@ -73,34 +83,42 @@ const strukturdata = artikelData({
   description={d.description}
   reklam={true}
   butikNamn={butik?.namn}
-  brodsmulor={[
-    { namn: 'Hantverkstips', href: '/' },
-    { namn: kategori?.data.namn ?? d.kategori, href: kategoriUrl(d.kategori) },
-    { namn: d.title },
-  ]}
+  brodsmulor={brodsmulor}
+  brodsmulorIVy={true}
   bred={true}
 >
   <StrukturData slot="head" data={strukturdata} />
 
-  <div class="mx-auto w-full max-w-lasbredd">
-    <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-penna">Jämförelse</p>
-    <h1 class="m-0 mt-2 font-serif text-h1 lg:text-h1-lg">{d.title}</h1>
-    <p class="m-0 mt-3 text-liten text-blyerts-2">
-      Publicerad <time datetime={isoDatum(d.publicerad)}>{formateraDatum(d.publicerad)}</time>{
-        d.uppdaterad && (
-          <>
-            , uppdaterad <time datetime={isoDatum(d.uppdaterad)}>{formateraDatum(d.uppdaterad)}</time>
-          </>
+  <div class="tvaspalt">
+    <div class="lg:max-w-lasbredd">
+      <Brodsmulor lista={brodsmulor} />
+
+      <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts">Jämförelse</p>
+      <h1 class="m-0 mt-2 font-serif text-h1 lg:text-h1-lg">{d.title}</h1>
+      <p class="m-0 mt-3 text-liten text-blyerts-2">
+        Publicerad <time datetime={isoDatum(d.publicerad)}>{formateraDatum(d.publicerad)}</time>{
+          d.uppdaterad && (
+            <>
+              , uppdaterad <time datetime={isoDatum(d.uppdaterad)}>{formateraDatum(d.uppdaterad)}</time>
+            </>
+          )
+        } · Av {forfattareNamn}
+      </p>
+
+      {
+        d.kortSvar && (
+          <Faktaruta variant="kortsvar">
+            <p class="m-0 leading-6">{d.kortSvar}</p>
+          </Faktaruta>
         )
-      } · Av {forfattareNamn}
-    </p>
+      }
 
-    <Innehallsforteckning rubriker={rubriker} />
-  </div>
+      <Innehallsforteckning rubriker={rubriker} variant="hopfallbar" />
+    </div>
 
-  <Jamforelsetabell produkter={produkter.map((p) => p.slug)} kategori={d.kategori} />
+    <Jamforelsetabell produkter={produkter.map((p) => p.slug)} kategori={d.kategori} />
 
-  <div class="mx-auto w-full max-w-lasbredd">
+    <div class="lg:max-w-lasbredd">
     <div class="prosa mt-8">
       <Content
         components={{
@@ -167,7 +185,7 @@ const strukturdata = artikelData({
           <ul class="m-0 p-0 list-none">
             {relaterat.map((r) => (
               <li class="border-t border-linje py-3">
-                <p class="m-0 text-etikett uppercase text-blyerts-2">{r.etikett}</p>
+                <p class="m-0 text-etikett uppercase text-blyerts">{r.etikett}</p>
                 <a
                   href={r.href}
                   class="inline-flex min-h-11 items-center text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
@@ -181,6 +199,7 @@ const strukturdata = artikelData({
       )
     }
 
-    <Forfattarruta forfattare={d.forfattare} publicerad={d.publicerad} uppdaterad={d.uppdaterad} />
+      <Forfattarruta forfattare={d.forfattare} publicerad={d.publicerad} uppdaterad={d.uppdaterad} />
+    </div>
   </div>
 </Bas>

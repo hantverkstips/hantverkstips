@@ -36,11 +36,12 @@ const sidor = [...(await publicerade('guider')), ...(await publicerade('kunskap'
   .filter((e) => e.data.pelare === entry.id)
   .sort((a, b) => a.data.title.localeCompare(b.data.title, 'sv'));
 
+// Huben har inget publiceringsdatum i frontmatter. Byggtidpunkten får inte bli
+// datum, den ändras vid varje bygge, så fältet utelämnas hellre.
 const strukturdata = artikelData({
   url: pelareUrl(entry.id),
   titel: d.title,
   beskrivning: d.description,
-  publicerad: d.uppdaterad ?? new Date(),
   uppdaterad: d.uppdaterad,
   forfattareSlug: 'redaktionen',
   forfattareNamn: 'Redaktionen',
@@ -91,7 +92,7 @@ const strukturdata = artikelData({
         <ul class="m-0 p-0 list-none">
           {sidor.map((s) => (
             <li class="border-t border-linje py-3">
-              <p class="m-0 text-etikett uppercase text-blyerts-2">{typEtikett(s.data.typ)}</p>
+              <p class="m-0 text-etikett uppercase text-blyerts">{typEtikett(s.data.typ)}</p>
               <a
                 href={artikelUrl(s)}
                 class="inline-flex min-h-11 items-center text-penna underline decoration-1 underline-offset-2 hover:decoration-2"

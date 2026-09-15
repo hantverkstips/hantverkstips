@@ -9,6 +9,7 @@ import { getEntry, render } from 'astro:content';
 import Bas from '../../layouts/Bas.astro';
 import { formateraDatum, isoDatum } from '../../lib/format';
 import {
+  arPublicerad,
   artikelUrl,
   brodsmulorForArtikel,
   kategoriUrl,
@@ -21,6 +22,7 @@ import {
 import { hittaPelare } from '../../lib/pelare';
 import { hamtaButik } from '../../lib/produkter';
 import { artikel as artikelData } from '../../lib/strukturdata';
+import Brodsmulor from '../ui/Brodsmulor.astro';
 import DetHarBehoverDu from '../ui/DetHarBehoverDu.astro';
 import Faktaruta from '../ui/Faktaruta.astro';
 import Forfattarruta from '../ui/Forfattarruta.astro';
@@ -79,7 +81,9 @@ const andra = alla
   .sort((a, b) => b.data.publicerad.getTime() - a.data.publicerad.getTime())
   .slice(0, 2);
 
-const kategori = d.kategori ? await getEntry('kategorier', d.kategori) : undefined;
+// Kategorisidan länkas bara om den faktiskt byggs. Ett utkast får inte länkas.
+const kategoriPost = d.kategori ? await getEntry('kategorier', d.kategori) : undefined;
+const kategori = kategoriPost && arPublicerad(kategoriPost) ? kategoriPost : undefined;
 const pelare = hittaPelare(d.pelare);
 
 const relaterat = [
@@ -109,13 +113,16 @@ const strukturdata = artikelData({
   reklam={reklam}
   butikNamn={butik?.namn}
   brodsmulor={brodsmulorForArtikel(entry)}
+  brodsmulorIVy={true}
   bred={true}
 >
   <StrukturData slot="head" data={strukturdata} />
 
-  <div class="lg:grid lg:grid-cols-[minmax(0,44rem)_16rem] lg:gap-12 lg:justify-center">
+  <div class="tvaspalt tvaspalt-rad">
     <div class="min-w-0">
-      <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-penna">{typEtikett(typ)}</p>
+      <Brodsmulor lista={brodsmulorForArtikel(entry)} />
+
+      <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts">{typEtikett(typ)}</p>
       <h1 class="m-0 mt-2 font-serif text-h1 lg:text-h1-lg">{d.title}</h1>
       <p class="m-0 mt-3 text-liten text-blyerts-2">
         Publicerad <time datetime={isoDatum(d.publicerad)}>{formateraDatum(d.publicerad)}</time>{
@@ -128,6 +135,14 @@ const strukturdata = artikelData({
       </p>
 
       {
+        d.kortSvar && (
+          <Faktaruta variant="kortsvar">
+            <p class="m-0 leading-6">{d.kortSvar}</p>
+          </Faktaruta>
+        )
+      }
+
+      {
         bild && (
           <figure class="m-0 mt-6">
             {arSvg ? (
@@ -136,6 +151,7 @@ const strukturdata = artikelData({
                 alt={d.bildtext ?? ''}
                 width={bild.width}
                 height={bild.height}
+                fetchpriority="high"
                 decoding="async"
                 class="block w-full h-auto rounded-sm border border-linje"
               />
@@ -145,6 +161,8 @@ const strukturdata = artikelData({
                 alt={d.bildtext ?? ''}
                 widths={[375, 704]}
                 sizes="(min-width: 1024px) 704px, 100vw"
+                loading="eager"
+                fetchpriority="high"
                 class="block w-full h-auto rounded-sm border border-linje"
               />
             )}
@@ -153,9 +171,7 @@ const strukturdata = artikelData({
         )
       }
 
-      <div class="lg:hidden">
-        <Innehallsforteckning rubriker={rubriker} />
-      </div>
+      <Innehallsforteckning rubriker={rubriker} variant="hopfallbar" />
 
       <div class="prosa mt-6">
         <Content components={komponenter} />
@@ -232,7 +248,7 @@ const strukturdata = artikelData({
 
     <aside class="hidden lg:block">
       <div class="sticky top-20">
-        <Innehallsforteckning rubriker={rubriker} />
+        <Innehallsforteckning rubriker={rubriker} variant="sidospalt" />
       </div>
     </aside>
   </div>

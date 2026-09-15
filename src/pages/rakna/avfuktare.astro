@@ -35,6 +35,19 @@ const fel = resultat.status === 'ogiltig' ? resultat.fel : {};
 const visat: AvfuktareResultat = resultat.status === 'ogiltig' ? raknaAvfuktare(STANDARD) : resultat;
 const visatIndata = resultat.status === 'ogiltig' ? STANDARD : indata;
 
+/**
+ * Fältens värden kommer från query-strängen som den skrevs, inte från de tolkade
+ * talen: "tolv" eller "" blir NaN i tolkaQuery, och NaN i ett fält som läsaren
+ * ska rätta är obrukbart.
+ */
+function faltVarde(nyckel: string, standard: number): string {
+  const ra = Astro.url.searchParams.get(nyckel);
+  if (ra !== null) return ra;
+  return String(standard).replace('.', ',');
+}
+const ytaVarde = faltVarde('yta', STANDARD.ytaKvm);
+const takhojdVarde = faltVarde('takhojd', STANDARD.takhojdM);
+
 const butik = await hamtaButik();
 
 let traffar: string[] = [];
@@ -86,7 +99,7 @@ const etikettKlass = 'block mb-1 font-bold text-blyerts';
               name="yta"
               type="text"
               inputmode="decimal"
-              value={String(indata.ytaKvm).replace('.', ',')}
+              value={ytaVarde}
               aria-describedby={fel.ytaKvm ? 'yta-fel' : undefined}
               class:list={[faltKlass, fel.ytaKvm ? 'border-varning' : 'border-blyerts-2']}
             />
@@ -103,7 +116,7 @@ const etikettKlass = 'block mb-1 font-bold text-blyerts';
               name="takhojd"
               type="text"
               inputmode="decimal"
-              value={String(indata.takhojdM).replace('.', ',')}
+              value={takhojdVarde}
               aria-describedby={fel.takhojdM ? 'takhojd-fel' : undefined}
               class:list={[faltKlass, fel.takhojdM ? 'border-varning' : 'border-blyerts-2']}
             />
@@ -143,9 +156,11 @@ const etikettKlass = 'block mb-1 font-bold text-blyerts';
       <div class="mt-8 border-t border-linje pt-6 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
         {
           resultat.status === 'utanfor' ? (
-            <Faktaruta rubrik="För stort utrymme">
-              <p>{resultat.text}</p>
-              <p>
+            /* Ingen rubrik: rutan står före sidans första H2 och en H3 här
+               skulle ge fel rubrikordning. */
+            <Faktaruta>
+              <p class="m-0 leading-6">{resultat.text}</p>
+              <p class="m-0 leading-6">
                 <a href="/fukt/">Läs mer om fukt i huset</a>
               </p>
             </Faktaruta>
@@ -196,7 +211,7 @@ const etikettKlass = 'block mb-1 font-bold text-blyerts';
           </div>
         ) : (
           <Faktaruta>
-            <p>
+            <p class="m-0 leading-6">
               Vi har inte testat någon avfuktare i den storleken. <a href="/luftavfuktare/">Se alla vi testat.</a>
             </p>
           </Faktaruta>

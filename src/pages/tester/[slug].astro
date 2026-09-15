@@ -6,7 +6,15 @@
 import { getEntry, render } from 'astro:content';
 import Bas from '../../layouts/Bas.astro';
 import { formateraDatum, isoDatum } from '../../lib/format';
-import { artikelUrl, kategoriUrl, publicerade, slugify, testUrl, typEtikett } from '../../lib/innehall';
+import {
+  arPublicerad,
+  artikelUrl,
+  kategoriUrl,
+  publicerade,
+  slugify,
+  testUrl,
+  typEtikett,
+} from '../../lib/innehall';
 import {
   arSlut,
   billigasteErbjudande,
@@ -17,6 +25,7 @@ import {
   varnaSaknadProdukt,
 } from '../../lib/produkter';
 import { produkt as produktData } from '../../lib/strukturdata';
+import Brodsmulor from '../../components/ui/Brodsmulor.astro';
 import Faktaruta from '../../components/ui/Faktaruta.astro';
 import Forfattarruta from '../../components/ui/Forfattarruta.astro';
 import Innehallsforteckning from '../../components/ui/Innehallsforteckning.astro';
@@ -45,7 +54,9 @@ const { Content, headings } = await render(entry);
 const produkt = await hamtaProdukt(d.produkt);
 if (!produkt) varnaSaknadProdukt(d.produkt, Astro.url.pathname);
 
-const kategori = await getEntry('kategorier', d.kategori);
+// Brödsmulan går via kategorisidan, så den får bara länkas om den byggs.
+const kategoriPost = await getEntry('kategorier', d.kategori);
+const kategori = kategoriPost && arPublicerad(kategoriPost) ? kategoriPost : undefined;
 const butik = await hamtaButik();
 const erbjudande = produkt ? billigasteErbjudande(produkt) : null;
 const bild = produkt ? lokalBild(produkt) : null;
@@ -76,6 +87,12 @@ const relaterat = [
   ...(await publicerade('kunskap')).filter((e) => e.data.kategori === d.kategori),
 ].map((e) => ({ etikett: typEtikett(e.data.typ), namn: e.data.title, href: artikelUrl(e) }));
 
+const brodsmulor = [
+  { namn: 'Hantverkstips', href: '/' },
+  ...(kategori ? [{ namn: kategori.data.namn, href: kategoriUrl(d.kategori) }] : []),
+  { namn: d.title },
+];
+
 const strukturdata = produkt
   ? produktData({
       produkt,
@@ -93,18 +110,17 @@ const strukturdata = produkt
   description={d.description}
   reklam={true}
   butikNamn={butik?.namn}
-  brodsmulor={[
-    { namn: 'Hantverkstips', href: '/' },
-    { namn: kategori?.data.namn ?? d.kategori, href: kategoriUrl(d.kategori) },
-    { namn: d.title },
-  ]}
+  brodsmulor={brodsmulor}
+  brodsmulorIVy={true}
   bred={true}
 >
   {strukturdata && <StrukturData slot="head" data={strukturdata} />}
 
-  <div class="lg:grid lg:grid-cols-[minmax(0,44rem)_16rem] lg:gap-12 lg:justify-center">
+  <div class="tvaspalt tvaspalt-rad">
     <div class="min-w-0">
-      <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-penna">{typEtikett('test', d.etikett)}</p>
+      <Brodsmulor lista={brodsmulor} />
+
+      <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts">{typEtikett('test', d.etikett)}</p>
       <h1 class="m-0 mt-2 font-serif text-h1 lg:text-h1-lg">{d.title}</h1>
       <p class="m-0 mt-3 text-liten text-blyerts-2">
         {
@@ -185,17 +201,31 @@ const strukturdata = produkt
                   </table>
                 )}
 
-                <Faktaruta variant="kopom" kopOm={d.kopOm} kopInteOm={d.kopInteOm} />
+                {/* Köp om och Köp inte om står direkt i omdömeskortet, utan
+                    linjerat papper: ett kort i ett kort blir en ruta för mycket. */}
+                <div class="mt-6 grid gap-4 lg:grid-cols-2">
+                  <div>
+                    <p class="m-0 mb-1 text-etikett lg:text-etikett-lg uppercase text-blyerts">Köp om</p>
+                    <p class="m-0 text-brod">{d.kopOm}</p>
+                  </div>
+                  <div>
+                    <p class="m-0 mb-1 text-etikett lg:text-etikett-lg uppercase text-blyerts">Köp inte om</p>
+                    <p class="m-0 text-brod">{d.kopInteOm}</p>
+                  </div>
+                </div>
 
                 {produkt && (
-                  <Kopknapp
-                    produkt={produkt.slug}
-                    modul="kort_full"
-                    pris={erbjudande?.pris ?? null}
-                    prisDatum={erbjudande?.uppdaterad ?? null}
-                    butikNamn={erbjudande?.butikNamn}
-                    slut={arSlut(erbjudande)}
-                  />
+                  <div class="mt-6">
+                    <Kopknapp
+                      produkt={produkt.slug}
+                      modul="kort_full"
+                      bredd="full"
+                      pris={erbjudande?.pris ?? null}
+                      prisDatum={erbjudande?.uppdaterad ?? null}
+                      butikNamn={erbjudande?.butikNamn}
+                      slut={arSlut(erbjudande)}
+                    />
+                  </div>
                 )}
               </div>
             </div>
@@ -203,9 +233,7 @@ const strukturdata = produkt
         }
       </section>
 
-      <div class="lg:hidden">
-        <Innehallsforteckning rubriker={rubriker} />
-      </div>
+      <Innehallsforteckning rubriker={rubriker} variant="hopfallbar" />
 
       <div class="prosa mt-8">
         <Content
@@ -326,7 +354,7 @@ const strukturdata = produkt
             <ul class="m-0 p-0 list-none">
               {relaterat.map((r) => (
                 <li class="border-t border-linje py-3">
-                  <p class="m-0 text-etikett uppercase text-blyerts-2">{r.etikett}</p>
+                  <p class="m-0 text-etikett uppercase text-blyerts">{r.etikett}</p>
                   <a
                     href={r.href}
                     class="inline-flex min-h-11 items-center text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
@@ -345,7 +373,7 @@ const strukturdata = produkt
 
     <aside class="hidden lg:block">
       <div class="sticky top-20">
-        <Innehallsforteckning rubriker={rubriker} />
+        <Innehallsforteckning rubriker={rubriker} variant="sidospalt" />
       </div>
     </aside>
   </div>

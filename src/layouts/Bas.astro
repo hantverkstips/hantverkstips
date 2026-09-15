@@ -26,12 +26,27 @@ interface Props {
   butikNamn?: string;
   /** Utelämnas på startsidan. */
   brodsmulor?: Brodsmula[];
+  /**
+   * Vyn renderar <Brodsmulor> själv, i sin egen spalt, så att brödsmulorna får
+   * samma vänsterkant som rubriken och innehållet. Layouten skriver ändå ut
+   * BreadcrumbList. Används av alla vyer med tvåspaltsmallen.
+   */
+  brodsmulorIVy?: boolean;
   /** main får sidbredd i stället för läsbredd. Kategori, jämförelse, kalkylator. */
   bred?: boolean;
   noindex?: boolean;
 }
 
-const { title, description, reklam = false, butikNamn, brodsmulor, bred = false, noindex = false } = Astro.props;
+const {
+  title,
+  description,
+  reklam = false,
+  butikNamn,
+  brodsmulor,
+  brodsmulorIVy = false,
+  bred = false,
+  noindex = false,
+} = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
 
@@ -105,7 +120,7 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
           <Fragment set:html={ordmarke} />
         </a>
 
-        <nav aria-label="Huvudmeny" class="hidden lg:flex items-center gap-6 text-liten">
+        <nav aria-label="Huvudmeny" class="huvudmeny hidden lg:flex items-center gap-6">
           {
             HUVUDMENY.map((m) => (
               <a href={m.href} class="text-blyerts no-underline hover:underline hover:decoration-penna">
@@ -174,7 +189,7 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
         bred ? 'max-w-sidbredd' : 'max-w-lasbredd',
       ]}
     >
-      {brodsmulor && brodsmulor.length > 0 && (
+      {brodsmulor && brodsmulor.length > 0 && !brodsmulorIVy && (
         <div class="mb-6">
           <Brodsmulor lista={brodsmulor} />
         </div>

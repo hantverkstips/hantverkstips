@@ -7,6 +7,8 @@
 import { Image } from 'astro:assets';
 import { getEntry, render } from 'astro:content';
 import Bas from '../layouts/Bas.astro';
+// Säsongens skiss. Byts mot säsongsstyrd illustration när fler finns ritade.
+import sasongsbild from '../assets/brand/riktning-1/illustration-kallare.svg';
 import { formateraDatum, formateraPris, isoDatum } from '../lib/format';
 import {
   arPublicerad,
@@ -147,14 +149,34 @@ const senaste = [
 >
   <StrukturData slot="head" data={organisation()} />
 
-  <div class="lg:grid lg:grid-cols-3 lg:gap-12">
-    <div class="lg:col-span-2 max-w-lasbredd">
-      <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">{startsida.data.title}</h1>
-      <div class="prosa mt-4 text-ingress lg:text-ingress-lg">
-        <Content components={{ Markering }} />
+  {/* Öppningen: text och säsongens skiss till vänster (60 procent på desktop),
+      verktygskortet till höger. Illustrationen är sidans LCP-bild. */}
+  <div class="lg:grid lg:grid-cols-5 lg:gap-12">
+    <div class="lg:col-span-3">
+      <div class="max-w-lasbredd">
+        <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">{startsida.data.title}</h1>
+        <div class="prosa mt-4 text-ingress lg:text-ingress-lg">
+          <Content components={{ Markering }} />
+        </div>
       </div>
+
+      <figure class="m-0 mt-8">
+        <img
+          src={sasongsbild.src}
+          alt=""
+          width={sasongsbild.width}
+          height={sasongsbild.height}
+          fetchpriority="high"
+          decoding="async"
+          class="block w-full h-auto rounded-sm border border-linje"
+        />
+        <figcaption class="mt-2 text-liten text-blyerts-2">
+          Källaren i september. Markfukten trycker in genom väggen och möter varm luft.
+        </figcaption>
+      </figure>
     </div>
-    <div class="lg:col-span-1">
+
+    <div class="lg:col-span-2">
       <Verktygskort kalkylator={sasong.slug} />
     </div>
   </div>
@@ -165,16 +187,29 @@ const senaste = [
     {
       justNu && (
         <section>
-          <p class="mt-12 lg:mt-16 m-0 text-etikett lg:text-etikett-lg uppercase text-penna">{justNu.etikett}</p>
-          {justNu.bild && (
-            <Image
-              src={justNu.bild}
-              alt=""
-              widths={[375, 704]}
-              sizes="(min-width: 1024px) 704px, 100vw"
-              class="mt-3 block w-full h-auto rounded-sm border border-linje"
-            />
-          )}
+          <p class="mt-12 lg:mt-16 m-0 text-etikett lg:text-etikett-lg uppercase text-blyerts">{justNu.etikett}</p>
+          {justNu.bild &&
+            (justNu.bild.format === 'svg' ? (
+              /* SVG kan inte skalas av bildtjänsten. Med widths genereras bara
+                 kopior av samma fil, så den renderas som en vanlig img. */
+              <img
+                src={justNu.bild.src}
+                alt=""
+                width={justNu.bild.width}
+                height={justNu.bild.height}
+                loading="lazy"
+                decoding="async"
+                class="mt-3 block w-full h-auto rounded-sm border border-linje"
+              />
+            ) : (
+              <Image
+                src={justNu.bild}
+                alt=""
+                widths={[375, 704]}
+                sizes="(min-width: 1024px) 704px, 100vw"
+                class="mt-3 block w-full h-auto rounded-sm border border-linje"
+              />
+            ))}
           <h2 class="m-0 mt-3 font-serif text-h2 lg:text-h2-lg">
             <a href={justNu.href} class="text-blyerts no-underline hover:underline hover:decoration-penna">
               {justNu.titel}
@@ -228,7 +263,7 @@ const senaste = [
           <ul class="m-0 p-0 list-none grid gap-6 lg:grid-cols-2">
             {senaste.map((s) => (
               <li>
-                <p class="m-0 text-etikett uppercase text-blyerts-2">{s.etikett}</p>
+                <p class="m-0 text-etikett uppercase text-blyerts">{s.etikett}</p>
                 <h3 class="m-0 mt-1 font-sans text-h3 lg:text-h3-lg">
                   <a href={s.href} class="text-blyerts underline decoration-1 underline-offset-2 hover:decoration-2">
                     {s.titel}

@@ -32,7 +32,8 @@ const strukturdata =
           url,
           titel: d.title,
           beskrivning: d.description,
-          publicerad: d.uppdaterad ?? new Date(),
+          // Om-sidor har bara uppdaterad. Byggtidpunkten som datePublished
+          // skulle ändras vid varje bygge, så fältet utelämnas.
           uppdaterad: d.uppdaterad,
           forfattareSlug: 'redaktionen',
           forfattareNamn: 'Redaktionen',
