@@ -272,35 +272,44 @@ Utan databas (`publikKlient()` är null): `console.warn('[produkter] Databas sak
 Ren funktion, inga importer från Astro, testbar utan bygge.
 
 ```ts
-export type Fuktniva = 'medel' | 'hog' | 'mycket_hog';   // 60 till 70, 70 till 80, över 80 procent
-export interface AvfuktareIndata { ytaKvm: number; takhojdM: number; fuktniva: Fuktniva; uppvarmt: boolean }
+export type Fuktniva = 'medel' | 'hog' | 'mycket_hog';        // 60 till 70, 70 till 80, över 80 procent
+export type Temperaturval = 'over_15' | 'fem_till_15' | 'under_5';
+export type Avfuktartyp = 'kondens' | 'sorption';
+export interface AvfuktareIndata { ytaKvm: number; takhojdM: number; fuktniva: Fuktniva; temperatur: Temperaturval }
 export type AvfuktareResultat =
-  | { status: 'ok'; literPerDygn: number; volymM3: number; typ: 'kondens' | 'sorption' }
+  | { status: 'ok'; volymM3: number; temperaturC: number; typ: Avfuktartyp;
+      literPerDygnVerklig: number;        // vad maskinen tar upp vid temperaturC och 55 % RF
+      marktKapacitetLiter: number;        // talet att jämföra med specs.kapacitet_liter_dygn
+      marktIntervall: [number, number];   // samma tal med faktorns ytterlägen
+      kapacitetVillkor: string }          // '30 °C och 80 % RF' eller '20 °C och 60 % RF'
   | { status: 'ogiltig'; fel: Partial<Record<keyof AvfuktareIndata, string>> }
   | { status: 'utanfor'; text: string };
 
-export const STANDARD: AvfuktareIndata = { ytaKvm: 40, takhojdM: 2.4, fuktniva: 'hog', uppvarmt: true };
-export const GRANSER = { ytaKvm: [5, 300], takhojdM: [1.8, 4] } as const;
+export const STANDARD: AvfuktareIndata = { ytaKvm: 40, takhojdM: 2.4, fuktniva: 'hog', temperatur: 'fem_till_15' };
+export const GRANSER = { ytaKvm: [5, 300], takhojdM: [0.5, 4] } as const;
 
+export function mattnadsanghalt(tempC: number): number;   // Magnus-formeln, g/m³
 export function raknaAvfuktare(i: AvfuktareIndata): AvfuktareResultat;
 export function tolkaQuery(q: URLSearchParams): { indata: AvfuktareIndata; harIndata: boolean };
 ```
 
-`tolkaQuery` läser `yta`, `takhojd`, `fukt` (`medel` | `hog` | `mycket_hog`), `uppvarmt` (`1` om ikryssad, saknas annars), accepterar decimalkomma (`'2,4'` blir 2.4), och fyller i `STANDARD` för det som saknas. `harIndata` är true om minst en parameter fanns; då är en saknad `uppvarmt` false (kryssrutan var avbockad), annars `STANDARD.uppvarmt`.
+`tolkaQuery` läser `yta`, `takhojd`, `fukt` (`medel` | `hog` | `mycket_hog`) och `temp` (`over_15` | `fem_till_15` | `under_5`), accepterar decimalkomma (`'2,4'` blir 2.4), och fyller i `STANDARD` för det som saknas. Länkar som delades innan formuläret fick tre temperaturer bär `uppvarmt=1`; den parametern läses fortfarande och blir `over_15` respektive `fem_till_15`. `harIndata` är true om minst en parameter fanns.
 
-`raknaAvfuktare`: först validering; icke-tal eller värden utanför `GRANSER` ger `ogiltig` med text per fält ("Ange yta mellan 5 och 300 kvm"). Yta över 300 ger i stället `utanfor` med texten "Över 300 kvm rekommenderar vi två maskiner eller en fast installation. Läs guiden om krypgrund." Sedan:
+`raknaAvfuktare`: först validering; icke-tal eller värden utanför `GRANSER` ger `ogiltig` med text per fält ("Ange yta mellan 5 och 300 kvm", "Ange takhöjd mellan 0,5 och 4 m"). Takhöjden går ner till 0,5 m så att krypgrunder ryms. Yta över 300 ger `utanfor` med texten "Över 300 kvm rekommenderar vi två maskiner eller en fast installation. Läs guiden om krypgrund." `temperatur === 'under_5'` ger `utanfor` med "Under 5 grader tappar även sorptionsmaskiner fart och kondensmaskiner står stilla. Läs guiden om krypgrund innan du köper."
 
-```ts
-// PLATSHÅLLARFORMEL. Produktexperten levererar den riktiga med källa innan sidan publiceras.
-// Byt bara konstanterna och kommentaren; signaturen behålls.
-const FAKTOR: Record<Fuktniva, number> = { medel: 0.08, hog: 0.10, mycket_hog: 0.13 }; // liter per dygn och m3
-const volymM3 = ytaKvm * takhojdM;
-const rå = volymM3 * FAKTOR[fuktniva] * (uppvarmt ? 1 : 1.4);
-const literPerDygn = Math.max(1, Math.ceil(rå));
-const typ = uppvarmt ? 'kondens' : 'sorption';
+Sedan produktexpertens formel ur `docs/briefer/underlag-kalkyl-avfuktare.md`, som räknar fuktbelastningen per dygn i augusti och sedan räknar om den till kapaciteten på lådan:
+
+```
+V   = yta × takhöjd
+v_s = mattnadsanghalt(T)                            // Magnus, T = 15 uppvärmt, 10 ouppvärmt
+M_luft = V × (RF_start − 0,55) × v_s / 1000          // engångsuttag ur luften, liter
+G_luft = max(0, 0,5 × V × 24 × (10,0 − 0,55 × v_s) / 1000)   // uteluft, liter per dygn
+G_mark = yta × q / 1000                              // q = 10 / 40 / 100 g per m² och dygn
+L_verklig = (M_luft + G_luft + G_mark) × 1,3
+L_märkt   = ceil(L_verklig / f)                      // f = 0,30 kondens vid 15 °C, 0,80 sorption vid 10 °C
 ```
 
-Standardvärdena ger 40 × 2,4 × 0,10 = 9,6, avrundat till 10 liter per dygn, vilket stämmer med köpguidens korta svar. Markera platshållaren med en kommentar som börjar `// PLATSHÅLLARFORMEL` så att den hittas med sökning.
+Alla konstanter ligger som namngivna konstanter överst i filen med kommentar om källa eller antagande. Räkneexemplen i underlagets avsnitt 5 körs av `scripts/test-kalkyl-avfuktare.mjs` (`node --experimental-strip-types --test scripts/test-kalkyl-avfuktare.mjs`) och ger 7 och 23 liter, 17 och 21, 4 och 5. Standardvärdena (40 kvm, 2,4 m, hög fukt, ouppvärmt) ger 10 liter verkligt och 12 liter märkt sorption.
 
 ### 3.3 `src/lib/kalkyl/register.ts`
 
@@ -476,10 +485,10 @@ Flöde: `const { indata, harIndata } = tolkaQuery(Astro.url.searchParams); const
 Markup:
 
 1. H1 "Hur stor avfuktare behöver du?", ingress två rader (platshållare).
-2. Kortet (bakgrund `papper-2`, radie `md`): `<form method="get" action="/rakna/avfuktare/">`, fält enligt `docs/DESIGN.md` avsnitt 5.5: `yta` (number-liknande textfält, `inputmode="decimal"`, enhet "kvm" som text i fältet via wrapper), `takhojd` (samma, "m"), `fukt` som tre radioknappar med etiketterna "60 till 70 procent, lite unket", "70 till 80 procent, fuktfläckar och lukt", "över 80 procent, synligt mögel", `uppvarmt` som kryssruta "Ja, över 15 grader". Alla fält har `<label>` ovanför, 15 px 600, fälthöjd 48 px, ram `blyerts-2` 1 px, radie `sm`, bakgrund `vit`. Värden förifyllda från `indata`. Knapp "Räkna ut" i `blyerts` med `papper`-text (inte `penna`; den leder inte till butik). Vid `ogiltig`: fältet får ram i `varning` och en rad text under i `varning` 14 px från `fel`, `aria-describedby` kopplar dem. Resultatet visas då från `STANDARD` med texten "Visar standardvärden tills indatan är rättad."
-3. Resultat i samma kort, avdelat med 1 px `linje`: etiketten "Minst", siffran i `text-siffra` med `<Markering>` bakom talet, enheten "liter per dygn" i brödtext, förutsättningarna i 14 px `blyerts-2` ("vid 20 °C och 60 % RF, {volym} m³, {fuktnivå}"), två meningar platshållare om vad det betyder, och raden "Rekommenderad typ: {kondens|sorption}". Länk "Så räknar vi" till `#sa-raknar-vi`. Vid `utanfor`: `<Faktaruta>` med texten och länk till `/fukt/avfuktare-krypgrund/` (finns inte än; länka till `/fukt/` tills den finns).
-4. H2 "Produkter som klarar det": produkter vars `specs.kapacitet_liter_dygn >= literPerDygn` och, om `typ === 'sorption'`, `specs.typ === 'sorption'`, sorterade på pris, max tre, som kompakta Produktkort med `modul="kalkylator"`. Inga träffar eller databas saknas: `<Faktaruta>` "Vi har inte testat någon avfuktare i den storleken. Se alla vi testat." med länk till `/luftavfuktare/`. Länk "Alla avfuktare vi testat" under.
-5. H2 "Så räknar vi" med `id="sa-raknar-vi"`: platshållartext som säger att formeln är preliminär och att produktexperten levererar den slutliga, med länk till `/om/sa-testar-vi/`.
+2. Kortet (bakgrund `papper-2`, radie `md`): `<form method="get" action="/rakna/avfuktare/">`, fält enligt `docs/DESIGN.md` avsnitt 5.8: `yta` (number-liknande textfält, `inputmode="decimal"`, enhet "kvm" som text i fältet via wrapper), `takhojd` (samma, "m", med raden "Krypgrund räknas också, ner till 0,5 m." under), `fukt` som tre radioknappar med etiketterna "60 till 70 procent, lite unket", "70 till 80 procent, fuktfläckar och lukt", "över 80 procent, synligt mögel", och `temp` som tre radioknappar "Uppvärmt, över 15 grader", "Ouppvärmt, 5 till 15 grader", "Kallt, under 5 grader" under legenden "Temperatur i utrymmet". Alla fält har `<label>` ovanför, 15 px 600, fälthöjd 48 px, ram `blyerts-2` 1 px, radie `sm`, bakgrund `vit`. Värden förifyllda från `indata`. Knapp "Räkna ut" i `blyerts` med `papper`-text (inte `penna`; den leder inte till butik). Vid `ogiltig`: fältet får ram i `varning` och en rad text under i `varning` 14 px från `fel`, `aria-describedby` kopplar dem. Resultatet visas då från `STANDARD` med texten "Visar standardvärden tills indatan är rättad."
+3. Resultat i samma kort, avdelat med 1 px `linje`: etiketten "Minst", `marktKapacitetLiter` i `text-siffra` med `<Markering>` bakom talet, enheten "liter per dygn märkt kapacitet" i ingress-storlek, och under i 14 px `blyerts-2` villkoret "uppgiven vid {kapacitetVillkor}, motsvarar cirka {literPerDygnVerklig} liter i din källare vid {temperaturC} grader" samt "{volym} m³, {fuktnivå}". Sedan rekommenderad typ i en mening och en mening om att talet ska läsas som intervallet `marktIntervall`. Länk "Så räknar vi" till `#sa-raknar-vi`. Vid `utanfor` (yta över 300 kvm eller temperatur under 5 grader): `<Faktaruta>` med texten och länk till `/fukt/avfuktare-krypgrund/` (finns inte än; länka till `/fukt/` tills den finns).
+4. H2 "Produkter som klarar det": produkter vars `specs.typ` innehåller den rekommenderade typen och vars `specs.kapacitet_liter_dygn` når `marktKapacitetLiter`, sorterade på pris, max tre, som kompakta Produktkort med `modul="kalkylator"`. Är de färre än tre fylls listan på med maskiner inom `marktIntervall`, aldrig under intervallets nedre kant. Inga träffar eller databas saknas: `<Faktaruta>` "Vi har inte testat någon avfuktare i den storleken. Se alla vi testat." med länk till `/luftavfuktare/`. Länk "Alla avfuktare vi testat" under.
+5. H2 "Så räknar vi" med `id="sa-raknar-vi"`: formeln i ord som en numrerad lista, H3 "Vad siffrorna vilar på" med tabellen över antaganden där varje rad säger källa eller antagande och länkar till källan, meningen "Vi verifierar formeln med egna mätningar under hösten." och länk till `/om/sa-testar-vi/`.
 6. H2 "Läs vidare": länkar till `/luftavfuktare/`, `/fukt/avfuktare-kallare/`, `/fukt/sorptionsavfuktare/`.
 
 Desktop: kortet 44 rem brett, formulär till vänster och resultat till höger i två lika spalter, produkterna i rad om tre under. Strukturerad data: ingen utöver brödsmulor (kalkylatorn är ett verktyg, inte en artikel). `<title>` "Avfuktarkalkylator: hur stor avfuktare behöver du? · Hantverkstips".
@@ -601,6 +610,6 @@ Kalkylatorn (`prerender = false`) finns inte i `dist/client`. Den kontrolleras m
 - [ ] Varje köpknapp har "Annonslänk" under sig och `rel="sponsored nofollow"`, och varje `/go/`-länk innehåller `modul`, `sidtyp` och `position`.
 - [ ] Ingen `<a>` med `proffsmagasinet.se` eller `adtraction` i `dist/client` (`Select-String -Path dist\client\**\*.html -Pattern 'proffsmagasinet\.se|adtraction'` ger bara reklambandets text, inga `href`).
 - [ ] Strukturerad data enligt avsnitt 6 på varje sidtyp; en testsida och en kategorisida klistrade i Googles Rich Results Test utan fel (teknisk ansvarig gör det vid granskning om utvecklaren saknar åtkomst).
-- [ ] Platshållarformeln i `src/lib/kalkyl/avfuktare.ts` är märkt `// PLATSHÅLLARFORMEL` och ingen annan fil räknar kapacitet.
+- [ ] Formeln i `src/lib/kalkyl/avfuktare.ts` har varje konstant märkt med källa eller antagande, `scripts/test-kalkyl-avfuktare.mjs` är grön, och ingen annan fil räknar kapacitet.
 - [ ] Tokens: inga hexvärden i komponenter, inga färgklasser utanför `global.css`, inga radier utom `sm` och `md`, ingen skugga utom `lyft` på mobilmenyn.
 - [ ] Leverans enligt `.claude/agents/utvecklare.md`: filer skapade och ändrade, byggresultat, en rad om osäkerheter. Därefter granskning av teknisk ansvarig (kod, bygge, mått) och designansvarig (visuellt), och chefredaktören ersätter platshållartexterna innan lansering.
