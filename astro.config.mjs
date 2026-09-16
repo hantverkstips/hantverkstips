@@ -13,6 +13,10 @@ export default defineConfig({
   site: 'https://hantverkstips.se',
   trailingSlash: 'always',
   integrations: [mdx()],
+  // Två innehållsfiler med samma id (filnamn) eller två sidor på samma adress
+  // stoppar bygget i stället för att varna. Standard är 'warn', och en varning
+  // i en bygglogg med hundratals sidor läser ingen.
+  prerenderConflictBehavior: 'error',
   vite: {
     plugins: [tailwindcss()],
   },

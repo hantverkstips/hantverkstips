@@ -28,7 +28,8 @@ Astro (content collections, MDX) · React-öar för interaktiva verktyg · Tailw
 ## Kommandon
 
 ```
-npm run dev       # lokal utveckling
-npm run build     # produktionsbygge, måste vara grönt
-npm run preview   # förhandsgranska bygget
+npm run dev         # lokal utveckling
+npm run kontrollera # innehållskontroll: slugs, undermappar, länkar, inlänkar (ingår i build)
+npm run build       # produktionsbygge, måste vara grönt
+npm run preview     # förhandsgranska bygget
 ```

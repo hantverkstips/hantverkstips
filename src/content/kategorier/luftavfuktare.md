@@ -37,7 +37,7 @@ val:
   - produkt: platshallare-kondens-liten
     etikett: Bäst under 3 000 kr
     forVem: Litet förråd eller tvättstuga, inte en hel källare.
-kopguide: /fukt/luftavfuktare-kallare/
+kopguide: /fukt/avfuktare-kallare/
 kalkylator: avfuktare
 forfattare: redaktionen
 uppdaterad: 2026-09-15

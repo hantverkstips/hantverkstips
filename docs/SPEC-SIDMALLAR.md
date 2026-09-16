@@ -20,7 +20,8 @@ Det här finns redan och ska återanvändas, inte skrivas om:
 | `src/components/ui/Kopknapp.astro` | Klar i sin datalogik. Utseendet justeras mot avsnitt 2.2 |
 | `src/pages/go/[slug].ts` | Klar. Rör inte |
 | `src/content/**` | Platshållarfiler för varje samling, se avsnitt 8 |
-| `src/assets/brand/riktning-1/` | `ordmarke.svg`, `symbol.svg`, `ikoner.svg`, `illustration-kallare.svg`, `monster.svg` |
+| `src/assets/brand/riktning-1/` | `ordmarke.svg`, `symbol.svg`, `ikoner.svg`, `monster.svg` |
+| `src/assets/illustrationer/[pelare]/` | Egna skisser, en mapp per pelare. `fukt/kallare.svg` är förebilden. Se `docs/ARKITEKTUR.md`, Illustrationer |
 | `public/fonts/` | `zilla-slab-latin-600.woff2`, `atkinson-hyperlegible-latin-400.woff2`, `atkinson-hyperlegible-latin-700.woff2` |
 
 Verifierat i bygget 2026-09-15: MDX-komponenter som skickas via `components`-propen på `<Content>` fungerar utan import i innehållsfilen; `Astro.locals` som sätts i ruttens frontmatter når komponenter inne i `<Content>` vid förrendering; `render(entry).headings` ger H2-listan med `slug` och `text`.
@@ -54,7 +55,7 @@ I ordning: `charset`, `viewport`, `<title>`, `description`, `canonical` (som nu)
 2. Inlinead ikonsprite: `import ikoner from '../assets/brand/riktning-1/ikoner.svg?raw'` och `<Fragment set:html={ikoner} />`. Filen har `style="display:none"` och `<symbol id="ikon-...">`.
 3. `<header>`, 56 px hög på mobil, 64 från `lg`, 1 px `linje` under. Innehåll i `max-w-sidbredd`:
    - Ordmärket som länk till `/`: `import ordmarke from '../assets/brand/riktning-1/ordmarke-inline.svg?raw'`, `set:html` inuti `<a href="/" class="ordmarke" aria-label="Hantverkstips, till startsidan">`. Filen finns (designansvarig lade till den 2026-09-15), saknar `xmlns` med avsikt och sätter färger och typsnitt via `var(--color-blyerts)`, `var(--color-penna)`, `var(--color-tumstock)` och `var(--font-serif)`, så den följer tokens automatiskt. CSS: `.ordmarke svg { height: 1.75rem; width: auto }` på mobil, `2rem` från `lg`. Ordmärket är den enda länken till startsidan i sidhuvudet.
-   - Desktop (`hidden lg:flex`): `<nav aria-label="Huvudmeny">` med fem länkar i rad till höger: Fukt `/fukt/`, Altan `/altan/`, Verktyg `/verktyg/`, Räkna själv `/rakna/`, Så testar vi `/om/sa-testar-vi/`. 15 px, `blyerts`, understrykning vid hover. Listan är hårdkodad i layouten enligt `docs/INNEHALLSARKITEKTUR.md` avsnitt 4; den ändras när nästa pelare får sex sidor.
+   - Desktop (`hidden lg:flex`): `<nav aria-label="Huvudmeny">` med länkarna i rad till höger: de publicerade hubbarna i `PELARE`-ordning (högst `MAX_HUBBAR_I_MENY`, fem), sedan Räkna själv `/rakna/` och Så testar vi `/om/sa-testar-vi/`. 15 px, `blyerts`, understrykning vid hover. Listan byggs av `publicerade('pelare')` (ändrat 2026-09-16, tidigare hårdkodad) enligt `docs/INNEHALLSARKITEKTUR.md` avsnitt 4.
    - Mobil (`lg:hidden`): `<details class="meny">` med `<summary>` som visar `<Ikon namn="meny" />` och ordet "Meny" (text, inte bara ikon), 44 px hög. När öppen: en lista absolut positionerad under sidhuvudet, full bredd, bakgrund `papper`, `shadow-lyft`, 48 px per rad. Innehåll: de fem posterna, en `<hr>` i `linje`, rubrik "Bäst i test" i etikett-stil följd av kategorisidorna (max fyra, från `publicerade('kategorier')`), sedan "Om Hantverkstips" till `/om/`. Ingen JavaScript, `<details>` sköter öppna och stäng. `summary::marker` döljs.
 4. `<Reklamband />` om `reklam`.
 5. `<Brodsmulor lista={brodsmulor} />` om `brodsmulor` finns, inuti `main`:s bredd, ovanför slot.
@@ -479,7 +480,7 @@ Markup:
 3. Resultat i samma kort, avdelat med 1 px `linje`: etiketten "Minst", siffran i `text-siffra` med `<Markering>` bakom talet, enheten "liter per dygn" i brödtext, förutsättningarna i 14 px `blyerts-2` ("vid 20 °C och 60 % RF, {volym} m³, {fuktnivå}"), två meningar platshållare om vad det betyder, och raden "Rekommenderad typ: {kondens|sorption}". Länk "Så räknar vi" till `#sa-raknar-vi`. Vid `utanfor`: `<Faktaruta>` med texten och länk till `/fukt/avfuktare-krypgrund/` (finns inte än; länka till `/fukt/` tills den finns).
 4. H2 "Produkter som klarar det": produkter vars `specs.kapacitet_liter_dygn >= literPerDygn` och, om `typ === 'sorption'`, `specs.typ === 'sorption'`, sorterade på pris, max tre, som kompakta Produktkort med `modul="kalkylator"`. Inga träffar eller databas saknas: `<Faktaruta>` "Vi har inte testat någon avfuktare i den storleken. Se alla vi testat." med länk till `/luftavfuktare/`. Länk "Alla avfuktare vi testat" under.
 5. H2 "Så räknar vi" med `id="sa-raknar-vi"`: platshållartext som säger att formeln är preliminär och att produktexperten levererar den slutliga, med länk till `/om/sa-testar-vi/`.
-6. H2 "Läs vidare": länkar till `/luftavfuktare/`, `/fukt/luftavfuktare-kallare/`, `/fukt/sorptionsavfuktare-eller-kondensavfuktare/`.
+6. H2 "Läs vidare": länkar till `/luftavfuktare/`, `/fukt/avfuktare-kallare/`, `/fukt/sorptionsavfuktare/`.
 
 Desktop: kortet 44 rem brett, formulär till vänster och resultat till höger i två lika spalter, produkterna i rad om tre under. Strukturerad data: ingen utöver brödsmulor (kalkylatorn är ett verktyg, inte en artikel). `<title>` "Avfuktarkalkylator: hur stor avfuktare behöver du? · Hantverkstips".
 
@@ -531,14 +532,16 @@ Finns redan i `src/content/`, alla med `utkast: false` eftersom mallarna ska ren
 
 | Samling | Fil | Mall som verifieras |
 |---|---|---|
-| guider | `fukt-i-kallaren.mdx` (problemguide, tejptestet, tre orsaker, Varning, en produkt sist, Verktygskort) | Artikel, problemguide |
-| guider | `luftavfuktare-kallare.mdx` (köpguide, tre produkter) | Artikel, köpguide, "Produkterna vi nämner" |
-| guider | `bygga-altan.mdx` (projektguide med `behover`, Markering) | Artikel, projektguide, DetHarBehoverDu |
-| kunskap | `sorptionsavfuktare-eller-kondensavfuktare.mdx` | Artikel, kunskap utan reklam |
-| tester | `woods-mrd20.mdx` (granskning, `matningar` utan kolumnen vi, två alternativ) | Test |
-| jamforelser | `woods-mrd20-vs-platshallare-sorption.mdx` | Jämförelse |
-| pelare | `fukt.mdx`, `altan.mdx`, `verktyg.mdx` | PelarHub, menyn, sidfoten, BorjaHar |
-| kategorier | `luftavfuktare.md` (`val` med tre, `kopguide`, `kalkylator`) | Kategorisida, startsidans "Bäst i test just nu" |
+| guider | `fukt/fukt-i-kallaren.mdx` (problemguide, tejptestet, tre orsaker, Varning, en produkt sist, Verktygskort) | Artikel, problemguide |
+| guider | `fukt/avfuktare-kallare.mdx` (köpguide, tre produkter) | Artikel, köpguide, "Produkterna vi nämner" |
+| guider | `altan/bygga-altan.mdx` (projektguide med `behover`, Markering) | Artikel, projektguide, DetHarBehoverDu |
+| kunskap | `fukt/sorptionsavfuktare.mdx` | Artikel, kunskap utan reklam |
+| tester | `luftavfuktare/woods-mrd20.mdx` (granskning, `matningar` utan kolumnen vi, två alternativ) | Test |
+| jamforelser | `luftavfuktare/woods-mrd20-vs-platshallare-sorption.mdx` | Jämförelse |
+| pelare | `fukt.mdx`, `inomhus.md`, `verktyg.mdx` (publicerade), `altan.mdx` (utkast till februari) | PelarHub, menyn, sidfoten, BorjaHar |
+| kategorier | `luftavfuktare.md` (`val` med tre, `kopguide`, `kalkylator`), `krysslaser.md` (utkast) | Kategorisida, startsidans "Bäst i test just nu" |
+
+Undermapparna (`fukt/`, `luftavfuktare/`) är ordning, inte adress: id är filnamnet, se `docs/ARKITEKTUR.md`. Sedan 2026-09-16 finns dessutom utkasten `kunskap/inomhus/gipsplugg.mdx`, `kunskap/inomhus/gipsskruv.mdx` och `guider/inomhus/skruva-i-gipsvagg.mdx` så att inomhushuben har adresser att länka till.
 | sidor | `om.mdx`, `sa-testar-vi.mdx`, `sa-tjanar-vi-pengar.mdx`, `kontakt.mdx`, `integritet.mdx`, `startsida.mdx` | Sida, startsidan |
 | forfattare | `redaktionen.md` | Författarsida, Forfattarruta |
 
