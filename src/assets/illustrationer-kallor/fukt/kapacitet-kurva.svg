@@ -19,7 +19,7 @@
     <path d="M70,340 v6 M145,340 v6 M220,340 v6 M295,340 v6 M370,340 v6 M445,340 v6 M520,340 v6"/>
     <path d="M302,172 Q316,178 326,188"/>
   </g>
-  <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="20" fill="#625a50">
+  <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="22" fill="#625a50">
     <g text-anchor="end">
       <text x="60" y="347">0</text>
       <text x="60" y="272">5</text>
@@ -54,20 +54,20 @@
   </g>
 
   <!-- Värden och namn i Atkinson -->
-  <rect x="70" y="148" width="30" height="22" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 85 159)"/>
-  <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="20" fill="#2a2521">
+  <rect x="70" y="147" width="32" height="24" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 86 159)"/>
+  <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="22" fill="#2a2521">
     <text x="283" y="78" text-anchor="end">17</text>
     <text x="134" y="138" text-anchor="end">13</text>
     <text x="74" y="166">11</text>
     <text x="432" y="180" text-anchor="end">10</text>
     <text x="150" y="302">1,09</text>
     <text x="78" y="322">0,47</text>
-    <text x="530" y="100">16,2</text>
+    <text x="528" y="100">16,2</text>
     <text x="300" y="230">8,8</text>
-    <text x="306" y="80" fill="#ad3519">Corroventa CTR, sorption</text>
+    <text x="298" y="80" fill="#ad3519">Corroventa CTR, sorption</text>
     <text x="456" y="200">Meaco 10L</text>
-    <text x="456" y="222" fill="#625a50">kondens</text>
-    <text x="250" y="144">Wood's DSC50FM</text>
-    <text x="250" y="166" fill="#625a50">kondens</text>
+    <text x="456" y="224" fill="#625a50">kondens</text>
+    <text x="244" y="136">Wood's DSC50FM</text>
+    <text x="244" y="160" fill="#625a50">kondens</text>
   </g>
 </svg>

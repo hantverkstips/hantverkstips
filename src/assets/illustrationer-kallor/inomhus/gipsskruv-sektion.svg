@@ -52,21 +52,21 @@
   </g>
 
   <!-- Tumstock bakom nyckeltalet -->
-  <rect x="270" y="188" width="54" height="22" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 297 199)"/>
+  <rect x="268" y="187" width="64" height="24" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 300 199)"/>
 
   <!-- Snickarpenna: ringen runt de 20 mm i träregeln -->
   <path d="M196,166 C186,152 158,158 160,186 C162,214 172,232 190,226 C204,220 204,196 198,180" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round"/>
 
   <!-- Handskrift (Caveat) -->
-  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="20" fill="#2a2521">
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
     <text x="44" y="114" fill="#625a50">12,5</text>
     <text x="466" y="76" fill="#625a50">12,5 + 12,5</text>
-    <text x="274" y="182">minst</text>
-    <text x="274" y="204">20 mm</text>
-    <text x="274" y="226">i trä</text>
-    <text x="466" y="190">10 genom</text>
-    <text x="466" y="212">plåten</text>
-    <text x="392" y="262" fill="#625a50">0,9 mm plåt</text>
+    <text x="274" y="180">minst</text>
+    <text x="274" y="206">20 mm</text>
+    <text x="274" y="232">i trä</text>
+    <text x="506" y="190">10 genom</text>
+    <text x="506" y="216">plåten</text>
+    <text x="388" y="262" fill="#625a50">0,9 mm plåt</text>
     <text x="128" y="354">träregel</text>
     <text x="392" y="354">stålregel</text>
   </g>

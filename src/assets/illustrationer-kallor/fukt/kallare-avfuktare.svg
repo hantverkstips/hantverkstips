@@ -58,11 +58,11 @@
 
   <!-- Papperslappar bakom anteckningar i skrafferingen -->
   <g fill="#f5efe3">
-    <rect x="48" y="204" width="106" height="52" transform="rotate(-1 101 230)"/>
-    <rect x="476" y="216" width="118" height="52" transform="rotate(1 535 242)"/>
+    <rect x="42" y="206" width="116" height="52" transform="rotate(-1 100 232)"/>
+    <rect x="474" y="218" width="122" height="54" transform="rotate(1 535 245)"/>
   </g>
   <!-- Tumstock bakom nyckeltalet -->
-  <rect x="294" y="182" width="48" height="24" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 318 194)"/>
+  <rect x="294" y="181" width="52" height="24" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 320 193)"/>
 
   <!-- Snickarpenna: markfukten genom väggen -->
   <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -76,16 +76,16 @@
   </g>
 
   <!-- Handskrift (Caveat) -->
-  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="20" fill="#2a2521">
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
     <text x="298" y="200">75 % i augusti</text>
     <text x="180" y="212" fill="#625a50">2,2 m i tak</text>
     <text x="278" y="356" fill="#625a50">40 kvm</text>
     <text x="184" y="246">tvättmaskin</text>
     <text x="348" y="296">avfuktare</text>
     <text x="346" y="238">sommarluft</text>
-    <text x="54" y="226" fill="#ad3519">markfukt</text>
-    <text x="54" y="248" fill="#ad3519">genom väggen</text>
-    <text x="480" y="238">fönstret</text>
-    <text x="480" y="260">stängt i juli</text>
+    <text x="46" y="228" font-size="22" fill="#ad3519">markfukt</text>
+    <text x="46" y="252" font-size="22" fill="#ad3519">genom väggen</text>
+    <text x="480" y="240">fönstret</text>
+    <text x="480" y="266">stängt i juli</text>
   </g>
 </svg>

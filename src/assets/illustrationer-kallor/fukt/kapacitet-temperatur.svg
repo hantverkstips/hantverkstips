@@ -17,14 +17,14 @@
     <path d="M74,300 H562"/>
     <path d="M72,300 h6 M72,246.7 h6 M72,193.3 h6 M72,140 h6 M72,86.7 h6"/>
   </g>
-  <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="20" fill="#625a50" text-anchor="end">
+  <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="22" fill="#625a50" text-anchor="end">
     <text x="66" y="307">0</text>
     <text x="66" y="254">10</text>
     <text x="66" y="200">20</text>
     <text x="66" y="147">30</text>
     <text x="66" y="94">40</text>
   </g>
-  <text x="84" y="38" font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="20" fill="#625a50">liter per dygn, tillverkaren uppger</text>
+  <text x="84" y="38" font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="22" fill="#625a50">liter per dygn, tillverkaren uppger</text>
 
   <!-- Kondensmaskinerna i blyerts -->
   <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -43,7 +43,7 @@
   </g>
 
   <!-- Värden ovanför staplarna -->
-  <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="20" fill="#2a2521" text-anchor="middle">
+  <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="22" fill="#2a2521" text-anchor="middle">
     <text x="114" y="206">16,2</text>
     <text x="158" y="245">8,8</text>
     <text x="226" y="73">41</text>
@@ -55,7 +55,7 @@
     <text x="538" y="233">11</text>
   </g>
   <!-- Temperatur under varje stapel, maskin och typ under gruppen -->
-  <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="20" fill="#625a50" text-anchor="middle">
+  <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="22" fill="#625a50" text-anchor="middle">
     <text x="114" y="326">35°</text>
     <text x="158" y="326">20°</text>
     <text x="226" y="326">30°</text>

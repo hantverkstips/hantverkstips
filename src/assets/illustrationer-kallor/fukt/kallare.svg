@@ -48,12 +48,13 @@
 
   <!-- Papperslappar bakom anteckningarna så att skrafferingen inte stör -->
   <g fill="#f5efe3">
-    <rect x="52" y="196" width="140" height="50" transform="rotate(-1 122 221)"/>
-    <rect x="440" y="196" width="150" height="76" transform="rotate(1 515 234)"/>
-    <rect x="236" y="216" width="112" height="24"/>
+    <rect x="44" y="194" width="140" height="48" transform="rotate(-1 114 218)"/>
+    <rect x="440" y="196" width="150" height="82" transform="rotate(1 515 237)"/>
+    <rect x="450" y="281" width="106" height="26"/>
+    <rect x="268" y="208" width="148" height="26"/>
   </g>
   <!-- Överstrykning med tumstocksgul bakom nyckeltalet -->
-  <rect x="236" y="217" width="110" height="22" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 291 228)"/>
+  <rect x="270" y="210" width="68" height="22" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 304 221)"/>
 
   <!-- Snickarpenna: fukten -->
   <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -67,19 +68,19 @@
     <!-- pöl på golvet -->
     <path d="M206,306 Q224,300 244,305 Q262,309 280,304"/>
     <!-- ring runt det våta hörnet -->
-    <path d="M176,214 C160,240 170,318 214,326 C270,336 318,318 300,282 C288,256 256,206 208,206 C192,206 182,208 178,216"/>
+    <path d="M190,214 C174,240 182,318 214,326 C270,336 318,318 300,282 C288,256 262,206 214,206 C200,206 192,208 190,216"/>
   </g>
 
   <!-- Handskrivna anteckningar (Caveat) -->
-  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" fill="#2a2521">
-    <text x="48" y="32" font-size="18" fill="#625a50">grannens källare, ingen dränering sedan 1971</text>
-    <text x="240" y="234" font-size="19">78 % RF i augusti</text>
-    <text x="58" y="216" font-size="17" fill="#ad3519">markfukt trycker</text>
-    <text x="58" y="238" font-size="17" fill="#ad3519">in genom väggen</text>
-    <text x="462" y="216" font-size="17">våt vägg,</text>
-    <text x="462" y="238" font-size="17">kallt golv,</text>
-    <text x="462" y="260" font-size="17">lukt i trappan</text>
-    <text x="456" y="300" font-size="16" fill="#625a50">2,2 m i tak</text>
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="48" y="32" fill="#625a50">grannens källare, ingen dränering sedan 1971</text>
+    <text x="274" y="228" font-size="22">78 % RF i augusti</text>
+    <text x="46" y="212" font-size="22" fill="#ad3519">markfukt trycker</text>
+    <text x="46" y="236" font-size="22" fill="#ad3519">in genom väggen</text>
+    <text x="462" y="216">våt vägg,</text>
+    <text x="462" y="242">kallt golv,</text>
+    <text x="462" y="268">lukt i trappan</text>
+    <text x="456" y="300" fill="#625a50">2,2 m i tak</text>
   </g>
   <!-- handritad måttbygel -->
   <path d="M446,196 Q442,250 446,306 M440,197 h10 M440,305 h10" fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round"/>

@@ -34,11 +34,11 @@
   <path d="M478,136 C448,190 458,298 528,298 C580,298 576,200 554,148" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round"/>
 
   <!-- Handskrift (Caveat) -->
-  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="20" fill="#2a2521">
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
     <text x="60" y="44">fritt mitt i rummet</text>
     <text x="320" y="44">instängd bakom hyllan</text>
-    <text x="436" y="140" fill="#625a50">hylla</text>
+    <text x="434" y="140" fill="#625a50">hylla</text>
     <text x="332" y="96" fill="#ad3519">här står den</text>
-    <text x="332" y="120" fill="#ad3519">hos de flesta</text>
+    <text x="332" y="122" fill="#ad3519">hos de flesta</text>
   </g>
 </svg>

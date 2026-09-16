@@ -19,8 +19,8 @@
     <path d="M58,110 H112 M104,103 L113,110 L104,117"/>
     <path d="M140,116 A34,34 0 1 0 140.5,116"/>
     <path d="M168,116 V74 M161,82 L168,73 L175,82"/>
-    <path d="M124,220 l8,-8 l8,8 l8,-8 l8,8 l8,-8 l8,8 l8,-8 l8,8"/>
-    <path d="M156,208 V190 M149,197 L156,188 L163,197"/>
+    <path d="M138,220 l8,-8 l8,8 l8,-8 l8,8 l8,-8 l8,8 l8,-8 l8,8"/>
+    <path d="M170,208 V190 M163,197 L170,188 L177,197"/>
     <!-- kondensavfuktaren -->
     <path d="M348,60 Q457,58 566,60 Q565,155 564,252 Q457,251 348,250 Q351,155 350,58"/>
     <path d="M356,110 H400 M392,103 L401,110 L392,117"/>
@@ -43,21 +43,21 @@
   <path d="M174,156 Q210,162 226,152 H282 M274,145 L283,152 L274,159" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
 
   <!-- Tumstock bakom nyckeltalet -->
-  <rect x="380" y="300" width="50" height="24" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 405 312)"/>
+  <rect x="378" y="299" width="58" height="25" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 407 312)"/>
 
   <!-- Handskrift (Caveat) -->
-  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="20" fill="#2a2521">
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
     <text x="56" y="44">sorption</text>
     <text x="350" y="44">kondens</text>
-    <text x="58" y="92">fuktig luft in</text>
-    <text x="176" y="88">torr luft</text>
+    <text x="58" y="80" font-size="22">fuktig luft in</text>
+    <text x="174" y="88" font-size="22">torr luft</text>
     <text x="180" y="144">rotor</text>
     <text x="58" y="224">värmare</text>
-    <text x="268" y="180" fill="#ad3519">våtluften</text>
-    <text x="268" y="202" fill="#ad3519">ut genom</text>
-    <text x="268" y="224" fill="#ad3519">väggen</text>
-    <text x="356" y="92">fuktig luft in</text>
-    <text x="478" y="88">torr luft</text>
+    <text x="268" y="180" font-size="22" fill="#ad3519">våtluften</text>
+    <text x="268" y="204" font-size="22" fill="#ad3519">ut genom</text>
+    <text x="268" y="228" font-size="22" fill="#ad3519">väggen</text>
+    <text x="356" y="92" font-size="22">fuktig luft in</text>
+    <text x="478" y="88" font-size="22">torr luft</text>
     <text x="372" y="150">kylslinga</text>
     <text x="448" y="228">tank</text>
     <text x="88" y="300">ner till -20</text>
