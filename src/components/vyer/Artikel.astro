@@ -32,6 +32,7 @@ import Illustration from '../ui/Illustration.astro';
 import Innehallsforteckning from '../ui/Innehallsforteckning.astro';
 import Jamforelsetabell from '../ui/Jamforelsetabell.astro';
 import Kopknapp from '../ui/Kopknapp.astro';
+import Kortsvarstext from '../ui/Kortsvarstext.astro';
 import Markering from '../ui/Markering.astro';
 import Pennstreck from '../ui/Pennstreck.astro';
 import Produktkort from '../ui/Produktkort.astro';
@@ -122,13 +123,15 @@ const strukturdata = artikelData({
 ---
 
 <Bas
-  title={`${d.title} · Hantverkstips`}
+  title={`${d.seoTitle ?? d.title} · Hantverkstips`}
   description={d.description}
   reklam={reklam}
   butikNamn={butik?.namn}
   brodsmulor={brodsmulor}
   brodsmulorIVy={true}
   bred={true}
+  ogBild={bild?.src}
+  ogTyp="article"
 >
   <StrukturData slot="head" data={strukturdata} />
 
@@ -154,7 +157,7 @@ const strukturdata = artikelData({
       {
         d.kortSvar && (
           <Faktaruta variant="kortsvar">
-            <p class="m-0 leading-6">{d.kortSvar}</p>
+            <Kortsvarstext text={d.kortSvar} plats={artikelUrl(entry)} />
           </Faktaruta>
         )
       }

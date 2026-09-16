@@ -35,6 +35,14 @@ interface Props {
   /** main får sidbredd i stället för läsbredd. Kategori, jämförelse, kalkylator. */
   bred?: boolean;
   noindex?: boolean;
+  /**
+   * Delningsbild (og:image). Sökväg i bygget eller absolut adress. Utelämnad,
+   * eller inlinead som data-URI av Vite, används sajtens standardbild.
+   * Facebook, LinkedIn och Slack hämtar ingen SVG, därför en PNG.
+   */
+  ogBild?: string;
+  /** article på artiklar och tester, website på hubbar, kategorier och verktyg. */
+  ogTyp?: 'website' | 'article';
 }
 
 const {
@@ -46,9 +54,19 @@ const {
   brodsmulorIVy = false,
   bred = false,
   noindex = false,
+  ogBild,
+  ogTyp = 'website',
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
+
+/**
+ * En liten SVG inlineas av Vite som data-URI, och en data-URI duger inte som
+ * delningsbild. Då, och när sidan saknar egen bild, används den sajtgemensamma
+ * bilden i 1200 × 630 (scripts/generera-delningsbilder.mjs).
+ */
+const OG_STANDARD = '/og-standard.png';
+const ogBildUrl = new URL(ogBild && !ogBild.startsWith('data:') ? ogBild : OG_STANDARD, Astro.site);
 
 const hubbar = await publicerade('pelare');
 const kategorier = await publicerade('kategorier');
@@ -100,6 +118,17 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex" />}
+
+    {/* Delning i Facebook, LinkedIn, Slack och Messenger. Samma text som title
+        och description: två sanningar om samma sida håller inte i längden. */}
+    <meta property="og:type" content={ogTyp} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogBildUrl} />
+    <meta property="og:site_name" content="Hantverkstips" />
+    <meta property="og:locale" content="sv_SE" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/zilla-slab-latin-600.woff2" />
     <link

@@ -2,7 +2,6 @@
  * Byggare för JSON-LD. Returnerar vanliga objekt som <StrukturData> renderar.
  * Inga betyg någonstans: vi har inga stjärnor. Se docs/SPEC-SIDMALLAR.md avsnitt 3.4 och 6.
  */
-import symbolUrl from '../assets/brand/riktning-1/symbol.svg?url';
 import type { Brodsmula } from './innehall';
 import {
   arSlut,
@@ -14,11 +13,27 @@ import {
   type Produkt,
 } from './produkter';
 
-export const SAJT = 'https://hantverkstips.se';
+/**
+ * Kanonisk värd. Sajten serveras på www och hantverkstips.se svarar 308 dit, så
+ * canonical, JSON-LD och delningslänkar måste peka på adressen som svarar 200.
+ * Måste stämma med `site` i astro.config.mjs. Se docs/ARKITEKTUR.md.
+ */
+export const SAJT = 'https://www.hantverkstips.se';
 
+/**
+ * En data-URI är redan fullständig. Utan kontrollen blev publisher.logo
+ * "https://www.hantverkstips.sedata:image/svg+xml,..." när Vite inlinade den
+ * lilla symbolen. Därför är logotypen numera en riktig fil under public/.
+ */
 function absolut(sokvag: string): string {
-  return sokvag.startsWith('http') ? sokvag : `${SAJT}${sokvag}`;
+  return sokvag.startsWith('http') || sokvag.startsWith('data:') ? sokvag : `${SAJT}${sokvag}`;
 }
+
+/**
+ * publisher.logo. Google vill ha en rasterbild på minst 112 × 112 px, och en
+ * inlinead SVG duger inte. Filen genereras av scripts/generera-delningsbilder.mjs.
+ */
+const LOGGA = '/brand/logga.png';
 
 export function organisation(): object {
   return {
@@ -26,7 +41,7 @@ export function organisation(): object {
     '@id': `${SAJT}/#organisation`,
     name: 'Hantverkstips',
     url: `${SAJT}/`,
-    logo: absolut(symbolUrl),
+    logo: absolut(LOGGA),
     sameAs: [],
   };
 }

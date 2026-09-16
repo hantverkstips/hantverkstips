@@ -138,7 +138,9 @@ Rotnamnrymden delas av pelare och kategorier. Pelarslugs (`src/lib/pelare.ts`: `
 
 **Innehållsfiler och undermappar** (beslut 2026-09-16, för att samlingarna ska bära hundratals filer). Guider och kunskap ligger i en undermapp per pelare, tester och jämförelser i en undermapp per kategori: `src/content/guider/fukt/avfuktare-kallare.mdx`, `src/content/tester/luftavfuktare/woods-mrd20.mdx`. Mappen är ordning för människor och verktyg; **id och adress kommer alltid från filnamnet**, aldrig från sökvägen, så en fil kan flyttas mellan mappar utan att URL:en ändras. Loadern i `src/content.config.ts` (`artikelLoader`) sätter id till filnamnet utan ändelse och stoppar bygget om två filer i samma samling har samma namn, oavsett mapp, och `prerenderConflictBehavior: 'error'` i `astro.config.mjs` gör detsamma på Astros nivå. Filnamnet får bara innehålla `a-z`, `0-9` och bindestreck, aldrig `index`. Mappen måste stämma med fältet: `guider/fukt/` kräver `pelare: fukt`, `tester/luftavfuktare/` kräver `kategori: luftavfuktare`; kontrollskriptet stoppar annars. Pelare, kategorier, sidor och författare är platta, en fil i en undermapp där läses inte av bygget och ger fel i kontrollen. Första artikeln i en pelare kräver att hubfilen `src/content/pelare/[pelare].md` finns, `utkast: true` räcker. Relativa sökvägar i frontmatter (`bild`) utgår från filens plats, alltså tre nivåer upp till `src/assets/`.
 
-**Byggkontroll.** `npm run build` kör `scripts/kontrollera-innehall.ts` (ren Node med typborttagning, Node 22.18 eller senare, inget Astro) före `astro build`. Den stoppar bygget vid dubbla slugs, fil i fel undermapp, pelare som saknas i registret eller saknar hubfil, kategori, författare eller kalkylator som inte finns, intern länk i frontmatter eller brödtext som leder ingenstans eller saknar avslutande snedstreck, länk direkt till `/go/`, och `bild` som pekar på en fil som saknas. Den varnar, utan att stoppa, när en publicerad sida länkar till ett utkast och när en publicerad artikel, test eller jämförelse saknar inlänk från en annan innehållsfil (sidfot, meny och mallarnas automatiska listor räknas inte; hubbar och kategorisidor har sina länkar därifrån och kontrolleras inte). Varningen blir stopp när sajten har fler sidor. Kör den ensam med `npm run kontrollera`.
+**Kanonisk värd.** `https://www.hantverkstips.se`. Utan www svarar 308 dit, och canonical ska peka på adressen som svarar 200. Värdet står på två ställen som måste stämma överens: `site` i `astro.config.mjs` och `SAJT` i `src/lib/strukturdata.ts`. Byts primär domän i Vercel byts båda samtidigt. Beslutat 2026-09-16 efter SEO-granskningen.
+
+**Byggkontroll.** `npm run build` kör `scripts/kontrollera-innehall.ts` (ren Node med typborttagning, Node 22.18 eller senare, inget Astro) före `astro build`. Den stoppar bygget vid dubbla slugs, fil i fel undermapp, pelare som saknas i registret, saknar hubfil eller har en hubfil som inte är `.mdx`, kategori, författare eller kalkylator som inte finns, intern länk i frontmatter eller brödtext som leder ingenstans, saknar avslutande snedstreck eller pekar på ett utkast (länken blir 404 i bygget), länk direkt till `/go/`, och `bild` som pekar på en fil som saknas. Den varnar, utan att stoppa, när en publicerad artikel, test eller jämförelse saknar inlänk från en annan innehållsfil (sidfot, meny och mallarnas automatiska listor räknas inte; hubbar och kategorisidor har sina länkar därifrån och kontrolleras inte). Varningen blir stopp när sajten har fler sidor. Kör den ensam med `npm run kontrollera`.
 
 **Affiliatelänkar.** Alltid `/go/[produkt-slug]/` med query-parametrar från `<Kopknapp>`. Länkar får `rel="sponsored nofollow"`. Skriv aldrig `<a>` direkt till en butik, och bygg aldrig `/go/`-länkar för hand, använd `goLank()` i `src/lib/affiliate.ts`.
 
@@ -180,6 +182,8 @@ Fastställs i `src/content.config.ts`. Datum skrivs `2026-09-15`.
 
 ```yaml
 title:            # H1, sidans löfte
+seoTitle:         # valfritt. <title> när sökfrasen inte tål samma formulering som H1.
+                  # Utelämnad används title. Sätts av SEO-strategen, inte av skribenten.
 description:      # meta description, max 160 tecken
 publicerad:       # datum
 uppdaterad:       # datum, valfritt
@@ -214,12 +218,14 @@ alternativ:       # lista med { produkt, varfor }
 
 **Jämförelser:** som guider utan `pelare` och `typ`, med `niva`, `kategori` (krävs, styr undermappen) och `produkter` (minst två).
 
-**Pelare** (`src/content/pelare/[pelare].md`, slug måste finnas i `src/lib/pelare.ts`):
+**Pelare** (`src/content/pelare/[pelare].mdx`, slug måste finnas i `src/lib/pelare.ts`). Filändelsen måste vara `.mdx`: Astro tillämpar mallens `components` bara på MDX, och en hub i `.md` får H2 utan pennstreck. `npm run kontrollera` stoppar bygget på `.md`.
 
 ```yaml
 title, description, uppdaterad, utkast
+seoTitle:         # valfritt, som ovan
 ingress:          # en mening för "Börja här" på startsidan
-viktiga:          # upp till tre { titel, href } som startsidan länkar till
+viktiga:          # upp till tre { titel, href } som startsidan länkar till.
+                  # Bara publicerade adresser: en länk till ett utkast är byggfel
 ```
 
 **Kategorier** (`src/content/kategorier/[kategori].md`):
@@ -227,6 +233,7 @@ viktiga:          # upp till tre { titel, href } som startsidan länkar till
 ```yaml
 namn:             # "Luftavfuktare"
 title:            # H1
+seoTitle:         # valfritt, som ovan
 description:      # meta
 ingress:          # under H1
 pelare:           # lista med pelarslugs, minst en
@@ -235,10 +242,12 @@ specs:            # lista med { nyckel, etikett, enhet, bast: hogst | lagst }, i
 val:              # upp till tre { produkt, etikett, forVem } för "Våra val". Första är "Vårt val"
 kopguide:         # sökväg till köpguiden
 kalkylator:       # slug i src/lib/kalkyl/register.ts
+noindex:          # valfritt, standard false. <meta name="robots" content="noindex"> utan att
+                  # avpublicera sidan. Används medan kategorin bara har platshållartext
 forfattare, uppdaterad, utkast
 ```
 
-**Sidor** (`src/content/sidor/`): `title`, `description`, `uppdaterad`, `strukturdata` (`Organization` | `Article` | `ingen`), `utkast`. Filen `startsida.mdx` har dessutom `justNu: { samling, id }` och renderas av `index.astro`, aldrig under `/om/`.
+**Sidor** (`src/content/sidor/`): `title`, `seoTitle` (valfritt), `description`, `uppdaterad`, `strukturdata` (`Organization` | `Article` | `ingen`), `utkast`. Filen `startsida.mdx` har dessutom `justNu: { samling, id }` och renderas av `index.astro`, aldrig under `/om/`.
 
 **Författare** (`src/content/forfattare/`): `namn`, `yrke`, `sedan` (årtal), `bild` (kvadratisk), `presentation` (en rad, fakta), `utkast`. Brödtexten är den längre presentationen.
 

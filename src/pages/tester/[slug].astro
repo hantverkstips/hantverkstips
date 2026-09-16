@@ -17,10 +17,10 @@ import {
 } from '../../lib/innehall';
 import { nivaEtikett } from '../../lib/niva';
 import {
-  arSlut,
   billigasteErbjudande,
   hamtaButik,
   hamtaProdukt,
+  lagerlage,
   lokalBild,
   produktNamn,
   varnaSaknadProdukt,
@@ -107,8 +107,9 @@ const strukturdata = produkt
 ---
 
 <Bas
-  title={`${d.title} · Hantverkstips`}
+  title={`${d.seoTitle ?? d.title} · Hantverkstips`}
   description={d.description}
+  ogTyp="article"
   reklam={true}
   butikNamn={butik?.namn}
   brodsmulor={brodsmulor}
@@ -226,7 +227,7 @@ const strukturdata = produkt
                       pris={erbjudande?.pris ?? null}
                       prisDatum={erbjudande?.uppdaterad ?? null}
                       butikNamn={erbjudande?.butikNamn}
-                      slut={arSlut(erbjudande)}
+                      lager={lagerlage(erbjudande)}
                     />
                   </div>
                 )}
@@ -344,7 +345,7 @@ const strukturdata = produkt
               pris={erbjudande?.pris ?? null}
               prisDatum={erbjudande?.uppdaterad ?? null}
               butikNamn={erbjudande?.butikNamn}
-              slut={arSlut(erbjudande)}
+              lager={lagerlage(erbjudande)}
             />
           </div>
         )

@@ -41,7 +41,7 @@ const strukturdata =
       : null;
 ---
 
-<Bas title={`${d.title} · Hantverkstips`} description={d.description} brodsmulor={brodsmulor}>
+<Bas title={`${d.seoTitle ?? d.title} · Hantverkstips`} description={d.description} brodsmulor={brodsmulor}>
   {strukturdata && <StrukturData slot="head" data={strukturdata} />}
 
   <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">{d.title}</h1>

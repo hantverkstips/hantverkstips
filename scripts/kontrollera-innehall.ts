@@ -4,6 +4,7 @@
  *   npm run kontrollera            (ingår i npm run build)
  *
  * Stoppar bygget (exit 1) vid:
+ *   - publicerad sida som länkar till ett utkast: länken blir 404 för läsaren
  *   - dubbla slugs: två filer med samma filnamn i guider + kunskap, i tester
  *     eller i jämförelser (filnamnet är adressen, mappen är bara ordning)
  *   - fil i fel undermapp: guider/kunskap ska ligga i [pelare]/, tester och
@@ -16,7 +17,6 @@
  *   - bild i frontmatter som pekar på en fil som saknas
  *
  * Varnar (bygget går vidare) vid:
- *   - publicerad sida som länkar till ett utkast (länken är död i bygget)
  *   - publicerad artikel, test eller jämförelse utan inlänk från en annan
  *     innehållsfil. Sidfoten, menyn och mallarnas automatiska listor räknas
  *     inte; huben och kategorisidan får sina länkar därifrån och kontrolleras
@@ -209,8 +209,15 @@ for (const f of filer) {
       felet(f.sokvag, `pelaren ${p} saknar hubfil. Skapa src/content/pelare/${p}.md (utkast: true räcker) innan första artikeln`);
     }
   }
-  if (f.samling === 'pelare' && !(PELARE_SLUGS as readonly string[]).includes(f.id)) {
-    felet(f.sokvag, `okänd pelare "${f.id}", lägg till i src/lib/pelare.ts`);
+  if (f.samling === 'pelare') {
+    if (!(PELARE_SLUGS as readonly string[]).includes(f.id)) {
+      felet(f.sokvag, `okänd pelare "${f.id}", lägg till i src/lib/pelare.ts`);
+    }
+    // Astro tillämpar components={{ h2: Pennstreck, ... }} bara på MDX. En
+    // hubfil i .md får råa h2 utan pennstreck och ser ut som ett utkast.
+    if (!f.sokvag.endsWith('.mdx')) {
+      felet(f.sokvag, 'pelarhubbar måste vara .mdx. I .md renderas H2 utan pennstreck och komponenterna i mallen gäller inte');
+    }
   }
 
   const kategori = strang(f.data.kategori);
@@ -294,7 +301,12 @@ for (const f of filer) {
       continue;
     }
     if (mal) {
-      if (mal.utkast && !f.utkast) varna(f.sokvag, `länkar till ${url} som är utkast. Länken är död tills målet publiceras`);
+      if (mal.utkast && !f.utkast) {
+        // Fel, inte varning: en publicerad sida som länkar till ett utkast ger
+        // 404 för läsaren och en död länk för Google. Hubbarna och startsidan
+        // hade tre sådana. Ta bort länken tills målet publiceras.
+        felet(f.sokvag, `länkar till ${url} som är utkast. Länken blir 404 i bygget, ta bort den tills målet publiceras`);
+      }
       if (mal.sokvag !== f.sokvag) {
         const s = inlankar.get(mal.sokvag) ?? new Set<string>();
         s.add(f.sokvag);
