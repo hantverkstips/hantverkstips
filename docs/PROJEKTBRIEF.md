@@ -20,7 +20,7 @@ Vår vallgrav är tre saker:
 
 ## Målgrupp
 
-Primärt tre grupper, i prioriteringsordning:
+Tre grupper som väger lika tungt. Sajten profilerar sig lika mycket mot fackmän och professionella hantverkare som mot hemmafixaren, och innehållet varvar expertundersökningar och komplexa ämnen med enkla saker (hur man hänger en tavla i gipsvägg, vilken skruv till vad). Beslut 2026-09-16.
 
 - **Husägaren med ett problem.** Fukt i källaren, ska bygga altan, renoverar badrum. Har budget, saknar kunskap, vill inte köpa fel. Söker "bästa luftavfuktare källare", "vilken kapsåg ska jag köpa".
 - **Den seriösa hemmafixaren.** Har verktyg, vill uppgradera till proffsklass. Jämför märken, läser specifikationer, vill veta skillnaden mellan modeller. Söker "Makita vs DeWalt kapsåg", "lasermätare test".
