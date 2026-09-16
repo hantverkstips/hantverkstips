@@ -239,9 +239,11 @@ Bara på `/guider/`. Inga knappar, ingen `<select>`, ingen JavaScript. `Pagineri
 
 `interface Props { kalkylator: string; iRutnat?: boolean }`. `iRutnat` tar bort kortets egen luft ovanför och under, så att det kan ligga i ett rutnät med samma ram och radie som artikelkorten. Slår upp i `KALKYLATORER` (avsnitt 3.3); okänd slug ger byggfel (`throw new Error`). Ett kort med ram: `<Ikon namn="kalkylator" />` och etiketten "Räkna själv" på samma rad i etikett-stil, rubriken (H3) som länk till `/rakna/[slug]/`, en rad (`rad`), länktexten "Till kalkylatorn" som en textlänk under. Inget diagram i fas 1. En sida får aldrig ha två verktygskort; det är en granskningsregel, inte något komponenten kontrollerar.
 
-### 2.10 `BorjaHar.astro`
+### 2.10 `Amnesrad.astro`
 
-Inga props. Data: `publicerade('pelare')` sorterad i `PELARE`-ordning. H2 "Börja här" via Pennstreck med länken "Alla ämnen" till `/amnen/` på samma rad, sedan en rad per hub: `<Ikon namn={pelare.ikon} />` och H3 med `PELARE.kort` som länk till `/[slug]/`, `ingress` som ett stycke, `viktiga` som länkar på var sin rad. Raderna ligger i ett rutnät med två spalter från `lg`, fyllt i läsordning, och skiljs med 1 px `linje`. Inga ikonkolumner, inga kort.
+Inga props. Bara på startsidan. Data: `PELARE`, `hubPublicerad(slug)` per pelare, samt `publicerade('guider')` och `publicerade('kunskap')` för antalet sidor. Ett `<nav aria-label="Ämnen">` med en `<ul>` i två spalter, fyra från `lg`: ett kort per pelare, alla åtta, i `PELARE`-ordning. Kortet är vänsterställt med `<Ikon namn={pelare.ikon} storlek={40} />` överst, en etikett i versaler, `PELARE.kort` i kortrubrik (Zilla Slab 600) och `PELARE.rad` i 14 px `blyerts-2`.
+
+Publicerad hub: kortet får klassen `artikelkort`, namnet är en `<a class="kortlank">` till `/[slug]/`, alltså samma ram, hover, fokus och klickyta som Artikelkort, och etiketten är antalet publicerade guider och kunskapsartiklar i pelaren ("4 sidor", "1 sida", ingen etikett vid noll). Utan hub: samma kort i `papper-2` med ikon och namn i `blyerts-2`, ingen länk, etiketten "Kommer". Under rutnätet länken "Alla ämnen" till `/amnen/`, högerställd. Ingen H2, ingen Pennstreck: raden är navigering, inte ett textblock. Utseendet står i `docs/DESIGN.md` avsnitt 5.1 och 6.
 
 ### 2.11 `DetHarBehoverDu.astro`
 
@@ -395,19 +397,19 @@ Alla rutter utom kalkylatorn och `/go/` är statiska. Varje rutt: sätter `Astro
 
 ### 4.1 `src/pages/index.astro`
 
-Data: `getEntry('sidor', 'startsida')` (H1 = `title`, stycket = `<Content />`), `sasongensKalkylator(new Date().getMonth() + 1)`, `publicerade('pelare')`, "just nu" via `getEntry(justNu.samling, justNu.id)`, `publicerade('kategorier')` med `hamtaProdukt(val[0].produkt)` per kategori, de sex senaste av guider + kunskap + tester + jamforelser sorterade på `publicerad` fallande, `KALKYLATORER`.
+Data: `getEntry('sidor', 'startsida')` (H1 = `title`, stycket = `<Content />`), `PELARE` med `hubPublicerad` per pelare (ämnesraden), `sasongensKalkylator(new Date().getMonth() + 1)`, `publicerade('pelare')`, "just nu" via `getEntry(justNu.samling, justNu.id)`, `publicerade('kategorier')` med `hamtaProdukt(val[0].produkt)` per kategori, de sex senaste av guider + kunskap + tester + jamforelser sorterade på `publicerad` fallande, `KALKYLATORER`.
 
 Block i ordning, enligt `docs/INNEHALLSARKITEKTUR.md` avsnitt 5 och `docs/DESIGN.md` avsnitt 5.1 (omskrivna 2026-09-16):
 
 1. Öppning: H1, vänsterställd, läsbredd. Stycket från `startsida.mdx` i ingress-storlek; länkarna ligger i texten. Ingen högerspalt.
-2. Säsongens ämne: ett rutnät i 12 kolumner. Illustrationen (7/12) med bildtext till vänster, och till höger (5/12) etiketten "Säsongens ämne · {månad}" från `manadNamn(new Date())`, `sasongRubrik` som H2 via Pennstreck, `sasongText` som stycke, `<Verktygskort kalkylator={sasong.slug} iRutnat />` och "Läs först" med `viktiga` från hubben för den pelare `sasong.kategori` hör till (`pelareForKategori`, fallback `fukt`). Saknas `sasongRubrik` och `sasongText` renderas resten ändå.
-3. Guider och tester: H2 via Pennstreck med länken "Alla guider och tester" på samma rad, sedan `<Artikelrutnat storForsta kompaktPaMobil />` med `justNu` först och de fyra senaste ur `allaKort()` efter, `justNu` bortfiltrerad på `href`. Är `justNu.illustration.src` samma fil som säsongsbilden nollställs bilden så att kortet visar placeholder. Utan `justNu` i frontmatter visas de fem senaste.
-4. `<BorjaHar />`.
+2. `<Amnesrad />` i sidbredd, direkt under öppningen (avsnitt 2.10). Ersatte "Börja här" 2026-09-16.
+3. Säsongens ämne: ett rutnät i 12 kolumner. Illustrationen (7/12) med bildtext till vänster, och till höger (5/12) etiketten "Säsongens ämne · {månad}" från `manadNamn(new Date())`, `sasongRubrik` som H2 via Pennstreck, `sasongText` som stycke, `<Verktygskort kalkylator={sasong.slug} iRutnat />` och "Läs först" med `viktiga` från hubben för den pelare `sasong.kategori` hör till (`pelareForKategori`, fallback `fukt`). Saknas `sasongRubrik` och `sasongText` renderas resten ändå.
+4. Guider och tester: H2 via Pennstreck med länken "Alla guider och tester" på samma rad, sedan `<Artikelrutnat storForsta kompaktPaMobil />` med `justNu` först och de fyra senaste ur `allaKort()` efter, `justNu` bortfiltrerad på `href`. Är `justNu.illustration.src` samma fil som säsongsbilden nollställs bilden så att kortet visar placeholder. Utan `justNu` i frontmatter visas de fem senaste.
 5. Bäst i test just nu: H2. En rad per kategori ur `kategoriVal()`: kategorinamn (H3 som länk till `/[kategori]/`), "Vårt val" i etikett-stil med produktnamnet, pris via `formateraPris` och antalet granskade, länken "Alla vi granskat". Två spalter av rader från `lg`. Ingen köpknapp, ingen bild. Kategori vars produkt saknas i databasen visar raden utan pris. Inga kategorier: blocket utgår.
 6. Räkna själv: H2 och verktygskort i rutnät, bara när `KALKYLATORER.length >= 2`.
 7. Så jobbar vi: H2 och två meningar med länkar till "Så testar vi" och "Så tjänar vi pengar", i läsbredd.
 
-`<title>` byggs av `title` i `startsida.mdx`: "Hantverkstips, " plus rubriken med gemen första bokstav och utan avslutande punkt, så att flik och H1 säger samma sak när chefredaktören byter H1. `seoTitle` i frontmatter vinner över det.
+`<title>` är "Hantverkstips, kunskap om huset från källaren till taket", samma mening som H1 utan H1:ans komma. Den står utskriven i rutten och byts när chefredaktören byter H1; `seoTitle` i frontmatter vinner över den.
 
 `reklam={false}`. Ingen `sidtyp`. Strukturerad data: `organisation()` i `<slot name="head">`. `bred={true}`.
 
@@ -610,7 +612,7 @@ Finns redan i `src/content/`, alla med `utkast: false` eftersom mallarna ska ren
 | kunskap | `fukt/sorptionsavfuktare.mdx` | Artikel, kunskap utan reklam |
 | tester | `luftavfuktare/woods-mrd20.mdx` (granskning, `matningar` utan kolumnen vi, två alternativ) | Test |
 | jamforelser | `luftavfuktare/woods-mrd20-vs-platshallare-sorption.mdx` | Jämförelse |
-| pelare | `fukt.mdx`, `inomhus.md`, `verktyg.mdx` (publicerade), `altan.mdx` (utkast till februari) | PelarHub, menyn, sidfoten, BorjaHar |
+| pelare | `fukt.mdx`, `inomhus.md`, `verktyg.mdx` (publicerade), `altan.mdx` (utkast till februari) | PelarHub, menyn, sidfoten, Amnesrad |
 | kategorier | `luftavfuktare.md` (`val` med tre, `kopguide`, `kalkylator`), `krysslaser.md` (utkast) | Kategorisida, startsidans "Bäst i test just nu" |
 
 Undermapparna (`fukt/`, `luftavfuktare/`) är ordning, inte adress: id är filnamnet, se `docs/ARKITEKTUR.md`. Sedan 2026-09-16 finns dessutom utkasten `kunskap/inomhus/gipsplugg.mdx`, `kunskap/inomhus/gipsskruv.mdx` och `guider/inomhus/skruva-i-gipsvagg.mdx` så att inomhushuben har adresser att länka till.

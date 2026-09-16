@@ -32,6 +32,14 @@
     <path d="M8,4 L16,7 L8,10 L16,13 L8,16 L16,19"/>
   </symbol>
 
+  <!-- Inomhus och montering: en skruv, ritad 2026-09-16 när ämnesraden gjorde
+       att Inomhus och Isolering stod med samma ikon bredvid varandra. -->
+  <symbol id="ikon-inomhus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M7.5,4 Q12,3.6 16.5,4 L15,7.2 Q12,7.5 9,7.2 Z"/>
+    <path d="M9.6,7.4 Q10.6,14.5 12,21.5 Q13.4,14.5 14.4,7.4"/>
+    <path d="M10,10.3 l4.2,-1.3 M10.4,13.3 l3.5,-1.2 M10.9,16.2 l2.6,-1.1 M11.4,18.8 l1.5,-0.8"/>
+  </symbol>
+
   <symbol id="ikon-verktyg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
     <g transform="rotate(-45 12 12)">
       <path d="M4,7 Q12,6.5 20,7 V13 Q12,13.5 4,13 Z"/>

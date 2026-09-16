@@ -180,9 +180,9 @@ const pelare = defineCollection({
     title: z.string(),
     seoTitle: z.string().optional(),
     description: z.string().max(160),
-    // En mening för "Börja här" på startsidan.
+    // En mening om pelaren, på hubben och på /amnen/.
     ingress: z.string(),
-    // Två till tre viktiga sidor som startsidan länkar till (sökvägar).
+    // Två till tre viktiga sidor som startsidans säsongsblock och /amnen/ länkar till (sökvägar).
     viktiga: z.array(z.object({ titel: z.string(), href: z.string() })).max(3).default([]),
     uppdaterad: z.coerce.date().optional(),
     utkast: z.boolean().default(false),

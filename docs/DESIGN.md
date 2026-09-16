@@ -211,6 +211,11 @@ Blocken skrevs om 2026-09-16 efter granskningen av den byggda sidan: layouten l�
 │   Ett stycke, 2 till 3 rader       │
 │   Två textlänkar                   │
 ├────────────────────────────────────┤
+│ Ämnesrad (sidbredd)                │
+│   Åtta ämneskort, fyra i rad       │
+│   Ikon 40 px · namn · en rad       │
+│   Länk "Alla ämnen" till höger     │
+├────────────────────────────────────┤
 │ Säsongens ämne (7/12 + 5/12)       │
 │   Illustration med bildtext        │
 │   Etikett · H2 · en mening         │
@@ -221,11 +226,6 @@ Blocken skrevs om 2026-09-16 efter granskningen av den byggda sidan: layouten l�
 │   tester" på samma rad             │
 │   Rutnät: 1 stort kort (justNu)    │
 │   + 4 vanliga, tre kolumner        │
-├────────────────────────────────────┤
-│ Börja här (två spalter av rader)   │
-│   Rad per pelare: ikon · H3 ·      │
-│   en mening · länkar radvis        │
-│   Länk "Alla ämnen"                │
 ├────────────────────────────────────┤
 │ Bäst i test just nu                │
 │   Rad per kategori: kategori,      │
@@ -241,11 +241,11 @@ Blocken skrevs om 2026-09-16 efter granskningen av den byggda sidan: layouten l�
 
 **Öppning.** H1 är ett påstående om huset, inte om verktygsköp och inte en välkomstfras. Under den ett stycke i ingress-storlek. Två länkar i löptext, en till en problemguide och en till en kalkylator. Vänsterställt, läsbredd, ingen högerspalt. Första skärmen innehåller inget pris.
 
+**Ämnesrad.** Direkt under öppningen, i sidbredd, före säsongsblocket: ett rutnät av ämneskort för alla åtta pelare i `PELARE`-ordning, fyra kolumner från 1024 px och två under. Komponenten är `Amnesrad.astro`, utseendet står i avsnitt 6. Den ersatte "Börja här" 2026-09-16, efter att ägaren påpekade att startsidan inte hade något att klicka på ovanför vecket och ingen väg till ämnena. Raden ska förbli kompakt: säsongsbilden är sidans LCP-bild och får inte tryckas ned mer än nödvändigt. Under rutnätet ligger länken "Alla ämnen" till `/amnen/` till höger, i samma stil som "Alla guider och tester".
+
 **Säsongens ämne.** Ett tvåspaltigt band på desktop, 7/12 och 5/12 med 48 px mellanrum. Vänster: säsongens skiss i ram med bildtext (källaren i september, altanen i april). Höger, uppifrån: etiketten "Säsongens ämne · September" med månaden från byggtidpunkten, en H2 med pennstreck och en mening som chefredaktören skriver i startsidans frontmatter (`sasongRubrik`, `sasongText`, båda valfria), verktygskortet för säsongens kalkylator (avfuktare augusti till november, elkostnad december till februari, trall mars till juni) och "Läs först" med hubbens `viktiga` för den pelare kalkylatorn hör till. Mobil: etikett, rubrik, mening, illustration, verktygskort, länkar. Det här är det enda stället på startsidan där marginalanteckningen får sitta, som en handskriven rad vid illustrationen. Statiskt, ingen ö.
 
 **Guider och tester.** H2 med pennstreck till vänster och länken "Alla guider och tester" till `/guider/` till höger på samma rad. Ett rutnät med fem Artikelkort: det första är chefredaktörens `justNu` i variant `stor` och tar två kolumner på desktop, de fyra följande är de senaste publicerade med `justNu` bortfiltrerad. Ett stort plus fyra är sex celler, alltså två fyllda rader; sex kort hade lämnat ett ensamt kort på en tredje rad. Mobil: det stora kortet stående, de fyra i kompakt variant. Tester, jämförelser och kategorisidor ingår på samma villkor som artiklar. Är `justNu`-kortets illustration samma fil som säsongsbilden visas kortet med placeholder: samma bild två gånger på en skärm ser ut som ett fel.
-
-**Börja här.** Rubrik "Börja här" som H2 med pennstreck, med länken "Alla ämnen" på samma rad. En rad per publicerad pelare, aldrig tre ikonkolumner, i två spalter från 1024 px med 1 px linje mellan raderna: pelarikon (24 px, blyerts) och pelarnamn som H3 på samma rad, en mening om vad du hittar, sedan `viktiga` som länkar på var sin rad. Det här är sajtens karta, och det är härifrån hubbarna får sin interna länkkraft.
 
 **Bäst i test just nu.** Rubrik "Bäst i test just nu" som H2. En rad per kategori med 1 px linje emellan, två spalter av rader på desktop. Kategorinamn i H3, "Vårt val" i etikett-stil följt av produktnamnet, priset och antalet granskade ("13 granskade") i blyerts-2, och länken "Alla vi granskat" till kategorisidan. Bara länkar, inga köpknappar, ingen produktbild. Blocket ska vara lätt, en anteckning i marginalen, inte huvudsaken. Data från kategorifilen och databasen.
 
@@ -680,7 +680,7 @@ Alla komponenter ligger i `src/components/ui/` som Astro utan klient-JS, utom de
 
 ### Ikoner
 
-Spriten `src/assets/brand/riktning-1/ikoner.svg` inlineas i layouten så att `<use href="#ikon-fukt">` fungerar utan extra förfrågan. 16 ikoner, 24 px grid, linje 1,75 px i `currentColor`, runda ändar, lätt darr i långa linjer och små överskjut i hörnen. Pelarikoner (fukt, altan, tak, grund, isolering, verktyg, el) används i mobilmenyn, i "Börja här" och vid pelarhubbens H1, i 24 px (32 vid H1), blyerts. Gränssnittsikoner (kalkylator, meny, stäng, sök, pil höger, extern länk, varning, info, check) används bara med text bredvid och `aria-hidden="true"`. Ikoner finns aldrig i löptext, aldrig framför H2 eller H3, aldrig i brödsmulor, aldrig som dekoration. Nya ikoner ritas i samma sprite efter reglerna i filens kommentar och godkänns av designansvarig.
+Spriten `src/assets/brand/riktning-1/ikoner.svg` inlineas i layouten så att `<use href="#ikon-fukt">` fungerar utan extra förfrågan. 16 ikoner, 24 px grid, linje 1,75 px i `currentColor`, runda ändar, lätt darr i långa linjer och små överskjut i hörnen. Pelarikoner (fukt, altan, tak, grund, isolering, verktyg, el) används i mobilmenyn, i startsidans ämnesrad och vid pelarhubbens H1, i 24 px (40 i ämneskortet, 32 vid H1), blyerts. Gränssnittsikoner (kalkylator, meny, stäng, sök, pil höger, extern länk, varning, info, check) används bara med text bredvid och `aria-hidden="true"`. Ikoner finns aldrig i löptext, aldrig framför H2 eller H3, aldrig i brödsmulor, aldrig som dekoration. Nya ikoner ritas i samma sprite efter reglerna i filens kommentar och godkänns av designansvarig.
 
 ### Etikett
 
@@ -709,6 +709,18 @@ Sedan 2026-09-16 visas nivån på **alla artikelkort**, även på startsidan: et
 **Kategorikort.** Ingen egen komponent: Artikelkort med etiketten "Bäst i test", kategorins namn som rubrik och kategorins `description` som beskrivning. Bildytan är det blanka bladet med två rader satta som kalkylatorns resultat: "Vårt val" i etikett-stil med produktnamnet i kortrubrik, och antalet granskade som ett stort tal i Zilla Slab med ordet "granskade" efter. Ingen packshot, aldrig. Utan databas visas bladet utan tal.
 
 **Hover, fokus, klickyta.** Hela kortet är klickbart genom att rubrikens länk får en `::after` som täcker kortet, men bara rubriken är länk för skärmläsaren (regeln "rubriken är länken"). Hover lyfter ingenting: rubriken får 2 px understrykning i penna, `transition: text-decoration-color 150ms`, avstängd vid `prefers-reduced-motion`. Fokus ger hela kortet `outline: 3px solid penna` via `:has`. Klickytan är alltid över 44 px hög.
+
+### Ämneskort (Ämnesrad)
+
+**Syfte.** Ta läsaren från startsidan till ett ämne med ett klick, och visa hela sajtens karta på en skärm. `src/components/ui/Amnesrad.astro`, bara på startsidan. Korten är navigering, inte påståenden om sajten, och faller därför inte under regeln i avsnitt 8.
+
+**Rutnät.** Ett kort per pelare, alla åtta, i `PELARE`-ordning. Fyra kolumner från 1024 px och två under, alltså två rader på desktop och fyra på mobil. 16 px mellan korten på mobil, 24 på desktop. Korten är cirka 150 px höga, klickytan alltid över 44 px. Under rutnätet länken "Alla ämnen" till höger.
+
+**Innehåll.** Vänsterställt, uppifrån: pelarikonen i 40 px, en etikett i versaler, pelarens namn i Zilla Slab 600 (kortrubrik, 20 px på mobil och 22 på desktop) och pelarens `rad` från `src/lib/pelare.ts`, en mening på högst åtta ord som chefredaktören skriver. Ingen bild, ingen beskrivning, ingen länklista: kortet är en dörr, inte en sida.
+
+**Publicerad pelare.** Hubben finns och är inte utkast (`hubPublicerad`). Kortet är en länk till `/[pelare]/` med artikelkortets mått och beteende: 1 px `linje`, radie 2 px, bakgrund `papper`, ingen skugga, hela kortet klickbart via `::after` på namnets länk, hover ger 2 px pennunderstrykning på namnet och fokus en ring runt kortet. Etiketten är antalet sidor i pelaren, publicerade guider och kunskapsartiklar: "4 sidor", "1 sida".
+
+**Pelare utan hub.** Kortet står kvar, dämpat: bakgrund `papper-2`, ikon och namn i `blyerts-2`, ingen länk, etiketten "Kommer". Kartan visar hela sajten, inte bara det som hunnit publiceras, och en länk till en hub som är utkast byggs aldrig.
 
 ### Filterrad och Paginering
 
@@ -907,7 +919,7 @@ Stockfoton. Genererade bilder av verktyg. Bilder utan `width` och `height`. Bild
 Det här byggs inte, oavsett vem som ber om det.
 
 - Hero med bakgrundsbild och centrerad text.
-- Tre kolumner med ikon, rubrik och en rad. Tre lika kort i rad är tillåtet när korten är samma slags sak: tre jämförbara val (som "Våra val") eller artiklar i ett rutnät, i den ordning de publicerats. Aldrig tre påståenden om sajten, och pelarna visas fortfarande som rader, aldrig som tre ikonkolumner (omformulerat 2026-09-16, regeln finns för att stoppa marknadsföringens tre ikoner, inte för att stoppa en tidningssida).
+- Tre kolumner med ikon, rubrik och en rad som säger något om sajten ("Snabbt", "Tryggt", "Oberoende"). Lika kort i rad är tillåtet när korten är samma slags sak: tre jämförbara val (som "Våra val"), artiklar i ett rutnät i den ordning de publicerats, eller ämneskorten i startsidans ämnesrad, som är dörrar till sajtens åtta ämnen. Skillnaden är vad kortet gör: ett ämneskort leder till en sida och bär pelarens namn och en rad om vad du hittar där, en marknadsföringsruta bär ett påstående om oss och leder ingenstans. Påståenden om sajten sätts aldrig i kolumner (omformulerat 2026-09-16, utvidgat med ämnesraden samma dag; regeln finns för att stoppa marknadsföringens tre ikoner, inte för att stoppa en tidningssida eller en meny).
 - Gradienter, någonstans. (`.markering` och `.linjerat` använder `linear-gradient` som ritverktyg för en platt yta och platta linjer, det är inte en gradient i den här meningen.)
 - Skugga på kort. Skugga används bara på det som ligger ovanpå sidan.
 - Piller-formade knappar och taggar.
@@ -917,7 +929,7 @@ Det här byggs inte, oavsett vem som ber om det.
 - Fasta köpknappar som följer med skärmen (fas 1).
 - Popup, banderoll, "prenumerera"-ruta, cookie-ruta som täcker innehåll (vi har inga kakor som kräver samtycke).
 - Animationer utöver `transition` på färg vid hover, max 150 ms. Ingen animation kräver JavaScript, och `prefers-reduced-motion` stänger av även dem. Pennstrecket ritas inte upp, det är där.
-- Ikoner i löptext, framför H2 och H3, i brödsmulor eller som dekoration. Ikoner finns i mobilmenyn, i "Börja här", vid pelarhubbens H1 och i gränssnitt med text bredvid. Bara ikoner ur spriten.
+- Ikoner i löptext, framför H2 och H3, i brödsmulor eller som dekoration. Ikoner finns i mobilmenyn, i startsidans ämnesrad, på "Alla ämnen", vid pelarhubbens H1 och i gränssnitt med text bredvid. Bara ikoner ur spriten.
 - Emojis.
 - Runda författarbilder.
 - Karuseller. Dragspel eller flikar som döljer innehåll som ska läsas eller indexeras.

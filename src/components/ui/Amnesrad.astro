@@ -1,0 +1,87 @@
+---
+/**
+ * Ämnesraden på startsidan. Ett rutnät av ämneskort för alla åtta pelare i
+ * PELARE-ordning, direkt under öppningen och före säsongsblocket, i sidbredd.
+ * Fyra kolumner från 1024 px, två under, alltså två rader på desktop och fyra
+ * på mobil.
+ *
+ * Korten är navigering, inte påståenden om sajten: de leder till ämnena och är
+ * därför tillåtna som rutnät, se docs/DESIGN.md avsnitt 8. Läsaren ska se vad
+ * sajten handlar om utan att scrolla, och kunna klicka sig till sitt ämne
+ * direkt. Korten hålls kompakta så att säsongsbilden, sidans LCP-bild, ligger
+ * kvar nära vecket.
+ *
+ * En pelare vars hub är publicerad (hubPublicerad) blir ett klickbart kort med
+ * artikelkortets ram, hover och fokus. Övriga står kvar som dämpade kort utan
+ * länk med etiketten KOMMER: kartan visar hela sajten, inte bara det som hunnit
+ * publiceras, och en död länk till en hub som är utkast byggs aldrig.
+ */
+import { hubPublicerad, pelareUrl, publicerade } from '../../lib/innehall';
+import { PELARE } from '../../lib/pelare';
+import Ikon from './Ikon.astro';
+
+/** Ordet på de dämpade korten. Chefredaktören äger det. */
+const KOMMER = 'Kommer';
+
+// Etiketten på ett publicerat kort är antalet sidor i pelaren: publicerade
+// guider och kunskapsartiklar. Tester och jämförelser hör till kategorier och
+// räknas därför inte här.
+const guider = await publicerade('guider');
+const kunskap = await publicerade('kunskap');
+const artiklar = [...guider, ...kunskap];
+
+const kort = await Promise.all(
+  PELARE.map(async (pelare) => {
+    const antal = artiklar.filter((e) => e.data.pelare === pelare.slug).length;
+    return {
+      pelare,
+      publicerad: await hubPublicerad(pelare.slug),
+      antal,
+      etikett: antal === 1 ? '1 sida' : `${antal} sidor`,
+    };
+  }),
+);
+---
+
+<nav aria-label="Ämnen" class="mt-8 lg:mt-12">
+  <ul class="m-0 grid list-none grid-cols-2 gap-4 p-0 lg:grid-cols-4 lg:gap-6">
+    {
+      kort.map((k) =>
+        k.publicerad ? (
+          <li>
+            <div class="artikelkort rounded-sm border border-linje bg-papper p-4">
+              <Ikon namn={k.pelare.ikon} storlek={40} class="text-blyerts" />
+              {k.antal > 0 && <p class="m-0 mt-2 text-etikett uppercase text-blyerts">{k.etikett}</p>}
+              <p class="m-0 mt-1 font-serif text-kortrubrik lg:text-kortrubrik-lg">
+                <a href={pelareUrl(k.pelare.slug)} class="kortlank">
+                  {k.pelare.kort}
+                </a>
+              </p>
+              <p class="m-0 mt-1 text-liten text-blyerts-2">{k.pelare.rad}</p>
+            </div>
+          </li>
+        ) : (
+          <li>
+            <div class="flex h-full flex-col rounded-sm border border-linje bg-papper-2 p-4">
+              <Ikon namn={k.pelare.ikon} storlek={40} class="text-blyerts-2" />
+              <p class="m-0 mt-2 text-etikett uppercase text-blyerts-2">{KOMMER}</p>
+              <p class="m-0 mt-1 font-serif text-kortrubrik lg:text-kortrubrik-lg text-blyerts-2">
+                {k.pelare.kort}
+              </p>
+              <p class="m-0 mt-1 text-liten text-blyerts-2">{k.pelare.rad}</p>
+            </div>
+          </li>
+        ),
+      )
+    }
+  </ul>
+
+  <p class="m-0 flex justify-end">
+    <a
+      href="/amnen/"
+      class="huvudmeny inline-flex min-h-11 items-center text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+    >
+      Alla ämnen
+    </a>
+  </p>
+</nav>

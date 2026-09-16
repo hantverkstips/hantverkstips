@@ -240,8 +240,8 @@ alternativ:       # lista med { produkt, varfor }
 ```yaml
 title, description, uppdaterad, utkast
 seoTitle:         # valfritt, som ovan
-ingress:          # en mening för "Börja här" på startsidan
-viktiga:          # upp till tre { titel, href } som startsidan länkar till.
+ingress:          # en mening om pelaren, på hubben och på /amnen/
+viktiga:          # upp till tre { titel, href } som startsidans säsongsblock länkar till.
                   # Bara publicerade adresser: en länk till ett utkast är byggfel
 ```
 

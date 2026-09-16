@@ -3,26 +3,77 @@ import type { IkonNamn } from '../components/ui/Ikon.astro';
 /**
  * Register över pelare (ämnesområden). Enda källan för slug och namn.
  * content.config.ts bygger sitt enum härifrån, layouten bygger meny och sidfot härifrån.
- * Ordningen är den som visas i huvudmenyn, i "Börja här" och i sidfoten.
+ * Ordningen är den som visas i huvudmenyn, i ämnesraden på startsidan och i sidfoten.
  * Se docs/INNEHALLSARKITEKTUR.md avsnitt 1 och 4.
+ *
+ * rad är kortets enda mening i ämnesraden (Amnesrad.astro), högst åtta ord.
+ * Chefredaktören skriver den och äger ordvalet.
  *
  * En pelare i registret har inte automatiskt en sida. Hubsidan /[pelare]/ finns bara
  * när det finns en fil i src/content/pelare/ med samma slug som inte är utkast, och
  * bara publicerade hubbar hamnar i menyn.
  *
- * Inomhus lades till 2026-09-16 (docs/SOKORDSANALYS.md avsnitt 5). Ikonen är isolering
- * tills designansvarig ritat en egen i spriten.
+ * Inomhus lades till 2026-09-16 (docs/SOKORDSANALYS.md avsnitt 5) med en egen
+ * skruvikon i spriten.
  */
 export const PELARE = [
-  { slug: 'fukt', namn: 'Fukt och inomhusklimat', kort: 'Fukt', ikon: 'fukt' },
-  { slug: 'inomhus', namn: 'Inomhus och montering', kort: 'Inomhus', ikon: 'isolering' },
-  { slug: 'altan', namn: 'Altan och uteplats', kort: 'Altan', ikon: 'altan' },
-  { slug: 'tak', namn: 'Tak', kort: 'Tak', ikon: 'tak' },
-  { slug: 'grund', namn: 'Grund och källare', kort: 'Grund', ikon: 'grund' },
-  { slug: 'isolering', namn: 'Isolering och energi', kort: 'Isolering', ikon: 'isolering' },
-  { slug: 'verktyg', namn: 'Verktyg och maskiner', kort: 'Verktyg', ikon: 'verktyg' },
-  { slug: 'el', namn: 'El och säkerhet', kort: 'El', ikon: 'el' },
-] as const satisfies readonly { slug: string; namn: string; kort: string; ikon: IkonNamn }[];
+  {
+    slug: 'fukt',
+    namn: 'Fukt och inomhusklimat',
+    kort: 'Fukt',
+    ikon: 'fukt',
+    rad: 'Hitta varifrån vattnet kommer innan du köper något.',
+  },
+  {
+    slug: 'inomhus',
+    namn: 'Inomhus och montering',
+    kort: 'Inomhus',
+    ikon: 'inomhus',
+    rad: 'Rätt skruv och plugg för varje vägg.',
+  },
+  {
+    slug: 'altan',
+    namn: 'Altan och uteplats',
+    kort: 'Altan',
+    ikon: 'altan',
+    rad: 'Bygg ett trädäck som håller i tjugo år.',
+  },
+  {
+    slug: 'tak',
+    namn: 'Tak',
+    kort: 'Tak',
+    ikon: 'tak',
+    rad: 'Hitta läckan, och veta när taket ska bytas.',
+  },
+  {
+    slug: 'grund',
+    namn: 'Grund och källare',
+    kort: 'Grund',
+    ikon: 'grund',
+    rad: 'Krypgrund och källarvägg utan fukt och sättningar.',
+  },
+  {
+    slug: 'isolering',
+    namn: 'Isolering och energi',
+    kort: 'Isolering',
+    ikon: 'isolering',
+    rad: 'Isolera rätt och sänk elräkningen utan mögel.',
+  },
+  {
+    slug: 'verktyg',
+    namn: 'Verktyg och maskiner',
+    kort: 'Verktyg',
+    ikon: 'verktyg',
+    rad: 'Testade maskiner, med egna mätningar och ärliga nackdelar.',
+  },
+  {
+    slug: 'el',
+    namn: 'El och säkerhet',
+    kort: 'El',
+    ikon: 'el',
+    rad: 'Det en lekman får göra själv, och inte.',
+  },
+] as const satisfies readonly { slug: string; namn: string; kort: string; ikon: IkonNamn; rad: string }[];
 
 export type PelareSlug = (typeof PELARE)[number]['slug'];
 

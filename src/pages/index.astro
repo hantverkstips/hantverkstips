@@ -3,10 +3,12 @@
  * Startsidan är en uppslagen anteckningsbok, inte en landningssida. Inget hero,
  * ingen bakgrundsbild, inga köpknappar, inget reklamband.
  *
- * Blocken följer docs/DESIGN.md avsnitt 5.1: öppning, säsongens ämne, rutnätet
- * med guider och tester (där "Just nu" är det stora kortet), Börja här, Bäst i
- * test just nu, Räkna själv och Så jobbar vi. "Just nu" och "Senaste" är ett och
- * samma rutnät: två block med samma sorts innehåll blev två gånger samma bild.
+ * Blocken följer docs/DESIGN.md avsnitt 5.1: öppning, ämnesraden, säsongens
+ * ämne, rutnätet med guider och tester (där "Just nu" är det stora kortet),
+ * Bäst i test just nu, Räkna själv och Så jobbar vi. "Just nu" och "Senaste" är
+ * ett och samma rutnät: två block med samma sorts innehåll blev två gånger
+ * samma bild. Ämnesraden ersatte "Börja här" 2026-09-16: läsaren såg inget att
+ * klicka på ovanför vecket och hittade inte till ämnena från startsidan.
  */
 import { getEntry, render } from 'astro:content';
 import Bas from '../layouts/Bas.astro';
@@ -25,7 +27,7 @@ import {
   type KortData,
 } from '../lib/kort';
 import { organisation } from '../lib/strukturdata';
-import BorjaHar from '../components/ui/BorjaHar.astro';
+import Amnesrad from '../components/ui/Amnesrad.astro';
 import Artikelrutnat from '../components/ui/Artikelrutnat.astro';
 import Markering from '../components/ui/Markering.astro';
 import Pennstreck from '../components/ui/Pennstreck.astro';
@@ -87,10 +89,14 @@ const rutnat = justNu ? [justNu, ...ovriga] : ovriga;
 // Bäst i test just nu: en rad per kategori med kategorifilens första val.
 const bastITest = await Promise.all((await publicerade('kategorier')).map(kategoriVal));
 
-// Title följer H1: två sanningar om samma sida håller inte i längden.
+/**
+ * Title säger samma sak som H1: två sanningar om samma sida håller inte i
+ * längden. Meningen skrivs ut här i stället för att byggas av H1, eftersom H1
+ * har ett komma som titeln inte ska ha. `seoTitle` i frontmatter vinner, och
+ * byter chefredaktören H1 byts den här raden med den.
+ */
 const h1 = startsida.data.title;
-const sidtitel =
-  startsida.data.seoTitle ?? `Hantverkstips, ${h1.charAt(0).toLowerCase()}${h1.slice(1).replace(/\.$/, '')}`;
+const sidtitel = startsida.data.seoTitle ?? 'Hantverkstips, kunskap om huset från källaren till taket';
 ---
 
 <Bas title={sidtitel} description={startsida.data.description} bred={true}>
@@ -102,6 +108,12 @@ const sidtitel =
       <Content components={{ Markering }} />
     </div>
   </div>
+
+  {/*
+    Ämnesraden. Åtta ämneskort i sidbredd direkt under öppningen: sajtens karta
+    och sidans enda navigering ovanför vecket.
+  */}
+  <Amnesrad />
 
   {/*
     Säsongens ämne. Illustrationen till vänster på desktop (7/12), etikett,
@@ -177,8 +189,6 @@ const sidtitel =
       </section>
     )
   }
-
-  <BorjaHar />
 
   {
     bastITest.length > 0 && (
