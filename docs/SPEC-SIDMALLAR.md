@@ -366,10 +366,10 @@ export interface Kalkylator { slug: string; namn: string; rad: string; sasong: [
 export const KALKYLATORER: Kalkylator[] = [
   { slug: 'avfuktare', namn: 'Hur stor avfuktare behöver du?', rad: 'Yta, takhöjd och fuktnivå ger liter per dygn, och maskinerna som klarar det.', sasong: [8, 11], kategori: 'luftavfuktare' },
 ];
-export function sasongensKalkylator(manad: number): Kalkylator;   // första vars sasong täcker månaden, annars KALKYLATORER[0]
+export function hittaKalkylator(slug: string): Kalkylator | undefined;
 ```
 
-Fler kalkylatorer läggs till här och som `src/pages/rakna/[slug].astro`-filer. Sidfoten och `/rakna/` läser listan.
+`sasong` är underlag för chefredaktörens val av `justNu`, inte något koden läser: `sasongensKalkylator` togs bort 2026-09-16 med startsidans säsongsblock. Fler kalkylatorer läggs till här och som `src/pages/rakna/[slug].astro`-filer. Sidfoten och `/rakna/` läser listan.
 
 ### 3.4 `src/lib/strukturdata.ts`
 
@@ -397,17 +397,16 @@ Alla rutter utom kalkylatorn och `/go/` är statiska. Varje rutt: sätter `Astro
 
 ### 4.1 `src/pages/index.astro`
 
-Data: `getEntry('sidor', 'startsida')` (H1 = `title`, stycket = `<Content />`), `PELARE` med `hubPublicerad` per pelare (ämnesraden), `sasongensKalkylator(new Date().getMonth() + 1)`, `publicerade('pelare')`, "just nu" via `getEntry(justNu.samling, justNu.id)`, `publicerade('kategorier')` med `hamtaProdukt(val[0].produkt)` per kategori, de sex senaste av guider + kunskap + tester + jamforelser sorterade på `publicerad` fallande, `KALKYLATORER`.
+Data: `getEntry('sidor', 'startsida')` (H1 = `title`, stycket = `<Content />`), heroillustrationen som statisk import av `src/assets/illustrationer/start/hus-tumstock.svg`, `PELARE` med `hubPublicerad` per pelare (ämnesraden), "just nu" via `getEntry(justNu.samling, justNu.id)`, `publicerade('kategorier')` med `hamtaProdukt(val[0].produkt)` per kategori, de sex senaste av guider + kunskap + tester + jamforelser sorterade på `publicerad` fallande, `KALKYLATORER`.
 
-Block i ordning, enligt `docs/INNEHALLSARKITEKTUR.md` avsnitt 5 och `docs/DESIGN.md` avsnitt 5.1 (omskrivna 2026-09-16):
+Block i ordning, enligt `docs/INNEHALLSARKITEKTUR.md` avsnitt 5 och `docs/DESIGN.md` avsnitt 5.1 (omskrivna 2026-09-16, säsongsblocket borttaget samma dag):
 
-1. Öppning: H1, vänsterställd, läsbredd. Stycket från `startsida.mdx` i ingress-storlek; länkarna ligger i texten. Ingen högerspalt.
-2. `<Amnesrad />` i sidbredd, direkt under öppningen (avsnitt 2.10). Ersatte "Börja här" 2026-09-16.
-3. Säsongens ämne: ett rutnät i 12 kolumner. Illustrationen (7/12) med bildtext till vänster, och till höger (5/12) etiketten "Säsongens ämne · {månad}" från `manadNamn(new Date())`, `sasongRubrik` som H2 via Pennstreck, `sasongText` som stycke, `<Verktygskort kalkylator={sasong.slug} iRutnat />` och "Läs först" med `viktiga` från hubben för den pelare `sasong.kategori` hör till (`pelareForKategori`, fallback `fukt`). Saknas `sasongRubrik` och `sasongText` renderas resten ändå.
-4. Guider och tester: H2 via Pennstreck med länken "Alla guider och tester" på samma rad, sedan `<Artikelrutnat storForsta kompaktPaMobil />` med `justNu` först och de fyra senaste ur `allaKort()` efter, `justNu` bortfiltrerad på `href`. Är `justNu.illustration.src` samma fil som säsongsbilden nollställs bilden så att kortet visar placeholder. Utan `justNu` i frontmatter visas de fem senaste.
-5. Bäst i test just nu: H2. En rad per kategori ur `kategoriVal()`: kategorinamn (H3 som länk till `/[kategori]/`), "Vårt val" i etikett-stil med produktnamnet, pris via `formateraPris` och antalet granskade, länken "Alla vi granskat". Två spalter av rader från `lg`. Ingen köpknapp, ingen bild. Kategori vars produkt saknas i databasen visar raden utan pris. Inga kategorier: blocket utgår.
-6. Räkna själv: H2 och verktygskort i rutnät, bara när `KALKYLATORER.length >= 2`.
-7. Så jobbar vi: H2 och två meningar med länkar till "Så testar vi" och "Så tjänar vi pengar", i läsbredd.
+1. Hero: ett rutnät i 12 kolumner i sidbredd, `items-center`, 48 px mellanrum från `lg`. Vänster 6/12: H1 i Zilla Slab och stycket från `startsida.mdx` i ingress-storlek, med länkarna i texten. Höger 6/12: illustrationen som `<img>` med `width` och `height` ur importen, `fetchpriority="high"`, `decoding="async"`, `alt=""`. Ingen ram, ingen bildtext, inget linjerat papper. Sidans LCP-bild. Mobil: en kolumn, H1, stycket, illustrationen.
+2. `<Amnesrad />` i sidbredd, direkt under heron (avsnitt 2.10). Ersatte "Börja här" 2026-09-16.
+3. Guider och tester: H2 via Pennstreck med länken "Alla guider och tester" på samma rad, sedan `<Artikelrutnat storForsta kompaktPaMobil />` med `justNu` först och de fyra senaste ur `allaKort()` efter, `justNu` bortfiltrerad på `href`. Utan `justNu` i frontmatter visas de fem senaste. Säsongen styrs genom `justNu`, inte genom ett eget block.
+4. Bäst i test just nu: H2. En rad per kategori ur `kategoriVal()`: kategorinamn (H3 som länk till `/[kategori]/`), "Vårt val" i etikett-stil med produktnamnet, pris via `formateraPris` och antalet granskade, länken "Alla vi granskat". Två spalter av rader från `lg`. Ingen köpknapp, ingen bild. Kategori vars produkt saknas i databasen visar raden utan pris. Inga kategorier: blocket utgår.
+5. Räkna själv: H2 och `<Verktygskort iRutnat />` per kalkylator i tre kolumner från `lg`, två från `sm`. Renderas när `KALKYLATORER.length > 0`.
+6. Så jobbar vi: H2 och två meningar med länkar till "Så testar vi" och "Så tjänar vi pengar", i läsbredd.
 
 `<title>` är "Hantverkstips, kunskap om huset från källaren till taket", samma mening som H1 utan H1:ans komma. Den står utskriven i rutten och byts när chefredaktören byter H1; `seoTitle` i frontmatter vinner över den.
 

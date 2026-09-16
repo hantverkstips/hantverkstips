@@ -241,7 +241,7 @@ alternativ:       # lista med { produkt, varfor }
 title, description, uppdaterad, utkast
 seoTitle:         # valfritt, som ovan
 ingress:          # en mening om pelaren, på hubben och på /amnen/
-viktiga:          # upp till tre { titel, href } som startsidans säsongsblock länkar till.
+viktiga:          # upp till tre { titel, href } som /amnen/ länkar till.
                   # Bara publicerade adresser: en länk till ett utkast är byggfel
 ```
 

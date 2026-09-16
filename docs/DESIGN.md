@@ -198,28 +198,22 @@ Gemensamt för alla sidor:
 
 ### 5.1 Startsida
 
-Startsidan är en uppslagen anteckningsbok, inte en landningssida. Inget hero, ingen bakgrundsbild, inga köpknappar, inget reklamband.
+Startsidan är en uppslagen anteckningsbok, inte en landningssida. Ingen bakgrundsbild, inga köpknappar, inget reklamband.
 
-Blocken skrevs om 2026-09-16 efter granskningen av den byggda sidan: layouten låg i läsbredd med en tom högerspalt, allt var en lodrät ström av rader, och säsongsbilden och "Just nu" visade samma skiss två gånger. Rutnätet av kort är svaret.
+Blocken skrevs om 2026-09-16 efter granskningen av den byggda sidan: layouten låg i läsbredd med en tom högerspalt, allt var en lodrät ström av rader, och säsongsbilden och "Just nu" visade samma skiss två gånger. Rutnätet av kort är svaret. Samma dag togs säsongsblocket bort helt, efter ägarens omdöme om övre halvan: etikett, säsongsrubrik, källarskiss, verktygskort och "Läs först" sa fem saker samtidigt och läsaren fick inget svar på vad sajten gör. Kvar blev ett hero som säger det med en bild och en mening, och säsongen styrs i stället genom `justNu` och rutnätet.
 
 ```
 ┌────────────────────────────────────┐
 │ Sidhuvud                           │
 ├────────────────────────────────────┤
-│ Öppning                            │
-│   H1 (Zilla Slab, vänsterställd)   │
-│   Ett stycke, 2 till 3 rader       │
-│   Två textlänkar                   │
+│ Hero (sidbredd, 6/12 + 6/12)       │
+│   H1 (Zilla Slab) · ett stycke     │
+│   Illustration till höger          │
 ├────────────────────────────────────┤
 │ Ämnesrad (sidbredd)                │
 │   Åtta ämneskort, fyra i rad       │
 │   Ikon 40 px · namn · en rad       │
 │   Länk "Alla ämnen" till höger     │
-├────────────────────────────────────┤
-│ Säsongens ämne (7/12 + 5/12)       │
-│   Illustration med bildtext        │
-│   Etikett · H2 · en mening         │
-│   Verktygskort · Läs först         │
 ├────────────────────────────────────┤
 │ Guider och tester                  │
 │   H2 + länk "Alla guider och       │
@@ -231,7 +225,7 @@ Blocken skrevs om 2026-09-16 efter granskningen av den byggda sidan: layouten l�
 │   Rad per kategori: kategori,      │
 │   vårt val, pris, antal granskade  │
 ├────────────────────────────────────┤
-│ Räkna själv (bara vid minst två)   │
+│ Räkna själv (verktygskort, 3 sp.)  │
 ├────────────────────────────────────┤
 │ Så jobbar vi (kort text, 2 länkar) │
 ├────────────────────────────────────┤
@@ -239,17 +233,17 @@ Blocken skrevs om 2026-09-16 efter granskningen av den byggda sidan: layouten l�
 └────────────────────────────────────┘
 ```
 
-**Öppning.** H1 är ett påstående om huset, inte om verktygsköp och inte en välkomstfras. Under den ett stycke i ingress-storlek. Två länkar i löptext, en till en problemguide och en till en kalkylator. Vänsterställt, läsbredd, ingen högerspalt. Första skärmen innehåller inget pris.
+**Hero.** Överst, i sidbredd. Desktop: två spalter om 6/12 med 48 px mellanrum, lodrätt centrerade. Vänster är H1 i Zilla Slab, vänsterställd, och under den startsidans stycke i ingress-storlek med sina två länkar i löptext, en till en problemguide och en till en kalkylator. Höger är illustrationen, `src/assets/illustrationer/start/hus-tumstock.svg`, ritad i ordmärkets stil. Mobil: H1, stycket, sedan illustrationen i full bredd. H1 är ett påstående om huset, inte om verktygsköp och inte en välkomstfras. Första skärmen innehåller inget pris.
 
-**Ämnesrad.** Direkt under öppningen, i sidbredd, före säsongsblocket: ett rutnät av ämneskort för alla åtta pelare i `PELARE`-ordning, fyra kolumner från 1024 px och två under. Komponenten är `Amnesrad.astro`, utseendet står i avsnitt 6. Den ersatte "Börja här" 2026-09-16, efter att ägaren påpekade att startsidan inte hade något att klicka på ovanför vecket och ingen väg till ämnena. Raden ska förbli kompakt: säsongsbilden är sidans LCP-bild och får inte tryckas ned mer än nödvändigt. Under rutnätet ligger länken "Alla ämnen" till `/amnen/` till höger, i samma stil som "Alla guider och tester".
+Illustrationen renderas som `<img>` med width och height ur filen, `fetchpriority="high"` och `decoding="async"`. Den är sidans LCP-bild. `alt=""`: bilden är dekorativ, H1 bär meningen. Ingen ram, ingen bildtext och inget linjerat papper bakom — heron ska vara en ren yta, och undantaget från ramregeln i avsnitt 7 gäller just den här bilden.
 
-**Säsongens ämne.** Ett tvåspaltigt band på desktop, 7/12 och 5/12 med 48 px mellanrum. Vänster: säsongens skiss i ram med bildtext (källaren i september, altanen i april). Höger, uppifrån: etiketten "Säsongens ämne · September" med månaden från byggtidpunkten, en H2 med pennstreck och en mening som chefredaktören skriver i startsidans frontmatter (`sasongRubrik`, `sasongText`, båda valfria), verktygskortet för säsongens kalkylator (avfuktare augusti till november, elkostnad december till februari, trall mars till juni) och "Läs först" med hubbens `viktiga` för den pelare kalkylatorn hör till. Mobil: etikett, rubrik, mening, illustration, verktygskort, länkar. Det här är det enda stället på startsidan där marginalanteckningen får sitta, som en handskriven rad vid illustrationen. Statiskt, ingen ö.
+**Ämnesrad.** Direkt under heron, i sidbredd: ett rutnät av ämneskort för alla åtta pelare i `PELARE`-ordning, fyra kolumner från 1024 px och två under. Komponenten är `Amnesrad.astro`, utseendet står i avsnitt 6. Den ersatte "Börja här" 2026-09-16, efter att ägaren påpekade att startsidan inte hade något att klicka på ovanför vecket och ingen väg till ämnena. Raden ska förbli kompakt: heron tar övre halvan, och ämneskorten ska ändå nå vecket på desktop. Under rutnätet ligger länken "Alla ämnen" till `/amnen/` till höger, i samma stil som "Alla guider och tester".
 
-**Guider och tester.** H2 med pennstreck till vänster och länken "Alla guider och tester" till `/guider/` till höger på samma rad. Ett rutnät med fem Artikelkort: det första är chefredaktörens `justNu` i variant `stor` och tar två kolumner på desktop, de fyra följande är de senaste publicerade med `justNu` bortfiltrerad. Ett stort plus fyra är sex celler, alltså två fyllda rader; sex kort hade lämnat ett ensamt kort på en tredje rad. Mobil: det stora kortet stående, de fyra i kompakt variant. Tester, jämförelser och kategorisidor ingår på samma villkor som artiklar. Är `justNu`-kortets illustration samma fil som säsongsbilden visas kortet med placeholder: samma bild två gånger på en skärm ser ut som ett fel.
+**Guider och tester.** H2 med pennstreck till vänster och länken "Alla guider och tester" till `/guider/` till höger på samma rad. Ett rutnät med fem Artikelkort: det första är chefredaktörens `justNu` i variant `stor` och tar två kolumner på desktop, de fyra följande är de senaste publicerade med `justNu` bortfiltrerad. Ett stort plus fyra är sex celler, alltså två fyllda rader; sex kort hade lämnat ett ensamt kort på en tredje rad. Mobil: det stora kortet stående, de fyra i kompakt variant. Tester, jämförelser och kategorisidor ingår på samma villkor som artiklar. Säsongen syns här: chefredaktören väljer `justNu` efter årstiden, och blocket är sedan 2026-09-16 det enda stället där säsongen styr startsidan.
 
 **Bäst i test just nu.** Rubrik "Bäst i test just nu" som H2. En rad per kategori med 1 px linje emellan, två spalter av rader på desktop. Kategorinamn i H3, "Vårt val" i etikett-stil följt av produktnamnet, priset och antalet granskade ("13 granskade") i blyerts-2, och länken "Alla vi granskat" till kategorisidan. Bara länkar, inga köpknappar, ingen produktbild. Blocket ska vara lätt, en anteckning i marginalen, inte huvudsaken. Data från kategorifilen och databasen.
 
-**Räkna själv.** Verktygskort i samma rutnät som artikelkorten, och bara när registret har minst två kalkylatorer. Med en enda står den redan i säsongsblocket.
+**Räkna själv.** Verktygskort i tre spalter på desktop, två från `sm` och en på mobil. Blocket renderas så snart registret har minst en kalkylator: sedan säsongsblocket och dess verktygskort togs bort 2026-09-16 är det enda stället på startsidan där verktygen syns, och verktygen är det vi har som ingen annan har.
 
 **Så jobbar vi.** Två till fyra meningar om hur vi testar och hur vi tjänar pengar, med länkar till "Så testar vi" och "Så tjänar vi pengar". Det här blocket finns för förtroendet, och för Google.
 
@@ -790,7 +784,7 @@ Prishistorik (fas 2) är ett litet linjediagram i det fulla kortet, 90 dagar, l�
 
 **Innehåll.** Ikonen `ikon-kalkylator` (24 px) och rubriken i H3 på samma rad ("Hur stor avfuktare behöver du?"), en rad förklaring, och länken "Till kalkylatorn". På startsidan dessutom ett litet eget diagram eller en detalj ur säsongens illustration överst.
 
-**Utseende.** Kort (ram linje, 2 px, ingen skugga), bakgrund papper. Ingen köpknapp, inget pris. Statiskt, ingen ö. I ett rutnät (hubbens grupp Räkna, startsidans säsongsblock, `/amnen/`) sköter rutnätet avståndet och kortet har ingen egen luft ovanför och under.
+**Utseende.** Kort (ram linje, 2 px, ingen skugga), bakgrund papper. Ingen köpknapp, inget pris. Statiskt, ingen ö. I ett rutnät (hubbens grupp Räkna, startsidans "Räkna själv", `/amnen/`) sköter rutnätet avståndet och kortet har ingen egen luft ovanför och under.
 
 ### Jämförelsetabell
 
@@ -882,6 +876,20 @@ I fas 1 kommer nästan alla produktbilder från leverantören. De är rena packs
 - **Samma ram överallt.** Alla produktbilder ligger i en 4:3-ruta med 1 px linje-ram och 2 px radie, med bilden `object-fit: contain` och 8 px luft runt. Rutans bakgrund är `vit`, det enda stället vit används. Att rutan är vit mot det varma papperet är avsiktligt: bilden ser ut som ett inklistrat urklipp, inte som en produktsida.
 - **Konsekvent beskärning.** 4:3 för produkter, 3:2 för foton av situationer, 1:1 för författare. Inga fria proportioner. Alla `<Image>` har `width` och `height`, alltid.
 - **Ingen retusch, ingen färgton.** Vi lägger inte filter på leverantörsbilder. Det ser billigt ut.
+
+### Varumärkesillustrationen
+
+En skiss förklarar något. En varumärkesillustration säger vem vi är, och det är en annan bild. Den enda som finns är startsidans hero, `src/assets/illustrationer/start/hus-tumstock.svg` (600 × 420, 9,3 kB, ritad 2026-09-16 när säsongsblocket togs bort och övre halvan blev rubrik till vänster och bild till höger). Den visar ett hus i genomskärning där konturen är en tumstock vikt i sex segment, med leder, streck och måttsiffrorna 20, 40, 60 och 80, och inuti huset en takstol, ett elskåp med blixt, en skruv på väg in i väggen och en droppe i källaren, med en altan utanför den högra väggen. De fem detaljerna är sajtens bredd i en bild: tak, el, montering, fukt, altan.
+
+Reglerna skiljer sig från skissernas på fyra punkter, och de gäller varje ny varumärkesillustration:
+
+- **Logotypens stil, inte anteckningsblockets.** Formen ritas som symbolen: segment i `tumstock` med `blyerts` kontur 2 px och helrunda ändar, leder som en fylld nit i blyerts med beslagsring i `blyerts-2`. Inget linjerat papper, ingen marginallinje, ingen skraffering utom marken. Bakgrunden är transparent så att sidans papper syns igenom.
+- **Ingen text.** Inga etiketter, inga anteckningar, ingen Caveat. Måttsiffrorna på tumstocken är ritade som banor och är textur, inte information: de ska inte gå att läsa som ett värde. Behöver bilden en förklaring hör den hemma i en skiss i stället.
+- **Ett pennstreck som signatur.** Ett enda streck i `penna`, 4,5 px, under motivet, som i ordmärket. Snickarpennan pekar inte på något här, den skriver under.
+- **Inga pyttedetaljer.** Bilden ligger i 560 px på desktop och 343 px på mobil. Tunnaste linje är 1,4 i motivets skala, alltså knappt 1 px på mobil. Varje detalj som blir gröt vid 343 px stryks i stället för att krympas.
+- **Motivet fyller ytan.** En varumärkesillustration ska väga lika mycket som rubriken bredvid, så den får inte ligga som en liten vinjett mitt i en tom viewBox. Motivet tar 90 till 94 procent av bredden och 88 till 90 procent av höjden, mätt på den renderade bilden, med jämna marginaler runt om. Motivet ritas i sin egen skala och skalas på plats med ett `transform` i det yttre `g`:et, så att koordinaterna går att räkna på och utsnittet går att justera på ett ställe.
+
+Den ligger på startsidan som `<img alt="">` eftersom H1 bär meningen. Filen har ändå `role="img"` och `aria-label` för den som öppnar den för sig. Den innehåller ingen `<text>`, så `npm run illustrationer` rör den inte och den behöver ingen källfil under `illustrationer-kallor/`.
 
 ### Skisserna
 
@@ -976,7 +984,7 @@ Alla filer under `src/assets/brand/riktning-1/`. Handskrivna SVG:er utan editorm
 | `ikoner.svg` | Sprite med 16 symboler i `currentColor` | Inlineas i layouten, se Ikoner i avsnitt 6 |
 | `monster.svg` | Linjerat papper, kakelbart 48 × 24 | Som `<pattern>` i illustrationer. I HTML används `.linjerat` i stället |
 
-Illustrationerna ligger inte i brand-mappen utan i `src/assets/illustrationer/[pelare]/`: `fukt/kallare.svg` (källaren i genomskärning, förebild för alla skisser, huvudbild i fuktguiderna och startsidans säsongsblock augusti till november). En ny skiss läggs i pelarens mapp och refereras från artikeln enligt `docs/ARKITEKTUR.md`.
+Illustrationerna ligger inte i brand-mappen utan i `src/assets/illustrationer/[pelare]/`: `fukt/kallare.svg` (källaren i genomskärning, förebild för alla skisser, huvudbild i fuktguiderna). En ny skiss läggs i pelarens mapp och refereras från artikeln enligt `docs/ARKITEKTUR.md`. Startsidans hero är undantaget: `start/hus-tumstock.svg` hör till ingen pelare utan till sajten, viewBox 600 × 420, genomskinlig bakgrund, ritad i ordmärkets stil.
 
 **Illustrationernas två mappar.** Texten i en skiss redigeras aldrig i den publicerade filen, utan i källan:
 

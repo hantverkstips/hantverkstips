@@ -6,7 +6,11 @@ export interface Kalkylator {
   slug: string;
   namn: string;
   rad: string;
-  /** Månad från och till, 1 till 12. Styr vilken startsidan visar. */
+  /**
+   * Månad från och till, 1 till 12. Säsongen som kalkylatorn hör till, underlag
+   * för chefredaktörens val av "Just nu" på startsidan. Startsidan läser inte
+   * fältet själv sedan säsongsblocket togs bort 2026-09-16.
+   */
   sasong: [number, number];
   kategori?: string;
 }
@@ -23,16 +27,4 @@ export const KALKYLATORER: Kalkylator[] = [
 
 export function hittaKalkylator(slug: string): Kalkylator | undefined {
   return KALKYLATORER.find((k) => k.slug === slug);
-}
-
-/** Första kalkylatorn vars säsong täcker månaden, annars den första i listan. */
-export function sasongensKalkylator(manad: number): Kalkylator {
-  const forsta = KALKYLATORER[0];
-  if (!forsta) throw new Error('[register] KALKYLATORER är tom');
-  const trafF = KALKYLATORER.find((k) => {
-    const [fran, till] = k.sasong;
-    // Säsonger som går över årsskiftet (12 till 2) hanteras också.
-    return fran <= till ? manad >= fran && manad <= till : manad >= fran || manad <= till;
-  });
-  return trafF ?? forsta;
 }

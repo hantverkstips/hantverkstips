@@ -182,7 +182,7 @@ const pelare = defineCollection({
     description: z.string().max(160),
     // En mening om pelaren, på hubben och på /amnen/.
     ingress: z.string(),
-    // Två till tre viktiga sidor som startsidans säsongsblock och /amnen/ länkar till (sökvägar).
+    // Två till tre viktiga sidor som /amnen/ länkar till (sökvägar).
     viktiga: z.array(z.object({ titel: z.string(), href: z.string() })).max(3).default([]),
     uppdaterad: z.coerce.date().optional(),
     utkast: z.boolean().default(false),
@@ -240,12 +240,8 @@ const sidor = defineCollection({
     uppdaterad: z.coerce.date().optional(),
     // Vilken strukturerad data sidan får. Organization bara på /om/.
     strukturdata: z.enum(['Organization', 'Article', 'ingen']).default('ingen'),
-    // Bara för startsida: säsongsblockets rubrik och mening, skrivna av
-    // chefredaktören och bytta med säsongen. Saknas de renderas blocket med
-    // etikett, illustration, verktygskort och länkar, utan rubrik och text.
-    sasongRubrik: z.string().optional(),
-    sasongText: z.string().optional(),
     // Bara för startsida: artikeln under "Just nu", vald av chefredaktören.
+    // Säsongen styrs härifrån sedan säsongsblocket togs bort 2026-09-16.
     justNu: z
       .object({
         samling: z.enum(['guider', 'kunskap', 'tester', 'jamforelser']),

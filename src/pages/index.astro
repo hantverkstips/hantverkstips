@@ -1,22 +1,24 @@
 ---
 /**
- * Startsidan är en uppslagen anteckningsbok, inte en landningssida. Inget hero,
- * ingen bakgrundsbild, inga köpknappar, inget reklamband.
+ * Startsidan är en uppslagen anteckningsbok, inte en landningssida. Ingen
+ * bakgrundsbild, inga köpknappar, inget reklamband.
  *
- * Blocken följer docs/DESIGN.md avsnitt 5.1: öppning, ämnesraden, säsongens
- * ämne, rutnätet med guider och tester (där "Just nu" är det stora kortet),
- * Bäst i test just nu, Räkna själv och Så jobbar vi. "Just nu" och "Senaste" är
- * ett och samma rutnät: två block med samma sorts innehåll blev två gånger
- * samma bild. Ämnesraden ersatte "Börja här" 2026-09-16: läsaren såg inget att
- * klicka på ovanför vecket och hittade inte till ämnena från startsidan.
+ * Blocken följer docs/DESIGN.md avsnitt 5.1: heron (H1, stycket och husskissen),
+ * ämnesraden, rutnätet med guider och tester (där "Just nu" är det stora
+ * kortet), Bäst i test just nu, Räkna själv och Så jobbar vi. "Just nu" och
+ * "Senaste" är ett och samma rutnät: två block med samma sorts innehåll blev
+ * två gånger samma bild. Ämnesraden ersatte "Börja här" 2026-09-16: läsaren såg
+ * inget att klicka på ovanför vecket och hittade inte till ämnena från
+ * startsidan. Säsongsblocket togs bort 2026-09-16: övre halvan sa fyra saker
+ * samtidigt. Säsongen styr i stället "Just nu" och rutnätet.
  */
 import { getEntry, render } from 'astro:content';
 import Bas from '../layouts/Bas.astro';
-// Säsongens skiss. Byts mot säsongsstyrd illustration när fler finns ritade.
-import sasongsbild from '../assets/illustrationer/fukt/kallare.svg';
-import { formateraPris, manadNamn } from '../lib/format';
+// Sidans LCP-bild. Egen skiss i ordmärkets stil, dekorativ: H1 bär meningen.
+import heroBild from '../assets/illustrationer/start/hus-tumstock.svg';
+import { formateraPris } from '../lib/format';
 import { arPublicerad, publicerade, slugify } from '../lib/innehall';
-import { KALKYLATORER, sasongensKalkylator } from '../lib/kalkyl/register';
+import { KALKYLATORER } from '../lib/kalkyl/register';
 import {
   allaKort,
   kategoriVal,
@@ -38,21 +40,6 @@ const startsida = await getEntry('sidor', 'startsida');
 if (!startsida) throw new Error('src/content/sidor/startsida.mdx saknas');
 const { Content } = await render(startsida);
 
-const nu = new Date();
-const sasong = sasongensKalkylator(nu.getMonth() + 1);
-
-/**
- * "Läs först" i säsongsblocket är hubbens viktiga sidor för den pelare säsongens
- * kalkylator hör till: kalkylatorns kategori pekar ut kategorifilen, och dess
- * första pelare är pelaren. Saknas den, eller är hubben utkast, faller vi
- * tillbaka på fukt, som är pelaren med flest sidor.
- */
-const hubbar = await publicerade('pelare');
-const sasongPelare = sasong.kategori ? await pelareForKategori(sasong.kategori) : 'fukt';
-const sasongHub = hubbar.find((h) => h.id === sasongPelare) ?? hubbar.find((h) => h.id === 'fukt');
-const lasForst = sasongHub?.data.viktiga ?? [];
-const sasongEtikett = `Säsongens ämne · ${manadNamn(nu)}`;
-
 // Just nu: chefredaktörens val. Utkast länkas aldrig från en publicerad sida.
 const justNuRef = startsida.data.justNu;
 let justNu: KortData | null = null;
@@ -70,15 +57,6 @@ if (justNuRef) {
     const e = await getEntry('kunskap', justNuRef.id);
     if (e && arPublicerad(e)) justNu = tillKortArtikel(e);
   }
-}
-
-/**
- * Samma bild två gånger på en skärm ser ut som ett fel. Är justNu-kortets
- * illustration säsongsbilden visas kortet med placeholder i stället, och
- * skissen får stå på ett ställe.
- */
-if (justNu?.illustration && justNu.illustration.src === sasongsbild.src) {
-  justNu = { ...justNu, illustration: undefined };
 }
 
 // Rutnätet: det stora kortet först, sedan de fyra senaste med justNu bortfiltrerad.
@@ -102,76 +80,39 @@ const sidtitel = startsida.data.seoTitle ?? 'Hantverkstips, kunskap om huset fr�
 <Bas title={sidtitel} description={startsida.data.description} bred={true}>
   <StrukturData slot="head" data={organisation()} />
 
-  <div class="max-w-lasbredd">
-    <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">{h1}</h1>
-    <div class="prosa mt-4 text-ingress lg:text-ingress-lg">
-      <Content components={{ Markering }} />
+  {/*
+    Heron i sidbredd. Desktop: texten 6/12 till vänster, skissen 6/12 till
+    höger, lodrätt centrerade med 48 px emellan. Mobil: H1, stycket, sedan
+    skissen i full bredd. Bilden är dekorativ och står utan ram och bildtext:
+    H1 bär meningen, och skissen har genomskinlig bakgrund, så en ram hade
+    bara lagt ännu en kant i övre halvan. Det är sidans LCP-bild.
+  */}
+  <section class="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-12">
+    <div class="lg:col-span-6">
+      <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">{h1}</h1>
+      <div class="prosa mt-4 text-ingress lg:text-ingress-lg">
+        <Content components={{ Markering }} />
+      </div>
     </div>
-  </div>
+
+    <div class="lg:col-span-6">
+      <img
+        src={heroBild.src}
+        alt=""
+        width={heroBild.width}
+        height={heroBild.height}
+        fetchpriority="high"
+        decoding="async"
+        class="block h-auto w-full"
+      />
+    </div>
+  </section>
 
   {/*
     Ämnesraden. Åtta ämneskort i sidbredd direkt under öppningen: sajtens karta
     och sidans enda navigering ovanför vecket.
   */}
   <Amnesrad />
-
-  {/*
-    Säsongens ämne. Illustrationen till vänster på desktop (7/12), etikett,
-    rubrik, mening, verktygskort och länkar till höger (5/12). På mobil står
-    rubriken över skissen, som i mockupen: läsaren ska veta vad hon tittar på.
-  */}
-  <section class="mt-12 grid grid-cols-1 gap-6 lg:mt-16 lg:grid-cols-12 lg:gap-12">
-    <div class="order-1 lg:col-span-5 lg:col-start-8 lg:row-start-1">
-      <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-blyerts">{sasongEtikett}</p>
-      {
-        startsida.data.sasongRubrik && (
-          <Pennstreck id={slugify(startsida.data.sasongRubrik)} utanLuft={true} class="mt-2">
-            {startsida.data.sasongRubrik}
-          </Pennstreck>
-        )
-      }
-      {startsida.data.sasongText && <p class="m-0 mt-2 text-brod lg:text-brod-lg">{startsida.data.sasongText}</p>}
-    </div>
-
-    <figure class="order-2 m-0 lg:col-span-7 lg:col-start-1 lg:row-span-3 lg:row-start-1">
-      <img
-        src={sasongsbild.src}
-        alt=""
-        width={sasongsbild.width}
-        height={sasongsbild.height}
-        fetchpriority="high"
-        decoding="async"
-        class="block h-auto w-full rounded-sm border border-linje"
-      />
-      <figcaption class="mt-2 text-liten text-blyerts-2">
-        Källaren i september. Markfukten trycker in genom väggen och möter varm luft.
-      </figcaption>
-    </figure>
-
-    <div class="order-3 lg:col-span-5 lg:col-start-8 lg:row-start-2">
-      <Verktygskort kalkylator={sasong.slug} iRutnat={true} />
-    </div>
-
-    {
-      lasForst.length > 0 && (
-        <div class="order-4 lg:col-span-5 lg:col-start-8 lg:row-start-3">
-          <p class="m-0 text-etikett uppercase text-blyerts-2">Läs först</p>
-          <ul class="m-0 list-none p-0">
-            {lasForst.map((v) => (
-              <li>
-                <a
-                  href={v.href}
-                  class="inline-flex min-h-11 items-center text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
-                >
-                  {v.titel}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )
-    }
-  </section>
 
   {
     rutnat.length > 0 && (
@@ -225,9 +166,9 @@ const sidtitel = startsida.data.seoTitle ?? 'Hantverkstips, kunskap om huset fr�
   }
 
   {
-    /* Med en enda kalkylator är den redan säsongens verktygskort, och samma kort
-       två gånger på en sida är samma fel som samma bild två gånger. */
-    KALKYLATORER.length >= 2 && (
+    /* Alla kalkylatorer, från den första. Blocket är enda stället på startsidan
+       där verktygen syns sedan säsongsblocket togs bort 2026-09-16. */
+    KALKYLATORER.length > 0 && (
       <section>
         <Pennstreck id={slugify('Räkna själv')}>Räkna själv</Pennstreck>
         <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
