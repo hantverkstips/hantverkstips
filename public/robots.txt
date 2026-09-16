@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /go/
+Disallow: /admin/
+
+Sitemap: https://www.hantverkstips.se/sitemap-index.xml

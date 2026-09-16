@@ -14,6 +14,7 @@ Beslutad 2026-09-15, uppdaterad samma dag efter innehållsarkitekturen (`docs/IN
 | Auth | Supabase Auth | Bara för `/admin` |
 | Hosting | Vercel via `@astrojs/vercel` | Statisk output plus serverfunktioner för `/go/`, `/rakna/` och `/admin` |
 | Rendering | Statisk som standard. `prerender = false` på `/go/*`, `/admin/*` och kalkylatorerna under `/rakna/[slug]/` | Kalkylatorn räknar på servern så att den fungerar utan klient-JS. Sidan utan query-parametrar cachas på CDN:et |
+| Sitemap | `@astrojs/sitemap` med filter | Indexerbara sidor listas, noindex och serversidor utesluts. Se Konventioner |
 | Mätning | Search Console + Vercel Analytics | Inget Google Analytics |
 | Språk | TypeScript strikt | |
 
@@ -26,6 +27,7 @@ C:\Hantverkstips\
 ├── .claude/agents/            # agentdefinitioner, en per roll
 ├── public/
 │   ├── fonts/                 # tre woff2-filer, self-hostade
+│   ├── robots.txt             # handskriven, pekar på sitemap-index.xml
 │   └── favicon.svg
 ├── src/
 │   ├── assets/
@@ -79,8 +81,10 @@ C:\Hantverkstips\
 │   ├── seed.sql               # utvecklingsdata, körs manuellt, aldrig mot produktion
 │   └── seed-*-2026-09-16.sql  # verkliga produkter ur produktexpertens underlag, idempotenta, körs manuellt
 └── scripts/
-    └── kontrollera-innehall.ts  # byggkontroll av innehållet, körs av npm run build före astro build.
-                                 # Senare även feed-import, konverteringsimport, ombyggnadstriggers
+    ├── kontrollera-innehall.ts  # byggkontroll av innehållet, körs av npm run build före astro build.
+    │                            # Senare även feed-import, konverteringsimport, ombyggnadstriggers
+    └── noindex-sidor.mjs        # läser noindex ur kategoriernas frontmatter, används av
+                                 # sitemapfiltret i astro.config.mjs
 ```
 
 ## Datamodell (Supabase)
@@ -139,6 +143,13 @@ Rotnamnrymden delas av pelare och kategorier. Pelarslugs (`src/lib/pelare.ts`: `
 **Innehållsfiler och undermappar** (beslut 2026-09-16, för att samlingarna ska bära hundratals filer). Guider och kunskap ligger i en undermapp per pelare, tester och jämförelser i en undermapp per kategori: `src/content/guider/fukt/avfuktare-kallare.mdx`, `src/content/tester/luftavfuktare/woods-mrd20.mdx`. Mappen är ordning för människor och verktyg; **id och adress kommer alltid från filnamnet**, aldrig från sökvägen, så en fil kan flyttas mellan mappar utan att URL:en ändras. Loadern i `src/content.config.ts` (`artikelLoader`) sätter id till filnamnet utan ändelse och stoppar bygget om två filer i samma samling har samma namn, oavsett mapp, och `prerenderConflictBehavior: 'error'` i `astro.config.mjs` gör detsamma på Astros nivå. Filnamnet får bara innehålla `a-z`, `0-9` och bindestreck, aldrig `index`. Mappen måste stämma med fältet: `guider/fukt/` kräver `pelare: fukt`, `tester/luftavfuktare/` kräver `kategori: luftavfuktare`; kontrollskriptet stoppar annars. Pelare, kategorier, sidor och författare är platta, en fil i en undermapp där läses inte av bygget och ger fel i kontrollen. Första artikeln i en pelare kräver att hubfilen `src/content/pelare/[pelare].md` finns, `utkast: true` räcker. Relativa sökvägar i frontmatter (`bild`) utgår från filens plats, alltså tre nivåer upp till `src/assets/`.
 
 **Kanonisk värd.** `https://www.hantverkstips.se`. Utan www svarar 308 dit, och canonical ska peka på adressen som svarar 200. Värdet står på två ställen som måste stämma överens: `site` i `astro.config.mjs` och `SAJT` i `src/lib/strukturdata.ts`. Byts primär domän i Vercel byts båda samtidigt. Beslutat 2026-09-16 efter SEO-granskningen.
+
+**Sitemap och robots.** `@astrojs/sitemap` (pinnad version i `package.json`, inget `^`: en integration som skriver filer Google läser ska inte byta beteende av sig själv) skriver `sitemap-index.xml` och `sitemap-0.xml` i bygget. Adresserna byggs av `site`, så de får www och avslutande snedstreck automatiskt. Filtret `iSitemap()` i `astro.config.mjs` tar bort allt som inte får indexeras:
+
+- prefixen `/go/`, `/admin/` och `/_skiss/`
+- varje adress med `<meta name="robots" content="noindex">`: kategorier med `noindex: true` plus `/404/`. En sida som står i sitemapen och samtidigt är noindex är en motstridig signal.
+
+Utkast filtreras inte, de byggs inte alls. Konfigurationen körs utanför Astros runtime och når inte `astro:content`, så `noindexAdresser()` i `scripts/noindex-sidor.mjs` läser i stället `src/content/kategorier/*.{md,mdx}` med glob och parsar frontmattret med `yaml`. Får fler samlingar fältet `noindex` utökas den funktionen. `public/robots.txt` är handskriven, tillåter allt utom `/go/` och `/admin/` och pekar på `https://www.hantverkstips.se/sitemap-index.xml`; byts domänen byts den raden samtidigt som `site` och `SAJT`. `Bas.astro` länkar sitemapen med `<link rel="sitemap" type="application/xml" href="/sitemap-index.xml">`. Lagt till 2026-09-16.
 
 **Byggkontroll.** `npm run build` kör `scripts/kontrollera-innehall.ts` (ren Node med typborttagning, Node 22.18 eller senare, inget Astro) före `astro build`. Den stoppar bygget vid dubbla slugs, fil i fel undermapp, pelare som saknas i registret, saknar hubfil eller har en hubfil som inte är `.mdx`, kategori, författare eller kalkylator som inte finns, intern länk i frontmatter eller brödtext som leder ingenstans, saknar avslutande snedstreck eller pekar på ett utkast (länken blir 404 i bygget), länk direkt till `/go/`, och `bild` som pekar på en fil som saknas. Den varnar, utan att stoppa, när en publicerad artikel, test eller jämförelse saknar inlänk från en annan innehållsfil (sidfot, meny och mallarnas automatiska listor räknas inte; hubbar och kategorisidor har sina länkar därifrån och kontrolleras inte). Varningen blir stopp när sajten har fler sidor. Kör den ensam med `npm run kontrollera`.
 

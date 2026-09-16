@@ -3,8 +3,10 @@ import { defineConfig } from 'astro/config';
 
 import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
+import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
 import { satteri } from '@astrojs/markdown-satteri';
+import { noindexAdresser } from './scripts/noindex-sidor.mjs';
 
 /** Längsta celltext som får hållas ihop på en rad. Värden som "1 × 12,5 mm"
  *  och "1,9 °C" ska aldrig brytas mellan tal och enhet; hela meningar bryts
@@ -75,6 +77,27 @@ const tabellBehallare = {
   },
 };
 
+/** Sökvägsprefix som aldrig får stå i sitemapen: redirect, inloggat, skisser. */
+const UTANFOR_SITEMAP = ['/go/', '/admin/', '/_skiss/'];
+
+/** Läses en gång när konfigurationen laddas, inte per sida. */
+const NOINDEX = noindexAdresser();
+
+/**
+ * Sitemapen listar bara sidor som får indexeras. Utkast byggs inte alls och kan
+ * därför aldrig komma hit; det som filtreras bort är serversidorna, skisserna
+ * och sidor med `<meta name="robots" content="noindex">` (kategorier med
+ * `noindex: true`, plus 404). En sida i sitemapen som samtidigt är noindex är
+ * en motstridig signal till Google. Se docs/ARKITEKTUR.md.
+ *
+ * @type {(url: string) => boolean}
+ */
+function iSitemap(url) {
+  const { pathname } = new URL(url);
+  if (UTANFOR_SITEMAP.some((prefix) => pathname.startsWith(prefix))) return false;
+  return !NOINDEX.has(pathname);
+}
+
 // Statisk output som standard. Sidor som behöver servern (/go/*, /admin/*)
 // sätter `export const prerender = false` och körs via Vercel-adaptern.
 // React-integrationen är borttagen i fas 1: inga öar finns, och utan den
@@ -85,7 +108,7 @@ export default defineConfig({
   // src/lib/strukturdata.ts. Se docs/ARKITEKTUR.md.
   site: 'https://www.hantverkstips.se',
   trailingSlash: 'always',
-  integrations: [mdx()],
+  integrations: [mdx(), sitemap({ filter: iSitemap })],
   // Två innehållsfiler med samma id (filnamn) eller två sidor på samma adress
   // stoppar bygget i stället för att varna. Standard är 'warn', och en varning
   // i en bygglogg med hundratals sidor läser ingen.
