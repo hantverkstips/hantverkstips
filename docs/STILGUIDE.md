@@ -46,6 +46,8 @@ Det här är mönster som avslöjar maskinskriven text. Ett enda fall räcker f�
 - "I slutändan", "när allt kommer omkring"
 - "Perfekt för", "idealisk för"
 - "Håll i minnet att", "kom ihåg att"
+- "Kartongen" och "lådan" om förpackningen innan förpackningen är nämnd. Skriv "på förpackningen" eller "tillverkarens uppgift" första gången; därefter får "lådan" stå.
+- "Grannen", "en kund", "jag minns" som inledning. Använda grepp, se "Sidan står för sig själv".
 
 **Struktur**
 - Treklanger: "snabbt, enkelt och smidigt". Två eller fyra, aldrig tre av slentrian.
@@ -84,6 +86,21 @@ Det här är mönster som avslöjar maskinskriven text. Ett enda fall räcker f�
 - Enheter med mellanslag: 25 kW, 40 kvm, 230 V.
 - Märken skrivs som tillverkaren skriver dem: DeWalt, Makita, Bosch, Festool, Wood's.
 
+## Sidan står för sig själv
+
+Tillagt 2026-09-16 efter Christians läsning av omgång 1 och 2. Reglerna gäller alla ämnen, från fukt till el, och väger tyngre än förbudslistan när de krockar: en text som är begriplig för den som landar från Google slår en text som undviker alla maskintecken.
+
+1. **Läsaren kommer från Google utan förkunskap.** Varje sida ska gå att läsa utan att ha sett någon annan sida på sajten. Ingen syftning på något som inte redan står på sidan: inte "kartongen", "lådan", "maskinen" eller "de två rummen" förrän saken är nämnd med namn. Testet: läs första stycket högt för någon som inte vet vad sidan handlar om.
+2. **Storheten skrivs ut första gången.** Ett tal utan storhet är ett fel. "65 procent luftfuktighet", inte "65 procent". "20 kg", "c 400 mm", "230 V", "2,40 kr per kWh". Det gäller första gången på varje sida och alltid i Kort svar; därefter får talet stå ensamt när storheten är självklar i sammanhanget.
+3. **Högst ett tal per mening i löptext.** Två tal i samma mening är en jämförelse och får stå kvar om det är poängen. Tre eller fler tal är en tabell. Antaganden bakom en tabell skrivs som en punktlista eller en tabell, aldrig som en mening.
+4. **Facktermen förklaras i samma mening första gången på sidan, anpassat till nivån.** Tre till fem ord räcker: "sorptionsavfuktare, som torkar luften med ett fuktsugande hjul i stället för kyla". Det gäller även termer som förklaras utförligt på en annan sida; länken kompletterar, den ersätter inte. Fältet `niva` styr hur mycket läsaren antas kunna: på en enkel sida förklaras allt, även cc, RF och dB; på en mellansida förklaras termen kort första gången; på en expertsida får branschstandardtermer stå utan förklaring, men sidans egna begrepp (som märkt kapacitet) förklaras ändå. Lätta ämnen antar att läsaren inte kan något. Komplexa ämnen och avancerade produkter antar grundkompetens, aldrig mer.
+5. **Högst en anekdot per sida, aldrig samma grepp två gånger på sajten.** "Grannen", "en kund", "jag minns" är använda. Sidor får också börja rakt på svaret; det är oftast bättre.
+6. **Kort svar är fyra till fem korta meningar.** En tanke per mening, högst ett tal per mening, inga tillverkarnamn och inga källor (de står i texten). Första meningen svarar på frågan i rubriken. Exempel på fel, från tavelsidan: "Under 5 kilo räcker en X-krok med spik, upp till 8 kilo tar en självborrande gipsplugg enligt fischer, och en gipskrok i stål anges av Habo till 20 kilo." Rätt: "Väg tavlan först. Under 5 kg räcker en X-krok med spik. Upp till 8 kg tar en självborrande gipsplugg. Tyngre än så, en gipskrok i stål eller skruv i regeln."
+7. **Nio delar lugn, en del lättsam.** Humorn är en mening som läsaren kan hoppa över, aldrig strukturen. Punchlines i slutet av stycken, tvåordsmeningar och inverterade inledningar ("Nu det jobbiga.") är grepp som fungerar en gång per sida, inte i varje avsnitt. Rösten är en kunnig hantverkare som förklarar för en kompis, inte en kolumnist.
+8. **Källor presenteras med ett eller två ord första gången, på enkla sidor alltid.** "Gipstillverkaren Norgips", "branschorganisationen Svenskt Trä", "tidningen Gör Det Själv". På mellansidor räcker det för källor som inte är tillverkare av produkter på sidan. På expertsidor får branschkällor stå utan presentation.
+9. **Mätvillkor skrivs ut, aldrig som bråk.** "vid 20 grader och 60 procent luftfuktighet" i löptext, "vid 20 °C och 60 %" i tabellceller. Skrivsättet "20/60" får användas i en tabell bara om raden ovanför tabellen säger vad det betyder, och aldrig i löptext.
+10. **Ett skrivsätt per mått på hela sajten.** Centrumavstånd skrivs "c 400 mm" och förklaras första gången på varje sida ("alltså 400 mm mellan reglarnas mitt"); när källorna skriver cc eller s säger sidan en gång att det betyder samma sak. "Cirka" skrivs ut.
+
 ## Tabeller
 
 Tillagt 2026-09-16 efter granskningen av omgång 2, där fyra tabeller sprängde läsbredden.
@@ -91,8 +108,11 @@ Tillagt 2026-09-16 efter granskningen av omgång 2, där fyra tabeller sprängde
 - Högst fyra kolumner i en tabell i löptext. Behövs fler är det två tabeller.
 - Källan står i en rad under tabellen, aldrig som egen kolumn.
 - Enheten står i kolumnrubriken ("Effekt, W"), inte i varje cell.
-- En cell är ett tal eller högst tre ord. Förklaringar står i texten under.
+- En cell är ett tal, ett tal med sitt mätvillkor ("7,4 l vid 20 °C och 60 %") eller högst tre ord. Förklaringar står i texten under.
 - Tabellen sorteras på det läsaren letar efter (vikt, yta, pris), och sorteringen bryts aldrig av en rad som "egentligen" hör hemma någon annanstans.
+- Kolumnrubriken är högst två ord plus enhet: "Vatten, g/m³", "Maxyta, kvm", "Tillverkaren, kg". En lång rubrik gör tabellen bredare än en mobilskärm oavsett hur få kolumner den har.
+- En cell bär ett värde. Två värden för samma sak ("7,4, som mest 9,7") blir en cell och en mening under tabellen.
+- Undantag för diagnostabeller ("Vad du ser | Trolig orsak | Nästa steg"): högst tre kolumner, och cellerna får vara en kort mening när hela tabellen läses som en checklista. Källraden under gäller ändå.
 
 ## Rubriker och metadata
 

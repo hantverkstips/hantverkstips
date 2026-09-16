@@ -507,17 +507,36 @@ body {
     och sidan blir aldrig bredare än skärmen.
   */
   /* Ledtexten över tabellen, samma ord och samma stil som jämförelsetabellens.
-     Bara på mobil: från lg får tabellen plats eller växer i stället ut åt höger. */
+     Bara på mobil: från lg får tabellen plats eller växer i stället ut åt höger.
+     Dold som utgångsläge: pluginet i astro.config.mjs lägger ledtexten över varje
+     brödtabell, men en tvåkolumnstabell får plats på 375 px och då är texten fel.
+     Den visas bara när tabellen har fler än tre kolumner, alltså när någon rad har
+     en fjärde cell. Granskningen 2026-09-16. Webbläsare utan :has() får ingen
+     ledtext alls, vilket är rätt väg att falla: tabellen scrollar ändå och den
+     tonade högerkanten visar att det finns mer. */
   .prosa .tabell-dra {
+    display: none;
     margin: 0 0 8px;
     font-size: var(--text-liten);
     line-height: var(--text-liten--line-height);
     color: var(--color-blyerts-2);
   }
+  .prosa .brodtabell-block:has(.brodtabell tr > *:nth-child(4)) .tabell-dra {
+    display: block;
+  }
   @media (min-width: 64rem) {
-    .prosa .tabell-dra {
+    .prosa .brodtabell-block:has(.brodtabell tr > *:nth-child(4)) .tabell-dra {
       display: none;
     }
+  }
+  /* Den tonade högerkanten följer samma villkor som ledtexten. En tabell med
+     högst tre kolumner ryms i 343 px, och då tonade kanten bort sista kolumnen
+     i onödan: tabellen såg skymd ut fast det inte fanns något mer att dra fram.
+     Gäller bara brödtabeller. Jämförelsetabellen använder samma .tabell-yta men
+     scrollar alltid på mobil och behåller sin kant. :not(:has(…)) är ogiltigt i
+     webbläsare utan :has(), då faller regeln bort och kanten ritas som förut. */
+  .prosa .brodtabell-block:not(:has(.brodtabell tr > *:nth-child(4))) .tabell-yta::after {
+    content: none;
   }
   /* DESIGN.md avsnitt 2: tabeller får gå ut förbi läsbredden. Artikelmallen har
      innehållsförteckningen i höger spalt, så tabellen får växa ut i mellanrummet
@@ -575,11 +594,24 @@ body {
   .prosa .brodtabell td:not(.kort-cell) {
     min-width: 6rem;
   }
+  /* Kolumnrubriker bryts alltid, också de korta. Pluginet räknar "Tillverkarens
+     maxyta" (20 tecken) som kort cell, och nowrap på den gjorde rubriken till
+     tabellens minsta bredd: fyra sådana rubriker blev bredare än 343 px och
+     tabellen klipptes på mobil. Granskningen 2026-09-16. hyphens: auto avstavar
+     på svenska, <html> har lang="sv". Klassen står i selektorn för att väga
+     tyngre än .kort-cell ovan. min-width 3 rem (48 px, varav 24 px
+     innermarginal) är golvet som hindrar att en rubrik pressas till ett tecken
+     per rad, och är lågt nog att fyra rubriker på två ord får plats i 343 px. */
+  .prosa .brodtabell th,
+  .prosa .brodtabell th.kort-cell {
+    white-space: normal;
+    hyphens: auto;
+    overflow-wrap: break-word;
+    min-width: 3rem;
+  }
   .prosa .brodtabell thead th {
     background-color: var(--color-papper-2);
     font-weight: 700;
-    /* Korta rubriker ("30 %", "Rumstemp") hålls ihop av .kort-cell ovan. Långa
-       rubriker får brytas, annars blir tabellen bredare än den behöver vara. */
   }
   .prosa .brodtabell tbody tr:last-child > th,
   .prosa .brodtabell tbody tr:last-child > td {

@@ -6,7 +6,7 @@ Hur teamet av agenter arbetar. Christian är beställare och sista instans. Huvu
 
 **Seniorer** (körs på huvudmodellen): kravställer, granskar, säger nej. De skriver briefer och gör bedömningar, men producerar sällan slutmaterial själva.
 
-**Utförare** (körs på Opus): skriver texter, bygger komponenter, kör analyser. Arbetar alltid från en skriftlig brief. Levererar aldrig direkt till publicering.
+**Utförare**: bygger komponenter och kör analyser (utvecklaren, på Opus) eller skriver sidor (skribenten, på huvudmodellen sedan 2026-09-16, eftersom rösten är sajtens viktigaste tillgång). Arbetar alltid från ett komplett uppdrag. Levererar aldrig direkt till publicering.
 
 | Roll | Nivå | Fil |
 |---|---|---|
@@ -40,7 +40,7 @@ Sidor produceras i omgångar om fyra till åtta, en skribent per sida, alla para
 Koordinator         → uppdrag per sida: sökord, typ, pelare, nivå, produkter i databasen, källor att
                       utgå från, vilka andra sidor i omgången som skrivs samtidigt (för länkar och
                       gränsdragning)
-Skribent (Opus)     → sökanalys av ettan (WebSearch, WebFetch), listan "bättre än ettan" (minst tre
+Skribent (huvudmod.)→ sökanalys av ettan (WebSearch, WebFetch), listan "bättre än ettan" (minst tre
                       punkter), faktaunderlag med källa per påstående, texten, illustrationerna som
                       SVG-källor, npm run illustrationer, npm run kontrollera. Allt i ett svep.
                       Rör bara sina egna filer och föreslår inlänkar från hubbar i rapporten.

@@ -800,6 +800,20 @@ Prishistorik (fas 2) är ett litet linjediagram i det fulla kortet, 90 dagar, l�
 
 **Tillstånd.** Med och utan priser (prisraden utgår om ingen produkt har pris). Med och utan köpknappar (jämförelser i kunskapsartiklar kan sakna dem). Färre än två produkter: komponenten renderar inte, bygget varnar.
 
+### Tabell i brödtext
+
+**Syfte.** Siffror som hör till texten och inte kommer ur produktdatabasen: daggpunkter, skruvlängder, kapacitet mot yta. Skrivs som en vanlig markdown-tabell i MDX; Sätteri-pluginet i `astro.config.mjs` lägger omslaget `.brodtabell-block` runt den.
+
+**Utseende.** Samma yta som jämförelsetabellen: 1 px linje mellan rader, tabellhuvud i papper-2, 12 px innermarginal, 14 px text på mobil och 15 px från lg, tabellsiffror.
+
+**Mobil.** Celler med högst 30 tecken hålls ihop på en rad (`.kort-cell`, sätts vid bygget), längre celler bryts och får minst 6 rem spaltbredd. Kolumnrubriker bryts alltid, också korta: `white-space: normal`, `hyphens: auto` (`<html>` har `lang="sv"`) och 3 rem minsta spaltbredd. Det är vad som gör att en fyrkolumnstabell med rubriker på två ord ryms i 343 px utan sidledsscroll. Räcker bredden ändå inte scrollar tabellen i sin behållare, aldrig sidan.
+
+**Ledtext och tonad kant.** "Dra i sidled för att se hela tabellen", 14 px blyerts-2 över tabellen, och den tonade 24 px-övergången på behållarens högerkant. Båda visas bara på mobil och bara när tabellen har fyra kolumner eller fler. Villkoret är `:has()` på omslaget (`:has(.brodtabell tr > *:nth-child(4))`), eftersom pluginet lägger ledtexten över varje tabell och en tabell med två eller tre kolumner ryms; då är texten fel och kanten får en tabell som ryms att se skymd ut. Webbläsare utan `:has()` får ingen ledtext men behåller kanten (`:not(:has(…))` är ogiltigt där och regeln faller bort); tabellen scrollar ändå. Jämförelsetabellen delar `.tabell-yta` men scrollar alltid på mobil och behåller sin kant.
+
+**Desktop.** I artikelmallen får tabellen växa ut i mellanrummet mot innehållsförteckningen (max läsbredd + 3 rem), aldrig över förteckningen. En tabell i en faktaruta stannar i rutan.
+
+**Redaktionellt.** Kolumnrubriken är högst två ord plus enhet ("Vatten, g/m³", "Maxyta, kvm"), en cell bär ett värde, och källraden under tabellen sätts med `<p class="tabellfot">`. Se STILGUIDE.md.
+
 ### Faktaruta
 
 **Syfte.** Lyfta något som ska läsas även av den som skummar. Faktarutan är en anteckning på blocket, därför ligger den på linjerat papper.
