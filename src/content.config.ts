@@ -63,6 +63,9 @@ const produktRef = z.union([
 const artikel = ({ image }: SchemaContext) =>
   z.object({
     title: z.string(),
+    // Egen title-tagg när sökfrasen inte tål samma formulering som H1. Utelämnad
+    // används title. Sätts av SEO-strategen, se docs/ARKITEKTUR.md.
+    seoTitle: z.string().optional(),
     description: z.string().max(160),
     publicerad: z.coerce.date(),
     uppdaterad: z.coerce.date().optional(),
@@ -175,6 +178,7 @@ const pelare = defineCollection({
   loader: glob({ base: './src/content/pelare', pattern: '*.{md,mdx}' }),
   schema: z.object({
     title: z.string(),
+    seoTitle: z.string().optional(),
     description: z.string().max(160),
     // En mening för "Börja här" på startsidan.
     ingress: z.string(),
@@ -191,6 +195,7 @@ const kategorier = defineCollection({
   schema: z.object({
     namn: z.string(),
     title: z.string(),
+    seoTitle: z.string().optional(),
     description: z.string().max(160),
     // Ingressen under H1. Meta-beskrivningen (description) återanvänds inte som ingress.
     ingress: z.string(),
@@ -217,6 +222,10 @@ const kategorier = defineCollection({
     kalkylator: z.string().optional(),
     forfattare: z.string().default('redaktionen'),
     uppdaterad: z.coerce.date().optional(),
+    // Håller sidan ur Googles index utan att avpublicera den. Används medan
+    // kategorin bara har platshållartext: den får inte rankas på "bäst i test"
+    // förrän den har egen text. Tas bort när texten är skriven.
+    noindex: z.boolean().default(false),
     utkast: z.boolean().default(false),
   }),
 });
@@ -226,6 +235,7 @@ const sidor = defineCollection({
   loader: glob({ base: './src/content/sidor', pattern: '*.{md,mdx}' }),
   schema: z.object({
     title: z.string(),
+    seoTitle: z.string().optional(),
     description: z.string().max(160),
     uppdaterad: z.coerce.date().optional(),
     // Vilken strukturerad data sidan får. Organization bara på /om/.

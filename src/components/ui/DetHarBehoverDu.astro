@@ -9,6 +9,7 @@ import {
   arSlut,
   billigasteErbjudande,
   hamtaProdukter,
+  lagerlage,
   produktNamn,
   varnaSaknadProdukt,
 } from '../../lib/produkter';
@@ -78,7 +79,7 @@ const visa = verktyg.length > 0 || material.length > 0;
                       pris={r.erbjudande?.pris ?? null}
                       prisDatum={r.erbjudande?.uppdaterad ?? null}
                       butikNamn={r.erbjudande?.butikNamn}
-                      slut={arSlut(r.erbjudande)}
+                      lager={lagerlage(r.erbjudande)}
                     />
                   </div>
                 )}

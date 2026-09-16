@@ -49,6 +49,9 @@ kopguide: /fukt/avfuktare-kallare/
 kalkylator: avfuktare
 forfattare: redaktionen
 uppdaterad: 2026-09-15
+# Ur index tills ingressen, "Så väljer du" och "Så testade vi" är skrivna.
+# Platshållartext på en sida med 29 köpknappar är precis vad Google straffar.
+noindex: true
 utkast: false
 ---
 

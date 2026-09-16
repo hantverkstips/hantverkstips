@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { serverKlient } from '../../lib/supabase';
-import { arKlickModul, arSidtyp, byggSparlank, tillBas36 } from '../../lib/affiliate';
+import { anvandbarLankmall, arKlickModul, arSidtyp, byggSparlank, tillBas36 } from '../../lib/affiliate';
 
 // Körs på servern vid varje anrop. Loggar klicket, bygger spårningslänken
 // från butiker.lankmall med klickets id som EPI, och skickar vidare med 302.
@@ -51,7 +51,10 @@ export const GET: APIRoute = async ({ params, url, request, redirect }) => {
   const rad = data as unknown as ErbjudandeRad | null;
   if (error || !rad) return new Response('Produkten hittades inte', { status: 404, headers: INGEN_CACHE });
 
-  const kanSpara = Boolean(rad.butiker.lankmall && rad.butik_url);
+  // En mall utan riktiga id:n, med okända platshållare eller utan {url} räknas
+  // som saknad: läsaren ska hellre gå ospårad till butiken än till en död sida
+  // hos nätverket. Varningen loggas en gång per butik.
+  const kanSpara = Boolean(rad.butik_url) && anvandbarLankmall(rad.butiker.lankmall, rad.butiker.slug);
   if (!kanSpara && !rad.affiliate_url) {
     return new Response('Erbjudandet saknar länk', { status: 404, headers: INGEN_CACHE });
   }

@@ -190,11 +190,20 @@ export function hogstaPris(p: Produkt): number | null {
   return priser.length ? Math.max(...priser) : null;
 }
 
-/** Sorterade på billigaste pris, produkter utan pris sist. */
+/**
+ * Sorterade på billigaste pris, produkter utan pris sist. Ej köpbara maskiner
+ * (slut eller ej beställningsbara) läggs efter de köpbara oavsett pris: en
+ * maskin som inte går att köpa ska inte stå först i tabellen bara för att den
+ * är billigast. Ordningen gäller både jämförelsetabellen, produktavsnitten och
+ * ItemList-datan, som alla utgår från den här listan.
+ */
 export async function produkterIKategori(kategoriSlug: string): Promise<Produkt[]> {
   const alla = await allaProdukter();
   const i = [...alla.values()].filter((p) => p.kategoriSlug === kategoriSlug);
   return i.sort((a, b) => {
+    const kopbarA = arSlut(billigasteErbjudande(a)) ? 1 : 0;
+    const kopbarB = arSlut(billigasteErbjudande(b)) ? 1 : 0;
+    if (kopbarA !== kopbarB) return kopbarA - kopbarB;
     const pa = lagstaPris(a);
     const pb = lagstaPris(b);
     if (pa === null && pb === null) return a.namn.localeCompare(b.namn, 'sv');
@@ -245,7 +254,34 @@ export function lokalBild(p: Produkt): string | null {
   return p.bildUrl && p.bildUrl.startsWith('/') ? p.bildUrl : null;
 }
 
+/**
+ * Lagerstatus i tre lägen. NULL betyder okänt och visas som köpbar (importen ska
+ * sätta i_lager när det är kontrollerat). Texten kommer från butikens feed och
+ * varierar i form: ej_bestallningsbar, "Ej beställningsbar", "slut i lager",
+ * restnoterad, utgått. Se docs/AFFILIATE.md avsnitt 3.
+ */
+export type Lagerlage = 'kopbar' | 'slut' | 'ej_bestallningsbar';
+
+/** Går inte att beställa alls, till skillnad från tillfälligt slut. */
+const EJ_BESTALLNINGSBAR = /ej.?best|icke.?best/i;
+/** Övriga negativa lägen: tillfälligt slut, restnoterat, ej i lager, utgått. */
+const SLUT = /slut|ej.?i.?lager|restnot|utg/i;
+
+export function lagerlage(e: Erbjudande | null): Lagerlage {
+  if (!e || !e.lagerstatus) return 'kopbar';
+  const status = e.lagerstatus.trim();
+  if (status === '') return 'kopbar';
+  if (EJ_BESTALLNINGSBAR.test(status)) return 'ej_bestallningsbar';
+  if (SLUT.test(status)) return 'slut';
+  return 'kopbar';
+}
+
+/** Sant när erbjudandet inte går att köpa: slut eller ej beställningsbart. */
 export function arSlut(e: Erbjudande | null): boolean {
-  if (!e || !e.lagerstatus) return false;
-  return /slut|ej i lager|restnot|utg/i.test(e.lagerstatus);
+  return lagerlage(e) !== 'kopbar';
+}
+
+/** Sant bara för produkter butiken inte tar hem igen. Styr knapptexten. */
+export function arEjBestallningsbar(e: Erbjudande | null): boolean {
+  return lagerlage(e) === 'ej_bestallningsbar';
 }

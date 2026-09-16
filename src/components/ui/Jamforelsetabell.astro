@@ -8,9 +8,9 @@ import { getEntry } from 'astro:content';
 import type { KlickModul } from '../../lib/affiliate';
 import { formateraPris } from '../../lib/format';
 import {
-  arSlut,
   billigasteErbjudande,
   hamtaProdukter,
+  lagerlage,
   lokalBild,
   produktNamn,
   varnaSaknadProdukt,
@@ -176,7 +176,7 @@ function kolumnKlass(slug: string): string {
                           pris={e?.pris ?? null}
                           prisDatum={e?.uppdaterad ?? null}
                           butikNamn={e?.butikNamn}
-                          slut={arSlut(e)}
+                          lager={lagerlage(e)}
                         />
                       ) : typeof e?.pris === 'number' ? (
                         <span class="font-bold text-blyerts">{formateraPris(e.pris)}</span>

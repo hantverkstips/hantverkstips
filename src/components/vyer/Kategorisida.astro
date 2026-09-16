@@ -16,7 +16,7 @@ import {
   testUrl,
   typEtikett,
 } from '../../lib/innehall';
-import { arSlut, billigasteErbjudande, hamtaButik, produktNamn, produkterIKategori } from '../../lib/produkter';
+import { billigasteErbjudande, hamtaButik, lagerlage, produktNamn, produkterIKategori } from '../../lib/produkter';
 import { lista as listaData } from '../../lib/strukturdata';
 import Brodsmulor from '../ui/Brodsmulor.astro';
 import Faktaruta from '../ui/Faktaruta.astro';
@@ -83,13 +83,15 @@ const strukturdata = listaData({
 ---
 
 <Bas
-  title={`${d.title} · Hantverkstips`}
+  title={`${d.seoTitle ?? d.title} · Hantverkstips`}
   description={d.description}
   reklam={true}
   butikNamn={butik?.namn}
   brodsmulor={[{ namn: 'Hantverkstips', href: '/' }, { namn: d.namn }]}
   brodsmulorIVy={true}
   bred={true}
+  noindex={d.noindex}
+  ogTyp="website"
 >
   <StrukturData slot="head" data={strukturdata} />
 
@@ -187,7 +189,7 @@ const strukturdata = listaData({
                       pris={e?.pris ?? null}
                       prisDatum={e?.uppdaterad ?? null}
                       butikNamn={e?.butikNamn}
-                      slut={arSlut(e)}
+                      lager={lagerlage(e)}
                     />
                   </div>
                 </>

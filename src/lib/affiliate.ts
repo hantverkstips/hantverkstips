@@ -83,13 +83,56 @@ export interface SparlankVarden {
   url: string;
 }
 
+/** Platshållare mallen får innehålla. Allt annat i {} är ett ifyllt värde som saknas. */
+const KANDA_PLATSHALLARE = new Set(['epi', 'epi2', 'url']);
+
+/**
+ * Id:n som nätverket ska byta ut innan programmet är godkänt. En mall med dem
+ * kvar skickar läsaren till en död sida hos nätverket i stället för till butiken.
+ */
+const OIFYLLDA_ID = /ANNONS_ID|KANAL_ID/;
+
+/**
+ * Varför mallen inte duger, annars null. Ett fel här betyder att /go/ ska falla
+ * tillbaka på erbjudanden.affiliate_url, som är butikens egen produktadress:
+ * ospårat är bättre än trasigt.
+ */
+export function lankmallFel(lankmall: string | null | undefined): string | null {
+  if (!lankmall || lankmall.trim() === '') return 'lankmall saknas';
+  if (OIFYLLDA_ID.test(lankmall)) return 'lankmall har oifyllda id:n (ANNONS_ID eller KANAL_ID)';
+  const okanda = [...lankmall.matchAll(/\{([^}]*)\}/g)]
+    .map((m) => m[1] ?? '')
+    .filter((namn) => !KANDA_PLATSHALLARE.has(namn));
+  if (okanda.length > 0) return `lankmall har okända platshållare: ${okanda.map((n) => `{${n}}`).join(', ')}`;
+  if (!lankmall.includes('{url}')) return 'lankmall saknar {url}';
+  return null;
+}
+
+/**
+ * Vakt framför byggSparlank. Duger mallen inte varnar den en gång per butik och
+ * returnerar false, så att anroparen kan använda affiliate_url i stället.
+ */
+const varnadeMallar = new Set<string>();
+export function anvandbarLankmall(lankmall: string | null | undefined, butik = 'okänd butik'): boolean {
+  const fel = lankmallFel(lankmall);
+  if (!fel) return true;
+  if (!varnadeMallar.has(butik)) {
+    varnadeMallar.add(butik);
+    console.warn(`[affiliate] ${butik}: ${fel}. Faller tillbaka på erbjudandets affiliate_url.`);
+  }
+  return false;
+}
+
 /**
  * Fyller i butiker.lankmall. Platshållare: {epi}, {epi2}, {url}.
  * Exempel på mall (Adtraction):
  * https://track.adtraction.com/t/t?a=A&as=AS&t=2&tk=1&epi={epi}&epi2={epi2}&url={url}
+ *
+ * Kastar hellre än bygger en halvfärdig länk. Anropa anvandbarLankmall först.
  */
 export function byggSparlank(lankmall: string, v: SparlankVarden): string {
-  if (!lankmall.includes('{url}')) throw new Error('lankmall saknar {url}');
+  const fel = lankmallFel(lankmall);
+  if (fel) throw new Error(fel);
   return lankmall
     .replace('{epi}', encodeURIComponent(v.epi))
     .replace('{epi2}', encodeURIComponent(v.epi2 ?? ''))

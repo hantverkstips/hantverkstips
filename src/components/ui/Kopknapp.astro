@@ -8,6 +8,7 @@
  */
 import { goLank, type KlickModul, type Sidtyp } from '../../lib/affiliate';
 import { formateraDatumKort, formateraPris } from '../../lib/format';
+import type { Lagerlage } from '../../lib/produkter';
 
 interface Props {
   produkt: string;
@@ -25,8 +26,14 @@ interface Props {
   prisDatum?: Date | string | null;
   /** Butikens namn från databasen. */
   butikNamn?: string;
-  /** Sekundär stil när lagerstatus är negativ. */
+  /** Sekundär stil utan länk när lagerstatus är negativ. */
   slut?: boolean;
+  /**
+   * Vilket negativt läge det är. Styr texten: slut i lager är tillfälligt,
+   * ej beställningsbar betyder att butiken inte tar hem varan igen. Utelämnas
+   * den härleds läget ur slut. Se lagerlage() i src/lib/produkter.ts.
+   */
+  lager?: Lagerlage;
   /** full gör knappen block och full bredd på mobil, auto från sm. Standard auto. */
   bredd?: 'auto' | 'full';
   /** Prisraden ovanför knappen. Sätt false när anroparen placerar priset själv. */
@@ -47,39 +54,70 @@ const {
   class: klass,
 } = Astro.props;
 
-const sidtyp = Astro.props.sidtyp ?? Astro.locals.sidtyp;
-const position = Astro.props.position ?? (Astro.locals.kopknappPosition = (Astro.locals.kopknappPosition ?? 0) + 1);
+const lager: Lagerlage = Astro.props.lager ?? (slut ? 'slut' : 'kopbar');
+const ejKopbar = lager !== 'kopbar';
 
-const href = goLank(produkt, { butik, modul, sidtyp, position });
+const sidtyp = Astro.props.sidtyp ?? Astro.locals.sidtyp;
+/**
+ * Positionsräknaren går bara upp för knappar som faktiskt blir annonslänkar.
+ * En ej köpbar produkt får ingen /go/-länk, och då ska den inte heller ta en
+ * position i klickstatistiken.
+ */
+const position = ejKopbar
+  ? null
+  : (Astro.props.position ?? (Astro.locals.kopknappPosition = (Astro.locals.kopknappPosition ?? 0) + 1));
+
+const href = ejKopbar ? null : goLank(produkt, { butik, modul, sidtyp, position: position ?? undefined });
 const datum = prisDatum ? new Date(prisDatum) : null;
 const harPris = typeof pris === 'number' && pris > 0;
 
 const text =
-  Astro.props.text ?? (slut ? `Slut i lager hos ${butikNamn}` : harPris ? `Till ${butikNamn}` : `Se pris hos ${butikNamn}`);
+  Astro.props.text ??
+  (lager === 'ej_bestallningsbar'
+    ? `Ej beställningsbar hos ${butikNamn}`
+    : lager === 'slut'
+      ? `Slut i lager hos ${butikNamn}`
+      : harPris
+        ? `Till ${butikNamn}`
+        : `Se pris hos ${butikNamn}`);
+
+/**
+ * Sekundär stil: ram i stället för fylld knapp. Ett <span> renderas i stället
+ * för <a> när varan inte går att köpa, så att ingen läsare skickas via /go/
+ * till en produkt butiken inte säljer. Då är raden under inte heller en
+ * annonslänk, bara prisdatumet.
+ */
+const knappKlass = [
+  'min-h-11 items-center justify-center rounded-md px-5 py-3 font-bold no-underline text-center',
+  bredd === 'full' ? 'flex w-full sm:inline-flex sm:w-auto' : 'inline-flex',
+  ejKopbar ? 'border-2 border-blyerts text-blyerts-2' : 'bg-penna text-papper hover:bg-blyerts hover:text-papper',
+];
+const prisrad = datum && harPris ? `pris ${formateraDatumKort(datum)}` : '';
 ---
 
 <div class:list={['kopknapp', klass]}>
   {
     visaPris && harPris && (
       <p class="m-0 mb-2 font-bold tabular-nums text-brod text-blyerts">
-        {slut && <span class="font-normal text-blyerts-2">senast </span>}
+        {ejKopbar && <span class="font-normal text-blyerts-2">senast </span>}
         {formateraPris(pris)}
       </p>
     )
   }
-  <a
-    href={href}
-    rel="sponsored nofollow"
-    class:list={[
-      'min-h-11 items-center justify-center rounded-md px-5 py-3 font-bold no-underline text-center',
-      'hover:bg-blyerts hover:text-papper',
-      bredd === 'full' ? 'flex w-full sm:inline-flex sm:w-auto' : 'inline-flex',
-      slut ? 'border-2 border-blyerts text-blyerts' : 'bg-penna text-papper',
-    ]}
-  >
-    {text}
-  </a>
-  <p class="m-0 mt-2 text-finstilt text-blyerts-2">
-    Annonslänk{datum && harPris ? ` · pris ${formateraDatumKort(datum)}` : ''}
-  </p>
+  {
+    ejKopbar ? (
+      <span class:list={knappKlass}>{text}</span>
+    ) : (
+      <a href={href} rel="sponsored nofollow" class:list={knappKlass}>
+        {text}
+      </a>
+    )
+  }
+  {
+    (!ejKopbar || prisrad) && (
+      <p class="m-0 mt-2 text-finstilt text-blyerts-2">
+        {ejKopbar ? prisrad : `Annonslänk${prisrad ? ` · ${prisrad}` : ''}`}
+      </p>
+    )
+  }
 </div>
