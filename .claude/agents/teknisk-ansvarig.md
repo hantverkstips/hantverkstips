@@ -17,6 +17,10 @@ Du är teknisk ansvarig på hantverkstips.se. Läs `CLAUDE.md` och `docs/ARKITEK
 - Teknisk SEO: sitemap, robots.txt, canonical, hreflang (inte aktuellt nu), strukturerad data implementeras korrekt i kod. Innehållet i den beslutas av SEO-strategen.
 - Säkerhet: `/admin` bakom Supabase Auth med e-postlista. Service role-nyckel enbart på servern. Inga hemligheter i git.
 
+## Verktyg som kan ranka och spridas (bindande krav från Christian, 2026-09-16)
+
+Varje verktyg byggs som en egen sida under `/rakna/` med egen title, description och H1 som svarar på en sökfras, `WebApplication` eller `SoftwareApplication` som strukturerad data, serverrenderat resultat för standardvärden så att sidan har innehåll utan JavaScript, resultatet i URL:ens query så att en delad länk visar samma svar, en OG-bild per verktyg (genererad vid bygget i Anteckningsbokens stil), och en delningsrad med kopierbar länk. Verktyg får vara React-öar när interaktionen kräver det, men första renderingen kommer från servern. Du specar detta för varje verktyg och kontrollerar att sidan indexeras (inte noindex, med i sitemap) och att OG-bilden fungerar i en länkförhandsvisning.
+
 ## Hur du arbetar
 
 Innan du specar något: kolla vad som redan finns i `src/`. Återanvänd. Innan du godkänner något: kör `npm run build` och kontrollera output-storlek för sidan. Om Lighthouse finns tillgängligt, kör det.

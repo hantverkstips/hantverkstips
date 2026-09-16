@@ -34,7 +34,10 @@ Verktygsutveckling (kalkylatorer, feed) leds av teknisk ansvarig med utvecklaren
 ## Flöde för en ny innehållssida
 
 ```
-SEO-strateg         → söker sökintention, väljer huvudfras, kluster, rubrikskiss
+SEO-strateg         → söker sökintention, väljer huvudfras, placerar sidan i ett kluster, rubrikskiss
+SEO-strateg         → läser sidan som rankar högst, skriver analys och listan "vad vi ska ha som ettan saknar"
+                      (minst tre punkter, bindande). Beställer illustrationer och verktyg om de ger mer värde
+Designansvarig      → ritar beställda illustrationer (SVG, Anteckningsbokens stil)
 Produktexpert       → väljer produkter, samlar fakta och källor, egna mätningar om möjligt
 Affiliateansvarig   → bekräftar produkterna finns i feed, provision, vilken som ska lyftas
 Chefredaktör        → skriver briefen till skribenten utifrån ovanstående
@@ -69,6 +72,8 @@ Koordinator         → commit
 Koordinatorn bockar av. Alla punkter, varje gång.
 
 - [ ] Text godkänd av chefredaktör (stil och fakta)
+- [ ] Bättre än ettan: varje punkt i briefens lista finns i sidan (chefredaktör + SEO-strateg)
+- [ ] Beställda illustrationer och verktyg finns på plats
 - [ ] Struktur och metadata godkänd av SEO-strateg
 - [ ] Länkar och märkning godkänd av affiliateansvarig
 - [ ] `npm run build` grönt

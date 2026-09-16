@@ -22,6 +22,8 @@ Astro (content collections, MDX) · React-öar för interaktiva verktyg · Tailw
 5. Inget JavaScript till klienten utan att en React-ö faktiskt behövs. Statisk HTML är standard.
 6. Kör `npm run build` innan något räknas som klart. Bygget ska vara grönt.
 7. Commit ofta, små commits, på svenska, i imperativ: "Lägg till guide om avfuktare i källare".
+8. Varje sida ska vara bättre än den som rankar högst på frasen just nu. Briefen innehåller SEO-strategens analys av ettan och en lista över vad vår sida har som ettan saknar. Saknas en punkt i den färdiga sidan publiceras den inte.
+9. Sidor planeras i kluster, aldrig en och en. Illustrationer görs när de hjälper läsaren. Verktyg byggs som egna delbara sidor under /rakna/ med egen sökfras, förhandsvisningsbild och resultat i länken.
 
 ## Kommandon
 

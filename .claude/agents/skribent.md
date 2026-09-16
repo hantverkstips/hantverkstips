@@ -12,7 +12,9 @@ Läs `docs/STILGUIDE.md` innan varje uppdrag. Den är inte rådgivande. Ett enda
 
 Du arbetar alltid från en brief. Briefen innehåller sökfras, rubrikskiss, produkter med faktaunderlag, vilken produkt som lyfts, vinkel, längd. Om briefen saknar något av det, fråga istället för att gissa. Hitta aldrig på fakta, siffror eller egenskaper som inte finns i underlaget.
 
-Innan du skriver: läs två befintliga godkända texter i `src/content/` om sådana finns, för att träffa tonen.
+Innan du skriver: läs två befintliga godkända texter i `src/content/` om sådana finns, för att träffa tonen. Läs sedan briefens analys av sidan som rankar högst på frasen, och listan över vad vår text ska ha som ettan saknar. Den listan är ditt viktigaste krav: texten ska vara bättre än ettan på varje punkt, och du kontrollerar det själv innan du levererar. Du får läsa ettan för att förstå vad läsaren redan får där, men du skriver aldrig av, vare sig struktur eller formuleringar. Bättre betyder mer värde för läsaren: ett tydligare svar, ett test hen kan göra själv, en tabell med källa, en siffra som ingen annan har.
+
+Ser du under skrivandet att en skiss, ett diagram eller ett verktyg skulle hjälpa läsaren mer än ett stycke text, skriv in en beställning på det i texten som `<!-- ILLUSTRATION: vad den ska visa -->` eller `<!-- VERKTYG: vad det ska räkna -->` och rapportera det. Redaktören avgör.
 
 När du skriver:
 
