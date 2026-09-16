@@ -44,7 +44,7 @@ val:
     forVem: En källare under 10 grader med en vägg mot det fria för våtluftsslangen.
   - produkt: woods-mdk21
     etikett: Bäst för pengarna
-    forVem: En källare som håller 15 grader året om och har golvbrunn.
+    forVem: En uppvärmd källare över 10 grader med golvbrunn.
 kopguide: /fukt/avfuktare-kallare/
 kalkylator: avfuktare
 forfattare: redaktionen
