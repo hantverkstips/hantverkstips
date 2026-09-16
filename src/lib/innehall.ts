@@ -4,6 +4,10 @@
  * Utkast: en fil med utkast: true visas i npm run dev så att skribent och redaktör
  * kan se sidan, men utesluts i npm run build. Alla getStaticPaths och listor går
  * genom publicerade() så att regeln sitter på ett ställe.
+ *
+ * Adresser: id på en artikel är filnamnet utan ändelse, oavsett undermapp
+ * (src/content/guider/fukt/avfuktare-kallare.mdx har id avfuktare-kallare).
+ * Mappen är ordning för människor, aldrig en del av URL:en. Se docs/ARKITEKTUR.md.
  */
 import { getCollection, type CollectionEntry, type CollectionKey } from 'astro:content';
 import { hittaPelare } from './pelare';
@@ -17,6 +21,12 @@ export function arPublicerad(entry: MedUtkast): boolean {
 export async function publicerade<K extends CollectionKey>(samling: K): Promise<CollectionEntry<K>[]> {
   const alla = await getCollection(samling);
   return alla.filter((e) => arPublicerad(e as unknown as MedUtkast));
+}
+
+/** Sant när pelarens hub byggs. En artikel får inte länka till en hub som är utkast. */
+export async function hubPublicerad(slug: string): Promise<boolean> {
+  const hubbar = await publicerade('pelare');
+  return hubbar.some((h) => h.id === slug);
 }
 
 export type Artikel = CollectionEntry<'guider'> | CollectionEntry<'kunskap'>;
@@ -47,12 +57,17 @@ export interface Brodsmula {
   href?: string;
 }
 
-/** Brödsmulor följer URL:en. Första nivån är alltid Hantverkstips. Sista saknar länk. */
-export function brodsmulorForArtikel(entry: Artikel): Brodsmula[] {
+/**
+ * Brödsmulor följer URL:en. Första nivån är alltid Hantverkstips. Sista saknar länk.
+ * Pelarnivån länkas bara när huben är publicerad; annars står namnet utan länk,
+ * så att en artikel som publiceras före sin hub inte får en död länk i varje bygge.
+ */
+export async function brodsmulorForArtikel(entry: Artikel): Promise<Brodsmula[]> {
   const p = hittaPelare(entry.data.pelare);
+  const hub = await hubPublicerad(entry.data.pelare);
   return [
     { namn: 'Hantverkstips', href: '/' },
-    { namn: p?.kort ?? entry.data.pelare, href: pelareUrl(entry.data.pelare) },
+    { namn: p?.kort ?? entry.data.pelare, ...(hub ? { href: pelareUrl(entry.data.pelare) } : {}) },
     { namn: entry.data.title },
   ];
 }

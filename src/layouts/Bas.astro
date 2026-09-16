@@ -11,10 +11,10 @@ import ikoner from '../assets/brand/riktning-1/ikoner.svg?raw';
 import ordmarke from '../assets/brand/riktning-1/ordmarke-inline.svg?raw';
 import { kategoriUrl, pelareUrl, publicerade, type Brodsmula } from '../lib/innehall';
 import { KALKYLATORER } from '../lib/kalkyl/register';
-import { PELARE } from '../lib/pelare';
+import { MAX_HUBBAR_I_MENY, PELARE } from '../lib/pelare';
 import { brodsmulor as brodsmulorData } from '../lib/strukturdata';
 import Brodsmulor from '../components/ui/Brodsmulor.astro';
-import Ikon from '../components/ui/Ikon.astro';
+import Ikon, { type IkonNamn } from '../components/ui/Ikon.astro';
 import Reklamband from '../components/ui/Reklamband.astro';
 import StrukturData from '../components/ui/StrukturData.astro';
 
@@ -58,13 +58,24 @@ const publiceradeHubbar = PELARE.flatMap((p) => {
   return entry ? [{ slug: p.slug, namn: p.namn, kort: p.kort, ikon: p.ikon }] : [];
 });
 
-const HUVUDMENY = [
-  { namn: 'Fukt', href: '/fukt/', ikon: 'fukt' },
-  { namn: 'Altan', href: '/altan/', ikon: 'altan' },
-  { namn: 'Verktyg', href: '/verktyg/', ikon: 'verktyg' },
+/**
+ * Huvudmenyn byggs av de publicerade hubbarna i PELARE-ordning, högst
+ * MAX_HUBBAR_I_MENY stycken, följda av Räkna själv och Så testar vi. En pelare
+ * kommer alltså in i menyn genom att dess hub får utkast: false, inte genom en
+ * ändring här. Se docs/INNEHALLSARKITEKTUR.md avsnitt 4.
+ */
+interface Menypost {
+  namn: string;
+  href: string;
+  ikon: IkonNamn | null;
+}
+const HUVUDMENY: Menypost[] = [
+  ...publiceradeHubbar
+    .slice(0, MAX_HUBBAR_I_MENY)
+    .map((p) => ({ namn: p.kort, href: pelareUrl(p.slug), ikon: p.ikon })),
   { namn: 'Räkna själv', href: '/rakna/', ikon: 'kalkylator' },
   { namn: 'Så testar vi', href: '/om/sa-testar-vi/', ikon: null },
-] as const;
+];
 
 const OM_SAJTEN = [
   { namn: 'Om oss', href: '/om/' },

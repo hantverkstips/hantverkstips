@@ -22,8 +22,11 @@ const { lista } = Astro.props;
               <a href={b.href} class="text-blyerts-2 underline decoration-1 underline-offset-2 hover:decoration-2">
                 {b.namn}
               </a>
-            ) : (
+            ) : i === lista.length - 1 ? (
               <span aria-current="page">{b.namn}</span>
+            ) : (
+              /* Mellannivå utan länk: pelaren när huben ännu är utkast. */
+              <span>{b.namn}</span>
             )}
           </li>
         ))}
