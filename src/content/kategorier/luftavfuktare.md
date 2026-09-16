@@ -50,10 +50,7 @@ kopguide: /fukt/avfuktare-kallare/
 kalkylator: avfuktare
 forfattare: redaktionen
 uppdaterad: 2026-09-16
-# Ur index tills köpknapparna fungerar. Service role-nyckeln saknas i Vercel, så
-# alla 29 knappar svarar 503; en indexerad sida som inte går att handla från är
-# värre än en sida utanför index. Raden tas bort när knapparna svarar.
-noindex: true
+# Indexerad sedan 2026-09-16 kväll, när köpknapparna började svara (secret key i Vercel).
 utkast: false
 ---
 
