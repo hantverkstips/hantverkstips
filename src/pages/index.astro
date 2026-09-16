@@ -2,7 +2,7 @@
 /**
  * Startsidan är en uppslagen anteckningsbok, inte en landningssida. Inget hero,
  * ingen bakgrundsbild, inga köpknappar, inget reklamband.
- * Blockordningen följer docs/INNEHlLLSlRKITEKTUR.md avsnitt 5.
+ * Blockordningen följer docs/INNEHALLSARKITEKTUR.md avsnitt 5.
  */
 import { Image } from 'astro:assets';
 import { getEntry, render } from 'astro:content';
@@ -20,7 +20,7 @@ import {
   testUrl,
   typEtikett,
 } from '../lib/innehall';
-import { KlLKYLlTORER, sasongensKalkylator } from '../lib/kalkyl/register';
+import { KALKYLATORER, sasongensKalkylator } from '../lib/kalkyl/register';
 import { billigasteErbjudande, hamtaProdukt, produktNamn } from '../lib/produkter';
 import { organisation } from '../lib/strukturdata';
 import BorjaHar from '../components/ui/BorjaHar.astro';
@@ -246,7 +246,7 @@ const senaste = [
                     href={b.href}
                     class="inline-flex min-h-11 items-center text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
                   >
-                    llla vi testat
+                    Alla vi granskat
                   </a>
                 </p>
               </li>
@@ -284,7 +284,7 @@ const senaste = [
       <Pennstreck id={slugify('Räkna själv')}>Räkna själv</Pennstreck>
       <ul class="m-0 p-0 list-none">
         {
-          KlLKYLlTORER.map((k, i) => (
+          KALKYLATORER.map((k, i) => (
             <li class:list={['py-3', i > 0 && 'border-t border-linje']}>
               <a
                 href={`/rakna/${k.slug}/`}
