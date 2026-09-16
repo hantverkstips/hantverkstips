@@ -16,9 +16,13 @@ values (
   'https://track.adtraction.com/t/t?a=ANNONS_ID&as=KANAL_ID&t=2&tk=1&epi={epi}&epi2={epi2}&url={url}'
 );
 
--- Kategori. Slug ska matcha src/content/kategorier/luftavfuktare.md.
+-- Kategorier. Slug ska matcha filen i src/content/kategorier/.
+-- Krysslaser (2026-09-16) har ännu inga produkter; specs-nycklar enligt kategorifilen:
+-- rackvidd_m, noggrannhet_mm_per_10m, linjer, sjalvnivellering_grader, laserklass, batteri.
 insert into kategorier (slug, namn, beskrivning)
-values ('luftavfuktare', 'Luftavfuktare', 'Avfuktare för källare, krypgrund och garage.');
+values
+  ('luftavfuktare', 'Luftavfuktare', 'Avfuktare för källare, krypgrund och garage.'),
+  ('krysslaser', 'Krysslaser', 'Kors- och linjelasrar för kök, undertak och plattsättning.');
 
 -- Produkter. Specs enligt kategorifilens nycklar:
 -- kapacitet_liter_dygn, typ, max_yta_kvm, ljudniva_db, effekt_w, arbetstemp_min_c.
