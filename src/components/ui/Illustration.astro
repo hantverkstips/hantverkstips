@@ -90,7 +90,14 @@ const svg =
   '</svg>';
 ---
 
-<figure class:list={['m-0 my-8', klass]}>
+{/*
+  Skisserna ritas i en 600 enheter bred viewBox och etiketterna sätts i den
+  skalan. Får figuren hela läsbredden (704 px) blir en viewBox-enhet 1,17 px
+  och axeltexten större än brödtexten. Max 600 px på desktop gör en enhet till
+  en bildpunkt; på mobil fyller bilden bredden som förut.
+  Se docs/DESIGN.md avsnitt 7 och designgranskningen 2026-09-16 punkt 12.
+*/}
+<figure class:list={['m-0 my-8 max-w-[600px]', klass]}>
   <Fragment set:html={svg} />
   {bildtext && <figcaption class="mt-2 text-liten text-blyerts-2">{bildtext}</figcaption>}
 </figure>

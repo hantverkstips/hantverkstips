@@ -1,0 +1,35 @@
+---
+/**
+ * Texten i "Kort svar". Frontmatter är en ren sträng, men mallen (DESIGN.md
+ * avsnitt 5.5 och 6) vill ha nyckeltalet överstruket. Därför den enda
+ * markeringen som tolkas i frontmatter: **så här** blir <Markering>.
+ *
+ * Ingen markdown i övrigt. Skribenten skriver
+ *   kortSvar: En källare på 40 kvm behöver minst **12 liter per dygn**.
+ * och får ett gult streck bakom talet. Fler än en markering varnar vid bygget:
+ * överstrykningen ska peka ut ett nyckeltal, inte måla halva stycket.
+ */
+import Markering from './Markering.astro';
+
+interface Props {
+  text: string;
+  /** Var texten står, används i byggvarningen. */
+  plats?: string;
+}
+
+const { text, plats } = Astro.props;
+
+// Delar på **...** och behåller avgränsarna, så att varannan del är markerad.
+const delar = text.split(/\*\*(.+?)\*\*/s);
+const antalMarkeringar = Math.floor(delar.length / 2);
+
+if (antalMarkeringar > 1) {
+  console.warn(
+    `[Kortsvarstext] ${antalMarkeringar} markeringar i kort svar${plats ? ` på ${plats}` : ''}. Markera ett nyckeltal, inte flera.`,
+  );
+}
+---
+
+<p class="m-0 leading-6">
+  {delar.map((del, i) => (i % 2 === 1 ? <Markering>{del}</Markering> : del))}
+</p>

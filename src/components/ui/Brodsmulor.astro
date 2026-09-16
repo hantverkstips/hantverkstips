@@ -15,9 +15,9 @@ const { lista } = Astro.props;
 {
   lista.length > 0 && (
     <nav aria-label="Brödsmulor" class="text-liten text-blyerts-2">
-      <ol class="brodsmulor flex flex-wrap items-center gap-x-2 gap-y-1 m-0 p-0 list-none">
+      <ol class="brodsmulor m-0 p-0 list-none">
         {lista.map((b, i) => (
-          <li class="flex items-center gap-x-2">
+          <li>
             {b.href && i < lista.length - 1 ? (
               <a href={b.href} class="text-blyerts-2 underline decoration-1 underline-offset-2 hover:decoration-2">
                 {b.namn}
@@ -36,9 +36,20 @@ const { lista } = Astro.props;
 }
 
 <style>
+  /*
+    Posterna är inline, inte flexboxar. Snedstrecket är ett ::before på samma
+    rad som texten och flyter med den: bryter sidtiteln över två rader hamnar
+    strecket inte längre ensamt i vänsterkanten (designgranskningen
+    2026-09-16 punkt 10).
+  */
+  .brodsmulor li {
+    display: inline;
+  }
+
   .brodsmulor li + li::before {
     content: "/";
     color: var(--color-linje);
+    padding-inline: 0.45em;
   }
 
   @media (max-width: 1023px) {
@@ -46,9 +57,21 @@ const { lista } = Astro.props;
       display: none;
     }
 
-    /* Den första synliga posten på mobil får inget inledande snedstreck. */
-    .brodsmulor li:nth-last-child(2)::before {
+    /* Den första synliga posten på mobil får inget inledande snedstreck.
+       Selektorn speglar regeln ovan (li + li) och inte bara nth-last-child,
+       annars vinner den mer specifika regeln och strecket blir kvar. */
+    .brodsmulor li + li:nth-last-child(2)::before {
       content: none;
+      padding-inline: 0;
+    }
+
+    /* Två rader räcker. En lång sidtitel kortas med ellips i stället för att
+       ta hela första skärmen från svaret. */
+    .brodsmulor {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
     }
   }
 </style>

@@ -52,6 +52,19 @@ function faltVarde(nyckel: string, standard: number): string {
 const ytaVarde = faltVarde('yta', STANDARD.ytaKvm);
 const takhojdVarde = faltVarde('takhojd', STANDARD.takhojdM);
 
+/**
+ * Delbar länk. Hela tillståndet ligger redan i query-strängen, så adressen är
+ * uträkningen. Den byggs av de tolkade värdena, inte av strängen läsaren skrev,
+ * så att en delad länk alltid ger samma resultat som skärmen visar.
+ */
+const delaQuery = new URLSearchParams({
+  yta: String(visatIndata.ytaKvm).replace('.', ','),
+  takhojd: String(visatIndata.takhojdM).replace('.', ','),
+  fukt: visatIndata.fuktniva,
+  temp: visatIndata.temperatur,
+});
+const delaLank = new URL(`/rakna/avfuktare/?${delaQuery.toString()}`, Astro.site ?? Astro.url).toString();
+
 const butik = await hamtaButik();
 
 /**
@@ -79,6 +92,18 @@ if (visat.status === 'ok') {
     .slice(0, 3)
     .map((p) => p.slug);
 }
+
+/**
+ * Kolumner efter antal träffar, och aldrig bredare än läsbredden när de är få:
+ * ett ensamt kort i en tredjedelsspalt (235 px) blir oläsligt, se
+ * designgranskningen 2026-09-16 punkt 3.
+ */
+const kortSpalter =
+  traffar.length >= 3
+    ? 'lg:grid-cols-3'
+    : traffar.length === 2
+      ? 'lg:grid-cols-2'
+      : 'lg:max-w-lasbredd';
 
 const typtext =
   visat.status === 'ok' && visat.typ === 'kondens'
@@ -179,8 +204,8 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
   <div class="mx-auto w-full max-w-lasbredd">
     <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">Hur stor avfuktare behöver du?</h1>
     <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
-      Platshållartext. Fyll i ytan, takhöjden och hur fuktigt det är i dag, så får du hur många liter per dygn maskinen
-      behöver klara. Resultatet är en marginal, inte ett exakt svar.
+      Fyll i ytan, takhöjden och hur fuktigt det är i dag, så får du hur många liter per dygn maskinen behöver klara.
+      Resultatet är en marginal, inte ett exakt svar.
     </p>
 
     <div class="linjerat mt-8 lg:grid lg:grid-cols-2 lg:gap-8">
@@ -277,13 +302,17 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
                   <p class="m-0 mb-2 text-liten text-varning">Visar standardvärden tills indatan är rättad.</p>
                 )}
                 <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">Minst</p>
-                <p class="m-0 mt-1 font-serif text-siffra lg:text-siffra-lg text-blyerts">
-                  <Markering>{visat.marktKapacitetLiter}</Markering>
+                {/* Enheten står på samma rad som talet, på talets baslinje
+                    (DESIGN.md avsnitt 5.8). Radbryter på smal skärm. */}
+                <p class="m-0 mt-1 flex flex-wrap items-baseline gap-x-2">
+                  <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
+                    <Markering>{visat.marktKapacitetLiter}</Markering>
+                  </span>
+                  <span class="text-ingress lg:text-ingress-lg">liter per dygn</span>
                 </p>
-                <p class="m-0 mt-2 text-ingress lg:text-ingress-lg">liter per dygn märkt kapacitet</p>
                 <p class="m-0 mt-2 text-liten text-blyerts-2">
-                  uppgiven vid {visat.kapacitetVillkor}, motsvarar cirka {visat.literPerDygnVerklig} liter i din källare
-                  vid {visat.temperaturC} grader
+                  märkt kapacitet, uppgiven vid {visat.kapacitetVillkor}, motsvarar cirka{' '}
+                  {visat.literPerDygnVerklig} liter i din källare vid {visat.temperaturC} grader
                 </p>
                 <p class="m-0 mt-1 text-liten text-blyerts-2">
                   {formateraTal(visat.volymM3, 1)} m³, {fuktnivaEtikett(visatIndata.fuktniva)}
@@ -299,6 +328,25 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
                     Så räknar vi
                   </a>
                 </p>
+
+                {/* Dela. Uträkningen står i adressen, så ett skrivskyddat fält
+                    räcker: markera och kopiera fungerar utan en rad JavaScript.
+                    En kopieringsknapp kan komma senare som React-ö. */}
+                <div class="mt-4 border-t border-linje pt-4">
+                  <label for="dela" class={etikettKlass}>
+                    Dela uträkningen
+                  </label>
+                  <input
+                    id="dela"
+                    type="text"
+                    readonly
+                    value={delaLank}
+                    class:list={[faltKlass, 'border-blyerts-2']}
+                  />
+                  <p class="m-0 mt-1 text-liten text-blyerts-2">
+                    Adressen innehåller dina värden. Markera och kopiera.
+                  </p>
+                </div>
               </>
             )
           )
@@ -310,7 +358,11 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
       <Pennstreck id="produkter-som-klarar-det">Produkter som klarar det</Pennstreck>
       {
         traffar.length > 0 ? (
-          <div class="grid gap-4 lg:grid-cols-3">
+          /* Kolumnerna följer antalet träffar. En ensam produkt i en
+             tredjedelsspalt blir 235 px bred, och då skriver kortets etiketter
+             över värdena. Ett kompakt kort får aldrig bli smalare än 20 rem.
+             Designgranskningen 2026-09-16 punkt 3. */
+          <div class:list={['grid gap-4', kortSpalter]}>
             {traffar.map((slug) => (
               <Produktkort produkt={slug} variant="kompakt" modul="kalkylator" />
             ))}
@@ -337,7 +389,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
         vatten, och att ta ner den till 55 procent kostar ett kvarts glas. Maskinen köps för det som kommer in varje
         dygn, och vi räknar på augusti, den värsta månaden.
       </p>
-      <ol class="m-0 mt-4 pl-6 text-brod lg:text-brod-lg">
+      <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg">
         <li class="mb-2">
           Yta gånger takhöjd ger volymen. 40 kvm med 2,4 meter i tak blir 96 m³.
         </li>

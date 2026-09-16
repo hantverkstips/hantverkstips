@@ -9,9 +9,9 @@ import { getEntry } from 'astro:content';
 import type { KlickModul } from '../../lib/affiliate';
 import { publicerade, testUrl } from '../../lib/innehall';
 import {
-  arSlut,
   billigasteErbjudande,
   hamtaProdukt,
+  lagerlage,
   lokalBild,
   produktNamn,
   varnaSaknadProdukt,
@@ -105,8 +105,12 @@ const bildHojd = variant === 'kompakt' ? 72 : 300;
           <h3 class="m-0 font-sans text-h3 lg:text-h3-lg text-blyerts">{namn}</h3>
           {forVem && <p class="m-0 mt-1 text-brod text-blyerts-2">{forVem}</p>}
 
+          {/* Nyckelvärdena: etiketten tar bara den bredd den behöver, värdet
+              resten, och minmax(0,1fr) hindrar att ett långt värde spränger
+              spalten. Med två lika breda kolumner skrev etikett och värde över
+              varandra i ett smalt kort (designgranskningen 2026-09-16 punkt 3). */}
           {specs.length > 0 && (
-            <dl class="m-0 mt-3 grid grid-cols-2 gap-x-4 gap-y-1 text-liten">
+            <dl class="m-0 mt-3 grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-1 text-liten">
               {specs.map((s) => (
                 <div class="contents">
                   <dt class="m-0 text-blyerts-2">{s.etikett}</dt>
@@ -131,7 +135,7 @@ const bildHojd = variant === 'kompakt' ? 72 : 300;
           pris={erbjudande?.pris ?? null}
           prisDatum={erbjudande?.uppdaterad ?? null}
           butikNamn={erbjudande?.butikNamn}
-          slut={arSlut(erbjudande)}
+          lager={lagerlage(erbjudande)}
         />
       </div>
 
