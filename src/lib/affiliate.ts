@@ -19,7 +19,11 @@ export const KLICK_MODULER = [
 ] as const;
 export type KlickModul = (typeof KLICK_MODULER)[number];
 
-/** Vilken sidtyp knappen satt på. Layouten sätter den, se Astro.locals.sidtyp. */
+/**
+ * Vilken sidtyp knappen satt på. Rutten sätter den, se Astro.locals.sidtyp.
+ * Listan speglas av check-constrainten klick_sidtyp_check i databasen
+ * (migration 0002, utökad med kunskap i 0003); ändras den ena ändras den andra.
+ */
 export const SIDTYPER = [
   'guide',
   'problemguide',
@@ -28,6 +32,7 @@ export const SIDTYPER = [
   'kategori',
   'verktyg',
   'jamforelse',
+  'kunskap',
 ] as const;
 export type Sidtyp = (typeof SIDTYPER)[number];
 

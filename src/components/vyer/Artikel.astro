@@ -53,14 +53,21 @@ const rubriker = headings.filter((h) => h.depth === 2).map((h) => ({ slug: h.slu
 const produkter = normaliseraProdukter(d.produkter);
 const behover = 'behover' in d && d.behover ? d.behover : { verktyg: [], material: [] };
 
+// Mallen avgör reklambandet, aldrig innehållsfilen: köpknapp på sidan ger band.
+// Kunskap får band bara med "en produkt per typ, sist" (docs/DESIGN.md 5.3), alltså
+// när frontmatterns produkter inte är tom. Kunskap utan produkter: inget band, inga kort.
 const reklam =
   typ === 'kopguide'
     ? true
-    : typ === 'problemguide'
+    : typ === 'problemguide' || typ === 'kunskap'
       ? produkter.length > 0
       : typ === 'projektguide'
         ? behover.verktyg.length > 0 || produkter.length > 0
         : false;
+
+// Blocket "Produkterna vi nämner" sist: köpguiden alltid när listan finns, kunskap
+// enligt undantaget ovan. Problemguiden har produkten i texten, projektguiden listan.
+const visaProdukterna = (typ === 'kopguide' || typ === 'kunskap') && produkter.length > 0;
 
 const butik = reklam ? await hamtaButik() : null;
 
@@ -188,7 +195,7 @@ const strukturdata = artikelData({
       </div>
 
       {
-        typ === 'kopguide' && produkter.length > 0 && (
+        visaProdukterna && (
           <section>
             <Pennstreck id="produkterna-vi-namner">Produkterna vi nämner</Pennstreck>
             <div class="grid gap-4">

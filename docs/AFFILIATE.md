@@ -150,7 +150,7 @@ Systemet arbetar på sidnivå men kan slå på hela sajten om andelen recensions
 
 ## 6. Mätning
 
-Klicktabellen utökas med `modul` (varaval, tabell, kort_kompakt, kort_full, kalkylator, behovslista, avslut), `sidtyp` (guide, problemguide, projektguide, test, kategori, verktyg, jamforelse), `position` (löpnummer för knappen på sidan), `epi` (bas 36 av id, skrivs efter insert) och `kategori_slug`. Köpknappen får modul och position som props; layouten sätter sidtyp. `/go/` läser dem ur query-parametrar som komponenten lägger på länken.
+Klicktabellen utökas med `modul` (varaval, tabell, kort_kompakt, kort_full, kalkylator, behovslista, avslut), `sidtyp` (guide, problemguide, projektguide, test, kategori, verktyg, jamforelse, kunskap), `position` (löpnummer för knappen på sidan), `epi` (bas 36 av id, skrivs efter insert) och `kategori_slug`. Köpknappen får modul och position som props; layouten sätter sidtyp. `/go/` läser dem ur query-parametrar som komponenten lägger på länken.
 
 Ny tabell `konverteringar`: `epi`, `order_varde`, `provision`, `status` (väntande, godkänd, avvisad), `klick_tid`, `order_tid`, `betalstatus`, `natverks_id`, `importerad`. Fylls dagligen från API:ts transaktionsendpoint. Matchning sker på `epi`; saknas EPI i en rad matchas på `clickDate` mot klick inom fem minuter i samma program, och raden märks som osäker.
 

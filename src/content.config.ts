@@ -97,9 +97,13 @@ const guider = defineCollection({
     artikel(ctx).extend({
       typ: z.enum(['projektguide', 'problemguide', 'kopguide']),
       // Projektguidens lista "Det här behöver du". Verktyg har köpknapp, material har inte.
+      // namn är valfritt och visas när produkten saknas i databasen (raden renderas
+      // då utan köpknapp och bygget varnar). Finns produkten vinner databasens namn.
       behover: z
         .object({
-          verktyg: z.array(z.object({ produkt: z.string(), varfor: z.string() })).default([]),
+          verktyg: z
+            .array(z.object({ produkt: z.string(), namn: z.string().optional(), varfor: z.string() }))
+            .default([]),
           material: z.array(z.object({ namn: z.string(), varfor: z.string() })).default([]),
         })
         .optional(),

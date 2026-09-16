@@ -65,6 +65,7 @@ C:\Hantverkstips\
 │   │   ├── supabase.ts        # klienter (server med service role, publik med anon)
 │   │   ├── produkter.ts       # hämta produkter och erbjudanden vid byggtid, med fallback
 │   │   ├── affiliate.ts       # modul- och sidtypslistor, bas 36, länkmall, /go/-länk
+│   │   ├── antaganden.ts      # gemensamma antaganden (elpris) som kalkylatorer och komponenter delar
 │   │   ├── pelare.ts          # register över pelare, reserverade rotslugs, max hubbar i menyn
 │   │   ├── niva.ts            # nivåerna enkel, mellan, expert och deras etiketter
 │   │   ├── innehall.ts        # utkastfilter, adresser, brödsmulor
@@ -74,8 +75,9 @@ C:\Hantverkstips\
 │   └── styles/
 │       └── global.css         # Tailwind + designtokens
 ├── supabase/
-│   ├── migrations/            # 0001_grund.sql, 0002_klick_och_konverteringar.sql
-│   └── seed.sql               # utvecklingsdata, körs manuellt, aldrig mot produktion
+│   ├── migrations/            # 0001_grund.sql, 0002_klick_och_konverteringar.sql, 0003_sidtyp_kunskap.sql
+│   ├── seed.sql               # utvecklingsdata, körs manuellt, aldrig mot produktion
+│   └── seed-*-2026-09-16.sql  # verkliga produkter ur produktexpertens underlag, idempotenta, körs manuellt
 └── scripts/
     └── kontrollera-innehall.ts  # byggkontroll av innehållet, körs av npm run build före astro build.
                                  # Senare även feed-import, konverteringsimport, ombyggnadstriggers
@@ -140,7 +142,7 @@ Rotnamnrymden delas av pelare och kategorier. Pelarslugs (`src/lib/pelare.ts`: `
 
 **Affiliatelänkar.** Alltid `/go/[produkt-slug]/` med query-parametrar från `<Kopknapp>`. Länkar får `rel="sponsored nofollow"`. Skriv aldrig `<a>` direkt till en butik, och bygg aldrig `/go/`-länkar för hand, använd `goLank()` i `src/lib/affiliate.ts`.
 
-**Reklammärkning.** Layouten visar bandet när rutten skickar `reklam={true}`. Rutten sätter det efter sidtyp och innehåll, aldrig innehållsfilen: köpguide, projektguide, test, jämförelse, kategori och kalkylator alltid; problemguide bara när `produkter` inte är tom; kunskap aldrig. Formuleringen är fastställd i `docs/AFFILIATE.md` avsnitt 5. Under varje köpknapp står "Annonslänk · pris 12 sep".
+**Reklammärkning.** Layouten visar bandet när rutten skickar `reklam={true}`. Rutten sätter det efter sidtyp och innehåll, aldrig innehållsfilen: köpguide, projektguide, test, jämförelse, kategori och kalkylator alltid; problemguide och kunskap bara när `produkter` inte är tom (kunskap enligt undantaget "en produkt per typ, sist" i `docs/DESIGN.md` 5.3: mallen renderar då blocket "Produkterna vi nämner" sist med köpknappar och sidtypen `kunskap` i klicklänken; kunskap utan `produkter` har varken band eller kort). Formuleringen är fastställd i `docs/AFFILIATE.md` avsnitt 5. Under varje köpknapp står "Annonslänk · pris 12 sep".
 
 **Bilder.** Astro `<Image>` med width och height. `bild` i frontmatter valideras med `image()` och pekar relativt från innehållsfilen till `src/assets/bilder/[pelare]/` (foto) eller `src/assets/illustrationer/[pelare]/` (skiss). Leverantörsbilder laddas ner vid import, hotlinkas aldrig; tills importen finns visar produktkortet tillståndet "Bild saknas" för externa adresser.
 
@@ -181,7 +183,8 @@ forfattare:       # slug i src/content/forfattare/, standard redaktionen
 bild:             # relativ sökväg till eget foto eller skiss, valfritt: ../../../assets/illustrationer/fukt/kallare.svg
 bildtext:         # valfritt
 kallor:           # lista med { titel, url }
-behover:          # bara projektguide: { verktyg: [{ produkt, varfor }], material: [{ namn, varfor }] }
+behover:          # bara projektguide: { verktyg: [{ produkt, namn?, varfor }], material: [{ namn, varfor }] }
+                  # verktyg.namn visas bara när produkten saknas i databasen: raden renderas utan köpknapp och bygget varnar
 utkast: true      # utesluts från bygget
 ```
 

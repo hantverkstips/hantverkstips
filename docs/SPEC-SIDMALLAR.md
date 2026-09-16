@@ -201,12 +201,12 @@ Inga props. Data: `publicerade('pelare')` sorterad i `PELARE`-ordning. H2 "Börj
 
 ```ts
 interface Props {
-  verktyg: { produkt: string; varfor: string }[];
+  verktyg: { produkt: string; namn?: string; varfor: string }[];
   material: { namn: string; varfor: string }[];
 }
 ```
 
-H2 "Det här behöver du" via Pennstreck. H3 "Verktyg": en rad per post, `hamtaProdukt(slug)` ger namn och pris; raden visar namn (600), `varfor`, pris i `blyerts-2` och Kopknapp med `modul="behovslista"`. Utan produktdata visas namnet som slug och ingen knapp. H3 "Material": namn (600) och `varfor`, ingen länk. Rader med 1 px `linje` emellan, inga kort, ingen tabell. Tom lista: H3 utgår. Båda tomma: komponenten renderar ingenting.
+H2 "Det här behöver du" via Pennstreck. H3 "Verktyg": en rad per post, `hamtaProdukt(slug)` ger namn och pris; raden visar namn (600), `varfor`, pris i `blyerts-2` och Kopknapp med `modul="behovslista"`. Utan produktdata (slug saknas i databasen) visas raden ändå med `namn` från frontmatter, annars slugen, utan pris och utan knapp, och bygget varnar via `varnaSaknadProdukt()` men stoppar inte. H3 "Material": namn (600) och `varfor`, ingen länk. Rader med 1 px `linje` emellan, inga kort, ingen tabell. Tom lista: H3 utgår. Båda tomma: komponenten renderar ingenting.
 
 ### 2.12 `Reklamband.astro`
 
@@ -412,7 +412,7 @@ export async function getStaticPaths() {
 }
 ```
 
-Rutten sätter `Astro.locals.sidtyp` från `typ`: `kopguide` → `guide`, `problemguide` → `problemguide`, `projektguide` → `projektguide`, `kunskap` → ingen. Renderar `<Artikel entry />`.
+Rutten sätter `Astro.locals.sidtyp` från `typ`: `kopguide` → `guide`, `problemguide` → `problemguide`, `projektguide` → `projektguide`, `kunskap` → `kunskap` (sedan 2026-09-16, för knapparna i "Produkterna vi nämner"). Renderar `<Artikel entry />`.
 
 **`vyer/Artikel.astro`.** Ordning, gemensam:
 
@@ -431,9 +431,9 @@ Rutten sätter `Astro.locals.sidtyp` från `typ`: `kopguide` → `guide`, `probl
 | kopguide | guide | alltid true | h2, Kopknapp, Produktkort, Jamforelsetabell, Faktaruta, Varning, Verktygskort, Markering | H2 "Produkterna vi nämner": ett kompakt Produktkort per post i `produkter` med `forVem` och `etikett`, `modul="avslut"`. Tom lista: utgår |
 | problemguide | problemguide | `produkter.length > 0` | samma som kopguide | inget. Produkten står i texten där diagnosen pekar på den |
 | projektguide | projektguide | `behover?.verktyg.length > 0 || produkter.length > 0` | samma som kopguide | `<DetHarBehoverDu verktyg material />` från `behover` |
-| kunskap | ingen | false | h2, Faktaruta, Varning, Verktygskort, Markering | inget |
+| kunskap | kunskap | `produkter.length > 0` | h2, Faktaruta, Varning, Verktygskort, Markering, Illustration | H2 "Produkterna vi nämner" som i köpguiden när `produkter` inte är tom ("en produkt per typ, sist", DESIGN 5.3). Tom lista: inget, och inget reklamband |
 
-Kunskap får inte `Kopknapp` eller `Produktkort`; skriver en innehållsfil ändå `<Produktkort>` ger MDX ett byggfel ("Expected component Produktkort to be defined"), vilket är avsikten.
+Kunskap får inte `Kopknapp` eller `Produktkort` i brödtexten; skriver en innehållsfil ändå `<Produktkort>` ger MDX ett byggfel ("Expected component Produktkort to be defined"), vilket är avsikten. Produkterna på en kunskapssida kommer bara från frontmatterns `produkter` och renderas av mallen sist.
 
 Strukturerad data: `artikel()` med `url = artikelUrl(entry)`, författarnamn från `forfattare`-samlingen, `bildUrl` om bild finns (absolut adress från `<Image>`-resultatet eller `bild.src`).
 

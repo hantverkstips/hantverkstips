@@ -24,9 +24,12 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 
 // Sidtypen styr klickspårningen och måste sättas före slot-innehållet renderas.
+// Kunskap får köpknappar bara i blocket "Produkterna vi nämner" (en produkt per typ,
+// sist); sidtypen sätts ändå alltid så att ett klick därifrån loggas rätt.
 if (entry.data.typ === 'kopguide') Astro.locals.sidtyp = 'guide';
 else if (entry.data.typ === 'problemguide') Astro.locals.sidtyp = 'problemguide';
 else if (entry.data.typ === 'projektguide') Astro.locals.sidtyp = 'projektguide';
+else if (entry.data.typ === 'kunskap') Astro.locals.sidtyp = 'kunskap';
 ---
 
 <Artikel entry={entry} />
