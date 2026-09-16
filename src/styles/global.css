@@ -195,6 +195,11 @@ body {
      på rubriker, aldrig som knapp. Text på markering är alltid blyerts (8,18:1). */
   .markering {
     color: var(--color-blyerts);
+    /* Komponenten renderar <mark>, vars standardbakgrund är webbläsargult
+       (#ffff00). Utan den här raden lyser det gula igenom ovanför och under
+       remsan och markeringen blir ett tvåfärgat block, tydligast bakom
+       kalkylatorns 48 px siffra. Designgranskningen 2026-09-16 punkt 1. */
+    background-color: transparent;
     background-image: linear-gradient(
       100deg,
       transparent 0%,
@@ -411,5 +416,158 @@ body {
     .prosa h3 {
       font-size: var(--text-h3-lg);
     }
+  }
+
+  /*
+    Tabeller i brödtext (markdown-tabeller i MDX). Samma yta som
+    Jamforelsetabell, se DESIGN.md avsnitt 6: 1 px linje mellan rader,
+    tabellhuvud i papper-2, 12 px innermarginal, 15 px text (14 på mobil),
+    tabellsiffror. Hast-pluginet i astro.config.mjs lägger .tabell-yta och
+    .tabell-behallare runt varje tabell, så sidledsscrollen sker i behållaren
+    och sidan blir aldrig bredare än skärmen.
+  */
+  .prosa .brodtabell {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--color-linje);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-liten);
+    line-height: var(--text-liten--line-height);
+    font-variant-numeric: tabular-nums;
+  }
+  @media (min-width: 64rem) {
+    .prosa .brodtabell {
+      /* 15 px. Samma storlek som desktopmenyn, används bara här och där. */
+      font-size: 0.9375rem;
+    }
+  }
+  .prosa .brodtabell th,
+  .prosa .brodtabell td {
+    padding: 12px;
+    /* Vänsterställt genomgående. Vilka kolumner som är rena tal går inte att
+       avgöra i CSS, och jämförelsetabellen är vänsterställd av samma skäl.
+       Tabellsiffror gör ändå att kolumnerna radar upp sig. */
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--color-linje);
+  }
+  /* Korta celler (tal med enhet, produktnamn) hålls ihop på en rad. Klassen
+     sätts vid bygget av pluginet i astro.config.mjs, som är det enda stället
+     där celltexten går att mäta utan JavaScript hos läsaren. */
+  .prosa .brodtabell .kort-cell {
+    white-space: nowrap;
+  }
+  /* Celler med hel text får en minsta spaltbredd, annars pressar tabellen ihop
+     dem till ett ord per rad när den ändå är bredare än skärmen. */
+  .prosa .brodtabell td:not(.kort-cell) {
+    min-width: 10rem;
+  }
+  .prosa .brodtabell thead th {
+    background-color: var(--color-papper-2);
+    font-weight: 700;
+    /* Korta rubriker ("30 %", "Rumstemp") hålls ihop av .kort-cell ovan. Långa
+       rubriker får brytas, annars blir tabellen bredare än den behöver vara. */
+  }
+  .prosa .brodtabell tbody tr:last-child > th,
+  .prosa .brodtabell tbody tr:last-child > td {
+    border-bottom: 0;
+  }
+  .prosa .brodtabell caption {
+    caption-side: top;
+    text-align: left;
+    padding: 12px 12px 0;
+    font-size: var(--text-liten);
+    color: var(--color-blyerts-2);
+  }
+  /* Tabellfot. Källraden under en tabell ("Egen beräkning med Magnus-formeln"),
+     14 px blyerts-2 enligt typskalan. Opt-in i MDX med
+     <p class="tabellfot">…</p>, eftersom stycket efter en tabell lika ofta är
+     vanlig brödtext som en källrad. */
+  .prosa .tabellfot {
+    margin-top: 8px;
+    font-size: var(--text-liten);
+    line-height: var(--text-liten--line-height);
+    color: var(--color-blyerts-2);
+  }
+
+  /*
+    Övriga element markdown kan ge i brödtexten. Utan de här reglerna nollar
+    Tailwinds preflight dem helt.
+  */
+  .prosa blockquote {
+    margin-inline: 0;
+    padding-left: 16px;
+    color: var(--color-blyerts-2);
+    /* Ingen linje till vänster: det mönstret är reserverat för Varning,
+       se DESIGN.md avsnitt 6. */
+  }
+  .prosa hr {
+    border: 0;
+    border-top: 1px solid var(--color-linje);
+    margin-block: 32px;
+  }
+  .prosa code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background-color: var(--color-papper-2);
+    padding: 1px 4px;
+    border-radius: var(--radius-sm);
+  }
+  .prosa pre {
+    background-color: var(--color-papper-2);
+    border: 1px solid var(--color-linje);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    overflow-x: auto;
+    font-size: var(--text-liten);
+    line-height: var(--text-liten--line-height);
+  }
+  .prosa pre code {
+    background: none;
+    padding: 0;
+    font-size: inherit;
+  }
+  .prosa ul ul,
+  .prosa ol ol,
+  .prosa ul ol,
+  .prosa ol ul,
+  .prosa li > p + p {
+    margin-top: 8px;
+  }
+  .prosa ol ol {
+    list-style: lower-alpha;
+  }
+  .prosa ol ol ol {
+    list-style: lower-roman;
+  }
+  .prosa ul ul {
+    list-style: circle;
+  }
+  .prosa dt {
+    font-weight: 700;
+  }
+  .prosa dd {
+    margin-left: 0;
+    margin-top: 4px;
+  }
+  .prosa dd + dt {
+    margin-top: 12px;
+  }
+  .prosa figure {
+    margin: 0;
+  }
+  .prosa figcaption {
+    margin-top: 8px;
+    font-size: var(--text-liten);
+    line-height: var(--text-liten--line-height);
+    color: var(--color-blyerts-2);
+  }
+  /* Ingen bild eller inbäddning får göra sidan bredare än skärmen. */
+  .prosa img,
+  .prosa svg,
+  .prosa video,
+  .prosa iframe {
+    max-width: 100%;
+    height: auto;
   }
 }
