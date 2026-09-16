@@ -11,9 +11,15 @@ import Ikon from './Ikon.astro';
 
 interface Props {
   kalkylator: string;
+  /**
+   * Kortet ligger i ett rutnät (hubbens grupp Räkna, startsidans säsongsblock)
+   * och sköter sitt avstånd själv genom rutnätets gap. Utan propen har det
+   * luft ovanför och under, som i löptext.
+   */
+  iRutnat?: boolean;
 }
 
-const { kalkylator } = Astro.props;
+const { kalkylator, iRutnat = false } = Astro.props;
 const k = hittaKalkylator(kalkylator);
 if (!k) {
   throw new Error(`[Verktygskort] Okänd kalkylator "${kalkylator}". Lägg till den i src/lib/kalkyl/register.ts`);
@@ -21,7 +27,7 @@ if (!k) {
 const href = `/rakna/${k.slug}/`;
 ---
 
-<div class="my-8 border border-linje rounded-sm bg-papper p-4 lg:p-6">
+<div class:list={['border border-linje rounded-sm bg-papper p-4 lg:p-6', !iRutnat && 'my-8']}>
   <p class="m-0 flex items-center gap-2 text-etikett lg:text-etikett-lg uppercase text-blyerts">
     <Ikon namn="kalkylator" storlek={24} />
     Räkna själv

@@ -28,8 +28,13 @@ export type PelareSlug = (typeof PELARE)[number]['slug'];
 
 export const PELARE_SLUGS = PELARE.map((p) => p.slug) as [PelareSlug, ...PelareSlug[]];
 
-/** Högst så många hubbar i huvudmenyn, före Räkna själv och Så testar vi. */
-export const MAX_HUBBAR_I_MENY = 5;
+/**
+ * Högst så många hubbar i huvudmenyn, före Ämnen, Guider, Räkna själv och
+ * Så testar vi. Sänkt från fem till tre 2026-09-16: med två nya poster i menyn
+ * blev sju det som får plats vid 1024 px, och resten av pelarna finns under
+ * Ämnen. Se docs/DESIGN.md avsnitt 5 och designbriefen avsnitt 7.
+ */
+export const MAX_HUBBAR_I_MENY = 3;
 
 /**
  * Sökvägar i roten som varken en pelare eller en kategori får använda.
@@ -39,6 +44,11 @@ export const RESERVERADE_ROTSLUGS = [
   'tester',
   'jamforelser',
   'rakna',
+  // Översiktssidorna, src/pages/amnen/ och src/pages/guider/. Statiska mappar
+  // vinner över [rot], så en pelare eller kategori med den slugen hade blivit
+  // en sida som aldrig byggs.
+  'amnen',
+  'guider',
   'om',
   'forfattare',
   'go',

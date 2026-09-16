@@ -1,0 +1,52 @@
+---
+/**
+ * Rutnätet av artikelkort. Tre kolumner från 1024 px, två från 640, en under.
+ * Rutnätet använder sidbredden, inte läsbredden: det är formen som gör sidan
+ * till en tidningssida i stället för en lodrät ström. Se docs/DESIGN.md avsnitt 6.
+ *
+ * storForsta ger det första kortet två kolumner på desktop (startsidans justNu).
+ * kompaktPaMobil gör kort två och uppåt kompakta på mobil, så att startsidan
+ * inte blir 2 400 px lång.
+ */
+import type { KortData } from '../../lib/kort';
+import Artikelkort from './Artikelkort.astro';
+
+interface Props {
+  kort: KortData[];
+  storForsta?: boolean;
+  kompaktPaMobil?: boolean;
+  /** Metaraden utan pelarnamn. Hubben, där alla kort har samma pelare. */
+  visaPelare?: boolean;
+  /** Första kortets bild är sidans LCP-bild (startsidan). */
+  prioriteraForsta?: boolean;
+}
+
+const { kort, storForsta = false, kompaktPaMobil = false, visaPelare = true, prioriteraForsta = false } = Astro.props;
+---
+
+{
+  kort.length > 0 && (
+    <ul class="kortrutnat m-0 mt-4 grid list-none grid-cols-1 gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+      {kort.map((k, i) => (
+        <li class:list={[storForsta && i === 0 && 'lg:col-span-2']}>
+          <Artikelkort
+            etikett={k.etikett}
+            niva={k.niva}
+            rubrik={k.rubrik}
+            beskrivning={k.beskrivning}
+            illustration={k.illustration}
+            pelare={k.pelare}
+            datum={k.datum}
+            meta={k.meta}
+            href={k.href}
+            bladfakta={k.bladfakta}
+            variant={storForsta && i === 0 ? 'stor' : 'standard'}
+            kompaktPaMobil={kompaktPaMobil && !(storForsta && i === 0)}
+            visaPelare={visaPelare}
+            prioriterad={prioriteraForsta && i === 0}
+          />
+        </li>
+      ))}
+    </ul>
+  )
+}

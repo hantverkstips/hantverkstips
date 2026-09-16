@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup Alla guider · Hantverkstips</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* Tokens ur docs/DESIGN.md avsnitt 3. Mockup, inte produktionskod. */
+  :root {
+    --papper: #f5efe3; --papper-2: #ebe2cf; --linje: #c9bca3;
+    --blyerts: #2a2521; --blyerts-2: #625a50; --penna: #ad3519;
+    --tumstock: #e8b830; --ok: #2e6b3b; --varning: #8c5300; --vit: #ffffff;
+    --serif: "Zilla Slab", Georgia, serif;
+    --sans: "Atkinson Hyperlegible", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--papper); color: var(--blyerts); font-family: var(--sans); font-size: 18px; line-height: 1.6; }
+  body { margin: 0; }
+  a { color: var(--penna); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:hover { text-decoration-thickness: 2px; }
+  :focus-visible { outline: 3px solid var(--penna); outline-offset: 2px; }
+  h1, h2, h3, p, ul, ol, figure { margin: 0; }
+  ul, ol { padding: 0; list-style: none; }
+
+  .sidbredd { max-width: 72rem; margin-inline: auto; padding-inline: 32px; }
+  .lasbredd { max-width: 44rem; }
+
+  header { border-bottom: 1px solid var(--linje); }
+  header .sidbredd { height: 64px; display: flex; align-items: center; justify-content: space-between; }
+  .ordmarke { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: var(--blyerts); font-family: var(--serif); font-weight: 600; font-size: 24px; position: relative; padding-bottom: 6px; }
+  .ordmarke svg.symbol { width: 32px; height: 32px; }
+  .ordmarke .streck { position: absolute; left: 40px; right: -6px; bottom: 0; height: 6px; }
+  nav.huvudmeny { display: flex; gap: 24px; font-size: 15px; }
+  nav.huvudmeny a { color: var(--blyerts); text-decoration: none; }
+  nav.huvudmeny a:hover { text-decoration: underline; text-decoration-color: var(--penna); }
+  nav.huvudmeny a[aria-current] { font-weight: 700; }
+
+  main { padding-block: 48px 96px; }
+  .brodsmulor { font-size: 14px; color: var(--blyerts-2); margin-bottom: 24px; }
+  .brodsmulor ol { display: flex; gap: 8px; }
+  .brodsmulor li + li::before { content: "/"; margin-right: 8px; }
+  .brodsmulor a { color: var(--blyerts-2); }
+
+  h1 { font-family: var(--serif); font-weight: 600; font-size: 42px; line-height: 1.15; }
+  .ingress { font-size: 21px; line-height: 1.5; margin-top: 16px; color: var(--blyerts-2); }
+  .etikett { font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; line-height: 1.3; color: var(--blyerts); }
+  .ikon { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+  /* Filterrad: slätt papper-2, länkar, aktiv post är blyerts med pennans understrykning */
+  .filter { margin-top: 32px; background: var(--papper-2); border: 1px solid var(--linje); border-radius: 2px; padding: 16px 24px; }
+  .filter .rad { display: grid; grid-template-columns: 72px 1fr; align-items: baseline; gap: 16px; padding-block: 6px; }
+  .filter .rad + .rad { border-top: 1px solid var(--linje); }
+  .filter ul { display: flex; flex-wrap: wrap; gap: 4px 20px; }
+  .filter li a, .filter li span { display: inline-block; padding-block: 8px; }
+  .filter li span[aria-current] { color: var(--blyerts); font-weight: 700; text-decoration: underline; text-decoration-thickness: 2px; text-decoration-color: var(--penna); text-underline-offset: 3px; }
+  .filter .antal { color: var(--blyerts-2); font-size: 14px; margin-left: 3px; }
+
+  /* Artikelrutnät och Artikelkort */
+  .rutnat { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 32px; }
+  .artikelkort { position: relative; display: flex; flex-direction: column; border: 1px solid var(--linje); border-radius: 2px; background: var(--papper); overflow: hidden; }
+  .artikelkort .bild { aspect-ratio: 5 / 3; border-bottom: 1px solid var(--linje); overflow: hidden; }
+  .artikelkort .bild img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .artikelkort .text { display: flex; flex-direction: column; flex: 1; padding: 24px; }
+  .artikelkort .kortrubrik { font-family: var(--serif); font-weight: 600; font-size: 22px; line-height: 1.25; margin-top: 8px; }
+  .artikelkort .kortrubrik a { color: var(--blyerts); text-decoration: none; transition: text-decoration-color 150ms; }
+  .artikelkort .kortrubrik a::after { content: ""; position: absolute; inset: 0; }
+  .artikelkort:hover .kortrubrik a { text-decoration: underline; text-decoration-thickness: 2px; text-decoration-color: var(--penna); text-underline-offset: 3px; }
+  .artikelkort:has(a:focus-visible) { outline: 3px solid var(--penna); outline-offset: 2px; }
+  .artikelkort .beskrivning { margin-top: 8px; font-size: 17px; line-height: 1.5; color: var(--blyerts-2); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .artikelkort .meta { margin-top: auto; padding-top: 12px; font-size: 14px; color: var(--blyerts-2); }
+  .plats-blad { height: 100%; display: grid; place-items: center; background-color: var(--papper-2);
+    background-image: linear-gradient(to right, color-mix(in srgb, var(--penna) 35%, transparent) 0, color-mix(in srgb, var(--penna) 35%, transparent) 1px, transparent 1px),
+      repeating-linear-gradient(to bottom, transparent 0, transparent 23px, var(--linje) 23px, var(--linje) 24px);
+    background-repeat: no-repeat, repeat; background-position: 24px 0, 0 8px; color: var(--blyerts-2); }
+  .plats-blad .ikon { width: 40px; height: 40px; }
+
+  /* Paginering */
+  .paginering { display: flex; justify-content: space-between; align-items: center; margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--linje); font-size: 15px; }
+  .paginering .lankar { display: flex; gap: 24px; }
+  .paginering .lankar a { display: inline-flex; min-height: 44px; align-items: center; }
+  .paginering .liten { color: var(--blyerts-2); }
+
+  footer { background: var(--blyerts); color: var(--papper); font-size: 14px; }
+  footer .sidbredd { padding-block: 48px; }
+  footer .ordmarke { color: var(--papper); }
+  footer .spalter { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin-top: 32px; }
+  footer .etikett { color: var(--papper); margin-bottom: 8px; }
+  footer li { margin-bottom: 8px; }
+  footer a { color: var(--papper); }
+
+  .anm { margin-top: 48px; padding: 16px 24px; background: var(--papper-2); border: 1px dashed var(--linje); font-size: 14px; color: var(--blyerts-2); }
+</style>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="ikon-fukt" viewBox="0 0 24 24"><path d="M12,3 C11.5,4 6,10.5 6,14.5 A6,6 0 0 0 18,14.5 C18,10.5 12.5,4 12,3"/><path d="M9,15 Q9.3,17.4 11.4,18.2"/></symbol>
+  <symbol id="ikon-altan" viewBox="0 0 24 24"><path d="M2.5,10 Q12,9.4 21.5,10 M2.5,14 Q12,13.5 21.5,14 M2.5,18 Q12,17.5 21.5,18"/><path d="M6,10.5 V21.5 M18,10.5 V21.5"/><path d="M6,9.5 V4.5 M18,9.5 V4.5 M5.5,5.5 Q12,5 18.5,5.5"/></symbol>
+</svg>
+
+<header>
+  <div class="sidbredd">
+    <a href="#" class="ordmarke" aria-label="Hantverkstips, till startsidan">
+      <svg class="symbol" viewBox="0 0 32 32" aria-hidden="true"><path d="M7,4 V28 M25,4 V28" stroke="#e8b830" stroke-width="6" stroke-linecap="round"/><path d="M8,15.5 Q16,15 24,15.5 M8,17.5 Q16,17 24,17.5" stroke="#2a2521" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+      Hantverkstips
+      <svg class="streck" viewBox="0 0 240 10" preserveAspectRatio="none" aria-hidden="true"><path d="M3,6.2 Q60,2.4 120,5.4 T237,4.2" fill="none" stroke="#ad3519" stroke-width="3" stroke-linecap="round"/></svg>
+    </a>
+    <nav class="huvudmeny" aria-label="Huvudmeny">
+      <a href="#">Fukt</a><a href="#">Inomhus</a><a href="#">Verktyg</a><a href="#">Ämnen</a><a href="#" aria-current="page">Guider</a><a href="#">Räkna själv</a><a href="#">Så testar vi</a>
+    </nav>
+  </div>
+</header>
+
+<main class="sidbredd">
+  <nav class="brodsmulor" aria-label="Brödsmulor"><ol><li><a href="#">Hantverkstips</a></li><li aria-current="page">Guider</li></ol></nav>
+
+  <div class="lasbredd">
+    <h1>Alla guider och tester</h1>
+    <p class="ingress">Sju sidor, den senaste från 16 september 2026. Nyast först. Välj ämne, typ eller nivå för att sålla.</p>
+  </div>
+
+  <nav class="filter" aria-label="Filter">
+    <div class="rad">
+      <p class="etikett">Ämne</p>
+      <ul>
+        <li><span aria-current="page">Alla<span class="antal">(7)</span></span></li>
+        <li><a href="#">Fukt<span class="antal">(5)</span></a></li>
+        <li><a href="#">Inomhus<span class="antal">(1)</span></a></li>
+        <li><a href="#">Altan<span class="antal">(1)</span></a></li>
+      </ul>
+    </div>
+    <div class="rad">
+      <p class="etikett">Typ</p>
+      <ul>
+        <li><span aria-current="page">Alla</span></li>
+        <li><a href="#">Köpguide<span class="antal">(1)</span></a></li>
+        <li><a href="#">Problemguide<span class="antal">(1)</span></a></li>
+        <li><a href="#">Projektguide<span class="antal">(2)</span></a></li>
+        <li><a href="#">Kunskap<span class="antal">(2)</span></a></li>
+        <li><a href="#">Bäst i test<span class="antal">(1)</span></a></li>
+      </ul>
+    </div>
+    <div class="rad">
+      <p class="etikett">Nivå</p>
+      <ul>
+        <li><span aria-current="page">Alla</span></li>
+        <li><a href="#">Enkel<span class="antal">(1)</span></a></li>
+        <li><a href="#">Mellan<span class="antal">(5)</span></a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <ul class="rutnat">
+    <li class="artikelkort">
+      <div class="bild"><img src="https://www.hantverkstips.se/_astro/kallare-avfuktare.URspGmly.svg" alt="" width="600" height="360"></div>
+      <div class="text">
+        <p class="etikett">Köpguide · Mellan</p>
+        <h2 class="kortrubrik"><a href="#">Rätt avfuktare till källaren, och hur stor den behöver vara</a></h2>
+        <p class="beskrivning">Så stor avfuktare din källare behöver, och när kondens räcker eller sorption krävs. Tre maskiner, kapacitet vid låg temperatur och elkostnad per månad.</p>
+        <p class="meta">Fukt · 16 sep 2026</p>
+      </div>
+    </li>
+    <li class="artikelkort">
+      <div class="bild"><img src="https://www.hantverkstips.se/_astro/gipsskruv-sektion.KCM--y3W.svg" alt="" width="600" height="360"></div>
+      <div class="text">
+        <p class="etikett">Projektguide · Enkel</p>
+        <h2 class="kortrubrik"><a href="#">Rätt gipsskruv för regeln och skivan, längd och gänga på en sida</a></h2>
+        <p class="beskrivning">Vilken gipsskruv du ska ha, i längd och gänga, för en eller två skivor på trä eller stål. Tabell med skruvavstånd och rätt försänkning.</p>
+        <p class="meta">Inomhus · 16 sep 2026</p>
+      </div>
+    </li>
+    <li class="artikelkort">
+      <div class="bild"><div class="plats-blad"><svg class="ikon" aria-hidden="true"><use href="#ikon-fukt"/></svg></div></div>
+      <div class="text">
+        <p class="etikett">Kunskap · Mellan</p>
+        <h2 class="kortrubrik"><a href="#">Rätt luftfuktighet inomhus, och vad du gör när hygrometern visar fel</a></h2>
+        <p class="beskrivning">Runt 50 procent är bra, 30 till 70 går an. Tabell per rum och årstid, daggpunkt förklarad, och vad du gör när det är för fuktigt eller för torrt.</p>
+        <p class="meta">Fukt · 16 sep 2026</p>
+      </div>
+    </li>
+    <li class="artikelkort">
+      <div class="bild"><img src="https://www.hantverkstips.se/_astro/sorption-flode.sNi4P2cu.svg" alt="" width="600" height="360" loading="lazy"></div>
+      <div class="text">
+        <p class="etikett">Kunskap · Mellan</p>
+        <h2 class="kortrubrik"><a href="#">Sorptionsavfuktare, temperaturen avgör om du behöver en</a></h2>
+        <p class="beskrivning">Sorptionsavfuktare torkar luft även vid minusgrader, men drar mer el och låter mer. Tabell över kapacitet vid 5, 10 och 20 grader, elkostnad och ljud.</p>
+        <p class="meta">Fukt · 16 sep 2026</p>
+      </div>
+    </li>
+    <li class="artikelkort">
+      <div class="bild"><img src="https://www.hantverkstips.se/_astro/kallare.U6pzmdVs.svg" alt="" width="600" height="360" loading="lazy"></div>
+      <div class="text">
+        <p class="etikett">Problemguide · Mellan</p>
+        <h2 class="kortrubrik"><a href="#">Fukt i källaren, så tar du reda på varifrån den kommer</a></h2>
+        <p class="beskrivning">Tejptestet visar på två dygn om fukten kommer inifrån eller utifrån. Sedan vet du om du ska köpa en avfuktare, gräva, eller ringa någon.</p>
+        <p class="meta">Fukt · 15 sep 2026</p>
+      </div>
+    </li>
+    <li class="artikelkort">
+      <div class="bild"><div class="plats-blad"><svg class="ikon" aria-hidden="true"><use href="#ikon-altan"/></svg></div></div>
+      <div class="text">
+        <p class="etikett">Projektguide · Mellan</p>
+        <h2 class="kortrubrik"><a href="#">Bygga altan, från plint till sista trallskruven</a></h2>
+        <p class="beskrivning">Ordningen som gör att altanen blir rak och håller i tjugo år. Plintar, reglar, trall och vilka verktyg du faktiskt behöver.</p>
+        <p class="meta">Altan · 15 sep 2026</p>
+      </div>
+    </li>
+    <li class="artikelkort">
+      <div class="bild"><div class="plats-blad"><svg class="ikon" aria-hidden="true"><use href="#ikon-fukt"/></svg></div></div>
+      <div class="text">
+        <p class="etikett">Bäst i test</p>
+        <h2 class="kortrubrik"><a href="#">Luftavfuktare</a></h2>
+        <p class="beskrivning">Vårt val är Wood's SW39FW I-EcoDefrost+, 5 948 kr. Bästa luftavfuktaren för källare, krypgrund och garage, jämförd med samma mått för alla.</p>
+        <p class="meta">Fukt · 9 granskade</p>
+      </div>
+    </li>
+  </ul>
+
+  <div class="paginering">
+    <p class="liten">Sida 1 av 21</p>
+    <div class="lankar"><a href="#">Nästa sida</a></div>
+  </div>
+
+  <p class="anm">Mockup 2026-09-16, 1200 px. Sju kort är allt som är publicerat i dag; kategorin Luftavfuktare visas här trots noindex för att kategorikortet ska synas. Pagineringsraden är ett exempel på tillståndet vid 500 artiklar (21 sidor om 24); med sju kort renderas den inte. Filtret är länkar till statiska sidor, ingen JavaScript. Ordmärkets symbol är förenklad.</p>
+</main>
+
+<footer>
+  <div class="sidbredd">
+    <span class="ordmarke">
+      <svg class="symbol" viewBox="0 0 32 32" aria-hidden="true"><path d="M7,4 V28 M25,4 V28" stroke="#e8b830" stroke-width="6" stroke-linecap="round"/><path d="M8,15.5 Q16,15 24,15.5 M8,17.5 Q16,17 24,17.5" stroke="#f5efe3" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+      Hantverkstips
+      <svg class="streck" viewBox="0 0 240 10" preserveAspectRatio="none" aria-hidden="true"><path d="M3,6.2 Q60,2.4 120,5.4 T237,4.2" fill="none" stroke="#ad3519" stroke-width="3" stroke-linecap="round"/></svg>
+    </span>
+    <div class="spalter">
+      <div><p class="etikett">Ämnen</p><ul><li><a href="#">Fukt och inomhusklimat</a></li><li><a href="#">Inomhus och montering</a></li><li><a href="#">Verktyg och maskiner</a></li><li><a href="#">Alla ämnen</a></li><li><a href="#">Alla guider och tester</a></li></ul></div>
+      <div><p class="etikett">Bäst i test</p><ul><li><a href="#">Luftavfuktare</a></li></ul></div>
+      <div><p class="etikett">Räkna själv</p><ul><li><a href="#">Hur stor avfuktare behöver du?</a></li></ul></div>
+      <div><p class="etikett">Om sajten</p><ul><li><a href="#">Om oss</a></li><li><a href="#">Så testar vi</a></li><li><a href="#">Så tjänar vi pengar</a></li><li><a href="#">Författare</a></li><li><a href="#">Kontakt</a></li><li><a href="#">Integritet</a></li></ul></div>
+    </div>
+    <p style="margin-top:32px">© 2026 Hantverkstips</p>
+  </div>
+</footer>
+</body>
+</html>

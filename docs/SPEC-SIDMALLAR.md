@@ -40,6 +40,7 @@ interface Props {
   brodsmulor?: Brodsmula[];      // från src/lib/innehall.ts. Utelämnas på startsidan
   bred?: boolean;                // main får max-w-sidbredd i stället för lasbredd. Kategori, jämförelse, kalkylator
   noindex?: boolean;             // <meta name="robots" content="noindex">. 404 och admin
+  paginering?: { foregaende?: string; nasta?: string };  // rel="prev" och rel="next" i head. /guider/
 }
 ```
 
@@ -55,13 +56,13 @@ I ordning: `charset`, `viewport`, `<title>`, `description`, `canonical` (som nu)
 2. Inlinead ikonsprite: `import ikoner from '../assets/brand/riktning-1/ikoner.svg?raw'` och `<Fragment set:html={ikoner} />`. Filen har `style="display:none"` och `<symbol id="ikon-...">`.
 3. `<header>`, 56 px hög på mobil, 64 från `lg`, 1 px `linje` under. Innehåll i `max-w-sidbredd`:
    - Ordmärket som länk till `/`: `import ordmarke from '../assets/brand/riktning-1/ordmarke-inline.svg?raw'`, `set:html` inuti `<a href="/" class="ordmarke" aria-label="Hantverkstips, till startsidan">`. Filen finns (designansvarig lade till den 2026-09-15), saknar `xmlns` med avsikt och sätter färger och typsnitt via `var(--color-blyerts)`, `var(--color-penna)`, `var(--color-tumstock)` och `var(--font-serif)`, så den följer tokens automatiskt. CSS: `.ordmarke svg { height: 1.75rem; width: auto }` på mobil, `2rem` från `lg`. Ordmärket är den enda länken till startsidan i sidhuvudet.
-   - Desktop (`hidden lg:flex`): `<nav aria-label="Huvudmeny">` med länkarna i rad till höger: de publicerade hubbarna i `PELARE`-ordning (högst `MAX_HUBBAR_I_MENY`, fem), sedan Räkna själv `/rakna/` och Så testar vi `/om/sa-testar-vi/`. 15 px, `blyerts`, understrykning vid hover. Listan byggs av `publicerade('pelare')` (ändrat 2026-09-16, tidigare hårdkodad) enligt `docs/INNEHALLSARKITEKTUR.md` avsnitt 4.
-   - Mobil (`lg:hidden`): `<details class="meny">` med `<summary>` som visar `<Ikon namn="meny" />` och ordet "Meny" (text, inte bara ikon), 44 px hög. När öppen: en lista absolut positionerad under sidhuvudet, full bredd, bakgrund `papper`, `shadow-lyft`, 48 px per rad. Innehåll: de fem posterna, en `<hr>` i `linje`, rubrik "Bäst i test" i etikett-stil följd av kategorisidorna (max fyra, från `publicerade('kategorier')`), sedan "Om Hantverkstips" till `/om/`. Ingen JavaScript, `<details>` sköter öppna och stäng. `summary::marker` döljs.
+   - Desktop (`hidden lg:flex`): `<nav aria-label="Huvudmeny">` med länkarna i rad till höger: de publicerade hubbarna i `PELARE`-ordning (högst `MAX_HUBBAR_I_MENY`, tre sedan 2026-09-16), sedan Ämnen `/amnen/`, Guider `/guider/`, Räkna själv `/rakna/` och Så testar vi `/om/sa-testar-vi/`. 15 px, `blyerts`, understrykning vid hover. Listan byggs av `publicerade('pelare')` (ändrat 2026-09-16, tidigare hårdkodad) enligt `docs/INNEHALLSARKITEKTUR.md` avsnitt 4.
+   - Mobil (`lg:hidden`): `<details class="meny">` med `<summary>` som visar `<Ikon namn="meny" />` och ordet "Meny" (text, inte bara ikon), 44 px hög. När öppen: en lista absolut positionerad under sidhuvudet, full bredd, bakgrund `papper`, `shadow-lyft`, 48 px per rad. Innehåll uppifrån: hubbarna med pelarikon och raden "Alla ämnen", sedan "Guider och tester" och "Räkna själv", sedan rubriken "Bäst i test" i etikett-stil följd av kategorisidorna (max fyra, från `publicerade('kategorier')`), sist "Så testar vi" och "Om Hantverkstips". Ingen JavaScript, `<details>` sköter öppna och stäng. `summary::marker` döljs.
 4. `<Reklamband />` om `reklam`.
 5. `<Brodsmulor lista={brodsmulor} />` om `brodsmulor` finns, inuti `main`:s bredd, ovanför slot.
 6. `<main id="innehall" tabindex="-1">` med `max-w-lasbredd` (eller `sidbredd` om `bred`), `px-4 sm:px-6 lg:px-8`, `py-8 lg:py-12`.
 7. `<footer>` bakgrund `blyerts`, text `papper`, 14 px. Ordmärket överst i `papper`: samma inline-SVG, och eftersom den läser `var(--color-blyerts)` räcker det att sidfotens `.ordmarke` sätter `style="--color-blyerts: var(--color-papper)"`; tumstocksgult och pennstrecket behålls. Fyra grupper, en spalt på mobil och fyra från `lg`, i ordning:
-   - **Ämnen**: alla publicerade hubbar, i `PELARE`-ordning. Data: `publicerade('pelare')` matchad mot `PELARE` för namn. En pelare utan publicerad hub listas inte.
+   - **Ämnen**: alla publicerade hubbar, i `PELARE`-ordning, sist raderna "Alla ämnen" (`/amnen/`) och "Alla guider och tester" (`/guider/`). Data: `publicerade('pelare')` matchad mot `PELARE` för namn. En pelare utan publicerad hub listas inte.
    - **Bäst i test**: alla publicerade kategorier (`publicerade('kategorier')`), länk till `/[kategori]/` med `namn`.
    - **Räkna själv**: alla poster i `KALKYLATORER` (avsnitt 3.3), länk till `/rakna/[slug]/`.
    - **Om sajten**: Om oss `/om/`, Så testar vi `/om/sa-testar-vi/`, Så tjänar vi pengar `/om/sa-tjanar-vi-pengar/`, Författare `/forfattare/redaktionen/` (byts till riktig författare senare), Kontakt `/om/kontakt/`, Integritet `/om/integritet/`.
@@ -189,13 +190,58 @@ interface Props { forfattare: string; publicerad?: Date; uppdaterad?: Date }
 
 Data: `getEntry('forfattare', forfattare)`; saknas den används `redaktionen`; saknas även den renderas texten "Redaktionen" utan länk. 1 px `linje` ovanför, 24 px lodrätt. Foto 64 × 64 px, radie `sm`, via `<Image>` från `data.bild`; utan foto en kvadrat i `papper-2` med initialer (första bokstaven i varje ord i `namn`, max två) i etikett-stil. Namnet som länk till `/forfattare/[id]/`, 600. Rad två: `presentation`, eller om `sedan` finns "{yrke} sedan {sedan}. {presentation}". Rad tre i 14 px `blyerts-2`: "Publicerad {datum}" och ", uppdaterad {datum}" om den finns. Rad fyra: länk "Så testar vi" till `/om/sa-testar-vi/`.
 
+### 2.9b `Artikelkort.astro`, `Artikelrutnat.astro` och `Kortgrupp.astro` (nya 2026-09-16)
+
+```ts
+// Artikelkort
+interface Props {
+  etikett: string;            // typEtikett(), eller "Bäst i test" på kategorikort
+  niva?: Niva;                // visas som " · Mellan" efter etiketten
+  rubrik: string;
+  beskrivning?: string;       // klipps till tre rader i CSS
+  illustration?: ImageMetadata;  // SVG som <img>, raster via <Image>
+  bildAlt?: string;           // standard "", bilden är dekorativ på ett kort
+  pelare: PelareSlug;         // placeholderns ikon och metaradens pelarnamn
+  datum?: Date;
+  meta?: string;              // fri text i stället för datum: "13 granskade"
+  href: string;
+  variant?: 'standard' | 'stor';
+  kompaktPaMobil?: boolean;   // bild 120 × 72 till vänster under 640 px
+  visaPelare?: boolean;       // false på hubben, där alla kort har samma pelare
+  rubrikniva?: 2 | 3;         // standard 3
+  prioriterad?: boolean;      // LCP-bild, ingen lazy
+  bladfakta?: { val?: string; antal?: number };  // kategorikortets bildyta
+}
+
+// Artikelrutnat
+interface Props { kort: KortData[]; storForsta?: boolean; kompaktPaMobil?: boolean; visaPelare?: boolean; prioriteraForsta?: boolean }
+
+// Kortgrupp (bara i en pelarhub)
+interface Props { grupp: 'hitta-felet' | 'valj-ratt' | 'gor-det-sjalv' | 'rakna' }
+```
+
+`KortData` och mappningen från frontmatter ligger i `src/lib/kort.ts` (`tillKortArtikel`, `tillKortTest`, `tillKortJamforelse`, `tillKortKategori`, `allaKort`, `pelareForKategori`), så att startsidan, hubben, `/amnen/` och `/guider/` bygger sina kort på ett ställe. Tester och jämförelser saknar `pelare` i frontmatter och får den via kategorifilens `pelare[0]`.
+
+`Kortgrupp` läser pelaren ur `Astro.locals.pelare`, som `src/pages/[rot]/index.astro` och `vyer/PelarHub.astro` sätter innan `<Content>` renderas. En prop går inte: taggen står i innehållsfilen. Saknad pelare eller okänd grupp ger byggfel, och `npm run kontrollera` stoppar en `<Kortgrupp>` i fel samling eller med okänt gruppnamn. En tom grupp renderar ingenting.
+
+Utseendet i sin helhet står i `docs/DESIGN.md` avsnitt 6, Artikelkort.
+
+### 2.9c `Filterrad.astro` och `Paginering.astro` (nya 2026-09-16)
+
+```ts
+interface FilterradProps { rader: { etikett: string; poster: { namn: string; antal: number; href: string; aktiv: boolean }[] }[] }
+interface PagineringProps { sida: number; antal: number; bas: string }
+```
+
+Bara på `/guider/`. Inga knappar, ingen `<select>`, ingen JavaScript. `Paginering` renderar ingenting när `antal === 1`.
+
 ### 2.9 `Verktygskort.astro`
 
-`interface Props { kalkylator: string }`. Slår upp i `KALKYLATORER` (avsnitt 3.3); okänd slug ger byggfel (`throw new Error`). Ett kort med ram: `<Ikon namn="kalkylator" />` och etiketten "Räkna själv" på samma rad i etikett-stil, rubriken (H3) som länk till `/rakna/[slug]/`, en rad (`rad`), länktexten "Till kalkylatorn" som en textlänk under. Inget diagram i fas 1. En sida får aldrig ha två verktygskort; det är en granskningsregel, inte något komponenten kontrollerar.
+`interface Props { kalkylator: string; iRutnat?: boolean }`. `iRutnat` tar bort kortets egen luft ovanför och under, så att det kan ligga i ett rutnät med samma ram och radie som artikelkorten. Slår upp i `KALKYLATORER` (avsnitt 3.3); okänd slug ger byggfel (`throw new Error`). Ett kort med ram: `<Ikon namn="kalkylator" />` och etiketten "Räkna själv" på samma rad i etikett-stil, rubriken (H3) som länk till `/rakna/[slug]/`, en rad (`rad`), länktexten "Till kalkylatorn" som en textlänk under. Inget diagram i fas 1. En sida får aldrig ha två verktygskort; det är en granskningsregel, inte något komponenten kontrollerar.
 
 ### 2.10 `BorjaHar.astro`
 
-Inga props. Data: `publicerade('pelare')` sorterad i `PELARE`-ordning. H2 "Börja här" via Pennstreck, sedan en rad per hub: `<Ikon namn={pelare.ikon} />` och H3 med `PELARE.kort` som länk till `/[slug]/`, `ingress` som ett stycke, `viktiga` som en kort lista med länkar. Rader skiljs med 1 px `linje`. Inga kolumner, inga kort.
+Inga props. Data: `publicerade('pelare')` sorterad i `PELARE`-ordning. H2 "Börja här" via Pennstreck med länken "Alla ämnen" till `/amnen/` på samma rad, sedan en rad per hub: `<Ikon namn={pelare.ikon} />` och H3 med `PELARE.kort` som länk till `/[slug]/`, `ingress` som ett stycke, `viktiga` som länkar på var sin rad. Raderna ligger i ett rutnät med två spalter från `lg`, fyllt i läsordning, och skiljs med 1 px `linje`. Inga ikonkolumner, inga kort.
 
 ### 2.11 `DetHarBehoverDu.astro`
 
@@ -351,16 +397,17 @@ Alla rutter utom kalkylatorn och `/go/` är statiska. Varje rutt: sätter `Astro
 
 Data: `getEntry('sidor', 'startsida')` (H1 = `title`, stycket = `<Content />`), `sasongensKalkylator(new Date().getMonth() + 1)`, `publicerade('pelare')`, "just nu" via `getEntry(justNu.samling, justNu.id)`, `publicerade('kategorier')` med `hamtaProdukt(val[0].produkt)` per kategori, de sex senaste av guider + kunskap + tester + jamforelser sorterade på `publicerad` fallande, `KALKYLATORER`.
 
-Block i ordning, enligt `docs/INNEHALLSARKITEKTUR.md` avsnitt 5:
+Block i ordning, enligt `docs/INNEHALLSARKITEKTUR.md` avsnitt 5 och `docs/DESIGN.md` avsnitt 5.1 (omskrivna 2026-09-16):
 
-1. Öppning: H1 i `font-rubrik`, vänsterställd, läsbredd. Stycket från `startsida.mdx` i ingress-storlek; länkarna ligger i texten. Från `lg` i vänster två tredjedelar med verktygskortet i höger tredjedel.
-2. `<Verktygskort kalkylator={sasong.slug} />`.
-3. `<BorjaHar />`.
-4. Just nu: etikett (`typEtikett`), H2 (Pennstreck) som länk, `description` som ingress, meta med datum. Bild från `entry.data.bild` via `<Image>` 3:2 om den finns, annars ingen bild. Utan `justNu` i frontmatter utgår blocket.
-5. Bäst i test just nu: H2 "Bäst i test just nu". En rad per kategori med `val[0]`: kategorinamn (H3 som länk till `/[kategori]/`), "Vårt val: {produktnamn}" och pris i `blyerts-2` med `formateraPris`, länken "Alla vi testat". Ingen köpknapp, ingen bild. Kategori vars produkt saknas i databasen visar raden utan pris. Inga kategorier: blocket utgår.
-6. Senaste guider och tester: H2, sex rader med etikett, H3 som länk, `description`, datum. En spalt, två från `lg`.
-7. Räkna själv: H2, `<ul>` med varje kalkylator: namn som länk, `rad`.
-8. Så jobbar vi: H2, `<Content />`-fritt block med hårdkodad platshållartext i rutten tills chefredaktören levererar: "Vi testar själva när vi kan och granskar tillverkarnas data när vi inte kan. Så testar vi. Sajten finansieras av annonslänkar, och hur det påverkar det vi skriver står på Så tjänar vi pengar." med de två länkarna.
+1. Öppning: H1, vänsterställd, läsbredd. Stycket från `startsida.mdx` i ingress-storlek; länkarna ligger i texten. Ingen högerspalt.
+2. Säsongens ämne: ett rutnät i 12 kolumner. Illustrationen (7/12) med bildtext till vänster, och till höger (5/12) etiketten "Säsongens ämne · {månad}" från `manadNamn(new Date())`, `sasongRubrik` som H2 via Pennstreck, `sasongText` som stycke, `<Verktygskort kalkylator={sasong.slug} iRutnat />` och "Läs först" med `viktiga` från hubben för den pelare `sasong.kategori` hör till (`pelareForKategori`, fallback `fukt`). Saknas `sasongRubrik` och `sasongText` renderas resten ändå.
+3. Guider och tester: H2 via Pennstreck med länken "Alla guider och tester" på samma rad, sedan `<Artikelrutnat storForsta kompaktPaMobil />` med `justNu` först och de fyra senaste ur `allaKort()` efter, `justNu` bortfiltrerad på `href`. Är `justNu.illustration.src` samma fil som säsongsbilden nollställs bilden så att kortet visar placeholder. Utan `justNu` i frontmatter visas de fem senaste.
+4. `<BorjaHar />`.
+5. Bäst i test just nu: H2. En rad per kategori ur `kategoriVal()`: kategorinamn (H3 som länk till `/[kategori]/`), "Vårt val" i etikett-stil med produktnamnet, pris via `formateraPris` och antalet granskade, länken "Alla vi granskat". Två spalter av rader från `lg`. Ingen köpknapp, ingen bild. Kategori vars produkt saknas i databasen visar raden utan pris. Inga kategorier: blocket utgår.
+6. Räkna själv: H2 och verktygskort i rutnät, bara när `KALKYLATORER.length >= 2`.
+7. Så jobbar vi: H2 och två meningar med länkar till "Så testar vi" och "Så tjänar vi pengar", i läsbredd.
+
+`<title>` byggs av `title` i `startsida.mdx`: "Hantverkstips, " plus rubriken med gemen första bokstav och utan avslutande punkt, så att flik och H1 säger samma sak när chefredaktören byter H1. `seoTitle` i frontmatter vinner över det.
 
 `reklam={false}`. Ingen `sidtyp`. Strukturerad data: `organisation()` i `<slot name="head">`. `bred={true}`.
 
@@ -386,7 +433,7 @@ export async function getStaticPaths() {
 
 Pelarslugs vinner alltid: en kategori får inte heta som en pelare, bygget stoppar. Rutten renderar `<PelarHub entry />` eller `<Kategorisida entry />`.
 
-**`vyer/PelarHub.astro`.** `sidtyp` sätts inte (inga knappar). `reklam={false}`. Brödsmulor: Hantverkstips / {kort}. H1 `title`, `description` visas inte (den är meta), `<Content components={{ h2: Pennstreck, Faktaruta, Varning, Verktygskort, Markering }} />`. Efter innehållet H2 "Bäst i test" med länkar till kategorier vars `pelare` innehåller huben (från `publicerade('kategorier')`), sedan H2 "Alla sidor i {kort}" med en lista av alla publicerade guider och kunskap med `pelare === rot`, sorterade på titel; den listan är säkerheten mot föräldralösa sidor, huben ovanför är den handskrivna. Strukturerad data: `artikel()` med författare redaktionen.
+**`vyer/PelarHub.astro`.** `sidtyp` sätts inte (inga knappar). `reklam={false}`, `bred={true}`. Brödsmulor: Hantverkstips / {kort}. H1 `title`, `description` visas inte (den är meta), `<Content components={{ h2: Pennstreck, Faktaruta, Varning, Verktygskort, Markering, Illustration, Kortgrupp }} />`. Rutten och vyn sätter `Astro.locals.pelare` innan innehållet renderas, så att `<Kortgrupp grupp="...">` i hubfilen vet vilken pelare den står i. Brödtexten hålls till läsbredd med en scoped regel på `.hub-prosa > p` med flera; kortrutnäten (`ul.kortrutnat`) undantas och fyller sidbredden. Sist H2 "Alla sidor i {kort}" med länken "Alla guider i {kort}" till `/guider/[pelare]/` på samma rad: alla publicerade guider och kunskap med `pelare === rot`, sorterade på titel och grupperade på nivå i tre spalter. Den listan är säkerheten mot föräldralösa sidor, korten ovanför är kartan. Kategorisidorna ligger numera som kategorikort i gruppen "Välj rätt", inte i en egen lista. Strukturerad data: `artikel()` med författare redaktionen.
 
 **`vyer/Kategorisida.astro`.** `Astro.locals.sidtyp = 'kategori'`. `reklam={true}`. `bred={true}`. Data: `produkterIKategori(entry.id)`, `publicerade('tester')` filtrerade på `kategori === entry.id`, guider + kunskap + jamforelser med samma `kategori`, `hamtaButik()`. Brödsmulor: Hantverkstips / {namn}. Ordning:
 
@@ -505,6 +552,21 @@ Desktop: kortet 44 rem brett, formulär till vänster och resultat till höger i
 
 Statisk. `noindex={true}`. H1 "Sidan finns inte", ett stycke ("Adressen kan ha ändrats. Börja från en av de här sidorna."), länkar till publicerade hubbar och `/rakna/`. Vercel serverar `dist/client/404.html` för okända adresser.
 
+### 4.11 `src/pages/amnen/index.astro`
+
+Statisk sida, kartan över sajten. Data: `publicerade('pelare')` i `PELARE`-ordning, `publicerade('guider')`, `publicerade('kunskap')`, `publicerade('kategorier')`, `publicerade('tester')`, `publicerade('jamforelser')` och `KALKYLATORER`. Per pelare: typgrupper i fast ordning (problemguide, kunskap, köpguide, projektguide, sedan jämförelser via kategorifilens `pelare`), kategorikort via `tillKortKategori()` med kategorins tester som länkrader under, och verktygskort för kalkylatorer vars `kategori` hör till pelaren. Layout enligt `docs/DESIGN.md` avsnitt 5.9 (6/3/3 på desktop). `bred={true}`, `reklam={false}`. Brödsmulor: Hantverkstips / Alla ämnen. Strukturerad data: `lista()` med hubbarna. H1, ingress och raden om pelare på väg är konstanter i rutten, hämtade ur `docs/briefer/texter-platshallare-2026-09-16.md`.
+
+### 4.12 `src/pages/guider/[...vag].astro`
+
+En rutt för `/guider/`, `/guider/[pelare]/`, `/guider/typ/[typ]/`, `/guider/niva/[niva]/` och `/sida/[n]/` under var och en. `getStaticPaths` bygger listan ur `guidefilter()` i `src/lib/guider.ts`, 24 kort per sida, och filter utan träffar byggs inte. Vyn är `src/components/vyer/Guidegalleri.astro` och tar `h1`, `titel`, `beskrivning`, `ingress`, `kort`, `totalt`, `senaste`, `rader`, `sida`, `antalSidor`, `bas` och `brodsmulor`.
+
+Två fällor, båda värda att veta om innan nästa rutt skrivs:
+
+1. `getStaticPaths` körs i sin egen omfattning och når bara importerade värden, aldrig konstanter i samma frontmatter. Därför ligger texterna och filterlogiken i `src/lib/guider.ts`.
+2. Astros kompilator läser inte en nästlad mallsträng (en backtick inuti `${}`) i frontmatter: den tappar resten av blocket och rapporterar ett syntaxfel på en helt annan rad. Bryt ut delsträngen till en egen variabel.
+
+`bred={true}`, `reklam={false}`. Strukturerad data: `lista()` med sidans kort. `rel="prev"` och `rel="next"` via `Bas`-propen `paginering`.
+
 ## 5. Ruttkollisioner, sammanfattning
 
 | Sökväg | Fil | Hur den vinner |
@@ -514,8 +576,9 @@ Statisk. `noindex={true}`. H1 "Sidan finns inte", ett stycke ("Adressen kan ha �
 | `/fukt/fukt-i-kallaren/` | `[rot]/[slug].astro` | två dynamiska segment, kolliderar inte med `[rot]/index.astro` |
 | `/tester/x/`, `/jamforelser/x/`, `/rakna/x/`, `/om/x/`, `/forfattare/x/`, `/go/x/` | statiska mappar | Astro prioriterar statiska segment före dynamiska, så `tester` når aldrig `[rot]` |
 | `/rakna/`, `/om/` | `rakna/index.astro`, `om/index.astro` | statiskt segment vinner över `[rot]/index.astro` |
+| `/amnen/`, `/guider/`, `/guider/fukt/` | `amnen/index.astro`, `guider/[...vag].astro` | statiska mappar vinner över `[rot]`, och `[...vag]` fångar allt under `/guider/` |
 
-Konsekvens: ingen pelare eller kategori får heta `tester`, `jamforelser`, `rakna`, `om`, `forfattare`, `go`, `admin`; kontrollen ligger i `RESERVERADE_ROTSLUGS`. Och en artikel-slug får inte heta `index`.
+Konsekvens: ingen pelare eller kategori får heta `tester`, `jamforelser`, `rakna`, `amnen`, `guider`, `om`, `forfattare`, `go`, `admin`; kontrollen ligger i `RESERVERADE_ROTSLUGS`. Och en artikel-slug får inte heta `index`.
 
 ## 6. Strukturerad data per sidtyp
 

@@ -39,6 +39,17 @@ export function formateraDatumKort(d: Date): string {
   return `${d.getDate()}${HART}${MANADER_KORT[d.getMonth()]}`;
 }
 
+/** "16 sep 2026". Används i artikelkortens metarad, där året behövs men inte plats. */
+export function formateraDatumKortMedAr(d: Date): string {
+  return `${d.getDate()}${HART}${MANADER_KORT[d.getMonth()]}${HART}${d.getFullYear()}`;
+}
+
+/** "September". Månadens namn med versal första bokstav, för säsongsetiketten. */
+export function manadNamn(d: Date): string {
+  const namn = MANADER[d.getMonth()] ?? '';
+  return namn.charAt(0).toUpperCase() + namn.slice(1);
+}
+
 /** "12 september 2026". Används i meta-rader och författarrutor. */
 export function formateraDatum(d: Date): string {
   return `${d.getDate()}${HART}${MANADER[d.getMonth()]}${HART}${d.getFullYear()}`;

@@ -1,0 +1,83 @@
+---
+/**
+ * Alla guider och tester, /guider/, med filtersidor och paginering. En rutt
+ * bygger fem sorters adress:
+ *
+ *   /guider/                     allt, nyast först
+ *   /guider/[pelare]/            ämnesfilter
+ *   /guider/typ/[typ]/           typfilter
+ *   /guider/niva/[niva]/         nivåfilter
+ *   .../sida/2/                  sida två och uppåt under var och en
+ *
+ * Ett filter i taget. Att kombinera ämne och nivå skulle ge hundratals sidor
+ * där nästan alla vore tomma. Filtersidor utan träffar byggs inte alls, så
+ * ingen tom sida hamnar i sitemapen.
+ *
+ * Texterna och filterlistan ligger i src/lib/guider.ts: getStaticPaths körs i
+ * sin egen omfattning och når bara det som är importerat.
+ */
+import { filterNamn, filterrader, guidefilter, PER_SIDA } from '../../lib/guider';
+import Guidegalleri from '../../components/vyer/Guidegalleri.astro';
+
+export async function getStaticPaths() {
+  const filter = await guidefilter();
+  const vagar = [];
+
+  for (const f of filter) {
+    const antalSidor = Math.max(1, Math.ceil(f.kort.length / PER_SIDA));
+    const senaste = f.kort.map((k) => k.sorteringsdatum).filter((d) => d.getTime() > 0)[0];
+    // Adressen utan /guider/ och utan avslutande snedstreck: "" för allt,
+    // "fukt" för ämnesfiltret, "typ/kopguide" för typfiltret.
+    const basvag = f.bas.slice('/guider/'.length).replace(/\/$/, '');
+    const prefix = basvag === '' ? '' : `${basvag}/`;
+
+    for (let sida = 1; sida <= antalSidor; sida++) {
+      const vag = sida === 1 ? basvag : `${prefix}sida/${sida}`;
+      vagar.push({
+        params: { vag: vag === '' ? undefined : vag },
+        props: {
+          h1: f.h1,
+          titel: sida === 1 ? f.titel : `${f.h1}, sida ${sida} · Hantverkstips`,
+          beskrivning: f.beskrivning,
+          ingress: sida === 1 ? f.ingress : undefined,
+          kort: f.kort.slice((sida - 1) * PER_SIDA, sida * PER_SIDA),
+          totalt: f.kort.length,
+          senaste,
+          rader: filterrader(filter, f.sort, f.varde),
+          sida,
+          antalSidor,
+          bas: f.bas,
+          filternamn: filterNamn(f.sort, f.varde),
+        },
+      });
+    }
+  }
+
+  return vagar;
+}
+
+const p = Astro.props;
+
+/**
+ * Brödsmulor: Hantverkstips / Guider, och på filtersidor dessutom filtrets namn.
+ * Paginerade sidor har samma brödsmulor som sida 1.
+ */
+const brodsmulor = p.filternamn
+  ? [{ namn: 'Hantverkstips', href: '/' }, { namn: 'Guider', href: '/guider/' }, { namn: p.filternamn }]
+  : [{ namn: 'Hantverkstips', href: '/' }, { namn: 'Guider' }];
+---
+
+<Guidegalleri
+  h1={p.h1}
+  titel={p.titel}
+  beskrivning={p.beskrivning}
+  ingress={p.ingress}
+  kort={p.kort}
+  totalt={p.totalt}
+  senaste={p.senaste}
+  rader={p.rader}
+  sida={p.sida}
+  antalSidor={p.antalSidor}
+  bas={p.bas}
+  brodsmulor={brodsmulor}
+/>

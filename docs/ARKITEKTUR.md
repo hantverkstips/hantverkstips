@@ -47,7 +47,7 @@ C:\Hantverkstips\
 │   ├── env.d.ts               # App.Locals: sidtyp och köpknappens löpnummer
 │   ├── components/
 │   │   ├── ui/                # Astro-komponenter, ingen klient-JS. Illustration.astro inlinear skisser
-│   │   ├── vyer/              # sidmallar som rutterna monterar (Artikel, Kategorisida, PelarHub)
+│   │   ├── vyer/              # sidmallar som rutterna monterar (Artikel, Kategorisida, PelarHub, Guidegalleri)
 │   │   └── islands/           # React-komponenter som hydreras. Bara /admin i fas 1
 │   ├── layouts/
 │   │   └── Bas.astro          # sidhuvud, reklamband, brödsmulor, sidfot
@@ -57,6 +57,8 @@ C:\Hantverkstips\
 │   │   ├── [rot]/[slug].astro # guide och kunskap under pelaren
 │   │   ├── tester/[slug].astro
 │   │   ├── jamforelser/[slug].astro
+│   │   ├── amnen/index.astro   # kartan över sajten, en sektion per publicerad pelare
+│   │   ├── guider/[...vag].astro  # galleriet, filtersidorna och pagineringen
 │   │   ├── rakna/             # kalkylatorer: index.astro (lista) och en fil per kalkylator
 │   │   ├── om/                # index.astro (/om/) och [slug].astro
 │   │   ├── forfattare/[slug].astro
@@ -71,6 +73,8 @@ C:\Hantverkstips\
 │   │   ├── pelare.ts          # register över pelare, reserverade rotslugs, max hubbar i menyn
 │   │   ├── niva.ts            # nivåerna enkel, mellan, expert och deras etiketter
 │   │   ├── innehall.ts        # utkastfilter, adresser, brödsmulor
+│   │   ├── kort.ts            # KortData och mappningen frontmatter till artikelkort
+│   │   ├── guider.ts          # filtren på /guider/: urval, rubriker, filterrader
 │   │   ├── format.ts          # pris, datum, tal enligt stilguiden
 │   │   ├── strukturdata.ts    # byggare för JSON-LD
 │   │   └── kalkyl/            # rena beräkningsfunktioner, en fil per kalkylator, plus register
@@ -137,8 +141,10 @@ Principer:
 | Kalkylator | `/rakna/[slug]/` | `src/pages/rakna/[slug].astro`, en fil per kalkylator |
 | Om sajten | `/om/` och `/om/[slug]/` | `src/content/sidor/` |
 | Författare | `/forfattare/[slug]/` | `src/content/forfattare/` |
+| Alla ämnen | `/amnen/` | `src/pages/amnen/index.astro`, byggd av pelare, kategorier och kalkylatorregistret |
+| Alla guider och tester | `/guider/`, `/guider/[pelare]/`, `/guider/typ/[typ]/`, `/guider/niva/[niva]/` och `/sida/[n]/` under var och en | `src/pages/guider/[...vag].astro` med `src/lib/guider.ts`, byggd av allt publicerat |
 
-Rotnamnrymden delas av pelare och kategorier. Pelarslugs (`src/lib/pelare.ts`: `fukt`, `inomhus`, `altan`, `tak`, `grund`, `isolering`, `verktyg`, `el`) är reserverade och får aldrig användas som kategorislug, och ingen av dem får vara `tester`, `jamforelser`, `rakna`, `om`, `forfattare`, `go`, `admin`. Kategorislugs i roten just nu: `luftavfuktare`, `krysslaser`. Rutten `src/pages/[rot]/index.astro` kontrollerar det i `getStaticPaths` och bygget stoppar vid kollision. En publicerad URL byts aldrig utan 301 (`vercel.json`, redirects); före lansering byts slugs fritt genom att filen döps om (så byttes `luftavfuktare-kallare` till `avfuktare-kallare` och `sorptionsavfuktare-eller-kondensavfuktare` till `sorptionsavfuktare` 2026-09-16).
+Rotnamnrymden delas av pelare och kategorier. Pelarslugs (`src/lib/pelare.ts`: `fukt`, `inomhus`, `altan`, `tak`, `grund`, `isolering`, `verktyg`, `el`) är reserverade och får aldrig användas som kategorislug, och ingen av dem får vara `tester`, `jamforelser`, `rakna`, `amnen`, `guider`, `om`, `forfattare`, `go`, `admin`. Kategorislugs i roten just nu: `luftavfuktare`, `krysslaser`. Rutten `src/pages/[rot]/index.astro` kontrollerar det i `getStaticPaths` och bygget stoppar vid kollision. En publicerad URL byts aldrig utan 301 (`vercel.json`, redirects); före lansering byts slugs fritt genom att filen döps om (så byttes `luftavfuktare-kallare` till `avfuktare-kallare` och `sorptionsavfuktare-eller-kondensavfuktare` till `sorptionsavfuktare` 2026-09-16).
 
 **Innehållsfiler och undermappar** (beslut 2026-09-16, för att samlingarna ska bära hundratals filer). Guider och kunskap ligger i en undermapp per pelare, tester och jämförelser i en undermapp per kategori: `src/content/guider/fukt/avfuktare-kallare.mdx`, `src/content/tester/luftavfuktare/woods-mrd20.mdx`. Mappen är ordning för människor och verktyg; **id och adress kommer alltid från filnamnet**, aldrig från sökvägen, så en fil kan flyttas mellan mappar utan att URL:en ändras. Loadern i `src/content.config.ts` (`artikelLoader`) sätter id till filnamnet utan ändelse och stoppar bygget om två filer i samma samling har samma namn, oavsett mapp, och `prerenderConflictBehavior: 'error'` i `astro.config.mjs` gör detsamma på Astros nivå. Filnamnet får bara innehålla `a-z`, `0-9` och bindestreck, aldrig `index`. Mappen måste stämma med fältet: `guider/fukt/` kräver `pelare: fukt`, `tester/luftavfuktare/` kräver `kategori: luftavfuktare`; kontrollskriptet stoppar annars. Pelare, kategorier, sidor och författare är platta, en fil i en undermapp där läses inte av bygget och ger fel i kontrollen. Första artikeln i en pelare kräver att hubfilen `src/content/pelare/[pelare].md` finns, `utkast: true` räcker. Relativa sökvägar i frontmatter (`bild`) utgår från filens plats, alltså tre nivåer upp till `src/assets/`.
 

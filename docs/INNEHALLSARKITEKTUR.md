@@ -122,6 +122,7 @@ Grundregel. Kunskap får pelarens prefix, produktsidor ligger platt. Läsaren oc
 | Kalkylator | `/rakna/[slug]/` | `/rakna/avfuktare/` |
 | Om sajten | `/om/[slug]/` | `/om/sa-testar-vi/` |
 | Författare | `/forfattare/[slug]/` | `/forfattare/christian/` |
+| Översikt | `/amnen/`, `/guider/` | `/amnen/`, `/guider/fukt/`, `/guider/typ/kopguide/`, `/guider/niva/enkel/` |
 
 Beslut och motiv:
 
@@ -132,6 +133,7 @@ Beslut och motiv:
 5. **Inga underkategorier de första sex månaderna.** `/luftavfuktare/krypgrund/` skulle bli en tunn lista. Behovet täcks av köpguiden `/fukt/avfuktare-krypgrund/`. Underkategorier byggs när Search Console visar att kategorisidan rankar på en delfras den inte kan svara på.
 6. **Slugs** är huvudfrasen kokad till två till fyra ord utan stoppord: `bygglov-altan`, inte `behover-jag-bygglov-for-altan`. Det nakna produktordet slår varianten med "eller" och "test" (`sorptionsavfuktare`, inte `sorptionsavfuktare-eller-kondensavfuktare`; `trallskruv`, inte `skruv-till-trall`). Övriga regler enligt arkitekturen (gemener, inga diakritiska tecken, avslutande snedstreck). En publicerad URL byts aldrig utan 301; före lansering byts den genom att filen döps om.
 7. **Nivå syns inte i adressen.** `enkel`, `mellan` och `expert` är ett frontmatterfält och en etikett, inte ett prefix. Samma pelare rymmer båda målgrupperna, och en sida kan byta nivå utan att flyttas.
+8. **Två reserverade rötter för översiktssidorna** (beslut 2026-09-16). `/amnen/` är kartan över sajten, `/guider/` är galleriet med alla guider och tester och sina filtersidor. Båda ligger i roten som en egen sidtyp, ingendera under en pelare: de tillhör inget ämne. `guider` är ledigt eftersom punkt 3 säger att artiklar aldrig ligger under `/guider/`, och samlingens mappnamn aldrig syns i en adress. Slugarna ligger i `RESERVERADE_ROTSLUGS` i `src/lib/pelare.ts`, så ingen pelare och ingen kategori kan ta dem, och de statiska mapparna `src/pages/amnen/` och `src/pages/guider/` vinner över `[rot]` i Astro. Filtersidor byggs bara när filtret har minst en träff, så ingen tom adress hamnar i sitemapen. Paginering: `/guider/sida/2/` och `/guider/fukt/sida/2/`, sida 1 är kanonisk för filtret och sida 2 och uppåt länkas bara från varandra med `rel="prev"` och `rel="next"`.
 
 Silorisken hanteras med länkar, inte adresser. En pelare är en ordning för läsaren och för brödsmulorna, inte en gräns för var en länk får gå. Reglerna i avsnitt 6 tvingar fram korslänkning mellan pelare och produktlager.
 
@@ -139,21 +141,22 @@ Silorisken hanteras med länkar, inte adresser. En pelare är en ordning för l�
 
 Mobil först. Menyn öppnas med `<details>`, ingen JavaScript, 48 px per rad.
 
-**Huvudmeny.** Byggs av de publicerade hubbarna i den ordning `src/lib/pelare.ts` anger, högst fem, följda av Räkna själv (`/rakna/`) och Så testar vi (`/om/sa-testar-vi/`). Listan är inte hårdkodad: en pelare kommer in genom att dess hub får `utkast: false`, vilket kräver minst fem sidor att länka till (avsnitt 6). September 2026 till januari 2027:
+**Huvudmeny.** Byggs av de publicerade hubbarna i den ordning `src/lib/pelare.ts` anger, högst tre (`MAX_HUBBAR_I_MENY`), följda av Ämnen (`/amnen/`), Guider (`/guider/`), Räkna själv (`/rakna/`) och Så testar vi (`/om/sa-testar-vi/`). Listan är inte hårdkodad: en pelare kommer in genom att dess hub får `utkast: false`, vilket kräver minst fem sidor att länka till (avsnitt 6). September 2026, med Verktyg avpublicerad och Altan kvar som utkast:
 
 1. Fukt (till `/fukt/`)
 2. Inomhus (till `/inomhus/`)
-3. Verktyg (till `/verktyg/`)
-4. Räkna själv (till `/rakna/`)
-5. Så testar vi (till `/om/sa-testar-vi/`)
+3. Ämnen (till `/amnen/`)
+4. Guider (till `/guider/`)
+5. Räkna själv (till `/rakna/`)
+6. Så testar vi (till `/om/sa-testar-vi/`)
 
-Altan byttes mot Inomhus 2026-09-16 eftersom altanklustret inte publiceras förrän i februari och en menypost till en tom hub skadar mer än den hjälper. I februari tar Altan den sjätte platsen. Inga undermenyer i fas 1. Hubsidorna är undermenyn, det är därför de finns. På desktop ligger posterna i rad till höger om ordmärket. Ordmärket är den enda länken till startsidan.
+Antalet hubbar sänktes från fem till tre 2026-09-16, när Ämnen och Guider kom in: sju poster är vad som får plats vid 1024 px med ordmärket, och pelare utanför de tre finns på `/amnen/` och i sidfoten i stället. Namnen i menyn är korta ("Ämnen", "Guider"), sidornas H1 är längre ("Alla ämnen", "Alla guider och tester"). Altan byttes mot Inomhus 2026-09-16 eftersom altanklustret inte publiceras förrän i februari och en menypost till en tom hub skadar mer än den hjälper. Inga undermenyer i fas 1. Hubsidorna är undermenyn, det är därför de finns. På desktop ligger posterna i rad till höger om ordmärket. Ordmärket är den enda länken till startsidan.
 
-**Mobilmenyn** visar samma poster, sedan en avdelare och gruppen "Bäst i test" med kategorierna som har publicerad kategorisida (max fyra rader), sedan "Om Hantverkstips".
+**Mobilmenyn**, uppifrån: de tre hubbarna med pelarikon, raden "Alla ämnen", sedan "Guider och tester" och "Räkna själv" (kalkylatorikon), sedan etiketten "Bäst i test" med kategorierna som har publicerad kategorisida (max fyra rader), sist "Så testar vi" och "Om Hantverkstips". 48 px per rad.
 
-**Sidfot**, fyra spalter på desktop, en på mobil, i den här ordningen: Ämnen (alla publicerade pelare), Bäst i test (kategorisidor), Räkna själv (kalkylatorer), Om sajten (Om oss, Så testar vi, Så tjänar vi pengar, Författare, Kontakt, Integritet). Sidfoten är sajtens säkerhet mot föräldralösa sidor, så den listar hubbar och kategorier, aldrig enskilda artiklar.
+**Sidfot**, fyra spalter på desktop, en på mobil, i den här ordningen: Ämnen (alla publicerade pelare, sist raderna "Alla ämnen" och "Alla guider och tester"), Bäst i test (kategorisidor), Räkna själv (kalkylatorer), Om sajten (Om oss, Så testar vi, Så tjänar vi pengar, Författare, Kontakt, Integritet). Sidfoten är sajtens säkerhet mot föräldralösa sidor, så den listar hubbar, översiktssidor och kategorier, aldrig enskilda artiklar.
 
-**Brödsmulor** följer URL:en och renderas som `BreadcrumbList`. Guide: Hantverkstips / Fukt / Rätt avfuktare till källaren. Test: Hantverkstips / Luftavfuktare / Wood's MRD20. Kalkylator: Hantverkstips / Räkna själv / Avfuktarkalkylator. Kategori: Hantverkstips / Luftavfuktare. På mobil visas de två sista nivåerna, enligt designdokumentet. Pelarnivån är en länk bara när huben är publicerad; en artikel som går ut före sin hub (altan hösten 2026) visar pelarens namn utan länk.
+**Brödsmulor** följer URL:en och renderas som `BreadcrumbList`. Guide: Hantverkstips / Fukt / Rätt avfuktare till källaren. Test: Hantverkstips / Luftavfuktare / Wood's MRD20. Kalkylator: Hantverkstips / Räkna själv / Avfuktarkalkylator. Kategori: Hantverkstips / Luftavfuktare. Översikt: Hantverkstips / Alla ämnen, Hantverkstips / Guider, Hantverkstips / Guider / Fukt; paginerade sidor har samma brödsmulor som sida 1. På mobil visas de två sista nivåerna, enligt designdokumentet. Pelarnivån är en länk bara när huben är publicerad; en artikel som går ut före sin hub (altan hösten 2026) visar pelarens namn utan länk.
 
 **Nivå.** Artikelhuvudet visar typ och nivå i samma etikett, "Kunskap · Expert". Hubsidans lista "Alla sidor i ..." grupperas i Enkel, Mellan och Expert som tre listor, så att läsaren hittar sin nivå utan filter i JavaScript. Utseendet står i `docs/DESIGN.md` avsnitt 6.
 
@@ -161,16 +164,15 @@ Altan byttes mot Inomhus 2026-09-16 eftersom altanklustret inte publiceras förr
 
 Startsidan rankar på varumärket och ingenting annat. Dess SEO-jobb är att berätta för Google vad sajten handlar om (hus, inte butik) och skicka länkkraft till hubbar, kategorisidor och kalkylatorer. Besökaren ska på tre sekunder se en redaktion som räknar och testar. Ordning uppifrån, med motiv:
 
-1. **Öppning.** H1 som ett påstående om huset, inte om verktygsköp. Riktning (chefredaktören skriver den riktiga): "Bygg, renovera och sköt huset utan att köpa fel." Ett stycke, två textlänkar (en till en problemguide, en till en kalkylator). Motiv: identiteten sätts här, och första skärmen ska inte innehålla ett pris.
-2. **Verktygskort med säsong.** Avfuktarkalkylatorn augusti till november, elkostnadskalkylatorn december till februari, trallkalkylatorn mars till juni. Motiv: kalkylatorerna är den länkbara tillgången och säsongen är den största trafikhävstången vi har.
-3. **Börja här, tre pelare.** Tre rader (inte tre kolumner med ikon), en per publicerad pelare: namn i H3, en mening om vad du hittar, två till tre länkar till klustrets viktigaste sidor. Motiv: det här är sajtens karta, och det är härifrån hubbarna får sin interna länkkraft.
-4. **Just nu.** En artikel vald av redaktören, med eget foto eller diagram. Motiv: färskhet och en signal att sajten uppdateras.
-5. **Bäst i test just nu.** En rad per kategori med vårt val, pris och länk till kategorisidan. Inga köpknappar på startsidan, bara länkar, så att startsidan slipper reklamband. Motiv: kategorisidorna tjänar pengarna och behöver länken, men startsidan ska inte se ut som en butik.
-6. **Senaste guider och tester**, sex rader. Motiv: djup indexering av nya sidor.
-7. **Räkna själv.** Alla kalkylatorer som lista.
-8. **Så jobbar vi.** Två till fyra meningar med länkar till "Så testar vi" och "Så tjänar vi pengar". Motiv: E-E-A-T-signal på den sida som får flest externa länkar.
+1. **Öppning.** H1 som ett påstående om huset, inte om verktygsköp. Ett stycke, två textlänkar (en till en problemguide, en till en kalkylator). Motiv: identiteten sätts här, och första skärmen ska inte innehålla ett pris.
+2. **Säsongens ämne.** Etiketten "Säsongens ämne · September" (månaden från byggtidpunkten), säsongens illustration med bildtext, en rubrik och en mening som chefredaktören skriver i startsidans frontmatter (`sasongRubrik`, `sasongText`), säsongens verktygskort och "Läs först" med hubbens `viktiga` för den pelare kalkylatorn hör till. Avfuktarkalkylatorn augusti till november, elkostnadskalkylatorn december till februari, trallkalkylatorn mars till juni. Motiv: kalkylatorerna är den länkbara tillgången och säsongen är den största trafikhävstången vi har.
+3. **Guider och tester.** Ett rutnät av artikelkort där chefredaktörens `justNu` är det stora kortet och de fyra senaste följer, med länken "Alla guider och tester" till `/guider/`. Block 4 och 6 i den gamla ordningen (Just nu, Senaste) är alltså ett block sedan 2026-09-16: två block med samma sorts innehåll gav samma bild två gånger på en skärm. Ser justNu-kortet ut att ha samma illustration som säsongsblocket visas kortet med placeholder i stället. Motiv: färskhet, djup indexering och en huvudsak på sidan.
+4. **Börja här.** En rad per publicerad pelare (aldrig tre kolumner med ikon), i två spalter från 1024 px: namn i H3, en mening om vad du hittar, `viktiga` som länkar på var sin rad, sist länken "Alla ämnen". Motiv: det här är sajtens karta, och det är härifrån hubbarna får sin interna länkkraft.
+5. **Bäst i test just nu.** En rad per kategori med vårt val, pris, antalet granskade och länken "Alla vi granskat". Inga köpknappar på startsidan, bara länkar, så att startsidan slipper reklamband. Motiv: kategorisidorna tjänar pengarna och behöver länken, men startsidan ska inte se ut som en butik.
+6. **Räkna själv.** Alla kalkylatorer som verktygskort i rutnät, men bara när det finns minst två. Med en enda är den redan säsongens verktygskort, och samma kort två gånger på en sida är samma fel som samma bild två gånger.
+7. **Så jobbar vi.** Två till fyra meningar med länkar till "Så testar vi" och "Så tjänar vi pengar". Motiv: E-E-A-T-signal på den sida som får flest externa länkar.
 
-Skillnaden mot skissen i `DESIGN.md` är block 3 (nytt) och att block 5 saknar köpknappar. Resten står sig.
+Layouten står i `docs/DESIGN.md` avsnitt 5.1.
 
 ## 6. Intern länkning
 
@@ -189,6 +191,8 @@ En fras, en sida. Registret över vilken sida som äger vilken fras är tabeller
 ## 7. E-E-A-T
 
 Google granskar affiliatesajter hårdare än andra, och recensionsriktlinjerna är tydliga med att den som skriver "test" ska ha haft produkten. Därför två etiketter: **Test** när vi haft produkten och mätt, **Granskning** när vi jämfört datablad och tredjepartsmätningar. Etiketten står i H1-blocket och i `Product`-markupen. Vi skriver aldrig "vi testade" på en granskning.
+
+Av samma skäl heter kategorisidans metodavsnitt **"Så granskade vi"**, inte "Så testade vi", tills kammartestet vid 10 och 20 grader är gjort (beslut 2026-09-16). Rubriken byts tillbaka i samma omgång som de första egna mätvärdena publiceras, och texten skrivs om då.
 
 Sidor som behövs innan lansering:
 

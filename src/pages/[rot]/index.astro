@@ -5,7 +5,7 @@
  * och bygget stoppar vid kollision. Se docs/SPEC-SIDMALLAR.md avsnitt 4.2.
  */
 import { publicerade } from '../../lib/innehall';
-import { arPelare, RESERVERADE_ROTSLUGS } from '../../lib/pelare';
+import { arPelare, RESERVERADE_ROTSLUGS, type PelareSlug } from '../../lib/pelare';
 import Kategorisida from '../../components/vyer/Kategorisida.astro';
 import PelarHub from '../../components/vyer/PelarHub.astro';
 
@@ -34,6 +34,9 @@ export async function getStaticPaths() {
 const props = Astro.props;
 // Kategorisidan har köpknappar. Sidtypen måste sättas före slot-innehållet renderas.
 if (props.typ === 'kategori') Astro.locals.sidtyp = 'kategori';
+// Pelaren måste vara satt innan hubbens MDX renderas: <Kortgrupp> står i
+// innehållsfilen och läser den därifrån.
+if (props.typ === 'pelare') Astro.locals.pelare = props.entry.id as PelareSlug;
 ---
 
 {props.typ === 'pelare' ? <PelarHub entry={props.entry} /> : <Kategorisida entry={props.entry} />}

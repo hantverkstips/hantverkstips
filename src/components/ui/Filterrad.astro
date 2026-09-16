@@ -1,0 +1,56 @@
+---
+/**
+ * Filtret på /guider/. Tre rader, varje rad är en etikett och länkar till
+ * statiska sidor. Ingen rullgardin, ingen <select>, ingen JavaScript.
+ *
+ * Den aktiva posten är blyerts 700 med 2 px understrykning i penna och
+ * aria-current="page", inte en länk. Poster med noll sidor visas inte:
+ * ett filter som ger en tom sida är ett trasigt filter.
+ * Se docs/DESIGN.md avsnitt 5.10.
+ */
+interface Post {
+  namn: string;
+  antal: number;
+  href: string;
+  aktiv: boolean;
+}
+
+interface Props {
+  rader: { etikett: string; poster: Post[] }[];
+}
+
+const { rader } = Astro.props;
+---
+
+<div class="rounded-sm border border-linje bg-papper-2 p-4 lg:px-6">
+  {
+    rader.map((rad, i) => (
+      <div class:list={['flex flex-col gap-1 sm:flex-row sm:gap-4', i > 0 && 'mt-3 sm:mt-2']}>
+        <p class="m-0 shrink-0 pt-2 text-etikett uppercase text-blyerts-2 sm:w-20">{rad.etikett}</p>
+        <ul class="m-0 flex list-none flex-wrap gap-x-2 p-0">
+          {rad.poster.map((post) => (
+            <li>
+              {post.aktiv ? (
+                <span
+                  aria-current="page"
+                  class="inline-flex min-h-11 items-center py-2 font-bold text-blyerts underline decoration-penna decoration-2 underline-offset-4"
+                >
+                  {post.namn}
+                  <span class="ml-1 font-normal text-blyerts-2">({post.antal})</span>
+                </span>
+              ) : (
+                <a
+                  href={post.href}
+                  class="inline-flex min-h-11 items-center py-2 text-penna underline decoration-1 underline-offset-4 hover:decoration-2"
+                >
+                  {post.namn}
+                  <span class="ml-1 text-blyerts-2">({post.antal})</span>
+                </a>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))
+  }
+</div>

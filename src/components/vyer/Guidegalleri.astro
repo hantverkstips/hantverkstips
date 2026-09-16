@@ -1,0 +1,83 @@
+---
+/**
+ * Galleriet på /guider/ och dess filtersidor. Rubrik, räknad rad, filter,
+ * rutnät och paginering. Allt är statiskt: filtren är länkar till egna sidor,
+ * pagineringen är länkar, ingen JavaScript. Se docs/DESIGN.md avsnitt 5.10.
+ */
+import Bas from '../../layouts/Bas.astro';
+import { formateraDatum } from '../../lib/format';
+import type { Brodsmula } from '../../lib/innehall';
+import type { KortData } from '../../lib/kort';
+import { lista } from '../../lib/strukturdata';
+import Artikelrutnat from '../ui/Artikelrutnat.astro';
+import Filterrad from '../ui/Filterrad.astro';
+import Paginering from '../ui/Paginering.astro';
+import StrukturData from '../ui/StrukturData.astro';
+
+interface Post {
+  namn: string;
+  antal: number;
+  href: string;
+  aktiv: boolean;
+}
+
+interface Props {
+  h1: string;
+  titel: string;
+  beskrivning: string;
+  /** Bara på /guider/ sida 1. Filtersidorna har den räknade raden i stället. */
+  ingress?: string;
+  kort: KortData[];
+  totalt: number;
+  senaste?: Date;
+  rader: { etikett: string; poster: Post[] }[];
+  sida: number;
+  antalSidor: number;
+  /** Filtrets adress, sida 1. */
+  bas: string;
+  brodsmulor: Brodsmula[];
+}
+
+const { h1, titel, beskrivning, ingress, kort, totalt, senaste, rader, sida, antalSidor, bas, brodsmulor } =
+  Astro.props;
+
+const sidaUrl = (n: number) => (n <= 1 ? bas : `${bas}sida/${n}/`);
+const paginering = {
+  ...(sida > 1 ? { foregaende: sidaUrl(sida - 1) } : {}),
+  ...(sida < antalSidor ? { nasta: sidaUrl(sida + 1) } : {}),
+};
+
+const raknad = senaste
+  ? `${totalt} ${totalt === 1 ? 'sida' : 'sidor'}, den senaste ${formateraDatum(senaste)}`
+  : `${totalt} ${totalt === 1 ? 'sida' : 'sidor'}`;
+
+const strukturdata = lista({
+  url: sidaUrl(sida),
+  namn: h1,
+  poster: kort.map((k) => ({ namn: k.rubrik, url: k.href })),
+});
+---
+
+<Bas
+  title={titel}
+  description={beskrivning}
+  brodsmulor={brodsmulor}
+  bred={true}
+  paginering={paginering}
+>
+  <StrukturData slot="head" data={strukturdata} />
+
+  <div class="max-w-lasbredd">
+    <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">{h1}</h1>
+    {ingress && <p class="m-0 mt-4 text-ingress lg:text-ingress-lg text-blyerts-2">{ingress}</p>}
+    <p class="m-0 mt-2 text-liten text-blyerts-2">{raknad}</p>
+  </div>
+
+  <div class="mt-6">
+    <Filterrad rader={rader} />
+  </div>
+
+  <Artikelrutnat kort={kort} />
+
+  <Paginering sida={sida} antal={antalSidor} bas={bas} />
+</Bas>

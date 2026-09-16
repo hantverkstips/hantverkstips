@@ -68,12 +68,14 @@ Storlekar i px, mobil (375 px) först och desktop (från 1024 px) efter snedstre
 | Liten text (bildtext, meta, tabellfot) | Atkinson | 400 | 14 / 14 | 1,5 | `text-liten` |
 | Finstilt (källhänvisning, prisdatum) | Atkinson | 400 | 13 / 13 | 1,5 | `text-finstilt` |
 | Etikett (taggar, kolumnrubriker) | Atkinson | 700, versaler, spärrning 0,06 em | 12 / 13 | 1,3 | `text-etikett` |
+| Kortrubrik (rubriken i ett artikelkort) | Zilla Slab | 600 | 20 / 22 | 1,25 | `text-kortrubrik`, `lg:text-kortrubrik-lg` |
 | Stor siffra (kalkylatorresultat) | Zilla Slab | 600 | 48 / 64 | 1,0 | `text-siffra`, `lg:text-siffra-lg` |
 
 Regler:
 
 - H4 finns inte. Behövs en fjärde nivå är texten fel strukturerad.
 - H1 och H2 sätts alltid med `font-serif`. H3 är sans, fet. Det är skillnaden i typsnitt, inte bara i storlek, som gör att läsaren ser nivåerna.
+- Kortrubriken är undantaget (beslut 2026-09-16). Rubriken i ett artikelkort är semantiskt en H3 men sätts i Zilla Slab 600, som en liten tidningsrubrik. Det är skälet till att ett rutnät läses som en tidningssida i stället för som en länklista. Regeln "H3 är sans" gäller fortfarande för H3 i löptext, och pennstrecket under H2 håller isär nivåerna. Startsidans stora kort använder `text-kortrubrik-xl` (24 px), som bara finns där.
 - H2 har pennstrecket under sig (klassen `.pennstreck`, avsnitt 6). H1 har det inte, ordmärket räcker ovanför. H3 har det aldrig.
 - Brödtext är aldrig under 17 px på mobil. Reklammärkningen är 14 px, inte 13, den ska kunna läsas.
 - Rubriker har luft ovanför sig, inte under. H2 får 48 px ovanför på mobil och 64 på desktop, 12 px under strecket. H3 får 32 ovanför, 8 under.
@@ -180,15 +182,15 @@ Gemensamt för alla sidor:
 
 **Sidhuvud.** 56 px högt på mobil, 64 på desktop. Vänster: ordmärket som inlinead SVG (`src/assets/brand/riktning-1/ordmarke-inline.svg`, symbol, "Hantverkstips" i Zilla Slab och pennstrecket), 28 px högt på mobil och 36 på desktop, `width: auto`. Ordmärket är den enda länken till startsidan. Höger på mobil: knappen "Meny" (text, inte hamburgare, ikonen `ikon-meny` får stå bredvid ordet), som öppnar en lista under sidhuvudet via `<details>`, alltså utan JavaScript. Desktop: huvudmenyns fem poster i rad till höger, 15 px, blyerts, understrykning i penna vid hover. Ingen sökruta i fas 1. 1 px `linje` under sidhuvudet.
 
-**Huvudmeny.** De publicerade pelarhubbarna i den ordning `src/lib/pelare.ts` anger, högst fem, följda av Räkna själv (`/rakna/`) och Så testar vi (`/om/sa-testar-vi/`). Hösten 2026 är det Fukt (`/fukt/`), Inomhus (`/inomhus/`), Verktyg (`/verktyg/`), Räkna själv, Så testar vi; Altan kommer in när altanhuben publiceras i februari (beslut 2026-09-16, `docs/INNEHALLSARKITEKTUR.md` avsnitt 4). Inga undermenyer. Menyn är inte hårdkodad: en pelare kommer in genom att dess hub får `utkast: false`.
+**Huvudmeny.** De publicerade pelarhubbarna i den ordning `src/lib/pelare.ts` anger, högst tre (`MAX_HUBBAR_I_MENY`, sänkt från fem 2026-09-16), följda av Ämnen (`/amnen/`), Guider (`/guider/`), Räkna själv (`/rakna/`) och Så testar vi (`/om/sa-testar-vi/`). Sju poster i 15 px får plats vid 1024 px med ordmärket. September 2026 är det Fukt, Inomhus, Ämnen, Guider, Räkna själv, Så testar vi. Pelare utanför de tre finns under Ämnen och i sidfoten. Inga undermenyer. Menyn är inte hårdkodad: en pelare kommer in genom att dess hub får `utkast: false`.
 
-**Mobilmenyn.** Lodrät lista med `shadow-lyft`, 48 px per rad, ram 1 px linje, 6 px radie. Först menyposterna, där pelarna har sin pelarikon till vänster om namnet (24 px, blyerts) och Räkna själv har `ikon-kalkylator`. Sedan en 1 px avdelare, etiketten "Bäst i test" och kategorierna med publicerad kategorisida (max fyra rader, utan ikon). Sedan en avdelare och "Om Hantverkstips".
+**Mobilmenyn.** Lodrät lista med `shadow-lyft`, 48 px per rad, ram 1 px linje, 6 px radie. Uppifrån: de tre hubbarna med sin pelarikon till vänster om namnet (24 px, blyerts), raden "Alla ämnen" utan ikon, sedan "Guider och tester" och "Räkna själv" (`ikon-kalkylator`), sedan etiketten "Bäst i test" och kategorierna med publicerad kategorisida (max fyra rader, utan ikon), sist "Så testar vi" och "Om Hantverkstips".
 
 **Reklammärkning.** Direkt under sidhuvudet på alla sidor som innehåller affiliatelänkar. Se komponent i avsnitt 6. Startsidan, pelarhubbar och kunskapsartiklar har inga köpknappar och därför inget band.
 
 **Brödsmulor.** 14 px, blyerts-2, med snedstreck som avdelare. Följer URL:en: guide "Hantverkstips / Fukt / Rätt avfuktare till källaren", test "Hantverkstips / Luftavfuktare / Wood's MRD20", kalkylator "Hantverkstips / Räkna själv / Avfuktarkalkylator". På mobil visas bara de två sista nivåerna. Ingen ikon i brödsmulor.
 
-**Sidfot.** Bakgrund blyerts, text papper. Ordmärket överst i papper (samma inlineade SVG, pennstrecket i penna syns bra på blyerts). Fyra spalter på desktop, en spalt på mobil, i den här ordningen: Ämnen (publicerade pelare), Bäst i test (kategorisidor), Räkna själv (kalkylatorer), Om sajten (Om oss, Så testar vi, Så tjänar vi pengar, Författare, Kontakt, Integritet). 14 px text. Inga enskilda artiklar, inga sociala ikoner.
+**Sidfot.** Bakgrund blyerts, text papper. Ordmärket överst i papper (samma inlineade SVG, pennstrecket i penna syns bra på blyerts). Fyra spalter på desktop, en spalt på mobil, i den här ordningen: Ämnen (publicerade pelare, sist raderna "Alla ämnen" och "Alla guider och tester"), Bäst i test (kategorisidor), Räkna själv (kalkylatorer), Om sajten (Om oss, Så testar vi, Så tjänar vi pengar, Författare, Kontakt, Integritet). 14 px text. Inga enskilda artiklar, inga sociala ikoner.
 
 **Hoppa till innehåll.** Första fokuserbara elementet på varje sida, synligt bara vid fokus.
 
@@ -197,6 +199,8 @@ Gemensamt för alla sidor:
 ### 5.1 Startsida
 
 Startsidan är en uppslagen anteckningsbok, inte en landningssida. Inget hero, ingen bakgrundsbild, inga köpknappar, inget reklamband.
+
+Blocken skrevs om 2026-09-16 efter granskningen av den byggda sidan: layouten låg i läsbredd med en tom högerspalt, allt var en lodrät ström av rader, och säsongsbilden och "Just nu" visade samma skiss två gånger. Rutnätet av kort är svaret.
 
 ```
 ┌────────────────────────────────────┐
@@ -207,27 +211,27 @@ Startsidan är en uppslagen anteckningsbok, inte en landningssida. Inget hero, i
 │   Ett stycke, 2 till 3 rader       │
 │   Två textlänkar                   │
 ├────────────────────────────────────┤
-│ Säsongens problem                  │
-│   Illustration (skiss, full bredd) │
-│   Verktygskort (kalkylator)        │
+│ Säsongens ämne (7/12 + 5/12)       │
+│   Illustration med bildtext        │
+│   Etikett · H2 · en mening         │
+│   Verktygskort · Läs först         │
 ├────────────────────────────────────┤
-│ Börja här                          │
+│ Guider och tester                  │
+│   H2 + länk "Alla guider och       │
+│   tester" på samma rad             │
+│   Rutnät: 1 stort kort (justNu)    │
+│   + 4 vanliga, tre kolumner        │
+├────────────────────────────────────┤
+│ Börja här (två spalter av rader)   │
 │   Rad per pelare: ikon · H3 ·      │
-│   en mening · 2 till 3 länkar      │
-├────────────────────────────────────┤
-│ Just nu (en artikel, stor)         │
-│   Bild 3:2 · Etikett · Rubrik ·    │
-│   Ingress · Meta                   │
+│   en mening · länkar radvis        │
+│   Länk "Alla ämnen"                │
 ├────────────────────────────────────┤
 │ Bäst i test just nu                │
 │   Rad per kategori: kategori,      │
-│   vårt val, pris, länk             │
+│   vårt val, pris, antal granskade  │
 ├────────────────────────────────────┤
-│ Senaste guider och tester (6 st)   │
-│   Rad: Etikett · Rubrik · En rad · │
-│   Datum                            │
-├────────────────────────────────────┤
-│ Räkna själv (kalkylatorlista)      │
+│ Räkna själv (bara vid minst två)   │
 ├────────────────────────────────────┤
 │ Så jobbar vi (kort text, 2 länkar) │
 ├────────────────────────────────────┤
@@ -235,19 +239,17 @@ Startsidan är en uppslagen anteckningsbok, inte en landningssida. Inget hero, i
 └────────────────────────────────────┘
 ```
 
-**Öppning.** H1 är ett påstående om huset, inte om verktygsköp och inte en välkomstfras. Riktning (chefredaktören skriver den riktiga): "Bygg, renovera och sköt huset utan att köpa fel." Under den ett stycke i ingress-storlek. Två länkar i löptext, en till en problemguide och en till en kalkylator. Vänsterställt, läsbredd. Första skärmen innehåller inget pris.
+**Öppning.** H1 är ett påstående om huset, inte om verktygsköp och inte en välkomstfras. Under den ett stycke i ingress-storlek. Två länkar i löptext, en till en problemguide och en till en kalkylator. Vänsterställt, läsbredd, ingen högerspalt. Första skärmen innehåller inget pris.
 
-**Säsongens problem.** Den handskissade illustrationen av säsongens problem (källaren i september, altanen i april) i full bredd på mobil, med bildtext. Under den ett verktygskort (avsnitt 6) med säsongens kalkylator: avfuktare augusti till november, elkostnad december till februari, trall mars till juni. På desktop ligger illustrationen till vänster (60 procent) och verktygskortet till höger. Det här är det enda stället på startsidan där marginalanteckningen får sitta, som en handskriven rad vid illustrationen. Statiskt, ingen ö.
+**Säsongens ämne.** Ett tvåspaltigt band på desktop, 7/12 och 5/12 med 48 px mellanrum. Vänster: säsongens skiss i ram med bildtext (källaren i september, altanen i april). Höger, uppifrån: etiketten "Säsongens ämne · September" med månaden från byggtidpunkten, en H2 med pennstreck och en mening som chefredaktören skriver i startsidans frontmatter (`sasongRubrik`, `sasongText`, båda valfria), verktygskortet för säsongens kalkylator (avfuktare augusti till november, elkostnad december till februari, trall mars till juni) och "Läs först" med hubbens `viktiga` för den pelare kalkylatorn hör till. Mobil: etikett, rubrik, mening, illustration, verktygskort, länkar. Det här är det enda stället på startsidan där marginalanteckningen får sitta, som en handskriven rad vid illustrationen. Statiskt, ingen ö.
 
-**Börja här.** Rubrik "Börja här" som H2 med pennstreck. En rad per publicerad pelare, aldrig kolumner: pelarikon (24 px, blyerts) och pelarnamn som H3 på samma rad, en mening om vad du hittar, sedan två till tre länkar till klustrets viktigaste sidor i löptext med kommatecken emellan. 1 px linje mellan raderna. Det här är sajtens karta, och det är härifrån hubbarna får sin interna länkkraft.
+**Guider och tester.** H2 med pennstreck till vänster och länken "Alla guider och tester" till `/guider/` till höger på samma rad. Ett rutnät med fem Artikelkort: det första är chefredaktörens `justNu` i variant `stor` och tar två kolumner på desktop, de fyra följande är de senaste publicerade med `justNu` bortfiltrerad. Ett stort plus fyra är sex celler, alltså två fyllda rader; sex kort hade lämnat ett ensamt kort på en tredje rad. Mobil: det stora kortet stående, de fyra i kompakt variant. Tester, jämförelser och kategorisidor ingår på samma villkor som artiklar. Är `justNu`-kortets illustration samma fil som säsongsbilden visas kortet med placeholder: samma bild två gånger på en skärm ser ut som ett fel.
 
-**Just nu.** En artikel, vald av chefredaktören. Mobil: bild 3:2 i full bredd, sedan etikett ("Köpguide", "Test", "Granskning"), rubrik i H2-storlek utan pennstreck (den är en länk), ingress, meta. Desktop: bild till vänster (halva bredden), text till höger, lodrätt centrerad. Bilden är eget foto eller egen illustration. Ingen leverantörsbild här.
+**Börja här.** Rubrik "Börja här" som H2 med pennstreck, med länken "Alla ämnen" på samma rad. En rad per publicerad pelare, aldrig tre ikonkolumner, i två spalter från 1024 px med 1 px linje mellan raderna: pelarikon (24 px, blyerts) och pelarnamn som H3 på samma rad, en mening om vad du hittar, sedan `viktiga` som länkar på var sin rad. Det här är sajtens karta, och det är härifrån hubbarna får sin interna länkkraft.
 
-**Bäst i test just nu.** Rubrik "Bäst i test just nu" som H2. En rad per kategori med 1 px linje emellan. Vänster: kategorinamn i H3. Mitten: "Vårt val" i etikett-stil följt av produktnamnet, och priset i blyerts-2 med datum. Höger: länken "Alla vi testat" till kategorisidan. Mobil: allt staplas inom raden, länken sist. Desktop: två spalter av rader. Bara länkar, inga köpknappar, ingen produktbild. Blocket ska vara lätt, en anteckning i marginalen, inte huvudsaken. Data från kategorifilen och databasen.
+**Bäst i test just nu.** Rubrik "Bäst i test just nu" som H2. En rad per kategori med 1 px linje emellan, två spalter av rader på desktop. Kategorinamn i H3, "Vårt val" i etikett-stil följt av produktnamnet, priset och antalet granskade ("13 granskade") i blyerts-2, och länken "Alla vi granskat" till kategorisidan. Bara länkar, inga köpknappar, ingen produktbild. Blocket ska vara lätt, en anteckning i marginalen, inte huvudsaken. Data från kategorifilen och databasen.
 
-**Senaste guider och tester.** Sex rader, samma anatomi som "Just nu" men utan bild och med rubrik i H3. Mobil en spalt, desktop två spalter. Etiketten säger typ: "Test", "Granskning", "Köpguide", "Problemguide", "Projektguide", "Kunskap", "Jämförelse".
-
-**Räkna själv.** Lista med varje kalkylator: namn som länk och en rad om vad man får ut. Ingen ikon.
+**Räkna själv.** Verktygskort i samma rutnät som artikelkorten, och bara när registret har minst två kalkylatorer. Med en enda står den redan i säsongsblocket.
 
 **Så jobbar vi.** Två till fyra meningar om hur vi testar och hur vi tjänar pengar, med länkar till "Så testar vi" och "Så tjänar vi pengar". Det här blocket finns för förtroendet, och för Google.
 
@@ -262,33 +264,37 @@ URL `/fukt/`. Huben är diagnosstart och länknav, handskriven av chefredaktöre
 │ Brödsmulor                         │
 │ Pelarikon (32 px) + H1             │
 │ Ingress                            │
-├────────────────────────────────────┤
-│ Illustration (pelarens situation)  │
+│ Handskriven inledning (läsbredd)   │
 ├────────────────────────────────────┤
 │ H2 Hitta felet                     │
-│   Rad: Rubrik (länk) · en mening   │
+│   Chefredaktörens mening           │
+│   Rutnät av Artikelkort            │
 ├────────────────────────────────────┤
 │ H2 Välj rätt                       │
-│   Rad: Rubrik (länk) · en mening   │
+│   Kategorikort först, sedan kort   │
+├────────────────────────────────────┤
+│ H2 Gör det själv (projektguider)   │
 ├────────────────────────────────────┤
 │ H2 Räkna                           │
-│   Verktygskort                     │
+│   Verktygskort i rutnät            │
 ├────────────────────────────────────┤
-│ H2 Testat i kategorin              │
-│   Rad per kategorisida: namn (länk)│
-│   · vårt val · antal testade       │
+│ H2 Alla sidor i Fukt   + länk      │
+│   Enkel · Mellan · Expert i tre    │
+│   spalter, tätt register           │
 ├────────────────────────────────────┤
 │ Sidfot                             │
 └────────────────────────────────────┘
 ```
 
-**Rubrikblock.** Pelarikonen står till vänster om H1, 32 px, blyerts, det enda stället där en ikon står vid en rubrik. H1 är hubbens löfte, till exempel "Fukt i huset, hitta orsaken innan du köper något". Ingressen säger vad pelaren täcker i två meningar.
+**Rubrikblock.** Pelarikonen står till vänster om H1, 32 px, blyerts. H1 är hubbens löfte, till exempel "Fukt i huset, hitta orsaken innan du köper något". Ingressen säger vad pelaren täcker i två meningar. Rubrikblocket, inledningen och gruppernas meningar hålls till läsbredd; rutnäten går ut i sidbredd.
 
-**Grupperna.** Tre H2 med pennstreck i den ordning innehållsarkitekturen anger: "Hitta felet" (problemguider och kunskap), "Välj rätt" (köpguider och jämförelser), "Räkna" (kalkylatorerna, som verktygskort). Varje rad är rubriken som länk i H3-storlek och en mening skriven av chefredaktören, inte ingressen kopierad. 1 px linje mellan rader. Hubben publiceras när den har minst fem sidor att länka till.
+**Grupperna.** Fyra möjliga H2 med pennstreck, i den här ordningen: "Hitta felet" (problemguider och kunskap), "Välj rätt" (kategorisidor som kategorikort först, sedan köpguider och jämförelser), "Gör det själv" (projektguider) och "Räkna" (kalkylatorerna i pelaren, som verktygskort). Chefredaktören skriver H2:n och sin mening i hubfilen och lägger `<Kortgrupp grupp="hitta-felet" />` under den; komponenten läser pelaren ur rutten och renderar korten ur frontmatter. Så blir gruppen både handskriven och komplett. En grupp utan sidor renderar ingenting. Hubben publiceras när den har minst fem sidor att länka till.
 
-**Testat i kategorin.** Kategorisidor som hör till pelaren, samma anatomi som "Bäst i test just nu" på startsidan. Bara länkar.
+**Alla sidor i pelaren.** Registret ligger sist som säkerheten mot föräldralösa sidor, i tre spalter på desktop (Enkel, Mellan, Expert sida vid sida), med länken "Alla guider i Fukt" till `/guider/fukt/` på rubrikraden. Det är ett register, inte en läsyta, så det får vara tätt: etikett och titel per rad, 1 px linje mellan raderna.
 
-**Desktop.** Läsbredd, ingen innehållsförteckning (sidan är sin egen).
+**Mobil.** Stående kort i huben, inte kompakta: den som valt ämne är här för att läsa, och bilden är halva anledningen att klicka. Registret blir tre listor under varandra.
+
+**Desktop.** Sidbredd, ingen innehållsförteckning (sidan är sin egen).
 
 ### 5.3 Problemguide
 
@@ -628,6 +634,36 @@ Fälten är förifyllda med typiska värden (40 kvm, 2,4 m, 70 till 80 %) så at
 
 **Desktop.** Papperet är 44 rem brett, formuläret till vänster och resultatet till höger i två lika spalter. Produkterna i rad om tre under.
 
+### 5.9 Alla ämnen
+
+URL `/amnen/`. Kartan över sajten, ordnad som människor tänker: ämne först, sedan vad som finns i ämnet. En sektion per publicerad pelare i `PELARE`-ordning; opublicerade pelare visas inte, en karta med tomma rum är sämre än en mindre karta.
+
+Sektionen börjar med pelarikonen i 32 px och pelarnamnet som H2 med pennstreck, länkat till huben, sedan pelarens ingress. Under den tre spalter på desktop:
+
+| Spalt | Innehåll |
+|---|---|
+| Guider (6/12) | Länklistor under etikett per typ i fast ordning: Problemguider, Kunskap, Köpguider, Projektguider, Jämförelser. Varje rad är titeln som länk och nivån i etikett-stil efter. Tester ligger under kategorin, inte här |
+| Bäst i test (3/12) | Ett kategorikort per kategorisida vars `pelare` innehåller pelaren, och under kortet kategorins tester som länkrader |
+| Räkna (3/12) | Verktygskort för kalkylatorer med `kategori` i pelaren |
+
+Inget rutnät av artikelkort här. Kartan ska vara tät och skanningsbar, och med femhundra artiklar måste den vara en lista; korten finns för kategorier och kalkylatorer, som är få. Sist ett stycke i blyerts-2 om vilka pelare som kommer, utan länkar, så att läsaren ser att sajten växer utan att skickas till en tom sida. På mobil staplas spalterna. Strukturerad data: `ItemList` med hubbarna. Brödsmulor: Hantverkstips / Alla ämnen.
+
+Spaltbredden är 6/3/3, inte 7/3/2 som i designbriefen: med 2/12 blev verktygskortet 192 px brett och bröt rubriken till ett ord per rad.
+
+### 5.10 Alla guider och tester
+
+URL `/guider/`, med filtersidorna `/guider/[pelare]/`, `/guider/typ/[typ]/` och `/guider/niva/[niva]/`. Galleriet med allt publicerat som har en sida att gå till: guider, kunskap, tester, jämförelser och kategorisidor (som kategorikort, och bara när de är indexerbara). Sorterat på `publicerad` fallande, kategorisidor på `uppdaterad`.
+
+Under H1 en rad i 14 px blyerts-2: "43 sidor, den senaste 16 september 2026". På `/guider/` står chefredaktörens ingress ovanför den.
+
+**Filtret.** Ett block i slätt `papper-2` (det är ett gränssnitt, inte en anteckning) med 1 px linje och tre rader: Ämne, Typ och Nivå. Varje rad är en etikett och länkar med antalet i parentes i blyerts-2. Den aktiva posten är blyerts 700 med 2 px understrykning i penna och `aria-current="page"`, inte en länk. Poster med noll sidor visas inte. Ett filter i taget: de två andra raderna byter filter i stället för att lägga till, och deras "Alla" står som aktiv. Länkarna har 44 px klickhöjd, radbryts och har 8 px vågrätt mellanrum. Ingen rullgardin, ingen `<select>`, inga knappar, ingen JavaScript.
+
+**Rutnätet.** Artikelkort i tre kolumner, 24 kort per sida.
+
+**Pagineringen.** `/guider/sida/2/` och `/guider/fukt/sida/2/`. Under rutnätet en rad: "Sida 2 av 21" i blyerts-2 till vänster, "Föregående sida" och "Nästa sida" som penna-länkar till höger, ingen sifferlista. Raden renderas inte när det bara finns en sida. `rel="prev"` och `rel="next"` ligger i `<head>`.
+
+H1 och title per filter står i `docs/briefer/texter-platshallare-2026-09-16.md`: ämnesfiltret "Guider och tester om fukt och inomhusklimat", typfiltret typen i plural, nivåfiltret "Enkla guider, klara på en dag", "Guider på mellannivå" och "Expertsidor och undersökningar". Strukturerad data: `ItemList` med sidans kort. Brödsmulor: Hantverkstips / Guider / Fukt.
+
 ## 6. Komponenter
 
 Alla komponenter ligger i `src/components/ui/` som Astro utan klient-JS, utom det som uttryckligen är en ö. Signaturelementen är tre hjälpklasser i `global.css` (`.pennstreck`, `.markering`, `.linjerat`), och komponenterna använder dem, de bygger inte egna varianter.
@@ -654,7 +690,31 @@ Spriten `src/assets/brand/riktning-1/ikoner.svg` inlineas i layouten så att `<u
 
 **Utseende.** Text i blyerts, ingen bakgrund, ingen ram, ingen ikon. Redaktörens omdömesetikett på produktkort är i penna. "Test" och "Granskning" ser likadana ut; skillnaden ska ligga i ordet, inte i en färg som säger att det ena är sämre.
 
-**Nivå** (beslut 2026-09-16). Varje artikel, test och jämförelse har en nivå: Enkel, Mellan eller Expert (`niva` i frontmatter, orden i `src/lib/niva.ts`). I artikelhuvudet står nivån i samma etikett som typen, efter en mittpunkt (U+00B7): "Kunskap · Expert", "Test · Mellan", "Jämförelse · Enkel". Samma stil, samma blyerts, ingen färg, ingen ram, ingen ikon; nivån är en upplysning, inte ett betyg, och "Enkel" får inte se ut som något sämre än "Expert". På hubsidan grupperas listan "Alla sidor i ..." under tre H3 med samma ord, i ordningen Enkel, Mellan, Expert, och varje rad har etiketten "Typ · Nivå". Det är hubbens filter utan JavaScript: tre listor i HTML, inget dragspel, inga flikar. Nivån visas inte på startsidans listor, i "Läs vidare" eller i kategorisidans listor.
+**Nivå** (beslut 2026-09-16). Varje artikel, test och jämförelse har en nivå: Enkel, Mellan eller Expert (`niva` i frontmatter, orden i `src/lib/niva.ts`). I artikelhuvudet står nivån i samma etikett som typen, efter en mittpunkt (U+00B7): "Kunskap · Expert", "Test · Mellan", "Jämförelse · Enkel". Samma stil, samma blyerts, ingen färg, ingen ram, ingen ikon; nivån är en upplysning, inte ett betyg, och "Enkel" får inte se ut som något sämre än "Expert". På hubsidan grupperas listan "Alla sidor i ..." under tre H3 med samma ord, i ordningen Enkel, Mellan, Expert, och varje rad har etiketten "Typ · Nivå". Det är hubbens filter utan JavaScript: tre listor i HTML, inget dragspel, inga flikar.
+
+Sedan 2026-09-16 visas nivån på **alla artikelkort**, även på startsidan: etiketten är "Typ · Nivå" ("Köpguide · Mellan", "Kunskap · Expert"). Det är den enda platsen där en hemmafixare och ett proffs ser vilka sidor som är för dem utan att klicka. Kategorikort har ingen nivå, de har etiketten "Bäst i test". I "Läs vidare" och i kategorisidans listor visas nivån fortfarande inte.
+
+### Artikelkort
+
+**Syfte.** Bära en artikel, ett test, en jämförelse eller en kategorisida i ett rutnät. Ett urklipp, inte ett WordPress-kort. `src/components/ui/Artikelkort.astro`.
+
+**Innehåll.** Bild kant i kant upptill med 1 px `linje` under, etiketten "Typ · Nivå", kortrubriken (Zilla Slab 600, semantiskt H3), beskrivningen i högst tre rader och en metarad som trycks mot kortets botten: "{pelarens korta namn} · {datum}", eller fri text som "13 granskade". På hubben, där alla kort har samma pelare, står bara datumet.
+
+**Mått.** Ram 1 px `linje`, radie 2 px, bakgrund `papper`, ingen skugga, ingen färgad kant. Bilden är 5:3 (343 × 206 på mobil, cirka 368 × 221 i tre kolumner), alltid med `width` och `height`, `loading="lazy"` utom startsidans stora kort, `decoding="async"`. Inre marginal 16 px på mobil, 24 på desktop. Rutnätet har 16 px mellan korten på mobil och 24 på desktop, tre kolumner från 1024 px, två från 640.
+
+**Varianter.** *standard* (bild överst, text under). *stor*, bara startsidans första kort: två kolumner på desktop, bilden till vänster i 7/12 av kortets bredd och texten i 5/12 lodrätt centrerad, kortrubrik 24 px, beskrivning i fyra rader. Bilden ligger i `object-fit: contain` mot `papper`, aldrig `cover`: en skiss med handskrift tål ingen beskärning. Kortets höjd sätts av rutnätets rad, alltså av standardkortet bredvid, så en 5:3-skiss får luft ovan och under i sin spalt. Papperet är samma färg som skissens eget, så kanterna syns inte. *kompakt på mobil*: bild 120 × 72 till vänster, ingen beskrivning, används för kort två och uppåt i startsidans rutnät.
+
+**Utan illustration.** Bildytan fylls av ett blankt blad ur samma block som skisserna: `papper-2` med linjer i `linje` var 24:e px och marginallinje i penna vid 35 procent, och pelarens ikon i 40 px `blyerts-2` mitt på. Aldrig en grå ruta, aldrig ett stockfoto, aldrig en packshot.
+
+**Kategorikort.** Ingen egen komponent: Artikelkort med etiketten "Bäst i test", kategorins namn som rubrik och kategorins `description` som beskrivning. Bildytan är det blanka bladet med två rader satta som kalkylatorns resultat: "Vårt val" i etikett-stil med produktnamnet i kortrubrik, och antalet granskade som ett stort tal i Zilla Slab med ordet "granskade" efter. Ingen packshot, aldrig. Utan databas visas bladet utan tal.
+
+**Hover, fokus, klickyta.** Hela kortet är klickbart genom att rubrikens länk får en `::after` som täcker kortet, men bara rubriken är länk för skärmläsaren (regeln "rubriken är länken"). Hover lyfter ingenting: rubriken får 2 px understrykning i penna, `transition: text-decoration-color 150ms`, avstängd vid `prefers-reduced-motion`. Fokus ger hela kortet `outline: 3px solid penna` via `:has`. Klickytan är alltid över 44 px hög.
+
+### Filterrad och Paginering
+
+**Filterrad** (`Filterrad.astro`, bara på `/guider/`). Tre rader med etikett och länkar, utseende enligt avsnitt 5.10. Ingen JavaScript.
+
+**Paginering** (`Paginering.astro`). "Sida n av m" och länkarna Föregående sida och Nästa sida. Renderas inte när det bara finns en sida.
 
 ### Köpknapp
 
@@ -718,7 +778,7 @@ Prishistorik (fas 2) är ett litet linjediagram i det fulla kortet, 90 dagar, l�
 
 **Innehåll.** Ikonen `ikon-kalkylator` (24 px) och rubriken i H3 på samma rad ("Hur stor avfuktare behöver du?"), en rad förklaring, och länken "Till kalkylatorn". På startsidan dessutom ett litet eget diagram eller en detalj ur säsongens illustration överst.
 
-**Utseende.** Kort (ram linje, 2 px, ingen skugga), bakgrund papper. Ingen köpknapp, inget pris. Statiskt, ingen ö.
+**Utseende.** Kort (ram linje, 2 px, ingen skugga), bakgrund papper. Ingen köpknapp, inget pris. Statiskt, ingen ö. I ett rutnät (hubbens grupp Räkna, startsidans säsongsblock, `/amnen/`) sköter rutnätet avståndet och kortet har ingen egen luft ovanför och under.
 
 ### Jämförelsetabell
 
@@ -847,7 +907,7 @@ Stockfoton. Genererade bilder av verktyg. Bilder utan `width` och `height`. Bild
 Det här byggs inte, oavsett vem som ber om det.
 
 - Hero med bakgrundsbild och centrerad text.
-- Tre kolumner med ikon, rubrik och en rad. Tre lika kort i rad är tillåtet bara när det är tre jämförbara val (som "Våra val"), aldrig som dekoration.
+- Tre kolumner med ikon, rubrik och en rad. Tre lika kort i rad är tillåtet när korten är samma slags sak: tre jämförbara val (som "Våra val") eller artiklar i ett rutnät, i den ordning de publicerats. Aldrig tre påståenden om sajten, och pelarna visas fortfarande som rader, aldrig som tre ikonkolumner (omformulerat 2026-09-16, regeln finns för att stoppa marknadsföringens tre ikoner, inte för att stoppa en tidningssida).
 - Gradienter, någonstans. (`.markering` och `.linjerat` använder `linear-gradient` som ritverktyg för en platt yta och platta linjer, det är inte en gradient i den här meningen.)
 - Skugga på kort. Skugga används bara på det som ligger ovanpå sidan.
 - Piller-formade knappar och taggar.

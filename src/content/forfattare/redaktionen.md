@@ -1,10 +1,10 @@
 ---
 namn: Redaktionen
 yrke: Redaktion
-presentation: Vi testar själva eller granskar tillverkarnas data. Så gör vi.
+presentation: Vi granskar tillverkarnas datablad och räknar själva. Ingen egen mätning är publicerad än, och det står där den saknas.
 utkast: false
 ---
 
-Platshållartext. Byts mot en riktig författare när Christian lämnat namn, foto och bakgrund.
+Redaktionen står som författare på kategorisidor, kalkylatorer och sidor där ingen enskild person skrivit texten. I september 2026 är det alla sidor. Sajten är nystartad av Christian Karlsson, och en författarsida med namn, yrke, år i yrket och foto kommer när den första egna mätningen är publicerad.
 
-Redaktionen står som författare på kategorisidor, kalkylatorer och sidor där ingen enskild person skrivit. Metoden bakom det vi rekommenderar finns på sidan [Så testar vi](/om/sa-testar-vi/).
+Det redaktionen står för är sättet att arbeta. Varje siffra har en källa vid sig, tillverkarens kapacitet återges med villkoret den är mätt vid, och en maskin vi inte haft i handen kallas granskad, inte testad. Hur det går till, och vad som kommer att mätas, står på [så testar vi](/om/sa-testar-vi/).

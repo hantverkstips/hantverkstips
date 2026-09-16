@@ -53,6 +53,9 @@ const KRAVER_INLANK: Samling[] = ['guider', 'kunskap', 'tester', 'jamforelser'];
 
 const SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
+/** Grupperna <Kortgrupp> känner till. Speglar src/components/ui/Kortgrupp.astro. */
+const KORTGRUPPER = ['hitta-felet', 'valj-ratt', 'gor-det-sjalv', 'rakna'] as const;
+
 interface Fil {
   samling: Samling;
   /** Sökväg relativt projektroten, med snedstreck. */
@@ -241,6 +244,17 @@ for (const f of filer) {
     if (!kalkylatorer.has(m[1] ?? '')) felet(f.sokvag, `<Verktygskort kalkylator="${m[1]}"> finns inte i registret`);
   }
 
+  // Hubbens kortgrupper. Komponenten läser pelaren ur rutten och fungerar bara
+  // i en pelarhub, så både okänt gruppnamn och fel samling är fel här.
+  for (const m of f.body.matchAll(/<Kortgrupp\s+grupp="([^"]+)"/g)) {
+    if (!(KORTGRUPPER as readonly string[]).includes(m[1] ?? '')) {
+      felet(f.sokvag, `<Kortgrupp grupp="${m[1]}"> är okänd. Använd en av ${KORTGRUPPER.join(', ')}`);
+    }
+    if (f.samling !== 'pelare') {
+      felet(f.sokvag, '<Kortgrupp> fungerar bara i en pelarhub, den läser pelaren ur rutten');
+    }
+  }
+
   const bild = strang(f.data.bild);
   if (bild !== undefined && !existsSync(resolve(ROT, dirname(f.sokvag), bild))) {
     felet(f.sokvag, `bild "${bild}" finns inte (sökvägen är relativ från filen, som ligger i en undermapp)`);
@@ -254,7 +268,30 @@ for (const f of filer) {
 
 const sidorPerUrl = new Map<string, Fil>();
 for (const f of filer) if (f.url) sidorPerUrl.set(f.url, f);
-const statiska = new Set<string>(['/', '/rakna/', ...KALKYLATORER.map((k) => `/rakna/${k.slug}/`)]);
+/**
+ * Adresser som mallarna bygger utan en innehållsfil. De får länkas till, men de
+ * räknas aldrig som en handskriven inlänk: /guider/ och dess filtersidor listar
+ * varje publicerad artikel automatiskt, och /amnen/ listar varje hub. En sida
+ * som bara nås därifrån är fortfarande föräldralös. Eftersom de saknar
+ * innehållsfil hamnar de aldrig i inlankar-tabellen, och regeln följer av sig
+ * själv; listan finns här för att länkkontrollen ska hitta målet.
+ */
+const OVERSIKTSSIDOR = [
+  '/amnen/',
+  '/guider/',
+  ...PELARE_SLUGS.map((p) => `/guider/${p}/`),
+  ...['kopguide', 'problemguide', 'projektguide', 'kunskap', 'test', 'jamforelse', 'kategori'].map(
+    (t) => `/guider/typ/${t}/`,
+  ),
+  ...NIVAER.map((n) => `/guider/niva/${n}/`),
+];
+
+const statiska = new Set<string>([
+  '/',
+  '/rakna/',
+  ...KALKYLATORER.map((k) => `/rakna/${k.slug}/`),
+  ...OVERSIKTSSIDOR,
+]);
 
 /** Alla interna länkar i en fil: strängar i frontmatter som börjar med /, markdown-länkar och href i brödtexten. */
 function lankarI(f: Fil): string[] {

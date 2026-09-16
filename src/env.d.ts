@@ -12,5 +12,11 @@ declare namespace App {
   interface Locals {
     sidtyp?: import('./lib/affiliate').Sidtyp;
     kopknappPosition?: number;
+    /**
+     * Pelaren som renderas just nu. Sätts av src/pages/[rot]/index.astro och av
+     * vyn PelarHub, och läses av <Kortgrupp> inuti hubbens MDX: komponenten står
+     * i innehållsfilen och kan inte få pelaren som prop därifrån.
+     */
+    pelare?: import('./lib/pelare').PelareSlug;
   }
 }

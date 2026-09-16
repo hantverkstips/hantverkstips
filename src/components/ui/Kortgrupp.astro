@@ -1,0 +1,107 @@
+---
+/**
+ * Hubbens kortgrupper. Chefredaktören skriver sin mening under varje H2 och
+ * lägger <Kortgrupp grupp="hitta-felet" /> under den; korten kommer från
+ * frontmatter, inte från att någon kommer ihåg att lägga till dem.
+ *
+ * Pelaren kommer från Astro.locals.pelare, som rutten och vyn PelarHub sätter.
+ * En prop går inte: taggen står i innehållsfilen, och chefredaktören ska inte
+ * behöva upprepa pelarens slug i varje grupp.
+ *
+ * Grupper enligt designbriefen avsnitt 4:
+ *   hitta-felet    problemguider och kunskap, senaste först
+ *   valj-ratt      kategorisidor som kategorikort, sedan köpguider och jämförelser
+ *   gor-det-sjalv  projektguider
+ *   rakna          kalkylatorer i pelaren, som verktygskort
+ *
+ * En tom grupp renderar ingenting, inte ens en rad.
+ */
+import { publicerade } from '../../lib/innehall';
+import { KALKYLATORER } from '../../lib/kalkyl/register';
+import {
+  nyastForst,
+  pelareForKategori,
+  tillKortArtikel,
+  tillKortJamforelse,
+  tillKortKategori,
+  type KortData,
+} from '../../lib/kort';
+import Artikelrutnat from './Artikelrutnat.astro';
+import Verktygskort from './Verktygskort.astro';
+
+const GRUPPER = ['hitta-felet', 'valj-ratt', 'gor-det-sjalv', 'rakna'] as const;
+type Grupp = (typeof GRUPPER)[number];
+
+interface Props {
+  grupp: Grupp;
+}
+
+const { grupp } = Astro.props;
+if (!GRUPPER.includes(grupp)) {
+  throw new Error(`[Kortgrupp] Okänd grupp "${grupp}". Använd en av ${GRUPPER.join(', ')}`);
+}
+
+const pelare = Astro.locals.pelare;
+if (!pelare) {
+  throw new Error(
+    '[Kortgrupp] Astro.locals.pelare saknas. Komponenten kan bara stå i en pelarhub, och rutten måste sätta pelaren.',
+  );
+}
+
+const artiklar = [...(await publicerade('guider')), ...(await publicerade('kunskap'))].filter(
+  (e) => e.data.pelare === pelare,
+);
+
+let kort: KortData[] = [];
+let kalkylatorer: string[] = [];
+
+if (grupp === 'hitta-felet') {
+  kort = artiklar
+    .filter((e) => e.data.typ === 'problemguide' || e.data.typ === 'kunskap')
+    .map(tillKortArtikel)
+    .sort(nyastForst);
+} else if (grupp === 'gor-det-sjalv') {
+  kort = artiklar
+    .filter((e) => e.data.typ === 'projektguide')
+    .map(tillKortArtikel)
+    .sort(nyastForst);
+} else if (grupp === 'valj-ratt') {
+  const kategorier = (await publicerade('kategorier')).filter((k) =>
+    (k.data.pelare as readonly string[]).includes(pelare),
+  );
+  const kategorikort = await Promise.all(kategorier.map(tillKortKategori));
+
+  const jamforelser = await Promise.all(
+    (await publicerade('jamforelser')).map(async (e) => ({
+      entry: e,
+      pelare: await pelareForKategori(e.data.kategori),
+    })),
+  );
+
+  const ovriga = [
+    ...artiklar.filter((e) => e.data.typ === 'kopguide').map(tillKortArtikel),
+    ...jamforelser.filter((j) => j.pelare === pelare).map((j) => tillKortJamforelse(j.entry, j.pelare)),
+  ].sort(nyastForst);
+
+  kort = [...kategorikort, ...ovriga];
+} else {
+  const kategorier = await publicerade('kategorier');
+  kalkylatorer = KALKYLATORER.filter((k) => {
+    if (!k.kategori) return false;
+    const kategori = kategorier.find((x) => x.id === k.kategori);
+    return kategori ? (kategori.data.pelare as readonly string[]).includes(pelare) : false;
+  }).map((k) => k.slug);
+}
+---
+
+{grupp !== 'rakna' && <Artikelrutnat kort={kort} visaPelare={false} />}
+
+{
+  grupp === 'rakna' && kalkylatorer.length > 0 && (
+    <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+      {kalkylatorer.map((slug) => (
+        <Verktygskort kalkylator={slug} iRutnat={true} />
+      ))}
+    </div>
+  )
+}

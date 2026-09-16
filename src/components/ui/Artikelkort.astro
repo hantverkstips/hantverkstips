@@ -1,0 +1,195 @@
+---
+/**
+ * Artikelkortet: ett urklipp med bild, etikett, rubrik, beskrivning och metarad.
+ * Samma kort bär artiklar, tester, jämförelser och kategorisidor; det som skiljer
+ * är vad som skickas in. Se docs/DESIGN.md avsnitt 6, Artikelkort.
+ *
+ * Hela kortet är klickbart, men länken är rubriken (regeln "rubriken är länken").
+ * Tekniken är .kortlank::after i global.css, inte en <a> runt allt: skärmläsaren
+ * ska få en länk per kort med rubriken som namn.
+ *
+ * Bilden är alltid en egen skiss eller ett eget foto. Kategorikortet har ingen
+ * bild alls: det visar det blanka bladet med vårt val och antalet granskade.
+ */
+import { Image } from 'astro:assets';
+import { formateraDatumKortMedAr } from '../../lib/format';
+import { nivaEtikett, type Niva } from '../../lib/niva';
+import { hittaPelare, type PelareSlug } from '../../lib/pelare';
+import Ikon from './Ikon.astro';
+
+interface Props {
+  etikett: string;
+  niva?: Niva;
+  rubrik: string;
+  beskrivning?: string;
+  illustration?: ImageMetadata;
+  /** Standard tom: bilden är dekorativ på ett kort, rubriken bär betydelsen. */
+  bildAlt?: string;
+  pelare: PelareSlug;
+  datum?: Date;
+  /** Fri text i metaraden i stället för datum: "9 granskade". */
+  meta?: string;
+  href: string;
+  variant?: 'standard' | 'stor';
+  /** Kort två och uppåt i startsidans rutnät: bild till vänster på mobil. */
+  kompaktPaMobil?: boolean;
+  /** Metaraden utan pelarnamn. Används på hubben, där alla kort har samma pelare. */
+  visaPelare?: boolean;
+  rubrikniva?: 2 | 3;
+  /** Startsidans stora kort är LCP-bild och laddas inte lazy. */
+  prioriterad?: boolean;
+  /** Kategorikortets bildyta: vårt val och antalet granskade på det blanka bladet. */
+  bladfakta?: { val?: string; antal?: number };
+}
+
+const {
+  etikett,
+  niva,
+  rubrik,
+  beskrivning,
+  illustration,
+  bildAlt = '',
+  pelare,
+  datum,
+  meta,
+  href,
+  variant = 'standard',
+  kompaktPaMobil = false,
+  visaPelare = true,
+  rubrikniva = 3,
+  prioriterad = false,
+  bladfakta,
+} = Astro.props;
+
+const Rubrik = rubrikniva === 2 ? 'h2' : 'h3';
+const rubrikklass = [
+  'm-0 mt-2 font-serif text-kortrubrik lg:text-kortrubrik-lg',
+  variant === 'stor' ? 'lg:text-kortrubrik-xl' : '',
+]
+  .join(' ')
+  .trim();
+const p = hittaPelare(pelare);
+const stor = variant === 'stor';
+
+const metadelar = [
+  ...(visaPelare && p ? [p.kort] : []),
+  ...(meta ? [meta] : datum ? [formateraDatumKortMedAr(datum)] : []),
+];
+
+// SVG kan inte skalas av bildtjänsten: med widths genereras bara kopior av samma
+// fil. Skisserna renderas därför som vanliga <img> med width och height.
+const svg = illustration?.format === 'svg';
+---
+
+<article
+  class:list={[
+    'artikelkort border border-linje rounded-sm bg-papper overflow-hidden',
+    kompaktPaMobil && 'flex-row sm:flex-col',
+    stor && 'lg:flex-row',
+  ]}
+>
+  <div
+    class:list={[
+      'relative shrink-0 overflow-hidden',
+      kompaktPaMobil ? 'w-30 border-r border-linje sm:w-full sm:border-r-0 sm:border-b' : 'w-full border-b border-linje',
+      stor && 'lg:w-7/12 lg:self-stretch lg:border-r lg:border-b-0',
+    ]}
+  >
+    {
+      illustration ? (
+        svg ? (
+          <img
+            src={illustration.src}
+            alt={bildAlt}
+            width={illustration.width}
+            height={illustration.height}
+            loading={prioriterad ? 'eager' : 'lazy'}
+            {...(prioriterad ? { fetchpriority: 'high' as const } : {})}
+            decoding="async"
+            class:list={[
+              'block w-full aspect-[5/3] bg-papper',
+              stor ? 'object-contain lg:h-full lg:aspect-auto' : 'object-cover',
+            ]}
+          />
+        ) : (
+          <Image
+            src={illustration}
+            alt={bildAlt}
+            widths={[375, 560, 760]}
+            sizes="(min-width: 1024px) 380px, 100vw"
+            loading={prioriterad ? 'eager' : 'lazy'}
+            decoding="async"
+            class:list={[
+              'block w-full aspect-[5/3] bg-papper',
+              stor ? 'object-contain lg:h-full lg:aspect-auto' : 'object-cover',
+            ]}
+          />
+        )
+      ) : (
+        <div
+          class:list={[
+            'plats-blad flex aspect-[5/3] items-center justify-center p-3 text-center',
+            stor && 'lg:h-full lg:aspect-auto',
+          ]}
+        >
+          {bladfakta && (bladfakta.val || bladfakta.antal) ? (
+            <div>
+              {bladfakta.val && (
+                <>
+                  <p class="m-0 text-etikett uppercase text-blyerts">Vårt val</p>
+                  <p class="m-0 mt-1 font-serif text-kortrubrik lg:text-kortrubrik-lg text-blyerts">
+                    {bladfakta.val}
+                  </p>
+                </>
+              )}
+              {bladfakta.antal && (
+                <p class="m-0 mt-2 font-serif text-h1 lg:text-h1-lg text-blyerts">
+                  {bladfakta.antal}
+                  <span class="ml-2 font-sans text-liten text-blyerts-2">granskade</span>
+                </p>
+              )}
+            </div>
+          ) : (
+            p && <Ikon namn={p.ikon} storlek={kompaktPaMobil ? 24 : 40} class="text-blyerts-2 sm:size-10" />
+          )}
+        </div>
+      )
+    }
+  </div>
+
+  <div
+    class:list={[
+      'flex min-w-0 flex-1 flex-col',
+      kompaktPaMobil ? 'p-3 sm:p-4 lg:p-6' : 'p-4 lg:p-6',
+      stor && 'lg:justify-center',
+    ]}
+  >
+    <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-blyerts">
+      {etikett}{niva && ` · ${nivaEtikett(niva)}`}
+    </p>
+
+    <Rubrik class={rubrikklass}>
+      <a href={href} class="kortlank">{rubrik}</a>
+    </Rubrik>
+
+    {
+      beskrivning && (
+        <p
+          class:list={[
+            'm-0 mt-2 text-brod text-blyerts-2 line-clamp-3',
+            kompaktPaMobil && 'hidden sm:block',
+            stor && 'lg:text-brod-lg lg:line-clamp-4',
+          ]}
+        >
+          {beskrivning}
+        </p>
+      )
+    }
+
+    {
+      metadelar.length > 0 && (
+        <p class="m-0 mt-auto pt-3 text-liten text-blyerts-2">{metadelar.join(' · ')}</p>
+      )
+    }
+  </div>
+</article>

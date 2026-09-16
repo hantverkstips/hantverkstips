@@ -1,0 +1,47 @@
+---
+/**
+ * Pagineringsraden under rutnätet på /guider/. "Sida 2 av 21" till vänster,
+ * Föregående och Nästa som länkar till höger. Ingen sifferlista: vid 21 sidor
+ * blir den ett band av tal ingen klickar. Renderas inte när det bara finns en
+ * sida. Se docs/DESIGN.md avsnitt 5.10.
+ */
+interface Props {
+  sida: number;
+  antal: number;
+  /** Filtrets adress, till exempel "/guider/fukt/". Sida 1 är den adressen. */
+  bas: string;
+}
+
+const { sida, antal, bas } = Astro.props;
+
+function sidaUrl(bas: string, sida: number): string {
+  return sida <= 1 ? bas : `${bas}sida/${sida}/`;
+}
+
+const lank = 'inline-flex min-h-11 items-center text-penna underline decoration-1 underline-offset-2 hover:decoration-2';
+---
+
+{
+  antal > 1 && (
+    <nav
+      aria-label="Sidor"
+      class="mt-8 flex flex-col gap-2 border-t border-linje pt-4 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p class="m-0 text-liten text-blyerts-2">
+        Sida {sida} av {antal}
+      </p>
+      <p class="m-0 flex gap-6">
+        {sida > 1 && (
+          <a href={sidaUrl(bas, sida - 1)} rel="prev" class={lank}>
+            Föregående sida
+          </a>
+        )}
+        {sida < antal && (
+          <a href={sidaUrl(bas, sida + 1)} rel="next" class={lank}>
+            Nästa sida
+          </a>
+        )}
+      </p>
+    </nav>
+  )
+}

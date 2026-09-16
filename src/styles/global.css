@@ -100,6 +100,19 @@
   --text-h3-lg: 1.3125rem;
   --text-h3-lg--line-height: 1.35;
   --text-h3-lg--font-weight: 700;
+  /* Kortrubrik. Zilla Slab 600 i ett artikelkort, semantiskt en H3 men satt som
+     en liten tidningsrubrik. Det är rutnätets skäl att läsas som en tidningssida
+     i stället för en länklista. Regeln "H3 är sans" gäller fortfarande i löptext.
+     -xl används bara av startsidans stora kort. Se docs/DESIGN.md avsnitt 2. */
+  --text-kortrubrik: 1.25rem;
+  --text-kortrubrik--line-height: 1.25;
+  --text-kortrubrik--font-weight: 600;
+  --text-kortrubrik-lg: 1.375rem;
+  --text-kortrubrik-lg--line-height: 1.25;
+  --text-kortrubrik-lg--font-weight: 600;
+  --text-kortrubrik-xl: 1.5rem;
+  --text-kortrubrik-xl--line-height: 1.25;
+  --text-kortrubrik-xl--font-weight: 600;
   --text-h2: 1.5rem;
   --text-h2--line-height: 1.25;
   --text-h2--font-weight: 600;
@@ -247,6 +260,73 @@ body {
       background-position: 32px 0, 0 0;
       padding: 24px 24px 24px 48px;
     }
+  }
+
+  /*
+    Artikelkortet. Ett urklipp: 1 px ram, 2 px radie, ingen skugga. Hela kortet är
+    klickbart genom att rubrikens länk får en ::after som täcker kortet, men bara
+    rubriken är länk för skärmläsaren. Hover lyfter ingenting, den stryker under
+    rubriken med pennan. Se docs/DESIGN.md avsnitt 6, Artikelkort.
+  */
+  .artikelkort {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .artikelkort .kortlank {
+    color: var(--color-blyerts);
+    text-decoration-line: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+    text-decoration-color: transparent;
+    transition: text-decoration-color 150ms;
+  }
+  .artikelkort .kortlank::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+  .artikelkort:hover .kortlank,
+  .artikelkort .kortlank:focus-visible {
+    text-decoration-color: var(--color-penna);
+  }
+  /* Ringen läggs runt hela kortet där :has finns. Webbläsare utan :has visar
+     webbläsarens egen ring runt rubriken, vilket också duger. */
+  .artikelkort:has(.kortlank:focus-visible) {
+    outline: 3px solid var(--color-penna);
+    outline-offset: 2px;
+  }
+  .artikelkort:has(.kortlank:focus-visible) .kortlank:focus-visible {
+    outline: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .artikelkort .kortlank {
+      transition: none;
+    }
+  }
+
+  /* Placeholder för kort utan illustration: ett blankt blad ur samma block som
+     skisserna. Linjer var 24:e px och en marginallinje i penna vid 35 procent.
+     Samma recept som .linjerat, men utan innehållsmarginal. Aldrig en grå ruta. */
+  .plats-blad {
+    background-color: var(--color-papper-2);
+    background-image:
+      linear-gradient(
+        to right,
+        color-mix(in srgb, var(--color-penna) 35%, transparent) 0,
+        color-mix(in srgb, var(--color-penna) 35%, transparent) 1px,
+        transparent 1px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 23px,
+        var(--color-linje) 23px,
+        var(--color-linje) 24px
+      );
+    background-repeat: no-repeat, repeat;
+    background-position: 24px 0, 0 0;
   }
 
   /*

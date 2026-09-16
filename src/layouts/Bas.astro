@@ -43,6 +43,12 @@ interface Props {
   ogBild?: string;
   /** article på artiklar och tester, website på hubbar, kategorier och verktyg. */
   ogTyp?: 'website' | 'article';
+  /**
+   * Paginerad lista: adresserna till föregående och nästa sida, som rel-länkar i
+   * <head>. Sida 1 är kanonisk för filtret, sida 2 och uppåt är indexerbara och
+   * länkas bara från varandra. Används av /guider/.
+   */
+  paginering?: { foregaende?: string; nasta?: string };
 }
 
 const {
@@ -56,6 +62,7 @@ const {
   noindex = false,
   ogBild,
   ogTyp = 'website',
+  paginering,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -78,21 +85,37 @@ const publiceradeHubbar = PELARE.flatMap((p) => {
 
 /**
  * Huvudmenyn byggs av de publicerade hubbarna i PELARE-ordning, högst
- * MAX_HUBBAR_I_MENY stycken, följda av Räkna själv och Så testar vi. En pelare
- * kommer alltså in i menyn genom att dess hub får utkast: false, inte genom en
- * ändring här. Se docs/INNEHALLSARKITEKTUR.md avsnitt 4.
+ * MAX_HUBBAR_I_MENY stycken, följda av Ämnen, Guider, Räkna själv och Så testar
+ * vi. En pelare kommer alltså in i menyn genom att dess hub får utkast: false,
+ * inte genom en ändring här; pelare utanför de tre finns under Ämnen.
+ * Se docs/INNEHALLSARKITEKTUR.md avsnitt 4 och docs/DESIGN.md avsnitt 5.
  */
 interface Menypost {
   namn: string;
   href: string;
   ikon: IkonNamn | null;
 }
+const MENYHUBBAR: Menypost[] = publiceradeHubbar
+  .slice(0, MAX_HUBBAR_I_MENY)
+  .map((p) => ({ namn: p.kort, href: pelareUrl(p.slug), ikon: p.ikon }));
+
 const HUVUDMENY: Menypost[] = [
-  ...publiceradeHubbar
-    .slice(0, MAX_HUBBAR_I_MENY)
-    .map((p) => ({ namn: p.kort, href: pelareUrl(p.slug), ikon: p.ikon })),
+  ...MENYHUBBAR,
+  { namn: 'Ämnen', href: '/amnen/', ikon: null },
+  { namn: 'Guider', href: '/guider/', ikon: null },
   { namn: 'Räkna själv', href: '/rakna/', ikon: 'kalkylator' },
   { namn: 'Så testar vi', href: '/om/sa-testar-vi/', ikon: null },
+];
+
+/** Mobilmenyn har längre namn än desktopmenyn, som ska få plats i en rad. */
+const MOBIL_AMNEN: Menypost[] = [...MENYHUBBAR, { namn: 'Alla ämnen', href: '/amnen/', ikon: null }];
+const MOBIL_VERKTYG: Menypost[] = [
+  { namn: 'Guider och tester', href: '/guider/', ikon: null },
+  { namn: 'Räkna själv', href: '/rakna/', ikon: 'kalkylator' },
+];
+const MOBIL_OM: Menypost[] = [
+  { namn: 'Så testar vi', href: '/om/sa-testar-vi/', ikon: null },
+  { namn: 'Om Hantverkstips', href: '/om/', ikon: null },
 ];
 
 const OM_SAJTEN = [
@@ -118,6 +141,8 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex" />}
+    {paginering?.foregaende && <link rel="prev" href={new URL(paginering.foregaende, Astro.site)} />}
+    {paginering?.nasta && <link rel="next" href={new URL(paginering.nasta, Astro.site)} />}
 
     {/* Delning i Facebook, LinkedIn, Slack och Messenger. Samma text som title
         och description: två sanningar om samma sida håller inte i längden. */}
@@ -181,7 +206,20 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
           >
             <ul class="m-0 p-0 list-none">
               {
-                HUVUDMENY.map((m) => (
+                MOBIL_AMNEN.map((m) => (
+                  <li class="border-b border-linje">
+                    <a href={m.href} class="flex h-12 items-center gap-3 text-blyerts no-underline">
+                      {m.ikon && <Ikon namn={m.ikon} storlek={24} />}
+                      {m.namn}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+
+            <ul class="m-0 p-0 list-none">
+              {
+                MOBIL_VERKTYG.map((m) => (
                   <li class="border-b border-linje">
                     <a href={m.href} class="flex h-12 items-center gap-3 text-blyerts no-underline">
                       {m.ikon && <Ikon namn={m.ikon} storlek={24} />}
@@ -195,7 +233,6 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
             {
               menyKategorier.length > 0 && (
                 <>
-                  <hr class="border-0 border-t border-linje m-0" />
                   <p class="m-0 pt-3 text-etikett uppercase text-blyerts-2">Bäst i test</p>
                   <ul class="m-0 p-0 list-none">
                     {menyKategorier.map((k) => (
@@ -211,9 +248,15 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
             }
 
             <ul class="m-0 p-0 pb-2 list-none">
-              <li>
-                <a href="/om/" class="flex h-12 items-center text-blyerts no-underline">Om Hantverkstips</a>
-              </li>
+              {
+                MOBIL_OM.map((m) => (
+                  <li>
+                    <a href={m.href} class="flex h-12 items-center text-blyerts no-underline">
+                      {m.namn}
+                    </a>
+                  </li>
+                ))
+              }
             </ul>
           </div>
         </details>
@@ -257,6 +300,12 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
                   </li>
                 ))
               }
+              <li class="mb-2">
+                <a href="/amnen/" class={sidfotLank}>Alla ämnen</a>
+              </li>
+              <li class="mb-2">
+                <a href="/guider/" class={sidfotLank}>Alla guider och tester</a>
+              </li>
             </ul>
           </div>
 

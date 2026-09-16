@@ -240,6 +240,11 @@ const sidor = defineCollection({
     uppdaterad: z.coerce.date().optional(),
     // Vilken strukturerad data sidan får. Organization bara på /om/.
     strukturdata: z.enum(['Organization', 'Article', 'ingen']).default('ingen'),
+    // Bara för startsida: säsongsblockets rubrik och mening, skrivna av
+    // chefredaktören och bytta med säsongen. Saknas de renderas blocket med
+    // etikett, illustration, verktygskort och länkar, utan rubrik och text.
+    sasongRubrik: z.string().optional(),
+    sasongText: z.string().optional(),
     // Bara för startsida: artikeln under "Just nu", vald av chefredaktören.
     justNu: z
       .object({

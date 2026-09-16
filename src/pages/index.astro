@@ -2,28 +2,31 @@
 /**
  * Startsidan är en uppslagen anteckningsbok, inte en landningssida. Inget hero,
  * ingen bakgrundsbild, inga köpknappar, inget reklamband.
- * Blockordningen följer docs/INNEHALLSARKITEKTUR.md avsnitt 5.
+ *
+ * Blocken följer docs/DESIGN.md avsnitt 5.1: öppning, säsongens ämne, rutnätet
+ * med guider och tester (där "Just nu" är det stora kortet), Börja här, Bäst i
+ * test just nu, Räkna själv och Så jobbar vi. "Just nu" och "Senaste" är ett och
+ * samma rutnät: två block med samma sorts innehåll blev två gånger samma bild.
  */
-import { Image } from 'astro:assets';
 import { getEntry, render } from 'astro:content';
 import Bas from '../layouts/Bas.astro';
 // Säsongens skiss. Byts mot säsongsstyrd illustration när fler finns ritade.
 import sasongsbild from '../assets/illustrationer/fukt/kallare.svg';
-import { formateraDatum, formateraPris, isoDatum } from '../lib/format';
-import {
-  arPublicerad,
-  artikelUrl,
-  jamforelseUrl,
-  kategoriUrl,
-  publicerade,
-  slugify,
-  testUrl,
-  typEtikett,
-} from '../lib/innehall';
+import { formateraPris, manadNamn } from '../lib/format';
+import { arPublicerad, publicerade, slugify } from '../lib/innehall';
 import { KALKYLATORER, sasongensKalkylator } from '../lib/kalkyl/register';
-import { billigasteErbjudande, hamtaProdukt, produktNamn } from '../lib/produkter';
+import {
+  allaKort,
+  kategoriVal,
+  pelareForKategori,
+  tillKortArtikel,
+  tillKortJamforelse,
+  tillKortTest,
+  type KortData,
+} from '../lib/kort';
 import { organisation } from '../lib/strukturdata';
 import BorjaHar from '../components/ui/BorjaHar.astro';
+import Artikelrutnat from '../components/ui/Artikelrutnat.astro';
 import Markering from '../components/ui/Markering.astro';
 import Pennstreck from '../components/ui/Pennstreck.astro';
 import StrukturData from '../components/ui/StrukturData.astro';
@@ -33,288 +36,214 @@ const startsida = await getEntry('sidor', 'startsida');
 if (!startsida) throw new Error('src/content/sidor/startsida.mdx saknas');
 const { Content } = await render(startsida);
 
-const sasong = sasongensKalkylator(new Date().getMonth() + 1);
+const nu = new Date();
+const sasong = sasongensKalkylator(nu.getMonth() + 1);
+
+/**
+ * "Läs först" i säsongsblocket är hubbens viktiga sidor för den pelare säsongens
+ * kalkylator hör till: kalkylatorns kategori pekar ut kategorifilen, och dess
+ * första pelare är pelaren. Saknas den, eller är hubben utkast, faller vi
+ * tillbaka på fukt, som är pelaren med flest sidor.
+ */
+const hubbar = await publicerade('pelare');
+const sasongPelare = sasong.kategori ? await pelareForKategori(sasong.kategori) : 'fukt';
+const sasongHub = hubbar.find((h) => h.id === sasongPelare) ?? hubbar.find((h) => h.id === 'fukt');
+const lasForst = sasongHub?.data.viktiga ?? [];
+const sasongEtikett = `Säsongens ämne · ${manadNamn(nu)}`;
 
 // Just nu: chefredaktörens val. Utkast länkas aldrig från en publicerad sida.
 const justNuRef = startsida.data.justNu;
-let justNu: { etikett: string; titel: string; href: string; beskrivning: string; datum: Date; bild?: ImageMetadata } | null =
-  null;
+let justNu: KortData | null = null;
 if (justNuRef) {
   if (justNuRef.samling === 'tester') {
     const e = await getEntry('tester', justNuRef.id);
-    if (e && arPublicerad(e)) {
-      justNu = {
-        etikett: typEtikett('test', e.data.etikett),
-        titel: e.data.title,
-        href: testUrl(e),
-        beskrivning: e.data.description,
-        datum: e.data.publicerad,
-        bild: e.data.bild,
-      };
-    }
+    if (e && arPublicerad(e)) justNu = tillKortTest(e, await pelareForKategori(e.data.kategori));
   } else if (justNuRef.samling === 'jamforelser') {
     const e = await getEntry('jamforelser', justNuRef.id);
-    if (e && arPublicerad(e)) {
-      justNu = {
-        etikett: 'Jämförelse',
-        titel: e.data.title,
-        href: jamforelseUrl(e),
-        beskrivning: e.data.description,
-        datum: e.data.publicerad,
-        bild: e.data.bild,
-      };
-    }
+    if (e && arPublicerad(e)) justNu = tillKortJamforelse(e, await pelareForKategori(e.data.kategori));
   } else if (justNuRef.samling === 'guider') {
     const e = await getEntry('guider', justNuRef.id);
-    if (e && arPublicerad(e)) {
-      justNu = {
-        etikett: typEtikett(e.data.typ),
-        titel: e.data.title,
-        href: artikelUrl(e),
-        beskrivning: e.data.description,
-        datum: e.data.publicerad,
-        bild: e.data.bild,
-      };
-    }
+    if (e && arPublicerad(e)) justNu = tillKortArtikel(e);
   } else {
     const e = await getEntry('kunskap', justNuRef.id);
-    if (e && arPublicerad(e)) {
-      justNu = {
-        etikett: typEtikett(e.data.typ),
-        titel: e.data.title,
-        href: artikelUrl(e),
-        beskrivning: e.data.description,
-        datum: e.data.publicerad,
-        bild: e.data.bild,
-      };
-    }
+    if (e && arPublicerad(e)) justNu = tillKortArtikel(e);
   }
 }
 
-// Bäst i test just nu: en rad per kategori med kategorifilens första val.
-const kategorier = await publicerade('kategorier');
-const bastITest = await Promise.all(
-  kategorier.map(async (k) => {
-    const val = k.data.val[0];
-    const produkt = val ? await hamtaProdukt(val.produkt) : null;
-    const erbjudande = produkt ? billigasteErbjudande(produkt) : null;
-    return {
-      namn: k.data.namn,
-      href: kategoriUrl(k.id),
-      produktNamn: produkt ? produktNamn(produkt) : (val?.produkt ?? null),
-      pris: erbjudande?.pris ?? null,
-    };
-  }),
-);
+/**
+ * Samma bild två gånger på en skärm ser ut som ett fel. Är justNu-kortets
+ * illustration säsongsbilden visas kortet med placeholder i stället, och
+ * skissen får stå på ett ställe.
+ */
+if (justNu?.illustration && justNu.illustration.src === sasongsbild.src) {
+  justNu = { ...justNu, illustration: undefined };
+}
 
-// Senaste guider och tester: sex senaste av alla textsamlingar.
-const senaste = [
-  ...(await publicerade('guider')).map((e) => ({
-    etikett: typEtikett(e.data.typ),
-    titel: e.data.title,
-    href: artikelUrl(e),
-    beskrivning: e.data.description,
-    datum: e.data.publicerad,
-  })),
-  ...(await publicerade('kunskap')).map((e) => ({
-    etikett: typEtikett(e.data.typ),
-    titel: e.data.title,
-    href: artikelUrl(e),
-    beskrivning: e.data.description,
-    datum: e.data.publicerad,
-  })),
-  ...(await publicerade('tester')).map((e) => ({
-    etikett: typEtikett('test', e.data.etikett),
-    titel: e.data.title,
-    href: testUrl(e),
-    beskrivning: e.data.description,
-    datum: e.data.publicerad,
-  })),
-  ...(await publicerade('jamforelser')).map((e) => ({
-    etikett: 'Jämförelse',
-    titel: e.data.title,
-    href: jamforelseUrl(e),
-    beskrivning: e.data.description,
-    datum: e.data.publicerad,
-  })),
-]
-  .sort((a, b) => b.datum.getTime() - a.datum.getTime())
-  .slice(0, 6);
+// Rutnätet: det stora kortet först, sedan de fyra senaste med justNu bortfiltrerad.
+// Ett stort plus fyra fyller två rader exakt på desktop.
+const ovriga = (await allaKort()).filter((k) => k.href !== justNu?.href).slice(0, justNu ? 4 : 5);
+const rutnat = justNu ? [justNu, ...ovriga] : ovriga;
+
+// Bäst i test just nu: en rad per kategori med kategorifilens första val.
+const bastITest = await Promise.all((await publicerade('kategorier')).map(kategoriVal));
+
+// Title följer H1: två sanningar om samma sida håller inte i längden.
+const h1 = startsida.data.title;
+const sidtitel =
+  startsida.data.seoTitle ?? `Hantverkstips, ${h1.charAt(0).toLowerCase()}${h1.slice(1).replace(/\.$/, '')}`;
 ---
 
-<Bas
-  title="Hantverkstips, bygg och renovera utan att köpa fel"
-  description={startsida.data.description}
-  bred={true}
->
+<Bas title={sidtitel} description={startsida.data.description} bred={true}>
   <StrukturData slot="head" data={organisation()} />
 
-  {/* Öppningen: text och säsongens skiss till vänster (60 procent på desktop),
-      verktygskortet till höger. Illustrationen är sidans LCP-bild. */}
-  <div class="lg:grid lg:grid-cols-5 lg:gap-12">
-    <div class="lg:col-span-3">
-      <div class="max-w-lasbredd">
-        <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">{startsida.data.title}</h1>
-        <div class="prosa mt-4 text-ingress lg:text-ingress-lg">
-          <Content components={{ Markering }} />
-        </div>
-      </div>
-
-      <figure class="m-0 mt-8">
-        <img
-          src={sasongsbild.src}
-          alt=""
-          width={sasongsbild.width}
-          height={sasongsbild.height}
-          fetchpriority="high"
-          decoding="async"
-          class="block w-full h-auto rounded-sm border border-linje"
-        />
-        <figcaption class="mt-2 text-liten text-blyerts-2">
-          Källaren i september. Markfukten trycker in genom väggen och möter varm luft.
-        </figcaption>
-      </figure>
-    </div>
-
-    <div class="lg:col-span-2">
-      <Verktygskort kalkylator={sasong.slug} />
-    </div>
-  </div>
-
   <div class="max-w-lasbredd">
-    <BorjaHar />
-
-    {
-      justNu && (
-        <section>
-          <p class="mt-12 lg:mt-16 m-0 text-etikett lg:text-etikett-lg uppercase text-blyerts">{justNu.etikett}</p>
-          {justNu.bild &&
-            (justNu.bild.format === 'svg' ? (
-              /* SVG kan inte skalas av bildtjänsten. Med widths genereras bara
-                 kopior av samma fil, så den renderas som en vanlig img. */
-              <img
-                src={justNu.bild.src}
-                alt=""
-                width={justNu.bild.width}
-                height={justNu.bild.height}
-                loading="lazy"
-                decoding="async"
-                class="mt-3 block w-full h-auto rounded-sm border border-linje"
-              />
-            ) : (
-              <Image
-                src={justNu.bild}
-                alt=""
-                widths={[375, 704]}
-                sizes="(min-width: 1024px) 704px, 100vw"
-                class="mt-3 block w-full h-auto rounded-sm border border-linje"
-              />
-            ))}
-          <h2 class="m-0 mt-3 font-serif text-h2 lg:text-h2-lg">
-            <a href={justNu.href} class="text-blyerts no-underline hover:underline hover:decoration-penna">
-              {justNu.titel}
-            </a>
-          </h2>
-          <p class="m-0 mt-2 text-ingress lg:text-ingress-lg">{justNu.beskrivning}</p>
-          <p class="m-0 mt-2 text-liten text-blyerts-2">
-            <time datetime={isoDatum(justNu.datum)}>{formateraDatum(justNu.datum)}</time>
-          </p>
-        </section>
-      )
-    }
-
-    {
-      bastITest.length > 0 && (
-        <section>
-          <Pennstreck id={slugify('Bäst i test just nu')}>Bäst i test just nu</Pennstreck>
-          <ul class="m-0 p-0 list-none">
-            {bastITest.map((b, i) => (
-              <li class:list={['py-4', i > 0 && 'border-t border-linje']}>
-                <h3 class="m-0 font-sans text-h3 lg:text-h3-lg">
-                  <a href={b.href} class="text-blyerts underline decoration-1 underline-offset-2 hover:decoration-2">
-                    {b.namn}
-                  </a>
-                </h3>
-                {b.produktNamn && (
-                  <p class="m-0 mt-1 text-brod text-blyerts-2">
-                    Vårt val: {b.produktNamn}
-                    {b.pris !== null && <> · {formateraPris(b.pris)}</>}
-                  </p>
-                )}
-                <p class="m-0 mt-1">
-                  <a
-                    href={b.href}
-                    class="inline-flex min-h-11 items-center text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
-                  >
-                    Alla vi granskat
-                  </a>
-                </p>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )
-    }
-
-    {
-      senaste.length > 0 && (
-        <section>
-          <Pennstreck id={slugify('Senaste guider och tester')}>Senaste guider och tester</Pennstreck>
-          <ul class="m-0 p-0 list-none grid gap-6 lg:grid-cols-2">
-            {senaste.map((s) => (
-              <li>
-                <p class="m-0 text-etikett uppercase text-blyerts">{s.etikett}</p>
-                <h3 class="m-0 mt-1 font-sans text-h3 lg:text-h3-lg">
-                  <a href={s.href} class="text-blyerts underline decoration-1 underline-offset-2 hover:decoration-2">
-                    {s.titel}
-                  </a>
-                </h3>
-                <p class="m-0 mt-1 text-brod text-blyerts-2">{s.beskrivning}</p>
-                <p class="m-0 mt-1 text-liten text-blyerts-2">
-                  <time datetime={isoDatum(s.datum)}>{formateraDatum(s.datum)}</time>
-                </p>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )
-    }
-
-    <section>
-      <Pennstreck id={slugify('Räkna själv')}>Räkna själv</Pennstreck>
-      <ul class="m-0 p-0 list-none">
-        {
-          KALKYLATORER.map((k, i) => (
-            <li class:list={['py-3', i > 0 && 'border-t border-linje']}>
-              <a
-                href={`/rakna/${k.slug}/`}
-                class="inline-flex min-h-11 items-center font-bold text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
-              >
-                {k.namn}
-              </a>
-              <p class="m-0 text-brod text-blyerts-2">{k.rad}</p>
-            </li>
-          ))
-        }
-      </ul>
-    </section>
-
-    <section>
-      <Pennstreck id={slugify('Så jobbar vi')}>Så jobbar vi</Pennstreck>
-      <p class="m-0 text-brod lg:text-brod-lg">
-        Vi testar själva när vi kan och granskar tillverkarnas data när vi inte kan.{' '}
-        <a href="/om/sa-testar-vi/" class="text-penna underline decoration-1 underline-offset-2 hover:decoration-2">
-          Så testar vi
-        </a>
-        . Sajten finansieras av annonslänkar, och hur det påverkar det vi skriver står på{' '}
-        <a
-          href="/om/sa-tjanar-vi-pengar/"
-          class="text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
-        >
-          Så tjänar vi pengar
-        </a>
-        .
-      </p>
-    </section>
+    <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">{h1}</h1>
+    <div class="prosa mt-4 text-ingress lg:text-ingress-lg">
+      <Content components={{ Markering }} />
+    </div>
   </div>
+
+  {/*
+    Säsongens ämne. Illustrationen till vänster på desktop (7/12), etikett,
+    rubrik, mening, verktygskort och länkar till höger (5/12). På mobil står
+    rubriken över skissen, som i mockupen: läsaren ska veta vad hon tittar på.
+  */}
+  <section class="mt-12 grid grid-cols-1 gap-6 lg:mt-16 lg:grid-cols-12 lg:gap-12">
+    <div class="order-1 lg:col-span-5 lg:col-start-8 lg:row-start-1">
+      <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-blyerts">{sasongEtikett}</p>
+      {
+        startsida.data.sasongRubrik && (
+          <Pennstreck id={slugify(startsida.data.sasongRubrik)} utanLuft={true} class="mt-2">
+            {startsida.data.sasongRubrik}
+          </Pennstreck>
+        )
+      }
+      {startsida.data.sasongText && <p class="m-0 mt-2 text-brod lg:text-brod-lg">{startsida.data.sasongText}</p>}
+    </div>
+
+    <figure class="order-2 m-0 lg:col-span-7 lg:col-start-1 lg:row-span-3 lg:row-start-1">
+      <img
+        src={sasongsbild.src}
+        alt=""
+        width={sasongsbild.width}
+        height={sasongsbild.height}
+        fetchpriority="high"
+        decoding="async"
+        class="block h-auto w-full rounded-sm border border-linje"
+      />
+      <figcaption class="mt-2 text-liten text-blyerts-2">
+        Källaren i september. Markfukten trycker in genom väggen och möter varm luft.
+      </figcaption>
+    </figure>
+
+    <div class="order-3 lg:col-span-5 lg:col-start-8 lg:row-start-2">
+      <Verktygskort kalkylator={sasong.slug} iRutnat={true} />
+    </div>
+
+    {
+      lasForst.length > 0 && (
+        <div class="order-4 lg:col-span-5 lg:col-start-8 lg:row-start-3">
+          <p class="m-0 text-etikett uppercase text-blyerts-2">Läs först</p>
+          <ul class="m-0 list-none p-0">
+            {lasForst.map((v) => (
+              <li>
+                <a
+                  href={v.href}
+                  class="inline-flex min-h-11 items-center text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+                >
+                  {v.titel}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+  </section>
+
+  {
+    rutnat.length > 0 && (
+      <section>
+        <div class="flex flex-wrap items-baseline justify-between gap-x-6">
+          <Pennstreck id={slugify('Guider och tester')}>Guider och tester</Pennstreck>
+          <a
+            href="/guider/"
+            class="huvudmeny inline-flex min-h-11 items-center text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+          >
+            Alla guider och tester
+          </a>
+        </div>
+        <Artikelrutnat kort={rutnat} storForsta={true} kompaktPaMobil={true} prioriteraForsta={false} />
+      </section>
+    )
+  }
+
+  <BorjaHar />
+
+  {
+    bastITest.length > 0 && (
+      <section>
+        <Pennstreck id={slugify('Bäst i test just nu')}>Bäst i test just nu</Pennstreck>
+        <ul class="m-0 grid list-none grid-cols-1 gap-x-12 p-0 lg:grid-cols-2">
+          {bastITest.map((b) => (
+            <li class="border-t border-linje py-4">
+              <h3 class="m-0 font-sans text-h3 lg:text-h3-lg">
+                <a href={b.href} class="text-blyerts underline decoration-1 underline-offset-2 hover:decoration-2">
+                  {b.namn}
+                </a>
+              </h3>
+              {b.produktNamn && (
+                <p class="m-0 mt-1 text-brod text-blyerts-2">
+                  <span class="text-etikett uppercase text-blyerts">Vårt val</span> {b.produktNamn}
+                  {b.pris !== null && <> · {formateraPris(b.pris)}</>}
+                  {b.antal > 0 && <> · {b.antal} granskade</>}
+                </p>
+              )}
+              <p class="m-0 mt-1">
+                <a
+                  href={b.href}
+                  class="inline-flex min-h-11 items-center text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+                >
+                  Alla vi granskat
+                </a>
+              </p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  {
+    /* Med en enda kalkylator är den redan säsongens verktygskort, och samma kort
+       två gånger på en sida är samma fel som samma bild två gånger. */
+    KALKYLATORER.length >= 2 && (
+      <section>
+        <Pennstreck id={slugify('Räkna själv')}>Räkna själv</Pennstreck>
+        <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+          {KALKYLATORER.map((k) => (
+            <Verktygskort kalkylator={k.slug} iRutnat={true} />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <section class="max-w-lasbredd">
+    <Pennstreck id={slugify('Så jobbar vi')}>Så jobbar vi</Pennstreck>
+    <p class="m-0 text-brod lg:text-brod-lg">
+      Vi testar själva när vi kan och granskar tillverkarnas data när vi inte kan.{' '}
+      <a href="/om/sa-testar-vi/" class="text-penna underline decoration-1 underline-offset-2 hover:decoration-2">
+        Så testar vi
+      </a>
+      . Sajten finansieras av annonslänkar, och hur det påverkar det vi skriver står på{' '}
+      <a
+        href="/om/sa-tjanar-vi-pengar/"
+        class="text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+      >
+        Så tjänar vi pengar
+      </a>
+      .
+    </p>
+  </section>
 </Bas>
