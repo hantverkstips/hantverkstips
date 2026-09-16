@@ -35,12 +35,15 @@ function markeraKortaCeller(nod) {
 }
 
 /**
- * Lägger samma två behållare runt varje markdown-tabell som Jamforelsetabell
- * använder: `.tabell-yta` (tonad högerkant) runt `.tabell-behallare`
- * (sidledsscroll i behållaren, aldrig i sidan). Markdown kan inte själv lägga
- * en div runt tabellen, och alternativet `display: block; overflow-x: auto` på
- * <table> är sämre: då upphör tabellayouten, kolumnerna slutar linjera mellan
- * raderna och den tonade kanten går inte att lägga på elementet som scrollar.
+ * Lägger samma behållare runt varje markdown-tabell som Jamforelsetabell
+ * använder: ledtexten "Dra i sidled för att se hela tabellen" på mobil, och
+ * `.tabell-yta` (tonad högerkant) runt `.tabell-behallare` (sidledsscroll i
+ * behållaren, aldrig i sidan). Allt ligger i `.brodtabell-block`, som är det
+ * som får växa ut förbi läsbredden på desktop (global.css).
+ * Markdown kan inte själv lägga en div runt tabellen, och alternativet
+ * `display: block; overflow-x: auto` på <table> är sämre: då upphör
+ * tabellayouten, kolumnerna slutar linjera mellan raderna och den tonade kanten
+ * går inte att lägga på elementet som scrollar.
  * Klassen `brodtabell` skiljer tabellen från Jamforelsetabell, som kan stå i
  * samma `.prosa` med egna klasser.
  * Ett hast-plugin i Sätteri (Astros markdown-processor), inte rehype.
@@ -57,17 +60,30 @@ const tabellBehallare = {
       ctx.replaceNode(node, {
         type: 'element',
         tagName: 'div',
-        properties: { className: ['tabell-yta'] },
+        properties: { className: ['brodtabell-block'] },
         children: [
           {
             type: 'element',
+            tagName: 'p',
+            properties: { className: ['tabell-dra'] },
+            children: [{ type: 'text', value: 'Dra i sidled för att se hela tabellen' }],
+          },
+          {
+            type: 'element',
             tagName: 'div',
-            properties: { className: ['tabell-behallare'] },
+            properties: { className: ['tabell-yta'] },
             children: [
               {
-                ...node,
-                properties: { ...node.properties, className: ['brodtabell'] },
-                children: (node.children ?? []).map(markeraKortaCeller),
+                type: 'element',
+                tagName: 'div',
+                properties: { className: ['tabell-behallare'] },
+                children: [
+                  {
+                    ...node,
+                    properties: { ...node.properties, className: ['brodtabell'] },
+                    children: (node.children ?? []).map(markeraKortaCeller),
+                  },
+                ],
               },
             ],
           },

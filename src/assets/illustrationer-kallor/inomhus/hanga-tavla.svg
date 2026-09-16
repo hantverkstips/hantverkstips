@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Till vänster en tavla på vägg framifrån, med måttet 145 cm från golvet upp till tavlans mittpunkt och två krokar placerade en tredjedel in från varje kant. Till höger ramen sedd bakifrån, där upphängningstråden är spänd uppåt och måttet från ramens överkant ner till den spända tråden är utsatt. Den slaka tråden är inringad med anteckningen att tavlan då hamnar för lågt.">
+  <!-- Anteckningsboken. Blyerts 2 px för vägg, ram, krokar och spänd tråd, blyerts-2 för måttbyglar,
+       golvskraffering och slak tråd, snickarpenna för ringen runt den slaka tråden (enda pennsaken),
+       tumstock bakom nyckeltalet 145 cm. Skala i vänstra bilden: 180 px = 145 cm, alltså 1,24 px per cm.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2: golvskraffering under golvlinjen -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M56,332 l-8,10 M84,332 l-8,10 M112,332 l-8,10 M140,332 l-8,10 M168,332 l-8,10 M196,332 l-8,10 M224,332 l-8,10 M252,332 l-8,10 M280,332 l-8,10 M308,332 l-8,10 M336,332 l-8,10 M364,332 l-8,10"/>
+  </g>
+
+  <!-- Blyerts: golvlinje, ram, krokar och spänd tråd (vänster bild) -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M50,330 Q215,329 380,330"/>
+    <path d="M190,101 Q265,99 340,100 Q341,150 340,199 Q265,201 190,200 Q189,150 190,100 Z"/>
+    <path d="M204,115 Q265,113 326,114 Q327,150 326,185 Q265,187 204,186 Q203,150 204,114"/>
+    <path d="M234,66 h12 v8 l-6,8 -6,-8 z"/>
+    <path d="M284,66 h12 v8 l-6,8 -6,-8 z"/>
+    <path d="M240,72 l9,-7 M290,72 l9,-7"/>
+    <path d="M205,101 L240,82 L290,82 L325,101" stroke-width="1.5"/>
+  </g>
+
+  <!-- Blyerts-2: måttbyglar och mittpunkt (vänster bild) -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M140,150 V330 M135,150 h10 M135,330 h10"/>
+    <path d="M240,56 H290 M240,51 v10 M290,51 v10"/>
+    <path d="M257,150 H273 M265,142 V158"/>
+    <path d="M210,58 Q224,50 237,54"/>
+  </g>
+  <path d="M140,150 H265" fill="none" stroke="#625a50" stroke-width="1.25" stroke-dasharray="7 5"/>
+
+  <!-- Blyerts: ramen bakifrån med spänd tråd (höger detalj) -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M410,111 Q485,109 560,110 Q561,195 560,279 Q485,281 410,280 Q409,195 410,110 Z"/>
+    <path d="M428,215 L485,170 L542,215"/>
+  </g>
+  <g fill="#2a2521">
+    <circle cx="428" cy="215" r="4"/><circle cx="542" cy="215" r="4"/>
+  </g>
+
+  <!-- Blyerts-2: slak tråd och måttbygel överkant till tråd -->
+  <path d="M428,215 Q485,252 542,215" fill="none" stroke="#625a50" stroke-width="1.5" stroke-dasharray="7 5" stroke-linecap="round"/>
+  <path d="M485,170 H561" fill="none" stroke="#625a50" stroke-width="1.25" stroke-dasharray="7 5"/>
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M566,112 V170 M561,112 h10 M561,170 h10"/>
+  </g>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="148" y="232" width="78" height="24" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 187 244)"/>
+
+  <!-- Snickarpenna: ringen runt den slaka tråden -->
+  <path d="M524,240 C516,226 454,226 448,242 C442,260 472,272 498,266 C514,262 524,252 522,242" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="44" y="40" fill="#625a50">två krokar</text>
+    <text x="44" y="64" fill="#625a50">1/3 in från kanten</text>
+    <text x="152" y="250">145 cm</text>
+    <text x="152" y="274" fill="#625a50">till tavlans mitt</text>
+    <text x="48" y="351" fill="#625a50">golv</text>
+    <text x="406" y="100" fill="#625a50">spänn tråden först</text>
+    <text x="416" y="134">överkant</text>
+    <text x="416" y="158">till tråd</text>
+    <text x="404" y="312" font-size="22" fill="#ad3519">slak tråd =</text>
+    <text x="404" y="336" font-size="22" fill="#ad3519">tavlan för lågt</text>
+  </g>
+</svg>

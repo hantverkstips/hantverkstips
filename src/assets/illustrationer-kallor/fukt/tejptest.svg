@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Två skisser av tejptestet på en källarvägg, sedda uppifrån. Den skrafferade betongväggen till vänster i varje skiss, plastbiten tejpad framför den. I den vänstra skissen sitter dropparna utanför plasten, på rumssidan, vilket betyder kondens. I den högra sitter dropparna mellan plasten och väggen, vilket betyder markfukt.">
+  <!-- Anteckningsboken. Blyertsskiss på linjerat papper. Väggsnittet skrafferat i blyerts-2,
+       plasten som en tunn blyertslinje, tejpen som kortare kraftiga streck med överhäng,
+       dropparna i snickarpenna. Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Överstrykning med tumstocksgul bakom nyckeltalet -->
+  <rect x="400" y="28" width="132" height="24" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 466 40)"/>
+
+  <!-- Blyerts: väggsnitten och plastbitarna -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- vänster skiss, vägg i snitt -->
+    <path d="M100,108 Q98,194 100,282 M150,108 Q152,194 150,282"/>
+    <path d="M99,109 Q125,107 151,109 M99,281 Q125,283 151,281"/>
+    <!-- vänster skiss, plasten -->
+    <path d="M196,118 Q194,194 196,272"/>
+    <!-- höger skiss, vägg i snitt -->
+    <path d="M380,108 Q378,194 380,282 M430,108 Q432,194 430,282"/>
+    <path d="M379,109 Q405,107 431,109 M379,281 Q405,283 431,281"/>
+    <!-- höger skiss, plasten -->
+    <path d="M476,118 Q474,194 476,272"/>
+  </g>
+
+  <!-- Blyerts, tunn: betongskraffering i väggsnitten -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M104,116 l9,9 M120,116 l9,9 M136,116 l9,9 M104,142 l9,9 M120,142 l9,9 M136,142 l9,9"/>
+    <path d="M104,168 l9,9 M120,168 l9,9 M136,168 l9,9 M104,194 l9,9 M120,194 l9,9 M136,194 l9,9"/>
+    <path d="M104,220 l9,9 M120,220 l9,9 M136,220 l9,9 M104,246 l9,9 M120,246 l9,9 M136,246 l9,9"/>
+    <path d="M104,268 l9,9 M120,268 l9,9 M136,268 l9,9"/>
+    <path d="M384,116 l9,9 M400,116 l9,9 M416,116 l9,9 M384,142 l9,9 M400,142 l9,9 M416,142 l9,9"/>
+    <path d="M384,168 l9,9 M400,168 l9,9 M416,168 l9,9 M384,194 l9,9 M400,194 l9,9 M416,194 l9,9"/>
+    <path d="M384,220 l9,9 M400,220 l9,9 M416,220 l9,9 M384,246 l9,9 M400,246 l9,9 M416,246 l9,9"/>
+    <path d="M384,268 l9,9 M400,268 l9,9 M416,268 l9,9"/>
+  </g>
+
+  <!-- Blyerts-2, kraftigt: tejpen, med överhäng förbi plastens kant -->
+  <g fill="none" stroke="#625a50" stroke-width="3.5" stroke-linecap="round">
+    <path d="M144,118 H208 M144,272 H208"/>
+    <path d="M424,118 H488 M424,272 H488"/>
+  </g>
+
+  <!-- Snickarpenna: dropparna. Vänster utanför plasten, höger mellan plast och vägg -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M216,140 C215,142 212,145 212,148 A4,4 0 0 0 220,148 C220,145 217,142 216,140"/>
+    <path d="M218,180 C217,182 214,185 214,188 A4,4 0 0 0 222,188 C222,185 219,182 218,180"/>
+    <path d="M215,220 C214,222 211,225 211,228 A4,4 0 0 0 219,228 C219,225 216,222 215,220"/>
+    <path d="M218,256 C217,258 214,261 214,264 A4,4 0 0 0 222,264 C222,261 219,258 218,256"/>
+    <path d="M454,140 C453,142 450,145 450,148 A4,4 0 0 0 458,148 C458,145 455,142 454,140"/>
+    <path d="M452,180 C451,182 448,185 448,188 A4,4 0 0 0 456,188 C456,185 453,182 452,180"/>
+    <path d="M455,220 C454,222 451,225 451,228 A4,4 0 0 0 459,228 C459,225 456,222 455,220"/>
+    <path d="M452,256 C451,258 448,261 448,264 A4,4 0 0 0 456,264 C456,261 453,258 452,256"/>
+  </g>
+
+  <!-- Handskrivna anteckningar (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="48" y="47.5" fill="#625a50">50 x 50 cm plast, tejpad runt om</text>
+    <text x="408" y="47.5">minst 2 dygn</text>
+    <text x="96" y="83.5">vatten på rumssidan</text>
+    <text x="376" y="83.5">vatten på väggsidan</text>
+    <text x="96" y="315.5" fill="#ad3519">= kondens</text>
+    <text x="96" y="339.5" fill="#ad3519">avfuktare hjälper</text>
+    <text x="376" y="315.5" fill="#ad3519">= markfukt</text>
+    <text x="376" y="339.5" fill="#ad3519">gräv i stället</text>
+  </g>
+</svg>

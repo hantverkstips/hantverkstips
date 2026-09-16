@@ -24,34 +24,33 @@ Verktygsutveckling (kalkylatorer, feed) leds av teknisk ansvarig med utvecklaren
 
 ## Grundloopen
 
-1. **Brief.** En senior skriver en brief till en utförare. Briefen är konkret: vad som ska göras, vilka källor som gäller, vad som räknas som klart, vad som är förbjudet. Briefer sparas i `docs/briefer/` så de kan återanvändas.
-2. **Utförande.** Utföraren levererar mot briefen. Om briefen är oklar frågar utföraren istället för att gissa.
-3. **Granskning.** Senioren granskar med konkreta ändringskrav, inte allmänna omdömen. "Stryk stycke tre, det är fyllnad" slår "gör texten stramare".
-4. **Nytt varv.** Utföraren rättar. Minst ett varv, ofta två. Efter tre varv utan godkännande går ärendet till koordinatorn; briefen var sannolikt fel.
-5. **Tvärgranskning.** Andra seniorer granskar sin del (se checklistan nedan).
-6. **Klart.** Bygget grönt, committat.
+Två granskningspunkter per leverans, aldrig fler. Beslutat av Christian 2026-09-16 efter att första omgången tog timmar för små saker.
 
-## Flöde för en ny innehållssida
+1. **Uppdrag.** Koordinatorn ger utföraren hela uppdraget från start, med alla krav (STILGUIDE, SEO-regler, design, källor, vad som är förbjudet). Inga mellanled, inga separata underlagsagenter.
+2. **Utförande.** Utföraren levererar komplett arbete i ett svep och kontrollerar det själv innan rapport.
+3. **En granskning.** Koordinatorn, eller en granskare med alla hattar, granskar allt på en gång och samlar alla anmärkningar i en enda retur med konkreta ändringskrav. "Stryk stycke tre, det är fyllnad" slår "gör texten stramare".
+4. **Rättning.** Utföraren rättar allt i returen.
+5. **Slutgranskning.** Bygget grönt, en sista titt, commit. Kvarstår fel efter slutgranskningen var uppdraget fel skrivet; koordinatorn skriver om det i stället för att starta ett tredje varv.
+
+## Flöde för en innehållsomgång
+
+Sidor produceras i omgångar om fyra till åtta, en skribent per sida, alla parallellt. Skribenten gör hela kedjan själv.
 
 ```
-SEO-strateg         → söker sökintention, väljer huvudfras, placerar sidan i ett kluster, rubrikskiss
-SEO-strateg         → läser sidan som rankar högst, skriver analys och listan "vad vi ska ha som ettan saknar"
-                      (minst tre punkter, bindande). Beställer illustrationer och verktyg om de ger mer värde
-Designansvarig      → ritar beställda illustrationer (SVG, Anteckningsbokens stil)
-Produktexpert       → väljer produkter, samlar fakta och källor, egna mätningar om möjligt
-Affiliateansvarig   → bekräftar produkterna finns i feed, provision, vilken som ska lyftas
-Chefredaktör        → skriver briefen till skribenten utifrån ovanstående
-Skribent            → utkast 1
-Chefredaktör        → granskning, ändringskrav
-Skribent            → utkast 2
-Chefredaktör        → godkänner text (stil + fakta)
-SEO-strateg         → godkänner struktur, metadata, interna länkar
-Affiliateansvarig   → godkänner länkar, reklammärkning
-Teknisk ansvarig    → bygget grönt, prestandabudget hålls
-Koordinator         → commit
+Koordinator         → uppdrag per sida: sökord, typ, pelare, nivå, produkter i databasen, källor att
+                      utgå från, vilka andra sidor i omgången som skrivs samtidigt (för länkar och
+                      gränsdragning)
+Skribent (Opus)     → sökanalys av ettan (WebSearch, WebFetch), listan "bättre än ettan" (minst tre
+                      punkter), faktaunderlag med källa per påstående, texten, illustrationerna som
+                      SVG-källor, npm run illustrationer, npm run kontrollera. Allt i ett svep.
+                      Rör bara sina egna filer och föreslår inlänkar från hubbar i rapporten.
+Granskare           → EN agent med alla fyra hattar (redaktion, SEO, affiliate, design) läser alla
+                      sidor i omgången samtidigt och skriver en retur per sida i docs/briefer/
+Skribenter          → rättar sin sida
+Koordinator         → lägger in inlänkar från hubbar, npm run build, skärmdumpar, commit, push
 ```
 
-Skribenten ser hela kedjan ovanför sig i briefen. Ingen skriver utan att veta vilken sökfras, vilka produkter och vilken vinkel.
+Underlaget (sökanalys och fakta) sparas som `docs/briefer/underlag-[slug]-[datum].md` så att nästa uppdatering av sidan kan utgå från det.
 
 ## Flöde för ett nytt verktyg (kalkylator)
 
@@ -83,9 +82,11 @@ Koordinatorn bockar av. Alla punkter, varje gång.
 
 ## Hur koordinatorn anropar agenter
 
-Seniorer anropas med ett uppdrag och läser själva `CLAUDE.md` och `docs/`. Utförare anropas med en färdig brief inklistrad i uppdraget. Utförare får aldrig uppdraget "skriv en artikel om X"; de får briefen.
+Alla agenter anropas med ett komplett uppdrag och läser själva `CLAUDE.md`, `docs/STILGUIDE.md` och de dokument uppdraget pekar på. Ett uppdrag är aldrig "skriv en artikel om X"; det innehåller sökord, typ, nivå, produkter, källor och gränsdragning mot andra sidor.
 
-När flera sidor produceras parallellt körs flera skribenter samtidigt, men granskningen sker en sida i taget.
+Agenter som arbetar parallellt äger var sin uppsättning filer. Ingen rör en annans fil. Bygget (`npm run build`) körs bara av koordinatorn, eftersom parallella byggen skriver över varandra.
+
+Christian vill inte få frågor om val; teamet beslutar och rapporterar. Rena uppgifter (nycklar, adresser) meddelas som åtgärdspunkter.
 
 ## Eskalering
 

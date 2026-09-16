@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Dörröppning i en regelvägg. En väggregel på vardera sidan om öppningen, en liggande avväxling över den och tre korta reglar upp till hammarbandet. Öppningen är 10 till 20 mm större än karmens yttermått. Två gipsskivor ovanför öppningen möts i en skarv rakt ovanför öppningskanten, och en spricka är ritad uppåt från det hörnet.">
+  <!-- Anteckningsboken. Blyerts 2 px för stomme och skivskarv, blyerts-2 streckat för skivornas kanter,
+       snickarpenna för sprickan upp från dörrhörnet (enda pennsaken), tumstock bakom nyckeltalet.
+       Inte skalenlig: skarvspringan är överdriven så att den syns.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2 streckat: de två gipsskivornas kanter ovanför öppningen -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round" stroke-dasharray="6 5">
+    <path d="M110,64 H356 V146 H110 Z"/>
+    <path d="M364,64 H522 V146 H364 Z"/>
+  </g>
+
+  <!-- Blyerts: tak, golv, hammarband, syll, reglar, avväxling, skivskarvens två kanter -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M45,32 Q300,30 570,32"/>
+    <path d="M45,318 Q300,320 570,318"/>
+    <path d="M60,40 Q295,38 530,40 Q529,49 530,58 Q295,60 60,58 Q61,49 60,40"/>
+    <path d="M60,292 Q135,290 210,292 Q209,301 210,310 Q135,312 60,310 Q61,301 60,292"/>
+    <path d="M370,292 Q450,290 530,292 Q529,301 530,310 Q450,312 370,310 Q371,301 370,292"/>
+    <path d="M90,58 Q89,175 90,292 M100,58 Q101,175 100,292"/>
+    <path d="M150,58 Q149,175 150,292 M160,58 Q161,175 160,292"/>
+    <path d="M210,58 Q209,190 210,318 M220,58 Q221,190 220,318"/>
+    <path d="M360,58 Q359,190 360,318 M370,58 Q371,190 370,318"/>
+    <path d="M430,58 Q429,175 430,292 M440,58 Q441,175 440,292"/>
+    <path d="M490,58 Q489,175 490,292 M500,58 Q501,175 500,292"/>
+    <path d="M210,150 Q290,148 370,150 Q369,159 370,168 Q290,170 210,168 Q211,159 210,150"/>
+    <path d="M250,66 Q249,108 250,144 M290,66 Q291,108 290,144 M330,66 Q329,108 330,144"/>
+    <path d="M356,64 Q357,105 356,146 M364,64 Q363,105 364,146"/>
+  </g>
+
+  <!-- Papperslappar bakom etiketterna som ligger över skivan -->
+  <rect x="388" y="82" width="108" height="24" fill="#f5efe3"/>
+  <rect x="388" y="110" width="160" height="24" fill="#f5efe3"/>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="228" y="242" width="142" height="26" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 299 255)"/>
+
+  <!-- Snickarpenna: sprickan upp från dörrhörnet, i skarven -->
+  <path d="M360,150 L372,126 L358,108 L374,84 L366,62" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="236" y="26" fill="#625a50">korta reglar</text>
+    <text x="232" y="196">avväxling</text>
+    <text x="240" y="236" font-size="22" fill="#625a50">öppning</text>
+    <text x="234" y="262" font-size="22">10 till 20 mm</text>
+    <text x="234" y="288" font-size="22" fill="#625a50">över karmen</text>
+    <text x="392" y="100" font-size="22" fill="#625a50">skivskarv</text>
+    <text x="392" y="128" font-size="22" fill="#ad3519">här spricker det</text>
+    <text x="60" y="348" fill="#625a50">syllen kapas i öppningen</text>
+  </g>
+</svg>

@@ -19,6 +19,7 @@ import Reklamband from '../components/ui/Reklamband.astro';
 import StrukturData from '../components/ui/StrukturData.astro';
 
 interface Props {
+  /** Sidans titel utan varumärke. Layouten lägger på " · Hantverkstips" när den får plats. */
   title: string;
   description: string;
   /** Visar Reklamband. Sätts av rutten efter sidtyp och innehåll. */
@@ -66,6 +67,18 @@ const {
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
+
+/**
+ * Varumärket sist i titeln, men bara när hela titeln ryms i sökresultatet.
+ * Google klipper vid ungefär 60 tecken, och en seoTitle på 58 tecken plus
+ * suffixet blir 74 och klipps mitt i löftet (granskningen 2026-09-16 punkt 5.9).
+ * Står Hantverkstips redan i titeln, som på startsidan, läggs inget på.
+ */
+const SUFFIX = ' · Hantverkstips';
+const MAX_TITEL = 60;
+const medSuffix = `${title}${SUFFIX}`;
+const sidtitel =
+  title.includes('Hantverkstips') || medSuffix.length > MAX_TITEL ? title : medSuffix;
 
 /**
  * En liten SVG inlineas av Vite som data-URI, och en data-URI duger inte som
@@ -137,7 +150,7 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
+    <title>{sidtitel}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex" />}
@@ -147,7 +160,7 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
     {/* Delning i Facebook, LinkedIn, Slack och Messenger. Samma text som title
         och description: två sanningar om samma sida håller inte i längden. */}
     <meta property="og:type" content={ogTyp} />
-    <meta property="og:title" content={title} />
+    <meta property="og:title" content={sidtitel} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogBildUrl} />

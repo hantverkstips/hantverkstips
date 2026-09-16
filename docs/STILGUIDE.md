@@ -84,6 +84,16 @@ Det här är mönster som avslöjar maskinskriven text. Ett enda fall räcker f�
 - Enheter med mellanslag: 25 kW, 40 kvm, 230 V.
 - Märken skrivs som tillverkaren skriver dem: DeWalt, Makita, Bosch, Festool, Wood's.
 
+## Tabeller
+
+Tillagt 2026-09-16 efter granskningen av omgång 2, där fyra tabeller sprängde läsbredden.
+
+- Högst fyra kolumner i en tabell i löptext. Behövs fler är det två tabeller.
+- Källan står i en rad under tabellen, aldrig som egen kolumn.
+- Enheten står i kolumnrubriken ("Effekt, W"), inte i varje cell.
+- En cell är ett tal eller högst tre ord. Förklaringar står i texten under.
+- Tabellen sorteras på det läsaren letar efter (vikt, yta, pris), och sorteringen bryts aldrig av en rad som "egentligen" hör hemma någon annanstans.
+
 ## Rubriker och metadata
 
 - H1 är sidans löfte, inte en sökfras instoppad. "Rätt avfuktare till källaren, och hur stor den behöver vara" slår "Bästa luftavfuktare källare 2026".

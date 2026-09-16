@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Stapeldiagram över Wood's SW39FW. Tillverkarens 19 liter per dygn vid 30 grader och 80 procent mot vår omräkning till 5,7 liter per dygn vid 15 grader och 55 procent, med osäkerhetsintervallet 4,8 till 6,7 liter utritat.">
+  <!-- Diagram i Anteckningsbokens hand. Tillverkarens stapel i blyerts 2 px, vår omräkning i penna 2,5 px,
+       etiketter i Atkinson Hyperlegible 22, en enda anteckning i Caveat 26 i penna.
+       19 l vid 30/80 ur Wood's produktblad för SW38FW. 5,7 l = 19 × 0,30, faktor ur underlag-kalkyl-avfuktare.md.
+       Intervall 4,8 till 6,7 ur f 0,25 till 0,35. Skala 11 px per liter, nollinje y=300.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Axlar i blyerts-2 -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M74,68 Q73,186 74,304"/>
+    <path d="M70,300 Q315,301 560,300"/>
+    <path d="M68,300 h6 M68,245 h6 M68,190 h6 M68,135 h6 M68,80 h6"/>
+  </g>
+  <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="22" fill="#625a50" text-anchor="end">
+    <text x="62" y="307">0</text>
+    <text x="62" y="252">5</text>
+    <text x="62" y="197">10</text>
+    <text x="62" y="142">15</text>
+    <text x="62" y="87">20</text>
+  </g>
+  <text x="80" y="46" font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="22" fill="#625a50">liter per dygn</text>
+
+  <!-- Tillverkarens tal i blyerts -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M130,303 Q129,197 130.5,91 H230 Q231,197 230,303"/>
+  </g>
+  <!-- Vår omräkning i snickarpenna -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M330,303 Q329,270 330.5,237.3 H430 Q431,270 430,303"/>
+  </g>
+  <!-- Osäkerhetsintervallet 4,8 till 6,7 liter -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M380,226.3 V247.2 M371,226.3 H389 M371,247.2 H389"/>
+  </g>
+
+  <!-- Nyckeltalet får gul markering -->
+  <rect x="356" y="193" width="48" height="25" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 380 205)"/>
+  <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="22" fill="#2a2521" text-anchor="middle">
+    <text x="180" y="78">19</text>
+    <text x="380" y="212">5,7</text>
+    <text x="180" y="326">30 °C, 80 % RF</text>
+    <text x="380" y="326">15 °C, 55 % RF</text>
+  </g>
+  <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="22" fill="#625a50" text-anchor="middle">
+    <text x="180" y="350">tillverkarens villkor</text>
+    <text x="380" y="350">vår omräkning</text>
+  </g>
+
+  <!-- Anteckningen, det enda i handskrift -->
+  <g font-family="'Caveat', cursive" font-weight="500" font-size="26" fill="#ad3519">
+    <text x="442" y="132">i din källare</text>
+    <text x="442" y="162">i november</text>
+  </g>
+  <path d="M468,176 Q450,206 408,230" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M408,230 L422,229 M408,230 L416,241" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

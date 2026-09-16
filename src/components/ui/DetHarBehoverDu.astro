@@ -17,24 +17,35 @@ import Kopknapp from './Kopknapp.astro';
 import Pennstreck from './Pennstreck.astro';
 
 interface Props {
-  /** namn används bara när produkten saknas i databasen; annars visas databasens namn. */
-  verktyg: { produkt: string; namn?: string; varfor: string }[];
+  /**
+   * produkt är valfri: ett vattenpass hör hemma under Verktyg även utan produkt
+   * i databasen. Utan produkt krävs namn, och raden renderas som text utan knapp.
+   * Med produkt visas databasens namn, och namn används bara när produkten
+   * saknas i bygget.
+   */
+  verktyg: { produkt?: string; namn?: string; varfor: string }[];
   material: { namn: string; varfor: string }[];
 }
 
 const { verktyg, material } = Astro.props;
 
-const produkter = await hamtaProdukter(verktyg.map((v) => v.produkt));
+const produkter = await hamtaProdukter(verktyg.flatMap((v) => (v.produkt ? [v.produkt] : [])));
 const karta = new Map(produkter.map((p) => [p.slug, p]));
 
-// Saknas produkten i databasen renderas raden ändå, med namnet från frontmatter
-// (eller slugen) och utan köpknapp, och bygget varnar en gång per slug. Bygget
-// stoppar inte: en verktygslista får peka på en produkt som importeras senare.
+// Raden utan produkt är avsedd och varnar inte. Pekar den på en produkt som
+// saknas i databasen renderas den ändå, med namnet från frontmatter (eller
+// slugen) och utan köpknapp, och bygget varnar en gång per slug. Bygget stoppar
+// inte: en verktygslista får peka på en produkt som importeras senare.
 const verktygsrader = verktyg.map((v) => {
-  const p = karta.get(v.produkt) ?? null;
-  if (!p) varnaSaknadProdukt(v.produkt, `${Astro.url.pathname}, Det här behöver du`);
+  const p = v.produkt ? (karta.get(v.produkt) ?? null) : null;
+  if (v.produkt && !p) varnaSaknadProdukt(v.produkt, `${Astro.url.pathname}, Det här behöver du`);
   const e = p ? billigasteErbjudande(p) : null;
-  return { slug: v.produkt, namn: p ? produktNamn(p) : (v.namn ?? v.produkt), varfor: v.varfor, produkt: p, erbjudande: e };
+  return {
+    namn: p ? produktNamn(p) : (v.namn ?? v.produkt ?? ''),
+    varfor: v.varfor,
+    produkt: p,
+    erbjudande: e,
+  };
 });
 
 const visa = verktyg.length > 0 || material.length > 0;

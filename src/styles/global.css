@@ -506,6 +506,37 @@ body {
     .tabell-behallare runt varje tabell, så sidledsscrollen sker i behållaren
     och sidan blir aldrig bredare än skärmen.
   */
+  /* Ledtexten över tabellen, samma ord och samma stil som jämförelsetabellens.
+     Bara på mobil: från lg får tabellen plats eller växer i stället ut åt höger. */
+  .prosa .tabell-dra {
+    margin: 0 0 8px;
+    font-size: var(--text-liten);
+    line-height: var(--text-liten--line-height);
+    color: var(--color-blyerts-2);
+  }
+  @media (min-width: 64rem) {
+    .prosa .tabell-dra {
+      display: none;
+    }
+  }
+  /* DESIGN.md avsnitt 2: tabeller får gå ut förbi läsbredden. Artikelmallen har
+     innehållsförteckningen i höger spalt, så tabellen får växa ut i mellanrummet
+     mellan spalterna (3 rem) men aldrig över förteckningen. Bredare än så
+     scrollar den i behållaren som förut. fit-content med min-width 100% gör att
+     smala tabeller ser ut precis som förut. */
+  @media (min-width: 64rem) {
+    .tvaspalt-rad .prosa .brodtabell-block {
+      width: fit-content;
+      min-width: 100%;
+      max-width: calc(100% + 3rem);
+    }
+    /* En tabell inne i en faktaruta stannar i rutan. */
+    .linjerat .prosa .brodtabell-block {
+      width: auto;
+      min-width: 0;
+      max-width: 100%;
+    }
+  }
   .prosa .brodtabell {
     width: 100%;
     border-collapse: collapse;
@@ -538,9 +569,11 @@ body {
     white-space: nowrap;
   }
   /* Celler med hel text får en minsta spaltbredd, annars pressar tabellen ihop
-     dem till ett ord per rad när den ändå är bredare än skärmen. */
+     dem till ett ord per rad när den ändå är bredare än skärmen. 6 rem, sänkt
+     från 10 efter granskningen 2026-09-16: fyra textkolumner blev 40 rem plus
+     innermarginaler och klipptes redan på desktop, nu får de plats i läsbredden. */
   .prosa .brodtabell td:not(.kort-cell) {
-    min-width: 10rem;
+    min-width: 6rem;
   }
   .prosa .brodtabell thead th {
     background-color: var(--color-papper-2);

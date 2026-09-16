@@ -43,6 +43,7 @@ export interface Filter {
   /** Filtrets adress, sida 1. */
   bas: string;
   h1: string;
+  /** <title> utan varumärke. Bas.astro lägger på " · Hantverkstips" när den får plats. */
   titel: string;
   beskrivning: string;
   /** Bara /guider/ har en skriven ingress. Filtersidorna har den räknade raden. */
@@ -80,7 +81,7 @@ export async function guidefilter(): Promise<Filter[]> {
       varde: '',
       bas: '/guider/',
       h1: H1_ALLA,
-      titel: `${H1_ALLA} · Hantverkstips`,
+      titel: H1_ALLA,
       beskrivning: BESKRIVNING_ALLA,
       ingress: INGRESS_ALLA,
       kort: alla,
@@ -96,7 +97,7 @@ export async function guidefilter(): Promise<Filter[]> {
       varde: p.slug,
       bas: `/guider/${p.slug}/`,
       h1,
-      titel: `Guider om ${gemener(p.namn)} · Hantverkstips`,
+      titel: `Guider om ${gemener(p.namn)}`,
       beskrivning: beskrivningAv(h1),
       kort,
     });
@@ -111,7 +112,7 @@ export async function guidefilter(): Promise<Filter[]> {
       varde: typ,
       bas: `/guider/typ/${typ}/`,
       h1,
-      titel: `${h1} · Hantverkstips`,
+      titel: h1,
       beskrivning: beskrivningAv(h1),
       kort,
     });
@@ -125,7 +126,7 @@ export async function guidefilter(): Promise<Filter[]> {
       varde: niva,
       bas: `/guider/niva/${niva}/`,
       h1: NIVA_H1[niva],
-      titel: `${NIVA_TITEL[niva]} · Hantverkstips`,
+      titel: NIVA_TITEL[niva],
       beskrivning: `Alla sidor på nivå ${niva} på Hantverkstips, nyast först, med typ och nivå på varje kort.`,
       kort,
     });

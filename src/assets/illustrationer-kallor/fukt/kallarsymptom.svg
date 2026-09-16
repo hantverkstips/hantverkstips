@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Skiss av en källare i genomskärning med tre ställen där fukt syns: imma på kallvattenröret under bjälklaget, salt och flagnande färg nedtill på den vänstra väggen, och en pöl på golvet under en rörgenomföring i den högra väggen.">
+  <!-- Anteckningsboken. Blyertsskiss på linjerat papper. Hus och rör i blyerts, jord och
+       bjälklag skrafferat i blyerts-2, de tre symptomen och deras etiketter i snickarpenna.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts: källaren i genomskärning -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- markyta utanför -->
+    <path d="M24,94 Q60,92 100,94 M500,94 Q540,92 576,94"/>
+    <!-- väggstumpar ovan mark -->
+    <path d="M100,94 Q99,78 100,62 M122,94 Q123,78 122,62 M478,94 Q477,78 478,62 M500,94 Q501,78 500,62"/>
+    <!-- bjälklag över källaren -->
+    <path d="M118,78 Q300,76 482,78 M118,94 Q300,96 482,94"/>
+    <!-- källarväggar -->
+    <path d="M100,94 Q98,200 100,302 M122,94 Q124,200 122,302"/>
+    <path d="M478,94 Q476,200 478,302 M500,94 Q502,200 500,302"/>
+    <!-- platta -->
+    <path d="M98,302 Q300,300 502,302 M98,318 Q300,320 502,318"/>
+    <!-- kallvattenrör under bjälklaget, med två upphängningar -->
+    <path d="M140,122 Q236,120 332,122"/>
+    <path d="M172,122 V104 M300,122 V104"/>
+    <!-- rörgenomföring i högra väggen, med stump ut i jorden -->
+    <path d="M466,252 A9,9 0 1 0 466,251"/>
+    <path d="M474,247 Q496,245 518,247 M474,258 Q496,256 518,258"/>
+  </g>
+
+  <!-- Blyerts, tunn: jordskraffering och bjälklag -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M28,102 l10,10 M50,102 l10,10 M72,102 l10,10 M28,134 l10,10 M50,134 l10,10 M72,134 l10,10"/>
+    <path d="M38,166 l10,10 M60,166 l10,10 M82,166 l10,10 M28,198 l10,10 M50,198 l10,10 M72,198 l10,10"/>
+    <path d="M38,230 l10,10 M60,230 l10,10 M82,230 l10,10 M28,262 l10,10 M50,262 l10,10 M72,262 l10,10"/>
+    <path d="M38,294 l10,10 M60,294 l10,10 M82,294 l10,10"/>
+    <path d="M510,102 l10,10 M532,102 l10,10 M554,102 l10,10 M510,134 l10,10 M532,134 l10,10 M554,134 l10,10"/>
+    <path d="M520,166 l10,10 M542,166 l10,10 M564,166 l10,10 M510,198 l10,10 M532,198 l10,10 M554,198 l10,10"/>
+    <path d="M520,230 l10,10 M542,230 l10,10 M564,230 l10,10 M510,275 l10,10 M532,275 l10,10 M554,275 l10,10"/>
+    <path d="M520,300 l10,10 M542,300 l10,10 M564,300 l10,10"/>
+    <path d="M132,80 l8,8 M164,80 l8,8 M196,80 l8,8 M228,80 l8,8 M260,80 l8,8 M292,80 l8,8 M324,80 l8,8 M356,80 l8,8 M388,80 l8,8 M420,80 l8,8 M452,80 l8,8"/>
+    <path d="M140,306 l8,8 M180,306 l8,8 M220,306 l8,8 M260,306 l8,8 M300,306 l8,8 M340,306 l8,8 M380,306 l8,8 M420,306 l8,8 M460,306 l8,8"/>
+  </g>
+
+  <!-- Snickarpenna: de tre symptomen -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- imma under kallvattenröret -->
+    <path d="M186,132 C185,134 182,137 182,140 A4,4 0 0 0 190,140 C190,137 187,134 186,132"/>
+    <path d="M230,134 C229,136 226,139 226,142 A4,4 0 0 0 234,142 C234,139 231,136 230,134"/>
+    <path d="M274,132 C273,134 270,137 270,140 A4,4 0 0 0 278,140 C278,137 275,134 274,132"/>
+    <!-- salt och flagnande färg nedtill på vänstra väggen -->
+    <path d="M124,236 Q136,232 150,237 Q160,240 168,236"/>
+    <path d="M124,252 Q138,256 152,251 Q162,247 172,252"/>
+    <path d="M124,268 Q134,263 146,268 Q158,273 168,268"/>
+    <path d="M124,284 Q138,280 154,285 Q164,288 172,284"/>
+    <!-- rinnmärke från genomföringen och pöl på golvet -->
+    <path d="M466,262 Q462,282 460,298"/>
+    <path d="M392,298 Q416,292 440,298 Q456,302 470,297"/>
+  </g>
+
+  <!-- Papperslappar bakom anteckningarna -->
+  <g fill="#f5efe3">
+    <rect x="146" y="150" width="260" height="26"/>
+    <rect x="174" y="222" width="286" height="26"/>
+    <rect x="192" y="270" width="264" height="26"/>
+    <rect x="44" y="330" width="392" height="26"/>
+  </g>
+  <!-- Överstrykning med tumstocksgul bakom nyckeltalet -->
+  <rect x="95" y="327" width="46" height="24" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 118 339)"/>
+
+  <!-- Handskrivna anteckningar (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="48" y="47.5" fill="#625a50">vad du ser, och vad det betyder</text>
+    <text x="150" y="167.5" fill="#ad3519">imma på röret = kondens</text>
+    <text x="178" y="239.5" fill="#ad3519">salt och flagor = markfukt</text>
+    <text x="196" y="287.5" fill="#ad3519">pöl efter regn = läckage</text>
+    <text x="48" y="347.5">över 75 % RF = skaderisk</text>
+  </g>
+</svg>

@@ -34,7 +34,7 @@ Verifierat i bygget 2026-09-15: MDX-komponenter som skickas via `components`-pro
 
 ```ts
 interface Props {
-  title: string;                 // <title>. Rutten skriver "Sidans titel · Hantverkstips" själv
+  title: string;                 // <title> utan varumärke. Layouten lägger på suffixet, se nedan
   description: string;
   reklam?: boolean;              // visar Reklamband. Standard false
   brodsmulor?: Brodsmula[];      // från src/lib/innehall.ts. Utelämnas på startsidan
@@ -49,6 +49,8 @@ interface Props {
 ### Head
 
 I ordning: `charset`, `viewport`, `<title>`, `description`, `canonical` (som nu), `robots` om `noindex`, favicon, tre `<link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/...">`, `<slot name="head" />`. Inga externa skript. Vercel Analytics läggs till vid lansering av teknisk ansvarig, inte nu.
+
+**Titelsuffixet** (beslut 2026-09-16). Rutterna skickar sidans titel utan varumärke (`seoTitle ?? title`), och layouten lägger på `" · Hantverkstips"` bara när den färdiga titeln då blir högst 60 tecken. Blir den längre utelämnas suffixet, eftersom Google klipper vid ungefär 60 och en seoTitle på 58 tecken annars förlorar slutet av löftet i stället för varumärket. Står ordet Hantverkstips redan i titeln, som på startsidan, läggs inget på. Samma titel används i `og:title`. Konsekvenser: korta titlar som "Sidan finns inte" och "Räkna själv" behåller suffixet, artikeltitlar på 45 tecken och uppåt gör det inte.
 
 ### Body, uppifrån
 
@@ -393,7 +395,7 @@ Inga betyg (`reviewRating`, `aggregateRating`) någonstans. Vi har inga stjärno
 
 Alla rutter utom kalkylatorn och `/go/` är statiska. Varje rutt: sätter `Astro.locals.sidtyp` överst där köpknappar kan förekomma, hämtar data, bygger `brodsmulor`, avgör `reklam`, renderar `<Bas>` och sin vy. Vyer ligger i `src/components/vyer/` och tar hela `entry` som prop; rutterna är tunna.
 
-`<title>` skrivs `${title} · Hantverkstips` överallt utom startsidan där det är `Hantverkstips · ${description-kortform}` (chefredaktören skriver; tills dess "Hantverkstips, bygg och renovera utan att köpa fel").
+`<title>` skickas till `<Bas>` utan varumärke, och layouten lägger på `" · Hantverkstips"` när den färdiga titeln ryms i 60 tecken (avsnitt 1). Startsidan är sin egen: där bär titeln varumärket först och får inget suffix.
 
 ### 4.1 `src/pages/index.astro`
 
@@ -539,7 +541,7 @@ Markup:
 5. H2 "Så räknar vi" med `id="sa-raknar-vi"`: formeln i ord som en numrerad lista, H3 "Vad siffrorna vilar på" med tabellen över antaganden där varje rad säger källa eller antagande och länkar till källan, meningen "Vi verifierar formeln med egna mätningar under hösten." och länk till `/om/sa-testar-vi/`.
 6. H2 "Läs vidare": länkar till `/luftavfuktare/`, `/fukt/avfuktare-kallare/`, `/fukt/sorptionsavfuktare/`.
 
-Desktop: kortet 44 rem brett, formulär till vänster och resultat till höger i två lika spalter, produkterna i rad om tre under. Strukturerad data: ingen utöver brödsmulor (kalkylatorn är ett verktyg, inte en artikel). `<title>` "Avfuktarkalkylator: hur stor avfuktare behöver du? · Hantverkstips".
+Desktop: kortet 44 rem brett, formulär till vänster och resultat till höger i två lika spalter, produkterna i rad om tre under. Strukturerad data: ingen utöver brödsmulor (kalkylatorn är ett verktyg, inte en artikel). `<title>` "Avfuktarkalkylator: hur stor avfuktare behöver du?", 50 tecken och därför utan suffix.
 
 ### 4.8 `src/pages/om/index.astro` och `src/pages/om/[slug].astro`
 

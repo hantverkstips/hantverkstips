@@ -65,7 +65,7 @@ values
     'SW23FW I-EcoDefrost+',
     (select id from kategorier where slug = 'luftavfuktare'),
     null,
-    '{"kapacitet_liter_dygn": 13.5, "kapacitet_villkor": "ej angivet, sannolikt 30 °C/80 % RF", "typ": "kondens", "max_yta_kvm": 100, "effekt_w": 145, "arbetstemp_min_c": 2, "tank_liter": 11.4, "slang": "ja, ingår ej"}'::jsonb,
+    '{"kapacitet_liter_dygn": 13.5, "kapacitet_villkor": "ej angivet", "typ": "kondens", "max_yta_kvm": 100, "effekt_w": 145, "arbetstemp_min_c": 2, "tank_liter": 11.4, "slang": "ja, ingår ej"}'::jsonb,
     null,
     true
   ),
@@ -76,7 +76,7 @@ values
     'SW39FW I-EcoDefrost+',
     (select id from kategorier where slug = 'luftavfuktare'),
     null,
-    '{"kapacitet_liter_dygn": 19, "kapacitet_villkor": "ej angivet, sannolikt 30 °C/80 % RF", "typ": "kondens", "max_yta_kvm": 140, "effekt_w": 320, "arbetstemp_min_c": 2, "tank_liter": 11.4, "slang": "ja, ingår ej"}'::jsonb,
+    '{"kapacitet_liter_dygn": 19, "kapacitet_villkor": "ej angivet", "typ": "kondens", "max_yta_kvm": 140, "effekt_w": 320, "arbetstemp_min_c": 2, "tank_liter": 11.4, "slang": "ja, ingår ej"}'::jsonb,
     null,
     true
   ),
@@ -87,7 +87,7 @@ values
     'SW43FW I-EcoDefrost+',
     (select id from kategorier where slug = 'luftavfuktare'),
     null,
-    '{"kapacitet_liter_dygn": 25.5, "kapacitet_villkor": "ej angivet, sannolikt 30 °C/80 % RF", "typ": "kondens", "max_yta_kvm": 190, "effekt_w": 420, "arbetstemp_min_c": 2, "tank_liter": 11.4, "slang": "ja, ingår ej"}'::jsonb,
+    '{"kapacitet_liter_dygn": 25.5, "kapacitet_villkor": "ej angivet", "typ": "kondens", "max_yta_kvm": 190, "effekt_w": 420, "arbetstemp_min_c": 2, "tank_liter": 11.4, "slang": "ja, ingår ej"}'::jsonb,
     null,
     true
   ),

@@ -58,13 +58,15 @@ Hub är `/fukt/`. Den äger ingen stor sökfras, den är diagnosstart och länkn
 
 Hub är `/inomhus/`. Gipsklustret (11 600 sökningar per månad) är större än avfuktarklustret och söks lika mycket i januari som i september. Sidorna kräver ingen produktdatabas och ingen godkänd affiliateansökan, så pelaren är första innehållsprioritet och når hubgränsen på fem sidor i november. Slipa bänkskiva (210) och hitta regel i vägg (110) läggs här när huben finns.
 
+Klustrets gemensamma tal, fastställt 2026-09-16 efter att tre sidor hittat på var sitt: **gränsen för när något ska sitta i regel eller kortling i stället för i plugg är 20 kg**, eller lägre när lasten sitter på en arm (tv-fäste) eller skiftar (skåp med lucka). Det är vår gräns, konservativ mot mollyns 38 kg i ett skivlag; Norgips säger "tunga saker" utan tal. Alla sidor i klustret använder 20 kg tills gipsplugg-undersökningen ger ett uppmätt tal.
+
 | URL | Arbetstitel | Typ | Huvudfras | Volym | Nivå | Prio | Affiliate |
 |---|---|---|---|---|---|---|---|
 | `/inomhus/` | Inomhus, väggar som håller och saker som sitter kvar | hub | ingen fras | | | 1 | nej |
 | `/inomhus/gipsplugg/` | Gipsplugg, åtta pluggtyper belastade till brott | undersökning och guide (kunskap) | gipsplugg (äger även plugg gipsvägg) | 6 400 | expert | 1 | nej |
 | `/inomhus/gipsskruv/` | Gipsskruv, rätt längd och gänga mot trä och stål | guide (kunskap) | gipsskruv | 3 600 | enkel | 1 | nej |
-| `/inomhus/skruva-i-gipsvagg/` | Skruva i gipsvägg, hylla, tv och tunga saker | projektguide | skruva i gipsvägg (äger även montera tv på gipsvägg, hylla gipsvägg) | 840 | enkel | 1 | nej |
-| `/inomhus/bygga-innervagg/` | Bygga innervägg, regelavståndstabellen | kunskap, tabell | bygga innervägg (äger även regelavstånd innervägg) | 900 | mellan | 1 | nej |
+| `/inomhus/skruva-i-gipsvagg/` | Skruva i gipsvägg, hylla, tv och tunga saker | problemguide | skruva i gipsvägg (äger även montera tv på gipsvägg, hylla gipsvägg) | 840 | enkel | 1 | nej |
+| `/inomhus/bygga-innervagg/` | Bygga innervägg med reglar och gips, regelavståndstabellen | projektguide | bygga innervägg (äger även regelavstånd innervägg) | 900 | mellan | 1 | nej |
 | `/inomhus/hanga-tavla-gipsvagg/` | Hänga tavla på gipsvägg | guide | hänga tavla gipsvägg (äger även sätta upp tavla gipsvägg) | 150 | enkel | 1 | nej |
 | `/inomhus/dreva-fonster/` | Dreva fönster, tätt inne och öppet ute | projektguide | dreva fönster | 320 | enkel | 1 | nej |
 
@@ -223,8 +225,8 @@ Ersatt 2026-09-16 med startlistan från `docs/SOKORDSANALYS.md` avsnitt 2, efter
 | 7 | `/fukt/avfuktare-krypgrund/` | 2 600 | mellan | köpguide | Äger även "krypgrundsavfuktare". Dyrast produkter i kategorin |
 | 8 | `/luftavfuktare/` | 1 650 | expert | bäst i test | Expertundersökning 2, kapacitet i kammare vid 10 och 20 grader. Kräver produkter i databasen |
 | 9 | `/tester/[avfuktare 1]/` | liten | mellan | test | Vårt val på kategorisidan måste ha ett test |
-| 10 | `/inomhus/skruva-i-gipsvagg/` | 840 | enkel | guide | Hylla, tv och tunga saker, med tabellen från 3 |
-| 11 | `/inomhus/bygga-innervagg/` | 900 | mellan | kunskap, tabell | Regelavstånd mot skivbredd, höjd och ljudklass med källa. Vinnbarhet 4 |
+| 10 | `/inomhus/skruva-i-gipsvagg/` | 840 | enkel | problemguide | Hylla, tv och tunga saker, med tabellen från 3. Skriven 2026-09-16 |
+| 11 | `/inomhus/bygga-innervagg/` | 900 | mellan | projektguide | Regelavstånd mot skivbredd, höjd och ljudklass med källa. Vinnbarhet 4. Skriven 2026-09-16 som projektguide, inte kunskapssida, eftersom sökintentionen är utförande |
 | 12 | `/fukt/fukt-i-kallaren/` | 480 | mellan | problemguide | Identitetssidan, men volymen (480, YoY -46 %) motiverar inte förtur |
 | 13 | `/inomhus/hanga-tavla-gipsvagg/` | 150 | enkel | guide | Christians exempel. Liten men klar på en dag, egen viktabell |
 | 14 | `/tester/[avfuktare 2, sorption]/` | liten | mellan | test | Täcker det kalla utrymmet. Tredje avfuktartestet stryks till fas 2 |

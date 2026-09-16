@@ -37,7 +37,7 @@ export async function getStaticPaths() {
         params: { vag: vag === '' ? undefined : vag },
         props: {
           h1: f.h1,
-          titel: sida === 1 ? f.titel : `${f.h1}, sida ${sida} · Hantverkstips`,
+          titel: sida === 1 ? f.titel : `${f.h1}, sida ${sida}`,
           beskrivning: f.beskrivning,
           ingress: sida === 1 ? f.ingress : undefined,
           kort: f.kort.slice((sida - 1) * PER_SIDA, sida * PER_SIDA),

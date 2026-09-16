@@ -100,12 +100,26 @@ const guider = defineCollection({
     artikel(ctx).extend({
       typ: z.enum(['projektguide', 'problemguide', 'kopguide']),
       // Projektguidens lista "Det här behöver du". Verktyg har köpknapp, material har inte.
-      // namn är valfritt och visas när produkten saknas i databasen (raden renderas
-      // då utan köpknapp och bygget varnar). Finns produkten vinner databasens namn.
+      // produkt är valfri: ett vattenpass eller en tumstock hör hemma under Verktyg
+      // även utan produkt i databasen, och raden renderas då som text utan knapp.
+      // namn krävs när produkt saknas, annars har raden ingenting att heta; med
+      // produkt visas namnet ur databasen, och frontmatterns namn används bara när
+      // produkten saknas i bygget (raden renderas utan köpknapp och bygget varnar).
       behover: z
         .object({
           verktyg: z
-            .array(z.object({ produkt: z.string(), namn: z.string().optional(), varfor: z.string() }))
+            .array(
+              z
+                .object({
+                  produkt: z.string().optional(),
+                  namn: z.string().optional(),
+                  varfor: z.string(),
+                })
+                .refine((v) => v.produkt !== undefined || v.namn !== undefined, {
+                  message: 'En verktygsrad utan produkt måste ha namn',
+                  path: ['namn'],
+                }),
+            )
             .default([]),
           material: z.array(z.object({ namn: z.string(), varfor: z.string() })).default([]),
         })
@@ -143,7 +157,11 @@ const tester = defineCollection({
         omdome: z.string(),
         kopOm: z.string(),
         kopInteOm: z.string(),
-        // Tabellen "Vi mätte" mot "Tillverkaren uppger". Kolumnen vi är tom på granskningar.
+        // Tabellen "Vi mätte" mot den uppgivna siffran. Kolumnen vi är tom på granskningar.
+        // kalla styr den andra värdekolumnens rubrik ("Tillverkaren uppger",
+        // "Butiken uppger", "Tredje part mätte"); utan fältet står "Tillverkaren
+        // uppger" som förut. markera ger sidans viktigaste värde gul markering:
+        // det vi mätt när vi mätt, annars uppgiften.
         matningar: z
           .array(
             z.object({
@@ -151,11 +169,17 @@ const tester = defineCollection({
               enhet: z.string().optional(),
               vi: z.string().optional(),
               tillverkaren: z.string().optional(),
+              kalla: z.enum(['tillverkaren', 'butiken', 'tredje part']).optional(),
+              markera: z.boolean().optional(),
             }),
           )
           .default([]),
-        // Alternativ som visas under H2 "Alternativ". Rubriken säger varför.
-        alternativ: z.array(z.object({ produkt: z.string(), varfor: z.string() })).default([]),
+        // Alternativ som visas under H2 "Alternativ". varfor är en mening och
+        // renderas som brödtext på kortet; etikett är redaktörens ord i versaler
+        // ("Billigare") och är valfri.
+        alternativ: z
+          .array(z.object({ produkt: z.string(), varfor: z.string(), etikett: z.string().optional() }))
+          .default([]),
       }),
 });
 

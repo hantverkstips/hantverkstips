@@ -213,8 +213,11 @@ forfattare:       # slug i src/content/forfattare/, standard redaktionen
 bild:             # relativ sökväg till eget foto eller skiss, valfritt: ../../../assets/illustrationer/fukt/kallare.svg
 bildtext:         # valfritt
 kallor:           # lista med { titel, url }
-behover:          # bara projektguide: { verktyg: [{ produkt, namn?, varfor }], material: [{ namn, varfor }] }
-                  # verktyg.namn visas bara när produkten saknas i databasen: raden renderas utan köpknapp och bygget varnar
+behover:          # bara projektguide: { verktyg: [{ produkt?, namn?, varfor }], material: [{ namn, varfor }] }
+                  # verktyg.produkt är valfri: ett vattenpass eller en tumstock hör hemma under Verktyg
+                  # även utan produkt i databasen, och raden renderas då som text utan köpknapp.
+                  # namn krävs när produkt saknas. Med produkt vinner databasens namn, och namn
+                  # används bara när produkten saknas i databasen: raden renderas utan köpknapp och bygget varnar
 utkast: true      # utesluts från bygget
 ```
 
@@ -229,8 +232,16 @@ testad:           # datum, valfritt
 omdome:           # en mening
 kopOm:            # ett kort stycke
 kopInteOm:        # ett kort stycke
-matningar:        # lista med { etikett, enhet, vi, tillverkaren }. vi är tom på granskningar
-alternativ:       # lista med { produkt, varfor }
+matningar:        # lista med { etikett, enhet, vi, tillverkaren, kalla, markera }. vi är tom på granskningar
+                  # kalla: tillverkaren | butiken | tredje part, valfritt. Styr den andra
+                  #   värdekolumnens rubrik: "Tillverkaren uppger" (standard, och utan fältet),
+                  #   "Butiken uppger", "Tredje part mätte". Kolumnen har en rubrik, så mallen
+                  #   tar den från den första mätningen med kalla och varnar om raderna har olika
+                  # markera: true ger gul markering på radens viktigaste värde, det vi mätt när vi
+                  #   mätt och annars uppgiften. Ett värde per sida, se docs/DESIGN.md avsnitt 6
+alternativ:       # lista med { produkt, varfor, etikett }. varfor är en mening och renderas som
+                  # brödtext på kortet ("för vem"-raden). etikett är valfri och är redaktörens
+                  # ord i versaler ("Billigare"), aldrig en mening
 ```
 
 **Jämförelser:** som guider utan `pelare` och `typ`, med `niva`, `kategori` (krävs, styr undermappen) och `produkter` (minst två).

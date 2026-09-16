@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Genomskärning av en 13 mm gipsskiva med fyra infästningar bredvid varandra. Den självborrande gipspluggen sitter bara i skivan och klarar 8 kg, hålrumspluggen viker ut två ben bakom skivan och klarar 18 kg, mollypluggen pressar två metallbågar mot skivans baksida och klarar 38 kg, och fjäderpluggens två vingar fälls ut bakom skivan. Bågarna bakom skivan är inringade med snickarpenna.">
+  <!-- Anteckningsboken. Blyerts 2 px för skiva och pluggar, blyerts-2 för måttbygel och bakgrundstext,
+       snickarpenna för ringen runt mollyns bågar bakom skivan (enda pennsaken), tumstock bakom 38 kg.
+       Skala 4 px per mm i skivans tjocklek: 13 mm blir 52 px. Handskrift i Caveat 500, banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Måttbygel i blyerts-2 för skivtjockleken -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M52,96 V148 M47,96 h10 M47,148 h10"/>
+  </g>
+
+  <!-- Blyerts: skivan i genomskärning och de fyra infästningarna -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- skivans fram- och baksida, med hål där infästningarna går igenom -->
+    <path d="M60,96 H114"/>
+    <path d="M142,96 Q197,97 252,96"/>
+    <path d="M272,96 Q329,97 386,96"/>
+    <path d="M406,96 Q466,97 526,96"/>
+    <path d="M534,96 H580"/>
+    <path d="M60,148 Q88,149 116,148"/>
+    <path d="M140,148 Q196,149 252,148"/>
+    <path d="M272,148 Q329,149 386,148"/>
+    <path d="M406,148 Q466,149 526,148"/>
+    <path d="M534,148 H580"/>
+    <path d="M60,95 V149 M580,95 V149"/>
+
+    <!-- 1. självborrande gipsplugg: grov gänga, tar bara i skivan -->
+    <path d="M108,94 H148"/>
+    <path d="M114,96 L124,246 L132,246 L142,96"/>
+    <path d="M124,246 L128,258 L132,246"/>
+    <path d="M117,116 L139,112 M119,140 L137,136 M121,164 L135,160 M122,188 L134,184 M124,212 L132,208"/>
+
+    <!-- 2. hålrumsplugg: hylsa genom skivan, två ben utvikta bakom -->
+    <path d="M248,88 H276"/>
+    <path d="M262,89 V252"/>
+    <path d="M252,90 V150 M272,90 V150"/>
+    <path d="M252,150 L232,192 L258,180"/>
+    <path d="M272,150 L292,192 L266,180"/>
+
+    <!-- 3. molly: rosett mot ytan, två metallbågar mot skivans baksida -->
+    <path d="M374,92 H418"/>
+    <path d="M386,84 H406 M396,85 V230"/>
+    <path d="M386,93 V150 M406,93 V150"/>
+    <path d="M386,149 C376,182 352,176 360,149"/>
+    <path d="M406,149 C416,182 440,176 432,149"/>
+
+    <!-- 4. fjäderplugg: två vingar som fälls ut bakom skivan -->
+    <path d="M518,88 H542 M530,89 V196"/>
+    <path d="M526,186 L484,156 L487,148 L529,172 Z"/>
+    <path d="M534,186 L576,156 L573,148 L531,172 Z"/>
+  </g>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="324" y="301" width="60" height="24" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 354 313)"/>
+
+  <!-- Snickarpenna: ringen runt det som tar spjärn bakom skivan -->
+  <path d="M448,142 C462,168 448,202 400,204 C356,206 342,184 344,160 C346,142 358,134 372,138" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="44" y="88" fill="#625a50">13 mm gips</text>
+    <text x="330" y="70" fill="#ad3519">bakom skivan bär</text>
+    <text x="60" y="296">självborrande</text>
+    <text x="60" y="324">8 kg</text>
+    <text x="194" y="296">hålrumsplugg</text>
+    <text x="194" y="324">18 kg</text>
+    <text x="328" y="296">molly</text>
+    <text x="328" y="324">38 kg</text>
+    <text x="462" y="296">fjäderplugg</text>
+    <text x="462" y="324">engångs</text>
+  </g>
+</svg>

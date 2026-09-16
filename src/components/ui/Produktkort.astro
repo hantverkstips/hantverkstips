@@ -108,13 +108,18 @@ const bildHojd = variant === 'kompakt' ? 72 : 300;
           {/* Nyckelvärdena: etiketten tar bara den bredd den behöver, värdet
               resten, och minmax(0,1fr) hindrar att ett långt värde spränger
               spalten. Med två lika breda kolumner skrev etikett och värde över
-              varandra i ett smalt kort (designgranskningen 2026-09-16 punkt 3). */}
+              varandra i ett smalt kort (designgranskningen 2026-09-16 punkt 3).
+              Under 640 px ligger värdet i stället på egen rad under etiketten:
+              i ett kompakt kort bredvid bilden blir värdekolumnen annars så smal
+              att "ej angivet, sannolikt 30 °C/80 % RF" bryts på fem rader
+              (granskningen 2026-09-16 punkt 5.5). Marginalen under värdet
+              skiljer paren åt när de är staplade. */}
           {specs.length > 0 && (
-            <dl class="m-0 mt-3 grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-1 text-liten">
+            <dl class="m-0 mt-3 grid grid-cols-1 sm:grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-1 text-liten">
               {specs.map((s) => (
                 <div class="contents">
                   <dt class="m-0 text-blyerts-2">{s.etikett}</dt>
-                  <dd class="m-0 tabular-nums text-blyerts">
+                  <dd class="m-0 mb-2 sm:mb-0 tabular-nums text-blyerts">
                     {String(produkt.specs[s.nyckel])}
                     {s.enhet ? ` ${s.enhet}` : ''}
                   </dd>

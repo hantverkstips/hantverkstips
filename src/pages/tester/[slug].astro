@@ -29,6 +29,7 @@ import { produkt as produktData } from '../../lib/strukturdata';
 import Brodsmulor from '../../components/ui/Brodsmulor.astro';
 import Faktaruta from '../../components/ui/Faktaruta.astro';
 import Forfattarruta from '../../components/ui/Forfattarruta.astro';
+import Illustration from '../../components/ui/Illustration.astro';
 import Innehallsforteckning from '../../components/ui/Innehallsforteckning.astro';
 import Jamforelsetabell from '../../components/ui/Jamforelsetabell.astro';
 import Kopknapp from '../../components/ui/Kopknapp.astro';
@@ -73,6 +74,38 @@ const alternativ = d.alternativ;
 
 const specs = kategori?.data.specs ?? [];
 
+/**
+ * Omdömestabellens andra värdekolumn. Rubriken kommer från mätningarnas `kalla`,
+ * så att en granskning med värden ur butikens produktsida inte skriver
+ * "Tillverkaren uppger" över dem. Utan fältet står rubriken kvar som förut.
+ * Se docs/DESIGN.md avsnitt 5.7.
+ */
+const KALLRUBRIK = {
+  tillverkaren: 'Tillverkaren uppger',
+  butiken: 'Butiken uppger',
+  'tredje part': 'Tredje part mätte',
+} as const;
+
+const matningsKallor = new Set(d.matningar.map((m) => m.kalla ?? 'tillverkaren'));
+if (matningsKallor.size > 1) {
+  console.warn(
+    `[test] ${entry.id}: mätningarna har olika kalla (${[...matningsKallor].join(', ')}). ` +
+      'Kolumnen har en rubrik, så den tas från den första mätningen med kalla. ' +
+      'Dela upp mätningarna eller skriv källan i texten.',
+  );
+}
+const kallRubrik = KALLRUBRIK[d.matningar.find((m) => m.kalla)?.kalla ?? 'tillverkaren'];
+
+/**
+ * `markera` gäller ett värde per rad: det vi mätt när vi mätt, annars uppgiften.
+ * Gul markering i en tabell finns bara här, se docs/DESIGN.md avsnitt 6.
+ */
+function markerar(m: (typeof d.matningar)[number], kolumn: 'vi' | 'tillverkaren'): boolean {
+  if (!m.markera) return false;
+  const viFinns = arTest && m.vi !== undefined;
+  return kolumn === 'vi' ? viFinns : !viFinns;
+}
+
 const EGEN_RUBRIK_SA_TESTADE = headings.some((h) => h.depth === 2 && /^så\s+(testade|granskade)\s+vi$/i.test(h.text));
 
 const rubriker = [
@@ -107,7 +140,7 @@ const strukturdata = produkt
 ---
 
 <Bas
-  title={`${d.seoTitle ?? d.title} · Hantverkstips`}
+  title={d.seoTitle ?? d.title}
   description={d.description}
   ogTyp="article"
   reklam={true}
@@ -184,7 +217,7 @@ const strukturdata = produkt
                           </th>
                         )}
                         <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">
-                          Tillverkaren uppger
+                          {kallRubrik}
                         </th>
                       </tr>
                     </thead>
@@ -195,9 +228,25 @@ const strukturdata = produkt
                             {m.etikett}
                             {m.enhet ? `, ${m.enhet}` : ''}
                           </th>
-                          {arTest && <td class="p-2 text-blyerts">{m.vi ?? <span class="text-blyerts-2">ej mätt</span>}</td>}
+                          {arTest && (
+                            <td class="p-2 text-blyerts">
+                              {m.vi === undefined ? (
+                                <span class="text-blyerts-2">ej mätt</span>
+                              ) : markerar(m, 'vi') ? (
+                                <Markering>{m.vi}</Markering>
+                              ) : (
+                                m.vi
+                              )}
+                            </td>
+                          )}
                           <td class="p-2 text-blyerts">
-                            {m.tillverkaren ?? <span class="text-blyerts-2">ej angivet</span>}
+                            {m.tillverkaren === undefined ? (
+                              <span class="text-blyerts-2">ej angivet</span>
+                            ) : markerar(m, 'tillverkaren') ? (
+                              <Markering>{m.tillverkaren}</Markering>
+                            ) : (
+                              m.tillverkaren
+                            )}
                           </td>
                         </tr>
                       ))}
@@ -244,6 +293,7 @@ const strukturdata = produkt
           components={{
             h2: Pennstreck,
             Faktaruta,
+            Illustration,
             Varning,
             Verktygskort,
             Markering,
@@ -258,9 +308,18 @@ const strukturdata = produkt
         alternativ.length > 0 && (
           <section>
             <Pennstreck id={slugify('Alternativ')}>Alternativ</Pennstreck>
+            {/* varfor är en mening och renderas som brödtext, inte som etikett:
+                en hel mening i versaler är ingen etikett. Etiketten är valfri och
+                skrivs av redaktören (granskningen 2026-09-16 punkt 5.6). */}
             <div class="grid gap-4">
               {alternativ.map((a) => (
-                <Produktkort produkt={a.produkt} variant="kompakt" etikett={a.varfor} modul="kort_kompakt" />
+                <Produktkort
+                  produkt={a.produkt}
+                  variant="kompakt"
+                  etikett={a.etikett}
+                  forVem={a.varfor}
+                  modul="kort_kompakt"
+                />
               ))}
             </div>
           </section>

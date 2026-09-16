@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Vägg framifrån med gipsskivor. Den närmaste sidans skivkanter är heldragna, den bortre sidans är streckade och förskjutna en halv skivbredd. Reglarna är prickade bakom. Springa 2 till 3 mm mellan skivorna, 10 till 15 mm mot taket, och en ring runt springan mot golvet med anteckningen att skivan inte står på golvet.">
+  <!-- Anteckningsboken. Blyerts 2 px för den närmaste sidans skivor, prickat blyerts-2 för reglarna bakom,
+       streckat blyerts-2 för den bortre sidans skivkanter, blyerts-2 för måttbyglar, snickarpenna för
+       ringen runt springan mot golvet (enda pennsaken), tumstock bakom nyckeltalet 2 till 3 mm.
+       Inte skalenlig: springorna är överdrivna så att de syns.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Reglarna bakom, prickade och dämpade -->
+  <g fill="none" stroke="#625a50" stroke-width="1" stroke-opacity="0.55" stroke-linecap="round" stroke-dasharray="2 5">
+    <path d="M120,52 V304 M190,52 V304 M260,52 V304 M330,52 V304 M400,52 V304 M470,52 V304 M540,52 V304"/>
+  </g>
+
+  <!-- Bortre sidans skivkanter, streckade -->
+  <g fill="none" stroke="#625a50" stroke-width="2" stroke-linecap="round" stroke-dasharray="14 8">
+    <path d="M190,62 V294 M330,62 V294 M470,62 V294"/>
+  </g>
+
+  <!-- Blyerts: tak, golv och den närmaste sidans skivor -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M60,44 Q300,42 570,44"/>
+    <path d="M60,312 Q300,314 570,312"/>
+    <path d="M120,60 Q330,58 540,60"/>
+    <path d="M120,296 Q330,298 540,296"/>
+    <path d="M120,60 Q119,178 120,296 M540,60 Q539,178 540,296"/>
+    <path d="M258,60 Q257,178 258,296 M262,60 Q263,178 262,296"/>
+    <path d="M398,60 Q397,178 398,296 M402,60 Q403,178 402,296"/>
+  </g>
+
+  <!-- Måttbyglar i blyerts-2 -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M106,44 V60 M101,44 h10 M101,60 h10"/>
+    <path d="M260,182 H330 M260,177 v10 M330,177 v10"/>
+    <path d="M414,240 H404"/>
+  </g>
+
+  <!-- Papperslappar bakom etiketter som korsar linjer -->
+  <rect x="42" y="68" width="106" height="24" fill="#f5efe3"/>
+  <rect x="220" y="192" width="160" height="26" fill="#f5efe3"/>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="414" y="226" width="116" height="25" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 472 238)"/>
+
+  <!-- Snickarpenna: ringen runt springan mot golvet -->
+  <path d="M212,290 C206,278 172,280 168,298 C164,316 178,326 194,322 C206,319 211,310 210,302" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="46" y="34">närmaste sidan</text>
+    <text x="360" y="34" fill="#625a50">bortre sidan, streckad</text>
+    <text x="46" y="86" font-size="22" fill="#625a50">10 till 15</text>
+    <text x="224" y="212">halv skivbredd</text>
+    <text x="418" y="246" font-size="22">2 till 3 mm</text>
+    <text x="60" y="348" font-size="22" fill="#ad3519">skivan står inte på golvet</text>
+  </g>
+</svg>

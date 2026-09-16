@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Gipsvägg framifrån med tre dolda reglar som streckade lodräta linjer på centrumavstånd 600 mm. Över varje regel står en lodrät rad skruvhuvuden med 300 mm mellan sig. Mellan reglarna markerar ljudvågor att väggen låter ihålig när du knackar, och ett eluttag sitter intill mittenregeln. Måttet c 600 är utmätt med snickarpenna.">
+  <!-- Anteckningsboken. Blyerts 2 px för skruvrad, knackvågor och eldosa, blyerts-2 1,5 px för dolda reglar
+       och måttbygel, snickarpenna för måttbygeln c 600 (enda pennsaken), tumstock bakom c 600.
+       Skala 0,3 px per mm i sidled: 600 mm blir 180 px. Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2: de dolda reglarna, måttbygeln c 300 och pekstrecket till regeln -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="9 8">
+    <path d="M140,84 Q139,192 140,304"/>
+    <path d="M320,84 Q321,192 320,304"/>
+    <path d="M500,84 Q499,192 500,304"/>
+  </g>
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M118,104 V194 M113,104 h10 M113,194 h10"/>
+    <path d="M306,200 L319,186"/>
+  </g>
+
+  <!-- Blyerts: skruvraden, knackvågorna och eldosan -->
+  <g fill="#2a2521" stroke="none">
+    <circle cx="140" cy="104" r="3.2"/>
+    <circle cx="140" cy="194" r="3.2"/>
+    <circle cx="140" cy="284" r="3.2"/>
+    <circle cx="320" cy="104" r="3.2"/>
+    <circle cx="320" cy="194" r="3.2"/>
+    <circle cx="320" cy="284" r="3.2"/>
+    <circle cx="500" cy="104" r="3.2"/>
+    <circle cx="500" cy="194" r="3.2"/>
+    <circle cx="500" cy="284" r="3.2"/>
+  </g>
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M214,138 C206,146 206,162 214,170"/>
+    <path d="M224,132 C213,143 213,165 224,176"/>
+    <path d="M234,126 C220,140 220,168 234,182"/>
+    <path d="M340,238 Q360,237 380,238 Q379,258 380,278 Q360,279 340,278 Q341,258 340,238 Z"/>
+    <circle cx="353" cy="258" r="5"/>
+    <circle cx="368" cy="258" r="5"/>
+    <path d="M60,306 Q320,307 580,306"/>
+    <path d="M60,316 Q320,317 580,316"/>
+  </g>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="192" y="37" width="62" height="24" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 223 49)"/>
+
+  <!-- Snickarpenna: måttet mellan två reglar -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round">
+    <path d="M140,66 Q230,67 320,66"/>
+    <path d="M140,60 V72 M320,60 V72"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="196" y="56">c 600</text>
+    <text x="46" y="96">skruvrad</text>
+    <text x="50" y="156" fill="#625a50">c 300</text>
+    <text x="170" y="206" fill="#625a50">ihåligt</text>
+    <text x="252" y="206" fill="#625a50">dovt</text>
+    <text x="352" y="130" fill="#625a50">c 450 i stål</text>
+    <text x="392" y="264" fill="#625a50">uttag vid regel</text>
+    <text x="452" y="342" fill="#625a50">dold regel</text>
+  </g>
+</svg>
