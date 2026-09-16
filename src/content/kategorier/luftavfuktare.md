@@ -9,6 +9,8 @@ specs:
     etikett: Kapacitet
     enhet: l/dygn
     bast: hogst
+  - nyckel: kapacitet_villkor
+    etikett: Kapacitet uppmätt vid
   - nyckel: typ
     etikett: Typ
   - nyckel: max_yta_kvm
@@ -27,16 +29,22 @@ specs:
     etikett: Lägsta arbetstemperatur
     enhet: °C
     bast: lagst
+  - nyckel: tank_liter
+    etikett: Tank
+    enhet: l
+    bast: hogst
+  - nyckel: slang
+    etikett: Slanganslutning
 val:
-  - produkt: woods-mrd20
-    etikett: Bäst till uppvärmd källare
-    forVem: Källare över 10 grader, upp till 60 kvm.
-  - produkt: platshallare-sorption
-    etikett: Bäst till krypgrund
-    forVem: Kalla utrymmen där kondensavfuktaren slutar fungera.
-  - produkt: platshallare-kondens-liten
-    etikett: Bäst under 3 000 kr
-    forVem: Litet förråd eller tvättstuga, inte en hel källare.
+  - produkt: woods-sw39fw
+    etikett: Bäst totalt
+    forVem: En källare på 30 till 60 kvm som kallnar mot 5 grader i november.
+  - produkt: acetec-evodry-6h-2
+    etikett: Bäst till kall källare
+    forVem: En källare under 10 grader med en vägg mot det fria för våtluftsslangen.
+  - produkt: woods-mdk21
+    etikett: Bäst för pengarna
+    forVem: En källare som håller 15 grader året om och har golvbrunn.
 kopguide: /fukt/avfuktare-kallare/
 kalkylator: avfuktare
 forfattare: redaktionen
