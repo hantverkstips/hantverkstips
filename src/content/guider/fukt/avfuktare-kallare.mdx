@@ -1,33 +1,36 @@
 ---
 title: Rätt avfuktare till källaren, och hur stor den behöver vara
-description: Temperaturen i källaren avgör om du behöver kondens eller sorption. Tre maskiner med pris, och vad de drar i el per månad.
+description: Så stor avfuktare din källare behöver, och när kondens räcker eller sorption krävs. Tre maskiner, kapacitet vid låg temperatur och elkostnad per månad.
 publicerad: 2026-09-16
 pelare: fukt
 typ: kopguide
 niva: mellan
 kategori: luftavfuktare
 kortSvar: >-
-  Källarens temperatur avgör typen, inte kartongen. Håller den över 10 grader året om
-  räcker kondens: Wood's SW39FW är förstavalet, MDK21 den billiga vägen om det finns
-  golvbrunn. Ligger den under 10 grader en längre period på vintern behöver du sorption,
-  och då är Acetec EvoDry 6H 2.0 vårt val. Hur många liter per dygn just din källare
-  behöver räknar du ut i vår kalkylator.
+  En källare på 40 kvm med 2,2 meter i tak och 65 procent i augusti behöver en
+  kondensavfuktare på 16 liter märkt kapacitet, alltså siffran på lådan, och där är
+  Wood's SW39FW förstavalet med MDK21 som den billiga vägen om det finns golvbrunn.
+  Ligger samma källare på 75 procent krävs 22 liter, och då är det SW43FW som gäller.
+  Går källaren under 10 grader en längre period på vintern behöver du sorption i
+  stället, och då är Acetec EvoDry 6H 2.0 vårt val.
 bild: ../../../assets/illustrationer/fukt/kallare-avfuktare.svg
 bildtext: En källare på 40 kvm i augusti. Markfukt genom väggen, sommarluft genom fönstret, tvättmaskinen som tredje källa.
 produkter:
   - slug: woods-sw39fw
     etikett: Bäst totalt
-    forVem: En källare på 30 till 60 kvm som kallnar ner mot 5 grader i november.
+    forVem: Upp till 40 kvm vid 60 till 70 procent, upp till 20 kvm när det är fuktigare än så.
   - slug: acetec-evodry-6h-2
     etikett: Bäst till kall källare
-    forVem: En källare under 10 grader med en vägg mot det fria för våtluftsslangen.
+    forVem: En kall källare upp till 20 kvm vid 60 till 80 procent, med en vägg mot det fria för våtluftsslangen.
   - slug: woods-mdk21
     etikett: Bäst för pengarna
-    forVem: En uppvärmd källare över 10 grader med golvbrunn.
+    forVem: Upp till 40 kvm vid 60 till 70 procent, i en källare som håller 15 grader året om och har golvbrunn.
 forfattare: redaktionen
 kallor:
   - titel: Proffsmagasinet, Wood's SW39FW I-EcoDefrost+
     url: https://www.proffsmagasinet.se/vvs-inomhusklimat/inomhusklimat/avfuktare/avfuktare/woods-sw39fw-i-ecodefrost-avfuktare-med-luftfilter-140-m-4058317
+  - titel: Proffsmagasinet, Wood's SW43FW I-EcoDefrost+
+    url: https://www.proffsmagasinet.se/vvs-inomhusklimat/inomhusklimat/avfuktare/avfuktare/woods-sw43fw-i-ecodefrost-avfuktare-med-luftfilter-190-m-4058319
   - titel: Proffsmagasinet, Wood's MDK21
     url: https://www.proffsmagasinet.se/vvs-inomhusklimat/inomhusklimat/avfuktare/avfuktare/woods-mdk21-avfuktare-upp-till-70-m-vs57632
   - titel: Proffsmagasinet, Wood's DSC50FM
@@ -65,11 +68,26 @@ Vill du ha talet för just ditt utrymme kan du [räkna på din källare](/rakna/
 
 ## Så stor behöver den vara
 
-Yta gånger takhöjd. Det är där du börjar. En källare på 40 kvm med 2,2 m i tak rymmer 88 kubikmeter luft, och det talet, tillsammans med vad hygrometern visar i augusti, är allt kalkylatorn behöver för att ge dig liter per dygn.
+Yta gånger takhöjd. Det är där du börjar. En källare på 40 kvm med 2,2 m i tak rymmer 88 kubikmeter luft, och ligger den på 65 procent i augusti ger kalkylatorn <Markering>16 liter märkt kapacitet</Markering> för en kondensavfuktare.
 
 <Verktygskort kalkylator="avfuktare" />
 
-{/* DIMENSIONERINGSTABELL: liter per dygn mot yta och fuktnivå läggs in här när produktexperten levererat formeln med källa till src/lib/kalkyl/avfuktare.ts. Tills dess står tillverkarnas egna maxytor nedan, eftersom de är det enda underlaget ger. */}
+Märkt kapacitet är siffran på lådan, inte vad maskinen tar upp i din källare. Kondenskolumnerna gäller utrymmen över 15 grader, sorptionskolumnerna utrymmen mellan 5 och 15. Under 5 grader räknar vi inte.
+
+| Yta | Medel, 60 till 70 %, kondens | Medel, 60 till 70 %, sorption | Hög, 70 till 80 %, kondens | Hög, 70 till 80 %, sorption | Mycket hög, över 80 %, kondens | Mycket hög, över 80 %, sorption |
+|---|---|---|---|---|---|---|
+| 20 kvm | 8 | 5 | 11 | 6 | 17 | 8 |
+| 40 kvm | 16 | 10 | 22 | 12 | 33 | 16 |
+| 60 kvm | 24 | 14 | 33 | 17 | 49 | 23 |
+| 80 kvm | 32 | 19 | 43 | 23 | 65 | 31 |
+
+Antagandena bakom tabellen: takhöjd 2,2 m, målnivå 55 procent RF, 0,5 luftomsättningar i timmen, uteluft 10,0 gram per kubikmeter i augusti, markfukt 10, 40 respektive 100 gram per kvm och dygn, marginal 1,3, och omräkning från märkt kapacitet till verklig med 0,30 vid 15 grader för kondens och 0,80 vid 10 grader för sorption. Räknat med samma formel som vår kalkylator.
+
+Jämför sedan talet med märkningen på lådan. SW39FW står för 19 liter och klarar exemplet ovan. Samma källare på 75 procent kräver 22 liter, och då räcker varken den eller MDK21. Där tar du nästa storlek i serien:
+
+<Produktkort produkt="woods-sw43fw" variant="kompakt" etikett="Till stor eller riktigt fuktig källare" forVem="Upp till 60 kvm vid 60 till 70 procent, och 40 kvm vid 75." />
+
+SW43FW uppges till 25,5 liter, drar 420 W, går ner till 2 grader och har samma tank på 11,4 liter och samma slanganslutning som SW39FW. Slangen ingår inte här heller, ljudnivån saknas på produktsidan precis som för systermodellerna, och du betalar för kapacitet du inte behöver om källaren ligger på 65 procent.
 
 Tillverkarna svarar på samma fråga med kvadratmeter i stället för liter, och det är de talen som står på kartongen:
 
@@ -77,6 +95,7 @@ Tillverkarna svarar på samma fråga med kvadratmeter i stället för liter, och
 |---|---|---|---|---|
 | Wood's MDK21 | 70 kvm | 20 l vid 30 °C och 80 % | plus 5 °C | Proffsmagasinet |
 | Wood's SW39FW | 140 kvm | 19 l, villkor ej angivet | plus 2 °C | Proffsmagasinet |
+| Wood's SW43FW | 190 kvm | 25,5 l, villkor ej angivet | plus 2 °C | Proffsmagasinet |
 | Acetec EvoDry 6H 2.0 | 100 m³, cirka 40 kvm | 7,4 l vid 20 °C och 60 % | minus 20 °C | Acetec datablad |
 
 Maxytan är tillverkarens egen och räknad vid tillverkarens egna villkor, så läs den som ett tak och inte som ett löfte. Att EvoDry täcker cirka 40 kvm och MDK21 70 betyder inte att MDK21 är dubbelt så stark. Det betyder att de två talen är tagna vid olika temperatur, vilket är hela nästa avsnitt.
@@ -91,7 +110,7 @@ Sedan kommer daggpunkten. Vid 12 grader och 75 procent ligger den på 7,7 grader
 
 Ljungby Fuktkontroll sätter gränsen vid plus 15 grader för att en kondensavfuktare ska fungera väl, och skriver att kapaciteten därunder faller "mer markant och successivt". Dantherm drar linjen lägre och säger kondens över 8 grader och 40 procent relativ fuktighet, sorption under det. Två olika svar från två branschkällor, men samma riktning.
 
-Regeln vi går på ligger mitt emellan och är lätt att komma ihåg. Håller källaren <Markering>över 10 grader</Markering> året om, köp kondens. Ligger den under 10 grader en längre period på vintern, köp sorption. Maskinerna själva slutar på olika ställen, och det är värt att läsa innan du beställer: MDK21 stannar vid plus 5 grader, SW-serien går till plus 2, EvoDry 6H 2.0 arbetar ner till minus 20. Att en maskin startar vid 2 grader är dock inte samma sak som att den avfuktar där.
+Regeln vi går på ligger mitt emellan och är lätt att komma ihåg. Håller källaren över 10 grader året om, köp kondens. Ligger den under 10 grader en längre period på vintern, köp sorption. Maskinerna själva slutar på olika ställen, och det är värt att läsa innan du beställer: MDK21 stannar vid plus 5 grader, SW-serien går till plus 2, EvoDry 6H 2.0 arbetar ner till minus 20. Att en maskin startar vid 2 grader är dock inte samma sak som att den avfuktar där.
 
 Branschen anger kapaciteten vid 30 grader och 80 procent, ibland vid 27/60 eller 20/70. Här är vad tillverkarna själva skriver, rad för rad:
 
@@ -99,27 +118,26 @@ Branschen anger kapaciteten vid 30 grader och 80 procent, ibland vid 27/60 eller
 |---|---|---|---|---|---|
 | Wood's SW39FW | kondens | 19 l (villkor ej angivet) | ej angivet | ej angivet | Proffsmagasinet |
 | Wood's MDK21 | kondens | 20 l | ej angivet | ej angivet | Proffsmagasinet |
-| Wood's DSC50FM | kondens | 16,2 l (35/80) | 8,8 l | ej angivet | Proffsmagasinet |
-| Wood's SW59FM | kondens | 41 l | 25 l | ej angivet | Proffsmagasinet, woods.se |
-| Meaco 10L ABC | kondens | 10 l | ej angivet | 1,09 l (10/60), 0,47 l (5/60) | Elgiganten, butiksuppgift |
 | Acetec EvoDry 6H 2.0 | sorption | ej angivet | 7,4 l (20/60), 9,7 som mest | ej angivet | Acetec datablad |
-| Corroventa CTR STD-TT | sorption | ej angivet | 17 l (20/60) | 13 l (10/60), 11 l (5/60) | Corroventa |
+| Meaco 10L ABC | kondens | 10 l | ej angivet | 1,09 l (10/60), 0,47 l (5/60) | Elgiganten, butiksuppgift |
 
-Titta på kolumnen för 10 grader. Den är nästan tom, och det är sidans viktigaste upplysning. Ingen tillverkare i Proffsmagasinets sortiment anger kapacitet under 20 grader, alltså finns det inget datablad för någon av kondensmaskinerna i sortimentet som svarar på vad din källare får ut av maskinen i november. Den mätningen gör vi själva i kammartestet.
+Titta på kolumnen för 10 grader. Den enda raden med ett tal där är Meacos, och det är en butiksuppgift om en maskin vi avråder från längre ner. Ingen tillverkare i Proffsmagasinets sortiment anger kapacitet under 20 grader, alltså finns det inget datablad för någon av kondensmaskinerna i sortimentet som svarar på vad din källare får ut av maskinen i november. Den mätningen gör vi själva i kammartestet.
 
-Där ett par värden finns är fallet tydligt. DSC50FM går från 16,2 liter till 8,8. SW59FM från 41 till 25. AD20 uppges till 23 liter vid 30/80 och 14 vid 27/60.
+Wood's egna par för de större maskinerna i sortimentet visar vartåt det lutar. DSC50FM går från 16,2 liter till 8,8. SW59FM från 41 till 25. AD20 uppges till 23 liter vid 30/80 och 14 vid 27/60.
 
 <Illustration namn="fukt/kapacitet-temperatur" alt="Stapeldiagram över liter per dygn vid 30 och 20 grader för Wood's DSC50FM, SW59FM och AD20, med Corroventa CTR som sorptionsreferens vid 20, 10 och 5 grader." bildtext="Tillverkarnas egna par. Kondensmaskinerna tappar fyra till sex tiondelar mellan 30 och 20 grader, sorptionsmaskinen en fjärdedel mellan 20 och 10." />
 
 Sorptionsmaskinen tappar också, men långsammare. Corroventa uppger 17 liter för CTR STD-TT vid 20 grader och 60 procent, 13 liter vid 10 grader och 11 liter vid 5. Det är den kurvan du köper när du köper sorption.
 
+{/* Hela kapacitetsjämförelsen mellan kondens och sorption ligger på /fukt/sorptionsavfuktare/ och ska inte dubbleras här. */}
+
 Ligger din källare under 10 grader en längre period på vintern är valet gjort åt dig. Då är det den här:
 
-<Produktkort produkt="acetec-evodry-6h-2" variant="kompakt" etikett="Bäst till kall källare" forVem="En källare under 10 grader med en vägg mot det fria för våtluftsslangen." />
+<Produktkort produkt="acetec-evodry-6h-2" variant="kompakt" etikett="Bäst till kall källare" forVem="En kall källare upp till 20 kvm vid 60 till 80 procent, med en vägg mot det fria för våtluftsslangen." />
 
 Acetec uppger 7,4 liter per dygn vid 20 grader och 60 procent, som mest 9,7, arbetsområde från minus 20 till plus 40 grader och 100 kubikmeter. En slang på 50 mm och 1,5 m ingår. Ljudnivån är 48 dBA enligt Acetec, och det är Acetecs siffra vi går på även om butiken skriver 46.
 
-Nu det jobbiga. Maskinen drar 530 W så länge den går, och vid 20 grader och 60 procent blir det 1,7 kWh per liter vatten, räknat av oss på de två uppgifterna. Våtluften måste dessutom ut, genom en vägg eller ett fönster, vilket betyder hål och en slang du inte kan gömma. Acetec skriver själva att maskinen inte är avsedd för krypgrund eller kallvind. Håller din källare 15 grader året om och elräkningen är huvudfrågan, köp inte den här. Mer om skillnaden finns i [sorptionsavfuktare för källare under 15 grader](/fukt/sorptionsavfuktare/).
+Nu det jobbiga. Maskinen drar 530 W så länge den går, och vid 20 grader och 60 procent blir det 1,7 kWh per liter vatten, räknat av oss på de två uppgifterna. Våtluften måste dessutom ut, genom en vägg eller ett fönster, vilket betyder hål och en slang du inte kan gömma. Acetec skriver själva att maskinen inte är avsedd för krypgrund eller kallvind. Håller din källare 15 grader året om och elräkningen är huvudfrågan, köp inte den här. Hela jämförelsen mellan kondens och sorption vid 5, 10 och 20 grader står i [sorptionsavfuktare för källare under 15 grader](/fukt/sorptionsavfuktare/).
 
 ## Var den ska stå, och vart vattnet ska ta vägen
 
@@ -152,19 +170,21 @@ Ett annat sätt att se på det: EvoDry 6H drar 1,7 kWh per liter vatten vid 20 g
 
 Ska källaren hålla 15 grader året om och det finns en golvbrunn i golvet, är det här den billiga vägen:
 
-<Produktkort produkt="woods-mdk21" variant="kompakt" etikett="Bäst för pengarna" forVem="En uppvärmd källare över 10 grader med golvbrunn." />
+<Produktkort produkt="woods-mdk21" variant="kompakt" etikett="Bäst för pengarna" forVem="Upp till 40 kvm vid 60 till 70 procent, i en källare som håller 15 grader året om och har golvbrunn." />
 
-MDK21 uppges till 20 liter vid 30 grader och 80 procent, drar 240 W, klarar upp till 70 kvm, låter högst 48 dB och har slanganslutning. Men lägsta arbetstemperatur är plus 5 grader, tanken rymmer bara 4 liter, och det finns ingen uppgift om vad den ger vid 20 grader. Ligger din källare under 10 grader en längre period på vintern är den fel maskin, hur bra pris den än har.
+MDK21 uppges till 20 liter vid 30 grader och 80 procent, drar 240 W, klarar 70 kvm enligt tillverkaren och låter högst 48 dB. Men vår egen tabell stannar på 40 kvm vid 60 till 70 procent för den maskinen, lägsta arbetstemperatur är plus 5 grader, tanken rymmer bara 4 liter, och det finns ingen uppgift om vad den ger vid 20 grader. Ligger din källare under 10 grader en längre period på vintern är den fel maskin, hur bra pris den än har.
 
 ## Maskinerna vi rekommenderar, och två vi inte gör
 
-<Produktkort produkt="woods-sw39fw" variant="kompakt" etikett="Bäst totalt" forVem="En källare på 30 till 60 kvm som kallnar ner mot 5 grader i november." />
+<Produktkort produkt="woods-sw39fw" variant="kompakt" etikett="Bäst totalt" forVem="Upp till 40 kvm vid 60 till 70 procent, upp till 20 kvm när det är fuktigare än så." />
 
-SW39FW är den vi pekar på för en vanlig villakällare på 30 till 60 kvm som kryper ner mot 5 grader i november. Butiken uppger 19 liter, drift ner till 2 grader, 11,4 liters tank, slanganslutning, 320 W och 140 kvm. Det är ytan och arbetstemperaturen som gör den intressant: den är byggd för mer yta än du har, och den stannar inte förrän vid 2 grader enligt butiken, även om ingen kan säga hur många liter den ger där.
+SW39FW är den vi pekar på för en vanlig villakällare på upp till 40 kvm som ligger på 60 till 70 procent och kryper ner mot 5 grader i november. Butiken uppger 19 liter, drift ner till 2 grader, 11,4 liters tank, slanganslutning, 320 W och 140 kvm. Det är ytan och arbetstemperaturen som gör den intressant: den är byggd för mer yta än du har, och den stannar inte förrän vid 2 grader enligt butiken, även om ingen kan säga hur många liter den ger där.
 
 Invändningarna då. Ljudnivån finns inte angiven på produktsidan, så räkna inte med en tyst maskin på hög fläkt. Slangen ingår inte. Ingen siffra vid 20 grader, precis som för resten av sortimentet. Och allt ovanstående är butikens återgivning av tillverkaren, inte något vi verifierat. Ska maskinen stå i ett rum du sover i, köp inte den.
 
 Valet blir alltså kort. Håller källaren 15 grader året om, ta SW39FW, eller MDK21 om det finns golvbrunn och priset avgör. Kallnar den ner mot 5 grader några veckor i november men ligger över 10 resten av året, ta SW39FW. Ligger den under 10 grader hela vintern, ta EvoDry 6H 2.0 och acceptera elräkningen.
+
+Storleken lägger sig ovanpå temperaturen. SW39FW och MDK21 räcker till 40 kvm vid 60 till 70 procent, EvoDry 6H 2.0 till 20 kvm, och en uppvärmd källare som är större eller fuktigare än så tar SW43FW.
 
 Vår egen källare mäts just nu, och siffrorna kommer här:
 
@@ -176,7 +196,7 @@ Den första är en liten kondensmaskin i en ouppvärmd källare. Meaco 10L ABC �
 
 Den andra är eeese Adam 20. Den anges till 42 till 44 dB, alltså både billigare och tystare än MDK21, och den hade kunnat bli vår rekommendation. Men den saknar svenskt datablad, så vi rekommenderar den inte förrän vi haft den i handen.
 
-Fler maskiner i kategorin finns hos [alla avfuktare vi testat](/luftavfuktare/).
+Fler maskiner i kategorin finns hos [alla avfuktare vi granskat](/luftavfuktare/).
 
 ## När avfuktaren inte räcker
 
