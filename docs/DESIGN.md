@@ -34,7 +34,7 @@ Två typsnitt, tre filer, 59,8 kB tillsammans. Alla under 60 kB var. Verifierat 
 
 **Varför Atkinson Hyperlegible.** Ritat för maximal läsbarhet, med tydlig skillnad mellan 1, l och I och mellan 0 och O, vilket vi behöver i tabeller med mätvärden. Nästan ingen svensk sajt använder det, så det bidrar till igenkänning. Familjen finns bara i 400 och 700, så halvfet betyder 700 överallt. Utvecklaren kontrollerar vid första tabellen att siffrorna står i raka kolumner med `font-variant-numeric: tabular-nums`; om typsnittet saknar tabellsiffror högerställs sifferkolumner så att kommatecknen ändå hamnar i linje.
 
-**Varför Caveat, och varför den inte laddas.** Handskriften är snickarens anteckning i marginalen och finns bara i illustrationer och i marginalanteckningen (avsnitt 6). Den skickas aldrig till klienten som webbfont. Texten konverteras till banor i SVG-filen innan publicering, så att illustrationen ser likadan ut överallt och kostar noll byte typsnitt. `--font-hand` finns i `global.css` bara för SVG-källfilerna och för att namnet ska vara ett. `font-hand` i HTML är ett fel.
+**Varför Caveat, och varför den inte laddas.** Handskriften är snickarens anteckning i marginalen och finns bara i illustrationer och i marginalanteckningen (avsnitt 6). Den skickas aldrig till klienten som webbfont. Texten konverteras till banor i SVG-filen innan publicering (`npm run illustrationer`, se bilaga B och `docs/ARKITEKTUR.md`), så att illustrationen ser likadan ut överallt och kostar noll byte typsnitt. `--font-hand` finns i `global.css` bara för SVG-källfilerna och för att namnet ska vara ett. `font-hand` i HTML är ett fel.
 
 Bortvalda från första omgången: IBM Plex Sans (30,2 kB, bra men anonymt) och Source Serif 4 (tidningskänslan var fel svar).
 
@@ -905,5 +905,23 @@ Alla filer under `src/assets/brand/riktning-1/`. Handskrivna SVG:er utan editorm
 | `monster.svg` | Linjerat papper, kakelbart 48 × 24 | Som `<pattern>` i illustrationer. I HTML används `.linjerat` i stället |
 
 Illustrationerna ligger inte i brand-mappen utan i `src/assets/illustrationer/[pelare]/`: `fukt/kallare.svg` (källaren i genomskärning, förebild för alla skisser, huvudbild i fuktguiderna och startsidans säsongsblock augusti till november). En ny skiss läggs i pelarens mapp och refereras från artikeln enligt `docs/ARKITEKTUR.md`.
+
+**Illustrationernas två mappar.** Texten i en skiss redigeras aldrig i den publicerade filen, utan i källan:
+
+| Mapp | Innehåll | Deployas |
+|---|---|---|
+| `src/assets/illustrationer-kallor/[pelare]/[namn].svg` | Originalet med `<text>` i Caveat 500, Zilla Slab 600 eller Atkinson. Här skriver designansvarig om en anteckning | Nej |
+| `src/assets/illustrationer/[pelare]/[namn].svg` | Samma skiss med all `<text>` konverterad till `<path>`. Det är den här filen artiklarna använder | Ja |
+| `scripts/typsnitt/*.ttf` | Caveat 500, Zilla Slab 600, Atkinson Hyperlegible 400 och 700 som TTF, för konverteringen. OFL, committade | Nej |
+
+Arbetsgången: ändra texten i `illustrationer-kallor/`, kör `npm run illustrationer` (ingår i `npm run build`), committa båda filerna. Skriptet är `scripts/konvertera-handskrift.mjs` (Node med `opentype.js`), det bevarar allt annat i filen och rör inte en fil som redan är konverterad. Tekniken beskrivs i `docs/ARKITEKTUR.md` under Illustrationer. Banor väger mer än text, så en skiss landar på 18 till 38 kB i stället för 3 till 6; gränsen är 40 kB och över den förenklas skissen.
+
+TTF-filerna i `scripts/typsnitt/` hämtas med samma CSS-API som woff2-filerna i avsnitt 2, men med en user-agent som inte kan woff2 (till exempel Android 4), så att `/* latin */`-blocken ger `.ttf`:
+
+```
+https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Zilla+Slab:wght@600&family=Atkinson+Hyperlegible:wght@400;700
+```
+
+Hämtade 2026-09-16: `caveat-500.ttf` (245,8 kB), `zilla-slab-600.ttf` (93,4 kB), `atkinson-hyperlegible-400.ttf` (34,5 kB), `atkinson-hyperlegible-700.ttf` (34,7 kB). Ingen av dem skickas till klienten; Caveat finns bara i banorna.
 
 Ordmärket i båda varianterna sätter texten i Zilla Slab som `<text>`. Så länge sajten self-hostar typsnittet renderas den inlineade varianten rätt. Konvertering av texten till banor görs med fonttools när det finns tillgängligt i bygg-miljön, och då byts `<text>` mot en `<path>` i båda filerna så att ordmärket blir oberoende av typsnittsladdning. Tills dess: reservstacken Georgia visas under de millisekunder swap tar, vilket är samma beteende som alla H1 på sidan.

@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Skiss av en källare på 40 kvadratmeter i genomskärning i augusti. Markfukt trycker in genom väggen från vänster, sommarluft kommer in genom ett öppet källarfönster till höger och lämnar droppar på det kalla golvet, tvättmaskinen står i hörnet, och en avfuktare mitt i rummet blåser torr luft och leder vattnet i slang till golvbrunnen.">
+  <!-- Anteckningsboken. Blyerts 2 px för huset, blyerts-2 för skraffering och mått, snickarpenna för markfukten
+       (enda pennsaken), tumstock bakom nyckeltalet 75 %. Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts: huset -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M56,170 Q160,167 260,170 T420,169 T566,171"/>
+    <path d="M146,104 Q230,72 315,40 Q400,72 484,104"/>
+    <path d="M380,65 V44 H398 V72"/>
+    <path d="M160,102 Q159,136 160,172 M470,102 Q471,136 470,172"/>
+    <path d="M156,170 Q315,172 474,170"/>
+    <path d="M160,170 Q158,245 160,322 M470,206 Q472,264 470,322"/>
+    <path d="M156,320 Q315,322 474,320"/>
+    <path d="M190,122 H222 V147 H190 Z M206,122 V147"/>
+    <path d="M408,122 H440 V147 H408 Z M424,122 V147"/>
+    <!-- öppet källarfönster i högerväggen -->
+    <path d="M470,170 V180 M466,180 H476 M466,204 H476 M472,180 L490,200"/>
+    <!-- sommarluft ner mot golvet, droppar på det kalla golvet -->
+    <path d="M462,196 Q450,226 444,266 M436,258 L444,268 L452,258"/>
+    <path d="M404,306 C403,308 400,311 400,314 A4,4 0 0 0 408,314 C408,311 405,308 404,306"/>
+    <path d="M436,308 C435,310 432,313 432,316 A4,4 0 0 0 440,316 C440,313 437,310 436,308"/>
+    <path d="M456,302 C455,304 452,307 452,310 A4,4 0 0 0 460,310 C460,307 457,304 456,302"/>
+    <!-- tvättmaskin -->
+    <path d="M180,270 H230 V320 M181,320 V269"/>
+    <path d="M205,286 A12,12 0 1 0 205.5,286"/>
+    <path d="M192,262 Q196,256 192,250 M206,262 Q210,256 206,250"/>
+    <!-- avfuktaren mitt i rummet, luft in och ut, slang till golvbrunn -->
+    <path d="M290,250 H340 V320 M291,320 V249"/>
+    <path d="M296,262 H334 M296,272 H334"/>
+    <path d="M246,286 H286 M278,279 L287,286 L278,293"/>
+    <path d="M334,246 V216 M327,224 L334,215 L341,224"/>
+    <path d="M340,308 Q362,314 374,316"/>
+    <path d="M372,314 H394 M376,314 V320 M382,314 V320 M388,314 V320"/>
+  </g>
+
+  <!-- Blyerts-2: jordskraffering utanför källarväggarna -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M60,180 l10,10 M82,180 l10,10 M104,180 l10,10 M126,180 l10,10 M148,180 l10,10"/>
+    <path d="M70,212 l10,10 M92,212 l10,10 M114,212 l10,10 M136,212 l10,10"/>
+    <path d="M60,244 l10,10 M82,244 l10,10 M104,244 l10,10 M126,244 l10,10 M148,244 l10,10"/>
+    <path d="M70,276 l10,10 M92,276 l10,10 M114,276 l10,10 M136,276 l10,10"/>
+    <path d="M60,308 l10,10 M82,308 l10,10 M104,308 l10,10 M126,308 l10,10 M148,308 l10,10"/>
+    <path d="M496,180 l10,10 M518,180 l10,10 M540,180 l10,10 M562,180 l10,10"/>
+    <path d="M486,212 l10,10 M508,212 l10,10 M530,212 l10,10 M552,212 l10,10"/>
+    <path d="M496,244 l10,10 M518,244 l10,10 M540,244 l10,10 M562,244 l10,10"/>
+    <path d="M486,276 l10,10 M508,276 l10,10 M530,276 l10,10 M552,276 l10,10"/>
+    <path d="M496,308 l10,10 M518,308 l10,10 M540,308 l10,10 M562,308 l10,10"/>
+  </g>
+
+  <!-- Papperslappar bakom anteckningar i skrafferingen -->
+  <g fill="#f5efe3">
+    <rect x="48" y="204" width="106" height="52" transform="rotate(-1 101 230)"/>
+    <rect x="476" y="216" width="118" height="52" transform="rotate(1 535 242)"/>
+  </g>
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="294" y="182" width="48" height="24" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 318 194)"/>
+
+  <!-- Snickarpenna: markfukten genom väggen -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M94,266 Q122,264 152,267 M143,259 L153,267 L143,275"/>
+  </g>
+
+  <!-- Måttbyglar i blyerts-2 -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M172,176 Q170,246 172,316 M167,177 h10 M167,315 h10"/>
+    <path d="M164,338 Q315,341 466,338 M164,333 v10 M466,333 v10"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="20" fill="#2a2521">
+    <text x="298" y="200">75 % i augusti</text>
+    <text x="180" y="212" fill="#625a50">2,2 m i tak</text>
+    <text x="278" y="356" fill="#625a50">40 kvm</text>
+    <text x="184" y="246">tvättmaskin</text>
+    <text x="348" y="296">avfuktare</text>
+    <text x="346" y="238">sommarluft</text>
+    <text x="54" y="226" fill="#ad3519">markfukt</text>
+    <text x="54" y="248" fill="#ad3519">genom väggen</text>
+    <text x="480" y="238">fönstret</text>
+    <text x="480" y="260">stängt i juli</text>
+  </g>
+</svg>

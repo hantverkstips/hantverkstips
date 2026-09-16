@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Genomskärning av två reglar med gipsskiva och gipsskruv. Till vänster en träregel med en 12,5-skiva, skruven går minst 20 mm in i träet och den delen är inringad. Till höger en tunn stålprofil på 0,9 mm med två 12,5-skivor, skruven går 10 mm genom plåten.">
+  <!-- Anteckningsboken. Blyerts 2 px för skivor, reglar och skruvar, blyerts-2 för träskraffering och måttbyglar,
+       snickarpenna för ringen runt de 20 mm i träregeln (enda pennsaken), tumstock bakom nyckeltalet 20 mm.
+       Skala 3 px per mm. Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2: träregeln skrafferad -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M126,170 l10,10 M148,170 l10,10 M170,170 l10,10 M192,170 l10,10 M214,170 l10,10 M236,170 l10,10"/>
+    <path d="M136,192 l10,10 M158,192 l10,10 M180,192 l10,10 M202,192 l10,10 M224,192 l10,10"/>
+    <path d="M126,214 l10,10 M148,214 l10,10 M170,214 l10,10 M192,214 l10,10 M214,214 l10,10 M236,214 l10,10"/>
+    <path d="M136,236 l10,10 M158,236 l10,10 M180,236 l10,10 M202,236 l10,10 M224,236 l10,10"/>
+    <path d="M126,258 l10,10 M148,258 l10,10 M170,258 l10,10 M192,258 l10,10 M214,258 l10,10 M236,258 l10,10"/>
+    <path d="M136,280 l10,10 M158,280 l10,10 M180,280 l10,10 M202,280 l10,10 M224,280 l10,10"/>
+    <path d="M126,302 l10,10 M148,302 l10,10 M170,302 l10,10 M192,302 l10,10 M214,302 l10,10 M236,302 l10,10"/>
+  </g>
+  <rect x="168" y="160" width="20" height="64" fill="#f5efe3"/>
+
+  <!-- Blyerts: skivor, reglar, skruvar -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- vänster: en 12,5-skiva på träregel -->
+    <path d="M78,122 H164 M192,122 Q241,123 292,122 Q291,141 292,160 Q186,162 78,160 Q79,141 78,122"/>
+    <path d="M120,158 Q119,245 120,332 M255,158 Q256,245 255,332"/>
+    <path d="M118,332 Q140,326 160,332 T200,332 T240,332 T257,332"/>
+    <path d="M166,124 H190 Q187,131 184,134 V212 L178,221 L172,212 V134 Q169,131 166,124 Z"/>
+    <path d="M174,125 h8"/>
+    <path d="M172,142 l12,-3 M172,150 l12,-3 M172,158 l12,-3 M172,166 l12,-3 M172,174 l12,-3 M172,182 l12,-3 M172,190 l12,-3 M172,198 l12,-3 M172,206 l12,-3"/>
+    <!-- höger: två 12,5-skivor på stålprofil -->
+    <path d="M328,85 H426 M454,85 Q507,86 562,85 Q561,123 562,160 Q445,162 328,160 Q329,123 328,85"/>
+    <path d="M330,122.5 Q445,124 560,122.5"/>
+    <path d="M500,172 V160 H380 V330 H500 V318"/>
+    <path d="M497,172 V163 H383 V327 H497 V318"/>
+    <path d="M428,87 H452 Q449,94 446,97 V190 L440,199 L434,190 V97 Q431,94 428,87 Z"/>
+    <path d="M436,88 h8"/>
+    <path d="M434,104 l12,-2 M434,110 l12,-2 M434,116 l12,-2 M434,122 l12,-2 M434,128 l12,-2 M434,134 l12,-2 M434,140 l12,-2 M434,146 l12,-2 M434,152 l12,-2 M434,158 l12,-2 M434,164 l12,-2 M434,170 l12,-2 M434,176 l12,-2 M434,182 l12,-2"/>
+  </g>
+
+  <!-- Måttbyglar i blyerts-2 -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M66,122 V160 M61,122 h10 M61,160 h10"/>
+    <path d="M574,85 V160 M569,85 h10 M569,160 h10"/>
+    <path d="M264,160 V220 M259,160 h10 M259,220 h10"/>
+    <path d="M458,163 V190 M453,163 h10 M453,190 h10"/>
+  </g>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="270" y="188" width="54" height="22" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 297 199)"/>
+
+  <!-- Snickarpenna: ringen runt de 20 mm i träregeln -->
+  <path d="M196,166 C186,152 158,158 160,186 C162,214 172,232 190,226 C204,220 204,196 198,180" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="20" fill="#2a2521">
+    <text x="44" y="114" fill="#625a50">12,5</text>
+    <text x="466" y="76" fill="#625a50">12,5 + 12,5</text>
+    <text x="274" y="182">minst</text>
+    <text x="274" y="204">20 mm</text>
+    <text x="274" y="226">i trä</text>
+    <text x="466" y="190">10 genom</text>
+    <text x="466" y="212">plåten</text>
+    <text x="392" y="262" fill="#625a50">0,9 mm plåt</text>
+    <text x="128" y="354">träregel</text>
+    <text x="392" y="354">stålregel</text>
+  </g>
+</svg>

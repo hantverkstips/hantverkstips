@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340" width="600" height="340" role="img" aria-label="Två gipsskruvar sida vid sida. Till vänster grov gänga med nålspets för träregel, till höger fin gänga med borrspets för stålregel på 0,7 till 2,0 mm plåt. Trumpethuvudet på den vänstra är inringat, huvudet är detsamma på båda.">
+  <!-- Anteckningsboken. Blyerts 2 px för skruvarna, blyerts-2 för hänvisningslinjer, snickarpenna för ringen
+       runt trumpethuvudet (enda pennsaken). Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="340" fill="url(#linjerat)"/>
+  <path d="M40,0 V340" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts: skruvarna -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- vänster: grov gänga, nålspets -->
+    <path d="M176,50 H224 Q218,60 212,66 V268 L200,292 L188,268 V66 Q182,60 176,50 Z"/>
+    <path d="M196,50 V56 H204 V50"/>
+    <path d="M188,82 l24,-7 M188,96 l24,-7 M188,110 l24,-7 M188,124 l24,-7 M188,138 l24,-7 M188,152 l24,-7 M188,166 l24,-7 M188,180 l24,-7 M188,194 l24,-7 M188,208 l24,-7 M188,222 l24,-7 M188,236 l24,-7 M188,250 l24,-7 M188,264 l24,-7"/>
+    <!-- höger: fin gänga, borrspets -->
+    <path d="M376,50 H424 Q418,60 412,66 V262 L406,282 L400,290 L394,282 L388,262 V66 Q382,60 376,50 Z"/>
+    <path d="M396,50 V56 H404 V50"/>
+    <path d="M400,266 V288 M394,270 L406,280"/>
+    <path d="M388,80 l24,-4 M388,87 l24,-4 M388,94 l24,-4 M388,101 l24,-4 M388,108 l24,-4 M388,115 l24,-4 M388,122 l24,-4 M388,129 l24,-4 M388,136 l24,-4 M388,143 l24,-4 M388,150 l24,-4 M388,157 l24,-4 M388,164 l24,-4 M388,171 l24,-4 M388,178 l24,-4 M388,185 l24,-4 M388,192 l24,-4 M388,199 l24,-4 M388,206 l24,-4 M388,213 l24,-4 M388,220 l24,-4 M388,227 l24,-4 M388,234 l24,-4 M388,241 l24,-4 M388,248 l24,-4 M388,255 l24,-4"/>
+  </g>
+  <!-- Blyerts-2: hänvisningslinjer -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M150,166 Q168,168 184,164"/>
+    <path d="M140,282 Q170,286 196,290"/>
+    <path d="M330,166 Q350,168 384,164"/>
+    <path d="M420,266 Q412,272 406,278"/>
+  </g>
+
+  <!-- Snickarpenna: ringen runt trumpethuvudet -->
+  <path d="M236,44 C226,28 176,26 166,46 C158,62 176,80 200,78 C222,76 236,66 234,54" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="20" fill="#2a2521">
+    <text x="60" y="170">grov gänga</text>
+    <text x="60" y="288">nålspets</text>
+    <text x="250" y="170">fin gänga</text>
+    <text x="426" y="268">borrspets</text>
+    <text x="426" y="292" fill="#625a50">0,7 till 2,0 mm</text>
+    <text x="426" y="316" fill="#625a50">plåt</text>
+    <text x="244" y="52" fill="#ad3519">samma huvud</text>
+    <text x="244" y="74" fill="#ad3519">på båda</text>
+    <text x="186" y="328">trä</text>
+    <text x="382" y="328">stål</text>
+  </g>
+</svg>

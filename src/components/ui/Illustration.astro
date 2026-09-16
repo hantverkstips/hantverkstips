@@ -35,7 +35,9 @@ const filer = import.meta.glob<string>('../../assets/illustrationer/**/*.svg', {
   eager: true,
 });
 
-const MAX_BYTE = 24 * 1024;
+// Handskriften är banor, inte text (scripts/konvertera-handskrift.mjs), och banor väger
+// mer än <text>. Gränsen är därför 40 kB för en konverterad skiss, inte 24.
+const MAX_BYTE = 40 * 1024;
 
 const nyckel = `../../assets/illustrationer/${namn}.svg`;
 const ra = filer[nyckel];
@@ -56,7 +58,9 @@ if (ra.length > MAX_BYTE) {
   );
 }
 if (/<text[\s>]/.test(ra)) {
-  console.warn(`[Illustration] ${namn}.svg innehåller <text>. Handskriften ska vara banor innan publicering (DESIGN.md avsnitt 7).`);
+  console.warn(
+    `[Illustration] ${namn}.svg innehåller <text>. Handskriften ska vara banor innan publicering (DESIGN.md avsnitt 7). Redigera källan i src/assets/illustrationer-kallor/${namn}.svg och kör npm run illustrationer.`,
+  );
 }
 
 // Rotelementets attribut. viewBox ger måtten; width och height i filen ignoreras.

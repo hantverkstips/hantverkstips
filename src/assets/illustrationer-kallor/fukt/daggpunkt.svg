@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420" width="600" height="420" role="img" aria-label="Diagram över daggpunkt. Rumstemperatur 10 till 25 grader på x-axeln, relativ fuktighet 30 till 90 procent på y-axeln, med kurvor för daggpunkt 5, 10, 12 och 15 grader. Fältet ovanför 12-graderskurvan är skrafferat, där blir en yttervägg på 12 grader våt. Punkten 20 grader och 60 procent är inringad med anteckningen här börjar imman.">
+  <!-- Diagram i Anteckningsbokens hand. Kurvor i blyerts 2 px, 12-graderskurvan och skrafferingen i blyerts-2,
+       axeletiketter i Atkinson Hyperlegible, ringen och anteckningen i snickarpenna (enda pennsaken),
+       tumstock bakom nyckeltalet 12 °C. Kurvorna är ritade genom briefens daggpunktstabell (20 och 22 °C) och
+       mättnadsånghalten vid 10, 12, 15, 20 och 25 °C; inget utanför tabellerna.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="420" fill="url(#linjerat)"/>
+  <path d="M40,0 V420" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Skraffering: fältet där en yta på 12 grader är kallare än daggpunkten -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M230,44 l10,10 M252,44 l10,10 M274,44 l10,10 M296,44 l10,10 M318,44 l10,10 M340,44 l10,10 M362,44 l10,10 M384,44 l10,10 M406,44 l10,10 M428,44 l10,10 M450,44 l10,10 M472,44 l10,10 M494,44 l10,10 M516,44 l10,10 M538,44 l10,10 M560,44 l10,10"/>
+    <path d="M241,66 l10,10 M263,66 l10,10 M285,66 l10,10 M307,66 l10,10 M329,66 l10,10 M351,66 l10,10 M373,66 l10,10 M395,66 l10,10 M417,66 l10,10 M439,66 l10,10 M461,66 l10,10 M483,66 l10,10 M505,66 l10,10 M527,66 l10,10 M549,66 l10,10"/>
+    <path d="M274,88 l10,10 M296,88 l10,10 M318,88 l10,10 M340,88 l10,10 M362,88 l10,10 M384,88 l10,10 M406,88 l10,10 M428,88 l10,10 M450,88 l10,10 M472,88 l10,10 M494,88 l10,10 M516,88 l10,10 M538,88 l10,10 M560,88 l10,10"/>
+    <path d="M307,110 l10,10 M329,110 l10,10 M351,110 l10,10 M373,110 l10,10 M395,110 l10,10 M417,110 l10,10 M439,110 l10,10 M461,110 l10,10 M483,110 l10,10 M505,110 l10,10 M527,110 l10,10 M549,110 l10,10"/>
+    <path d="M340,132 l10,10 M362,132 l10,10 M384,132 l10,10 M406,132 l10,10 M428,132 l10,10 M450,132 l10,10 M472,132 l10,10 M494,132 l10,10 M516,132 l10,10 M538,132 l10,10 M560,132 l10,10"/>
+    <path d="M373,154 l10,10 M395,154 l10,10 M417,154 l10,10 M439,154 l10,10 M461,154 l10,10 M483,154 l10,10 M505,154 l10,10 M527,154 l10,10 M549,154 l10,10"/>
+    <path d="M406,176 l10,10 M428,176 l10,10 M450,176 l10,10 M472,176 l10,10 M494,176 l10,10 M516,176 l10,10 M538,176 l10,10 M560,176 l10,10"/>
+    <path d="M439,198 l10,10 M461,198 l10,10 M483,198 l10,10 M505,198 l10,10 M527,198 l10,10 M549,198 l10,10"/>
+    <path d="M494,220 l10,10 M516,220 l10,10 M538,220 l10,10 M560,220 l10,10"/>
+    <path d="M549,242 l10,10"/>
+  </g>
+  <!-- Papperslapp bakom anteckningen i skrafferingen -->
+  <rect x="412" y="54" width="156" height="26" fill="#f5efe3"/>
+  <text x="418" y="74" font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="20" fill="#625a50">väggen blir våt</text>
+
+  <!-- Axlar i blyerts-2 -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M80,36 Q79,190 80,344"/>
+    <path d="M76,340 Q325,341 574,340"/>
+    <path d="M74,340 h6 M74,290 h6 M74,240 h6 M74,190 h6 M74,140 h6 M74,90 h6 M74,40 h6"/>
+    <path d="M80,340 v6 M243.3,340 v6 M406.7,340 v6 M570,340 v6"/>
+    <!-- 12-graderskurvan, gränsen för det skrafferade fältet -->
+    <path d="M204.1,40 C210.7,45.8 209.6,50 243.3,75 C277.1,100 368.6,165 406.7,190 C444.8,215 444.8,213.3 472,225 C499.2,236.7 553.7,254.2 570,260"/>
+  </g>
+  <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="20" fill="#625a50">
+    <g text-anchor="end">
+      <text x="70" y="347">30</text>
+      <text x="70" y="297">40</text>
+      <text x="70" y="247">50</text>
+      <text x="70" y="197">60</text>
+      <text x="70" y="147">70</text>
+      <text x="70" y="97">80</text>
+      <text x="70" y="47">90</text>
+    </g>
+    <g text-anchor="middle">
+      <text x="80" y="368">10</text>
+      <text x="243" y="368">15</text>
+      <text x="407" y="368">20</text>
+      <text x="570" y="368">25</text>
+      <text x="325" y="398">rumstemperatur, °C</text>
+    </g>
+    <text x="44" y="30">RF, %</text>
+  </g>
+
+  <!-- Daggpunktskurvor 5, 10 och 15 °C i blyerts -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round">
+    <path d="M80,130 C90.9,136.7 118.1,154.2 145.3,170 C172.6,185.8 199.8,203.3 243.3,225 C286.9,246.7 368.6,283.3 406.7,300 C444.8,316.7 444.8,318.3 472,325 C499.2,331.7 553.7,337.5 570,340"/>
+    <path d="M145.3,45 C161.7,58.3 199.8,95 243.3,125 C286.9,155 368.6,203.3 406.7,225 C444.8,246.7 444.8,245 472,255 C499.2,265 553.7,280 570,285"/>
+    <path d="M308.7,40 C325,54.2 379.4,104.2 406.7,125 C433.9,145.8 444.8,150.8 472,165 C499.2,179.2 553.7,202.5 570,210"/>
+  </g>
+
+  <!-- Kurvetiketter där kurvorna går in i diagrammet, nyckeltalet 12 °C överstruket -->
+  <rect x="178" y="12" width="52" height="24" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 204 24)"/>
+  <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="20" fill="#2a2521">
+    <text x="86" y="122">5 °C</text>
+    <text x="145" y="30" text-anchor="middle">10 °C</text>
+    <text x="204" y="30" text-anchor="middle">12 °C</text>
+    <text x="309" y="30" text-anchor="middle">15 °C</text>
+    <text x="344" y="30" fill="#625a50">daggpunkt</text>
+  </g>
+
+  <!-- Snickarpenna: ringen runt 20 °C och 60 %, och anteckningen -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round">
+    <path d="M418,176 C400,168 388,186 394,200 C400,214 424,212 424,196 C424,190 421,184 416,181"/>
+    <path d="M240,290 Q310,296 392,204"/>
+  </g>
+  <text x="92" y="300" font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="20" fill="#ad3519">här börjar imman</text>
+</svg>

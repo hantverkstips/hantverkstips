@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" width="600" height="300" role="img" aria-label="Tre försänkningar av gipsskruv i genomskärning. Till vänster för grunt, huvudet står över ytan. I mitten rätt, huvudet 0,5 till 1 mm under ytan med kartongen hel. Till höger för djupt, huvudet har gått genom kartongen, inringat med anteckningen den här håller inte.">
+  <!-- Anteckningsboken. Blyerts 2 px för skiva, regel och skruv, blyerts-2 för kartongen, träskraffering, rutor
+       och måttbygel, snickarpenna för ringen runt den för djupa skruven (enda pennsaken).
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="300" fill="url(#linjerat)"/>
+  <path d="M40,0 V300" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2: tre rutor, träskraffering, kartongen -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M56,44 H216 V246 H56 Z M220,44 H380 V246 H220 Z M384,44 H544 V246 H384 Z"/>
+    <path d="M74,170 l10,10 M96,170 l10,10 M118,170 l10,10 M140,170 l10,10 M162,170 l10,10 M184,170 l10,10 M84,192 l10,10 M106,192 l10,10 M128,192 l10,10 M150,192 l10,10 M172,192 l10,10 M74,214 l10,10 M96,214 l10,10 M118,214 l10,10 M140,214 l10,10 M162,214 l10,10 M184,214 l10,10"/>
+    <path d="M238,170 l10,10 M260,170 l10,10 M282,170 l10,10 M304,170 l10,10 M326,170 l10,10 M348,170 l10,10 M248,192 l10,10 M270,192 l10,10 M292,192 l10,10 M314,192 l10,10 M336,192 l10,10 M238,214 l10,10 M260,214 l10,10 M282,214 l10,10 M304,214 l10,10 M326,214 l10,10 M348,214 l10,10"/>
+    <path d="M402,170 l10,10 M424,170 l10,10 M446,170 l10,10 M468,170 l10,10 M490,170 l10,10 M512,170 l10,10 M412,192 l10,10 M434,192 l10,10 M456,192 l10,10 M478,192 l10,10 M500,192 l10,10 M402,214 l10,10 M424,214 l10,10 M446,214 l10,10 M468,214 l10,10 M490,214 l10,10 M512,214 l10,10"/>
+  </g>
+  <g fill="#f5efe3">
+    <rect x="126" y="160" width="20" height="64"/>
+    <rect x="290" y="160" width="20" height="76"/>
+    <rect x="454" y="160" width="20" height="84"/>
+  </g>
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M68,124 H130 M142,124 H204 M68,157 H204"/>
+    <path d="M232,124 H286 Q290,130 294,134 M306,134 Q310,130 314,124 H368 M232,157 H368"/>
+    <path d="M396,124 H444 M484,124 H532 M446,128 l4,10 M482,128 l-4,10 M396,157 H532"/>
+  </g>
+
+  <!-- Blyerts: skivor, reglar, skruvar -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- för grunt: huvudet över ytan -->
+    <path d="M68,160 V120 H130 M142,120 H204 V160 H68"/>
+    <path d="M68,160 V232 M204,160 V232 M66,232 Q100,228 136,232 T206,232"/>
+    <path d="M124,108 H148 Q145,115 142,118 V214 L136,222 L130,214 V118 Q127,115 124,108 Z"/>
+    <path d="M132,109 h8 M130,166 l12,-3 M130,176 l12,-3 M130,186 l12,-3 M130,196 l12,-3 M130,206 l12,-3"/>
+    <!-- rätt: huvudet 0,5 till 1 mm under ytan -->
+    <path d="M232,160 V120 H288 M312,120 H368 V160 H232"/>
+    <path d="M232,160 V232 M368,160 V232 M230,232 Q264,228 300,232 T370,232"/>
+    <path d="M288,123 H312 Q309,130 306,133 V225 L300,233 L294,225 V133 Q291,130 288,123 Z"/>
+    <path d="M296,124 h8 M294,166 l12,-3 M294,176 l12,-3 M294,186 l12,-3 M294,196 l12,-3 M294,206 l12,-3 M294,216 l12,-3"/>
+    <!-- för djupt: huvudet genom kartongen -->
+    <path d="M396,160 V120 H446 l-3,8 M482,120 l3,8 M482,120 H532 V160 H396"/>
+    <path d="M396,160 V232 M532,160 V232 M394,232 Q428,228 464,232 T534,232"/>
+    <path d="M452,132 H476 Q473,139 470,142 V234 L464,242 L458,234 V142 Q455,139 452,132 Z"/>
+    <path d="M460,133 h8 M458,166 l12,-3 M458,176 l12,-3 M458,186 l12,-3 M458,196 l12,-3 M458,206 l12,-3 M458,216 l12,-3 M458,226 l12,-3"/>
+  </g>
+
+  <!-- Måttbygel 0,5 till 1 mm på den mittersta, blyerts-2 -->
+  <path d="M320,120 V124 M316,120 h8 M316,124 h8 M320,118 V80" fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Snickarpenna: ringen runt den för djupa -->
+  <path d="M496,108 C486,96 442,98 440,122 C438,146 466,156 486,148 C500,142 504,128 500,118" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="20" fill="#2a2521">
+    <text x="66" y="106" fill="#625a50">kartong</text>
+    <text x="236" y="74" fill="#625a50">0,5 till 1 mm</text>
+    <text x="390" y="66" fill="#ad3519">den här håller inte</text>
+    <text x="136" y="270" text-anchor="middle">för grunt</text>
+    <text x="300" y="270" text-anchor="middle">rätt</text>
+    <text x="464" y="270" text-anchor="middle">för djupt</text>
+  </g>
+</svg>

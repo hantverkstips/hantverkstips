@@ -9,7 +9,8 @@
   "scripts": {
     "dev": "astro dev",
     "kontrollera": "node --experimental-strip-types scripts/kontrollera-innehall.ts",
-    "build": "npm run kontrollera && astro build",
+    "illustrationer": "node scripts/konvertera-handskrift.mjs",
+    "build": "npm run kontrollera && npm run illustrationer && astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -30,6 +31,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "@types/node": "^22.20.3",
+    "opentype.js": "1.3.4",
     "typescript": "^6.0.3",
     "yaml": "^2.9.1"
   },

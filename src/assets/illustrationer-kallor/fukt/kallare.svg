@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Skiss av ett hus i genomskärning. Källaren har fukt som trycker in genom väggen från marken utanför. Anteckningar med snickarpenna.">
+  <!-- Riktning 1, Anteckningsboken. Blyertsskiss på linjerat papper med anteckningar i snickarpenna.
+       Handskriven text i Caveat 500 (Google Fonts, OFL). Konverteras till banor vid bygget så att
+       ingen webbfont behövs. Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521,
+       blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts: huset -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- markyta -->
+    <path d="M60,190 Q150,187 250,190 T420,189 T560,191"/>
+    <!-- tak -->
+    <path d="M186,114 Q248,78 311,44 Q372,78 434,114"/>
+    <path d="M350,64 V44 H368 V78"/>
+    <!-- väggar ovan mark -->
+    <path d="M200,112 Q199,150 200,190 M420,112 Q421,150 420,190"/>
+    <!-- bjälklag -->
+    <path d="M196,190 Q310,192 424,190"/>
+    <!-- källarväggar och platta -->
+    <path d="M200,190 Q198,250 200,312 M420,190 Q422,250 420,312"/>
+    <path d="M196,312 Q310,314 424,312"/>
+    <!-- fönster -->
+    <path d="M230,135 H262 V160 H230 Z M246,135 V160"/>
+    <path d="M360,135 H392 V160 H360 Z M376,135 V160"/>
+    <!-- trappa ner -->
+    <path d="M400,190 V200 H392 V210 H384 V220 H376 V230 H368"/>
+  </g>
+
+  <!-- Blyerts, tunn: jordskraffering -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M70,200 l10,10 M92,200 l10,10 M114,200 l10,10 M136,200 l10,10 M158,200 l10,10 M180,200 l10,10"/>
+    <path d="M80,232 l10,10 M102,232 l10,10 M124,232 l10,10 M146,232 l10,10 M168,232 l10,10"/>
+    <path d="M70,264 l10,10 M92,264 l10,10 M114,264 l10,10 M136,264 l10,10 M158,264 l10,10 M180,264 l10,10"/>
+    <path d="M80,296 l10,10 M102,296 l10,10 M124,296 l10,10 M146,296 l10,10 M168,296 l10,10"/>
+    <path d="M436,200 l10,10 M458,200 l10,10 M480,200 l10,10 M502,200 l10,10 M524,200 l10,10"/>
+    <path d="M446,232 l10,10 M468,232 l10,10 M490,232 l10,10 M512,232 l10,10 M534,232 l10,10"/>
+    <path d="M436,264 l10,10 M458,264 l10,10 M480,264 l10,10 M502,264 l10,10 M524,264 l10,10"/>
+    <path d="M446,296 l10,10 M468,296 l10,10 M490,296 l10,10 M512,296 l10,10 M534,296 l10,10"/>
+    <path d="M210,322 l10,10 M240,322 l10,10 M270,322 l10,10 M300,322 l10,10 M330,322 l10,10 M360,322 l10,10 M390,322 l10,10"/>
+  </g>
+
+  <!-- Papperslappar bakom anteckningarna så att skrafferingen inte stör -->
+  <g fill="#f5efe3">
+    <rect x="52" y="196" width="140" height="50" transform="rotate(-1 122 221)"/>
+    <rect x="440" y="196" width="150" height="76" transform="rotate(1 515 234)"/>
+    <rect x="236" y="216" width="112" height="24"/>
+  </g>
+  <!-- Överstrykning med tumstocksgul bakom nyckeltalet -->
+  <rect x="236" y="217" width="110" height="22" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 291 228)"/>
+
+  <!-- Snickarpenna: fukten -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- pilar från marken in i väggen -->
+    <path d="M130,262 Q160,260 192,263 M184,256 L193,263 L184,269"/>
+    <path d="M130,284 Q160,282 192,285 M184,278 L193,285 L184,291"/>
+    <path d="M130,304 Q160,302 192,305 M184,298 L193,305 L184,311"/>
+    <!-- droppar på insidan -->
+    <path d="M212,246 C211,248 208,251 208,254 A4,4 0 0 0 216,254 C216,251 213,248 212,246"/>
+    <path d="M214,274 C213,276 210,279 210,282 A4,4 0 0 0 218,282 C218,279 215,276 214,274"/>
+    <!-- pöl på golvet -->
+    <path d="M206,306 Q224,300 244,305 Q262,309 280,304"/>
+    <!-- ring runt det våta hörnet -->
+    <path d="M176,214 C160,240 170,318 214,326 C270,336 318,318 300,282 C288,256 256,206 208,206 C192,206 182,208 178,216"/>
+  </g>
+
+  <!-- Handskrivna anteckningar (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" fill="#2a2521">
+    <text x="48" y="32" font-size="18" fill="#625a50">grannens källare, ingen dränering sedan 1971</text>
+    <text x="240" y="234" font-size="19">78 % RF i augusti</text>
+    <text x="58" y="216" font-size="17" fill="#ad3519">markfukt trycker</text>
+    <text x="58" y="238" font-size="17" fill="#ad3519">in genom väggen</text>
+    <text x="462" y="216" font-size="17">våt vägg,</text>
+    <text x="462" y="238" font-size="17">kallt golv,</text>
+    <text x="462" y="260" font-size="17">lukt i trappan</text>
+    <text x="456" y="300" font-size="16" fill="#625a50">2,2 m i tak</text>
+  </g>
+  <!-- handritad måttbygel -->
+  <path d="M446,196 Q442,250 446,306 M440,197 h10 M440,305 h10" fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420" width="600" height="420" role="img" aria-label="Kurvdiagram över liter per dygn mot temperatur 5 till 35 grader, ur tillverkarnas datablad. Corroventa CTR, sorption, ger 17 liter vid 20 grader, 13 vid 10 och 11 vid 5. Meaco 10L, kondens, ger 10 liter vid 30 grader, 1,09 vid 10 och 0,47 vid 5. Wood's DSC50FM, kondens, ger 16,2 liter vid 35 grader och 8,8 vid 20.">
+  <!-- Diagram i Anteckningsbokens hand. Raka blyertslinjer mellan tillverkarnas punkter, inget extrapolerat.
+       Sorptionsmaskinen i snickarpenna (enda pennsaken), etiketter i Atkinson Hyperlegible, tumstock bakom 11.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="420" fill="url(#linjerat)"/>
+  <path d="M40,0 V420" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Axlar i blyerts-2 -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M70,36 Q69,190 70,344"/>
+    <path d="M66,340 Q295,341 524,340"/>
+    <path d="M64,340 h6 M64,265 h6 M64,190 h6 M64,115 h6 M64,40 h6"/>
+    <path d="M70,340 v6 M145,340 v6 M220,340 v6 M295,340 v6 M370,340 v6 M445,340 v6 M520,340 v6"/>
+    <path d="M302,172 Q316,178 326,188"/>
+  </g>
+  <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="20" fill="#625a50">
+    <g text-anchor="end">
+      <text x="60" y="347">0</text>
+      <text x="60" y="272">5</text>
+      <text x="60" y="197">10</text>
+      <text x="60" y="122">15</text>
+      <text x="60" y="47">20</text>
+    </g>
+    <g text-anchor="middle">
+      <text x="70" y="368">5</text>
+      <text x="145" y="368">10</text>
+      <text x="220" y="368">15</text>
+      <text x="295" y="368">20</text>
+      <text x="370" y="368">25</text>
+      <text x="445" y="368">30</text>
+      <text x="520" y="368">35</text>
+      <text x="295" y="398">temperatur, °C</text>
+    </g>
+    <text x="76" y="26">liter per dygn, tillverkaren uppger</text>
+  </g>
+
+  <!-- Kondensmaskinerna i blyerts, raka linjer mellan angivna punkter -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M70,333 L145,323.7 L445,190"/>
+    <path d="M295,208 L520,97"/>
+    <path d="M66,333 a4,4 0 1 0 8,0 a4,4 0 1 0 -8,0 M141,323.7 a4,4 0 1 0 8,0 a4,4 0 1 0 -8,0 M441,190 a4,4 0 1 0 8,0 a4,4 0 1 0 -8,0"/>
+    <path d="M291,208 a4,4 0 1 0 8,0 a4,4 0 1 0 -8,0 M516,97 a4,4 0 1 0 8,0 a4,4 0 1 0 -8,0"/>
+  </g>
+  <!-- Sorptionsmaskinen i snickarpenna -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M70,175 L145,145 L295,85"/>
+    <path d="M66,175 a4,4 0 1 0 8,0 a4,4 0 1 0 -8,0 M141,145 a4,4 0 1 0 8,0 a4,4 0 1 0 -8,0 M291,85 a4,4 0 1 0 8,0 a4,4 0 1 0 -8,0"/>
+  </g>
+
+  <!-- Värden och namn i Atkinson -->
+  <rect x="70" y="148" width="30" height="22" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 85 159)"/>
+  <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="20" fill="#2a2521">
+    <text x="283" y="78" text-anchor="end">17</text>
+    <text x="134" y="138" text-anchor="end">13</text>
+    <text x="74" y="166">11</text>
+    <text x="432" y="180" text-anchor="end">10</text>
+    <text x="150" y="302">1,09</text>
+    <text x="78" y="322">0,47</text>
+    <text x="530" y="100">16,2</text>
+    <text x="300" y="230">8,8</text>
+    <text x="306" y="80" fill="#ad3519">Corroventa CTR, sorption</text>
+    <text x="456" y="200">Meaco 10L</text>
+    <text x="456" y="222" fill="#625a50">kondens</text>
+    <text x="250" y="144">Wood's DSC50FM</text>
+    <text x="250" y="166" fill="#625a50">kondens</text>
+  </g>
+</svg>

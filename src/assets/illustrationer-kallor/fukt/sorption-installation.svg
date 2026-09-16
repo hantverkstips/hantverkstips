@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Ett kallt utrymme i genomskärning. Sorptionsavfuktaren står på block med 50 cm fritt framför filtret, våtluftsslangen går med fall utåt genom ytterväggen, hygrostaten sitter på väggen inställd på 60 till 65 procent, plast ligger på marken med 50 cm överlapp och ventilerna i väggarna är tätade, markerade med kryss.">
+  <!-- Anteckningsboken. Blyerts 2 px för utrymme, maskin, block, ventiler och hygrostat, blyerts-2 för skraffering,
+       plast och mått, snickarpenna för våtluftsslangen (enda pennsaken). Handskrift i Caveat 500.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts: utrymmet -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M58,96 Q300,98 542,96"/>
+    <path d="M80,92 Q79,196 80,302 M520,92 Q521,196 520,302"/>
+    <path d="M50,300 Q170,297 300,300 T590,299"/>
+    <!-- maskinen på block -->
+    <path d="M240,236 H320 V288 M241,288 V235 M250,250 H310 M250,260 H310 M250,270 H310"/>
+    <path d="M246,288 V300 H262 V288 M298,288 V300 H314 V288"/>
+    <!-- hygrostat på väggen -->
+    <path d="M92,150 H114 V172 H92 Z M98,161 H108"/>
+    <!-- ventiler med kryss -->
+    <path d="M74,200 H86 V214 H74 Z M74,200 L86,214 M86,200 L74,214"/>
+    <path d="M514,190 H526 V204 H514 Z M514,190 L526,204 M526,190 L514,204"/>
+  </g>
+  <!-- Blyerts-2: mark, plast, mått -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M56,310 l10,10 M78,310 l10,10 M100,310 l10,10 M122,310 l10,10 M144,310 l10,10 M166,310 l10,10 M188,310 l10,10 M210,310 l10,10 M232,310 l10,10 M254,310 l10,10 M276,310 l10,10 M298,310 l10,10 M320,310 l10,10 M342,310 l10,10 M364,310 l10,10 M386,310 l10,10 M408,310 l10,10 M430,310 l10,10 M452,310 l10,10 M474,310 l10,10 M496,310 l10,10 M518,310 l10,10 M540,310 l10,10 M562,310 l10,10"/>
+    <path d="M66,336 l10,10 M88,336 l10,10 M110,336 l10,10 M132,336 l10,10 M154,336 l10,10 M176,336 l10,10 M198,336 l10,10 M220,336 l10,10 M242,336 l10,10 M264,336 l10,10 M286,336 l10,10 M308,336 l10,10 M330,336 l10,10 M352,336 l10,10 M374,336 l10,10 M396,336 l10,10 M418,336 l10,10 M440,336 l10,10 M462,336 l10,10 M484,336 l10,10 M506,336 l10,10 M528,336 l10,10 M550,336 l10,10"/>
+  </g>
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M88,294 H400" stroke-dasharray="8 5"/>
+    <path d="M376,291 H512" stroke-dasharray="8 5"/>
+    <path d="M180,262 H236 M180,257 v10 M236,257 v10"/>
+    <path d="M376,304 v8 M400,304 v8 M376,310 H400"/>
+  </g>
+  <!-- Papperslappar bakom anteckningar i skrafferingen -->
+  <g fill="#f5efe3">
+    <rect x="94" y="314" width="150" height="26"/>
+    <rect x="404" y="314" width="130" height="26"/>
+  </g>
+
+  <!-- Snickarpenna: våtluftsslangen med fall utåt genom väggen -->
+  <path d="M320,250 Q400,240 470,258 Q500,262 540,272 M532,264 L541,272 L531,279" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="20" fill="#2a2521">
+    <text x="56" y="44">kallt utrymme</text>
+    <text x="120" y="166">hygrostat 60 till 65 %</text>
+    <text x="92" y="212">ventil tätad</text>
+    <text x="408" y="196">ventil tätad</text>
+    <text x="138" y="250" fill="#625a50">50 cm fritt</text>
+    <text x="326" y="288">på block</text>
+    <text x="430" y="246" fill="#ad3519">fall utåt</text>
+    <text x="100" y="334" fill="#625a50">plast på marken</text>
+    <text x="410" y="334" fill="#625a50">50 cm överlapp</text>
+  </g>
+</svg>

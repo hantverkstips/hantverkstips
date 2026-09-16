@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320" width="600" height="320" role="img" aria-label="Två skisser av en källare sedd uppifrån. Till vänster står avfuktaren fritt mitt i rummet och luften går runt hela rummet. Till höger står den instängd i hörnet bakom en hylla, inringad med snickarpenna och anteckningen här står den hos de flesta.">
+  <!-- Anteckningsboken. Blyerts 2 px för rum, hylla och maskin, luftpilar i blyerts, ringen i snickarpenna
+       runt den felaktiga placeringen (enda pennsaken). Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="320" fill="url(#linjerat)"/>
+  <path d="M40,0 V320" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts: två rum sedda uppifrån -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- vänster rum, maskinen fritt -->
+    <path d="M58,60 Q175,58 292,60 Q291,170 290,282 Q175,281 58,280 Q61,170 60,58"/>
+    <path d="M150,146 H190 V196 H150 Z M158,158 H182 M158,168 H182"/>
+    <path d="M170,140 V100 M163,108 L170,99 L177,108"/>
+    <path d="M170,202 V242 M163,234 L170,243 L177,234"/>
+    <path d="M144,171 H104 M112,164 L103,171 L112,178"/>
+    <path d="M196,171 H236 M228,164 L237,171 L228,178"/>
+    <path d="M98,108 Q78,170 98,234 M242,108 Q262,170 242,234"/>
+    <!-- höger rum, hylla och maskin i hörnet -->
+    <path d="M318,60 Q435,58 552,60 Q551,170 550,282 Q435,281 318,280 Q321,170 320,58"/>
+    <path d="M486,150 H500 V280 M487,280 V149"/>
+    <path d="M486,176 H500 M486,202 H500 M486,228 H500 M486,254 H500"/>
+    <path d="M508,236 H546 V278 M509,278 V235 M516,248 H538 M516,258 H538"/>
+    <path d="M527,230 V208 M520,216 L527,207 L534,216"/>
+    <path d="M522,204 Q508,190 522,182 Q540,176 540,196 Q538,206 528,208"/>
+  </g>
+
+  <!-- Snickarpenna: ringen runt det instängda hörnet -->
+  <path d="M478,136 C448,190 458,298 528,298 C580,298 576,200 554,148" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="20" fill="#2a2521">
+    <text x="60" y="44">fritt mitt i rummet</text>
+    <text x="320" y="44">instängd bakom hyllan</text>
+    <text x="436" y="140" fill="#625a50">hylla</text>
+    <text x="332" y="96" fill="#ad3519">här står den</text>
+    <text x="332" y="120" fill="#ad3519">hos de flesta</text>
+  </g>
+</svg>

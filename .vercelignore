@@ -1,0 +1,10 @@
+# Filer som inte behöver följa med till Vercel. Bygget läser dem aldrig där:
+# illustrationerna är redan konverterade till banor när de committas.
+
+# Typsnitt för konverteringen av handskrift (OFL, committade, se scripts/konvertera-handskrift.mjs).
+# De används bara lokalt när en illustration ritas om; klienten får aldrig någon av dem.
+scripts/typsnitt/
+
+# Källorna till illustrationerna, med <text> kvar. Redigeras av designansvarig,
+# konverteras med npm run illustrationer. Det som publiceras är src/assets/illustrationer/.
+src/assets/illustrationer-kallor/
