@@ -3,14 +3,20 @@
  * Pelarhub. Diagnosstart och länknav, handskriven av chefredaktören. Inga
  * köpknappar, inget reklamband. Listan "Alla sidor i ..." är säkerheten mot
  * föräldralösa sidor, texten ovanför är den handskrivna kartan.
+ *
+ * Listan grupperas på nivå (enkel, mellan, expert) som tre listor under varsin
+ * H3. Det är hubbens "filter" utan JavaScript: läsaren ser direkt vilka sidor
+ * som är för henne, och alla länkar ligger i HTML:en, inte bakom ett dragspel.
  */
 import { render, type CollectionEntry } from 'astro:content';
 import Bas from '../../layouts/Bas.astro';
 import { artikelUrl, kategoriUrl, pelareUrl, publicerade, typEtikett } from '../../lib/innehall';
+import { NIVAER, nivaEtikett } from '../../lib/niva';
 import { hittaPelare } from '../../lib/pelare';
 import { artikel as artikelData } from '../../lib/strukturdata';
 import Faktaruta from '../ui/Faktaruta.astro';
 import Ikon from '../ui/Ikon.astro';
+import Illustration from '../ui/Illustration.astro';
 import Markering from '../ui/Markering.astro';
 import Pennstreck from '../ui/Pennstreck.astro';
 import StrukturData from '../ui/StrukturData.astro';
@@ -35,6 +41,12 @@ const kategorier = (await publicerade('kategorier')).filter((k) =>
 const sidor = [...(await publicerade('guider')), ...(await publicerade('kunskap'))]
   .filter((e) => e.data.pelare === entry.id)
   .sort((a, b) => a.data.title.localeCompare(b.data.title, 'sv'));
+
+const grupper = NIVAER.map((niva) => ({
+  niva,
+  etikett: nivaEtikett(niva),
+  sidor: sidor.filter((s) => s.data.niva === niva),
+})).filter((g) => g.sidor.length > 0);
 
 // Huben har inget publiceringsdatum i frontmatter. Byggtidpunkten får inte bli
 // datum, den ändras vid varje bygge, så fältet utelämnas hellre.
@@ -62,7 +74,7 @@ const strukturdata = artikelData({
   <p class="m-0 mt-4 text-ingress lg:text-ingress-lg text-blyerts-2">{d.ingress}</p>
 
   <div class="prosa mt-8">
-    <Content components={{ h2: Pennstreck, Faktaruta, Varning, Verktygskort, Markering }} />
+    <Content components={{ h2: Pennstreck, Faktaruta, Varning, Verktygskort, Markering, Illustration }} />
   </div>
 
   {
@@ -86,22 +98,31 @@ const strukturdata = artikelData({
   }
 
   {
-    sidor.length > 0 && (
+    grupper.length > 0 && (
       <section>
         <Pennstreck id="alla-sidor">Alla sidor i {kort}</Pennstreck>
-        <ul class="m-0 p-0 list-none">
-          {sidor.map((s) => (
-            <li class="border-t border-linje py-3">
-              <p class="m-0 text-etikett uppercase text-blyerts">{typEtikett(s.data.typ)}</p>
-              <a
-                href={artikelUrl(s)}
-                class="inline-flex min-h-11 items-center text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
-              >
-                {s.data.title}
-              </a>
-            </li>
-          ))}
-        </ul>
+        {grupper.map((g) => (
+          <Fragment>
+            <Pennstreck niva={3} id={`niva-${g.niva}`}>
+              {g.etikett}
+            </Pennstreck>
+            <ul class="m-0 p-0 list-none">
+              {g.sidor.map((s) => (
+                <li class="border-t border-linje py-3">
+                  <p class="m-0 text-etikett uppercase text-blyerts">
+                    {typEtikett(s.data.typ)} · {g.etikett}
+                  </p>
+                  <a
+                    href={artikelUrl(s)}
+                    class="inline-flex min-h-11 items-center text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+                  >
+                    {s.data.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </Fragment>
+        ))}
       </section>
     )
   }

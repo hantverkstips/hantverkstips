@@ -1,11 +1,50 @@
+import { existsSync } from 'node:fs';
 import { defineCollection, z, type SchemaContext } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { NIVAER, STANDARD_NIVA } from './lib/niva';
 import { PELARE_SLUGS } from './lib/pelare';
 
 // Scheman för content collections. Fälten dokumenteras i docs/ARKITEKTUR.md.
 // Ändra här först, uppdatera dokumentet, sedan innehållsfilerna.
 
 const pelareEnum = z.enum(PELARE_SLUGS);
+const nivaEnum = z.enum(NIVAER);
+
+/**
+ * Loader för artikelsamlingarna. Filerna ligger i undermappar (guider/fukt/,
+ * kunskap/inomhus/, tester/luftavfuktare/) så att samlingarna klarar hundratals
+ * filer, men id och därmed URL kommer från filnamnet, aldrig från mappen:
+ * src/content/guider/fukt/avfuktare-kallare.mdx blir /fukt/avfuktare-kallare/.
+ *
+ * Två filer med samma namn i olika mappar ger byggfel här, oavsett ordning,
+ * och dessutom i Astros egen dubblettkontroll (prerenderConflictBehavior: 'error'
+ * i astro.config.mjs). Kontrollen mot en fil som fortfarande finns gör att ett
+ * namnbyte i npm run dev inte ger ett falskt fel.
+ */
+function artikelLoader(mapp: string) {
+  const sedda = new Map<string, string>();
+  return glob({
+    base: `./src/content/${mapp}`,
+    pattern: '**/*.{md,mdx}',
+    generateId: ({ entry, base }) => {
+      const fil = entry.split(/[\\/]/).pop() ?? entry;
+      const id = fil.replace(/\.(md|mdx)$/, '');
+      if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(id) || id === 'index') {
+        throw new Error(
+          `src/content/${mapp}/${entry}: filnamnet blir adressen och får bara innehålla a-z, 0-9 och bindestreck (inte "index")`,
+        );
+      }
+      const tidigare = sedda.get(id);
+      if (tidigare && tidigare !== entry && existsSync(new URL('./' + encodeURI(tidigare), base))) {
+        throw new Error(
+          `Dubbel slug "${id}" i ${mapp}: ${tidigare} och ${entry}. Filnamnet är adressen, så två filer får inte heta lika även om de ligger i olika mappar.`,
+        );
+      }
+      sedda.set(id, entry);
+      return id;
+    },
+  });
+}
 
 // Produkter en artikel nämner. Antingen bara slug, eller slug med redaktörens rad
 // "för vem" och etikett, som produktkortet visar i blocket "Produkterna vi nämner".
@@ -19,8 +58,8 @@ const produktRef = z.union([
 ]);
 
 // Gemensamt frontmatter för alla textsidor. image() validerar sökvägen vid bygget
-// och ger mallen width/height till <Image>. Sökvägen är relativ från innehållsfilen:
-// bild: ../../assets/bilder/fukt/kallare.jpg
+// och ger mallen width/height till <Image>. Sökvägen är relativ från innehållsfilen,
+// som ligger i en undermapp: bild: ../../../assets/illustrationer/fukt/kallare.svg
 const artikel = ({ image }: SchemaContext) =>
   z.object({
     title: z.string(),
@@ -29,6 +68,9 @@ const artikel = ({ image }: SchemaContext) =>
     uppdaterad: z.coerce.date().optional(),
     // Pelaren styr URL:en: /[pelare]/[slug]/. Se docs/INNEHALLSARKITEKTUR.md avsnitt 3.
     pelare: pelareEnum,
+    // Vem sidan är skriven för: enkel, mellan eller expert. Visas som etikett i
+    // artikelhuvudet ("Kunskap · Expert") och grupperar hubsidans lista. Se src/lib/niva.ts.
+    niva: nivaEnum.default(STANDARD_NIVA),
     // Produktkategori artikeln hör till (slug i src/content/kategorier/). Valfri:
     // en altanguide har ingen kategori förrän kap- och gersågar finns.
     kategori: z.string().optional(),
@@ -38,7 +80,7 @@ const artikel = ({ image }: SchemaContext) =>
     // efter metaraden, före bilden. Skrivs i frontmatter, aldrig i brödtexten,
     // så att mallen styr placeringen och strukturen blir densamma på varje sida.
     kortSvar: z.string().optional(),
-    // Eget foto eller eget diagram. Aldrig leverantörsbild. Ligger under "Kort svar".
+    // Eget foto eller egen illustration. Aldrig leverantörsbild. Ligger under "Kort svar".
     bild: image().optional(),
     bildtext: z.string().optional(),
     // Källförteckning, visas sist på sidan.
@@ -48,8 +90,9 @@ const artikel = ({ image }: SchemaContext) =>
   });
 
 // Guider: projektguide, problemguide, köpguide. Mallen varierar på typ.
+// Undermapp per pelare: src/content/guider/[pelare]/[slug].mdx
 const guider = defineCollection({
-  loader: glob({ base: './src/content/guider', pattern: '**/*.{md,mdx}' }),
+  loader: artikelLoader('guider'),
   schema: (ctx) =>
     artikel(ctx).extend({
       typ: z.enum(['projektguide', 'problemguide', 'kopguide']),
@@ -64,8 +107,9 @@ const guider = defineCollection({
 });
 
 // Kunskap: ingen reklammärkning, inga produktkort. typ är alltid kunskap.
+// Undermapp per pelare: src/content/kunskap/[pelare]/[slug].mdx
 const kunskap = defineCollection({
-  loader: glob({ base: './src/content/kunskap', pattern: '**/*.{md,mdx}' }),
+  loader: artikelLoader('kunskap'),
   schema: (ctx) =>
     artikel(ctx).extend({
       typ: z.literal('kunskap').default('kunskap'),
@@ -73,8 +117,9 @@ const kunskap = defineCollection({
 });
 
 // Tester och granskningar. Ingen poängskala, inga stjärnor (docs/DESIGN.md).
+// Undermapp per kategori: src/content/tester/[kategori]/[marke-modell].mdx
 const tester = defineCollection({
-  loader: glob({ base: './src/content/tester', pattern: '**/*.{md,mdx}' }),
+  loader: artikelLoader('tester'),
   schema: (ctx) =>
     artikel(ctx)
       .omit({ pelare: true })
@@ -108,8 +153,9 @@ const tester = defineCollection({
 });
 
 // Jämförelser, X mot Y. Platt URL under /jamforelser/.
+// Undermapp per kategori: src/content/jamforelser/[kategori]/[a-vs-b].mdx
 const jamforelser = defineCollection({
-  loader: glob({ base: './src/content/jamforelser', pattern: '**/*.{md,mdx}' }),
+  loader: artikelLoader('jamforelser'),
   schema: (ctx) =>
     artikel(ctx)
       .omit({ pelare: true })
@@ -122,7 +168,7 @@ const jamforelser = defineCollection({
 // Pelarhubbar. En fil per pelare med handskriven text. Slug måste finnas i src/lib/pelare.ts.
 // Huben publiceras när den har minst fem sidor att länka till.
 const pelare = defineCollection({
-  loader: glob({ base: './src/content/pelare', pattern: '**/*.{md,mdx}' }),
+  loader: glob({ base: './src/content/pelare', pattern: '*.{md,mdx}' }),
   schema: z.object({
     title: z.string(),
     description: z.string().max(160),
@@ -137,7 +183,7 @@ const pelare = defineCollection({
 
 // En fil per produktkategori. Styr bäst i test-sidan och vilka specs som visas.
 const kategorier = defineCollection({
-  loader: glob({ base: './src/content/kategorier', pattern: '**/*.{md,mdx}' }),
+  loader: glob({ base: './src/content/kategorier', pattern: '*.{md,mdx}' }),
   schema: z.object({
     namn: z.string(),
     title: z.string(),
@@ -173,7 +219,7 @@ const kategorier = defineCollection({
 
 // Om-sidor under /om/ plus startsidans text (id startsida, renderas av index.astro).
 const sidor = defineCollection({
-  loader: glob({ base: './src/content/sidor', pattern: '**/*.{md,mdx}' }),
+  loader: glob({ base: './src/content/sidor', pattern: '*.{md,mdx}' }),
   schema: z.object({
     title: z.string(),
     description: z.string().max(160),
@@ -193,7 +239,7 @@ const sidor = defineCollection({
 
 // Författare. Brödtexten är den längre presentationen på författarsidan.
 const forfattare = defineCollection({
-  loader: glob({ base: './src/content/forfattare', pattern: '**/*.{md,mdx}' }),
+  loader: glob({ base: './src/content/forfattare', pattern: '*.{md,mdx}' }),
   schema: ({ image }) =>
     z.object({
       namn: z.string(),

@@ -12,6 +12,7 @@ import {
   arPublicerad,
   artikelUrl,
   brodsmulorForArtikel,
+  hubPublicerad,
   kategoriUrl,
   normaliseraProdukter,
   pelareUrl,
@@ -19,6 +20,7 @@ import {
   typEtikett,
   type Artikel as ArtikelPost,
 } from '../../lib/innehall';
+import { nivaEtikett } from '../../lib/niva';
 import { hittaPelare } from '../../lib/pelare';
 import { hamtaButik } from '../../lib/produkter';
 import { artikel as artikelData } from '../../lib/strukturdata';
@@ -26,6 +28,7 @@ import Brodsmulor from '../ui/Brodsmulor.astro';
 import DetHarBehoverDu from '../ui/DetHarBehoverDu.astro';
 import Faktaruta from '../ui/Faktaruta.astro';
 import Forfattarruta from '../ui/Forfattarruta.astro';
+import Illustration from '../ui/Illustration.astro';
 import Innehallsforteckning from '../ui/Innehallsforteckning.astro';
 import Jamforelsetabell from '../ui/Jamforelsetabell.astro';
 import Kopknapp from '../ui/Kopknapp.astro';
@@ -70,6 +73,7 @@ const kunskapskomponenter = {
   Varning,
   Verktygskort,
   Markering,
+  Illustration,
 };
 const komponenter =
   typ === 'kunskap' ? kunskapskomponenter : { ...kunskapskomponenter, Kopknapp, Produktkort, Jamforelsetabell };
@@ -85,10 +89,13 @@ const andra = alla
 const kategoriPost = d.kategori ? await getEntry('kategorier', d.kategori) : undefined;
 const kategori = kategoriPost && arPublicerad(kategoriPost) ? kategoriPost : undefined;
 const pelare = hittaPelare(d.pelare);
+// Huben länkas bara när den byggs. Brödsmulorna gör samma bedömning.
+const hub = await hubPublicerad(d.pelare);
+const brodsmulor = await brodsmulorForArtikel(entry);
 
 const relaterat = [
   ...(kategori ? [{ namn: `Alla ${kategori.data.namn.toLowerCase()} vi testat`, href: kategoriUrl(kategori.id) }] : []),
-  ...(pelare ? [{ namn: pelare.namn, href: pelareUrl(d.pelare) }] : []),
+  ...(pelare && hub ? [{ namn: pelare.namn, href: pelareUrl(d.pelare) }] : []),
   ...andra.map((e) => ({ namn: e.data.title, href: artikelUrl(e) })),
 ];
 
@@ -112,7 +119,7 @@ const strukturdata = artikelData({
   description={d.description}
   reklam={reklam}
   butikNamn={butik?.namn}
-  brodsmulor={brodsmulorForArtikel(entry)}
+  brodsmulor={brodsmulor}
   brodsmulorIVy={true}
   bred={true}
 >
@@ -120,9 +127,12 @@ const strukturdata = artikelData({
 
   <div class="tvaspalt tvaspalt-rad">
     <div class="min-w-0">
-      <Brodsmulor lista={brodsmulorForArtikel(entry)} />
+      <Brodsmulor lista={brodsmulor} />
 
-      <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts">{typEtikett(typ)}</p>
+      {/* Typ och nivå i samma etikett: "Kunskap · Expert". Se docs/DESIGN.md avsnitt 6. */}
+      <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts">
+        {typEtikett(typ)} · {nivaEtikett(d.niva)}
+      </p>
       <h1 class="m-0 mt-2 font-serif text-h1 lg:text-h1-lg">{d.title}</h1>
       <p class="m-0 mt-3 text-liten text-blyerts-2">
         Publicerad <time datetime={isoDatum(d.publicerad)}>{formateraDatum(d.publicerad)}</time>{

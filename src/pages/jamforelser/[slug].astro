@@ -16,6 +16,7 @@ import {
   slugify,
   typEtikett,
 } from '../../lib/innehall';
+import { nivaEtikett } from '../../lib/niva';
 import { hamtaButik } from '../../lib/produkter';
 import { artikel as artikelData } from '../../lib/strukturdata';
 import Brodsmulor from '../../components/ui/Brodsmulor.astro';
@@ -93,7 +94,7 @@ const strukturdata = artikelData({
     <div class="lg:max-w-lasbredd">
       <Brodsmulor lista={brodsmulor} />
 
-      <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts">Jämförelse</p>
+      <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts">Jämförelse · {nivaEtikett(d.niva)}</p>
       <h1 class="m-0 mt-2 font-serif text-h1 lg:text-h1-lg">{d.title}</h1>
       <p class="m-0 mt-3 text-liten text-blyerts-2">
         Publicerad <time datetime={isoDatum(d.publicerad)}>{formateraDatum(d.publicerad)}</time>{

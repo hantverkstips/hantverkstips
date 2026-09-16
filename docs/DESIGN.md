@@ -180,9 +180,9 @@ Gemensamt för alla sidor:
 
 **Sidhuvud.** 56 px högt på mobil, 64 på desktop. Vänster: ordmärket som inlinead SVG (`src/assets/brand/riktning-1/ordmarke-inline.svg`, symbol, "Hantverkstips" i Zilla Slab och pennstrecket), 28 px högt på mobil och 36 på desktop, `width: auto`. Ordmärket är den enda länken till startsidan. Höger på mobil: knappen "Meny" (text, inte hamburgare, ikonen `ikon-meny` får stå bredvid ordet), som öppnar en lista under sidhuvudet via `<details>`, alltså utan JavaScript. Desktop: huvudmenyns fem poster i rad till höger, 15 px, blyerts, understrykning i penna vid hover. Ingen sökruta i fas 1. 1 px `linje` under sidhuvudet.
 
-**Huvudmeny.** Fem poster, i den här ordningen: Fukt (`/fukt/`), Altan (`/altan/`), Verktyg (`/verktyg/`), Räkna själv (`/rakna/`), Så testar vi (`/om/sa-testar-vi/`). Inga undermenyer. Den sjätte platsen är reserverad för nästa pelare när den har sex publicerade sidor.
+**Huvudmeny.** De publicerade pelarhubbarna i den ordning `src/lib/pelare.ts` anger, högst fem, följda av Räkna själv (`/rakna/`) och Så testar vi (`/om/sa-testar-vi/`). Hösten 2026 är det Fukt (`/fukt/`), Inomhus (`/inomhus/`), Verktyg (`/verktyg/`), Räkna själv, Så testar vi; Altan kommer in när altanhuben publiceras i februari (beslut 2026-09-16, `docs/INNEHALLSARKITEKTUR.md` avsnitt 4). Inga undermenyer. Menyn är inte hårdkodad: en pelare kommer in genom att dess hub får `utkast: false`.
 
-**Mobilmenyn.** Lodrät lista med `shadow-lyft`, 48 px per rad, ram 1 px linje, 6 px radie. Först de fem posterna, där pelarna (Fukt, Altan, Verktyg) har sin pelarikon till vänster om namnet (24 px, blyerts) och Räkna själv har `ikon-kalkylator`. Sedan en 1 px avdelare, etiketten "Bäst i test" och kategorierna med publicerad kategorisida (max fyra rader, utan ikon). Sedan en avdelare och "Om Hantverkstips".
+**Mobilmenyn.** Lodrät lista med `shadow-lyft`, 48 px per rad, ram 1 px linje, 6 px radie. Först menyposterna, där pelarna har sin pelarikon till vänster om namnet (24 px, blyerts) och Räkna själv har `ikon-kalkylator`. Sedan en 1 px avdelare, etiketten "Bäst i test" och kategorierna med publicerad kategorisida (max fyra rader, utan ikon). Sedan en avdelare och "Om Hantverkstips".
 
 **Reklammärkning.** Direkt under sidhuvudet på alla sidor som innehåller affiliatelänkar. Se komponent i avsnitt 6. Startsidan, pelarhubbar och kunskapsartiklar har inga köpknappar och därför inget band.
 
@@ -386,7 +386,7 @@ URL `/altan/` (huben är projektguiden) och `/altan/tradack-pa-mark/`. Steg för
 
 ### 5.5 Köpguide
 
-URL `/fukt/luftavfuktare-kallare/`. Problemet först, produkten sist, men svaret i första skärmen.
+URL `/fukt/avfuktare-kallare/`. Problemet först, produkten sist, men svaret i första skärmen.
 
 ```
 ┌────────────────────────────────────┐
@@ -654,6 +654,8 @@ Spriten `src/assets/brand/riktning-1/ikoner.svg` inlineas i layouten så att `<u
 
 **Utseende.** Text i blyerts, ingen bakgrund, ingen ram, ingen ikon. Redaktörens omdömesetikett på produktkort är i penna. "Test" och "Granskning" ser likadana ut; skillnaden ska ligga i ordet, inte i en färg som säger att det ena är sämre.
 
+**Nivå** (beslut 2026-09-16). Varje artikel, test och jämförelse har en nivå: Enkel, Mellan eller Expert (`niva` i frontmatter, orden i `src/lib/niva.ts`). I artikelhuvudet står nivån i samma etikett som typen, efter en mittpunkt (U+00B7): "Kunskap · Expert", "Test · Mellan", "Jämförelse · Enkel". Samma stil, samma blyerts, ingen färg, ingen ram, ingen ikon; nivån är en upplysning, inte ett betyg, och "Enkel" får inte se ut som något sämre än "Expert". På hubsidan grupperas listan "Alla sidor i ..." under tre H3 med samma ord, i ordningen Enkel, Mellan, Expert, och varje rad har etiketten "Typ · Nivå". Det är hubbens filter utan JavaScript: tre listor i HTML, inget dragspel, inga flikar. Nivån visas inte på startsidans listor, i "Läs vidare" eller i kategorisidans listor.
+
 ### Köpknapp
 
 **Syfte.** Enda vägen till butiken. Sköter `/go/[slug]`, `rel="sponsored nofollow"`, klicklogg med `modul` och `position`.
@@ -811,7 +813,7 @@ I fas 1 kommer nästan alla produktbilder från leverantören. De är rena packs
 
 ### Skisserna
 
-Blyertsskiss på linjerat papper. Förebilden är `src/assets/brand/riktning-1/illustration-kallare.svg`, och varje ny illustration följer samma regler så att tio agenter ritar som en hand:
+Blyertsskiss på linjerat papper. Förebilden är `src/assets/illustrationer/fukt/kallare.svg` (flyttad från `brand/riktning-1/` 2026-09-16; illustrationer ligger i `src/assets/illustrationer/[pelare]/`, hur en artikel refererar dem står i `docs/ARKITEKTUR.md`), och varje ny illustration följer samma regler så att tio agenter ritar som en hand:
 
 - **Papperet.** Bakgrund `papper` med linjer i `linje` var 24:e px (mönstret `monster.svg` som `<pattern>`), och en marginallinje i penna vid 35 procents opacitet 40 px från vänster. Skala 600 × 360 för en huvudbild i 3:2 (kan beskäras till 4:3 för kort).
 - **Blyerts.** Allt som är hus, mark och föremål ritas i `blyerts`, 2 px, runda ändar. Raka linjer är aldrig raka: en kvadratisk kurva med kontrollpunkten förskjuten högst 3 procent av linjens längd. Hörn skjuter över 2 till 4 px. En linjebredd per lager, ingen fyllning, ingen skuggning.
@@ -900,7 +902,8 @@ Alla filer under `src/assets/brand/riktning-1/`. Handskrivna SVG:er utan editorm
 | `ordmarke-inline.svg` | Samma ordmärke utan xmlns, typsnitt via `var(--font-serif)` och färger via tokens i style-attribut | Inlineas i sidhuvud och sidfot, ärver self-hostade Zilla Slab |
 | `symbol.svg` | Tumstocken vikt till ett H, 32 px | Favicon, redaktionens författarruta, sociala förhandsbilder |
 | `ikoner.svg` | Sprite med 16 symboler i `currentColor` | Inlineas i layouten, se Ikoner i avsnitt 6 |
-| `illustration-kallare.svg` | Källaren i genomskärning, förebild för alla skisser | Huvudbild i fuktguiderna och startsidans säsongsblock (augusti till november) |
 | `monster.svg` | Linjerat papper, kakelbart 48 × 24 | Som `<pattern>` i illustrationer. I HTML används `.linjerat` i stället |
+
+Illustrationerna ligger inte i brand-mappen utan i `src/assets/illustrationer/[pelare]/`: `fukt/kallare.svg` (källaren i genomskärning, förebild för alla skisser, huvudbild i fuktguiderna och startsidans säsongsblock augusti till november). En ny skiss läggs i pelarens mapp och refereras från artikeln enligt `docs/ARKITEKTUR.md`.
 
 Ordmärket i båda varianterna sätter texten i Zilla Slab som `<text>`. Så länge sajten self-hostar typsnittet renderas den inlineade varianten rätt. Konvertering av texten till banor görs med fonttools när det finns tillgängligt i bygg-miljön, och då byts `<text>` mot en `<path>` i båda filerna så att ordmärket blir oberoende av typsnittsladdning. Tills dess: reservstacken Georgia visas under de millisekunder swap tar, vilket är samma beteende som alla H1 på sidan.

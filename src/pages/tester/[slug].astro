@@ -15,6 +15,7 @@ import {
   testUrl,
   typEtikett,
 } from '../../lib/innehall';
+import { nivaEtikett } from '../../lib/niva';
 import {
   arSlut,
   billigasteErbjudande,
@@ -120,7 +121,9 @@ const strukturdata = produkt
     <div class="min-w-0">
       <Brodsmulor lista={brodsmulor} />
 
-      <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts">{typEtikett('test', d.etikett)}</p>
+      <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts">
+        {typEtikett('test', d.etikett)} · {nivaEtikett(d.niva)}
+      </p>
       <h1 class="m-0 mt-2 font-serif text-h1 lg:text-h1-lg">{d.title}</h1>
       <p class="m-0 mt-3 text-liten text-blyerts-2">
         {
