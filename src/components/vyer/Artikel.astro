@@ -57,13 +57,16 @@ const behover = 'behover' in d && d.behover ? d.behover : { verktyg: [], materia
 // Mallen avgör reklambandet, aldrig innehållsfilen: köpknapp på sidan ger band.
 // Kunskap får band bara med "en produkt per typ, sist" (docs/DESIGN.md 5.3), alltså
 // när frontmatterns produkter inte är tom. Kunskap utan produkter: inget band, inga kort.
+// Projektguiden: DetHarBehoverDu ger knapp bara på verktygsrader med produkt, så en
+// lista med enbart textrader ger noll annonslänkar och därmed inget band
+// (granskningen 2026-09-16 punkt 5.1).
 const reklam =
   typ === 'kopguide'
     ? true
     : typ === 'problemguide' || typ === 'kunskap'
       ? produkter.length > 0
       : typ === 'projektguide'
-        ? behover.verktyg.length > 0 || produkter.length > 0
+        ? behover.verktyg.some((v) => v.produkt) || produkter.length > 0
         : false;
 
 // Blocket "Produkterna vi nämner" sist: köpguiden alltid när listan finns, kunskap

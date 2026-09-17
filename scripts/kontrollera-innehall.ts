@@ -22,6 +22,10 @@
  *     inte; huben och kategorisidan får sina länkar därifrån och kontrolleras
  *     inte. Se docs/INNEHALLSARKITEKTUR.md avsnitt 6. Blir stopp när sajten
  *     har fler sidor.
+ *   - publicerad sida vars seoTitle (eller title när seoTitle saknas) är över
+ *     60 tecken, eller vars description ligger utanför 120 till 155 tecken
+ *
+ * Varningarna om titel och beskrivning gäller sökresultatet, inte schemat.
  *
  * Skriptet läser filerna direkt och använder inte Astro, så det går på två
  * sekunder och kan köras utan att bygga. Schemat i src/content.config.ts är
@@ -52,6 +56,16 @@ const UNDERMAPP: Partial<Record<Samling, 'pelare' | 'kategori'>> = {
 const KRAVER_INLANK: Samling[] = ['guider', 'kunskap', 'tester', 'jamforelser'];
 
 const SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+
+/** Längsta titel Google visar i sökresultatet. Samma tal som MAX_TITEL i
+ *  src/layouts/Bas.astro, som lägger på " · Hantverkstips" bara när totalen
+ *  ryms under det. En titel över gränsen får alltså varken varumärke eller
+ *  synligt slut, och det är den varningen som saknades. */
+const MAX_TITEL = 60;
+/** Spannet en meta-beskrivning ska ligga i. Under 120 tecken lämnar Google
+ *  plats oanvänd eller skriver en egen text ur sidan, över 155 klipps slutet. */
+const MIN_DESCRIPTION = 120;
+const MAX_DESCRIPTION = 155;
 
 /** Grupperna <Kortgrupp> känner till. Speglar src/components/ui/Kortgrupp.astro. */
 const KORTGRUPPER = ['hitta-felet', 'valj-ratt', 'gor-det-sjalv', 'rakna'] as const;
@@ -261,6 +275,30 @@ for (const f of filer) {
   }
 
   if (/\/go\//.test(f.body)) felet(f.sokvag, 'länkar direkt till /go/. Affiliatelänkar går alltid via <Kopknapp>');
+
+  // Titel och beskrivning som de ser ut i sökresultatet. Gäller varje sida som
+  // byggs, utkast räknas inte. Schemat tar redan max 160 tecken på description,
+  // men det är gränsen för när HTML-taggen blir orimlig, inte för när Google
+  // klipper. Granskningen 2026-09-16 punkt 5.5.
+  if (!f.utkast && f.url) {
+    const seoTitle = strang(f.data.seoTitle);
+    const titeln = seoTitle ?? strang(f.data.title);
+    if (titeln !== undefined && titeln.length > MAX_TITEL) {
+      const falt = seoTitle === undefined ? 'title' : 'seoTitle';
+      varna(
+        f.sokvag,
+        `${falt} är ${titeln.length} tecken, över ${MAX_TITEL}. Google klipper titeln och Bas.astro utelämnar varumärkessuffixet`,
+      );
+    }
+    const beskrivning = strang(f.data.description);
+    if (beskrivning !== undefined && (beskrivning.length < MIN_DESCRIPTION || beskrivning.length > MAX_DESCRIPTION)) {
+      const riktning = beskrivning.length < MIN_DESCRIPTION ? 'under' : 'över';
+      varna(
+        f.sokvag,
+        `description är ${beskrivning.length} tecken, ${riktning} spannet ${MIN_DESCRIPTION} till ${MAX_DESCRIPTION}`,
+      );
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------

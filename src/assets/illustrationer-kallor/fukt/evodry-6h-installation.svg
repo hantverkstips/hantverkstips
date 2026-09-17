@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Ett garage i genomskärning med ytterväggen till höger. Acetec EvoDry 6H 2.0 står på golvet nära väggen med hygrostatratten vid filtret, torrluften blåser ut i rummet, och våtluftsslangen går med fall utåt genom ett hål på 70 mm i väggen till en utloppsplåt på utsidan.">
+  <!-- Anteckningsboken. Blyerts 2 px för rum, vägg, maskin, ratt och utloppsplåt, blyerts-2 för skraffering,
+       måttbyglar och ledlinjer, snickarpenna för våtluftsslangen (enda pennsaken). Handskrift i Caveat 500, 24 px.
+       Mått ur Acetecs dokumentation för EvoDry 6H 2.0 (docs.acetec.se/dokument/ref-20100): våtgasslang 50 mm,
+       väggöppning cirka 70 mm, utloppsplåt med nederbördsskydd, hygrostat med graderad skala vid intagsfiltret.
+       50 cm fritt framför filtret ur Acetecs allmänna installationsanvisning.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts: rummet, ytterväggen, maskinen, ratten, utloppsplåten -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- tak och golv -->
+    <path d="M62,70 Q232,72 402,70"/>
+    <path d="M50,300 Q170,298 300,300 T590,299"/>
+    <!-- innervägg till vänster -->
+    <path d="M80,66 Q79,184 80,302"/>
+    <!-- yttervägg, två ytor, med hålet mellan y 226 och 262 -->
+    <path d="M400,60 Q401,143 400,226 M400,262 Q399,291 400,320"/>
+    <path d="M440,60 Q439,143 440,226 M440,262 Q441,291 440,320"/>
+    <path d="M400,226 H440 M400,262 H440"/>
+    <!-- maskinen på golvet, fronten mot rummet -->
+    <path d="M280,220 Q330,221 361,220 Q362,260 360,300 M281,300 Q280,260 280,219"/>
+    <!-- filtergaller på fronten -->
+    <path d="M288,246 H312 M288,258 H312 M288,270 H312"/>
+    <!-- hygrostatratten vid filtret -->
+    <circle cx="300" cy="234" r="6"/>
+    <path d="M300,234 L304,229"/>
+    <!-- utloppsplåt på utsidan, tunn plåt mot väggen, med snedställt nederbördsskydd ovanför mynningen -->
+    <path d="M440,220 H448 Q447,246 448,272 H440"/>
+    <path d="M448,228 L470,240 Q470,246 470,252"/>
+    <!-- torrluften ut i rummet -->
+    <path d="M276,256 Q247,257 218,256 M218,256 L228,249 M218,256 L228,263"/>
+  </g>
+
+  <!-- Blyerts-2: skraffering i vägg och mark, måttbyglar, ledlinje -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M406,76 l10,10 M424,76 l10,10 M406,98 l10,10 M424,98 l10,10 M406,120 l10,10 M424,120 l10,10 M406,142 l10,10 M424,142 l10,10 M406,164 l10,10 M424,164 l10,10 M406,186 l10,10 M424,186 l10,10 M406,204 l10,10 M424,204 l10,10 M406,272 l10,10 M424,272 l10,10 M406,294 l10,10 M424,294 l10,10"/>
+    <path d="M56,310 l10,10 M78,310 l10,10 M100,310 l10,10 M122,310 l10,10 M144,310 l10,10 M166,310 l10,10 M188,310 l10,10 M210,310 l10,10 M232,310 l10,10 M254,310 l10,10 M276,310 l10,10 M298,310 l10,10 M320,310 l10,10 M342,310 l10,10 M364,310 l10,10 M386,310 l10,10 M452,310 l10,10 M474,310 l10,10 M496,310 l10,10 M518,310 l10,10 M540,310 l10,10 M562,310 l10,10"/>
+    <path d="M66,336 l10,10 M88,336 l10,10 M110,336 l10,10 M132,336 l10,10 M154,336 l10,10 M176,336 l10,10 M198,336 l10,10 M220,336 l10,10 M242,336 l10,10 M264,336 l10,10 M286,336 l10,10 M308,336 l10,10 M330,336 l10,10 M352,336 l10,10 M374,336 l10,10 M462,336 l10,10 M484,336 l10,10 M506,336 l10,10 M528,336 l10,10 M550,336 l10,10"/>
+  </g>
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <!-- 50 cm fritt framför filtret -->
+    <path d="M210,210 H278 M210,205 v10 M278,205 v10"/>
+    <!-- hålets höjd, 70 mm -->
+    <path d="M482,226 V262 M477,226 h10 M477,262 h10"/>
+    <!-- ledlinje från etiketten till ratten -->
+    <path d="M250,230 Q272,231 292,233"/>
+  </g>
+
+  <!-- Snickarpenna: våtluftsslangen med fall utåt genom väggen till plåten -->
+  <path d="M360,236 Q385,238 400,244 Q420,248 440,252" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M470,150 Q462,190 450,226 M450,226 L446,215 M450,226 L457,218" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Nyckeltalet 70 får gul markering -->
+  <rect x="519" y="232" width="32" height="24" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 535 244)"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="58" y="44">garage, 8 grader</text>
+    <text x="520" y="44" fill="#625a50">ute</text>
+    <text x="96" y="234">ratt vid filtret</text>
+    <text x="100" y="262">torr luft ut</text>
+    <text x="196" y="200" fill="#625a50">50 cm fritt</text>
+    <text x="452" y="112" fill="#ad3519">våtluft ut</text>
+    <text x="452" y="138" fill="#ad3519">fall utåt</text>
+    <text x="490" y="250" fill="#625a50">hål 70 mm</text>
+    <text x="452" y="294">utloppsplåt</text>
+  </g>
+</svg>

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="En trappa i tre steg som stiger från vänster till höger, märkta korn 80, korn 120 och korn 150 med en rad under varje om vad kornet gör: 80 tar bort gammal olja, 120 tar bort spåren, 150 är sista kornet före oljan. Ett fjärde, streckat steg märkt korn 240 är inringat med röd penna och anteckningen att det är för fint, oljan går inte in.">
+  <!-- Anteckningsboken. Blyerts 2 px för trappan, blyerts-2 för anteckningarna och det streckade
+       fjärde steget, snickarpenna för ringen runt korn 240 och dess anteckning (enda pennsaken),
+       tumstock bakom nyckeltalet korn 150. Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts: trappan i tre steg, tre plansteg och tre sättsteg, med lite darr och överskjut i hörnen -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M52,301 Q122,299 193,300"/>
+    <path d="M190,303 Q191,271 190,238"/>
+    <path d="M187,240 Q255,239 323,240"/>
+    <path d="M320,243 Q321,211 320,178"/>
+    <path d="M317,180 Q385,179 453,180"/>
+    <path d="M450,183 Q451,152 450,122"/>
+  </g>
+
+  <!-- Blyerts-2: det fjärde steget, streckat, dit du inte ska -->
+  <path d="M447,120 Q510,119 574,120" fill="none" stroke="#625a50" stroke-width="1.5" stroke-dasharray="7 5" stroke-linecap="round"/>
+
+  <!-- Tumstock bakom nyckeltalet korn 150 -->
+  <rect x="326" y="150" width="94" height="26" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 373 163)"/>
+
+  <!-- Snickarpenna: ringen runt korn 240, öppen kurva -->
+  <path d="M560,98 C548,84 466,86 458,102 C450,118 480,130 516,128 C544,126 560,116 558,104" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="64" y="292">korn 80</text>
+    <text x="64" y="324" fill="#625a50">bort med gammal olja</text>
+
+    <text x="198" y="232">korn 120</text>
+    <text x="198" y="264" fill="#625a50">bort med spåren</text>
+
+    <text x="330" y="170">korn 150</text>
+    <text x="330" y="204" fill="#625a50">sista, sedan olja</text>
+
+    <text x="466" y="114" fill="#625a50">korn 240</text>
+    <text x="330" y="52" fill="#ad3519">för fint, oljan</text>
+    <text x="330" y="76" fill="#ad3519">går inte in</text>
+  </g>
+</svg>

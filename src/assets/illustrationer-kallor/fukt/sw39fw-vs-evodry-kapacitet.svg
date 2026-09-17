@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Stapeldiagram med liter per dygn vid 15, 10 och 5 grader för Wood's SW39FW (5,7, 3,8 och under 1) och Acetec EvoDry 6H 2.0 (6,7, 5,9 och 4,8), vår omräkning ur tillverkarnas märkkapacitet.">
+  <!-- Diagram i Anteckningsbokens hand. SW39FW (kondens) i blyerts 2 px, EvoDry (sorption) i penna 2,5 px,
+       etiketter i Atkinson Hyperlegible 22, en enda anteckning i Caveat 26 i penna.
+       Liter per dygn: SW39FW 19 × 0,30 = 5,7, 19 × 0,20 = 3,8, under 1 (Meacos andel vid 5 °C, butiksuppgift);
+       EvoDry 7,4 × 0,90 = 6,7, 7,4 × 0,80 = 5,9, 7,4 × 0,65 = 4,8. Faktorer ur underlag-kalkyl-avfuktare.md.
+       Skala 25 px per liter, nollinje y=300. Nyckeltalet 5,9 markerat.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Axlar i blyerts-2 -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M84,88 Q83,194 84,304"/>
+    <path d="M80,300 Q325,301 570,300"/>
+    <path d="M78,300 h6 M78,250 h6 M78,200 h6 M78,150 h6 M78,100 h6"/>
+  </g>
+  <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="22" fill="#625a50" text-anchor="end">
+    <text x="72" y="307">0</text>
+    <text x="72" y="257">2</text>
+    <text x="72" y="207">4</text>
+    <text x="72" y="157">6</text>
+    <text x="72" y="107">8</text>
+  </g>
+  <text x="90" y="46" font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="22" fill="#625a50">liter per dygn, vår omräkning</text>
+
+  <!-- Teckenförklaring, uppe till höger -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M378,64 Q388,63 398,64.5" stroke="#2a2521" stroke-width="2"/>
+    <path d="M378,90 Q388,89 398,90.5" stroke="#ad3519" stroke-width="2.5"/>
+  </g>
+  <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="22" fill="#2a2521">
+    <text x="408" y="71">SW39FW, kondens</text>
+    <text x="408" y="97">EvoDry, sorption</text>
+  </g>
+
+  <!-- SW39FW i blyerts: 15 °C 5,7 (y 157,5), 10 °C 3,8 (y 205), 5 °C under 1 streckad (y 277,5) -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M115,303 Q114,230 115.5,157.5 H165 Q166,230 165,303"/>
+    <path d="M275,303 Q274,254 275.5,205 H325 Q326,254 325,303"/>
+    <path d="M435,303 Q434.5,290 435.5,277.5 H485 Q486,290 485,303" stroke-dasharray="5 5"/>
+  </g>
+  <!-- EvoDry i snickarpenna: 15 °C 6,7 (y 132,5), 10 °C 5,9 (y 152,5), 5 °C 4,8 (y 180) -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M175,303 Q174,218 175.5,132.5 H225 Q226,218 225,303"/>
+    <path d="M335,303 Q334,228 335.5,152.5 H385 Q386,228 385,303"/>
+    <path d="M495,303 Q494,242 495.5,180 H545 Q546,242 545,303"/>
+  </g>
+
+  <!-- Nyckeltalet 5,9 får gul markering -->
+  <rect x="337" y="123" width="46" height="25" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 360 135)"/>
+
+  <!-- Talen ovanför staplarna -->
+  <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="22" fill="#2a2521" text-anchor="middle">
+    <text x="140" y="149">5,7</text>
+    <text x="200" y="124">6,7</text>
+    <text x="300" y="197">3,8</text>
+    <text x="360" y="142">5,9</text>
+    <text x="520" y="172">4,8</text>
+  </g>
+  <text x="460" y="270" font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="22" fill="#625a50" text-anchor="middle">under 1</text>
+
+  <!-- Temperaturerna under grupperna -->
+  <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="22" fill="#2a2521" text-anchor="middle">
+    <text x="170" y="330">15 °C</text>
+    <text x="330" y="330">10 °C</text>
+    <text x="490" y="330">5 °C</text>
+  </g>
+  <text x="330" y="354" font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="22" fill="#625a50" text-anchor="middle">i källaren, vid 55 % luftfuktighet</text>
+
+  <!-- Anteckningen, det enda i handskrift -->
+  <g font-family="'Caveat', cursive" font-weight="500" font-size="26" fill="#ad3519" text-anchor="middle">
+    <text x="505" y="124">här byter</text>
+    <text x="505" y="152">de plats</text>
+  </g>
+  <path d="M458,150 Q430,168 396,172" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M396,172 L408,164 M396,172 L409,178" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

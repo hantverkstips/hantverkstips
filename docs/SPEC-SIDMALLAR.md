@@ -397,6 +397,27 @@ Alla rutter utom kalkylatorn och `/go/` är statiska. Varje rutt: sätter `Astro
 
 `<title>` skickas till `<Bas>` utan varumärke, och layouten lägger på `" · Hantverkstips"` när den färdiga titeln ryms i 60 tecken (avsnitt 1). Startsidan är sin egen: där bär titeln varumärket först och får inget suffix.
 
+#### 4.0 Komponentuppsättningen till `<Content>`
+
+En innehållsfil importerar aldrig en komponent själv. Mallen skickar dem via `components`-propen på `<Content>`, och en MDX-fil som använder något utanför sin uppsättning ger byggfel. Det är avsikten: uppsättningen är gränsen för vad skribenten får skriva. Två uppsättningar finns, och alla artikelmallar använder den ena eller den andra. Ändras listan här ska den ändras i alla mallar som använder den.
+
+**Basuppsättningen** (allt utom affiliate):
+
+```
+h2: Pennstreck, Faktaruta, Illustration, Varning, Verktygskort, Markering
+```
+
+**Produktuppsättningen** = basuppsättningen plus `Kopknapp`, `Produktkort`, `Jamforelsetabell`.
+
+| Mall | Uppsättning |
+|---|---|
+| `vyer/Artikel.astro`, `typ === 'kunskap'` (4.3) | basuppsättningen |
+| `vyer/Artikel.astro`, kopguide, problemguide, projektguide (4.3) | produktuppsättningen |
+| `tester/[slug].astro` (4.4) | produktuppsättningen |
+| `jamforelser/[slug].astro` (4.5) | produktuppsättningen |
+
+Kategorisidans `<Content>` (4.2, punkt 6) står utanför: den renderar kategorifilens korta avsnitt och har en egen, kortare lista.
+
 ### 4.1 `src/pages/index.astro`
 
 Data: `getEntry('sidor', 'startsida')` (H1 = `title`, stycket = `<Content />`), heroillustrationen som statisk import av `src/assets/illustrationer/start/hus-tumstock.svg`, `PELARE` med `hubPublicerad` per pelare (ämnesraden), "just nu" via `getEntry(justNu.samling, justNu.id)`, `publicerade('kategorier')` med `hamtaProdukt(val[0].produkt)` per kategori, de sex senaste av guider + kunskap + tester + jamforelser sorterade på `publicerad` fallande, `KALKYLATORER`.
@@ -477,7 +498,7 @@ Rutten sätter `Astro.locals.sidtyp` från `typ`: `kopguide` → `guide`, `probl
 
 1. Brödsmulor via `brodsmulorForArtikel(entry)`.
 2. Etikett (`typEtikett(typ)`) i etikett-stil, H1 `title`, ingress = `description`? Nej: ingressen är det första stycket i brödtexten och skrivs av skribenten, mallen visar inte `description`. Meta: "Publicerad {datum}" (", uppdaterad {datum}"), "Av {namn}".
-3. `<Content components={komponenter} />` där `komponenter` beror på typ (tabell nedan). Skribenten lägger `<Faktaruta variant="kortsvar">` överst själv; mallen tvingar inte.
+3. `<Content components={komponenter} />` där `komponenter` beror på typ (4.0 och tabellen nedan). Skribenten lägger `<Faktaruta variant="kortsvar">` överst själv; mallen tvingar inte.
 4. Bild: om `bild` finns, `<Image src={bild} alt={bildtext ?? ''} widths={[375, 704]} sizes="(min-width: 1024px) 704px, 100vw" />` med `<figcaption>`. Placeringen "under Kort svar" löses så: vyn renderar bilden före `<Content>` om innehållet inte börjar med en Faktaruta, annars direkt efter första H2:s föregångare... det kräver att vyn läser MDX-trädet, vilket vi inte gör. Beslut: bilden renderas av vyn direkt efter metaraden, före `<Content>`. Skribenten skriver "Kort svar" som första element i brödtexten och bilden hamnar då ovanför det. Designansvarig får avgöra om det håller; alternativet är att skribenten placerar bilden själv med `![]()` i MDX, och då utelämnas `bild` i frontmatter.
 5. `<Innehallsforteckning rubriker={headings depth 2} />` mellan bild och innehåll; på desktop i höger spalt.
 6. Typspecifika block efter innehållet (tabell).
@@ -487,10 +508,10 @@ Rutten sätter `Astro.locals.sidtyp` från `typ`: `kopguide` → `guide`, `probl
 
 | Typ | `sidtyp` | `reklam` | Komponenter till `<Content>` | Block efter innehållet |
 |---|---|---|---|---|
-| kopguide | guide | alltid true | h2, Kopknapp, Produktkort, Jamforelsetabell, Faktaruta, Varning, Verktygskort, Markering | H2 "Produkterna vi nämner": ett kompakt Produktkort per post i `produkter` med `forVem` och `etikett`, `modul="avslut"`. Tom lista: utgår |
+| kopguide | guide | alltid true | produktuppsättningen (4.0) | H2 "Produkterna vi nämner": ett kompakt Produktkort per post i `produkter` med `forVem` och `etikett`, `modul="avslut"`. Tom lista: utgår |
 | problemguide | problemguide | `produkter.length > 0` | samma som kopguide | inget. Produkten står i texten där diagnosen pekar på den |
 | projektguide | projektguide | `behover?.verktyg.length > 0 || produkter.length > 0` | samma som kopguide | `<DetHarBehoverDu verktyg material />` från `behover` |
-| kunskap | kunskap | `produkter.length > 0` | h2, Faktaruta, Varning, Verktygskort, Markering, Illustration | H2 "Produkterna vi nämner" som i köpguiden när `produkter` inte är tom ("en produkt per typ, sist", DESIGN 5.3). Tom lista: inget, och inget reklamband |
+| kunskap | kunskap | `produkter.length > 0` | basuppsättningen (4.0) | H2 "Produkterna vi nämner" som i köpguiden när `produkter` inte är tom ("en produkt per typ, sist", DESIGN 5.3). Tom lista: inget, och inget reklamband |
 
 Kunskap får inte `Kopknapp` eller `Produktkort` i brödtexten; skriver en innehållsfil ändå `<Produktkort>` ger MDX ett byggfel ("Expected component Produktkort to be defined"), vilket är avsikten. Produkterna på en kunskapssida kommer bara från frontmatterns `produkter` och renderas av mallen sist.
 
@@ -507,7 +528,7 @@ Ordning:
 1. Etikett "Test" eller "Granskning" i etikett-stil, `penna`. H1 `title`. Meta: "Testad {testad}" (bara test), "Publicerad", "uppdaterad", "Av".
 2. Omdömesblock: kort med ram. Bild från produkten (4:3) överst på mobil, 40 procent till vänster från `lg`. Etikett om produkten är `val[0]` i kategorifilen ("Vårt val"). `omdome` som ett stycke i ingress-storlek. Tabell med `matningar`: kolumnerna "Vi mätte" och "Tillverkaren uppger", enhet i radrubriken, tomt värde skrivs "ej mätt" (kolumnen vi) eller "ej angivet". På granskningar döljs kolumnen "Vi mätte" helt. `<Faktaruta variant="kopom" kopOm kopInteOm />`. Pris och Kopknapp `modul="kort_full"`.
 3. `<Innehallsforteckning />` från headings.
-4. `<Content components={{ h2: Pennstreck, Faktaruta, Varning, Verktygskort, Markering, Kopknapp, Produktkort, Jamforelsetabell }} />`. Enligt `docs/AFFILIATE.md` ska inga knappar ligga mellan omdömet och avslutet; att Kopknapp ändå är tillåten i texten är för att granskaren ska kunna se och stryka, inte för att den ska användas.
+4. `<Content>` med produktuppsättningen (4.0). Enligt `docs/AFFILIATE.md` ska inga knappar ligga mellan omdömet och avslutet; att Kopknapp ändå är tillåten i texten är för att granskaren ska kunna se och stryka, inte för att den ska användas.
 5. H2 "Alternativ" (Pennstreck): ett kompakt Produktkort per post i `alternativ`, med `etikett = varfor`. Tom: utgår.
 6. H2 "Specifikationer": `<table>` två kolumner (egenskap, värde) från kategorifilens `specs` och produktens `specs`. Alla specs, inte bara fyra. "ej angivet" för saknade.
 7. H2 "Så testade vi" om brödtexten inte redan har en H2 med den texten (kontrollera `headings`); då renderas en kort standardtext "Metoden i sin helhet står på sidan Så testar vi." med länk. Källor från `kallor`.
@@ -518,7 +539,7 @@ Strukturerad data: `produkt()` med `etikett`, och `brodsmulor` via layouten. Om 
 
 ### 4.5 `src/pages/jamforelser/[slug].astro`
 
-`publicerade('jamforelser')`. `Astro.locals.sidtyp = 'jamforelse'`. `reklam={true}`. `bred={true}`. Brödsmulor: Hantverkstips / {kategorinamn} / {title}. Ordning: etikett "Jämförelse", H1, meta, `<Innehallsforteckning />`, `<Jamforelsetabell produkter kategori />` direkt efter metaraden (tabellen är svaret), `<Content>` med samma komponenter som köpguiden, H2 "Produkterna vi nämner" som i köpguiden, källor, relaterat, författarruta. Strukturerad data: `artikel()`.
+`publicerade('jamforelser')`. `Astro.locals.sidtyp = 'jamforelse'`. `reklam={true}`. `bred={true}`. Brödsmulor: Hantverkstips / {kategorinamn} / {title}. Ordning: etikett "Jämförelse", H1, meta, `<Innehallsforteckning />`, `<Jamforelsetabell produkter kategori />` direkt efter metaraden (tabellen är svaret), `<Content>` med produktuppsättningen (4.0), H2 "Produkterna vi nämner" som i köpguiden, källor, relaterat, författarruta. Strukturerad data: `artikel()`.
 
 ### 4.6 `src/pages/rakna/index.astro`
 

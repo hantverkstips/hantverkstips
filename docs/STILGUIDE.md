@@ -113,6 +113,8 @@ Tillagt 2026-09-16 efter granskningen av omgång 2, där fyra tabeller sprängde
 - Kolumnrubriken är högst två ord plus enhet: "Vatten, g/m³", "Maxyta, kvm", "Tillverkaren, kg". En lång rubrik gör tabellen bredare än en mobilskärm oavsett hur få kolumner den har.
 - En cell bär ett värde. Två värden för samma sak ("7,4, som mest 9,7") blir en cell och en mening under tabellen.
 - Undantag för diagnostabeller ("Vad du ser | Trolig orsak | Nästa steg"): högst tre kolumner, och cellerna får vara en kort mening när hela tabellen läses som en checklista. Källraden under gäller ändå.
+- Så här beter sig tabellen på en mobilskärm, uppmätt i 343 px 2026-09-17: två kolumner ryms alltid, fyra kolumner ryms så länge cellerna är korta, och tre kolumner ryms när cellerna är antingen högst tio tecken eller mer än sexton. Allt annat scrollar i sidled inom tabellen, med raden "Dra i sidled för att se hela tabellen" över och en tonad kant till höger. Den raden står över varje tabell från tre kolumner, så läsaren vet alltid att det finns mer.
+- En tabell som scrollar är inte ett fel, men den lästa kolumnen ska vara den första. Lägg det läsaren letar efter längst till vänster och nästa steg längst till höger.
 
 ## Rubriker och metadata
 

@@ -510,10 +510,12 @@ body {
      Bara på mobil: från lg får tabellen plats eller växer i stället ut åt höger.
      Dold som utgångsläge: pluginet i astro.config.mjs lägger ledtexten över varje
      brödtabell, men en tvåkolumnstabell får plats på 375 px och då är texten fel.
-     Den visas bara när tabellen har fler än tre kolumner, alltså när någon rad har
-     en fjärde cell. Granskningen 2026-09-16. Webbläsare utan :has() får ingen
-     ledtext alls, vilket är rätt väg att falla: tabellen scrollar ändå och den
-     tonade högerkanten visar att det finns mer. */
+     Den visas från tre kolumner, alltså när någon rad har en tredje cell: en
+     trekolumnstabell ryms oftast men inte alltid, och läsaren måste få veta att
+     tredje kolumnen finns. Sänkt från fyra efter granskningen 2026-09-16 punkt
+     5.2, där slipguidens diagnostabell dolde "Nästa steg" utan ett ord om det.
+     Webbläsare utan :has() får ingen ledtext alls, vilket är rätt väg att falla:
+     tabellen scrollar ändå och den tonade högerkanten visar att det finns mer. */
   .prosa .tabell-dra {
     display: none;
     margin: 0 0 8px;
@@ -521,21 +523,21 @@ body {
     line-height: var(--text-liten--line-height);
     color: var(--color-blyerts-2);
   }
-  .prosa .brodtabell-block:has(.brodtabell tr > *:nth-child(4)) .tabell-dra {
+  .prosa .brodtabell-block:has(.brodtabell tr > *:nth-child(3)) .tabell-dra {
     display: block;
   }
   @media (min-width: 64rem) {
-    .prosa .brodtabell-block:has(.brodtabell tr > *:nth-child(4)) .tabell-dra {
+    .prosa .brodtabell-block:has(.brodtabell tr > *:nth-child(3)) .tabell-dra {
       display: none;
     }
   }
-  /* Den tonade högerkanten följer samma villkor som ledtexten. En tabell med
-     högst tre kolumner ryms i 343 px, och då tonade kanten bort sista kolumnen
-     i onödan: tabellen såg skymd ut fast det inte fanns något mer att dra fram.
+  /* Den tonade högerkanten följer samma villkor som ledtexten. En tvåkolumns-
+     tabell ryms alltid i 343 px, och då tonade kanten bort sista kolumnen i
+     onödan: tabellen såg skymd ut fast det inte fanns något mer att dra fram.
      Gäller bara brödtabeller. Jämförelsetabellen använder samma .tabell-yta men
      scrollar alltid på mobil och behåller sin kant. :not(:has(…)) är ogiltigt i
      webbläsare utan :has(), då faller regeln bort och kanten ritas som förut. */
-  .prosa .brodtabell-block:not(:has(.brodtabell tr > *:nth-child(4))) .tabell-yta::after {
+  .prosa .brodtabell-block:not(:has(.brodtabell tr > *:nth-child(3))) .tabell-yta::after {
     content: none;
   }
   /* DESIGN.md avsnitt 2: tabeller får gå ut förbi läsbredden. Artikelmallen har
@@ -587,12 +589,23 @@ body {
   .prosa .brodtabell .kort-cell {
     white-space: nowrap;
   }
+  /* Från fyra kolumner släpps nowrap på alla celler. Fyra korta celler à 16
+     tecken som inte får brytas blir bredare än 343 px hur låg min-width än är,
+     och då klipptes tabellen fast rubrikerna var på två ord (granskningen
+     2026-09-16 punkt 5.3). Ett tal med enhet som bryts mellan tal och enhet är
+     ett mindre ont än en kolumn läsaren aldrig ser. Med två eller tre kolumner
+     finns bredden kvar och nowrap gäller som förut. */
+  .prosa .brodtabell:has(tr > *:nth-child(4)) .kort-cell {
+    white-space: normal;
+  }
   /* Celler med hel text får en minsta spaltbredd, annars pressar tabellen ihop
-     dem till ett ord per rad när den ändå är bredare än skärmen. 6 rem, sänkt
-     från 10 efter granskningen 2026-09-16: fyra textkolumner blev 40 rem plus
-     innermarginaler och klipptes redan på desktop, nu får de plats i läsbredden. */
+     dem till ett ord per rad när den ändå är bredare än skärmen. 4 rem, sänkt
+     från 6 (och dessförinnan 10) efter granskningen 2026-09-16 punkt 5.3: fyra
+     textkolumner à 6 rem plus innermarginaler blev bredare än 343 px och
+     klipptes på mobil. 4 rem (64 px, varav 24 px innermarginal) räcker för ett
+     ord per rad utan att pressa isär bokstäverna. */
   .prosa .brodtabell td:not(.kort-cell) {
-    min-width: 6rem;
+    min-width: 4rem;
   }
   /* Kolumnrubriker bryts alltid, också de korta. Pluginet räknar "Tillverkarens
      maxyta" (20 tecken) som kort cell, och nowrap på den gjorde rubriken till

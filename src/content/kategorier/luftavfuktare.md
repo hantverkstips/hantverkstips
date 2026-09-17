@@ -1,7 +1,7 @@
 ---
 namn: Luftavfuktare
 title: Luftavfuktare jämförda på tillverkarnas egna siffror, och tre vi står för
-seoTitle: Bästa luftavfuktaren till källare, krypgrund och garage, jämförda på datablad
+seoTitle: Bästa luftavfuktaren, jämförd på datablad
 description: Avfuktarna i Proffsmagasinets sortiment jämförda på tillverkarnas egna siffror, tre vi rekommenderar och hur stor du behöver. Inga egna mätningar än.
 ingress: Samma mått för alla maskiner i en tabell, och tillverkarens kapacitet med villkoret utskrivet. Tre val vi står för tills kammartestet vid 10 och 20 grader är gjort. Det som saknas i databladen står som saknas, inte som en gissning.
 pelare: [fukt]
@@ -60,7 +60,7 @@ Temperaturen i utrymmet först, storleken sedan.
 
 Håller källaren över 10 grader året om räcker en kondensavfuktare, alltså en maskin som kyler fram vattnet ur luften. Där är Wood's SW39FW vårt förstaval för upp till 40 kvm vid 60 till 70 procent luftfuktighet. Vad de 19 literna blir i en källare på 15 grader står i [granskningen av Wood's SW39FW](/tester/woods-sw39fw/). Wood's MDK21 är den billiga vägen om det finns golvbrunn och källaren håller 15 grader.
 
-Ligger utrymmet under 10 grader en längre period på vintern är det sorption som gäller, alltså en maskin som binder vattnet i ett fuktsugande hjul. Då pekar vi på Acetec EvoDry 6H 2.0. Reservationen är att den drar 530 W och behöver ett hål i ytterväggen för våtluftsslangen. Varför gränsen går vid 10 grader, och vad tillverkarna själva anger vid 5, 10 och 20 grader, står i [sorptionsavfuktare, temperaturen avgör](/fukt/sorptionsavfuktare/).
+Ligger utrymmet under 10 grader en längre period på vintern är det sorption som gäller, alltså en maskin som binder vattnet i ett fuktsugande hjul. Då pekar vi på Acetec EvoDry 6H 2.0. Vad den kostar i drift och vad installationen kräver står i [granskningen av EvoDry 6H 2.0](/tester/acetec-evodry-6h-2/). Reservationen är att den drar 530 W och behöver ett hål i ytterväggen för våtluftsslangen. Varför gränsen går vid 10 grader, och vad tillverkarna själva anger vid 5, 10 och 20 grader, står i [sorptionsavfuktare, temperaturen avgör](/fukt/sorptionsavfuktare/).
 
 Storleken räknar du ut från yta, takhöjd och den fuktnivå du mäter i dag. Ta en källare på 40 kvm med 2,2 meter i tak. Ligger den på 65 procent luftfuktighet i augusti landar den på 16 liter märkt kapacitet för kondens, alltså siffran på förpackningen. Ligger samma källare på 75 procent krävs 22 liter. Hela tabellen från 20 till 80 kvm, antagandena bakom den och maskinerna som klarar talen finns i [rätt avfuktare till källaren](/fukt/avfuktare-kallare/). Vill du ha talet för just ditt utrymme gör [kalkylatorn](/rakna/avfuktare/) räkningen med samma formel.
 

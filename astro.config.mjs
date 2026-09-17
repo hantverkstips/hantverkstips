@@ -10,8 +10,11 @@ import { noindexAdresser } from './scripts/noindex-sidor.mjs';
 
 /** Längsta celltext som får hållas ihop på en rad. Värden som "1 × 12,5 mm"
  *  och "1,9 °C" ska aldrig brytas mellan tal och enhet; hela meningar bryts
- *  som vanligt, annars blir tabellen orimligt bred att dra i. */
-const KORT_CELL = 30;
+ *  som vanligt, annars blir tabellen orimligt bred att dra i. 16 tecken,
+ *  sänkt från 30 efter granskningen 2026-09-16 punkt 5.2: ett tal med enhet
+ *  ryms, en kort mening ("Bygglov krävs alltid") gör det inte, och det var
+ *  sådana celler som sköt tvåkolumnstabellen utanför 343 px. */
+const KORT_CELL = 16;
 
 /** @type {(nod: any) => string} */
 function celltext(nod) {

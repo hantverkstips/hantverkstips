@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Samma spalt mellan karm och vägg sedd uppifrån, men med fogmassa både ytterst mot utsidan och innerst mot rummet. Drevet i mitten är inringat med droppar i, fukten kan inte torka ut.">
+  <!-- Anteckningsboken. Blyerts 2 px för vägg, karm och de två fogmassorna, blyerts-2 för skraffering, drev
+       och ledare, snickarpenna för ringen runt det våta drevet med dropparna (enda pennsaken). Inget nyckeltal.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2: regeln skrafferad -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M170,62 l10,10 M192,62 l10,10 M214,62 l10,10 M236,62 l10,10 M258,62 l10,10 M280,62 l10,10"/>
+    <path d="M181,84 l10,10 M203,84 l10,10 M225,84 l10,10 M247,84 l10,10 M269,84 l10,10"/>
+    <path d="M170,106 l10,10 M192,106 l10,10 M214,106 l10,10 M236,106 l10,10 M258,106 l10,10 M280,106 l10,10"/>
+    <path d="M181,128 l10,10 M203,128 l10,10 M225,128 l10,10 M247,128 l10,10 M269,128 l10,10"/>
+    <path d="M170,150 l10,10 M192,150 l10,10 M214,150 l10,10 M236,150 l10,10 M258,150 l10,10 M280,150 l10,10"/>
+    <path d="M181,172 l10,10 M203,172 l10,10 M225,172 l10,10 M247,172 l10,10 M269,172 l10,10"/>
+    <path d="M170,194 l10,10 M192,194 l10,10 M214,194 l10,10 M236,194 l10,10 M258,194 l10,10 M280,194 l10,10"/>
+    <path d="M181,216 l10,10 M203,216 l10,10 M225,216 l10,10 M247,216 l10,10 M269,216 l10,10"/>
+    <path d="M170,238 l10,10 M192,238 l10,10 M214,238 l10,10 M236,238 l10,10 M258,238 l10,10 M280,238 l10,10"/>
+    <path d="M181,260 l10,10 M203,260 l10,10 M225,260 l10,10 M247,260 l10,10 M269,260 l10,10"/>
+    <path d="M170,282 l10,10 M192,282 l10,10 M214,282 l10,10 M236,282 l10,10 M258,282 l10,10 M280,282 l10,10"/>
+  </g>
+
+  <!-- Blyerts: ytterpanel, regel, gipsskiva, karm, fogmassa ute och inne -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M150,40 Q225,39 300,40 Q301,47 300,54 Q225,55 150,54 Q149,47 150,40 Z"/>
+    <path d="M165,54 Q166,177 165,300 M300,54 Q299,177 300,300"/>
+    <path d="M150,300 Q225,301 300,300 Q301,307 300,314 Q225,315 150,314 Q149,307 150,300 Z"/>
+    <path d="M345,54 Q392,53 440,54 Q441,177 440,300 Q392,301 345,300 Q344,177 345,54 Z"/>
+    <path d="M301,56 Q322,55 344,56 Q345,68 344,80 Q322,81 301,80 Q300,68 301,56 Z"/>
+    <path d="M301,290 Q322,289 344,290 Q345,302 344,314 Q322,315 301,314 Q300,302 301,290 Z"/>
+  </g>
+
+  <!-- Blyerts-2: drevet som löst klotter och ledare -->
+  <path d="M305,100 Q322,92 340,102 Q322,110 305,114 Q322,118 340,126 Q322,134 305,138 Q322,142 340,150 Q322,158 305,162 Q322,166 340,174 Q322,182 305,186 Q322,190 340,198 Q322,206 305,210 Q322,214 340,222 Q322,230 305,234 Q322,238 340,246 Q322,254 305,258 Q322,262 340,270" fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round"/>
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M144,70 L298,68"/>
+    <path d="M144,298 L298,302"/>
+  </g>
+
+  <!-- Snickarpenna: ringen runt det våta drevet, och dropparna i det -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M356,94 C312,82 286,112 288,180 C290,244 302,282 340,280 C372,278 366,232 362,184 C358,142 364,108 352,96"/>
+    <path d="M322,132 c-7,9 -7,16 0,18 c7,-2 7,-9 0,-18 z"/>
+    <path d="M322,176 c-7,9 -7,16 0,18 c7,-2 7,-9 0,-18 z"/>
+    <path d="M322,220 c-7,9 -7,16 0,18 c7,-2 7,-9 0,-18 z"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="240" y="24" fill="#625a50">tätt på båda sidor, fel</text>
+    <text x="548" y="44" fill="#625a50">ute</text>
+    <text x="548" y="356" fill="#625a50">inne</text>
+    <text x="44" y="76">fogmassa</text>
+    <text x="44" y="184" fill="#625a50">vägg</text>
+    <text x="44" y="304">fogmassa</text>
+    <text x="0" y="0" fill="#625a50" transform="translate(404 240) rotate(-90)">fönsterkarm</text>
+    <text x="452" y="170" fill="#ad3519">fukten stannar</text>
+    <text x="452" y="194" fill="#ad3519">kvar i drevet</text>
+  </g>
+</svg>
