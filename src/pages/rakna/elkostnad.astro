@@ -1,0 +1,397 @@
+---
+/**
+ * Elkostnadskalkylatorn. Formuläret skickas som GET till samma sida och
+ * beräkningen sker på servern, så sidan fungerar utan ett enda byte klient-JS.
+ * Kostnaden är en serverfunktion per anrop, och den hålls nere med CDN-cache.
+ * Se docs/SPEC-SIDMALLAR.md avsnitt 4.7.
+ *
+ * Formeln och alla antaganden ligger i src/lib/kalkyl/elkostnad.ts. Sidan räknar
+ * ingenting själv, den visar bara resultatet och redovisar källorna.
+ *
+ * Query-parametern produkt fyller fälten ur produktens specs. Uppslaget sker
+ * här och inte i formeln: src/lib/kalkyl/ är rena moduler utan databas, och
+ * produktForval() tar emot specs som ett vanligt objekt.
+ *
+ * Räkningen pekar inte ut någon produkt, den räknar på den maskin läsaren redan
+ * har eller tittar på. Därför har sidan varken produktkort eller reklamband.
+ */
+export const prerender = false;
+
+import Bas from '../../layouts/Bas.astro';
+import { ELPRIS_KALLA } from '../../lib/antaganden';
+import { formateraPris, formateraTal } from '../../lib/format';
+import {
+  produktForval,
+  produktSlugFranQuery,
+  raknaElkostnad,
+  standardMedForval,
+  tolkaQuery,
+  type ElkostnadIndata,
+  type ElkostnadResultat,
+} from '../../lib/kalkyl/elkostnad';
+import { CELL_KLASS, ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
+import { hamtaProdukt, produktNamn } from '../../lib/produkter';
+import ElkostnadForm from '../../components/kalkyl/ElkostnadForm.astro';
+import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Markering from '../../components/ui/Markering.astro';
+import Pennstreck from '../../components/ui/Pennstreck.astro';
+
+Astro.locals.sidtyp = 'verktyg';
+
+Astro.response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+
+const q = Astro.url.searchParams;
+
+/* Produkten i adressen, när läsaren kom hit från ett produktkort. */
+const produktSlug = produktSlugFranQuery(q);
+const produkt = produktSlug ? await hamtaProdukt(produktSlug) : null;
+const forval = produktForval(produkt?.specs ?? null);
+const standard = standardMedForval(forval);
+
+const { indata } = tolkaQuery(q, forval);
+const resultat = raknaElkostnad(indata);
+
+const fel = resultat.status === 'ogiltig' ? resultat.fel : {};
+// Vid ogiltig indata visas standardvärdenas resultat, med en rad som säger det.
+const visat: ElkostnadResultat = resultat.status === 'ogiltig' ? raknaElkostnad(standard) : resultat;
+const visatIndata: ElkostnadIndata = resultat.status === 'ogiltig' ? standard : indata;
+
+const komma = (n: number) => String(n).replace('.', ',');
+/** Tal i löptext: heltal utan decimal, annars en. "19 liter", "7,4 liter". */
+const talText = (n: number) => formateraTal(n, Number.isInteger(n) ? 0 : 1);
+/**
+ * Energin och priset per liter. En decimal räcker (beslut i granskningen
+ * omgång 3: 1,7 kWh och 4,1 kr), men under en krona säger en decimal inget,
+ * och då skrivs två ut.
+ */
+const perLiter = (n: number) => formateraTal(n, n >= 1 ? 1 : 2);
+
+/**
+ * Fältens värden kommer från query-strängen som den skrevs, inte från de tolkade
+ * talen: "trehundra" eller "" blir NaN i tolkaQuery, och NaN i ett fält som
+ * läsaren ska rätta är obrukbart.
+ */
+function faltVarde(nyckel: string, standardVarde: number): string {
+  const ra = q.get(nyckel);
+  if (ra !== null) return ra;
+  return komma(standardVarde);
+}
+
+/* Dagarna kan stå i fältet dagareget när radioknappen "Eget antal" är vald. */
+const raDagar = q.get('dagar');
+const dagarVarde =
+  raDagar === null ? komma(standard.dagar) : raDagar.trim() === 'eget' ? (q.get('dagareget') ?? '') : raDagar;
+
+/* Literfältet förifylls aldrig ur produkten. Skälet står vid produktForval. */
+const literVarde = q.get('liter') ?? '';
+
+const varden = {
+  effekt: faltVarde('effekt', standard.effektW),
+  timmar: faltVarde('timmar', standard.timmarPerDygn),
+  dagar: dagarVarde,
+  // Elpriset skrivs med två decimaler i fältet, som på fakturan och i tabellerna.
+  elpris: q.get('elpris') ?? formateraTal(standard.elprisKrPerKwh, 2),
+  liter: literVarde,
+};
+
+/** Raden över formuläret när adressen pekar ut en produkt. */
+let produktRad: string | null = null;
+if (produktSlug !== null) {
+  if (produkt && forval.effektW !== null) {
+    const namn = produktNamn(produkt);
+    produktRad = `Räknar på ${namn}, ${talText(forval.effektW)} W enligt butiken. Ändra talen om du har egna.`;
+  } else {
+    produktRad =
+      'Maskinen i länken finns inte i vår produktdatabas, eller saknar uppgift om effekt. Fälten står därför på standardvärden.';
+  }
+}
+
+/**
+ * Delbar länk. Hela tillståndet ligger redan i query-strängen, så adressen är
+ * uträkningen. Den byggs av de tolkade värdena, inte av strängen läsaren skrev,
+ * och dagarna skrivs alltid som ett tal, aldrig som "eget".
+ */
+const delaQuery = new URLSearchParams({
+  effekt: komma(visatIndata.effektW),
+  timmar: komma(visatIndata.timmarPerDygn),
+  dagar: komma(visatIndata.dagar),
+  elpris: komma(visatIndata.elprisKrPerKwh),
+});
+if (visatIndata.literPerDygn !== null) delaQuery.set('liter', komma(visatIndata.literPerDygn));
+const delaLank = new URL(`/rakna/elkostnad/?${delaQuery.toString()}`, Astro.site ?? Astro.url).toString();
+
+/** Tal ur resultatet, färdigformaterade, så att markupen nedan blir läsbar. */
+const tal =
+  visat.status === 'ok'
+    ? {
+        kwhPerDygn: formateraTal(visat.kwhPerDygn, 2),
+        kwhPerPeriod: formateraTal(visat.kwhPerPeriod, 1),
+        krPerPeriod: formateraPris(visat.krPerPeriod),
+        krPerDygn: formateraTal(visat.krPerDygn, 2),
+        kwhPerAr: formateraTal(visat.kwhPerAr, 0),
+        krPerAr: formateraPris(visat.krPerAr),
+        kwhPerLiter: visat.kwhPerLiter === null ? null : perLiter(visat.kwhPerLiter),
+        krPerLiter: visat.krPerLiter === null ? null : perLiter(visat.krPerLiter),
+        effekt: talText(visatIndata.effektW),
+        timmar: talText(visatIndata.timmarPerDygn),
+        dagar: talText(visatIndata.dagar),
+        elpris: formateraTal(visatIndata.elprisKrPerKwh, 2),
+        liter: visatIndata.literPerDygn === null ? null : talText(visatIndata.literPerDygn),
+      }
+    : null;
+
+const titel = 'Elkostnadskalkylator, vad kostar maskinen att köra';
+
+/** Antagandena i tabellen under "Så räknar vi". Samma tal som konstanterna i kalkylen. */
+const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande'; stod: string; url?: string }[] = [
+  {
+    storhet: 'Elpriset',
+    varde: `${formateraTal(standard.elprisKrPerKwh, 2)} kr per kWh`,
+    grund: 'Källa',
+    stod: `SCB, genomsnitt för ${ELPRIS_KALLA.omfattar}, ${ELPRIS_KALLA.period}`,
+    url: ELPRIS_KALLA.url,
+  },
+  {
+    storhet: 'Effekten under gångtiden',
+    varde: 'märkeffekten, hela tiden',
+    grund: 'Antagande',
+    stod: 'Vi räknar med att maskinen drar sin märkeffekt varje minut den är igång. En kompressor pendlar i verkligheten, och talet blir därför en övre gräns',
+  },
+  {
+    storhet: 'Gångtiden per dygn',
+    varde: `${formateraTal(standard.timmarPerDygn)} timmar som standard`,
+    grund: 'Antagande',
+    stod: 'Vår gissning för en hygrostatstyrd avfuktare i en källare som inte är genomblöt. Ingen uppmätt drifttid, och det är talet som påverkar svaret mest',
+  },
+  {
+    storhet: 'Året',
+    varde: '365 dagar',
+    grund: 'Antagande',
+    stod: 'Skottår räknas inte. Skillnaden är under tre promille och ryms i osäkerheten på gångtiden',
+  },
+];
+---
+
+<Bas
+  title={titel}
+  description="Räkna ut elkostnaden för en maskin ur effekt, gångtid och elpris. Kilowattimmar och kronor per månad eller år, med SCB:s elpris och antagandena utskrivna."
+  reklam={false}
+  brodsmulor={[
+    { namn: 'Hantverkstips', href: '/' },
+    { namn: 'Räkna själv', href: '/rakna/' },
+    { namn: 'Elkostnadskalkylator' },
+  ]}
+  bred={true}
+>
+  <div class="mx-auto w-full max-w-lasbredd">
+    <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">Vad kostar maskinen i el? Räkna ut kWh och kronor</h1>
+    <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
+      Här kan du räkna ut elkostnad för en maskin som står och går: avfuktaren i källaren, värmefläkten i garaget,
+      frysen i förrådet. Fyll i effekten i watt, gångtiden per dygn och vad du betalar för elen. Vad kostar det att
+      köra den en månad, och vad blir samma maskin på ett år? Svaret står både i kilowattimmar och i kronor.
+    </p>
+
+    {
+      visat.status === 'ok' && tal && (
+        <Faktaruta variant="kortsvar">
+          <p class="m-0 leading-6">Maskinen drar {tal.kwhPerDygn} kWh el per dygn.</p>
+          <p class="m-0 leading-6">
+            På {tal.dagar} dagar blir det <Markering>{tal.kwhPerPeriod} kWh</Markering>.
+          </p>
+          <p class="m-0 leading-6">Det kostar {tal.krPerPeriod}.</p>
+          <p class="m-0 leading-6">Samma gångtid hela året går på {tal.krPerAr}.</p>
+          {tal.krPerLiter && <p class="m-0 leading-6">Varje liter vatten kostar {tal.krPerLiter} kr.</p>}
+        </Faktaruta>
+      )
+    }
+
+    <div class="linjerat mt-8 lg:grid lg:grid-cols-2 lg:gap-8">
+      <ElkostnadForm
+        indata={indata}
+        varden={varden}
+        fel={fel}
+        produktSlug={produktSlug}
+        produktRad={produktRad}
+      />
+
+      <div class="mt-8 border-t border-linje pt-6 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
+        {
+          visat.status === 'ok' && tal && (
+            <>
+              {resultat.status === 'ogiltig' && (
+                <p class="m-0 mb-2 text-liten text-varning">Visar standardvärden tills indatan är rättad.</p>
+              )}
+              <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">På {tal.dagar} dagar</p>
+              {/* Enheten står på samma rad som talet, på talets baslinje
+                  (DESIGN.md avsnitt 5.8). Radbryter på smal skärm. */}
+              <p class="m-0 mt-1 flex flex-wrap items-baseline gap-x-2">
+                <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
+                  <Markering>{tal.kwhPerPeriod}</Markering>
+                </span>
+                <span class="text-ingress lg:text-ingress-lg">kWh</span>
+              </p>
+              <p class="m-0 mt-2 flex flex-wrap items-baseline gap-x-2">
+                <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">{tal.krPerPeriod}</span>
+              </p>
+              <p class="m-0 mt-2 text-liten text-blyerts-2">
+                vid {tal.effekt} W i {tal.timmar} timmar per dygn och {tal.elpris} kr per kWh
+              </p>
+
+              <ul class="m-0 mt-4 p-0 list-none text-brod tabular-nums">
+                <li class="border-t border-linje py-2">{tal.kwhPerDygn} kWh per dygn</li>
+                <li class="border-t border-linje py-2">{tal.krPerDygn} kr per dygn</li>
+                <li class="border-t border-linje py-2">
+                  {tal.krPerAr} per år vid samma gångtid, alltså {tal.kwhPerAr} kWh
+                </li>
+                {tal.krPerLiter && tal.kwhPerLiter && (
+                  <li class="border-t border-linje py-2">
+                    {tal.kwhPerLiter} kWh och {tal.krPerLiter} kr per liter vatten
+                  </li>
+                )}
+              </ul>
+
+              {visat.gorInteDetHar && (
+                <>
+                  <p class="m-0 mt-4 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">Gör inte det här</p>
+                  <p class="m-0 mt-1 text-brod">{visat.gorInteDetHar}</p>
+                </>
+              )}
+
+              <p class="m-0 mt-4">
+                <a href="#sa-raknar-vi" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
+                  Så räknar vi
+                </a>
+              </p>
+
+              {/* Dela. Uträkningen står i adressen, så ett skrivskyddat fält
+                  räcker: markera och kopiera fungerar utan en rad JavaScript. */}
+              <div class="mt-4 border-t border-linje pt-4">
+                <label for="dela" class={ETIKETT_KLASS}>
+                  Dela uträkningen
+                </label>
+                <input id="dela" type="text" readonly value={delaLank} class:list={[FALT_KLASS, 'border-blyerts-2']} />
+                <p class="m-0 mt-1 text-liten text-blyerts-2">Adressen innehåller dina värden. Markera och kopiera.</p>
+              </div>
+            </>
+          )
+        }
+      </div>
+    </div>
+
+    <section>
+      <Pennstreck id="watt-till-kwh">Räkna elförbrukning från watt till kWh själv</Pennstreck>
+      <p class="m-0 text-brod lg:text-brod-lg">
+        Effekten står i watt på typskylten, den lilla metallbrickan på maskinens baksida. Dela talet med 1 000 så har
+        du kilowatt. Gångra kilowatten med antalet timmar maskinen faktiskt går, så har du kilowattimmar, och
+        kilowattimmen är enheten elbolaget tar betalt för. En maskin på 1 000 W som går en timme drar en kilowattimme.
+        Sedan är det bara priset kvar: multiplicera kilowattimmarna med vad du betalar, allt inräknat.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Märkeffekten är inte förbrukningen. Den säger vad maskinen drar när allt går för fullt, och nästan ingen
+        maskin gör det hela tiden. Kompressorn i en avfuktare startar när hygrostaten, alltså fuktgivaren, säger till
+        och stannar när luften är torr nog. En värmefläkt på termostat gör samma sak med värmen. Kalkylatorn ovanför
+        antar att märkeffekten dras under hela gångtiden du fyller i, vilket ger en övre gräns för en maskin som
+        pendlar. Vill du ha ett riktigt tal, sätt en energimätare mellan maskinen och vägguttaget och läs av efter en
+        vecka.
+      </p>
+
+      <Pennstreck id="avfuktaren" niva={3}>Avfuktaren i källaren</Pennstreck>
+      <p class="m-0 text-brod lg:text-brod-lg">
+        En avfuktare på 320 W, hygrostatstyrd så att den går åtta timmar per dygn. Det ger 2,56 kWh per dygn, alltså
+        76,8 kWh på en månad. Med elpriset i kalkylatorn kostar månaden 184 kr. Det är den vanligaste maskinen i det
+        här räkneexemplet, och den enda där literpriset på vattnet säger något: dela kilowattimmarna per dygn med
+        antalet liter maskinen tar upp.
+      </p>
+
+      <Pennstreck id="varmeflakten" niva={3}>Värmefläkten i garaget</Pennstreck>
+      <p class="m-0 text-brod lg:text-brod-lg">
+        En värmefläkt på 2 000 W med termostat, i ett garage som ska hållas frostfritt i november. Säg fem timmars
+        gångtid per dygn. Då blir det 10 kWh per dygn och 300 kWh på en månad, vilket kostar 720 kr. Fläkten är alltså
+        dyrare än avfuktaren trots att den står på kortare tid, för effekten är mer än dubbelt så hög.
+      </p>
+
+      <Pennstreck id="byggflakten" niva={3}>Byggfläkten dygnet runt</Pennstreck>
+      <p class="m-0 text-brod lg:text-brod-lg">
+        En byggfläkt på 3 000 W som torkar ett golv går utan uppehåll. Den drar 72 kWh per dygn. En vecka blir 504 kWh
+        och 1 210 kr, och det är i den storleksordningen en uttorkning efter en vattenskada ligger. Räkna på den innan
+        du hyr, inte efter.
+      </p>
+    </section>
+
+    <section>
+      <Pennstreck id="sa-raknar-vi">Så räknar vi</Pennstreck>
+      <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg">
+        <li class="mb-2">Effekten i watt delas med 1 000 och blir kilowatt.</li>
+        <li class="mb-2">Kilowatten gångras med gångtiden per dygn och blir kilowattimmar per dygn.</li>
+        <li class="mb-2">Kilowattimmarna per dygn gångras med antalet dagar och blir periodens förbrukning.</li>
+        <li class="mb-2">Förbrukningen gångras med elpriset och blir kronor.</li>
+        <li class="mb-2">Året är samma räkning med 365 dagar, vid den gångtid du fyllt i.</li>
+        <li>
+          Har du fyllt i liter vatten per dygn delas kilowattimmarna per dygn med det talet, och du får energin och
+          kostnaden per liter.
+        </li>
+      </ol>
+
+      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad siffrorna vilar på</h3>
+      <div class="mt-4 overflow-x-auto">
+        <table class="w-full border-collapse text-liten tabular-nums">
+          <caption class="sr-only">Antaganden och källor i elkostnadskalkylatorn</caption>
+          <thead>
+            <tr class="border-b border-linje text-left">
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Storhet</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Vi räknar med</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Källa eller antagande</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              antaganden.map((a) => (
+                <tr>
+                  <th scope="row" class:list={[CELL_KLASS, 'text-left font-normal']}>
+                    {a.storhet}
+                  </th>
+                  <td class={CELL_KLASS}>{a.varde}</td>
+                  <td class={CELL_KLASS}>
+                    {a.grund}.{' '}
+                    {a.url ? (
+                      <a href={a.url} rel="nofollow" class={LANK_KLASS}>
+                        {a.stod}
+                      </a>
+                    ) : (
+                      a.stod
+                    )}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <p class="m-0 mt-6 text-brod lg:text-brod-lg">
+        Formeln är säker, gångtiden är det inte. Fyller du i en timme för mycket per dygn flyttar sig årssiffran med
+        mer än du tror, och det är därför gångtiden står överst i tabellen över det som är gissat. Läs svaret som ett
+        spann, inte som ett facit.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Metoden bakom våra siffror står på <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar vi</a>.
+      </p>
+    </section>
+
+    <section>
+      <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
+      <ul class="m-0 p-0 list-none">
+        <li class="border-t border-linje">
+          <a href="/fukt/avfuktare-kallare/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
+            Rätt avfuktare till källaren, med eltabell för fyra maskiner
+          </a>
+        </li>
+        <li class="border-t border-linje">
+          <a href="/fukt/sorptionsavfuktare/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
+            Sorption eller kondens, temperaturen avgör
+          </a>
+        </li>
+      </ul>
+    </section>
+  </div>
+</Bas>

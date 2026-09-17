@@ -19,9 +19,13 @@ export interface Kalkylator {
   /**
    * Pelare i src/lib/pelare.ts. Sätts när kalkylatorn hör hemma i ett ämne utan
    * att peka på en produktkategori. Hubbens grupp Räkna och /amnen/ visar en
-   * kalkylator som anger antingen pelaren eller en kategori i pelaren.
+   * kalkylator som anger antingen en av pelarna eller en kategori i pelaren.
+   *
+   * Fältet blev en lista 2026-09-17 med elkostnadskalkylatorn, som hör hemma i
+   * både El och energi och Fukt: den räknar på vilken maskin som helst, men
+   * frågan ställs oftast om en avfuktare.
    */
-  pelare?: string;
+  pelare?: readonly string[];
 }
 
 export const KALKYLATORER: Kalkylator[] = [
@@ -30,7 +34,7 @@ export const KALKYLATORER: Kalkylator[] = [
     namn: 'Blir väggen våt? Räkna ut daggpunkten',
     rad: 'Temperatur, luftfuktighet och kallaste ytan ger kondensrisken.',
     sasong: [11, 2],
-    pelare: 'fukt',
+    pelare: ['fukt'],
   },
   {
     slug: 'avfuktare',
@@ -38,7 +42,14 @@ export const KALKYLATORER: Kalkylator[] = [
     rad: 'Yta, takhöjd och fuktnivå ger liter per dygn, och maskinerna som klarar det.',
     sasong: [8, 11],
     kategori: 'luftavfuktare',
-    pelare: 'fukt',
+    pelare: ['fukt'],
+  },
+  {
+    slug: 'elkostnad',
+    namn: 'Vad kostar maskinen i el?',
+    rad: 'Effekt, gångtid och elpris ger kilowattimmar och kronor.',
+    sasong: [10, 3],
+    pelare: ['el', 'fukt'],
   },
 ];
 

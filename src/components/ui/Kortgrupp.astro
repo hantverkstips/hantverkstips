@@ -86,13 +86,14 @@ if (grupp === 'hitta-felet') {
   kort = [...kategorikort, ...ovriga];
 } else {
   /*
-   * En kalkylator hör till pelaren antingen direkt (fältet pelare i registret)
+   * En kalkylator hör till pelaren antingen direkt (listan pelare i registret)
    * eller genom sin produktkategori. Daggpunktskalkylatorn pekar inte på någon
    * kategori, och utan det första ledet skulle den aldrig synas i en hub.
+   * Listan gör att samma kalkylator kan höra hemma i två ämnen, som elkostnaden.
    */
   const kategorier = await publicerade('kategorier');
   kalkylatorer = KALKYLATORER.filter((k) => {
-    if (k.pelare === pelare) return true;
+    if (k.pelare?.includes(pelare)) return true;
     if (!k.kategori) return false;
     const kategori = kategorier.find((x) => x.id === k.kategori);
     return kategori ? (kategori.data.pelare as readonly string[]).includes(pelare) : false;

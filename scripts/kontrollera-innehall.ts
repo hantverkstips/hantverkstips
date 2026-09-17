@@ -182,8 +182,10 @@ const kalkylatorer = new Set(KALKYLATORER.map((k) => k.slug));
 /* Registret pekar ut pelare och kategori i fritext. Fel slug där gör att
    kalkylatorn tyst försvinner ur hubben och ur /amnen/, utan att något går sönder. */
 for (const k of KALKYLATORER) {
-  if (k.pelare !== undefined && !(PELARE_SLUGS as readonly string[]).includes(k.pelare)) {
-    felet('src/lib/kalkyl/register.ts', `kalkylatorn "${k.slug}" har pelare "${k.pelare}" som inte finns`);
+  for (const p of k.pelare ?? []) {
+    if (!(PELARE_SLUGS as readonly string[]).includes(p)) {
+      felet('src/lib/kalkyl/register.ts', `kalkylatorn "${k.slug}" har pelare "${p}" som inte finns`);
+    }
   }
   if (k.kategori !== undefined && !kategorier.has(k.kategori)) {
     felet('src/lib/kalkyl/register.ts', `kalkylatorn "${k.slug}" har kategori "${k.kategori}" som saknar fil`);

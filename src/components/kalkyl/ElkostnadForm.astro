@@ -1,0 +1,251 @@
+---
+/**
+ * Formuläret till elkostnadskalkylatorn. Ett ställe: sidan /rakna/elkostnad/
+ * renderar det i fullt format, och <Kalkylator namn="elkostnad" /> i en artikel
+ * renderar samma fält i kompakt format med action till verktygssidan.
+ *
+ * Ingen klient-JavaScript. Formuläret skickas som GET, och verktygssidan räknar.
+ *
+ * Perioden är två radioknappar plus ett eget antal dagar. Radioknappen "Eget
+ * antal" skickar dagar=eget, och då läser kalkylatorn fältet bredvid. Den
+ * delbara länken skriver alltid ut talet (dagar=90), så en delad adress
+ * fungerar utan att man vet hur formuläret är byggt.
+ *
+ * Alla props är valfria, eftersom det inbäddade formuläret inte har någon
+ * uträkning att visa värden ur; då står standardvärdena i fälten.
+ */
+import { GANGTIDER, PERIODER, STANDARD, type ElkostnadIndata } from '../../lib/kalkyl/elkostnad.ts';
+import {
+  ETIKETT_KLASS,
+  FALT_KLASS,
+  FEL_KLASS,
+  HJALP_KLASS,
+  KNAPP_KLASS,
+  LANK_KLASS,
+  ramKlass,
+} from '../../lib/kalkyl/stil';
+
+interface Props {
+  /** Valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
+  indata?: ElkostnadIndata;
+  /** Talen som de skrevs i adressen, så att ett felskrivet värde går att rätta. */
+  varden?: { effekt: string; timmar: string; dagar: string; elpris: string; liter: string };
+  fel?: Partial<Record<keyof ElkostnadIndata, string>>;
+  /** Produktens slug, när läsaren kom hit från ett produktkort. Följer med vidare. */
+  produktSlug?: string | null;
+  /** Raden över formuläret: "Räknar på Wood's SW39FW, 320 W enligt butiken". */
+  produktRad?: string | null;
+  /** Inbäddad i en artikel: tätare fält, inga hjälprader. */
+  kompakt?: boolean;
+  /** Prefix på id-attributen, så att två formulär på samma sida inte krockar. */
+  idPrefix?: string;
+  knappText?: string;
+}
+
+const komma = (n: number) => String(n).replace('.', ',');
+
+const {
+  indata = STANDARD,
+  varden = {
+    effekt: komma(STANDARD.effektW),
+    timmar: komma(STANDARD.timmarPerDygn),
+    dagar: komma(STANDARD.dagar),
+    // Elpriset med två decimaler, som på fakturan och i sajtens eltabeller.
+    elpris: STANDARD.elprisKrPerKwh.toFixed(2).replace('.', ','),
+    liter: '',
+  },
+  produktSlug = null,
+  produktRad = null,
+  fel = {},
+  kompakt = false,
+  idPrefix = '',
+  knappText = 'Räkna ut',
+} = Astro.props;
+
+const id = (namn: string) => `${idPrefix}${namn}`;
+const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
+
+/* Är antalet dagar något annat än de två färdiga valen står "Eget antal" för. */
+const fardigPeriod = PERIODER.some((p) => p.dagar === indata.dagar);
+const egetAntal = fardigPeriod ? '' : varden.dagar;
+
+const talfalt = [
+  {
+    namn: 'effekt',
+    etikett: 'Effekt',
+    enhet: 'W',
+    varde: varden.effekt,
+    fel: fel.effektW,
+    hjalp: 'Talet på typskylten eller i databladet, alltså märkeffekten.',
+  },
+  {
+    namn: 'timmar',
+    etikett: 'Gångtid per dygn',
+    enhet: 'timmar',
+    varde: varden.timmar,
+    fel: fel.timmarPerDygn,
+    hjalp: null,
+  },
+] as const;
+---
+
+<form method="get" action="/rakna/elkostnad/">
+  {produktSlug && <input type="hidden" name="produkt" value={produktSlug} />}
+
+  {
+    produktRad && (
+      <p class="m-0 mb-4 rounded-sm border border-linje bg-papper-2 p-3 text-liten text-blyerts">{produktRad}</p>
+    )
+  }
+
+  <div class:list={[kompakt && 'sm:grid sm:grid-cols-2 sm:gap-4']}>
+    {
+      talfalt.map((f) => (
+        <div class="mb-4">
+          <label for={id(f.namn)} class={ETIKETT_KLASS}>
+            {f.etikett}
+          </label>
+          <div class="flex items-center gap-2">
+            <input
+              id={id(f.namn)}
+              name={f.namn}
+              type="text"
+              inputmode="decimal"
+              value={f.varde}
+              aria-describedby={
+                f.fel ? id(`${f.namn}-fel`) : f.namn === 'timmar' && !kompakt ? id('timmar-hjalp') : undefined
+              }
+              class:list={[FALT_KLASS, ramKlass(Boolean(f.fel))]}
+            />
+            <span class="text-brod text-blyerts-2">{f.enhet}</span>
+          </div>
+          {f.fel ? (
+            <p id={id(`${f.namn}-fel`)} class={FEL_KLASS}>
+              {f.fel}
+            </p>
+          ) : (
+            !kompakt && f.hjalp && <p class={HJALP_KLASS}>{f.hjalp}</p>
+          )}
+          {f.namn === 'timmar' && !f.fel && !kompakt && (
+            <div id={id('timmar-hjalp')} class={HJALP_KLASS}>
+              <p class="m-0">Vet du inte, gissa efter den här listan.</p>
+              <ul class="m-0 mt-1 list-none p-0">
+                {GANGTIDER.map((g) => (
+                  <li>{g.vad}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      ))
+    }
+  </div>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Period</legend>
+    <div class={radioKlass}>
+      {
+        PERIODER.map((p) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input type="radio" name="dagar" value={String(p.dagar)} checked={indata.dagar === p.dagar} />
+            {p.etikett}
+          </label>
+        ))
+      }
+      <label class="flex min-h-11 items-center gap-2 text-brod">
+        <input type="radio" name="dagar" value="eget" checked={!fardigPeriod} />
+        Eget antal
+      </label>
+    </div>
+    <div class="mt-1 flex items-center gap-2">
+      <input
+        id={id('dagareget')}
+        name="dagareget"
+        type="text"
+        inputmode="numeric"
+        value={egetAntal}
+        aria-label="Eget antal dagar"
+        aria-describedby={fel.dagar ? id('dagar-fel') : undefined}
+        class:list={[FALT_KLASS, ramKlass(Boolean(fel.dagar)), 'max-w-32']}
+      />
+      <span class="text-brod text-blyerts-2">dagar</span>
+    </div>
+    {fel.dagar && <p id={id('dagar-fel')} class={FEL_KLASS}>{fel.dagar}</p>}
+  </fieldset>
+
+  <div class="mb-4">
+    <label for={id('elpris')} class={ETIKETT_KLASS}>Elpris</label>
+    <div class="flex items-center gap-2">
+      <input
+        id={id('elpris')}
+        name="elpris"
+        type="text"
+        inputmode="decimal"
+        value={varden.elpris}
+        aria-describedby={fel.elprisKrPerKwh ? id('elpris-fel') : !kompakt ? id('elpris-hjalp') : undefined}
+        class:list={[FALT_KLASS, ramKlass(Boolean(fel.elprisKrPerKwh))]}
+      />
+      <span class="text-brod text-blyerts-2">kr per kWh</span>
+    </div>
+    {
+      fel.elprisKrPerKwh ? (
+        <p id={id('elpris-fel')} class={FEL_KLASS}>
+          {fel.elprisKrPerKwh}
+        </p>
+      ) : (
+        !kompakt && (
+          <p id={id('elpris-hjalp')} class={HJALP_KLASS}>
+            Standardvärdet är SCB:s genomsnitt för hushåll, med nätavgift, energiskatt och moms inräknade. Står ditt
+            eget pris på fakturan, skriv in det i stället.
+          </p>
+        )
+      )
+    }
+  </div>
+
+  <div class="mb-6">
+    <label for={id('liter')} class={ETIKETT_KLASS}>Liter vatten per dygn, om det är en avfuktare</label>
+    <div class="flex items-center gap-2">
+      <input
+        id={id('liter')}
+        name="liter"
+        type="text"
+        inputmode="decimal"
+        value={varden.liter}
+        placeholder="lämna tomt"
+        aria-describedby={fel.literPerDygn ? id('liter-fel') : !kompakt ? id('liter-hjalp') : undefined}
+        class:list={[FALT_KLASS, ramKlass(Boolean(fel.literPerDygn))]}
+      />
+      <span class="text-brod text-blyerts-2">l per dygn</span>
+    </div>
+    {
+      fel.literPerDygn ? (
+        <p id={id('liter-fel')} class={FEL_KLASS}>
+          {fel.literPerDygn}
+        </p>
+      ) : (
+        !kompakt && (
+          <div id={id('liter-hjalp')} class={HJALP_KLASS}>
+            <p class="m-0">
+              Fyller du i det får du också vad varje liter vatten kostar, vilket är det enda måttet som går att jämföra
+              mellan en kondens- och en sorptionsavfuktare.
+            </p>
+            {/* Fältet förifylls aldrig ur databasen. Märkt kapacitet är mätt i
+                ett klimat som inte finns i en svensk källare, och ett literpris
+                räknat på den siffran ser tre gånger bättre ut än verkligheten. */}
+            <p class="m-0 mt-1">
+              Märkt kapacitet gäller vid 30 grader och 80 procent luftfuktighet. I en källare på 15 grader ger en
+              kondensavfuktare ungefär en tredjedel, se{' '}
+              <a href="/fukt/avfuktare-kallare/" class={LANK_KLASS}>
+                köpguiden
+              </a>
+              .
+            </p>
+          </div>
+        )
+      )
+    }
+  </div>
+
+  <button type="submit" class={KNAPP_KLASS}>{knappText}</button>
+</form>

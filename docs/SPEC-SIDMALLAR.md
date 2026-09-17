@@ -115,7 +115,9 @@ interface Props {
 
 Data: `await hamtaProdukt(produkt)` (avsnitt 3.1). Kategorifilen för produktens `kategoriSlug` via `getEntry('kategorier', slug)` ger `specs` och därmed nyckelvärdena. Testlänk: `publicerade('tester')` filtrerad på `data.produkt === slug`, första träffen ger `href` till `testUrl(entry)`.
 
-Innehåll, i ordning: bild, etikett (om satt, `penna`, etikett-stil), H3 med `marke` och `modell` (eller `namn` om de saknas), `forVem`, nyckelvärden (de första fyra i kategorifilens `specs` som produkten har värde för, som `<dl>` med etikett och värde plus enhet, tabellsiffror), pris och köpknapp, länk "Läs testet" (sekundär stil, om test finns).
+Innehåll, i ordning: bild, etikett (om satt, `penna`, etikett-stil), H3 med `marke` och `modell` (eller `namn` om de saknas), `forVem`, nyckelvärden (de första fyra i kategorifilens `specs` som produkten har värde för, som `<dl>` med etikett och värde plus enhet, tabellsiffror), länken "Räkna elkostnaden", pris och köpknapp, länk "Läs testet" (sekundär stil, om test finns).
+
+"Räkna elkostnaden" kom till 2026-09-17 med elkostnadskalkylatorn. Den står under nyckelvärdena, som textlänk i `penna` med 44 px klickyta, och går till `/rakna/elkostnad/?produkt=[slug]`. Raden visas bara när produktens specs har `effekt_w`; utan effekt finns inget att räkna på. Villkoret läses med `produktForval()` ur avsnitt 4.7.3, så att ett tal som ligger som sträng i databasen behandlas likadant här och i kalkylatorn.
 
 Bild: 4:3-ruta, vit bakgrund, 1 px `linje`, radie `sm`, 8 px luft, `object-fit: contain`. Kompakt: 96 × 72 px till vänster om texten. Full: överst i kortets bredd på mobil, 40 procent till vänster från `lg`. Bilden renderas bara om `bildUrl` börjar med `/` (lokal fil under `public/bilder/produkter/`), med `<img width height loading="lazy" decoding="async">`; externa adresser hotlinkas inte och ger tillståndet "Bild saknas".
 
@@ -374,15 +376,16 @@ Alla konstanter ligger som namngivna konstanter överst i filen med kommentar om
 ### 3.3 `src/lib/kalkyl/register.ts`
 
 ```ts
-export interface Kalkylator { slug: string; namn: string; rad: string; sasong: [number, number] /* månad från, till, 1 till 12 */; kategori?: string; pelare?: string }
+export interface Kalkylator { slug: string; namn: string; rad: string; sasong: [number, number] /* månad från, till, 1 till 12 */; kategori?: string; pelare?: readonly string[] }
 export const KALKYLATORER: Kalkylator[] = [
-  { slug: 'daggpunkt', namn: 'Blir väggen våt? Räkna ut daggpunkten', rad: 'Temperatur, luftfuktighet och kallaste ytan ger kondensrisken.', sasong: [11, 2], pelare: 'fukt' },
-  { slug: 'avfuktare', namn: 'Hur stor avfuktare behöver du?', rad: 'Yta, takhöjd och fuktnivå ger liter per dygn, och maskinerna som klarar det.', sasong: [8, 11], kategori: 'luftavfuktare', pelare: 'fukt' },
+  { slug: 'daggpunkt', namn: 'Blir väggen våt? Räkna ut daggpunkten', rad: 'Temperatur, luftfuktighet och kallaste ytan ger kondensrisken.', sasong: [11, 2], pelare: ['fukt'] },
+  { slug: 'avfuktare', namn: 'Hur stor avfuktare behöver du?', rad: 'Yta, takhöjd och fuktnivå ger liter per dygn, och maskinerna som klarar det.', sasong: [8, 11], kategori: 'luftavfuktare', pelare: ['fukt'] },
+  { slug: 'elkostnad', namn: 'Vad kostar maskinen i el?', rad: 'Effekt, gångtid och elpris ger kilowattimmar och kronor.', sasong: [10, 3], pelare: ['el', 'fukt'] },
 ];
 export function hittaKalkylator(slug: string): Kalkylator | undefined;
 ```
 
-`pelare` kom till 2026-09-17. Hubbens grupp Räkna (`Kortgrupp`) och `/amnen/` filtrerade fram till dess bara på `kategori`, och en kalkylator som inte pekar på en produktkategori kunde därför inte visas i något ämne. Båda läser nu `k.pelare === pelare` först och kategorin sedan. `rad` är högst tolv ord, den ska rymmas på två rader i ett kort. `npm run kontrollera` stoppar bygget om `pelare` eller `kategori` i registret pekar på något som inte finns.
+`pelare` kom till 2026-09-17. Hubbens grupp Räkna (`Kortgrupp`) och `/amnen/` filtrerade fram till dess bara på `kategori`, och en kalkylator som inte pekar på en produktkategori kunde därför inte visas i något ämne. Båda läser nu `k.pelare` först och kategorin sedan. Samma dag, med elkostnadskalkylatorn, blev fältet en lista: verktyget räknar på vilken maskin som helst men frågan ställs oftast om en avfuktare, så det står i både El och energi och Fukt. `Kortgrupp`, `/amnen/` och `scripts/kontrollera-innehall.ts` läser listan. `rad` är högst tolv ord, den ska rymmas på två rader i ett kort. `npm run kontrollera` stoppar bygget om `pelare` eller `kategori` i registret pekar på något som inte finns.
 
 `sasong` är underlag för chefredaktörens val av `justNu`, inte något koden läser: `sasongensKalkylator` togs bort 2026-09-16 med startsidans säsongsblock. Fler kalkylatorer läggs till här och som `src/pages/rakna/[slug].astro`-filer. Sidfoten och `/rakna/` läser listan.
 
@@ -570,7 +573,7 @@ Varje kalkylator är en egen sida med egen sökfras och resultatet i adressen. M
 2. **Testet.** `scripts/test-kalkyl-[slug].mjs`, körs med `node --experimental-strip-types --test scripts/test-kalkyl-[slug].mjs`. Minst sex fall som täcker varje utfall formeln kan ge, plus `tolkaQuery` och gränserna. Talen jämförs mot en källa utanför koden: underlagets räkneexempel eller en tabell i en publicerad artikel. Skripten ligger inte i `package.json`; de körs direkt med node, som `scripts/tabell-dimensionering.ts`.
 3. **Formuläret.** `src/components/kalkyl/[Verktyg]Form.astro` med props `indata`, `varden` (talen som de skrevs i adressen), `fel`, `kompakt`, `idPrefix` och `knappText`, alla valfria. Klasserna kommer från `src/lib/kalkyl/stil.ts`, aldrig egna. Komponenten är det enda stället fälten står på.
 4. **Sidan.** `src/pages/rakna/[slug].astro`, `prerender = false`, `Astro.locals.sidtyp = 'verktyg'`, `Cache-Control` på alla svar, `bred={true}`, brödsmulor Hantverkstips / Räkna själv / {verktyget}. Sidan renderar formulärkomponenten, resultatet med det stora talet, en `<Faktaruta variant="kortsvar">` överst, H2 "Så räknar vi" med formeln i ord och tabellen där varje rad är märkt Källa eller Antagande med länk, och H2 "Läs vidare". Delbar länk i ett skrivskyddat fält, byggd av de tolkade värdena. Strukturerad data: bara brödsmulorna, som layouten skriver ut. Verktyget är inte en artikel.
-5. **Registret.** En rad i `src/lib/kalkyl/register.ts` med `slug`, `namn`, `rad` (högst tolv ord), `sasong` och `pelare` eller `kategori`. `/rakna/`, sidfoten, startsidan, `/amnen/` och hubbens grupp Räkna hämtar listan själva.
+5. **Registret.** En rad i `src/lib/kalkyl/register.ts` med `slug`, `namn`, `rad` (högst tolv ord), `sasong` och `pelare` (en lista, ett verktyg får höra hemma i flera ämnen) eller `kategori`. `/rakna/`, sidfoten, startsidan, `/amnen/` och hubbens grupp Räkna hämtar listan själva.
 6. **Inbäddningen.** Slugen läggs till i `MED_FORMULAR` i `src/components/ui/Kalkylator.astro`, och artikeln som förklarar talet får `<Kalkylator namn="[slug]" />` där läsaren just fått veta vad talet betyder. En kalkylator utan den raden går fortfarande att länka till med `<Verktygskort>`.
 
 Produkter visas bara när räkningen faktiskt pekar ut en produktegenskap. Gör den inte det, som daggpunkten, har sidan varken produktkort eller reklamband (`reklam={false}`), utan länkar vidare till kalkylatorn eller artikeln som tar vid.
@@ -621,6 +624,39 @@ Bedömningen: ytan under daggpunkten ger kondens, luft över 75 procent RF vid y
 Markup: H1 "Blir väggen våt? Räkna ut daggpunkten", ingress på tre meningar, `<Faktaruta variant="kortsvar">` med svaret, sedan formuläret och resultatet i två spalter på det linjerade papperet som avfuktarsidan. Det stora talet är daggpunkten i `text-siffra` med `<Markering>`. Under resultatet åtgärderna som en lista och "Gör inte det här" när det gäller. Sedan H2 "Vad daggpunkten är, och när kondens på vägg blir mögel" med tre typfall som H3 (sovrummet i januari, källaren i augusti, garaget), H2 "Så räknar vi" med sex steg och antagandetabellen, och H2 "Läs vidare" till `/fukt/luftfuktighet-inomhus/`, `/fukt/fukt-i-kallaren/` och `/fukt/sorptionsavfuktare/`.
 
 `<title>` "Daggpunktskalkylator, räkna ut när väggen blir våt", 50 tecken; med suffixet blir den 66 och layouten utelämnar det därför, precis som på avfuktarsidan. Formuläret är inbäddat i `/fukt/luftfuktighet-inomhus/` direkt efter daggpunktstabellerna.
+
+#### 4.7.3 `src/pages/rakna/elkostnad.astro` (byggd 2026-09-17)
+
+`export const prerender = false`, samma motivering och samma `Cache-Control` som de två sidorna ovan. `Astro.locals.sidtyp = 'verktyg'`. `reklam={false}`: räkningen pekar inte ut någon produkt, den räknar på maskinen läsaren redan har, så sidan har varken produktkort eller reklamband. Brödsmulor: Hantverkstips / Räkna själv (`/rakna/`) / Elkostnadskalkylator. `bred={true}`.
+
+Formeln ligger i `src/lib/kalkyl/elkostnad.ts`:
+
+```ts
+export interface ElkostnadIndata { effektW: number; timmarPerDygn: number; dagar: number; elprisKrPerKwh: number; literPerDygn: number | null }
+export const STANDARD = { effektW: 320, timmarPerDygn: 8, dagar: 30, elprisKrPerKwh: ELPRIS_KR_PER_KWH, literPerDygn: null };
+export const GRANSER = { effektW: [1, 10000], timmarPerDygn: [0.1, 24], dagar: [1, 3650], elprisKrPerKwh: [0.1, 20], literPerDygn: [0.1, 200] };
+export function raknaElkostnad(i: ElkostnadIndata): ElkostnadResultat;   // ok | ogiltig
+export function tolkaQuery(q: URLSearchParams, forval?): { indata: ElkostnadIndata; harIndata: boolean };
+export function produktSlugFranQuery(q: URLSearchParams): string | null;
+export function produktForval(specs): { effektW: number | null };
+export function standardMedForval(forval): ElkostnadIndata;
+```
+
+Elpriset kommer från `ELPRIS_KR_PER_KWH` i `src/lib/antaganden.ts`, alltså samma tal som eltabellerna i `/fukt/avfuktare-kallare/` och `/tester/woods-sw39fw/`. Importen står med `.ts`-ändelse, så att testskriptet kan köras med node utan bygge.
+
+Query: `effekt`, `timmar`, `dagar`, `elpris`, `liter` och `produkt`. Resultatet bär kWh per dygn, kWh och kronor per period, kronor per dygn, kWh och kronor per år vid samma gångtid, kWh och kronor per liter när liter angetts, samt `gorInteDetHar` (en maskin som går dygnet runt utan hygrostat).
+
+**Produkt-parametern.** `?produkt=[slug]` fyller effektfältet ur produktens `specs`, alltså `effekt_w`, och ingenting annat. Uppslaget sker i rutten och inte i formeln, eftersom `src/lib/kalkyl/` är rena moduler utan databas; `produktForval()` tar emot `specs` som ett vanligt objekt och går därför att testa utan Supabase. Över formuläret står en rad med produktens namn ("Räknar på Wood's SW39FW I-EcoDefrost+, 320 W enligt butiken"), och slugen följer med i ett dolt fält så att den står kvar när läsaren ändrar talen. Läsarens egna tal slår alltid produktens. Saknas produkten i databasen, eller saknar den effekt, visas standardvärdena med raden som säger det. Slugen valideras mot `^[a-z0-9-]{1,80}$` innan uppslaget.
+
+Literfältet förifylls aldrig, inte ens när produkten har `kapacitet_liter_dygn` (koordinatorns beslut 2026-09-17). Kapaciteten i databasen är märkt kapacitet, uppmätt vid 30 grader och 80 procent luftfuktighet, och hela sajten säger att talet på förpackningen inte är vad maskinen ger i en källare; förifyllt skulle det ge ett literpris som ser tre gånger bättre ut än verkligheten. Under fältet står i stället raden "Märkt kapacitet gäller vid 30 grader och 80 procent luftfuktighet. I en källare på 15 grader ger en kondensavfuktare ungefär en tredjedel, se köpguiden" med länk till `/fukt/avfuktare-kallare/`.
+
+Perioden är två radioknappar (30 och 365 dagar) plus "Eget antal" med ett fält bredvid. Radioknappen skickar då `dagar=eget` och kalkylatorn läser `dagareget`; den delbara länken skriver alltid ut talet (`dagar=90`), så en delad adress fungerar utan att man vet hur formuläret är byggt.
+
+Markup: H1 "Vad kostar maskinen i el? Räkna ut kWh och kronor", ingress på fyra meningar, `<Faktaruta variant="kortsvar">` med svaret, sedan formuläret och resultatet i två spalter på det linjerade papperet. De stora talen är två: kWh per period med `<Markering>` och kronor per period. Under dem kronor per dygn, kronor per år och kronor per liter som rader med linje emellan, sedan "Gör inte det här" när gångtiden är dygnet runt. Sedan H2 "Räkna elförbrukning från watt till kWh själv" (346 ord) med tre typfall som H3 (avfuktaren i källaren, värmefläkten i garaget, byggfläkten dygnet runt), H2 "Så räknar vi" med sex steg och antagandetabellen, och H2 "Läs vidare" till `/fukt/avfuktare-kallare/` och `/fukt/sorptionsavfuktare/`.
+
+`<title>` "Elkostnadskalkylator, vad kostar maskinen att köra", 50 tecken; med suffixet blir den 66 och layouten utelämnar det därför, precis som på de två andra kalkylatorsidorna. Formuläret är inbäddat i `/fukt/avfuktare-kallare/` direkt efter stycket som förklarar eltabellen, och i `/tester/woods-sw39fw/` i avsnittet om elkostnad.
+
+`Produktkort.astro` fick samtidigt en diskret textlänk "Räkna elkostnaden" till `/rakna/elkostnad/?produkt=[slug]`, under nyckelvärdena och bara för produkter vars specs har `effekt_w`.
 
 ### 4.8 `src/pages/om/index.astro` och `src/pages/om/[slug].astro`
 

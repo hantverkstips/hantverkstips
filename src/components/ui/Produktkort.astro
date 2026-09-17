@@ -7,6 +7,7 @@
  */
 import { getEntry } from 'astro:content';
 import type { KlickModul } from '../../lib/affiliate';
+import { produktForval } from '../../lib/kalkyl/elkostnad';
 import { publicerade, testUrl } from '../../lib/innehall';
 import {
   billigasteErbjudande,
@@ -63,6 +64,8 @@ const kortKlass = [
   rekommenderad ? 'bg-papper-2' : 'bg-papper',
 ];
 const harBild = bild !== null;
+/** Utan effekt i databladet finns inget att räkna på, och länken utgår. */
+const harEffekt = produkt ? produktForval(produkt.specs).effektW !== null : false;
 const bildBredd = variant === 'kompakt' ? 96 : 400;
 const bildHojd = variant === 'kompakt' ? 72 : 300;
 ---
@@ -126,6 +129,21 @@ const bildHojd = variant === 'kompakt' ? 72 : 300;
                 </div>
               ))}
             </dl>
+          )}
+
+          {/* Har maskinen en effekt i databladet går den att räkna på. Länken
+              tar med slugen, så att elkostnadskalkylatorn kan fylla i effekten
+              och kapaciteten åt läsaren. Diskret textlänk, samma stil som
+              "Läs testet" nedan. */}
+          {harEffekt && (
+            <p class="m-0 mt-3">
+              <a
+                href={`/rakna/elkostnad/?produkt=${produkt.slug}`}
+                class="inline-flex min-h-11 items-center text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+              >
+                Räkna elkostnaden
+              </a>
+            </p>
           )}
         </div>
       </div>
