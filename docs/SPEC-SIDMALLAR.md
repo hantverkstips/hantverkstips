@@ -751,6 +751,40 @@ Markup: H1 "Behöver din altan bygglov? Fyll i måtten och få svar", ingress p�
 
 `<title>` "Behöver altanen bygglov? Svar med lagrum", 40 tecken, och med suffixet 56, så layouten behåller det till skillnad från de fyra andra kalkylatorsidorna. Sidan säger på tre ställen att verktyget är vägledning och inte ett myndighetsbeslut: i ingressen, i brödtexten under regeltabellen och i beskrivningen av vad det inte kan se. Formuläret är inbäddat i `/altan/bygglov-altan/` direkt efter beslutstabellen.
 
+#### 4.7.6 `src/pages/rakna/altan.astro` (byggd 2026-09-17)
+
+`export const prerender = false`, samma motivering och samma `Cache-Control` som de fem sidorna ovan. `Astro.locals.sidtyp = 'verktyg'`. `reklam={false}`: trallskruven finns inte i produktdatabasen än, så sidan har varken produktkort eller reklamband. Kortet läggs till när skruvkategorin fylls i februari. Brödsmulor: Hantverkstips / Räkna själv (`/rakna/`) / Trallkalkylator. `bred={true}`.
+
+Det här är det första verktyget som byggdes innan ämnets guide fanns. Altanklustret skrivs i februari, så utvecklaren hämtade källorna själv och lade dem i `docs/briefer/underlag-kalkyl-altan-2026-09-17.md`, med en tabell över vilka sidor som gick att läsa maskinellt och ett avsnitt 7 över vad chefredaktören ska verifiera i webbläsare. Svenskt Träs egna tabeller på byggbeskrivningar.se ligger som bilder; TräGuiden publicerar samma tal som text, och det är den sidan modulen hänvisar till.
+
+Formeln ligger i `src/lib/kalkyl/altan.ts`:
+
+```ts
+export interface AltanIndata { langdM: number; breddM: number; trallbreddMm: 95 | 120 | 145; riktning: 'langsida' | 'kortsida'; ccMm: 450 | 600; regel: '45x145' | '45x170' | '45x195'; grund: 'plintar' | 'befintlig' }
+export const STANDARD = { langdM: 4, breddM: 3, trallbreddMm: 120, riktning: 'langsida', ccMm: 600, regel: '45x145', grund: 'plintar' };
+export const GRANSER = { langdM: [1, 20], breddM: [1, 20] };
+export function bastaHandelslangd(bradLangdM): { handelslangdM; bradorPerLangd; spillProcent };
+export function bastaForpackning(antalSkruv): { storlek; antal; totalt };
+export function raknaAltan(i): AltanResultat;                 // ok | ogiltig
+export function tolkaQuery(q): { indata: AltanIndata; harIndata: boolean };
+```
+
+Query: `langd`, `bredd`, `trallbredd`, `riktning`, `cc`, `regel`, `grund`. Resultatet bär ytan, brädlängden och det mått brädorna täcker, antalet brädor, springan, löpmeter trall med och utan spill, handelslängden som spiller minst med antal längder och spillprocent, antalet reglar med längd och löpmeter, antalet bärlinor med löpmeter, reglarnas spännvidd och den spännvidd dimensionen klarar, antalet plintar och plintar per rad, korsningarna, trallskruven med förpackningsstorlek och antal förpackningar, skruvens och infästningens text samt `gorInteDetHar` som en lista.
+
+**Geometrin.** Långsidan och kortsidan sorteras ur läsarens två mått, så att 4 × 3 och 3 × 4 ger samma svar. Trallens riktning avgör vilken av dem som blir brädlängd; reglarna går alltid tvärs trallen och är därför lika långa som måttet tvärs brädorna. Bärlinorna går parallellt med trallen, och varje bärlina vilar på en rad plintar.
+
+**Konstanterna med källa.** Trall 28 mm på c 600 mm som mest, springa 5, 6 och 7 mm för brädor på 95, 120 och 145 mm, två skruv per korsning för brädor från 95 mm och trallskruv 4,2 × 55 mm (samtliga TräGuiden, Läggning av trall). Bärlina 45 × 170 mm med som mest 2,5 m mellan plintarna och fall 1:100 (TräGuiden och byggbeskrivningen Altan). Spännvidd 2,3 m för 45 × 145 mm vid c 600 mm (branschens dimensioneringstabell för villaaltan utan tak). ANTAGANDE: spännvidd 2,7 och 3,1 m för 45 × 170 och 45 × 195 mm, c 450 mm under 28 mm trall, handelslängder 3,6 till 4,8 m, spill 10 procent och förpackningar om 250 eller 500.
+
+**Regeldimensionen styr plintarna.** Reglarnas fria spännvidd mellan två bärlinor sätts av regelns höjd. Räcker dimensionen inte till altanens djup lägger kalkylatorn in en bärlinrad till, tills spännvidden ligger under taket, och varje rad är en rad plintar. Standardaltanen på 4 × 3 m med 45 × 145 mm får därför tre bärlinrader och nio plintar, medan samma altan på 45 × 195 mm klarar sig med två rader och sex plintar. Rådet om spännvidd säger vilken dimension som hade tagit bort en rad.
+
+**Råden.** `gorInteDetHar` kan innehålla fyra rader: spännvidden som dimensionen inte klarar, springan under fem millimeter (gäller den breda brädan på 145 mm), trallbrädor som skarvas i luften i stället för över en regel (gäller när altanen är längre än 4,8 m i trallens riktning) och trall utan fall (gäller från 2 m djup).
+
+Markup: H1 "Räkna ut trall, reglar och plintar till altanen", ingress på tre meningar, `<Faktaruta variant="kortsvar">` med svaret, sedan formuläret och resultatet i två spalter på det linjerade papperet. De stora talen är två: löpmeter trall med `<Markering>` och antalet handelslängder med längden som enhet. Under dem raderna med spill, reglar, bärlinor, spännvidd, plintar och skruv, infästningen som en finstilt rad, sedan "Gör inte det här". Sedan H2 "Hur mycket trall behöver jag, och hur många plintar altanen behöver" (447 ord), H2 "Så räknar vi" med åtta steg och antagandetabellen på fjorton rader, H2 "Läs vidare" till `/altan/bygglov-altan/` och `/rakna/bygglov-altan/`, och tre frågor i `<Faq>`.
+
+`<title>` "Trallkalkylator, räkna trall, reglar och plintar", 48 tecken; med suffixet blir den 64 och layouten utelämnar det därför, som på fyra av de fem andra kalkylatorsidorna. Sökfraserna "räkna trall", "trallkalkylator", "hur mycket trall behöver jag" och "plintar" ligger i ingressen och i den första H2:n. Formuläret finns i `MED_FORMULAR`, men ingen artikel bäddar in det än: altanguiden är avpublicerad tills klustret skrivs.
+
+Testskriptet `scripts/test-kalkyl-altan.mjs` kör nio fall: standardaltanen, riktningen bytt, 145 mm trall, c 450 mm, 45 × 195 mm på lång spännvidd, 45 × 145 mm som inte räcker till 4 m djup, en liten altan på 2 × 2 m, en stor på 8 × 5 m och standardaltanen på befintlig grund. Utöver dem testas konstanterna mot underlaget, handelslängden, förpackningsvalet, gränserna och `tolkaQuery`.
+
 ### 4.8 `src/pages/om/index.astro` och `src/pages/om/[slug].astro`
 
 `index.astro` renderar `getEntry('sidor', 'om')`. `[slug].astro` har `getStaticPaths` från `publicerade('sidor')` utan `om` och `startsida`. Båda: brödsmulor Hantverkstips / {title} (index) respektive Hantverkstips / Om (`/om/`) / {title}. H1, meta "Uppdaterad {datum}" om den finns, `<Content components={{ h2: Pennstreck, Faktaruta, Varning, Markering }} />`. `reklam={false}`. Strukturerad data efter `strukturdata`: `Organization` ger `organisation()`, `Article` ger `artikel()` med redaktionen, `ingen` ger inget. Gemensam vy `vyer/Sida.astro` så att de två rutterna är tio rader var.

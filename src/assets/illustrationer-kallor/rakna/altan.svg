@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Altan uppifrån på linjerat papper. Nio trallbrädor ligger som vågräta band längs långsidan, och under dem går fem streckade reglar tvärs brädorna. Nio streckade cirklar i tre rader visar plintarna. En måttbygel mellan två reglar under altanen är märkt c 600, en skruvad anteckning säger trall 28 gånger 120, och en rödmarkerad springa mellan två brädor är märkt 5 millimeter springa.">
+  <!-- Anteckningsboken, verktygsskiss för /rakna/altan/. Blyerts 2 px för altanens kant och trallbrädornas
+       skarvar, blyerts-2 streckat för reglarna under trallen och för plintarna, blyerts-2 för måttbygel och
+       pekpinne, snickarpenna för ringen runt en springa (den enda pennsaken), tumstock bakom nyckeltalet c 600.
+       Skala i sidled: regelmitt var 80 px = 600 mm, alltså 1 px cirka 7,5 mm. Djupled är inte i samma skala;
+       skissen visar ordningen, inte proportionen.
+       Altanen x=110-520, y=86-286. Reglar x=140, 220, 300, 380, 460. Plintar i tre rader, som standardaltanen.
+       Handskrift i Caveat 500, 26 px, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Trallens yta, papper som fyllning så att linjeringen inte lyser igenom brädorna -->
+  <path d="M110,86 Q315,84 520,86 Q518,186 520,286 Q315,288 110,286 Q112,186 110,86" fill="#f5efe3"/>
+
+  <!-- Blyerts-2 streckat: reglarna under trallen, tvärs brädorna -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-dasharray="7 6" stroke-linecap="round">
+    <path d="M140,88 Q139,187 140,284"/>
+    <path d="M220,88 Q221,187 220,284"/>
+    <path d="M300,88 Q299,187 300,284"/>
+    <path d="M380,88 Q381,187 380,284"/>
+    <path d="M460,88 Q459,187 460,284"/>
+  </g>
+
+  <!-- Blyerts-2 streckat: plintarna, tre rader om tre, alltså standardaltanens nio.
+       Raderna ligger mitt på en bräda, aldrig på en skarv, så att ringen syns hel. -->
+  <g fill="none" stroke="#625a50" stroke-width="1.75" stroke-dasharray="4 4">
+    <circle cx="150" cy="97" r="11"/>
+    <circle cx="315" cy="97" r="11"/>
+    <circle cx="480" cy="97" r="11"/>
+    <circle cx="150" cy="186" r="11"/>
+    <circle cx="315" cy="186" r="11"/>
+    <circle cx="480" cy="186" r="11"/>
+    <circle cx="150" cy="275" r="11"/>
+    <circle cx="315" cy="275" r="11"/>
+    <circle cx="480" cy="275" r="11"/>
+  </g>
+
+  <!-- Blyerts: altanens kant och skarvarna mellan trallbrädorna -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M110,86 Q315,84 520,86 Q518,186 520,286 Q315,288 110,286 Q112,186 110,86"/>
+    <path d="M110,108 Q315,106 520,108"/>
+    <path d="M110,130 Q315,128 520,130"/>
+    <path d="M110,152 Q315,150 520,152"/>
+    <path d="M110,175 Q315,173 520,175"/>
+    <path d="M110,197 Q315,195 520,197"/>
+    <path d="M110,219 Q315,217 520,219"/>
+    <path d="M110,242 Q315,240 520,242"/>
+    <path d="M110,264 Q315,262 520,264"/>
+  </g>
+
+  <!-- Blyerts-2: måttbygeln mellan två regelmitter under altanen, och pekpinnen till en plint -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M300,306 Q340,305 380,306 M300,301 v10 M380,301 v10"/>
+  </g>
+  <path d="M96,186 Q118,184 138,188" fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round"/>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="300" y="313" width="70" height="29" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 335 327)"/>
+
+  <!-- Snickarpenna: ringen runt en springa mellan två brädor, öppen som när man ringar in för hand -->
+  <path d="M508,131 C505,116 452,114 448,138 C445,159 478,166 500,158 C509,154 511,143 508,136" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M478,112 Q474,96 462,80" fill="none" stroke="#ad3519" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="26" fill="#2a2521">
+    <text x="110" y="62" fill="#625a50">trall 28 × 120</text>
+    <text x="352" y="62" fill="#ad3519">5 mm springa</text>
+    <text x="46" y="180" fill="#625a50">plint</text>
+    <text x="306" y="336">c 600</text>
+  </g>
+</svg>

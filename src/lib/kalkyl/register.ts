@@ -65,6 +65,13 @@ export const KALKYLATORER: Kalkylator[] = [
     sasong: [2, 6],
     pelare: ['altan'],
   },
+  {
+    slug: 'altan',
+    namn: 'Räkna trall, reglar och plintar',
+    rad: 'Yta, riktning och regeldimension ger trall, reglar, plintar och skruv.',
+    sasong: [3, 6],
+    pelare: ['altan'],
+  },
 ];
 
 export function hittaKalkylator(slug: string): Kalkylator | undefined {

@@ -1,0 +1,264 @@
+---
+/**
+ * Formuläret till trall-, regel- och plinträknaren. Ett ställe: sidan
+ * /rakna/altan/ renderar det i fullt format, och <Kalkylator namn="altan" /> i
+ * en artikel renderar samma fält i kompakt format med action till verktygssidan.
+ *
+ * Ingen klient-JavaScript. Formuläret skickas som GET, och verktygssidan räknar.
+ *
+ * Alla props är valfria, eftersom det inbäddade formuläret inte har någon
+ * uträkning att visa värden ur; då står standardvärdena i fälten.
+ */
+import {
+  GRUNDER,
+  REGELAVSTAND,
+  REGELDIMENSIONER,
+  RIKTNINGAR,
+  STANDARD,
+  TRALLBREDDER,
+  type AltanIndata,
+} from '../../lib/kalkyl/altan.ts';
+import {
+  ETIKETT_KLASS,
+  FALT_KLASS,
+  FEL_KLASS,
+  HJALP_KLASS,
+  KNAPP_KLASS,
+  LANK_KLASS,
+  ramKlass,
+} from '../../lib/kalkyl/stil';
+
+interface Props {
+  /** Valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
+  indata?: AltanIndata;
+  /** Talen som de skrevs i adressen, så att ett felskrivet värde går att rätta. */
+  varden?: { langd: string; bredd: string };
+  fel?: Partial<Record<keyof AltanIndata, string>>;
+  /** Inbäddad i en artikel: tätare fält, inga hjälprader. */
+  kompakt?: boolean;
+  /** Prefix på id-attributen, så att två formulär på samma sida inte krockar. */
+  idPrefix?: string;
+  knappText?: string;
+}
+
+const komma = (n: number) => String(n).replace('.', ',');
+
+const {
+  indata = STANDARD,
+  varden = { langd: komma(STANDARD.langdM), bredd: komma(STANDARD.breddM) },
+  fel = {},
+  kompakt = false,
+  idPrefix = '',
+  knappText = 'Räkna ut',
+} = Astro.props;
+
+const id = (namn: string) => `${idPrefix}${namn}`;
+const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
+
+const talfalt = [
+  {
+    namn: 'langd',
+    etikett: 'Altanens längd',
+    enhet: 'm',
+    varde: varden.langd,
+    fel: fel.langdM,
+    hjalp: 'Mät ytterkant till ytterkant på det färdiga golvet.',
+  },
+  {
+    namn: 'bredd',
+    etikett: 'Altanens bredd',
+    enhet: 'm',
+    varde: varden.bredd,
+    fel: fel.breddM,
+    hjalp: 'Ut från husväggen, om altanen ligger mot huset.',
+  },
+] as const;
+---
+
+<form method="get" action="/rakna/altan/">
+  <div class:list={[kompakt && 'sm:grid sm:grid-cols-2 sm:gap-4']}>
+    {
+      talfalt.map((f) => (
+        <div class="mb-4">
+          <label for={id(f.namn)} class={ETIKETT_KLASS}>
+            {f.etikett}
+          </label>
+          <div class="flex items-center gap-2">
+            <input
+              id={id(f.namn)}
+              name={f.namn}
+              type="text"
+              inputmode="decimal"
+              value={f.varde}
+              aria-describedby={f.fel ? id(`${f.namn}-fel`) : undefined}
+              class:list={[FALT_KLASS, ramKlass(Boolean(f.fel))]}
+            />
+            <span class="text-brod text-blyerts-2">{f.enhet}</span>
+          </div>
+          {f.fel ? (
+            <p id={id(`${f.namn}-fel`)} class={FEL_KLASS}>
+              {f.fel}
+            </p>
+          ) : (
+            !kompakt && f.hjalp && <p class={HJALP_KLASS}>{f.hjalp}</p>
+          )}
+        </div>
+      ))
+    }
+  </div>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Trallbrädans bredd</legend>
+    <div class={radioKlass}>
+      {
+        TRALLBREDDER.map((t) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input
+              type="radio"
+              name="trallbredd"
+              value={String(t.varde)}
+              checked={indata.trallbreddMm === t.varde}
+              aria-describedby={kompakt ? undefined : id('trall-hjalp')}
+            />
+            {kompakt ? t.etikett.split(',')[0] : t.etikett}
+          </label>
+        ))
+      }
+    </div>
+    {
+      !kompakt && (
+        <p id={id('trall-hjalp')} class={HJALP_KLASS}>
+          Kalkylatorn räknar på 28 mm tjock trall. Det är den tjocklek branschorganisationen Svenskt Trä anger för
+          reglar på c&nbsp;600&nbsp;mm. Tunnare brädor vill ha tätare reglar.
+        </p>
+      )
+    }
+  </fieldset>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Trallens riktning</legend>
+    <div class={radioKlass}>
+      {
+        RIKTNINGAR.map((r) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input
+              type="radio"
+              name="riktning"
+              value={r.varde}
+              checked={indata.riktning === r.varde}
+              aria-describedby={kompakt ? undefined : id('riktning-hjalp')}
+            />
+            {r.etikett}
+          </label>
+        ))
+      }
+    </div>
+    {
+      !kompakt && (
+        <p id={id('riktning-hjalp')} class={HJALP_KLASS}>
+          Reglarna går alltid tvärs trallen, så valet vänder hela stommen. Brädor längs långsidan ger färre och längre
+          brädor, och reglar längs kortsidan ger tvärtom.
+        </p>
+      )
+    }
+  </fieldset>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Regelavstånd</legend>
+    <div class={radioKlass}>
+      {
+        REGELAVSTAND.map((c) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input
+              type="radio"
+              name="cc"
+              value={String(c.varde)}
+              checked={indata.ccMm === c.varde}
+              aria-describedby={kompakt ? undefined : id('cc-hjalp')}
+            />
+            {c.etikett}
+          </label>
+        ))
+      }
+    </div>
+    {
+      !kompakt && (
+        <div id={id('cc-hjalp')} class={HJALP_KLASS}>
+          <p class="m-0">
+            Måttet är avståndet mellan reglarnas mitt. Svenskt Trä anger c&nbsp;600&nbsp;mm som största avstånd under
+            28&nbsp;mm trall. Det täta c&nbsp;450&nbsp;mm ger ett stummare golv, och det är också måttet tunnare brädor
+            kräver.
+          </p>
+        </div>
+      )
+    }
+  </fieldset>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Regeldimension</legend>
+    <div class={radioKlass}>
+      {
+        REGELDIMENSIONER.map((r) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input
+              type="radio"
+              name="regel"
+              value={r.varde}
+              checked={indata.regel === r.varde}
+              aria-describedby={kompakt ? undefined : id('regel-hjalp')}
+            />
+            {r.etikett}
+          </label>
+        ))
+      }
+    </div>
+    {
+      !kompakt && (
+        <p id={id('regel-hjalp')} class={HJALP_KLASS}>
+          Den högre regeln spänner längre mellan bärlinorna, och då behövs färre plintar. Kalkylatorn säger till när
+          dimensionen inte räcker till altanens djup.
+        </p>
+      )
+    }
+  </fieldset>
+
+  <fieldset class="m-0 mb-6 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Vad altanen står på</legend>
+    <div class={radioKlass}>
+      {
+        GRUNDER.map((g) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input
+              type="radio"
+              name="grund"
+              value={g.varde}
+              checked={indata.grund === g.varde}
+              aria-describedby={kompakt ? undefined : id('grund-hjalp')}
+            />
+            {kompakt ? g.etikett.split(',')[0] : g.etikett}
+          </label>
+        ))
+      }
+    </div>
+    {
+      !kompakt && (
+        <div id={id('grund-hjalp')} class={HJALP_KLASS}>
+          <p class="m-0">
+            Plintar betyder att du gjuter eller gräver ner betongplintar och lägger bärlinor på dem. Ligger altanen på
+            en gjuten platta eller på befintliga murar behövs varken bärlinor eller plintar, och kalkylatorn räknar då
+            bara trall, reglar och skruv.
+          </p>
+          <p class="m-0 mt-1">
+            Höjden över mark avgör om bygget behöver lov. Det svaret får du i{' '}
+            <a href="/rakna/bygglov-altan/" class={LANK_KLASS}>
+              bygglovsverktyget för altan
+            </a>
+            .
+          </p>
+        </div>
+      )
+    }
+  </fieldset>
+
+  <button type="submit" class={KNAPP_KLASS}>{knappText}</button>
+</form>

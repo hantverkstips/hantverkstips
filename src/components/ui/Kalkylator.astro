@@ -14,6 +14,7 @@
  * en artikel och en riktig H3 skulle kunna ge fel rubrikordning.
  */
 import { hittaKalkylator } from '../../lib/kalkyl/register';
+import AltanForm from '../kalkyl/AltanForm.astro';
 import AvfuktareForm from '../kalkyl/AvfuktareForm.astro';
 import BygglovAltanForm from '../kalkyl/BygglovAltanForm.astro';
 import DaggpunktForm from '../kalkyl/DaggpunktForm.astro';
@@ -27,7 +28,7 @@ interface Props {
 }
 
 /** Kalkylatorer som har ett formulär att bädda in. */
-const MED_FORMULAR = ['avfuktare', 'daggpunkt', 'elkostnad', 'innervagg', 'bygglov-altan'];
+const MED_FORMULAR = ['avfuktare', 'daggpunkt', 'elkostnad', 'innervagg', 'bygglov-altan', 'altan'];
 
 const { namn } = Astro.props;
 const k = hittaKalkylator(namn);
@@ -59,6 +60,7 @@ const prefix = `${k.slug}-inbaddad-`;
   {namn === 'elkostnad' && <ElkostnadForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'innervagg' && <InnervaggForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'bygglov-altan' && <BygglovAltanForm kompakt={true} idPrefix={prefix} knappText="Ge mig svaret" />}
+  {namn === 'altan' && <AltanForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
 
   <p class="m-0 mt-4 text-liten text-blyerts-2">
     Knappen tar dig till kalkylatorn med dina värden ifyllda. Där står svaret med källan bakom varje tal.
