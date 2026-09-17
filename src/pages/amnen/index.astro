@@ -91,7 +91,10 @@ const amnen = await Promise.all(
       })),
     );
 
-    const verktyg = KALKYLATORER.filter((k) => k.kategori && kategoriSlugs.includes(k.kategori));
+    // Kalkylatorn hör till pelaren direkt (fältet pelare) eller genom sin kategori.
+    const verktyg = KALKYLATORER.filter(
+      (k) => k.pelare === pelare.slug || (k.kategori !== undefined && kategoriSlugs.includes(k.kategori)),
+    );
 
     return { pelare, entry, typgrupper, kategoriBlock, verktyg };
   }),

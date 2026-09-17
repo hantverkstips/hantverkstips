@@ -1,0 +1,439 @@
+---
+/**
+ * Daggpunktskalkylatorn. Formuläret skickas som GET till samma sida och
+ * beräkningen sker på servern, så sidan fungerar utan ett enda byte klient-JS.
+ * Kostnaden är en serverfunktion per anrop, och den hålls nere med CDN-cache.
+ * Se docs/SPEC-SIDMALLAR.md avsnitt 4.7.
+ *
+ * Formeln och alla antaganden ligger i src/lib/kalkyl/daggpunkt.ts. Sidan räknar
+ * ingenting själv, den visar bara resultatet och redovisar källorna.
+ *
+ * Ingen produkt i databasen följer av den här räkningen, så sidan har inga
+ * produktkort och inget reklamband. Pekar svaret på en avfuktare länkar den till
+ * avfuktarkalkylatorn i stället.
+ */
+export const prerender = false;
+
+import Bas from '../../layouts/Bas.astro';
+import { formateraTal } from '../../lib/format';
+import {
+  ATGARDSTEXT,
+  KRITISKT_FUKTTILLSTAND_RF,
+  raknaDaggpunkt,
+  STANDARD,
+  tolkaQuery,
+  type DaggpunktResultat,
+} from '../../lib/kalkyl/daggpunkt';
+import { CELL_KLASS, ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
+import DaggpunktForm from '../../components/kalkyl/DaggpunktForm.astro';
+import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Markering from '../../components/ui/Markering.astro';
+import Pennstreck from '../../components/ui/Pennstreck.astro';
+import Verktygskort from '../../components/ui/Verktygskort.astro';
+
+Astro.locals.sidtyp = 'verktyg';
+
+Astro.response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+
+const { indata } = tolkaQuery(Astro.url.searchParams);
+const resultat = raknaDaggpunkt(indata);
+
+const fel = resultat.status === 'ogiltig' ? resultat.fel : {};
+// Vid ogiltig indata visas standardvärdenas resultat, med en rad som säger det.
+const visat: DaggpunktResultat = resultat.status === 'ogiltig' ? raknaDaggpunkt(STANDARD) : resultat;
+const visatIndata = resultat.status === 'ogiltig' ? STANDARD : indata;
+
+/**
+ * Fältens värden kommer från query-strängen som den skrevs, inte från de tolkade
+ * talen: "tjugo" eller "" blir NaN i tolkaQuery, och NaN i ett fält som läsaren
+ * ska rätta är obrukbart.
+ */
+function faltVarde(nyckel: string, standard: number): string {
+  const ra = Astro.url.searchParams.get(nyckel);
+  if (ra !== null) return ra;
+  return String(standard).replace('.', ',');
+}
+const varden = {
+  temp: faltVarde('temp', STANDARD.luftTempC),
+  rf: faltVarde('rf', STANDARD.rfProcent),
+  ytatemp: faltVarde('ytatemp', STANDARD.ytTempC),
+};
+
+/**
+ * Delbar länk. Hela tillståndet ligger redan i query-strängen, så adressen är
+ * uträkningen. Den byggs av de tolkade värdena, inte av strängen läsaren skrev,
+ * så att en delad länk alltid ger samma resultat som skärmen visar.
+ */
+const delaQuery = new URLSearchParams({
+  temp: String(visatIndata.luftTempC).replace('.', ','),
+  rf: String(visatIndata.rfProcent).replace('.', ','),
+  ytatemp: String(visatIndata.ytTempC).replace('.', ','),
+  arstid: visatIndata.arstid,
+  rum: visatIndata.rum,
+});
+const delaLank = new URL(`/rakna/daggpunkt/?${delaQuery.toString()}`, Astro.site ?? Astro.url).toString();
+
+/** Tal ur resultatet, färdigformaterade, så att markupen nedan blir läsbar. */
+const tal =
+  visat.status === 'ok'
+    ? {
+        daggpunkt: formateraTal(visat.daggpunktC, 1),
+        anghalt: formateraTal(visat.anghaltGPerM3, 1),
+        rfYta: formateraTal(visat.rfVidYtanProcent, 0),
+        marginal: formateraTal(Math.abs(visat.marginalC), 1),
+        rfKrav: formateraTal(visat.rfForGransenProcent, 0),
+        ytTempKrav: formateraTal(visat.ytTempForGransenC, 1),
+        luftTemp: formateraTal(visatIndata.luftTempC, 0),
+        rfInne: formateraTal(visatIndata.rfProcent, 0),
+        ytTemp: formateraTal(visatIndata.ytTempC, 0),
+      }
+    : null;
+
+/** Rubriken över resultatet, en rad som säger vad svaret blev. */
+const domar = {
+  kondens: 'Ja, ytan blir våt',
+  mogelrisk: 'Nej, men det är för fuktigt vid ytan',
+  ingen_risk: 'Nej, ytan håller sig torr',
+} as const;
+
+const KORT_SVAR_YTA = {
+  kondens: 'Den kallaste ytan är kallare än så, och där fälls vattnet ut.',
+  mogelrisk: 'Den kallaste ytan är varmare än så, och blir alltså inte våt.',
+  ingen_risk: 'Den kallaste ytan är varmare än så, och blir alltså inte våt.',
+} as const;
+
+const titel = 'Daggpunktskalkylator, räkna ut när väggen blir våt';
+
+/** Antagandena i tabellen under "Så räknar vi". Samma tal som konstanterna i kalkylen. */
+const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande'; stod: string; url?: string }[] = [
+  {
+    storhet: 'Daggpunkten ur temperatur och luftfuktighet',
+    varde: 'Magnus-formeln, a = 17,625 och b = 243,04',
+    grund: 'Källa',
+    stod: 'Lawrence 2005 i tidskriften BAMS 86(2), som anger osäkerheten till 0,35 grader',
+    url: 'https://journals.ametsoc.org/view/journals/bams/86/2/bams-86-2-225.xml',
+  },
+  {
+    storhet: 'Gränsen för mögel vid ytan',
+    varde: '75 % RF',
+    grund: 'Källa',
+    stod: 'Boverket, BBR 6:52, kritiskt fukttillstånd när materialets eget värde inte är undersökt',
+    url: 'https://www.boverket.se/sv/PBL-kunskapsbanken/regler-om-byggande/boverkets-byggregler/fuktsakerhet/hogsta-tillatna-fukttillstand/',
+  },
+  {
+    storhet: 'Ånghalten, alltså vattnet i luften',
+    varde: '216,68 × ångtrycket delat med temperaturen i kelvin',
+    grund: 'Källa',
+    stod: 'Allmänna gaslagen för vattenånga, samma härledning som Magnus-formeln',
+    url: 'https://www.smhi.se/kunskapsbanken/meteorologi/luftfuktighet/olika-matt-pa-luftfuktighet',
+  },
+  {
+    storhet: 'Luftfuktigheten vid den kalla ytan',
+    varde: 'ångtrycket inne delat med mättnadsångtrycket vid ytan',
+    grund: 'Antagande',
+    stod: 'Vi räknar med att luftskiktet vid ytan bär lika mycket vatten som rummet. Står en garderob tätt mot väggen är det verkliga talet högre',
+  },
+  {
+    storhet: 'Typiska yttemperaturer i hjälptexten',
+    varde: '12 till 15, 5 till 10 och 8 till 12 grader',
+    grund: 'Antagande',
+    stod: 'Vår erfarenhet från äldre hus. Din vägg kan ligga flera grader åt endera hållet, mät med en IR-termometer',
+  },
+  {
+    storhet: 'Gränsen där vi säger att ytan måste bli varmare',
+    varde: '25 % RF inne',
+    grund: 'Antagande',
+    stod: 'Vårt val. Under det går det inte att hålla en bostad vintertid utan att luften blir obehagligt torr',
+  },
+];
+---
+
+<Bas
+  title={titel}
+  description="Räkna ut daggpunkten ur temperaturen inne och hygrometerns tal, och se om den kallaste väggen får kondens eller mögelrisk. Källa på varje tal."
+  reklam={false}
+  brodsmulor={[
+    { namn: 'Hantverkstips', href: '/' },
+    { namn: 'Räkna själv', href: '/rakna/' },
+    { namn: 'Daggpunktskalkylator' },
+  ]}
+  bred={true}
+>
+  <div class="mx-auto w-full max-w-lasbredd">
+    <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">Blir väggen våt? Räkna ut daggpunkten</h1>
+    <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
+      Fyll i temperaturen inne, vad hygrometern visar och hur kall den kallaste ytan är. Daggpunktskalkylatorn räknar
+      ut daggpunkten och säger om du får kondens på väggen. Svaret är en riskbedömning, inte ett löfte om vad som
+      händer.
+    </p>
+
+    {
+      visat.status === 'ok' && tal && (
+        <Faktaruta variant="kortsvar">
+          <p class="m-0 leading-6">Daggpunkten i rummet ligger på {tal.daggpunkt} grader.</p>
+          <p class="m-0 leading-6">{KORT_SVAR_YTA[visat.bedomning]}</p>
+          <p class="m-0 leading-6">
+            Luften närmast ytan hamnar på{' '}
+            <Markering>{tal.rfYta} procent luftfuktighet</Markering>, mot Boverkets gräns på{' '}
+            {KRITISKT_FUKTTILLSTAND_RF} procent.
+          </p>
+          <p class="m-0 leading-6">
+            {visat.bedomning === 'ingen_risk'
+              ? 'Ingen åtgärd behövs, men mät om det ändå luktar.'
+              : visat.atgarder[0] === 'avfuktare'
+                ? 'Det här löser du med en avfuktare, inte med vädring.'
+                : 'Vädra, sänk fuktproduktionen och gör ytan varmare.'}
+          </p>
+        </Faktaruta>
+      )
+    }
+
+    <div class="linjerat mt-8 lg:grid lg:grid-cols-2 lg:gap-8">
+      <DaggpunktForm indata={indata} varden={varden} fel={fel} />
+
+      <div class="mt-8 border-t border-linje pt-6 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
+        {
+          visat.status === 'ok' && tal && (
+            <>
+              {resultat.status === 'ogiltig' && (
+                <p class="m-0 mb-2 text-liten text-varning">Visar standardvärden tills indatan är rättad.</p>
+              )}
+              <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">Daggpunkt</p>
+              {/* Enheten står på samma rad som talet, på talets baslinje
+                  (DESIGN.md avsnitt 5.8). Radbryter på smal skärm. */}
+              <p class="m-0 mt-1 flex flex-wrap items-baseline gap-x-2">
+                <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
+                  <Markering>{tal.daggpunkt}</Markering>
+                </span>
+                <span class="text-ingress lg:text-ingress-lg">grader</span>
+              </p>
+              <p class="m-0 mt-2 text-liten text-blyerts-2">
+                vid {tal.luftTemp} °C och {tal.rfInne} % RF inne, plus minus {formateraTal(visat.osakerhetC, 2)} grader
+                i formeln
+              </p>
+              <p class="m-0 mt-1 text-liten text-blyerts-2">
+                {tal.anghalt} g/m³ vatten i luften, {tal.rfYta} % RF vid ytan på {tal.ytTemp} °C
+              </p>
+
+              <p class="m-0 mt-4 font-sans text-h3 lg:text-h3-lg text-blyerts">{domar[visat.bedomning]}</p>
+              <p class="m-0 mt-2 text-brod">
+                {visat.bedomning === 'kondens' ? (
+                  <>
+                    Ytan ligger {tal.marginal} grader under daggpunkten, så vatten fälls ut på den så länge luften är
+                    så här fuktig. Det syns som imma på glas och som en mörk fläck på en tapetserad vägg.
+                  </>
+                ) : visat.bedomning === 'mogelrisk' ? (
+                  <>
+                    Ytan klarar sig undan med {tal.marginal} grader till godo, men luftskiktet närmast den ligger över
+                    Boverkets gräns. Står det kvar vecka efter vecka växer mögel utan att ytan någonsin varit blöt.
+                  </>
+                ) : (
+                  <>
+                    Ytan har {tal.marginal} grader till godo mot daggpunkten, och luften vid den ligger under gränsen.
+                    Ingen åtgärd behövs för fuktens skull.
+                  </>
+                )}
+              </p>
+
+              {visat.bedomning !== 'ingen_risk' && (
+                <>
+                  <p class="m-0 mt-4 text-brod">
+                    {visat.ytanMasteBliVarmare ? (
+                      <>
+                        För att komma under gränsen vid ytan behöver du få upp ytan till {tal.ytTempKrav} grader. Att
+                        vädra sig ner till {tal.rfKrav} procent luftfuktighet inne går inte, så det är ytan som ska
+                        åtgärdas.
+                      </>
+                    ) : (
+                      <>
+                        Två vägar leder under gränsen: ner till {tal.rfKrav} procent luftfuktighet inne, eller upp till{' '}
+                        {tal.ytTempKrav} grader på ytan. Den ena räcker.
+                      </>
+                    )}
+                  </p>
+                  <ul class="m-0 mt-4 p-0 list-none text-brod">
+                    {visat.atgarder.map((a) => (
+                      <li class="mb-2 border-l-2 border-linje pl-3">{ATGARDSTEXT[a]}</li>
+                    ))}
+                  </ul>
+                  {visat.gorInteDetHar && (
+                    <>
+                      <p class="m-0 mt-4 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">Gör inte det här</p>
+                      <p class="m-0 mt-1 text-brod">{visat.gorInteDetHar}</p>
+                    </>
+                  )}
+                </>
+              )}
+
+              <p class="m-0 mt-4">
+                <a href="#sa-raknar-vi" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
+                  Så räknar vi
+                </a>
+              </p>
+
+              {/* Dela. Uträkningen står i adressen, så ett skrivskyddat fält
+                  räcker: markera och kopiera fungerar utan en rad JavaScript. */}
+              <div class="mt-4 border-t border-linje pt-4">
+                <label for="dela" class={ETIKETT_KLASS}>
+                  Dela uträkningen
+                </label>
+                <input id="dela" type="text" readonly value={delaLank} class:list={[FALT_KLASS, 'border-blyerts-2']} />
+                <p class="m-0 mt-1 text-liten text-blyerts-2">Adressen innehåller dina värden. Markera och kopiera.</p>
+              </div>
+            </>
+          )
+        }
+      </div>
+    </div>
+
+    {
+      visat.status === 'ok' && visat.visaAvfuktare && (
+        <section>
+          <Pennstreck id="avfuktaren">Så stor avfuktare behöver utrymmet</Pennstreck>
+          <p class="m-0 text-brod lg:text-brod-lg">
+            En avfuktare som är för liten går dygnet runt och kommer ändå inte ner till 55 procent luftfuktighet.
+            Räkna ut hur många liter per dygn maskinen behöver klara innan du köper.
+          </p>
+          <Verktygskort kalkylator="avfuktare" />
+        </section>
+      )
+    }
+
+    <section>
+      <Pennstreck id="vad-daggpunkten-ar">Vad daggpunkten är, och när kondens på vägg blir mögel</Pennstreck>
+      <p class="m-0 text-brod lg:text-brod-lg">
+        Luft bär vatten som ånga, och hur mycket den orkar bära beror på temperaturen. Kyls luften kommer en punkt där
+        den inte orkar mer, och då fälls vattnet ut som droppar. Den temperaturen är daggpunkten. Allt i rummet som är
+        kallare än daggpunkten blir vått, och det är alltid den kallaste ytan som får ta emot.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Kondens på vägg syns sällan som droppar. Väggen suger i sig vattnet, tapeten mörknar och det börjar lukta
+        källare. Innan det ens är blött har luftskiktet närmast väggen redan legat på hög luftfuktighet i veckor, och
+        det räcker. Boverket sätter i BBR 6:52 gränsen vid 75 procent relativ luftfuktighet för material vars eget
+        värde inte är undersökt. Mögel växer där, på en yta som ingen skulle kalla våt.
+      </p>
+
+      <Pennstreck id="sovrummet-i-januari" niva={3}>Sovrummet i januari</Pennstreck>
+      <p class="m-0 text-brod lg:text-brod-lg">
+        Två personer sover i ett rum på 20 grader och hygrometern visar 50 procent. Daggpunkten ligger på 9,3 grader.
+        Rutan i ett gammalt tvåglasfönster håller inte ens hälften av det en kall natt, så imman på insidan är given.
+        Ytterväggen bakom garderoben är den andra kandidaten, för där står luften stilla och väggen är några grader
+        kallare än rummet. Vädra kort med genomdrag morgon och kväll. Uteluft på några minusgrader bär nästan inget
+        vatten alls, och när den värmts upp inne är den torrare än luften den bytte ut. Flytta ut garderoben några
+        centimeter från väggen medan du håller på.
+      </p>
+
+      <Pennstreck id="kallaren-i-augusti" niva={3}>Källaren i augusti</Pennstreck>
+      <p class="m-0 text-brod lg:text-brod-lg">
+        Här vänder allt. Källarluften håller kanske 18 grader och väggarna mot mark ligger på 12. Uteluften i augusti
+        är varm och full av vatten, och det vattnet följer med in genom det öppna källarfönstret. På den kalla väggen
+        fälls det ut. Ju mer du vädrar, desto blötare blir det. Stäng fönstret, ställ in en avfuktare och låt den gå
+        med hygrostat. Kommer fukten upp genom golvet i stället är det dräneringen som är problemet, och då hjälper
+        ingen maskin i längden.
+      </p>
+
+      <Pennstreck id="garaget" niva={3}>Garaget</Pennstreck>
+      <p class="m-0 text-brod lg:text-brod-lg">
+        Ett ouppvärmt garage följer uteluften med ett dygns fördröjning, och det är fördröjningen som ställer till
+        det. En vårdag när luften slår om från kallt till milt ligger betongplattan kvar på gårdagens temperatur.
+        Daggpunkten i den nya luften hamnar över plattan, och då står det vatten på golvet fast taket är helt. Samma
+        sak händer med en bil som körs in blöt. Ventilera när det är kallare ute än inne, inte tvärtom, och håll
+        verktygen på en hylla i stället för direkt på betongen.
+      </p>
+    </section>
+
+    <section>
+      <Pennstreck id="sa-raknar-vi">Så räknar vi</Pennstreck>
+      <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg">
+        <li class="mb-2">
+          Temperaturen inne ger mättnadsångtrycket, alltså hur mycket ånga luften orkar bära innan den är full.
+          Magnus-formeln gör den omräkningen.
+        </li>
+        <li class="mb-2">
+          Luftfuktigheten du läser av på hygrometern säger hur stor del av taket som är använd. Halva taket vid 20
+          grader är 8,6 gram vatten per kubikmeter.
+        </li>
+        <li class="mb-2">
+          Daggpunkten är samma formel baklänges: den temperatur där just den mängden ånga fyller taket helt.
+        </li>
+        <li class="mb-2">
+          Vid den kalla ytan är vattnet detsamma, men taket är lägre. Kvoten mellan dem är luftfuktigheten i skiktet
+          närmast väggen, och den är alltid högre än den hygrometern visar mitt i rummet.
+        </li>
+        <li class="mb-2">
+          Ligger ytan under daggpunkten blir den våt. Ligger luften vid ytan över 75 procent är det mögelrisk, även
+          utan en droppe kondens.
+        </li>
+        <li>
+          Till sist vänder vi på räkningen två gånger: vilken luftfuktighet inne som ger 75 procent vid ytan, och
+          vilken yttemperatur som gör samma sak med dagens luftfuktighet.
+        </li>
+      </ol>
+
+      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad siffrorna vilar på</h3>
+      <div class="mt-4 overflow-x-auto">
+        <table class="w-full border-collapse text-liten tabular-nums">
+          <caption class="sr-only">Antaganden och källor i daggpunktskalkylatorn</caption>
+          <thead>
+            <tr class="border-b border-linje text-left">
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Storhet</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Vi räknar med</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Källa eller antagande</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              antaganden.map((a) => (
+                <tr>
+                  <th scope="row" class:list={[CELL_KLASS, 'text-left font-normal']}>
+                    {a.storhet}
+                  </th>
+                  <td class={CELL_KLASS}>{a.varde}</td>
+                  <td class={CELL_KLASS}>
+                    {a.grund}.{' '}
+                    {a.url ? (
+                      <a href={a.url} rel="nofollow" class={LANK_KLASS}>
+                        {a.stod}
+                      </a>
+                    ) : (
+                      a.stod
+                    )}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <p class="m-0 mt-6 text-brod lg:text-brod-lg">
+        Formeln är säker, indatan är det inte. Hygrometern på väggen kan visa några procentenheter fel, och
+        yttemperaturen är en gissning tills du mätt den. Läs svaret som ett spann, inte som ett facit.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Metoden bakom våra siffror står på <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar vi</a>.
+      </p>
+    </section>
+
+    <section>
+      <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
+      <ul class="m-0 p-0 list-none">
+        <li class="border-t border-linje">
+          <a href="/fukt/luftfuktighet-inomhus/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
+            Rätt luftfuktighet inomhus, med tabell per rum
+          </a>
+        </li>
+        <li class="border-t border-linje">
+          <a href="/fukt/fukt-i-kallaren/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
+            Hitta varifrån fukten i källaren kommer
+          </a>
+        </li>
+        <li class="border-t border-linje">
+          <a href="/fukt/sorptionsavfuktare/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
+            Sorption eller kondens, temperaturen avgör
+          </a>
+        </li>
+      </ul>
+    </section>
+  </div>
+</Bas>

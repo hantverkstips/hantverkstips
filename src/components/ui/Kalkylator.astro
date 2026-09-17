@@ -1,0 +1,60 @@
+---
+/**
+ * Kalkylatorn inbäddad i en artikel. Skribenten skriver <Kalkylator namn="daggpunkt" />
+ * i MDX och får verktygets riktiga formulär på plats, inte en länk att klicka på.
+ *
+ * Formuläret skickas som GET till verktygssidan, som räknar och visar resultatet.
+ * Ingen klient-JavaScript, ingen dubblerad formel och inget eget formulär:
+ * fälten kommer från samma komponent som verktygssidan använder.
+ *
+ * Ett nytt verktyg läggs till på två rader här, i registret och som en egen sida.
+ * Okänd slug, eller en slug utan formulärkomponent, ger byggfel som i Verktygskort.
+ *
+ * Rubriken är ett <p> i H3-stil, inte en H3: komponenten kan stå var som helst i
+ * en artikel och en riktig H3 skulle kunna ge fel rubrikordning.
+ */
+import { hittaKalkylator } from '../../lib/kalkyl/register';
+import AvfuktareForm from '../kalkyl/AvfuktareForm.astro';
+import DaggpunktForm from '../kalkyl/DaggpunktForm.astro';
+import Ikon from './Ikon.astro';
+
+interface Props {
+  /** Kalkylatorns slug i src/lib/kalkyl/register.ts. */
+  namn: string;
+}
+
+/** Kalkylatorer som har ett formulär att bädda in. */
+const MED_FORMULAR = ['avfuktare', 'daggpunkt'];
+
+const { namn } = Astro.props;
+const k = hittaKalkylator(namn);
+if (!k) {
+  throw new Error(`[Kalkylator] Okänd kalkylator "${namn}". Lägg till den i src/lib/kalkyl/register.ts`);
+}
+if (!MED_FORMULAR.includes(namn)) {
+  throw new Error(
+    `[Kalkylator] Kalkylatorn "${namn}" har inget formulär att bädda in. Lägg till komponenten i src/components/kalkyl/ och slugen i MED_FORMULAR.`,
+  );
+}
+
+const href = `/rakna/${k.slug}/`;
+const prefix = `${k.slug}-inbaddad-`;
+---
+
+<div class="linjerat my-8">
+  <p class="m-0 flex items-center gap-2 text-etikett lg:text-etikett-lg uppercase text-blyerts">
+    <Ikon namn="kalkylator" storlek={24} />
+    Räkna själv
+  </p>
+  <p class="m-0 mt-2 mb-2 font-sans text-h3 lg:text-h3-lg font-bold">
+    <a href={href} class="text-blyerts underline decoration-1 underline-offset-2 hover:decoration-2">{k.namn}</a>
+  </p>
+  <p class="m-0 mb-6 text-brod lg:text-brod-lg text-blyerts-2">{k.rad}</p>
+
+  {namn === 'daggpunkt' && <DaggpunktForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
+  {namn === 'avfuktare' && <AvfuktareForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
+
+  <p class="m-0 mt-4 text-liten text-blyerts-2">
+    Knappen tar dig till kalkylatorn med dina värden ifyllda. Där står svaret med källan bakom varje tal.
+  </p>
+</div>

@@ -1,0 +1,168 @@
+---
+/**
+ * Formuläret till daggpunktskalkylatorn. Ett ställe: sidan /rakna/daggpunkt/
+ * renderar det i fullt format, och <Kalkylator namn="daggpunkt" /> i en artikel
+ * renderar samma fält i kompakt format med action till verktygssidan.
+ *
+ * Ingen klient-JavaScript. Formuläret skickas som GET, och verktygssidan räknar.
+ *
+ * Alla props är valfria, eftersom det inbäddade formuläret inte har någon
+ * uträkning att visa värden ur; då står standardvärdena i fälten.
+ */
+import {
+  ARSTIDER,
+  RUMSVAL,
+  STANDARD,
+  TYPISKA_YTOR,
+  type DaggpunktIndata,
+} from '../../lib/kalkyl/daggpunkt';
+import { ETIKETT_KLASS, FALT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, ramKlass } from '../../lib/kalkyl/stil';
+
+interface Props {
+  /** Valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
+  indata?: DaggpunktIndata;
+  /** Talen som de skrevs i adressen, så att ett felskrivet värde går att rätta. */
+  varden?: { temp: string; rf: string; ytatemp: string };
+  fel?: Partial<Record<keyof DaggpunktIndata, string>>;
+  /** Inbäddad i en artikel: tätare fält, inga hjälprader. */
+  kompakt?: boolean;
+  /** Prefix på id-attributen, så att två formulär på samma sida inte krockar. */
+  idPrefix?: string;
+  knappText?: string;
+}
+
+const {
+  indata = STANDARD,
+  varden = {
+    temp: String(STANDARD.luftTempC),
+    rf: String(STANDARD.rfProcent),
+    ytatemp: String(STANDARD.ytTempC),
+  },
+  fel = {},
+  kompakt = false,
+  idPrefix = '',
+  knappText = 'Räkna ut',
+} = Astro.props;
+
+const id = (namn: string) => `${idPrefix}${namn}`;
+const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
+
+const talfalt = [
+  {
+    namn: 'temp',
+    etikett: 'Lufttemperatur inne',
+    enhet: '°C',
+    varde: varden.temp,
+    fel: fel.luftTempC,
+    hjalp: null,
+  },
+  {
+    namn: 'rf',
+    etikett: 'Relativ luftfuktighet',
+    enhet: '%',
+    varde: varden.rf,
+    fel: fel.rfProcent,
+    hjalp: 'Talet hygrometern visar mitt i rummet.',
+  },
+] as const;
+---
+
+<form method="get" action="/rakna/daggpunkt/">
+  <div class:list={[kompakt && 'sm:grid sm:grid-cols-2 sm:gap-4']}>
+    {
+      talfalt.map((f) => (
+        <div class="mb-4">
+          <label for={id(f.namn)} class={ETIKETT_KLASS}>
+            {f.etikett}
+          </label>
+          <div class="flex items-center gap-2">
+            <input
+              id={id(f.namn)}
+              name={f.namn}
+              type="text"
+              inputmode="decimal"
+              value={f.varde}
+              aria-describedby={f.fel ? id(`${f.namn}-fel`) : undefined}
+              class:list={[FALT_KLASS, ramKlass(Boolean(f.fel))]}
+            />
+            <span class="text-brod text-blyerts-2">{f.enhet}</span>
+          </div>
+          {f.fel ? (
+            <p id={id(`${f.namn}-fel`)} class={FEL_KLASS}>
+              {f.fel}
+            </p>
+          ) : (
+            !kompakt && f.hjalp && <p class={HJALP_KLASS}>{f.hjalp}</p>
+          )}
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="mb-4">
+    <label for={id('ytatemp')} class={ETIKETT_KLASS}>Kallaste ytans temperatur</label>
+    <div class="flex items-center gap-2">
+      <input
+        id={id('ytatemp')}
+        name="ytatemp"
+        type="text"
+        inputmode="decimal"
+        value={varden.ytatemp}
+        aria-describedby={fel.ytTempC ? id('ytatemp-fel') : id('ytatemp-hjalp')}
+        class:list={[FALT_KLASS, ramKlass(Boolean(fel.ytTempC))]}
+      />
+      <span class="text-brod text-blyerts-2">°C</span>
+    </div>
+    {fel.ytTempC && <p id={id('ytatemp-fel')} class={FEL_KLASS}>{fel.ytTempC}</p>}
+    <div id={id('ytatemp-hjalp')} class={HJALP_KLASS}>
+      <p class="m-0">Vet du inte, gissa efter den här listan.</p>
+      <ul class="m-0 mt-1 list-none p-0">
+        {
+          TYPISKA_YTOR.map((t) => (
+            <li>
+              {t.yta}, {t.spann}
+            </li>
+          ))
+        }
+      </ul>
+      {
+        !kompakt && (
+          <p class="m-0 mt-1">
+            Talen är vår erfarenhet från äldre hus, inte en publicerad tabell. Mät med en IR-termometer om du vill ha
+            ditt eget värde.
+          </p>
+        )
+      }
+    </div>
+  </div>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Årstid</legend>
+    <div class={radioKlass}>
+      {
+        ARSTIDER.map((a) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input type="radio" name="arstid" value={a.varde} checked={indata.arstid === a.varde} />
+            {a.etikett}
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <fieldset class="m-0 mb-6 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Utrymme</legend>
+    <div class={radioKlass}>
+      {
+        RUMSVAL.map((r) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input type="radio" name="rum" value={r.varde} checked={indata.rum === r.varde} />
+            {r.etikett}
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <button type="submit" class={KNAPP_KLASS}>{knappText}</button>
+</form>

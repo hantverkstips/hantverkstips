@@ -1,0 +1,115 @@
+---
+/**
+ * Formuläret till avfuktarkalkylatorn. Ett ställe: sidan /rakna/avfuktare/
+ * renderar det i fullt format, och <Kalkylator namn="avfuktare" /> i en artikel
+ * renderar samma fält i kompakt format med action till verktygssidan.
+ *
+ * Ingen klient-JavaScript. Formuläret skickas som GET, och verktygssidan räknar.
+ *
+ * Alla props är valfria, eftersom det inbäddade formuläret inte har någon
+ * uträkning att visa värden ur; då står standardvärdena i fälten.
+ */
+import { FUKTNIVAER, STANDARD, TEMPERATURVAL, type AvfuktareIndata } from '../../lib/kalkyl/avfuktare';
+import { ETIKETT_KLASS, FALT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, ramKlass } from '../../lib/kalkyl/stil';
+
+interface Props {
+  /** Valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
+  indata?: AvfuktareIndata;
+  /** Talen som de skrevs i adressen, så att ett felskrivet värde går att rätta. */
+  varden?: { yta: string; takhojd: string };
+  fel?: Partial<Record<keyof AvfuktareIndata, string>>;
+  /** Inbäddad i en artikel: tätare fält, inga hjälprader. */
+  kompakt?: boolean;
+  /** Prefix på id-attributen, så att två formulär på samma sida inte krockar. */
+  idPrefix?: string;
+  knappText?: string;
+}
+
+const {
+  indata = STANDARD,
+  varden = { yta: String(STANDARD.ytaKvm), takhojd: String(STANDARD.takhojdM).replace('.', ',') },
+  fel = {},
+  kompakt = false,
+  idPrefix = '',
+  knappText = 'Räkna ut',
+} = Astro.props;
+
+const id = (namn: string) => `${idPrefix}${namn}`;
+const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
+---
+
+<form method="get" action="/rakna/avfuktare/">
+  <div class:list={[kompakt && 'sm:grid sm:grid-cols-2 sm:gap-4']}>
+    <div class="mb-4">
+      <label for={id('yta')} class={ETIKETT_KLASS}>Yta</label>
+      <div class="flex items-center gap-2">
+        <input
+          id={id('yta')}
+          name="yta"
+          type="text"
+          inputmode="decimal"
+          value={varden.yta}
+          aria-describedby={fel.ytaKvm ? id('yta-fel') : undefined}
+          class:list={[FALT_KLASS, ramKlass(Boolean(fel.ytaKvm))]}
+        />
+        <span class="text-brod text-blyerts-2">kvm</span>
+      </div>
+      {fel.ytaKvm && <p id={id('yta-fel')} class={FEL_KLASS}>{fel.ytaKvm}</p>}
+    </div>
+
+    <div class="mb-4">
+      <label for={id('takhojd')} class={ETIKETT_KLASS}>Takhöjd</label>
+      <div class="flex items-center gap-2">
+        <input
+          id={id('takhojd')}
+          name="takhojd"
+          type="text"
+          inputmode="decimal"
+          value={varden.takhojd}
+          aria-describedby={fel.takhojdM ? id('takhojd-fel') : undefined}
+          class:list={[FALT_KLASS, ramKlass(Boolean(fel.takhojdM))]}
+        />
+        <span class="text-brod text-blyerts-2">m</span>
+      </div>
+      {
+        fel.takhojdM ? (
+          <p id={id('takhojd-fel')} class={FEL_KLASS}>
+            {fel.takhojdM}
+          </p>
+        ) : (
+          !kompakt && <p class={HJALP_KLASS}>Krypgrund räknas också, ner till 0,5 m.</p>
+        )
+      }
+    </div>
+  </div>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Fuktnivå</legend>
+    <div class={radioKlass}>
+      {
+        FUKTNIVAER.map((f) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input type="radio" name="fukt" value={f.varde} checked={indata.fuktniva === f.varde} />
+            {f.etikett}
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <fieldset class="m-0 mb-6 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Temperatur i utrymmet</legend>
+    <div class={radioKlass}>
+      {
+        TEMPERATURVAL.map((t) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input type="radio" name="temp" value={t.varde} checked={indata.temperatur === t.varde} />
+            {t.etikett}
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <button type="submit" class={KNAPP_KLASS}>{knappText}</button>
+</form>

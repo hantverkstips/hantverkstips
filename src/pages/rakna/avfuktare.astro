@@ -13,15 +13,15 @@ export const prerender = false;
 import Bas from '../../layouts/Bas.astro';
 import { formateraTal } from '../../lib/format';
 import {
-  FUKTNIVAER,
   fuktnivaEtikett,
   raknaAvfuktare,
   STANDARD,
-  TEMPERATURVAL,
   tolkaQuery,
   type AvfuktareResultat,
 } from '../../lib/kalkyl/avfuktare';
+import { CELL_KLASS, ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
 import { hamtaButik, lagstaPris, produkterIKategori } from '../../lib/produkter';
+import AvfuktareForm from '../../components/kalkyl/AvfuktareForm.astro';
 import Faktaruta from '../../components/ui/Faktaruta.astro';
 import Markering from '../../components/ui/Markering.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
@@ -109,12 +109,6 @@ const typtext =
   visat.status === 'ok' && visat.typ === 'kondens'
     ? 'Leta efter en kondensavfuktare. Den tar mest vatten per krona så länge utrymmet håller sig över 15 grader.'
     : 'Leta efter en sorptionsavfuktare. En kondensmaskin tappar fart under 15 grader och lägger till slut mer tid på att avfrosta än på att avfukta.';
-
-const faltKlass =
-  'w-full min-h-12 rounded-sm border bg-papper px-3 text-brod text-blyerts tabular-nums';
-const etikettKlass = 'block mb-1 font-bold text-blyerts';
-const lankKlass = 'text-penna underline decoration-1 underline-offset-2 hover:decoration-2';
-const cellKlass = 'border-b border-linje p-2 align-top text-blyerts';
 
 /** Antagandena i tabellen under "Så räknar vi". Samma tal som konstanterna i kalkylen. */
 const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande'; stod: string; url?: string }[] = [
@@ -209,80 +203,9 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     </p>
 
     <div class="linjerat mt-8 lg:grid lg:grid-cols-2 lg:gap-8">
-      <form method="get" action="/rakna/avfuktare/">
-        <div class="mb-4">
-          <label for="yta" class={etikettKlass}>Yta</label>
-          <div class="flex items-center gap-2">
-            <input
-              id="yta"
-              name="yta"
-              type="text"
-              inputmode="decimal"
-              value={ytaVarde}
-              aria-describedby={fel.ytaKvm ? 'yta-fel' : undefined}
-              class:list={[faltKlass, fel.ytaKvm ? 'border-varning' : 'border-blyerts-2']}
-            />
-            <span class="text-brod text-blyerts-2">kvm</span>
-          </div>
-          {fel.ytaKvm && <p id="yta-fel" class="m-0 mt-1 text-liten text-varning">{fel.ytaKvm}</p>}
-        </div>
-
-        <div class="mb-4">
-          <label for="takhojd" class={etikettKlass}>Takhöjd</label>
-          <div class="flex items-center gap-2">
-            <input
-              id="takhojd"
-              name="takhojd"
-              type="text"
-              inputmode="decimal"
-              value={takhojdVarde}
-              aria-describedby={fel.takhojdM ? 'takhojd-fel' : undefined}
-              class:list={[faltKlass, fel.takhojdM ? 'border-varning' : 'border-blyerts-2']}
-            />
-            <span class="text-brod text-blyerts-2">m</span>
-          </div>
-          {
-            fel.takhojdM ? (
-              <p id="takhojd-fel" class="m-0 mt-1 text-liten text-varning">
-                {fel.takhojdM}
-              </p>
-            ) : (
-              <p class="m-0 mt-1 text-liten text-blyerts-2">Krypgrund räknas också, ner till 0,5 m.</p>
-            )
-          }
-        </div>
-
-        <fieldset class="m-0 mb-4 p-0 border-0">
-          <legend class:list={[etikettKlass, 'p-0']}>Fuktnivå</legend>
-          {
-            FUKTNIVAER.map((f) => (
-              <label class="flex min-h-11 items-center gap-2 text-brod">
-                <input type="radio" name="fukt" value={f.varde} checked={indata.fuktniva === f.varde} />
-                {f.etikett}
-              </label>
-            ))
-          }
-        </fieldset>
-
-        <fieldset class="m-0 mb-6 p-0 border-0">
-          <legend class:list={[etikettKlass, 'p-0']}>Temperatur i utrymmet</legend>
-          {
-            TEMPERATURVAL.map((t) => (
-              <label class="flex min-h-11 items-center gap-2 text-brod">
-                <input type="radio" name="temp" value={t.varde} checked={indata.temperatur === t.varde} />
-                {t.etikett}
-              </label>
-            ))
-          }
-        </fieldset>
-
-        <button
-          type="submit"
-          class="inline-flex min-h-12 items-center rounded-md border-2 border-blyerts px-5 py-3 font-bold text-blyerts hover:bg-blyerts hover:text-papper"
-        >
-          Räkna ut
-        </button>
-      </form>
+      {/* Formuläret ligger i src/components/kalkyl/AvfuktareForm.astro, så att
+          <Kalkylator namn="avfuktare" /> i en artikel visar exakt samma fält. */}
+      <AvfuktareForm indata={indata} varden={{ yta: ytaVarde, takhojd: takhojdVarde }} fel={fel} />
 
       <div class="mt-8 border-t border-linje pt-6 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
         {
@@ -324,7 +247,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
                   liten. En för liten går dygnet runt och håller ändå inte 55 procent.
                 </p>
                 <p class="m-0 mt-2">
-                  <a href="#sa-raknar-vi" class:list={['inline-flex min-h-11 items-center', lankKlass]}>
+                  <a href="#sa-raknar-vi" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
                     Så räknar vi
                   </a>
                 </p>
@@ -333,7 +256,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
                     räcker: markera och kopiera fungerar utan en rad JavaScript.
                     En kopieringsknapp kan komma senare som React-ö. */}
                 <div class="mt-4 border-t border-linje pt-4">
-                  <label for="dela" class={etikettKlass}>
+                  <label for="dela" class={ETIKETT_KLASS}>
                     Dela uträkningen
                   </label>
                   <input
@@ -341,7 +264,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
                     type="text"
                     readonly
                     value={delaLank}
-                    class:list={[faltKlass, 'border-blyerts-2']}
+                    class:list={[FALT_KLASS, 'border-blyerts-2']}
                   />
                   <p class="m-0 mt-1 text-liten text-blyerts-2">
                     Adressen innehåller dina värden. Markera och kopiera.
@@ -376,7 +299,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
         )
       }
       <p class="m-0 mt-4">
-        <a href="/luftavfuktare/" class:list={['inline-flex min-h-11 items-center', lankKlass]}>
+        <a href="/luftavfuktare/" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
           Alla avfuktare vi granskat
         </a>
       </p>
@@ -436,14 +359,14 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
             {
               antaganden.map((a) => (
                 <tr>
-                  <th scope="row" class:list={[cellKlass, 'text-left font-normal']}>
+                  <th scope="row" class:list={[CELL_KLASS, 'text-left font-normal']}>
                     {a.storhet}
                   </th>
-                  <td class={cellKlass}>{a.varde}</td>
-                  <td class={cellKlass}>
+                  <td class={CELL_KLASS}>{a.varde}</td>
+                  <td class={CELL_KLASS}>
                     {a.grund}.{' '}
                     {a.url ? (
-                      <a href={a.url} rel="nofollow" class={lankKlass}>
+                      <a href={a.url} rel="nofollow" class={LANK_KLASS}>
                         {a.stod}
                       </a>
                     ) : (
@@ -462,7 +385,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
         Metoden bakom våra siffror står på{' '}
-        <a href="/om/sa-testar-vi/" class={lankKlass}>Så testar vi</a>.
+        <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar vi</a>.
       </p>
     </section>
 
@@ -470,17 +393,17 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
       <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
       <ul class="m-0 p-0 list-none">
         <li class="border-t border-linje">
-          <a href="/luftavfuktare/" class:list={['flex min-h-11 items-center py-2', lankKlass]}>
+          <a href="/luftavfuktare/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
             Alla luftavfuktare vi granskat
           </a>
         </li>
         <li class="border-t border-linje">
-          <a href="/fukt/avfuktare-kallare/" class:list={['flex min-h-11 items-center py-2', lankKlass]}>
+          <a href="/fukt/avfuktare-kallare/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
             Rätt avfuktare till källaren
           </a>
         </li>
         <li class="border-t border-linje">
-          <a href="/fukt/sorptionsavfuktare/" class:list={['flex min-h-11 items-center py-2', lankKlass]}>
+          <a href="/fukt/sorptionsavfuktare/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
             Sorption eller kondens, temperaturen avgör
           </a>
         </li>

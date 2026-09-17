@@ -241,6 +241,16 @@ Bara på `/guider/`. Inga knappar, ingen `<select>`, ingen JavaScript. `Pagineri
 
 `interface Props { kalkylator: string; iRutnat?: boolean }`. `iRutnat` tar bort kortets egen luft ovanför och under, så att det kan ligga i ett rutnät med samma ram och radie som artikelkorten. Slår upp i `KALKYLATORER` (avsnitt 3.3); okänd slug ger byggfel (`throw new Error`). Ett kort med ram: `<Ikon namn="kalkylator" />` och etiketten "Räkna själv" på samma rad i etikett-stil, rubriken (H3) som länk till `/rakna/[slug]/`, en rad (`rad`), länktexten "Till kalkylatorn" som en textlänk under. Inget diagram i fas 1. En sida får aldrig ha två verktygskort; det är en granskningsregel, inte något komponenten kontrollerar.
 
+### 2.9d `Kalkylator.astro` (ny 2026-09-17)
+
+`interface Props { namn: string }`, alltså kalkylatorns slug. Bäddar in verktygets riktiga formulär i en artikel i stället för att länka till det: `<Kalkylator namn="daggpunkt" />` i MDX ger etiketten "Räkna själv", kalkylatorns namn som länk till `/rakna/[slug]/`, raden ur registret, och formuläret i kompakt form med `action` till verktygssidan. Läsaren fyller i, trycker på knappen och landar på verktygssidan med sina värden i adressen och svaret uträknat. Ingen klient-JavaScript, ingen formel i komponenten.
+
+Formuläret kommer från `src/components/kalkyl/[Verktyg]Form.astro`, samma komponent som verktygssidan renderar, så att fälten aldrig hinner glida isär. Kalkylator sätter `idPrefix` (`daggpunkt-inbaddad-`), så att fältens id är unika även om sidan har ett annat formulär. Radioknapparna behåller sina namn (`fukt`, `temp`, `arstid`, `rum`); en radiogrupp hör till sitt formulär, inte till sidan.
+
+Okänd slug ger byggfel som i Verktygskort, och en slug som finns i registret men saknar formulärkomponent ger ett eget byggfel som säger vad som fattas (listan `MED_FORMULAR` i komponenten). `npm run kontrollera` läser dessutom `<Kalkylator namn="...">` i alla innehållsfiler mot registret.
+
+Skillnaden mot Verktygskort: kortet är en hänvisning och ligger i rutnät och listor, Kalkylator är verktyget på plats och står en gång i en artikel, där läsaren just fått veta vad talet betyder.
+
 ### 2.10 `Amnesrad.astro`
 
 Inga props. Bara på startsidan. Data: `PELARE`, `hubPublicerad(slug)` per pelare, samt `publicerade('guider')` och `publicerade('kunskap')` för antalet sidor. Ett `<nav aria-label="Ämnen">` med en `<ul>` i två spalter, fyra från `lg`: ett kort per pelare, alla åtta, i `PELARE`-ordning. Kortet är vänsterställt med `<Ikon namn={pelare.ikon} storlek={40} />` överst, en etikett i versaler, `PELARE.kort` i kortrubrik (Zilla Slab 600) och `PELARE.rad` i 14 px `blyerts-2`.
@@ -364,12 +374,15 @@ Alla konstanter ligger som namngivna konstanter överst i filen med kommentar om
 ### 3.3 `src/lib/kalkyl/register.ts`
 
 ```ts
-export interface Kalkylator { slug: string; namn: string; rad: string; sasong: [number, number] /* månad från, till, 1 till 12 */; kategori?: string }
+export interface Kalkylator { slug: string; namn: string; rad: string; sasong: [number, number] /* månad från, till, 1 till 12 */; kategori?: string; pelare?: string }
 export const KALKYLATORER: Kalkylator[] = [
-  { slug: 'avfuktare', namn: 'Hur stor avfuktare behöver du?', rad: 'Yta, takhöjd och fuktnivå ger liter per dygn, och maskinerna som klarar det.', sasong: [8, 11], kategori: 'luftavfuktare' },
+  { slug: 'daggpunkt', namn: 'Blir väggen våt? Räkna ut daggpunkten', rad: 'Temperatur, luftfuktighet och kallaste ytan ger kondensrisken.', sasong: [11, 2], pelare: 'fukt' },
+  { slug: 'avfuktare', namn: 'Hur stor avfuktare behöver du?', rad: 'Yta, takhöjd och fuktnivå ger liter per dygn, och maskinerna som klarar det.', sasong: [8, 11], kategori: 'luftavfuktare', pelare: 'fukt' },
 ];
 export function hittaKalkylator(slug: string): Kalkylator | undefined;
 ```
+
+`pelare` kom till 2026-09-17. Hubbens grupp Räkna (`Kortgrupp`) och `/amnen/` filtrerade fram till dess bara på `kategori`, och en kalkylator som inte pekar på en produktkategori kunde därför inte visas i något ämne. Båda läser nu `k.pelare === pelare` först och kategorin sedan. `rad` är högst tolv ord, den ska rymmas på två rader i ett kort. `npm run kontrollera` stoppar bygget om `pelare` eller `kategori` i registret pekar på något som inte finns.
 
 `sasong` är underlag för chefredaktörens val av `justNu`, inte något koden läser: `sasongensKalkylator` togs bort 2026-09-16 med startsidans säsongsblock. Fler kalkylatorer läggs till här och som `src/pages/rakna/[slug].astro`-filer. Sidfoten och `/rakna/` läser listan.
 
@@ -404,8 +417,10 @@ En innehållsfil importerar aldrig en komponent själv. Mallen skickar dem via `
 **Basuppsättningen** (allt utom affiliate):
 
 ```
-h2: Pennstreck, Faktaruta, Illustration, Varning, Verktygskort, Markering
+h2: Pennstreck, Faktaruta, Illustration, Varning, Verktygskort, Kalkylator, Markering
 ```
+
+`Kalkylator` kom till 2026-09-17 med daggpunktskalkylatorn och står i båda uppsättningarna. En artikel som förklarar ett tal får alltså bädda in verktyget som räknar ut det.
 
 **Produktuppsättningen** = basuppsättningen plus `Kopknapp`, `Produktkort`, `Jamforelsetabell`.
 
@@ -545,7 +560,22 @@ Strukturerad data: `produkt()` med `etikett`, och `brodsmulor` via layouten. Om 
 
 Statisk. Brödsmulor: Hantverkstips / Räkna själv. H1 "Räkna själv", ett stycke platshållare ("Kalkylatorerna räknar på riktiga produktdata. Resultatet är en marginal, inte ett exakt svar."), sedan en rad per post i `KALKYLATORER`: H2 (Pennstreck) som länk, `rad`. `reklam={false}`.
 
-### 4.7 `src/pages/rakna/avfuktare.astro`
+### 4.7 Kalkylatorsidorna under `/rakna/`
+
+Varje kalkylator är en egen sida med egen sökfras och resultatet i adressen. Mönstret nedan gäller alla; avvik bara med en anteckning om varför.
+
+**Ett nytt verktyg byggs i sex steg.** Ordningen är avsiktlig: formeln och testet först, utseendet sist.
+
+1. **Formeln.** `src/lib/kalkyl/[slug].ts`, ren modul utan importer från Astro. `STANDARD` med typiska värden, `GRANSER`, `tolkaQuery(q)` som fyller på med standard och tål decimalkomma, och `rakna[Slug](indata)` som ger `status: 'ok'` eller `'ogiltig'` med feltext per fält (avfuktaren har dessutom `'utanfor'`). Varje konstant ligger namngiven överst med en kommentar som säger källa eller ANTAGANDE. Räkningen sker aldrig i en `.astro`-fil.
+2. **Testet.** `scripts/test-kalkyl-[slug].mjs`, körs med `node --experimental-strip-types --test scripts/test-kalkyl-[slug].mjs`. Minst sex fall som täcker varje utfall formeln kan ge, plus `tolkaQuery` och gränserna. Talen jämförs mot en källa utanför koden: underlagets räkneexempel eller en tabell i en publicerad artikel. Skripten ligger inte i `package.json`; de körs direkt med node, som `scripts/tabell-dimensionering.ts`.
+3. **Formuläret.** `src/components/kalkyl/[Verktyg]Form.astro` med props `indata`, `varden` (talen som de skrevs i adressen), `fel`, `kompakt`, `idPrefix` och `knappText`, alla valfria. Klasserna kommer från `src/lib/kalkyl/stil.ts`, aldrig egna. Komponenten är det enda stället fälten står på.
+4. **Sidan.** `src/pages/rakna/[slug].astro`, `prerender = false`, `Astro.locals.sidtyp = 'verktyg'`, `Cache-Control` på alla svar, `bred={true}`, brödsmulor Hantverkstips / Räkna själv / {verktyget}. Sidan renderar formulärkomponenten, resultatet med det stora talet, en `<Faktaruta variant="kortsvar">` överst, H2 "Så räknar vi" med formeln i ord och tabellen där varje rad är märkt Källa eller Antagande med länk, och H2 "Läs vidare". Delbar länk i ett skrivskyddat fält, byggd av de tolkade värdena. Strukturerad data: bara brödsmulorna, som layouten skriver ut. Verktyget är inte en artikel.
+5. **Registret.** En rad i `src/lib/kalkyl/register.ts` med `slug`, `namn`, `rad` (högst tolv ord), `sasong` och `pelare` eller `kategori`. `/rakna/`, sidfoten, startsidan, `/amnen/` och hubbens grupp Räkna hämtar listan själva.
+6. **Inbäddningen.** Slugen läggs till i `MED_FORMULAR` i `src/components/ui/Kalkylator.astro`, och artikeln som förklarar talet får `<Kalkylator namn="[slug]" />` där läsaren just fått veta vad talet betyder. En kalkylator utan den raden går fortfarande att länka till med `<Verktygskort>`.
+
+Produkter visas bara när räkningen faktiskt pekar ut en produktegenskap. Gör den inte det, som daggpunkten, har sidan varken produktkort eller reklamband (`reklam={false}`), utan länkar vidare till kalkylatorn eller artikeln som tar vid.
+
+#### 4.7.1 `src/pages/rakna/avfuktare.astro`
 
 `export const prerender = false`. Motivering: formuläret skickas som GET till samma sida och beräkningen sker på servern, så sidan fungerar utan ett enda byte klient-JS och klarar prestandabudgeten på 0 kB. Alternativet, statisk sida med standardvärden, kan inte räkna på läsarens indata utan en React-ö. Kostnaden är en serverfunktion per anrop; den hålls nere med CDN-cache: `Astro.response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400')` på alla svar. Vercel cachar per fullständig URL inklusive query, och indatan är validerad till ett begränsat antal värden, så nyckelrymden är hanterbar. Produktdata kommer från `produkterIKategori('luftavfuktare')` med modulcachen i 3.1.
 
@@ -563,6 +593,34 @@ Markup:
 6. H2 "Läs vidare": länkar till `/luftavfuktare/`, `/fukt/avfuktare-kallare/`, `/fukt/sorptionsavfuktare/`.
 
 Desktop: kortet 44 rem brett, formulär till vänster och resultat till höger i två lika spalter, produkterna i rad om tre under. Strukturerad data: ingen utöver brödsmulor (kalkylatorn är ett verktyg, inte en artikel). `<title>` "Avfuktarkalkylator: hur stor avfuktare behöver du?", 50 tecken och därför utan suffix.
+
+Formuläret flyttades 2026-09-17 till `src/components/kalkyl/AvfuktareForm.astro` utan att något ändrades i utseende, fältnamn eller id. Sidan renderar `<AvfuktareForm indata={indata} varden={{ yta, takhojd }} fel={fel} />`, och `<Kalkylator namn="avfuktare" />` renderar samma komponent i kompakt form.
+
+#### 4.7.2 `src/pages/rakna/daggpunkt.astro` (byggd 2026-09-17)
+
+`export const prerender = false`, samma motivering och samma `Cache-Control` som avfuktarsidan. `Astro.locals.sidtyp = 'verktyg'`. `reklam={false}`: ingen produkt i databasen följer av räkningen, så sidan har varken produktkort eller reklamband. Brödsmulor: Hantverkstips / Räkna själv (`/rakna/`) / Daggpunktskalkylator. `bred={true}`.
+
+Formeln ligger i `src/lib/kalkyl/daggpunkt.ts`:
+
+```ts
+export interface DaggpunktIndata { luftTempC: number; rfProcent: number; ytTempC: number; arstid: 'vinter' | 'sommar'; rum: 'bostad' | 'kallare' | 'garage' }
+export const STANDARD = { luftTempC: 20, rfProcent: 50, ytTempC: 12, arstid: 'vinter', rum: 'bostad' };
+export const GRANSER = { luftTempC: [0, 40], rfProcent: [5, 100], ytTempC: [-20, 40] };
+export function daggpunkt(tempC: number, rfProcent: number): number;       // Magnus, grader
+export function mattnadsangtryck(tempC: number): number;                   // hPa
+export function temperaturForAngtryck(hPa: number): number;                // Magnus baklänges
+export function mattnadsanghalt(tempC: number): number;                    // g/m³
+export function raknaDaggpunkt(i: DaggpunktIndata): DaggpunktResultat;     // ok | ogiltig
+export function tolkaQuery(q: URLSearchParams): { indata: DaggpunktIndata; harIndata: boolean };
+```
+
+Query: `temp`, `rf`, `ytatemp`, `arstid`, `rum`. Resultatet bär daggpunkten, ånghalten i g/m³, luftfuktigheten vid den kalla ytan, marginalen i grader, bedömningen (`kondens`, `mogelrisk`, `ingen_risk`), de två vägarna under gränsen (`rfForGransenProcent` och `ytTempForGransenC`), åtgärderna i ordning, `visaAvfuktare` och `gorInteDetHar`.
+
+Bedömningen: ytan under daggpunkten ger kondens, luft över 75 procent RF vid ytan ger mögelrisk (Boverket, BBR 6:52), annars ingen risk. Rådet beror på årstid och rum. Vinter ger vädra och sänk fuktproduktionen, sommar i källare eller garage ger avfuktare och `visaAvfuktare`, som lägger in `<Verktygskort kalkylator="avfuktare" />` på sidan. En kall yta ger isolera eller värm ytan i alla lägen. `gorInteDetHar` är åtgärden som är fel i just det läget: avfuktare i ett sovrum i januari, vädring i en källare i augusti, kondensmaskin i ett kallt utrymme på vintern.
+
+Markup: H1 "Blir väggen våt? Räkna ut daggpunkten", ingress på tre meningar, `<Faktaruta variant="kortsvar">` med svaret, sedan formuläret och resultatet i två spalter på det linjerade papperet som avfuktarsidan. Det stora talet är daggpunkten i `text-siffra` med `<Markering>`. Under resultatet åtgärderna som en lista och "Gör inte det här" när det gäller. Sedan H2 "Vad daggpunkten är, och när kondens på vägg blir mögel" med tre typfall som H3 (sovrummet i januari, källaren i augusti, garaget), H2 "Så räknar vi" med sex steg och antagandetabellen, och H2 "Läs vidare" till `/fukt/luftfuktighet-inomhus/`, `/fukt/fukt-i-kallaren/` och `/fukt/sorptionsavfuktare/`.
+
+`<title>` "Daggpunktskalkylator, räkna ut när väggen blir våt", 50 tecken; med suffixet blir den 66 och layouten utelämnar det därför, precis som på avfuktarsidan. Formuläret är inbäddat i `/fukt/luftfuktighet-inomhus/` direkt efter daggpunktstabellerna.
 
 ### 4.8 `src/pages/om/index.astro` och `src/pages/om/[slug].astro`
 

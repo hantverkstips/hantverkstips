@@ -179,6 +179,17 @@ const kategorier = new Map(per('kategorier').map((f) => [f.id, f]));
 const forfattare = new Set(per('forfattare').map((f) => f.id));
 const kalkylatorer = new Set(KALKYLATORER.map((k) => k.slug));
 
+/* Registret pekar ut pelare och kategori i fritext. Fel slug där gör att
+   kalkylatorn tyst försvinner ur hubben och ur /amnen/, utan att något går sönder. */
+for (const k of KALKYLATORER) {
+  if (k.pelare !== undefined && !(PELARE_SLUGS as readonly string[]).includes(k.pelare)) {
+    felet('src/lib/kalkyl/register.ts', `kalkylatorn "${k.slug}" har pelare "${k.pelare}" som inte finns`);
+  }
+  if (k.kategori !== undefined && !kategorier.has(k.kategori)) {
+    felet('src/lib/kalkyl/register.ts', `kalkylatorn "${k.slug}" har kategori "${k.kategori}" som saknar fil`);
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Undermappar, slugs, pelare, kategori, författare, nivå, bild
 
@@ -256,6 +267,10 @@ for (const f of filer) {
   }
   for (const m of f.body.matchAll(/<Verktygskort\s+kalkylator="([^"]+)"/g)) {
     if (!kalkylatorer.has(m[1] ?? '')) felet(f.sokvag, `<Verktygskort kalkylator="${m[1]}"> finns inte i registret`);
+  }
+  // Inbäddat formulär. Samma register, annat attribut: <Kalkylator namn="daggpunkt" />.
+  for (const m of f.body.matchAll(/<Kalkylator\s+namn="([^"]+)"/g)) {
+    if (!kalkylatorer.has(m[1] ?? '')) felet(f.sokvag, `<Kalkylator namn="${m[1]}"> finns inte i registret`);
   }
 
   // Hubbens kortgrupper. Komponenten läser pelaren ur rutten och fungerar bara
