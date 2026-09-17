@@ -145,7 +145,7 @@ Underlagens förslag är i stort sett införda. Kontrollerat i filerna:
 
 Det som återstår:
 
-1. `src/content/guider/inomhus/bygga-innervagg.mdx`, sist i texten där sidan pekar vidare, enligt underlaget för slipa: "Nästa projekt i samma pelare som inte kräver en enda skruv är att [slipa och olja bänkskivan](/inomhus/slipa-bankskiva/)." Slipa har i dag bara huben som inlänk, planen säger minst två.
+1. `src/content/guider/inomhus/bygga-innervagg.mdx`, sist i texten där sidan pekar vidare, enligt underlaget för slipa: "Nästa projekt i samma pelare som inte kräver en enda skruv är att [slipa och olja bänkskivan](/kok/slipa-bankskiva/)." Slipa har i dag bara huben som inlänk, planen säger minst två.
 2. `src/content/tester/luftavfuktare/woods-sw39fw.mdx`, rad 157, stycket om EvoDry under "Mot de tre den ska jämföras med", lägg sist: "Hela genomgången står i [granskningen av Acetec EvoDry 6H 2.0](/tester/acetec-evodry-6h-2/)." Stycket nämner maskinen utan att länka till dess sida, bara till sorptionssidan.
 3. `src/content/kunskap/fukt/sorptionsavfuktare.mdx` rad 121, 138, 238 och `src/content/guider/fukt/avfuktare-kallare.mdx` rad 159, 189: ändringarna i punkt 3.2 och 3.3 ovan. Inte inlänkar, men samma koordinatorärende.
 4. `src/content/pelare/altan.mdx` (utkast) och `src/content/guider/altan/trallskruv.mdx` (kommande): länken till bygglov-altan i Kort svar respektive första avsnittet, enligt underlaget avsnitt 8. Noteras här så att den inte glöms i februari.

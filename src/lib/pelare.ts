@@ -1,91 +1,124 @@
 import type { IkonNamn } from '../components/ui/Ikon.astro';
 
 /**
- * Register över pelare (ämnesområden). Enda källan för slug och namn.
- * content.config.ts bygger sitt enum härifrån, layouten bygger meny och sidfot härifrån.
- * Ordningen är den som visas i huvudmenyn, i ämnesraden på startsidan och i sidfoten.
- * Se docs/INNEHALLSARKITEKTUR.md avsnitt 1 och 4.
+ * Register över pelare (ämnesområden). Enda källan för slug, namn och ordning.
+ * content.config.ts bygger sitt enum härifrån, layouten bygger sidhuvudets
+ * ämnesrad och sidfoten härifrån, startsidan och /amnen/ sina kort.
  *
- * rad är kortets enda mening i ämnesraden (Amnesrad.astro), högst åtta ord.
- * Chefredaktören skriver den och äger ordvalet.
+ * Strukturen gjordes om 2026-09-17 efter Christians krav: kategorierna ska
+ * täcka en fastighet från tak till grund, både utsida och insida, och vara
+ * byggda för det vi fyller på framåt, inte för det som råkar finnas i dag.
+ * Tre grupper, i den ordning de visas:
+ *   ute    tak, fasad, altan, grund       (uppifrån och ner)
+ *   inne   väggar, golv, kök och bad
+ *   huset  tvärgående ämnen: fukt, el och energi, verktyg
  *
- * En pelare i registret har inte automatiskt en sida. Hubsidan /[pelare]/ finns bara
- * när det finns en fil i src/content/pelare/ med samma slug som inte är utkast, och
- * bara publicerade hubbar hamnar i menyn.
- *
- * Inomhus lades till 2026-09-16 (docs/SOKORDSANALYS.md avsnitt 5) med en egen
- * skruvikon i spriten.
+ * rad är kortets enda mening i ämnesraden och på /amnen/, högst åtta ord.
+ * En pelare i registret har inte automatiskt en sida. Hubsidan /[pelare]/ finns
+ * bara när det finns en fil i src/content/pelare/ med samma slug som inte är
+ * utkast. Slugen är permanent, den står i varje artikeladress; namnet får ändras.
  */
+export const PELAREGRUPPER = [
+  { slug: 'ute', namn: 'Utsidan', rad: 'Från taknocken ner till grunden.' },
+  { slug: 'inne', namn: 'Insidan', rad: 'Väggar, golv, kök och badrum.' },
+  { slug: 'huset', namn: 'Hela huset', rad: 'Det som går genom alla rum.' },
+] as const;
+
+export type PelareGrupp = (typeof PELAREGRUPPER)[number]['slug'];
+
 export const PELARE = [
+  {
+    slug: 'tak',
+    namn: 'Tak och vind',
+    kort: 'Tak',
+    ikon: 'tak',
+    grupp: 'ute',
+    rad: 'Yttertak, hängrännor, vind och läckor.',
+  },
+  {
+    slug: 'fasad',
+    namn: 'Fasad, fönster och dörrar',
+    kort: 'Fasad',
+    ikon: 'fasad',
+    grupp: 'ute',
+    rad: 'Panel, puts, fönster, dörrar och drevning.',
+  },
+  {
+    slug: 'altan',
+    namn: 'Altan och trädgård',
+    kort: 'Altan',
+    ikon: 'altan',
+    grupp: 'ute',
+    rad: 'Altan, trädäck, staket och bygglov.',
+  },
+  {
+    slug: 'grund',
+    namn: 'Grund och dränering',
+    kort: 'Grund',
+    ikon: 'grund',
+    grupp: 'ute',
+    rad: 'Krypgrund, källarvägg, dränering och sättningar.',
+  },
+  {
+    slug: 'inomhus',
+    namn: 'Väggar och innertak',
+    kort: 'Väggar',
+    ikon: 'inomhus',
+    grupp: 'inne',
+    rad: 'Reglar, gips, infästning och målning inne.',
+  },
+  {
+    slug: 'golv',
+    namn: 'Golv och trappor',
+    kort: 'Golv',
+    ikon: 'golv',
+    grupp: 'inne',
+    rad: 'Trägolv, klinker, laminat och trappor.',
+  },
+  {
+    slug: 'kok',
+    namn: 'Kök och badrum',
+    kort: 'Kök och bad',
+    ikon: 'kok',
+    grupp: 'inne',
+    rad: 'Bänkskivor, våtrum, kakel och vitvaror.',
+  },
   {
     slug: 'fukt',
     namn: 'Fukt och inomhusklimat',
     kort: 'Fukt',
     ikon: 'fukt',
-    rad: 'Hitta varifrån vattnet kommer innan du köper något.',
+    grupp: 'huset',
+    rad: 'Luftfuktighet, avfuktare, mögel och ventilation.',
   },
   {
-    slug: 'inomhus',
-    namn: 'Inomhus och montering',
-    kort: 'Inomhus',
-    ikon: 'inomhus',
-    rad: 'Rätt skruv och plugg för varje vägg.',
-  },
-  {
-    slug: 'altan',
-    namn: 'Altan och uteplats',
-    kort: 'Altan',
-    ikon: 'altan',
-    rad: 'Bygg ett trädäck som håller i tjugo år.',
-  },
-  {
-    slug: 'tak',
-    namn: 'Tak',
-    kort: 'Tak',
-    ikon: 'tak',
-    rad: 'Hitta läckan, och veta när taket ska bytas.',
-  },
-  {
-    slug: 'grund',
-    namn: 'Grund och källare',
-    kort: 'Grund',
-    ikon: 'grund',
-    rad: 'Krypgrund och källarvägg utan fukt och sättningar.',
-  },
-  {
-    slug: 'isolering',
-    namn: 'Isolering och energi',
-    kort: 'Isolering',
-    ikon: 'isolering',
-    rad: 'Isolera rätt och sänk elräkningen utan mögel.',
+    slug: 'el',
+    namn: 'El, värme och energi',
+    kort: 'El och energi',
+    ikon: 'el',
+    grupp: 'huset',
+    rad: 'Vad du får göra själv, värme och isolering.',
   },
   {
     slug: 'verktyg',
     namn: 'Verktyg och maskiner',
     kort: 'Verktyg',
     ikon: 'verktyg',
-    rad: 'Testade maskiner, med egna mätningar och ärliga nackdelar.',
+    grupp: 'huset',
+    rad: 'Granskade maskiner, med ärliga nackdelar.',
   },
-  {
-    slug: 'el',
-    namn: 'El och säkerhet',
-    kort: 'El',
-    ikon: 'el',
-    rad: 'Det en lekman får göra själv, och inte.',
-  },
-] as const satisfies readonly { slug: string; namn: string; kort: string; ikon: IkonNamn; rad: string }[];
+] as const satisfies readonly {
+  slug: string;
+  namn: string;
+  kort: string;
+  ikon: IkonNamn;
+  grupp: PelareGrupp;
+  rad: string;
+}[];
 
 export type PelareSlug = (typeof PELARE)[number]['slug'];
 
 export const PELARE_SLUGS = PELARE.map((p) => p.slug) as [PelareSlug, ...PelareSlug[]];
-
-/**
- * Högst så många hubbar i huvudmenyn, före Ämnen, Guider, Räkna själv och
- * Så testar vi. Sänkt från fem till tre 2026-09-16: med två nya poster i menyn
- * blev sju det som får plats vid 1024 px, och resten av pelarna finns under
- * Ämnen. Se docs/DESIGN.md avsnitt 5 och designbriefen avsnitt 7.
- */
-export const MAX_HUBBAR_I_MENY = 3;
 
 /**
  * Sökvägar i roten som varken en pelare eller en kategori får använda.
@@ -115,4 +148,8 @@ export function hittaPelare(slug: string) {
 
 export function arPelare(slug: string): slug is PelareSlug {
   return PELARE.some((p) => p.slug === slug);
+}
+
+export function hittaGrupp(slug: PelareGrupp) {
+  return PELAREGRUPPER.find((g) => g.slug === slug)!;
 }

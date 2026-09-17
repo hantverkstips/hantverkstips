@@ -249,6 +249,8 @@ Illustrationen renderas som `<img>` med width och height ur filen, `fetchpriorit
 
 ### 5.2 Pelarhub
 
+**Omgjort 2026-09-17.** Hubben är ett galleri som mallen bygger, utan handskriven text. Skälet är Christians läsning av `/inomhus/`: specifik information om tavlor och skruvar hör hemma i artiklarna, hubben ska säga "här listar vi" och visa korten. Hubfilen bär bara frontmatter (title, description, ingress). Mallen `PelarHub.astro` visar gruppetiketten (Utsidan, Insidan, Hela huset), ikon, H1, ingress, antal sidor med länk till `/guider/[pelare]/`, och därefter de fyra grupperna Hitta felet, Välj rätt, Gör det själv och Räkna, var och en med en generell rad som aldrig nämner en enskild sida, produkt eller ett tal, följd av kortrutnätet. En tom grupp visas inte. Registret per nivå längst ner är borttaget, `/guider/[pelare]/` fyller den funktionen. Sidhuvudet beskrivs i INNEHALLSARKITEKTUR.md avsnitt 4.
+
 URL `/fukt/`. Huben är diagnosstart och länknav, handskriven av chefredaktören, inte en automatisk lista. Inga köpknappar, inget reklamband.
 
 ```

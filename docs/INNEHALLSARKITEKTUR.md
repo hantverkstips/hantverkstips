@@ -6,6 +6,23 @@ Volymerna i avsnitt 2 och 8 kommer från Google Ads (`docs/data/keyword-stats-20
 
 ## 1. Ämnesområden
 
+**Omgjort 2026-09-17.** Christian: kategorierna ska stödja en fastighet från tak till grund, både utsida och insida, och vara byggda för det vi fyller på framåt. Registret i `src/lib/pelare.ts` har därför tio pelare i tre grupper, i den ordning de visas överallt:
+
+| Grupp | Slug | Namn | Innehåll |
+|---|---|---|---|
+| Utsidan | `tak` | Tak och vind | yttertak, hängrännor, takfönster, vind, läckor |
+| Utsidan | `fasad` | Fasad, fönster och dörrar | panel, puts, fönster, ytterdörrar, drevning, målning ute |
+| Utsidan | `altan` | Altan och trädgård | altan, trädäck, staket, plank, bygglov |
+| Utsidan | `grund` | Grund och dränering | krypgrund, källarvägg, dränering, sättningar |
+| Insidan | `inomhus` | Väggar och innertak | reglar, gips, infästning, innertak, målning inne |
+| Insidan | `golv` | Golv och trappor | trägolv, klinker, laminat, trappor |
+| Insidan | `kok` | Kök och badrum | bänkskivor, våtrum, kakel, vitvaror |
+| Hela huset | `fukt` | Fukt och inomhusklimat | luftfuktighet, avfuktare, mögel, ventilation |
+| Hela huset | `el` | El, värme och energi | el, värme, isolering, energi |
+| Hela huset | `verktyg` | Verktyg och maskiner | granskningar, jämförelser, bäst i test |
+
+Slugen `inomhus` behölls för väggarna eftersom den står i publicerade adresser; namnet ändrades. Pelaren `isolering` gick upp i `el`. Två artiklar flyttade med permanenta omdirigeringar i `astro.config.mjs`: dreva fönster till `fasad`, slipa bänkskiva till `kok`. Hubbarna är gallerier utan handskriven text (avsnitt 5 i DESIGN.md); en hub publiceras så snart den har en sida. Beskrivningarna av klustren nedan gäller fortfarande, men under de nya pelarnamnen.
+
 Briefens sju områden håller, plus en åttonde pelare från 2026-09-16, med tre justeringar. "Grund och källare" överlappar "Fukt" nästan helt i hur folk söker ("fukt i källaren", "avfuktare krypgrund", "dränera hus"), så Fukt äger allt som handlar om symptom, mätning och avfuktning, medan Grund äger byggnadsåtgärderna (dränering, isolering av krypgrund, platta). Grund startar när Fukt har sju sidor (lättat från tio 2026-09-16, eftersom avfuktarklustret krympte till sju sidor); första sidan är `/grund/isolera-krypgrund/`. Den andra justeringen är att luftavfuktare och byggfläktar inte är "verktyg" i en husägares huvud, de är inomhusklimat. Produktkategorierna får därför egna adresser i roten (avsnitt 3) och hör hemma i flera pelare samtidigt. Den tredje är att sajten riktar sig lika mycket till fackmän som till hemmafixare (Christians besked 2026-09-16). Målgrupp är inte ett ämne, så pelarna delas inte; i stället har varje artikel en nivå, `enkel`, `mellan` eller `expert`, som visas som etikett i artikelhuvudet ("Kunskap · Expert") och grupperar hubsidans lista. Nivån sätts i briefen av SEO-strategen och chefredaktören tillsammans.
 
 | Pelare | Prefix | Omfattar |
@@ -140,6 +157,8 @@ Beslut och motiv:
 Silorisken hanteras med länkar, inte adresser. En pelare är en ordning för läsaren och för brödsmulorna, inte en gräns för var en länk får gå. Reglerna i avsnitt 6 tvingar fram korslänkning mellan pelare och produktlager.
 
 ## 4. Navigation
+
+**Omgjort 2026-09-17.** Sidhuvudet har två rader. Övre raden: ordmärket och de fasta sidorna Guider, Räkna själv, Om oss, Kontakt. Undre raden, ämnesraden: alla publicerade pelare i registrets ordning med ikon, och sist Alla ämnen. På mobil ligger allt i en meny grupperad Utsidan, Insidan, Hela huset, sedan Alla ämnen och de fasta sidorna. Ingen gräns på antal hubbar i menyn längre; raden scrollar i sidled om den blir bredare än skärmen. Så testar vi ligger i sidfoten och under Om oss.
 
 Mobil först. Menyn öppnas med `<details>`, ingen JavaScript, 48 px per rad.
 

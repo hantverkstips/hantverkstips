@@ -1,6 +1,6 @@
 # Underlag, dreva fönster
 
-Skrivet 2026-09-16 av skribenten (sökanalys, faktaunderlag och illustrationsbeställning i en fil). Sida 16 i startlistan. URL `/inomhus/dreva-fonster/`, projektguide, pelare inomhus, nivå enkel, ingen säsong. Huvudfras "dreva fönster", 320 per månad. Sekundära fraser: "drev fönster", "dreva fönster mineralull eller drevremsa", "tätt inne öppet ute", "fogskum fönster".
+Skrivet 2026-09-16 av skribenten (sökanalys, faktaunderlag och illustrationsbeställning i en fil). Sida 16 i startlistan. URL `/fasad/dreva-fonster/`, projektguide, pelare inomhus, nivå enkel, ingen säsong. Huvudfras "dreva fönster", 320 per månad. Sekundära fraser: "drev fönster", "dreva fönster mineralull eller drevremsa", "tätt inne öppet ute", "fogskum fönster".
 
 Sidan äger drevningen av fönster och dörrar, alltså isoleringen och tätningen i spalten mellan karm och vägg. Själva fönstermontaget (kilar, karmskruv, lod och våg) nämns bara så mycket som drevningen kräver; en egen sida om att montera fönster får skrivas när volymen motiverar det.
 
@@ -148,8 +148,8 @@ Ut från sidan, minst tre:
 
 In till sidan inom en vecka, minst två (förslag med exakt fil och mening):
 
-- `src/content/guider/inomhus/bygga-innervagg.mdx`, rad 139, efter "Ett drev som är för tjockt trycker karmen ur lod när det expanderar.": "Hur spalten drevas och tätas står i [dreva fönster och dörrar, tätt inne och öppet ute](/inomhus/dreva-fonster/)."
-- `src/content/kunskap/fukt/luftfuktighet-inomhus.mdx`, rad 110, efter meningen om det gamla fönstret som immar: "Drar det däremot kallt runt karmen på ett nytt fönster är det drevningen, se [dreva fönster](/inomhus/dreva-fonster/)."
+- `src/content/guider/inomhus/bygga-innervagg.mdx`, rad 139, efter "Ett drev som är för tjockt trycker karmen ur lod när det expanderar.": "Hur spalten drevas och tätas står i [dreva fönster och dörrar, tätt inne och öppet ute](/fasad/dreva-fonster/)."
+- `src/content/kunskap/fukt/luftfuktighet-inomhus.mdx`, rad 110, efter meningen om det gamla fönstret som immar: "Drar det däremot kallt runt karmen på ett nytt fönster är det drevningen, se [dreva fönster](/fasad/dreva-fonster/)."
 - `src/content/pelare/inomhus.mdx` under "Gör det själv" när huben listar projektguider.
 
 ## 8. Metadata

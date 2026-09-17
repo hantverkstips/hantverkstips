@@ -1,32 +1,26 @@
 ---
 /**
- * Pelarhub. Diagnosstart och länknav: chefredaktörens text är kartans
- * förklaring, korten är kartan. Inga köpknappar, inget reklamband.
+ * Pelarhub, sedan 2026-09-17 ett galleri utan handskriven text. Rubrik och
+ * ingress kommer från hubfilen, allt annat bygger mallen av artiklarnas
+ * frontmatter i fyra fasta grupper: Hitta felet, Välj rätt, Gör det själv och
+ * Räkna. Varje grupp har en generell rad som säger vad som listas, aldrig
+ * specifik information om ett enskilt ämne; den hör hemma i artiklarna.
  *
- * Grupperna kommer från innehållsfilen, som skriver sin mening under varje H2
- * och sedan <Kortgrupp grupp="hitta-felet" />. Komponenten läser pelaren från
- * Astro.locals.pelare, som rutten sätter och som vyn sätter igen här för att
- * hubben ska fungera även om den renderas från en annan rutt.
- *
- * Listan "Alla sidor i ..." ligger kvar sist som säkerheten mot föräldralösa
- * sidor, i tre spalter grupperade på nivå. Det är hubbens filter utan
- * JavaScript: tre listor i HTML, inget dragspel, inga flikar.
+ * Skälet (Christian 2026-09-17): hubben ska stödja hur vi fyller på framåt,
+ * inte spegla de tre sidor som råkar finnas i dag. En grupp utan sidor visas
+ * inte alls. Inga köpknappar, inget reklamband.
  */
-import { render, type CollectionEntry } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 import Bas from '../../layouts/Bas.astro';
-import { artikelUrl, pelareUrl, publicerade, typEtikett } from '../../lib/innehall';
-import { NIVAER, nivaEtikett } from '../../lib/niva';
-import { hittaPelare, type PelareSlug } from '../../lib/pelare';
+import { pelareUrl, publicerade } from '../../lib/innehall';
+import { KALKYLATORER } from '../../lib/kalkyl/register';
+import { pelareForKategori } from '../../lib/kort';
+import { hittaGrupp, hittaPelare, type PelareSlug } from '../../lib/pelare';
 import { artikel as artikelData } from '../../lib/strukturdata';
-import Faktaruta from '../ui/Faktaruta.astro';
 import Ikon from '../ui/Ikon.astro';
-import Illustration from '../ui/Illustration.astro';
 import Kortgrupp from '../ui/Kortgrupp.astro';
-import Markering from '../ui/Markering.astro';
 import Pennstreck from '../ui/Pennstreck.astro';
 import StrukturData from '../ui/StrukturData.astro';
-import Varning from '../ui/Varning.astro';
-import Verktygskort from '../ui/Verktygskort.astro';
 
 interface Props {
   entry: CollectionEntry<'pelare'>;
@@ -34,28 +28,66 @@ interface Props {
 
 const { entry } = Astro.props;
 const d = entry.data;
-const pelare = hittaPelare(entry.id);
+const slug = entry.id as PelareSlug;
+const pelare = hittaPelare(slug);
 const kort = pelare?.kort ?? d.title;
+const grupp = pelare ? hittaGrupp(pelare.grupp) : undefined;
 
-// Kortgrupp står i innehållsfilen och kan inte få pelaren som prop därifrån.
-Astro.locals.pelare = entry.id as PelareSlug;
+// Kortgrupp läser pelaren härifrån.
+Astro.locals.pelare = slug;
 
-const { Content } = await render(entry);
+/**
+ * Grupperna och deras generella rader. Raden får nämna ämnet (kort) men aldrig
+ * en enskild sida, en produkt eller ett tal.
+ */
+const artiklar = [...(await publicerade('guider')), ...(await publicerade('kunskap'))].filter(
+  (e) => e.data.pelare === slug,
+);
+const kategorier = (await publicerade('kategorier')).filter((k) =>
+  (k.data.pelare as readonly string[]).includes(slug),
+);
+const jamforelser = (
+  await Promise.all(
+    (await publicerade('jamforelser')).map(async (e) => ({ e, p: await pelareForKategori(e.data.kategori) })),
+  )
+).filter((j) => j.p === slug);
+const kalkylatorer = KALKYLATORER.filter((k) => k.kategori && kategorier.some((x) => x.id === k.kategori));
 
-const sidor = [...(await publicerade('guider')), ...(await publicerade('kunskap'))]
-  .filter((e) => e.data.pelare === entry.id)
-  .sort((a, b) => a.data.title.localeCompare(b.data.title, 'sv'));
+const antal = {
+  'hitta-felet': artiklar.filter((e) => e.data.typ === 'problemguide' || e.data.typ === 'kunskap').length,
+  'valj-ratt': artiklar.filter((e) => e.data.typ === 'kopguide').length + kategorier.length + jamforelser.length,
+  'gor-det-sjalv': artiklar.filter((e) => e.data.typ === 'projektguide').length,
+  rakna: kalkylatorer.length,
+} as const;
 
-const grupper = NIVAER.map((niva) => ({
-  niva,
-  etikett: nivaEtikett(niva),
-  sidor: sidor.filter((s) => s.data.niva === niva),
-})).filter((g) => g.sidor.length > 0);
+const GRUPPER = [
+  {
+    id: 'hitta-felet',
+    rubrik: 'Hitta felet',
+    rad: `Här listar vi guiderna som hjälper dig hitta orsaken innan du lagar eller köper något inom ${(pelare?.namn ?? kort).toLowerCase()}.`,
+  },
+  {
+    id: 'valj-ratt',
+    rubrik: 'Välj rätt',
+    rad: 'Här samlar vi köpguider, jämförelser och bäst i test, alltid med nackdelarna utskrivna.',
+  },
+  {
+    id: 'gor-det-sjalv',
+    rubrik: 'Gör det själv',
+    rad: 'Här ligger projektguiderna, steg för steg, med måtten du behöver innan du börjar.',
+  },
+  {
+    id: 'rakna',
+    rubrik: 'Räkna',
+    rad: 'Här finns kalkylatorerna som gör räkningen åt dig, med antagandena utskrivna.',
+  },
+] as const;
 
-// Huben har inget publiceringsdatum i frontmatter. Byggtidpunkten får inte bli
-// datum, den ändras vid varje bygge, så fältet utelämnas hellre.
+const synliga = GRUPPER.filter((g) => antal[g.id] > 0);
+const totalt = artiklar.length + jamforelser.length;
+
 const strukturdata = artikelData({
-  url: pelareUrl(entry.id),
+  url: pelareUrl(slug),
   titel: d.title,
   beskrivning: d.description,
   uppdaterad: d.uppdaterad,
@@ -72,80 +104,46 @@ const strukturdata = artikelData({
 >
   <StrukturData slot="head" data={strukturdata} />
 
-  {/* Rubrikblocket och den handskrivna inledningen hålls i läsbredd, rutnäten
-      går ut i sidbredd. */}
   <div class="max-w-lasbredd">
-    <div class="flex items-start gap-3">
+    {grupp && <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">{grupp.namn}</p>}
+    <div class="mt-2 flex items-start gap-3">
       {pelare && <Ikon namn={pelare.ikon} storlek={32} class="mt-1 text-blyerts" />}
       <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">{d.title}</h1>
     </div>
     <p class="m-0 mt-4 text-ingress lg:text-ingress-lg text-blyerts-2">{d.ingress}</p>
-  </div>
-
-  {/* Brödtexten är läsbredd, men Kortgrupp bryter ut till sidbredd själv genom
-      att stå i en behållare utan maxbredd. Därför sätts maxbredden på styckena
-      i .prosa i stället för på hela blocket. */}
-  <div class="prosa hub-prosa mt-8">
-    <Content
-      components={{ h2: Pennstreck, Faktaruta, Varning, Verktygskort, Markering, Illustration, Kortgrupp }}
-    />
+    {
+      totalt > 0 && (
+        <p class="m-0 mt-3 text-liten text-blyerts-2">
+          {totalt === 1 ? '1 sida' : `${totalt} sidor`} ·{' '}
+          <a href={`/guider/${slug}/`} class="text-penna underline decoration-1 underline-offset-2 hover:decoration-2">
+            Alla guider om {(pelare?.namn ?? kort).toLowerCase()}
+          </a>
+        </p>
+      )
+    }
   </div>
 
   {
-    grupper.length > 0 && (
-      <section>
-        <div class="flex flex-wrap items-baseline justify-between gap-x-6">
-          <Pennstreck id="alla-sidor">Alla sidor i {kort}</Pennstreck>
-          <a
-            href={`/guider/${entry.id}/`}
-            class="huvudmeny inline-flex min-h-11 items-center text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
-          >
-            Alla guider i {kort}
-          </a>
-        </div>
-        <div class="grid grid-cols-1 gap-x-12 lg:grid-cols-3">
-          {grupper.map((g) => (
-            <div>
-              <Pennstreck niva={3} id={`niva-${g.niva}`}>
-                {g.etikett}
-              </Pennstreck>
-              <ul class="m-0 list-none p-0">
-                {g.sidor.map((s) => (
-                  <li class="border-t border-linje py-2">
-                    <p class="m-0 text-etikett uppercase text-blyerts">
-                      {typEtikett(s.data.typ)} · {g.etikett}
-                    </p>
-                    <a
-                      href={artikelUrl(s)}
-                      class="inline-flex min-h-11 items-center text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
-                    >
-                      {s.data.title}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </section>
+    synliga.length === 0 && (
+      <p class="mt-8 max-w-lasbredd text-brod lg:text-brod-lg text-blyerts-2">
+        Här finns inga guider än. De första kommer inom kort, och tills dess hittar du allt vi publicerat under{' '}
+        <a href="/guider/" class="text-penna underline decoration-1 underline-offset-2 hover:decoration-2">
+          alla guider och tester
+        </a>
+        .
+      </p>
     )
   }
-</Bas>
 
-<style>
-  /* Chefredaktörens text är en läsyta, korten är en karta. Texten hålls därför
-     till 44 rem även när sidan är i sidbredd, medan rutnäten fyller bredden. */
-  .hub-prosa :global(> p),
-  .hub-prosa :global(> ul),
-  .hub-prosa :global(> ol),
-  .hub-prosa :global(> h2),
-  .hub-prosa :global(> h3),
-  .hub-prosa :global(> blockquote) {
-    max-width: var(--container-lasbredd);
+  {
+    synliga.map((g) => (
+      <section class="mt-10 lg:mt-14">
+        <div class="max-w-lasbredd">
+          <Pennstreck id={g.id}>{g.rubrik}</Pennstreck>
+          <p class="m-0 text-brod lg:text-brod-lg text-blyerts-2">{g.rad}</p>
+        </div>
+        <Kortgrupp grupp={g.id} />
+      </section>
+    ))
   }
-  /* Kortgruppernas rutnät är en <ul> men ingen lista i löptext: den fyller
-     sidbredden. */
-  .hub-prosa :global(> ul.kortrutnat) {
-    max-width: none;
-  }
-</style>
+</Bas>

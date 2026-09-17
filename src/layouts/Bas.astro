@@ -11,7 +11,7 @@ import ikoner from '../assets/brand/riktning-1/ikoner.svg?raw';
 import ordmarke from '../assets/brand/riktning-1/ordmarke-inline.svg?raw';
 import { kategoriUrl, pelareUrl, publicerade, type Brodsmula } from '../lib/innehall';
 import { KALKYLATORER } from '../lib/kalkyl/register';
-import { MAX_HUBBAR_I_MENY, PELARE } from '../lib/pelare';
+import { PELARE, PELAREGRUPPER } from '../lib/pelare';
 import { brodsmulor as brodsmulorData } from '../lib/strukturdata';
 import Brodsmulor from '../components/ui/Brodsmulor.astro';
 import Ikon, { type IkonNamn } from '../components/ui/Ikon.astro';
@@ -97,39 +97,33 @@ const publiceradeHubbar = PELARE.flatMap((p) => {
 });
 
 /**
- * Huvudmenyn byggs av de publicerade hubbarna i PELARE-ordning, högst
- * MAX_HUBBAR_I_MENY stycken, följda av Ämnen, Guider, Räkna själv och Så testar
- * vi. En pelare kommer alltså in i menyn genom att dess hub får utkast: false,
- * inte genom en ändring här; pelare utanför de tre finns under Ämnen.
- * Se docs/INNEHALLSARKITEKTUR.md avsnitt 4 och docs/DESIGN.md avsnitt 5.
+ * Sidhuvudet, omgjort 2026-09-17 efter Christians krav: bättre kategorier,
+ * Om oss och Kontakt. Två rader. Övre raden bär ordmärket och sajtens
+ * fasta sidor: Guider, Räkna själv, Om oss, Kontakt. Undre raden är
+ * ämnesraden: alla publicerade pelare i PELARE-ordning (tak till grund, ute
+ * före inne, sedan hela huset) med ikon, och sist Alla ämnen. En pelare kommer
+ * in i raden genom att dess hub får utkast: false, aldrig genom en ändring här.
+ * Mobilen har allt i en meny bakom Meny-knappen, grupperat som ämnesraden.
  */
 interface Menypost {
   namn: string;
   href: string;
   ikon: IkonNamn | null;
 }
-const MENYHUBBAR: Menypost[] = publiceradeHubbar
-  .slice(0, MAX_HUBBAR_I_MENY)
-  .map((p) => ({ namn: p.kort, href: pelareUrl(p.slug), ikon: p.ikon }));
-
-const HUVUDMENY: Menypost[] = [
-  ...MENYHUBBAR,
-  { namn: 'Ämnen', href: '/amnen/', ikon: null },
+const FASTA: Menypost[] = [
   { namn: 'Guider', href: '/guider/', ikon: null },
   { namn: 'Räkna själv', href: '/rakna/', ikon: 'kalkylator' },
-  { namn: 'Så testar vi', href: '/om/sa-testar-vi/', ikon: null },
+  { namn: 'Om oss', href: '/om/', ikon: null },
+  { namn: 'Kontakt', href: '/om/kontakt/', ikon: null },
 ];
-
-/** Mobilmenyn har längre namn än desktopmenyn, som ska få plats i en rad. */
-const MOBIL_AMNEN: Menypost[] = [...MENYHUBBAR, { namn: 'Alla ämnen', href: '/amnen/', ikon: null }];
-const MOBIL_VERKTYG: Menypost[] = [
-  { namn: 'Guider och tester', href: '/guider/', ikon: null },
-  { namn: 'Räkna själv', href: '/rakna/', ikon: 'kalkylator' },
-];
-const MOBIL_OM: Menypost[] = [
-  { namn: 'Så testar vi', href: '/om/sa-testar-vi/', ikon: null },
-  { namn: 'Om Hantverkstips', href: '/om/', ikon: null },
-];
+const AMNESRAD: Menypost[] = publiceradeHubbar.map((p) => ({ namn: p.kort, href: pelareUrl(p.slug), ikon: p.ikon }));
+/** Mobilmenyn grupperar ämnena som ämnesraden på startsidan. */
+const MOBIL_GRUPPER = PELAREGRUPPER.map((g) => ({
+  namn: g.namn,
+  poster: publiceradeHubbar
+    .filter((p) => PELARE.find((x) => x.slug === p.slug)?.grupp === g.slug)
+    .map((p) => ({ namn: p.namn, href: pelareUrl(p.slug), ikon: p.ikon }) as Menypost),
+})).filter((g) => g.poster.length > 0);
 
 const OM_SAJTEN = [
   { namn: 'Om oss', href: '/om/' },
@@ -140,7 +134,6 @@ const OM_SAJTEN = [
   { namn: 'Integritet', href: '/om/integritet/' },
 ];
 
-const menyKategorier = kategorier.slice(0, 4);
 const ar = new Date().getFullYear();
 const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:decoration-2';
 ---
@@ -199,9 +192,9 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
           <Fragment set:html={ordmarke} />
         </a>
 
-        <nav aria-label="Huvudmeny" class="huvudmeny hidden lg:flex items-center gap-6">
+        <nav aria-label="Sajtens sidor" class="huvudmeny hidden lg:flex items-center gap-6">
           {
-            HUVUDMENY.map((m) => (
+            FASTA.map((m) => (
               <a href={m.href} class="text-blyerts no-underline hover:underline hover:decoration-penna">
                 {m.namn}
               </a>
@@ -215,56 +208,36 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
             Meny
           </summary>
           <div
-            class="absolute left-0 right-0 top-full z-50 border-b border-linje bg-papper shadow-lyft px-4 sm:px-6"
+            class="absolute left-0 right-0 top-full z-50 border-b border-linje bg-papper shadow-lyft px-4 sm:px-6 pb-2"
           >
-            <ul class="m-0 p-0 list-none">
-              {
-                MOBIL_AMNEN.map((m) => (
-                  <li class="border-b border-linje">
-                    <a href={m.href} class="flex h-12 items-center gap-3 text-blyerts no-underline">
-                      {m.ikon && <Ikon namn={m.ikon} storlek={24} />}
-                      {m.namn}
-                    </a>
-                  </li>
-                ))
-              }
-            </ul>
-
-            <ul class="m-0 p-0 list-none">
-              {
-                MOBIL_VERKTYG.map((m) => (
-                  <li class="border-b border-linje">
-                    <a href={m.href} class="flex h-12 items-center gap-3 text-blyerts no-underline">
-                      {m.ikon && <Ikon namn={m.ikon} storlek={24} />}
-                      {m.namn}
-                    </a>
-                  </li>
-                ))
-              }
-            </ul>
-
             {
-              menyKategorier.length > 0 && (
+              MOBIL_GRUPPER.map((g) => (
                 <>
-                  <p class="m-0 pt-3 text-etikett uppercase text-blyerts-2">Bäst i test</p>
+                  <p class="m-0 pt-3 text-etikett uppercase text-blyerts-2">{g.namn}</p>
                   <ul class="m-0 p-0 list-none">
-                    {menyKategorier.map((k) => (
+                    {g.poster.map((m) => (
                       <li class="border-b border-linje">
-                        <a href={kategoriUrl(k.id)} class="flex h-12 items-center text-blyerts no-underline">
-                          {k.data.namn}
+                        <a href={m.href} class="flex h-12 items-center gap-3 text-blyerts no-underline">
+                          {m.ikon && <Ikon namn={m.ikon} storlek={24} />}
+                          {m.namn}
                         </a>
                       </li>
                     ))}
                   </ul>
                 </>
-              )
+              ))
             }
-
-            <ul class="m-0 p-0 pb-2 list-none">
+            <ul class="m-0 p-0 list-none">
+              <li class="border-b border-linje">
+                <a href="/amnen/" class="flex h-12 items-center gap-3 font-bold text-blyerts no-underline">
+                  Alla ämnen
+                </a>
+              </li>
               {
-                MOBIL_OM.map((m) => (
-                  <li>
-                    <a href={m.href} class="flex h-12 items-center text-blyerts no-underline">
+                FASTA.map((m) => (
+                  <li class="border-b border-linje last:border-b-0">
+                    <a href={m.href} class="flex h-12 items-center gap-3 text-blyerts no-underline">
+                      {m.ikon && <Ikon namn={m.ikon} storlek={24} />}
                       {m.namn}
                     </a>
                   </li>
@@ -274,6 +247,33 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
           </div>
         </details>
       </div>
+
+      {/* Ämnesraden. Bara på desktop; mobilen har ämnena i menyn. */}
+      <nav aria-label="Ämnen" class="amnesrad hidden lg:block border-t border-linje bg-papper-2">
+        <ul class="mx-auto max-w-sidbredd px-8 m-0 p-0 list-none flex items-center gap-1 overflow-x-auto">
+          {
+            AMNESRAD.map((m) => (
+              <li>
+                <a
+                  href={m.href}
+                  class="flex h-11 items-center gap-2 whitespace-nowrap px-3 text-liten text-blyerts no-underline hover:underline hover:decoration-penna"
+                >
+                  {m.ikon && <Ikon namn={m.ikon} storlek={20} />}
+                  {m.namn}
+                </a>
+              </li>
+            ))
+          }
+          <li class="ml-auto">
+            <a
+              href="/amnen/"
+              class="flex h-11 items-center whitespace-nowrap px-3 text-liten text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+            >
+              Alla ämnen
+            </a>
+          </li>
+        </ul>
+      </nav>
     </header>
 
     {reklam && <Reklamband butikNamn={butikNamn} />}

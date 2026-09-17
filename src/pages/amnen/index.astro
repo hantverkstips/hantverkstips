@@ -21,7 +21,7 @@ import {
 import { KALKYLATORER } from '../../lib/kalkyl/register';
 import { tillKortKategori } from '../../lib/kort';
 import { nivaEtikett, type Niva } from '../../lib/niva';
-import { PELARE } from '../../lib/pelare';
+import { hittaGrupp, PELARE } from '../../lib/pelare';
 import { lista } from '../../lib/strukturdata';
 import Artikelkort from '../../components/ui/Artikelkort.astro';
 import Ikon from '../../components/ui/Ikon.astro';
@@ -31,10 +31,9 @@ import Verktygskort from '../../components/ui/Verktygskort.astro';
 
 const TITEL = 'Alla ämnen';
 const INGRESS =
-  'Sajten är ordnad efter husets problem, inte efter butikens hyllor. Två ämnen är i gång, resten är på väg och listas utan länk tills de har något att visa.';
+  'Sajten är ordnad som ett hus: utsidan från tak till grund, insidan rum för rum, och sist det som går genom hela huset. Ämnen som inte har några sidor än står med men utan länk.';
 const BESKRIVNING =
-  'Alla ämnen på Hantverkstips, från fukt inomhus till väggar i gips, med bäst i test-sidor och kalkylatorer. Två i gång, sex på väg.';
-const PA_VAG = 'På väg. Altan i februari, Verktyg i mars.';
+  'Alla ämnen på Hantverkstips, från tak till grund, ute och inne: guider, bäst i test och kalkylatorer per ämne, och vilka ämnen som är på väg.';
 
 /** Typordningen i spalten Guider. Tester listas under kategorin, inte här. */
 const TYPORDNING = [
@@ -98,6 +97,9 @@ const amnen = await Promise.all(
   }),
 );
 
+const paVag = PELARE.filter((p) => !hubbar.some((h) => h.id === p.slug)).map((p) => p.namn);
+const PA_VAG = paVag.length > 0 ? `På väg, i den ordning de fylls på: ${paVag.join(", ")}.` : "";
+
 const strukturdata = lista({
   url: '/amnen/',
   namn: TITEL,
@@ -121,7 +123,12 @@ const strukturdata = lista({
   {
     amnen.map((a, i) => (
       <section class:list={[i > 0 && 'border-t border-linje']}>
-        <div class="mt-12 flex items-center gap-3 lg:mt-16">
+        {(i === 0 || amnen[i - 1].pelare.grupp !== a.pelare.grupp) && (
+          <p class="m-0 mt-12 text-etikett lg:text-etikett-lg uppercase text-blyerts-2 lg:mt-16">
+            {hittaGrupp(a.pelare.grupp).namn} · {hittaGrupp(a.pelare.grupp).rad}
+          </p>
+        )}
+        <div class="mt-4 flex items-center gap-3">
           <Ikon namn={a.pelare.ikon} storlek={32} class="text-blyerts" />
           <Pennstreck id={a.pelare.slug} utanLuft={true}>
             <a href={pelareUrl(a.pelare.slug)} class="text-blyerts no-underline hover:underline hover:decoration-penna">

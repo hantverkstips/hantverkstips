@@ -1,6 +1,6 @@
 # Underlag, slipa bänkskiva i trä
 
-Skrivet 2026-09-16 av skribenten (sökanalys, faktaunderlag och illustration i en fil). Sidan står i innehållsarkitekturens avsnitt 8 som "läggs i Inomhus när huben finns"; huben är publicerad. URL `/inomhus/slipa-bankskiva/`, projektguide, pelare inomhus, nivå enkel, ingen säsong. Huvudfras "slipa bänkskiva", 210 per månad. Sekundära fraser: "olja bänkskiva", "renovera bänkskiva trä", "slipa bänkskiva ek", "bänkskiva slipa och olja".
+Skrivet 2026-09-16 av skribenten (sökanalys, faktaunderlag och illustration i en fil). Sidan står i innehållsarkitekturens avsnitt 8 som "läggs i Inomhus när huben finns"; huben är publicerad. URL `/kok/slipa-bankskiva/`, projektguide, pelare inomhus, nivå enkel, ingen säsong. Huvudfras "slipa bänkskiva", 210 per månad. Sekundära fraser: "olja bänkskiva", "renovera bänkskiva trä", "slipa bänkskiva ek", "bänkskiva slipa och olja".
 
 Sidan äger renoveringen av en befintlig träbänkskiva: slipning och oljan direkt efter. Det löpande underhållet (olja utan slipning) täcks i ett eget H2 men får ingen egen sida förrän volymen motiverar det.
 
@@ -124,8 +124,8 @@ Ut från sidan, tre:
 
 In till sidan inom en vecka, minst två:
 
-- `/inomhus/` (hub), under "Gör det själv", förslag på mening efter tavelmeningen: "Är det bänkskivan i köket som är grå och repig går den att göra som ny på en helg, [slipa bänkskiva i trä](/inomhus/slipa-bankskiva/) ger kornen och oljan."
-- `/inomhus/bygga-innervagg/`, sist i texten där sidan pekar vidare, förslag: "Nästa projekt i samma pelare som inte kräver en enda skruv är att [slipa och olja bänkskivan](/inomhus/slipa-bankskiva/)." Alternativt `/altan/olja-och-underhall/` när den skrivs, som är den naturligaste systersidan (samma oljor, andra villkor).
+- `/inomhus/` (hub), under "Gör det själv", förslag på mening efter tavelmeningen: "Är det bänkskivan i köket som är grå och repig går den att göra som ny på en helg, [slipa bänkskiva i trä](/kok/slipa-bankskiva/) ger kornen och oljan."
+- `/inomhus/bygga-innervagg/`, sist i texten där sidan pekar vidare, förslag: "Nästa projekt i samma pelare som inte kräver en enda skruv är att [slipa och olja bänkskivan](/kok/slipa-bankskiva/)." Alternativt `/altan/olja-och-underhall/` när den skrivs, som är den naturligaste systersidan (samma oljor, andra villkor).
 
 ## 8. Metadata
 
