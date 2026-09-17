@@ -58,6 +58,13 @@ export const KALKYLATORER: Kalkylator[] = [
     sasong: [1, 12],
     pelare: ['inomhus'],
   },
+  {
+    slug: 'bygglov-altan',
+    namn: 'Behöver altanen bygglov?',
+    rad: 'Höjd, avstånd och detaljplan ger svaret med lagrum.',
+    sasong: [2, 6],
+    pelare: ['altan'],
+  },
 ];
 
 export function hittaKalkylator(slug: string): Kalkylator | undefined {

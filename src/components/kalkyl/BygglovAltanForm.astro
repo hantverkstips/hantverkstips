@@ -1,0 +1,208 @@
+---
+/**
+ * Formuläret till bygglovsverktyget för altan. Ett ställe: sidan
+ * /rakna/bygglov-altan/ renderar det i fullt format, och
+ * <Kalkylator namn="bygglov-altan" /> i en artikel renderar samma fält i
+ * kompakt format med action till verktygssidan.
+ *
+ * Ingen klient-JavaScript. Formuläret skickas som GET, och verktygssidan svarar.
+ *
+ * Alla props är valfria, eftersom det inbäddade formuläret inte har någon
+ * bedömning att visa värden ur; då står standardvärdena i fälten.
+ */
+import {
+  DETALJPLAN_VAL,
+  STANDARD,
+  TAK_VAL,
+  VARDEFULLT_VAL,
+  type BygglovAltanIndata,
+} from '../../lib/kalkyl/bygglov-altan.ts';
+import { ETIKETT_KLASS, FALT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, ramKlass } from '../../lib/kalkyl/stil';
+
+interface Props {
+  /** Valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
+  indata?: BygglovAltanIndata;
+  /** Talen som de skrevs i adressen, så att ett felskrivet värde går att rätta. */
+  varden?: { hojd: string; avstand: string; grans: string; yta: string };
+  fel?: Partial<Record<keyof BygglovAltanIndata, string>>;
+  /** Inbäddad i en artikel: tätare fält, inga hjälprader. */
+  kompakt?: boolean;
+  /** Prefix på id-attributen, så att två formulär på samma sida inte krockar. */
+  idPrefix?: string;
+  knappText?: string;
+}
+
+const komma = (n: number) => String(n).replace('.', ',');
+
+const {
+  indata = STANDARD,
+  varden = {
+    hojd: komma(STANDARD.hojdM),
+    avstand: komma(STANDARD.avstandByggnadM),
+    grans: komma(STANDARD.avstandGransM),
+    yta: komma(STANDARD.ytaKvm),
+  },
+  fel = {},
+  kompakt = false,
+  idPrefix = '',
+  knappText = 'Ge mig svaret',
+} = Astro.props;
+
+const id = (namn: string) => `${idPrefix}${namn}`;
+const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
+
+const talfalt = [
+  {
+    namn: 'hojd',
+    etikett: 'Altangolvets höjd över marken',
+    enhet: 'm',
+    varde: varden.hojd,
+    fel: fel.hojdM,
+    hjalp: 'Mät där altanen är som högst, från marken upp till golvets ovansida. Sluttar tomten är det nedsidan som gäller.',
+  },
+  {
+    namn: 'avstand',
+    etikett: 'Avstånd till närmaste byggnad',
+    enhet: 'm',
+    varde: varden.avstand,
+    fel: fel.avstandByggnadM,
+    hjalp: 'Från fasaden till altanens ytterkant. Noll meter betyder att altanen ligger mot huset. Lagen säger en byggnad, så garaget och förrådet räknas också.',
+  },
+  {
+    namn: 'grans',
+    etikett: 'Avstånd till tomtgränsen',
+    enhet: 'm',
+    varde: varden.grans,
+    fel: fel.avstandGransM,
+    hjalp: 'Till den närmaste gränsen. Går gränsen mot en gata eller en park är kommunen din granne.',
+  },
+  {
+    namn: 'yta',
+    etikett: 'Altanens yta',
+    enhet: 'kvm',
+    varde: varden.yta,
+    fel: fel.ytaKvm,
+    hjalp: 'Används till två saker: byggsanktionsavgiften, och gränsen på 30 kvm när altanen får tak eller inglasning.',
+  },
+] as const;
+---
+
+<form method="get" action="/rakna/bygglov-altan/">
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Ligger tomten inom detaljplan?</legend>
+    <div class={radioKlass}>
+      {
+        DETALJPLAN_VAL.map((v) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input
+              type="radio"
+              name="plan"
+              value={v.varde}
+              checked={indata.detaljplan === v.varde}
+              aria-describedby={kompakt ? undefined : id('plan-hjalp')}
+            />
+            {v.etikett}
+          </label>
+        ))
+      }
+    </div>
+    {
+      !kompakt && (
+        <p id={id('plan-hjalp')} class={HJALP_KLASS}>
+          De flesta tätorter ligger inom detaljplan, alltså kommunens karta med regler för vad som får byggas i
+          området. Landsbygden gör det sällan. Kommunens karttjänst visar vad som gäller för din tomt, och vet du inte
+          svarar verktyget för båda fallen.
+        </p>
+      )
+    }
+  </fieldset>
+
+  <div class:list={[kompakt && 'sm:grid sm:grid-cols-2 sm:gap-4']}>
+    {
+      talfalt.map((f) => (
+        <div class="mb-4">
+          <label for={id(f.namn)} class={ETIKETT_KLASS}>
+            {f.etikett}
+          </label>
+          <div class="flex items-center gap-2">
+            <input
+              id={id(f.namn)}
+              name={f.namn}
+              type="text"
+              inputmode="decimal"
+              value={f.varde}
+              aria-describedby={f.fel ? id(`${f.namn}-fel`) : undefined}
+              class:list={[FALT_KLASS, ramKlass(Boolean(f.fel))]}
+            />
+            <span class="text-brod text-blyerts-2">{f.enhet}</span>
+          </div>
+          {f.fel ? (
+            <p id={id(`${f.namn}-fel`)} class={FEL_KLASS}>
+              {f.fel}
+            </p>
+          ) : (
+            !kompakt && <p class={HJALP_KLASS}>{f.hjalp}</p>
+          )}
+        </div>
+      ))
+    }
+  </div>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Tak över altanen</legend>
+    <div class={radioKlass}>
+      {
+        TAK_VAL.map((v) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input type="radio" name="tak" value={v.varde} checked={indata.tak === v.varde} />
+            {kompakt ? v.kort : v.etikett}
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Ligger altanen ovanpå ett garage eller en annan byggnad?</legend>
+    <div class={radioKlass}>
+      <label class="flex min-h-11 items-center gap-2 text-brod">
+        <input type="radio" name="patak" value="ja" checked={indata.paTak} />
+        Ja
+      </label>
+      <label class="flex min-h-11 items-center gap-2 text-brod">
+        <input type="radio" name="patak" value="nej" checked={!indata.paTak} />
+        Nej
+      </label>
+    </div>
+  </fieldset>
+
+  <fieldset class="m-0 mb-6 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Är huset eller området utpekat som värdefullt?</legend>
+    <div class={radioKlass}>
+      {
+        VARDEFULLT_VAL.map((v) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input
+              type="radio"
+              name="vardefullt"
+              value={v.varde}
+              checked={indata.vardefullt === v.varde}
+              aria-describedby={kompakt ? undefined : id('vardefullt-hjalp')}
+            />
+            {v.etikett}
+          </label>
+        ))
+      }
+    </div>
+    {
+      !kompakt && (
+        <p id={id('vardefullt-hjalp')} class={HJALP_KLASS}>
+          Gäller hus och områden som kommunen pekat ut som kulturhistoriskt värdefulla, ofta i detaljplanen eller i ett
+          kulturmiljöprogram. Där krävs bygglov även för en altan som annars hade varit fri.
+        </p>
+      )
+    }
+  </fieldset>
+
+  <button type="submit" class={KNAPP_KLASS}>{knappText}</button>
+</form>

@@ -690,6 +690,36 @@ Markup: H1 "Räkna ut reglar, gipsskivor och skruv till innerväggen", ingress p
 
 `<title>` "Regelkalkylator, räkna reglar, gips och skruv till väggen", 57 tecken; med suffixet blir den 73 och layouten utelämnar det därför, precis som på de tre andra kalkylatorsidorna. Formuläret är inbäddat i `/inomhus/bygga-innervagg/` direkt efter punktlistan med antagandena i materialavsnittet, och i `/inomhus/gipsskruv/` direkt under skruvavståndstabellen.
 
+#### 4.7.5 `src/pages/rakna/bygglov-altan.astro` (byggd 2026-09-17)
+
+`export const prerender = false`, samma motivering och samma `Cache-Control` som de fyra sidorna ovan. `Astro.locals.sidtyp = 'verktyg'`. `reklam={false}`: verktyget pekar inte ut någon produkt, det ger ett besked, så sidan har varken produktkort eller reklamband. Brödsmulor: Hantverkstips / Räkna själv (`/rakna/`) / Bygglov för altan. `bred={true}`.
+
+Det här är det första beslutsverktyget. Det räknar inget material utan svarar ja, nej eller kanske, och varje regel som slår in bär sitt lagrum. Reglerna ligger i `src/lib/kalkyl/bygglov-altan.ts`:
+
+```ts
+export interface BygglovAltanIndata { detaljplan: 'ja' | 'nej' | 'vet-inte'; hojdM: number; avstandByggnadM: number; avstandGransM: number; tak: 'nej' | 'skarmtak' | 'vaggar'; paTak: boolean; ytaKvm: number; vardefullt: 'ja' | 'nej' | 'vet-inte' }
+export const STANDARD = { detaljplan: 'ja', hojdM: 0.8, avstandByggnadM: 0, avstandGransM: 4.5, tak: 'nej', paTak: false, ytaKvm: 20, vardefullt: 'nej' };
+export const GRANSER = { hojdM: [0, 10], avstandByggnadM: [0, 100], avstandGransM: [0, 200], ytaKvm: [1, 500] };
+export function sanktionsavgift(ytaKvm): { grundKr; tillaggKr; summaKr };   // PBF 9 kap. 12 §
+export function bedomFall(planlagt, i): Bedomning;                         // ett av de två fallen
+export function raknaBygglovAltan(i): BygglovAltanResultat;                // ok | ogiltig
+export function tolkaQuery(q): { indata: BygglovAltanIndata; harIndata: boolean };
+```
+
+Query: `plan`, `hojd`, `avstand`, `grans`, `tak`, `patak`, `yta`, `vardefullt`. Resultatet bär svaret (`ja`, `nej`, `kanske`), rubriken över det, en eller två `bedomningar` med varsin lista `regler`, flaggan `olikaFall`, `kravGrannmedgivande`, byggsanktionsavgiften med grundbelopp, tillägg, halva och en fjärdedel, samt `gorInteDetHar`.
+
+**Reglerna med lagrum.** Varje regel är en egen funktion i modulen med lagrummet i kommentaren över sig, och samma lagrum följer med ut i resultatet så att läsaren ser det på raden. Inom detaljplan krävs lov över 1,8 m höjd inom 3,6 m från en byggnad, och över 1,2 m längre bort (PBL 9 kap. 19 §). Utanför detaljplan finns ingen måttregel alls (Boverket); kvar står anpassning och olägenhet. Väggar, inglasning eller skärmtak gör altanen till en tillbyggnad, lovfri upp till 30 kvm på ett en- eller tvåbostadshus (9 kap. 10 §). Altan ovanpå en byggnad ger "räkna med bygglov" inom detaljplan och ett kanske utanför (9 kap. 19 § och MÖD mål P 5608-13). Utpekat värdefullt hus eller område kräver lov även för det som annars är fritt (9 kap. 37 och 38 §§). Närmare gränsen än 4,5 m ger utfallet `granne`, alltså raden om skriftligt medgivande, och det lyfter aldrig svaret till ett bygglovskrav (9 kap. 34 och 35 §§ plus Boverkets vägledning; lagtexten räknar inte upp altaner).
+
+**"Vet inte" på detaljplan** kör `bedomFall()` två gånger och visar båda listorna under varsin rubrik. Ger de två fallen olika svar blir det sammanvägda svaret `kanske`. Samma hållning gäller värdefullt hus: ett "vet inte" lyfter svaret till `kanske` i stället för att gissa.
+
+**Byggsanktionsavgiften** står alltid, oavsett vad svaret blev, eftersom den är hela poängen med att fråga först: 0,25 prisbasbelopp plus 0,005 per kvm av prisbasbeloppet 59 200 kr för 2026 (PBF 9 kap. 12 § 3). Sidan visar också nedsättningen till hälften och en fjärdedel, och att avgiften faller bort vid rättelse innan sammanträdet (PBL 11 kap. 51 till 58 §§). Kalkylen på 20 kvm ger 20 720 kr, alltså samma tal som avgiftstabellen i `/altan/bygglov-altan/`, och testskriptet asserterar alla tre raderna i den tabellen.
+
+**ANTAGANDE.** Verktyget räknar på ett en- eller tvåbostadshus; gränsen på 30 kvm gäller inte flerbostadshus. Ett glest räcke räknas inte in i höjden, ett tätt plank gör det. Båda står i regeltabellen.
+
+Markup: H1 "Behöver din altan bygglov? Fyll i måtten och få svar", ingress på fem meningar, `<Faktaruta variant="kortsvar">` med svaret, sedan formuläret och bedömningen i två spalter på det linjerade papperet. Det stora "talet" är svarsordet i `text-siffra` med `<Markering>` och resten av rubriken på samma baslinje, precis där enheten står på de andra kalkylatorerna. Under det reglerna som en lista där varje rad har en etikett (Bygglov, Inget lov, Osäkert, Grannens ja), texten och lagrummet, sedan avgiften i kronor, "Gör inte det här", rådet att kommunen har sista ordet och raden om att reglerna gäller sedan 1 december 2025. Sedan H2 "Bygglov altan, de tre måtten och vad som ändrades 1 december 2025" (399 ord) med länk till artikeln, H2 "Så bedömer vi" med åtta steg och regeltabellen på tretton rader, och H2 "Läs vidare" till `/altan/bygglov-altan/` och `/guider/altan/`.
+
+`<title>` "Behöver altanen bygglov? Svar med lagrum", 40 tecken, och med suffixet 56, så layouten behåller det till skillnad från de fyra andra kalkylatorsidorna. Sidan säger på tre ställen att verktyget är vägledning och inte ett myndighetsbeslut: i ingressen, i brödtexten under regeltabellen och i beskrivningen av vad det inte kan se. Formuläret är inbäddat i `/altan/bygglov-altan/` direkt efter beslutstabellen.
+
 ### 4.8 `src/pages/om/index.astro` och `src/pages/om/[slug].astro`
 
 `index.astro` renderar `getEntry('sidor', 'om')`. `[slug].astro` har `getStaticPaths` från `publicerade('sidor')` utan `om` och `startsida`. Båda: brödsmulor Hantverkstips / {title} (index) respektive Hantverkstips / Om (`/om/`) / {title}. H1, meta "Uppdaterad {datum}" om den finns, `<Content components={{ h2: Pennstreck, Faktaruta, Varning, Markering }} />`. `reklam={false}`. Strukturerad data efter `strukturdata`: `Organization` ger `organisation()`, `Article` ger `artikel()` med redaktionen, `ingen` ger inget. Gemensam vy `vyer/Sida.astro` så att de två rutterna är tio rader var.

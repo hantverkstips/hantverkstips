@@ -15,6 +15,7 @@
  */
 import { hittaKalkylator } from '../../lib/kalkyl/register';
 import AvfuktareForm from '../kalkyl/AvfuktareForm.astro';
+import BygglovAltanForm from '../kalkyl/BygglovAltanForm.astro';
 import DaggpunktForm from '../kalkyl/DaggpunktForm.astro';
 import ElkostnadForm from '../kalkyl/ElkostnadForm.astro';
 import InnervaggForm from '../kalkyl/InnervaggForm.astro';
@@ -26,7 +27,7 @@ interface Props {
 }
 
 /** Kalkylatorer som har ett formulär att bädda in. */
-const MED_FORMULAR = ['avfuktare', 'daggpunkt', 'elkostnad', 'innervagg'];
+const MED_FORMULAR = ['avfuktare', 'daggpunkt', 'elkostnad', 'innervagg', 'bygglov-altan'];
 
 const { namn } = Astro.props;
 const k = hittaKalkylator(namn);
@@ -57,6 +58,7 @@ const prefix = `${k.slug}-inbaddad-`;
   {namn === 'avfuktare' && <AvfuktareForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'elkostnad' && <ElkostnadForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'innervagg' && <InnervaggForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
+  {namn === 'bygglov-altan' && <BygglovAltanForm kompakt={true} idPrefix={prefix} knappText="Ge mig svaret" />}
 
   <p class="m-0 mt-4 text-liten text-blyerts-2">
     Knappen tar dig till kalkylatorn med dina värden ifyllda. Där står svaret med källan bakom varje tal.
