@@ -160,6 +160,45 @@ export function lista(l: { url: string; namn: string; poster: { namn: string; ur
   };
 }
 
+export interface VerktygData {
+  /** Sökväg med avslutande snedstreck: `/rakna/avfuktare/`. */
+  url: string;
+  /** Verktygets namn, alltså det som står sist i brödsmulorna. */
+  namn: string;
+  beskrivning: string;
+}
+
+/**
+ * Kalkylatorerna under /rakna/. WebApplication och inte Article: sidan är ett
+ * verktyg som räknar, inte en text som påstår något, och den har varken
+ * författare eller publiceringsdatum. Priset skrivs ut som noll kronor
+ * tillsammans med isAccessibleForFree, eftersom Google läser båda och ett
+ * verktyg utan prisuppgift annars kan tolkas som ett verktyg bakom inloggning.
+ *
+ * FAQPage byggs inte här. Ingen kalkylatorsida har ett avsnitt med frågor och
+ * svar i dag, och markup för frågor som inte står på sidan är en felaktig
+ * signal. Får en sida ett sådant avsnitt läggs FAQPage till för just den sidan.
+ */
+export function verktyg(v: VerktygData): object {
+  return {
+    '@type': 'WebApplication',
+    name: v.namn,
+    url: absolut(v.url),
+    description: v.beskrivning,
+    applicationCategory: 'UtilityApplication',
+    operatingSystem: 'Web',
+    offers: {
+      '@type': 'Offer',
+      price: 0,
+      priceCurrency: 'SEK',
+    },
+    inLanguage: 'sv',
+    isAccessibleForFree: true,
+    // Skrivs ut i sin helhet, av samma skäl som i artikel().
+    publisher: organisation(),
+  };
+}
+
 export function person(f: {
   slug: string;
   namn: string;

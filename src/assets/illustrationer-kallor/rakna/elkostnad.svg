@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Skiss på linjerat papper av en maskin på 300 watt som står på golvet med sladden dragen till ett vägguttag. Ovanför uttaget sitter en elmätare med räkneverk. Maskinens vred är inringat i rött med anteckningen att gångtiden avgör. Elpriset 2,50 kronor per kilowattimme står vid mätaren och nyckeltalet 310 kronor i månaden är markerat.">
+  <!-- Anteckningsboken, verktygsskiss för /rakna/elkostnad/. Blyerts 2 px för maskin, sladd, uttag och
+       elmätare, blyerts-2 för golv- och väggskraffering, räkneverkets streck och etiketter, snickarpenna
+       för ringen runt vredet (den enda pennsaken), tumstock bakom nyckeltalet 173 kr/mån.
+       Golvlinje y=308, vägg x=512, maskinen x=76–200, mätaren x=416–506.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2: golvet under linjen och väggens snitt till höger -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M60,312 l10,10 M92,312 l10,10 M124,312 l10,10 M156,312 l10,10 M188,312 l10,10 M220,312 l10,10 M252,312 l10,10 M284,312 l10,10 M316,312 l10,10 M348,312 l10,10 M380,312 l10,10 M412,312 l10,10 M444,312 l10,10 M476,312 l10,10"/>
+    <path d="M520,42 l10,10 M520,86 l10,10 M520,130 l10,10 M520,174 l10,10 M520,262 l10,10"/>
+    <path d="M540,64 l10,10 M540,108 l10,10 M540,152 l10,10 M540,196 l10,10 M540,240 l10,10 M540,284 l10,10"/>
+  </g>
+
+  <!-- Blyerts: golvlinje, vägg, uttag och sladd -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M48,308 Q310,310 572,308"/>
+    <path d="M512,30 Q514,170 512,310"/>
+    <path d="M486,226 Q499,224 512,226 M486,260 Q499,262 512,260 M486,226 Q484,243 486,260"/>
+    <path d="M200,280 Q268,310 336,290 Q414,266 486,246"/>
+  </g>
+  <g fill="#2a2521" stroke="none">
+    <circle cx="496" cy="237" r="2.8"/>
+    <circle cx="496" cy="249" r="2.8"/>
+  </g>
+
+  <!-- Blyerts: elmätaren med räkneverk och skiva -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M416,58 Q461,56 506,58 Q508,103 506,148 Q461,150 416,148 Q414,103 416,58"/>
+    <path d="M428,74 Q461,72 494,74 Q495,85 494,96 Q461,98 428,96 Q427,85 428,74"/>
+    <path d="M428,118 Q461,116 494,118"/>
+  </g>
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M441,75 V95 M454,75 V95 M467,75 V95 M481,75 V95"/>
+    <path d="M472,113 V123"/>
+  </g>
+
+  <!-- Blyerts: maskinen med galler och vred -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M76,166 Q138,164 200,166 Q202,237 200,308 Q138,310 76,308 Q74,237 76,166"/>
+    <path d="M90,196 Q94,216 90,236 M100,196 Q104,216 100,236 M110,196 Q114,216 110,236"/>
+    <circle cx="164" cy="216" r="16"/>
+    <path d="M164,216 L174,206"/>
+  </g>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="386" y="194" width="118" height="26" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 445 207)"/>
+
+  <!-- Snickarpenna: ringen runt vredet, öppen som när man ringar in för hand -->
+  <path d="M194,206 C188,184 140,182 136,214 C132,244 158,258 180,246 C192,240 198,226 194,212" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="78" y="143" fill="#625a50">300 W</text>
+    <text x="224" y="119" fill="#625a50">8 h per dygn</text>
+    <text x="224" y="143" fill="#ad3519">gångtiden avgör</text>
+    <text x="412" y="47">elmätare</text>
+    <text x="386" y="179" fill="#625a50">2,40 kr/kWh</text>
+    <text x="392" y="215">173 kr/mån</text>
+  </g>
+</svg>

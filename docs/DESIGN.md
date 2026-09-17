@@ -924,6 +924,20 @@ Blyertsskiss på linjerat papper. Förebilden är `src/assets/illustrationer/fuk
 
 Altanen ritas som snickarens egen skiss med mått på reglarna, taket som en takstol med vinkeln noterad, garaget med fläkten och pilar för luftflödet. Chefredaktören beställer, designansvarig ritar eller specar, och varje ny illustration granskas mot listan ovan.
 
+### Illustrationer för verktygen
+
+Varje kalkylator i `src/lib/kalkyl/register.ts` har en egen skiss, ritad 2026-09-17. Den ligger i en egen mapp, `src/assets/illustrationer-kallor/rakna/[slug].svg` med den konverterade i `src/assets/illustrationer/rakna/[slug].svg`, och heter samma sak som verktyget i registret. Mappen är inte en pelare utan verktygen: elkostnadskalkylatorn hör till två pelare och avfuktarkalkylatorn till en kategori, så pelarmappen hade inte räckt.
+
+Skissen visar det verktyget räknar på, inte verktyget. Reglerna är skissernas ovan, med tre skärpningar som gäller just de här bilderna, eftersom de också blir delningsbilder och därmed det första någon ser av sajten:
+
+- **Ett nyckeltal, ett svar.** Talet med gul markering är det kalkylatorn svarar med: liter per dygn, daggpunkten i grader, kronor i månaden, regelavståndet, höjden i meter. Ingen annan siffra i bilden får markering.
+- **Motivet är situationen, med mått.** Källaren med maskinen, väggen med termometern och dropparna där ytan är kallare än daggpunkten, maskinen med sladden till elmätaren, regelväggen med c-måttet och skruven, altanen vid huset med 1,8 m, 3,6 m och 4,5 m. Måtten ritas som byglar i blyerts-2 med måttet i handskrift, aldrig som text utan bygel.
+- **Handskriften är 24 px.** De här bilderna visas både i läsbredd på mobil och nedskalade till 560 px i delningsbilden, så undantaget på 22 px används inte här.
+
+Filerna, mätta 2026-09-17 efter `npm run illustrationer`: `avfuktare.svg` 18,6 kB, `bygglov-altan.svg` 25,1 kB, `daggpunkt.svg` 17,5 kB, `elkostnad.svg` 21,4 kB, `innervagg.svg` 17,0 kB. Alla under gränsen 40 kB, ingen `<text>` kvar.
+
+**Delningsbilden.** `scripts/generera-delningsbilder.mjs` bygger dessutom `public/og/rakna-[slug].png`, 1200 × 630, en per kalkylator. Skriptet läser registret direkt (`import { KALKYLATORER } from '../src/lib/kalkyl/register.ts'`, Node 24 tar bort typerna själv) och den redan konverterade skissen, så namnet i bilden är samma namn som på sidan och i menyn, och en ändring i registret slår igenom med en körning. Uppslaget är: papper som yta, verktygets namn till vänster i Zilla Slab 600 på två rader med ett pennstreck under, ordmärket nere till vänster, och skissen inklistrad till höger i 560 px bredd med 1 px `linje`-ram, som ett urklipp. Namnet delas vid det ordmellanrum som ger jämnast rader och krymper från 54 px tills den bredaste raden får plats i spalten; det är skälet till att ett långt namn inte behöver kortas i registret. Skriptet kastar om skissen saknas eller fortfarande har `<text>`, så en oklar bild kan inte smyga ut. Filerna väger 47 till 57 kB och är committade; skriptet körs för hand när ett namn, en skiss eller märket ändras.
+
 ### Diagram
 
 Varje test och varje kategorisida har minst ett diagram med egna eller källgranskade siffror. Inline-SVG, byggd vid bygget, med tokens och i samma hand som skisserna: axlar och etiketter i blyerts-2 (Atkinson, 22 px i diagrammets 600-skala, vilket är 13 px på mobil; ingen handskrift i diagram utom en enda anteckning i penna vid det diagrammet pekar på), staplar och linjer i blyerts med 2 px linje, den produkt eller det värde texten handlar om i penna, jämförelsevärden i linje. Det viktigaste värdet får gul markering bakom siffran. En serie i penna, aldrig fler. Diagrammen har `role="img"` och en `aria-label` som säger vad de visar. Diagram är alltid rätt bredd för mobil (max 343 px utan scroll) och får inte förlita sig på hover. Ingen 3D, inga tårtor.
@@ -1002,7 +1016,7 @@ Alla filer under `src/assets/brand/riktning-1/`. Handskrivna SVG:er utan editorm
 | `ikoner.svg` | Sprite med 16 symboler i `currentColor` | Inlineas i layouten, se Ikoner i avsnitt 6 |
 | `monster.svg` | Linjerat papper, kakelbart 48 × 24 | Som `<pattern>` i illustrationer. I HTML används `.linjerat` i stället |
 
-Illustrationerna ligger inte i brand-mappen utan i `src/assets/illustrationer/[pelare]/`: `fukt/kallare.svg` (källaren i genomskärning, förebild för alla skisser, huvudbild i fuktguiderna). En ny skiss läggs i pelarens mapp och refereras från artikeln enligt `docs/ARKITEKTUR.md`. Startsidans hero är undantaget: `start/hus-tumstock.svg` hör till ingen pelare utan till sajten, viewBox 600 × 420, genomskinlig bakgrund, ritad i ordmärkets stil.
+Illustrationerna ligger inte i brand-mappen utan i `src/assets/illustrationer/[pelare]/`: `fukt/kallare.svg` (källaren i genomskärning, förebild för alla skisser, huvudbild i fuktguiderna). En ny skiss läggs i pelarens mapp och refereras från artikeln enligt `docs/ARKITEKTUR.md`. Startsidans hero är undantaget: `start/hus-tumstock.svg` hör till ingen pelare utan till sajten, viewBox 600 × 420, genomskinlig bakgrund, ritad i ordmärkets stil. Verktygens skisser ligger i `rakna/`, en per kalkylator i registret och med samma slug (avsnitt 7).
 
 **Illustrationernas två mappar.** Texten i en skiss redigeras aldrig i den publicerade filen, utan i källan:
 

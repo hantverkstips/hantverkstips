@@ -1,32 +1,79 @@
 ---
 /**
- * Listsida för kalkylatorerna. Statisk, inga köpknappar, inget reklamband.
+ * Galleriet över kalkylatorerna. Statiskt, inga köpknappar, inget reklamband.
+ *
+ * Korten är samma <Artikelkort> som guiderna och testerna ligger i, med
+ * registrets namn som rubrik och dess rad som beskrivning. Egen komponent
+ * behövdes inte: illustration, etikett, rubrik, beskrivning, href och pelare
+ * är precis vad kortet tar. Metaraden stängs av (visaPelare={false}), eftersom
+ * pelaren redan står i etiketten och ett verktyg saknar datum.
+ *
+ * Sidbredd, med rubrik och ingress i läsbredd som pelarhubben gör, och samma
+ * rutnät som /guider/: tre kolumner från 1024 px, två från 640, en under. Fem
+ * verktyg blir en rad om tre och en om två. Se docs/SPEC-SIDMALLAR.md 4.6.
  */
 import Bas from '../../layouts/Bas.astro';
 import { KALKYLATORER } from '../../lib/kalkyl/register';
-import Pennstreck from '../../components/ui/Pennstreck.astro';
+import { hittaPelare, PELARE } from '../../lib/pelare';
+import { verktygsillustration } from '../../lib/verktygsbild';
+import Artikelkort from '../../components/ui/Artikelkort.astro';
+
+/**
+ * Pelaren är den första i registrets lista. Elkostnadskalkylatorn hör hemma i
+ * både El och energi och Fukt; etiketten visar den första, som registret har
+ * ordnat efter var frågan oftast ställs.
+ */
+const kort = KALKYLATORER.map((k) => {
+  const pelare = hittaPelare(k.pelare?.[0] ?? '') ?? PELARE[0];
+  return {
+    slug: k.slug,
+    etikett: `Räkna själv · ${pelare.kort}`,
+    rubrik: k.namn,
+    beskrivning: k.rad,
+    illustration: verktygsillustration(k.slug),
+    pelare: pelare.slug,
+    href: `/rakna/${k.slug}/`,
+  };
+});
 ---
 
 <Bas
   title="Räkna själv"
-  description="Kalkylatorer med källa på varje tal: om väggen blir våt av kondens, hur stor avfuktare du behöver, och fler när säsongen kräver dem."
+  description="Kalkylatorer för fukt, el, innervägg och bygglov. Källa bakom varje tal, och resultatet ligger kvar i länken."
   brodsmulor={[{ namn: 'Hantverkstips', href: '/' }, { namn: 'Räkna själv' }]}
+  bred={true}
 >
-  <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">Räkna själv</h1>
-  <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
-    Kalkylatorerna räknar på riktiga produktdata. Resultatet är en marginal, inte ett exakt svar.
-  </p>
+  <div class="max-w-lasbredd">
+    <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">Räkna själv</h1>
+    <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
+      Verktygen räknar ut talet du behöver innan du köper material eller drar igång maskinen. Du fyller i dina egna
+      mått, och räkningen görs på siffror vi kan peka ut varifrån de kommer. Svaret är en marginal, inte ett facit.
+    </p>
+  </div>
 
-  {
-    KALKYLATORER.map((k) => (
-      <section>
-        <Pennstreck id={k.slug}>
-          <a href={`/rakna/${k.slug}/`} class="text-blyerts no-underline hover:underline hover:decoration-penna">
-            {k.namn}
-          </a>
-        </Pennstreck>
-        <p class="m-0 text-brod lg:text-brod-lg">{k.rad}</p>
-      </section>
-    ))
-  }
+  <ul class="kortrutnat m-0 mt-8 grid list-none grid-cols-1 gap-4 p-0 sm:grid-cols-2 lg:mt-10 lg:grid-cols-3 lg:gap-6">
+    {
+      kort.map((k) => (
+        <li>
+          <Artikelkort
+            etikett={k.etikett}
+            rubrik={k.rubrik}
+            beskrivning={k.beskrivning}
+            illustration={k.illustration}
+            pelare={k.pelare}
+            href={k.href}
+            rubrikniva={2}
+            visaPelare={false}
+          />
+        </li>
+      ))
+    }
+  </ul>
+
+  <p class="m-0 mt-8 max-w-lasbredd text-brod lg:mt-10 lg:text-brod-lg">
+    Varje verktyg visar var talen kommer ifrån. Under resultatet står en tabell där varje rad är märkt med sin källa,
+    ett datablad eller en myndighet, eller med ordet antagande när vi själva har valt talet. När du har räknat står
+    dina värden kvar i webbläsarens adressfält, så du kan spara länken eller skicka den vidare till den som ska göra
+    jobbet.
+  </p>
 </Bas>

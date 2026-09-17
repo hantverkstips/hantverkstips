@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Genomskärning av ett rums ytterhörn på linjerat papper. Ute är det 2 grader, inne 21 grader och 55 procent relativ fuktighet. En termometer ligger mot väggens insida. Längst ner på den kalla ytan bildas droppar och en pöl, och en anteckning i rött säger att ytan håller 11 grader. Daggpunkten 11,6 grader är markerad.">
+  <!-- Anteckningsboken, verktygsskiss för /rakna/daggpunkt/. Blyerts 2 px för vägg, tak, golv och
+       termometer, blyerts-2 för isoleringens skraffering, termometerns skala och etiketter, snickarpenna
+       för kondensen (dropparna, pölen och pilen till ytan, den enda pennsaken), tumstock bakom
+       nyckeltalet 11,6 °C.
+       Väggen i snitt x=150–196, innertak y=72, golv y=300. Ytan är kallare än daggpunkten, därför
+       fälls vattnet ut just där.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2: väggens isolering och marken under golvet -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M156,58 l10,10 M156,100 l10,10 M156,142 l10,10 M156,184 l10,10 M156,226 l10,10 M156,268 l10,10"/>
+    <path d="M174,79 l10,10 M174,121 l10,10 M174,163 l10,10 M174,205 l10,10 M174,247 l10,10"/>
+    <path d="M56,304 l10,10 M88,304 l10,10 M120,304 l10,10 M152,304 l10,10 M184,304 l10,10 M296,304 l10,10 M328,304 l10,10 M360,304 l10,10 M392,304 l10,10 M424,304 l10,10 M456,304 l10,10 M488,304 l10,10 M520,304 l10,10"/>
+  </g>
+
+  <!-- Blyerts: ytterväggen i snitt, innertaket och golvet -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M150,44 Q148,180 150,300"/>
+    <path d="M196,44 Q198,180 196,300"/>
+    <path d="M150,46 Q173,44 196,46"/>
+    <path d="M196,72 Q384,74 572,72"/>
+    <path d="M48,300 Q310,302 572,300"/>
+  </g>
+
+  <!-- Blyerts: termometern mot väggens insida -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M206,86 Q218,84 230,86 Q232,142 230,198 Q218,200 206,198 Q204,142 206,86"/>
+    <path d="M212,198 Q212,206 208,210 M224,198 Q224,206 228,210"/>
+    <circle cx="218" cy="216" r="13"/>
+    <path d="M218,212 Q217,190 218,168"/>
+  </g>
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M221,102 h7 M221,118 h7 M221,134 h7 M221,150 h7 M221,166 h7 M221,182 h7"/>
+    <path d="M198,106 h8 M198,182 h8"/>
+  </g>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="296" y="194" width="84" height="26" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 338 207)"/>
+
+  <!-- Snickarpenna: kondensen på den kalla ytan och pilen som pekar dit -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M202,238 C201,240 198,243 198,246 A4,4 0 0 0 206,246 C206,243 203,240 202,238"/>
+    <path d="M204,260 C203,262 200,265 200,268 A4,4 0 0 0 208,268 C208,265 205,262 204,260"/>
+    <path d="M202,282 C201,284 198,287 198,290 A4,4 0 0 0 206,290 C206,287 203,284 202,282"/>
+    <path d="M198,299 Q216,293 236,298 Q252,302 268,297"/>
+    <path d="M294,270 Q256,274 216,280 M227,272 L214,281 L228,286"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="56" y="167" fill="#625a50">ute 2 °C</text>
+    <text x="430" y="119" fill="#625a50">inne 21 °C</text>
+    <text x="430" y="143" fill="#625a50">55 % RF</text>
+    <text x="300" y="191" fill="#625a50">daggpunkt</text>
+    <text x="300" y="215">11,6 °C</text>
+    <text x="300" y="267" fill="#ad3519">ytan 11 °C</text>
+  </g>
+</svg>

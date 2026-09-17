@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Källare i genomskärning på linjerat papper. Takhöjden är måttsatt till 2,2 meter. På den vänstra källarväggen rinner droppar, och en pil visar att den fuktiga luften dras över rummet till en avfuktare som står på golvet till höger. Nyckeltalet 12 liter per dygn är markerat.">
+  <!-- Anteckningsboken, verktygsskiss för /rakna/avfuktare/. Blyerts 2 px för källare och maskin,
+       blyerts-2 för markskraffering, måttbygel och pekpinne, snickarpenna för fukten (dropparna och
+       luftpilen, den enda pennsaken), tumstock bakom nyckeltalet 12 l/dygn.
+       Källarens innermått x=150–466, bjälklag y=106, golv y=322, marklinje y=112.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2: jorden utanför källarväggarna och under plattan -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M56,128 l10,10 M78,128 l10,10 M100,128 l10,10 M122,128 l10,10"/>
+    <path d="M66,170 l10,10 M88,170 l10,10 M110,170 l10,10 M132,170 l10,10"/>
+    <path d="M56,212 l10,10 M78,212 l10,10 M100,212 l10,10 M122,212 l10,10"/>
+    <path d="M66,254 l10,10 M88,254 l10,10 M110,254 l10,10 M132,254 l10,10"/>
+    <path d="M56,296 l10,10 M78,296 l10,10 M100,296 l10,10 M122,296 l10,10"/>
+    <path d="M480,128 l10,10 M502,128 l10,10 M524,128 l10,10 M546,128 l10,10"/>
+    <path d="M490,170 l10,10 M512,170 l10,10 M534,170 l10,10 M556,170 l10,10"/>
+    <path d="M480,212 l10,10 M502,212 l10,10 M524,212 l10,10 M546,212 l10,10"/>
+    <path d="M490,254 l10,10 M512,254 l10,10 M534,254 l10,10 M556,254 l10,10"/>
+    <path d="M480,296 l10,10 M502,296 l10,10 M524,296 l10,10 M546,296 l10,10"/>
+    <path d="M170,328 l10,10 M202,328 l10,10 M234,328 l10,10 M266,328 l10,10 M298,328 l10,10 M330,328 l10,10 M362,328 l10,10 M394,328 l10,10 M426,328 l10,10"/>
+  </g>
+
+  <!-- Blyerts: marklinje, bjälklag, källarväggar och platta -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M48,112 Q99,110 150,112"/>
+    <path d="M466,112 Q518,110 570,112"/>
+    <path d="M144,106 Q308,108 472,106"/>
+    <path d="M150,106 Q148,215 150,322"/>
+    <path d="M466,106 Q468,215 466,322"/>
+    <path d="M144,322 Q308,324 472,322"/>
+  </g>
+
+  <!-- Blyerts: avfuktaren, en låda med galler, handtag och vattenbehållare -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M350,214 Q395,212 440,214 Q442,268 440,322 Q395,324 350,322 Q348,268 350,214"/>
+    <path d="M384,214 Q395,204 406,214"/>
+    <path d="M360,238 Q364,256 360,274 M368,238 Q372,256 368,274 M376,238 Q380,256 376,274"/>
+    <path d="M354,298 Q395,296 436,298"/>
+  </g>
+
+  <!-- Blyerts-2: måttbygel för takhöjden, och pekpinne från nyckeltalet till maskinen -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M192,110 Q190,215 192,318 M187,110 h10 M187,318 h10"/>
+  </g>
+  <path d="M310,306 Q328,308 346,308" fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round"/>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="196" y="294" width="110" height="26" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 251 307)"/>
+
+  <!-- Snickarpenna: fukten på väggen och luften in i maskinen -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M160,144 C159,146 156,149 156,152 A4,4 0 0 0 164,152 C164,149 161,146 160,144"/>
+    <path d="M162,186 C161,188 158,191 158,194 A4,4 0 0 0 166,194 C166,191 163,188 162,186"/>
+    <path d="M160,228 C159,230 156,233 156,236 A4,4 0 0 0 164,236 C164,233 161,230 160,228"/>
+    <path d="M214,278 Q282,274 344,278 M336,271 L345,278 L336,285"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="48" y="47" fill="#625a50">källare 40 kvm, 75 % RF</text>
+    <text x="200" y="167" fill="#625a50">2,2 m</text>
+    <text x="216" y="263" fill="#ad3519">fuktig luft</text>
+    <text x="346" y="191">avfuktare</text>
+    <text x="200" y="315">12 l/dygn</text>
+  </g>
+</svg>

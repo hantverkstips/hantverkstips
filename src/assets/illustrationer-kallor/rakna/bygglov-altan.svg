@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Hus i sidovy på linjerat papper med en altan på plintar utanför fasaden. Tre mått är utsatta: 1,8 meter från marken upp till altangolvet, 3,6 meter ut från fasaden och 4,5 meter vidare till en streckad tomtgräns. En pil i rött pekar uppåt förbi höjdmåttet med anteckningen att en högre altan kräver bygglov. Nyckeltalet 1,8 meter är markerat.">
+  <!-- Anteckningsboken, verktygsskiss för /rakna/bygglov-altan/. Blyerts 2 px för hus, altan, räcke och
+       plintar, blyerts-2 för markskraffering, måttbyglar och tomtgräns, snickarpenna för pilen uppåt vid
+       höjdmåttet (den enda pennsaken), tumstock bakom nyckeltalet 1,8 m.
+       Skala: 1 m = 36 px. Marklinje y=296, altangolv y=231 (1,8 m), fasad x=164,
+       altanens ytterkant x=294 (3,6 m), tomtgräns x=456 (4,5 m).
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2: marken under marklinjen -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M62,300 l-8,10 M88,300 l-8,10 M114,300 l-8,10 M140,300 l-8,10 M166,300 l-8,10 M192,300 l-8,10 M218,300 l-8,10 M244,300 l-8,10 M270,300 l-8,10 M296,300 l-8,10 M322,300 l-8,10 M348,300 l-8,10 M374,300 l-8,10 M400,300 l-8,10 M426,300 l-8,10 M452,300 l-8,10 M478,300 l-8,10 M504,300 l-8,10 M530,300 l-8,10 M556,300 l-8,10"/>
+  </g>
+
+  <!-- Blyerts: marklinje, hus med tak och fönster -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M48,296 Q310,298 572,296"/>
+    <path d="M50,296 Q49,222 50,148"/>
+    <path d="M164,148 Q165,222 164,296"/>
+    <path d="M42,148 Q109,146 176,148"/>
+    <path d="M46,148 L109,104 L172,148"/>
+    <path d="M72,186 h34 v44 h-34 z M89,186 v44"/>
+  </g>
+
+  <!-- Blyerts: altangolv, plintar med stolpar och glest räcke -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M164,231 Q229,229 294,231"/>
+    <path d="M164,241 Q229,239 294,241"/>
+    <path d="M184,241 V282 M212,241 V282 M240,241 V282 M268,241 V282"/>
+    <path d="M178,282 h12 v14 h-12 z M206,282 h12 v14 h-12 z M234,282 h12 v14 h-12 z M262,282 h12 v14 h-12 z"/>
+    <path d="M176,231 Q175,212 176,194 M290,231 Q291,212 290,194"/>
+    <path d="M174,196 Q232,194 292,196"/>
+    <path d="M192,231 V202 M208,231 V202 M224,231 V202 M240,231 V202 M256,231 V202 M272,231 V202"/>
+  </g>
+
+  <!-- Blyerts-2: tomtgräns, måttbyglar och hjälplinjer -->
+  <path d="M456,150 Q455,224 456,296" fill="none" stroke="#625a50" stroke-width="1.5" stroke-dasharray="8 6" stroke-linecap="round"/>
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M316,231 Q315,264 316,296 M311,231 h10 M311,296 h10"/>
+    <path d="M164,170 Q229,169 294,170 M164,165 v10 M294,165 v10"/>
+    <path d="M294,170 Q375,169 456,170 M456,165 v10"/>
+  </g>
+  <path d="M294,231 V176 M164,170 V152" fill="none" stroke="#625a50" stroke-width="1.25" stroke-dasharray="7 5"/>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="326" y="242" width="66" height="26" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 359 255)"/>
+
+  <!-- Snickarpenna: pilen uppåt förbi höjdmåttet -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M318,226 Q319,206 318,188"/>
+    <path d="M312,197 L318,187 L324,197"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="48" y="35" fill="#625a50">altan på plintar</text>
+    <text x="190" y="158" fill="#625a50">3,6 m ut</text>
+    <text x="310" y="158" fill="#625a50">4,5 m till gräns</text>
+    <text x="334" y="203" fill="#ad3519">högre än 1,8 m?</text>
+    <text x="334" y="227" fill="#ad3519">då bygglov</text>
+    <text x="330" y="263">1,8 m</text>
+    <text x="464" y="287" fill="#625a50">tomtgräns</text>
+  </g>
+</svg>

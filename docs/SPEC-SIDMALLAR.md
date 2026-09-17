@@ -561,7 +561,9 @@ Strukturerad data: `produkt()` med `etikett`, och `brodsmulor` via layouten. Om 
 
 ### 4.6 `src/pages/rakna/index.astro`
 
-Statisk. Brödsmulor: Hantverkstips / Räkna själv. H1 "Räkna själv", ett stycke platshållare ("Kalkylatorerna räknar på riktiga produktdata. Resultatet är en marginal, inte ett exakt svar."), sedan en rad per post i `KALKYLATORER`: H2 (Pennstreck) som länk, `rad`. `reklam={false}`.
+Statisk. Brödsmulor: Hantverkstips / Räkna själv. `reklam={false}`. `bred={true}`, med H1, ingress och det avslutande stycket i `max-w-lasbredd` som pelarhubben gör, så att texten och rutnätet får samma vänsterkant.
+
+**Galleri sedan 2026-09-17.** H1 "Räkna själv", ingress, sedan ett rutnät med ett `<Artikelkort>` per post i `KALKYLATORER`, i registrets ordning. Samma rutnät som `/guider/`: tre kolumner från 1024 px, två från 640, en under. Fem verktyg blir en rad om tre och en om två. Kortet får `etikett` "Räkna själv · {pelarens korta namn}" (pelaren är den första i registrets lista, uppslagen med `hittaPelare()`), `rubrik` = `namn` som länk till `/rakna/[slug]/`, `beskrivning` = `rad`, `rubrikniva={2}` och `visaPelare={false}`, eftersom pelaren redan står i etiketten och ett verktyg saknar datum. Ingen ny kortkomponent: `<Artikelkort>` tar precis de props galleriet behöver. Under rutnätet ett stycke om att varje verktyg redovisar källan per tal och att resultatet ligger kvar i adressen och går att dela.
 
 ### 4.7 Kalkylatorsidorna under `/rakna/`
 
@@ -575,6 +577,19 @@ Varje kalkylator är en egen sida med egen sökfras och resultatet i adressen. M
 4. **Sidan.** `src/pages/rakna/[slug].astro`, `prerender = false`, `Astro.locals.sidtyp = 'verktyg'`, `Cache-Control` på alla svar, `bred={true}`, brödsmulor Hantverkstips / Räkna själv / {verktyget}. Sidan renderar formulärkomponenten, resultatet med det stora talet, en `<Faktaruta variant="kortsvar">` överst, H2 "Så räknar vi" med formeln i ord och tabellen där varje rad är märkt Källa eller Antagande med länk, och H2 "Läs vidare". Delbar länk i ett skrivskyddat fält, byggd av de tolkade värdena. Strukturerad data: bara brödsmulorna, som layouten skriver ut. Verktyget är inte en artikel.
 5. **Registret.** En rad i `src/lib/kalkyl/register.ts` med `slug`, `namn`, `rad` (högst tolv ord), `sasong` och `pelare` (en lista, ett verktyg får höra hemma i flera ämnen) eller `kategori`. `/rakna/`, sidfoten, startsidan, `/amnen/` och hubbens grupp Räkna hämtar listan själva.
 6. **Inbäddningen.** Slugen läggs till i `MED_FORMULAR` i `src/components/ui/Kalkylator.astro`, och artikeln som förklarar talet får `<Kalkylator namn="[slug]" />` där läsaren just fått veta vad talet betyder. En kalkylator utan den raden går fortfarande att länka till med `<Verktygskort>`.
+
+**Bilderna, tillagda 2026-09-17.** Två filer per verktyg, båda namngivna efter slugen, båda ritade av designansvarig: skissen i `src/assets/illustrationer/rakna/[slug].svg` (600 × 360, alltså 5:3 som artikelkorten, under 40 kB) och delningsbilden i `public/og/rakna-[slug].png` (1200 × 630). Sidorna läser dem genom `src/lib/verktygsbild.ts`, som ligger utanför `src/lib/kalkyl/` för att formelmodulerna ska gå att köra med node i testskripten:
+
+- `verktygsillustration(slug)` slår upp skissen i en eager `import.meta.glob` och ger `undefined` när filen inte finns. En slug utan skiss är alltså inget byggfel: verktygssidan visar ingen bild, och galleriets kort visar det blanka bladet med pelarikonen, precis som ett artikelkort utan illustration.
+- `verktygsDelningsbild(slug)` ger strängen `/og/rakna-[slug].png`, som skickas till `<Bas ogBild={...}>`. Ingen kontroll behövs: sökvägen pekar i `public/`, och layouten gör om den till en absolut adress med `new URL(..., Astro.site)`.
+
+Skissen står i sidhuvudet till höger om ingressen i ett 7/5-rutnät från 1024 px, som startsidans hero, och under ingressen på mobil. `alt` är tom, H1 bär betydelsen, och ramen är artikelbildernas (`rounded-sm border border-linje`). Bilden är sidans LCP-bild och laddas därför med `fetchpriority="high"` utan `loading="lazy"`; en SVG på 17 till 26 kB är billigare än den kalkylator den illustrerar. På gallerikortet laddas samma fil lazy, som alla kortbilder.
+
+**Strukturerad data, tillagd 2026-09-17.** Varje verktygssida lägger `<StrukturData slot="head" data={verktyg({ url, namn, beskrivning })} />` inuti `<Bas>`. `verktyg()` i `src/lib/strukturdata.ts` ger `WebApplication` med `applicationCategory: 'UtilityApplication'`, `operatingSystem: 'Web'`, `offers` på 0 SEK, `inLanguage: 'sv'`, `isAccessibleForFree: true` och `publisher` från `organisation()`. Sidan är ett verktyg, inte en artikel, och får därför varken `Article`, författare eller datum. Brödsmulorna skriver layouten ut som förut. `FAQPage` läggs till först på en sida som faktiskt har ett avsnitt med frågor och svar; ingen kalkylatorsida har det i dag, och markup för frågor som inte står på sidan är en felaktig signal.
+
+Slug, verktygsnamn och beskrivning står som `SLUG`, `VERKTYGSNAMN` och `BESKRIVNING` överst i varje rutt, så att brödsmulan, `description`, `og:image` och `WebApplication` inte kan glida isär.
+
+**Sitemapen.** Kontrollerad i bygget 2026-09-17: `@astrojs/sitemap` tar med både `/rakna/` och de fem serverrenderade verktygssidorna, så `customPages` behövs inte. `public/robots.txt` blockerar bara `/go/` och `/admin/`.
 
 Produkter visas bara när räkningen faktiskt pekar ut en produktegenskap. Gör den inte det, som daggpunkten, har sidan varken produktkort eller reklamband (`reklam={false}`), utan länkar vidare till kalkylatorn eller artikeln som tar vid.
 
@@ -770,9 +785,10 @@ Konsekvens: ingen pelare eller kategori får heta `tester`, `jamforelser`, `rakn
 | Test | `Product` med `AggregateOffer`; `review` bara på `etikett: test` | rutten |
 | Kategori | `ItemList` | rutten |
 | Författare | `Person` | rutten |
-| Kalkylator, `/rakna/`, 404 | bara `BreadcrumbList` | |
+| Kalkylator | `WebApplication` med `publisher` Organization (`verktyg()`) | rutten |
+| `/rakna/`, 404 | bara `BreadcrumbList` | |
 
-Rutten renderar `<StrukturData data={...} slot="head" />` inuti `<Bas>`. `FAQPage` byggs inte nu.
+Rutten renderar `<StrukturData data={...} slot="head" />` inuti `<Bas>`. `FAQPage` byggs bara på en sida som har ett avsnitt med frågor och svar; ingen sida har det i dag.
 
 ## 7. Utkast
 

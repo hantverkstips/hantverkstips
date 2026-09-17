@@ -31,10 +31,13 @@ import {
 } from '../../lib/kalkyl/elkostnad';
 import { CELL_KLASS, ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
 import { hamtaProdukt, produktNamn } from '../../lib/produkter';
+import { verktyg } from '../../lib/strukturdata';
+import { verktygsDelningsbild, verktygsillustration } from '../../lib/verktygsbild';
 import ElkostnadForm from '../../components/kalkyl/ElkostnadForm.astro';
 import Faktaruta from '../../components/ui/Faktaruta.astro';
 import Markering from '../../components/ui/Markering.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
+import StrukturData from '../../components/ui/StrukturData.astro';
 
 Astro.locals.sidtyp = 'verktyg';
 
@@ -170,26 +173,66 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     stod: 'Skottår räknas inte. Skillnaden är under tre promille och ryms i osäkerheten på gångtiden',
   },
 ];
+
+/** Slug, namn och beskrivning på ett ställe: brödsmulan, og:image och WebApplication läser samma. */
+const SLUG = 'elkostnad';
+const VERKTYGSNAMN = 'Elkostnadskalkylator';
+const BESKRIVNING =
+  'Räkna ut elkostnaden för en maskin ur effekt, gångtid och elpris. Kilowattimmar och kronor per månad eller år, med SCB:s elpris och antagandena utskrivna.';
+const illustration = verktygsillustration(SLUG);
 ---
 
 <Bas
   title={titel}
-  description="Räkna ut elkostnaden för en maskin ur effekt, gångtid och elpris. Kilowattimmar och kronor per månad eller år, med SCB:s elpris och antagandena utskrivna."
+  description={BESKRIVNING}
   reklam={false}
   brodsmulor={[
     { namn: 'Hantverkstips', href: '/' },
     { namn: 'Räkna själv', href: '/rakna/' },
-    { namn: 'Elkostnadskalkylator' },
+    { namn: VERKTYGSNAMN },
   ]}
   bred={true}
+  ogBild={verktygsDelningsbild(SLUG)}
 >
+  <StrukturData
+    slot="head"
+    data={verktyg({ url: `/rakna/${SLUG}/`, namn: VERKTYGSNAMN, beskrivning: BESKRIVNING })}
+  />
+
   <div class="mx-auto w-full max-w-lasbredd">
-    <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">Vad kostar maskinen i el? Räkna ut kWh och kronor</h1>
-    <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
-      Här kan du räkna ut elkostnad för en maskin som står och går: avfuktaren i källaren, värmefläkten i garaget,
-      frysen i förrådet. Fyll i effekten i watt, gångtiden per dygn och vad du betalar för elen. Vad kostar det att
-      köra den en månad, och vad blir samma maskin på ett år? Svaret står både i kilowattimmar och i kronor.
-    </p>
+    {/*
+      Sidhuvudet: rubrik och ingress till vänster i 7/12, skissen till höger i
+      5/12 på desktop, under ingressen på mobil. Bilden är dekorativ, H1 bär
+      betydelsen, därför tom alt. Den är sidans LCP-bild och laddas därför
+      eagert med fetchpriority; en SVG under 40 kB kostar mindre än den
+      kalkylator den illustrerar. Saknas filen visas ingen bild alls.
+    */}
+    <section class="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-7">
+        <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">Vad kostar maskinen i el? Räkna ut kWh och kronor</h1>
+        <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
+          Här kan du räkna ut elkostnad för en maskin som står och går: avfuktaren i källaren, värmefläkten i garaget,
+          frysen i förrådet. Fyll i effekten i watt, gångtiden per dygn och vad du betalar för elen. Vad kostar det
+          att köra den en månad, och vad blir samma maskin på ett år? Svaret står både i kilowattimmar och i kronor.
+        </p>
+      </div>
+
+      {
+        illustration && (
+          <div class="lg:col-span-5">
+            <img
+              src={illustration.src}
+              alt=""
+              width={illustration.width}
+              height={illustration.height}
+              fetchpriority="high"
+              decoding="async"
+              class="block h-auto w-full rounded-sm border border-linje"
+            />
+          </div>
+        )
+      }
+    </section>
 
     {
       visat.status === 'ok' && tal && (
