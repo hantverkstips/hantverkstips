@@ -32,6 +32,7 @@ import { verktyg } from '../../lib/strukturdata';
 import { verktygsDelningsbild, verktygsillustration } from '../../lib/verktygsbild';
 import InnervaggForm from '../../components/kalkyl/InnervaggForm.astro';
 import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Faq from '../../components/ui/Faq.astro';
 import Markering from '../../components/ui/Markering.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
 import Produktkort from '../../components/ui/Produktkort.astro';
@@ -208,6 +209,26 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     varde: '2,4 till 4,8 m',
     grund: 'Antagande',
     stod: 'De längder byggvaruhusen vanligen lagerför i 45 × 70 och 45 × 95. Ingen publicerad standard',
+  },
+];
+
+/**
+ * Frågorna sist på sidan. Exemplen är desamma som i "Materialåtgång innervägg",
+ * och påslagen är de som står i "Så räknar vi".
+ */
+const FRAGOR = [
+  {
+    fraga: 'Hur många reglar går det åt till en innervägg?',
+    svar: 'Väggens längd delas med c-måttet, alltså avståndet mellan reglarnas mitt, och avrundas uppåt. Sedan läggs en regel till som stänger sista facket. Ta en vägg på fyra meter med reglar på c 600 mm: den får åtta reglar, och den sista står i väggänden. Varje dörröppning lägger till två reglar och en avväxling över öppningen.',
+  },
+  {
+    fraga: 'Ska reglarna sitta på c 400 eller c 600 mm?',
+    svar: 'Med två lag gips på varje sida räcker c 600 mm. Står du på ett lag väljer kalkylatorn c 400 mm åt dig, eftersom väggen annars ger efter mellan reglarna när någon lutar sig mot den. Branschorganisationen Svenskt Trä knyter det glesare måttet till dubbla skivlag med förskjutna skarvar, medan skivtillverkarna anger det för sina egna system utan det villkoret. Skillnaden mellan källorna är värd att veta innan du sågar.',
+    lank: { text: 'Hela ordningen står i guiden om att bygga innervägg.', href: '/inomhus/bygga-innervagg/' },
+  },
+  {
+    fraga: 'Hur mycket spill ska jag räkna med?',
+    svar: 'Virket får ett påslag på fem procent, för den skeva regeln finns alltid i högen. Skivorna får tio procent, eftersom bitarna vid tak, hörn och dörr sällan blir hela. Därför drar kalkylatorn inte heller av dörrhålet från skivytan. Den föreslår dessutom den handelslängd som spiller minst när reglarna kapas, och det är ofta inte den längsta i hyllan.',
   },
 ];
 
@@ -535,5 +556,7 @@ const illustration = verktygsillustration(SLUG);
         </li>
       </ul>
     </section>
+
+    <Faq fragor={FRAGOR} />
   </div>
 </Bas>

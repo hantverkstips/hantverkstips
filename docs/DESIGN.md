@@ -856,6 +856,20 @@ Sista meningen är en länk till `/om/sa-tjanar-vi-pengar/`. Butiksnamnet hämta
 
 **Tillstånd.** Visas på alla sidor där en köpknapp eller jämförelsetabell med köpknappar renderas. Layouten avgör det, inte innehållsfilen. På en projektguide betyder det att minst en verktygsrad i "Det här behöver du" pekar på en produkt: rader utan produkt renderas som text utan knapp, och en lista med bara sådana rader ger inget band. Köpknappen har dessutom sin egen finstilta rad "Annonslänk · pris [datum]" under sig, så märkningen finns på två ställen: ovanför första länken och vid varje länk. Inga "i samarbete med", inga hashtaggar, ingen märkning som bara ligger i sidfoten.
 
+### Frågor och svar
+
+Tillagd 2026-09-17. Komponenten är `src/components/ui/Faq.astro`.
+
+**Syfte.** De tre eller fyra frågor läsaren fortfarande har när sidan är läst, och som annars skickar hen tillbaka till Google. Den är inte en sammanfattning av sidan och den upprepar inte kort svar.
+
+**Innehåll.** H2 med pennstreck, som standard "Vanliga frågor", sedan en rad per fråga. Frågan är formulerad som läsaren skulle skriva den, svaret är två till fyra meningar enligt STILGUIDE.md, med de tal sidan redan använder. Ett svar får avslutas med en hänvisning vidare, och den är då en egen mening med en länk, aldrig en länk inbakad mitt i svaret.
+
+**Utseende.** 1 px linje över listan och under varje fråga, ingen ram runt, ingen bakgrund, ingen skugga. Frågan är `<summary>` i sans 700 blyerts med 44 px klickhöjd och webbläsarens egen triangel kvar; den är det enda som säger att raden går att fälla ut. Svaret är brödtext, 16 px indrag noll, med 16 px luft under. Rutan står sist i brödtexten, före författarrutan, och är alltid stängd när sidan laddas.
+
+**Tillstånd.** Tom lista: renderas inte. Ingen JavaScript, `<details>` sköter öppna och stäng.
+
+**Markup.** Komponenten skriver själv ut FAQPage i ett `<script type="application/ld+json">` på plats i brödtexten, inte i head, och texten i markupen är ordagrant den som står på skärmen. Högst en per sida, kontrollerat av `npm run kontrollera`.
+
 ### Innehållsförteckning
 
 **Syfte.** Skumläsning och hopp på långa sidor. Bygger på H2 i innehållet.

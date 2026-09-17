@@ -29,6 +29,7 @@ import { verktyg } from '../../lib/strukturdata';
 import { verktygsDelningsbild, verktygsillustration } from '../../lib/verktygsbild';
 import DaggpunktForm from '../../components/kalkyl/DaggpunktForm.astro';
 import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Faq from '../../components/ui/Faq.astro';
 import Markering from '../../components/ui/Markering.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
 import StrukturData from '../../components/ui/StrukturData.astro';
@@ -147,6 +148,26 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     varde: '25 % RF inne',
     grund: 'Antagande',
     stod: 'Vårt val. Under det går det inte att hålla en bostad vintertid utan att luften blir obehagligt torr',
+  },
+];
+
+/**
+ * Frågorna sist på sidan. Alla tre svaras redan av texten ovanför, med samma
+ * tal; rutan är till för den som skummar och för Googles frågeblock.
+ */
+const FRAGOR = [
+  {
+    fraga: 'Vad är daggpunkt?',
+    svar: 'Daggpunkten är den temperatur där luften inte orkar bära mer vatten som ånga. Kyls en yta under den fälls vattnet ut på ytan. Det är alltid den kallaste ytan i rummet som blir våt först, oftast fönsterrutan eller ytterväggen bakom en garderob.',
+  },
+  {
+    fraga: 'Vilken luftfuktighet är normal inomhus?',
+    svar: 'En bostad ligger vintertid oftast mellan 30 och 45 procent relativ luftfuktighet, och högre på sommaren när uteluften bär mer vatten. Hygrometern visar luften mitt i rummet. Vid en kall yta är talet alltid högre än så, och det är där mögel börjar.',
+    lank: { text: 'Läs mer om rätt luftfuktighet inomhus, rum för rum.', href: '/fukt/luftfuktighet-inomhus/' },
+  },
+  {
+    fraga: 'Hjälper en avfuktare mot kondens på fönster?',
+    svar: 'Ja, när kondensen beror på fuktig luft inne. Avfuktaren tar bort vatten ur luften, och då sjunker daggpunkten under rutans temperatur. Ett gammalt tvåglasfönster kan bli så kallt att det skulle krävas obehagligt torr luft, och då är det rutan som ska bytas. Kort vädring med genomdrag morgon och kväll gör ofta samma nytta på vintern.',
   },
 ];
 
@@ -478,5 +499,7 @@ const illustration = verktygsillustration(SLUG);
         </li>
       </ul>
     </section>
+
+    <Faq fragor={FRAGOR} />
   </div>
 </Bas>

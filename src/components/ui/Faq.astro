@@ -1,0 +1,97 @@
+---
+/**
+ * Frågor och svar sist i brödtexten. Används både från en MDX-fil och direkt i
+ * en Astro-sida:
+ *
+ *   <Faq fragor={[{ fraga: 'Vad är daggpunkt?', svar: 'Den temperatur där ...' }]} />
+ *
+ * Svaret är ren text. Ingen markdown, inga taggar: ett svar med en inbakad
+ * länk skulle behöva renderas med set:html, och då blir samma sträng både
+ * synlig text och JSON-LD med två olika betydelser. Behöver svaret peka vidare
+ * finns fältet lank, som renderas som en egen mening efter svaret och räknas in
+ * i markupen som sista meningen i svaret. Då säger sidan och markupen samma sak.
+ *
+ * FAQPage skrivs ut här i komponenten och inte via <slot name="head" />, av
+ * samma skäl: komponenten står i brödtexten och vet bäst vad som faktiskt
+ * renderas. <script type="application/ld+json"> är inte klient-JS, webbläsaren
+ * kör den inte, och kontrollen i docs/SPEC-SIDMALLAR.md avsnitt 10 undantar den.
+ *
+ * Högst en Faq per sida. Två FAQPage-block på samma adress är motstridig
+ * markup; kontrollen ligger i scripts/kontrollera-innehall.ts.
+ *
+ * Utseende enligt docs/DESIGN.md avsnitt 6, Frågor och svar. Ingen JavaScript:
+ * <details> sköter öppna och stäng.
+ */
+import { slugify } from '../../lib/innehall';
+import Pennstreck from './Pennstreck.astro';
+import StrukturData from './StrukturData.astro';
+
+export interface Fraga {
+  fraga: string;
+  svar: string;
+  /** Valfri hänvisning, renderas som en mening efter svaret. */
+  lank?: { text: string; href: string };
+}
+
+interface Props {
+  fragor: Fraga[];
+  rubrik?: string;
+}
+
+const { fragor, rubrik = 'Vanliga frågor' } = Astro.props;
+
+/**
+ * Markupen speglar det som står på skärmen, fråga för fråga. Texten i
+ * acceptedAnswer är svaret plus länkmeningen, alltså exakt det läsaren ser när
+ * frågan är uppfälld.
+ */
+const markup = {
+  '@type': 'FAQPage',
+  mainEntity: fragor.map((f) => ({
+    '@type': 'Question',
+    name: f.fraga,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: f.lank ? `${f.svar} ${f.lank.text}` : f.svar,
+    },
+  })),
+};
+---
+
+{
+  fragor.length > 0 && (
+    <section class="faq">
+      <Pennstreck id={slugify(rubrik)}>{rubrik}</Pennstreck>
+      <div class="border-t border-linje">
+        {fragor.map((f) => (
+          <details class="border-b border-linje">
+            {/*
+              Ingen flex-klass här. <summary> har display: list-item, och det
+              är den egenskapen som ritar triangeln; byts den mot flex
+              försvinner triangeln och raden ser ut som en vanlig rubrik, utan
+              något som säger att den går att fälla ut. py-3 plus radavståndet
+              ger 48 px klickhöjd.
+            */}
+            <summary class="min-h-11 cursor-pointer py-3 font-sans font-bold leading-6 text-blyerts">
+              {f.fraga}
+            </summary>
+            <div class="pb-4">
+              <p class="m-0 text-brod lg:text-brod-lg">{f.svar}</p>
+              {f.lank && (
+                <p class="m-0 mt-2 text-brod lg:text-brod-lg">
+                  <a
+                    href={f.lank.href}
+                    class="inline-flex min-h-11 items-center text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+                  >
+                    {f.lank.text}
+                  </a>
+                </p>
+              )}
+            </div>
+          </details>
+        ))}
+      </div>
+      <StrukturData data={markup} />
+    </section>
+  )
+}

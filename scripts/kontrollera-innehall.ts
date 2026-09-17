@@ -35,7 +35,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { parse as parseYaml } from 'yaml';
+import { lasFrontmatter, strang } from './frontmatter.ts';
 import { KALKYLATORER } from '../src/lib/kalkyl/register.ts';
 import { NIVAER } from '../src/lib/niva.ts';
 import { PELARE_SLUGS } from '../src/lib/pelare.ts';
@@ -107,28 +107,11 @@ function lasMapp(mapp: string): string[] {
   return ut;
 }
 
+/** Läsningen ligger i scripts/frontmatter.ts, delad med delningsbilderna. */
 function delaFrontmatter(text: string, fil: string): { data: Record<string, unknown>; body: string } {
-  const m = text.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
-  if (!m) {
-    felet(fil, 'saknar frontmatter (--- ... ---) överst');
-    return { data: {}, body: text };
-  }
-  let data: unknown;
-  try {
-    data = parseYaml(m[1] ?? '');
-  } catch (e) {
-    felet(fil, `frontmatter går inte att läsa: ${(e as Error).message}`);
-    return { data: {}, body: m[2] ?? '' };
-  }
-  if (typeof data !== 'object' || data === null || Array.isArray(data)) {
-    felet(fil, 'frontmatter är inte en lista av fält');
-    return { data: {}, body: m[2] ?? '' };
-  }
-  return { data: data as Record<string, unknown>, body: m[2] ?? '' };
-}
-
-function strang(v: unknown): string | undefined {
-  return typeof v === 'string' ? v : undefined;
+  const { data, body, fel: meddelande } = lasFrontmatter(text);
+  if (meddelande) felet(fil, meddelande);
+  return { data, body };
 }
 
 function urlFor(samling: Samling, id: string, data: Record<string, unknown>): string | null {
@@ -292,6 +275,14 @@ for (const f of filer) {
   }
 
   if (/\/go\//.test(f.body)) felet(f.sokvag, 'länkar direkt till /go/. Affiliatelänkar går alltid via <Kopknapp>');
+
+  // Högst en <Faq> per sida. Komponenten skriver ut ett FAQPage-block där den
+  // står, och två block på samma adress är motstridig markup: Google får två
+  // listor med frågor och vet inte vilken sidan handlar om.
+  const faqar = [...f.body.matchAll(/<Faq[\s/>]/g)].length;
+  if (faqar > 1) {
+    felet(f.sokvag, `har ${faqar} <Faq>. Högst en per sida, annars blir FAQPage-markupen motstridig`);
+  }
 
   // Titel och beskrivning som de ser ut i sökresultatet. Gäller varje sida som
   // byggs, utkast räknas inte. Schemat tar redan max 160 tecken på description,

@@ -93,6 +93,18 @@ export function artikel(a: ArtikelData): object {
   };
 }
 
+const I_LAGER = 'https://schema.org/InStock';
+const SLUT_I_LAGER = 'https://schema.org/OutOfStock';
+
+/**
+ * Lagerstatus i schema.org-form. Går via arSlut() och därmed lagerlage(), samma
+ * funktion som Kopknapp läser, så att sidan och markupen aldrig säger olika
+ * saker: en knapp med texten "Slut i lager" får aldrig InStock bredvid sig.
+ */
+function tillganglighet(p: Produkt): string {
+  return arSlut(billigasteErbjudande(p)) ? SLUT_I_LAGER : I_LAGER;
+}
+
 export interface ProduktData {
   produkt: Produkt;
   url: string;
@@ -106,12 +118,7 @@ export function produkt(p: ProduktData): object {
   const bild = lokalBild(p.produkt);
   const lagsta = lagstaPris(p.produkt);
   const hogsta = hogstaPris(p.produkt);
-  const billigast = billigasteErbjudande(p.produkt);
   const medPris = p.produkt.erbjudanden.filter((e) => typeof e.pris === 'number' && e.pris > 0);
-
-  // Samma tolkning av lagerstatus som Kopknapp gör, så att sidan och markupen
-  // aldrig säger olika saker.
-  const tillganglighet = arSlut(billigast) ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock';
 
   return {
     '@type': 'Product',
@@ -127,7 +134,7 @@ export function produkt(p: ProduktData): object {
             lowPrice: lagsta,
             highPrice: hogsta,
             offerCount: medPris.length,
-            availability: tillganglighet,
+            availability: tillganglighet(p.produkt),
           },
         }
       : {}),
@@ -157,6 +164,69 @@ export function lista(l: { url: string; namn: string; poster: { namn: string; ur
       name: p.namn,
       url: absolut(p.url),
     })),
+  };
+}
+
+export interface KategoriPost {
+  produkt: Produkt;
+  /**
+   * Sidan där erbjudandet faktiskt visas: produktens test- eller
+   * granskningssida om den finns, annars kategorisidan med ankare till
+   * produktens rubrik. Aldrig en /go/-adress, se kommentaren i kategori().
+   */
+  url: string;
+}
+
+/**
+ * Kategorisidans ItemList, där varje post bär ett helt Product-objekt i stället
+ * för bara ett namn och en länk. Skälet är att kategorisidan är den sida som
+ * visar priset, lagerstatusen och köpknappen; en lista med bara länkar berättar
+ * ingenting om det för Google.
+ *
+ * Priset är lägsta pris och lagerstatusen kommer ur samma funktioner som
+ * Kopknapp och produkt() läser, så att de tre aldrig säger olika saker.
+ *
+ * `offers.url` pekar på vår egen sida, aldrig på /go/[slug]. Google vill ha
+ * adressen där erbjudandet visas för läsaren, och /go/ är en vidarebefordran
+ * med rel="sponsored nofollow" som varken renderar pris eller produktnamn.
+ *
+ * En produkt utan pris får inget offers-objekt. Ett Product utan offers, review
+ * eller aggregateRating är giltig schema.org men saknar det Google kräver för
+ * ett rikt resultat, och det är rätt läge: vi hittar hellre inte på ett pris.
+ */
+export function kategori(k: { url: string; namn: string; poster: KategoriPost[] }): object {
+  return {
+    '@type': 'ItemList',
+    name: k.namn,
+    url: absolut(k.url),
+    itemListElement: k.poster.map((post, i) => {
+      const bild = lokalBild(post.produkt);
+      const lagsta = lagstaPris(post.produkt);
+      const sida = absolut(post.url);
+      return {
+        '@type': 'ListItem',
+        position: i + 1,
+        item: {
+          '@type': 'Product',
+          name: produktNamn(post.produkt),
+          ...(post.produkt.marke ? { brand: { '@type': 'Brand', name: post.produkt.marke } } : {}),
+          sku: post.produkt.slug,
+          ...(bild ? { image: absolut(bild) } : {}),
+          url: sida,
+          ...(lagsta !== null
+            ? {
+                offers: {
+                  '@type': 'Offer',
+                  price: lagsta,
+                  priceCurrency: 'SEK',
+                  availability: tillganglighet(post.produkt),
+                  url: sida,
+                },
+              }
+            : {}),
+        },
+      };
+    }),
   };
 }
 

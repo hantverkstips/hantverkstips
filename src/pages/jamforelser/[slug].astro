@@ -5,6 +5,7 @@
  */
 import { getEntry, render } from 'astro:content';
 import Bas from '../../layouts/Bas.astro';
+import { delningsbild } from '../../lib/delningsbild';
 import { formateraDatum, isoDatum } from '../../lib/format';
 import {
   arPublicerad,
@@ -21,6 +22,7 @@ import { hamtaButik } from '../../lib/produkter';
 import { artikel as artikelData } from '../../lib/strukturdata';
 import Brodsmulor from '../../components/ui/Brodsmulor.astro';
 import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Faq from '../../components/ui/Faq.astro';
 import Forfattarruta from '../../components/ui/Forfattarruta.astro';
 import Illustration from '../../components/ui/Illustration.astro';
 import Innehallsforteckning from '../../components/ui/Innehallsforteckning.astro';
@@ -71,6 +73,14 @@ const relaterat = [
   ...(await publicerade('kunskap')).filter((e) => e.data.kategori === d.kategori),
 ].map((e) => ({ etikett: typEtikett(e.data.typ), namn: e.data.title, href: artikelUrl(e) }));
 
+/**
+ * Delningsbilden i 1200 × 630, ritad ur titeln och sidans första illustration
+ * (scripts/generera-delningsbilder.mjs). Samma fil går ut som og:image och som
+ * image i Article, så att Google får en rasterbild. Saknas filen tar Bas
+ * sajtens standardbild.
+ */
+const ogBild = delningsbild('jamforelser', entry.id);
+
 const strukturdata = artikelData({
   url: jamforelseUrl(entry),
   titel: d.title,
@@ -79,12 +89,14 @@ const strukturdata = artikelData({
   uppdaterad: d.uppdaterad,
   forfattareSlug: d.forfattare,
   forfattareNamn,
+  bildUrl: ogBild,
 });
 ---
 
 <Bas
   title={d.seoTitle ?? d.title}
   description={d.description}
+  ogBild={ogBild}
   ogTyp="article"
   reklam={true}
   butikNamn={butik?.namn}
@@ -137,6 +149,7 @@ const strukturdata = artikelData({
           Kopknapp,
           Produktkort,
           Jamforelsetabell,
+          Faq,
         }}
       />
     </div>

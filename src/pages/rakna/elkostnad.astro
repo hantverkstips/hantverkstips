@@ -18,7 +18,7 @@
 export const prerender = false;
 
 import Bas from '../../layouts/Bas.astro';
-import { ELPRIS_KALLA } from '../../lib/antaganden';
+import { ELPRIS_KALLA, ELPRIS_KR_PER_KWH } from '../../lib/antaganden';
 import { formateraPris, formateraTal } from '../../lib/format';
 import {
   produktForval,
@@ -35,6 +35,7 @@ import { verktyg } from '../../lib/strukturdata';
 import { verktygsDelningsbild, verktygsillustration } from '../../lib/verktygsbild';
 import ElkostnadForm from '../../components/kalkyl/ElkostnadForm.astro';
 import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Faq from '../../components/ui/Faq.astro';
 import Markering from '../../components/ui/Markering.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
 import StrukturData from '../../components/ui/StrukturData.astro';
@@ -171,6 +172,26 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     varde: '365 dagar',
     grund: 'Antagande',
     stod: 'Skottår räknas inte. Skillnaden är under tre promille och ryms i osäkerheten på gångtiden',
+  },
+];
+
+/**
+ * Frågorna sist på sidan. Svaren använder samma tal som räkneexemplen ovanför,
+ * och elpriset kommer ur ELPRIS_KR_PER_KWH som hela sajten räknar med.
+ */
+const FRAGOR = [
+  {
+    fraga: 'Hur räknar jag om watt till kWh?',
+    svar: 'Dela effekten i watt med 1 000, så har du kilowatt. Gångra kilowatten med antalet timmar maskinen faktiskt går, så har du kilowattimmar. En maskin på 1 000 W som går en timme drar alltså en kilowattimme. Kilowattimmen är enheten elbolaget tar betalt för.',
+  },
+  {
+    fraga: 'Drar en avfuktare mycket el?',
+    svar: 'En vanlig kondensavfuktare till en källare ligger på 320 W. Är den styrd av en hygrostat, alltså en fuktgivare som stänger av när luften är torr nog, går den kanske åtta timmar per dygn. Månaden landar då på 184 kr. En värmefläkt i garaget kostar mer än så trots kortare gångtid, för effekten är dubbelt så hög.',
+    lank: { text: 'Se elen för fyra avfuktare i guiden om avfuktare till källaren.', href: '/fukt/avfuktare-kallare/' },
+  },
+  {
+    fraga: 'Vad kostar en kWh 2026?',
+    svar: `Kalkylatorn räknar med ${String(ELPRIS_KR_PER_KWH).replace('.', ',')} kr per kWh om du inte skriver något annat. Talet är statistikmyndigheten SCB:s genomsnitt för hushåll, ${ELPRIS_KALLA.period}, och det omfattar elhandel, nätavgift, energiskatt och moms. Ditt eget pris står på fakturan och kan ligga en bra bit från genomsnittet. Byt talet i fältet, så räknas allt om.`,
   },
 ];
 
@@ -436,5 +457,7 @@ const illustration = verktygsillustration(SLUG);
         </li>
       </ul>
     </section>
+
+    <Faq fragor={FRAGOR} />
   </div>
 </Bas>

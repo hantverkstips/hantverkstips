@@ -39,7 +39,9 @@ interface Props {
   reklam?: boolean;              // visar Reklamband. Standard false
   brodsmulor?: Brodsmula[];      // från src/lib/innehall.ts. Utelämnas på startsidan
   bred?: boolean;                // main får max-w-sidbredd i stället för lasbredd. Kategori, jämförelse, kalkylator
-  noindex?: boolean;             // <meta name="robots" content="noindex">. 404 och admin
+  noindex?: boolean;             // lägger noindex i robots-taggen. 404 och admin
+  ogBild?: string;               // sökväg i public till sidans delningsbild. Utelämnad: /og-standard.png
+  ogTyp?: 'website' | 'article'; // article på artiklar, tester och jämförelser, website på hubbar och verktyg
   paginering?: { foregaende?: string; nasta?: string };  // rel="prev" och rel="next" i head. /guider/
 }
 ```
@@ -48,7 +50,17 @@ interface Props {
 
 ### Head
 
-I ordning: `charset`, `viewport`, `<title>`, `description`, `canonical` (som nu), `robots` om `noindex`, favicon, tre `<link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/...">`, `<slot name="head" />`. Inga externa skript. Vercel Analytics läggs till vid lansering av teknisk ansvarig, inte nu.
+I ordning: `charset`, `viewport`, `<title>`, `description`, `canonical` (som nu), `robots`, favicon, tre `<link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/...">`, `<slot name="head" />`. Inga externa skript. Vercel Analytics läggs till vid lansering av teknisk ansvarig, inte nu.
+
+**Robots-taggen** (ändrad 2026-09-17). Taggen står på varje sida, inte bara på de som är `noindex`, eftersom den bär `max-image-preview:large`. Utan direktivet visar Google en miniatyr av sidans bild i sökresultatet och i Discover; med det visas den i full bredd, vilket är hela poängen med att varje sida numera har en egen delningsbild. Innehållet är `max-image-preview:large`, och på en `noindex`-sida `noindex, max-image-preview:large`: båda värdena hör hemma i samma tagg, för två robots-taggar med olika innehåll är odefinierat och Google tar då den strängaste tolkningen.
+
+**Delningsbilden** (ändrad 2026-09-17). `og:image` är alltid en PNG i 1200 × 630 under `public/og/`, aldrig sidans SVG. Skälen är två: Facebook, LinkedIn och Slack hämtar ingen SVG, och Vite inlinear dessutom gärna en liten SVG som data-URI, vilket gjorde `og:image` till en data-URI utan värd. Layouten avvisar därför en `ogBild` som börjar med `data:` och tar standardbilden i stället.
+
+Vyerna (`Artikel.astro`, `tester/[slug].astro`, `jamforelser/[slug].astro`, `PelarHub.astro`) hämtar sökvägen med `delningsbild(samling, slug)` ur `src/lib/delningsbild.ts`. Funktionen returnerar `/og/[samling]-[slug].png` när filen finns och annars `undefined`, kontrollerat med `existsSync` vid bygget, så att en sida vars bild ännu inte är byggd faller tillbaka på `/og-standard.png` i stället för att peka på en 404. Samma sträng går vidare som `bildUrl` till `artikel()` i `src/lib/strukturdata.ts`, så att `Article.image` blir en rasterbild. Kalkylatorsidorna har sin egen väg dit, `verktygsDelningsbild(slug)` i avsnitt 4.7, och pekar på `/og/rakna-[slug].png`.
+
+Bilderna ritas av `scripts/generera-delningsbilder.mjs`, som ingår i `npm run build` efter `npm run illustrationer` och före `astro build`. En bild byggs per publicerad fil i `guider`, `kunskap`, `tester`, `jamforelser` och `pelare`, och ser ut som ett uppslag i anteckningsboken: papper som yta, `title` ur frontmattern till vänster i Zilla Slab 600 på högst tre rader med krympande storlek och ett pennstreck under, ordmärket nere till vänster, och sidans egen bild till höger. Bilden till höger är frontmatterfältet `bild` när det pekar på en SVG under `src/assets/illustrationer/`, annars den första `<Illustration namn="..." />` i brödtexten. Tester, jämförelser och hubbar har ingen bild i frontmattern och får sin därifrån. Saknas båda sätts titeln i större grad och tumstockssymbolen står till höger i stället.
+
+Skriptet är idempotent: en PNG skrivs om bara när innehållsfilen (och därmed titeln), illustrationen, symbolen, typsnittet eller skriptet är nyare än den. `npm run delningsbilder -- --alla` bygger om allt. Filerna är committade, så ett vanligt bygge skriver ingenting, men en artikel som publiceras får sin bild i samma bygge. Det fungerar också på Vercel: undantaget för `scripts/typsnitt/` togs bort ur `.vercelignore` 2026-09-17, eftersom titeln sätts i Zilla Slab 600 och skriptet inte kan tyst hoppa över den. `sharp`, `opentype.js` och `yaml` ligger därför i `dependencies`, inte i `devDependencies`.
 
 **Titelsuffixet** (beslut 2026-09-16). Rutterna skickar sidans titel utan varumärke (`seoTitle ?? title`), och layouten lägger på `" · Hantverkstips"` bara när den färdiga titeln då blir högst 60 tecken. Blir den längre utelämnas suffixet, eftersom Google klipper vid ungefär 60 och en seoTitle på 58 tecken annars förlorar slutet av löftet i stället för varumärket. Står ordet Hantverkstips redan i titeln, som på startsidan, läggs inget på. Samma titel används i `og:title`. Konsekvenser: korta titlar som "Sidan finns inte" och "Räkna själv" behåller suffixet, artikeltitlar på 45 tecken och uppåt gör det inte.
 
@@ -420,10 +432,12 @@ En innehållsfil importerar aldrig en komponent själv. Mallen skickar dem via `
 **Basuppsättningen** (allt utom affiliate):
 
 ```
-h2: Pennstreck, Faktaruta, Illustration, Varning, Verktygskort, Kalkylator, Markering
+h2: Pennstreck, Faktaruta, Illustration, Varning, Verktygskort, Kalkylator, Markering, Faq
 ```
 
 `Kalkylator` kom till 2026-09-17 med daggpunktskalkylatorn och står i båda uppsättningarna. En artikel som förklarar ett tal får alltså bädda in verktyget som räknar ut det.
+
+`Faq` kom till 2026-09-17 och står i båda uppsättningarna. Den tar `fragor` (`{ fraga, svar, lank? }[]`) och en valfri `rubrik` som standard är "Vanliga frågor", renderar frågorna som `<details>` och skriver ut FAQPage-markup där den står. Två regler gäller: högst en `<Faq>` per sida, vilket `npm run kontrollera` kontrollerar, och den står sist i brödtexten, före författarrutan. Svaren är ren text; behöver ett svar peka vidare används fältet `lank`, inte en markdownlänk inne i svaret. Skälet står i komponentens toppkommentar: en sträng som är både synlig text och JSON-LD får inte betyda två saker.
 
 **Produktuppsättningen** = basuppsättningen plus `Kopknapp`, `Produktkort`, `Jamforelsetabell`.
 
@@ -489,7 +503,9 @@ Pelarslugs vinner alltid: en kategori får inte heta som en pelare, bygget stopp
 8. H2 "Fler guider och tester om {namn}": lista med etikett och länk för allt med samma `kategori`. Tomt: utgår.
 9. `<Forfattarruta forfattare={forfattare} uppdaterad={uppdaterad} />`.
 
-Strukturerad data: `lista()` med produkterna i tabellordning (namn, url = testsidan om test finns, annars kategorisidan med `#`-ankare till produktens H2).
+Strukturerad data: `kategori()` i `src/lib/strukturdata.ts` med produkterna i tabellordning. Varje `ListItem` bär ett helt `Product` (`name`, `brand`, `sku`, `image` när `lokalBild()` ger en lokal fil, `url` = testsidan om test finns, annars kategorisidan med `#`-ankare till produktens H2) och ett `Offer` med `price` = lägsta pris, `priceCurrency: "SEK"`, `availability` ur `arSlut()` och `url` = samma sida som produktens. Ändrat 2026-09-17 från `lista()`, som bara gav namn och länk och därmed inget om det sidan faktiskt visar: pris, lager och köpknapp.
+
+Två saker är avsiktliga. `offers.url` pekar aldrig på `/go/[slug]`: Google vill ha adressen där erbjudandet visas för läsaren, och `/go/` är en vidarebefordran med `rel="sponsored nofollow"` som varken renderar pris eller produktnamn. Och pris och lagerstatus läses ur `lagstaPris()`, `billigasteErbjudande()` och `arSlut()`, alltså samma funktioner som `Kopknapp` och `produkt()`, så att sidan och markupen aldrig kan säga olika. En produkt utan pris får inget `offers`; då saknar dess `Product` det Google kräver för ett rikt resultat, vilket är rätt läge, eftersom alternativet vore ett påhittat pris.
 
 Desktop: innehåll i läsbredd centrerat i `sidbredd`, innehållsförteckningen i höger spalt från `lg` (`lg:grid lg:grid-cols-[minmax(0,44rem)_16rem] lg:gap-12`). Våra val och tabellen bryter till full `sidbredd` (`lg:col-span-2`).
 

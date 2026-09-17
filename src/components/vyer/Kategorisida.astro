@@ -17,7 +17,7 @@ import {
   typEtikett,
 } from '../../lib/innehall';
 import { billigasteErbjudande, hamtaButik, lagerlage, produktNamn, produkterIKategori } from '../../lib/produkter';
-import { lista as listaData } from '../../lib/strukturdata';
+import { kategori as kategoriData } from '../../lib/strukturdata';
 import Brodsmulor from '../ui/Brodsmulor.astro';
 import Faktaruta from '../ui/Faktaruta.astro';
 import Forfattarruta from '../ui/Forfattarruta.astro';
@@ -69,13 +69,19 @@ const rubriker = [
   ...headings.filter((h) => h.depth === 2).map((h) => ({ slug: h.slug, text: h.text })),
 ];
 
-const strukturdata = listaData({
+/**
+ * ItemList med ett Product per post, i tabellens ordning. Adressen är
+ * produktens testsida när den finns, annars kategorisidan med ankare till
+ * produktens egen H2. Priset och lagerstatusen bygger komponenten inte själv:
+ * kategori() läser samma funktioner som Kopknapp nedan.
+ */
+const strukturdata = kategoriData({
   url: kategoriUrl(entry.id),
   namn: d.namn,
   poster: produkter.map((p) => {
     const t = testPerProdukt.get(p.slug);
     return {
-      namn: produktNamn(p),
+      produkt: p,
       url: t ? testUrl(t) : `${kategoriUrl(entry.id)}#${slugify(produktNamn(p))}`,
     };
   }),

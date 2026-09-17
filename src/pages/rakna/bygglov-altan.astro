@@ -17,6 +17,8 @@ export const prerender = false;
 import Bas from '../../layouts/Bas.astro';
 import { formateraTal } from '../../lib/format';
 import {
+  GRANS_M,
+  HOJD_NARA_BYGGNAD_M,
   LOVFRI_TILLBYGGNAD_KVM,
   NARA_BYGGNAD_M,
   PRISBASBELOPP_KR,
@@ -34,6 +36,7 @@ import { verktyg } from '../../lib/strukturdata';
 import { verktygsDelningsbild, verktygsillustration } from '../../lib/verktygsbild';
 import BygglovAltanForm from '../../components/kalkyl/BygglovAltanForm.astro';
 import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Faq from '../../components/ui/Faq.astro';
 import Markering from '../../components/ui/Markering.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
 import StrukturData from '../../components/ui/StrukturData.astro';
@@ -215,6 +218,26 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     varde: 'glest räcke räknas inte',
     grund: 'Antagande',
     stod: 'Ett tätt plank räknas in i höjden. Länsstyrelsens handläggarstöd räknar ett räcke som plank över cirka 1,1 m när mindre än hälften är luft',
+  },
+];
+
+/**
+ * Frågorna sist på sidan. Måtten läses ur samma konstanter som bedömningen, så
+ * att en lagändring bara behöver rättas på ett ställe.
+ */
+const FRAGOR = [
+  {
+    fraga: 'Behöver jag bygglov för altan?',
+    svar: `Inom detaljplan är altanen lovfri när golvet ligger högst ${komma(HOJD_NARA_BYGGNAD_M)} meter över marken och den står nära en byggnad. Nära betyder inom ${komma(NARA_BYGGNAD_M)} meter, mätt från fasaden till altanens ytterkant. Utanför detaljplan finns inga mått alls, men altanen ska passa in i omgivningen och inte bli en betydande olägenhet för grannen. Sätter du väggar eller glas runt den är det ingen altan längre utan en tillbyggnad.`,
+  },
+  {
+    fraga: `Vad ändrades ${REGLERNA_GALLER_FRAN}?`,
+    svar: 'Då trädde lag 2025:974 i kraft, och hela bygglovskapitlet i plan- och bygglagen byttes ut. Altanregeln står nu i 9 kap. 19 § och är skriven tvärtom mot den gamla, som en regel om när lov krävs. Orden friggebod, attefallshus och attefallsaltan är borta ur lagtexten, och med dem försvann kravet på anmälan och startbesked för det som är lovfritt. Måtten är oförändrade.',
+    lank: { text: 'Hela genomgången står i artikeln om bygglov för altan.', href: '/altan/bygglov-altan/' },
+  },
+  {
+    fraga: 'Hur nära tomtgränsen får altanen ligga?',
+    svar: `Ligger altanen närmare tomtgränsen än ${komma(GRANS_M)} meter vill Boverket att du hämtar ett skriftligt medgivande från varje granne som berörs. Går gränsen mot en gata eller en park är kommunen grannen, och då söker du lov i stället. Ett muntligt ja är värt ingenting den dag grannen säljer, så be om namnteckning på en ritning med måtten i.`,
   },
 ];
 
@@ -538,5 +561,7 @@ const illustration = verktygsillustration(SLUG);
         </li>
       </ul>
     </section>
+
+    <Faq fragor={FRAGOR} />
   </div>
 </Bas>

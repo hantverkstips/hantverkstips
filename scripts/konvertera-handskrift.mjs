@@ -15,7 +15,8 @@
  *   källa och konverteras sedan på plats.
  * - Idempotent: en fil utan <text> lämnas orörd, och en oförändrad utdata skrivs inte om.
  *
- * Typsnitten ligger i scripts/typsnitt/ (OFL, committade, deployas inte).
+ * Typsnitten ligger i scripts/typsnitt/ (OFL, committade, deployas sedan
+ * 2026-09-17 även till Vercel, se .vercelignore).
  */
 
 import fs from 'node:fs';
@@ -471,9 +472,10 @@ function kB(byte) {
 }
 
 /**
- * Typsnitten behövs bara när något faktiskt ska konverteras. De ligger utanför
- * deployen (`.vercelignore`), så på Vercel finns de inte: där är illustrationerna
- * redan banor, och bygget ska inte falla på en mapp som med flit är utelämnad.
+ * Typsnitten behövs bara när något faktiskt ska konverteras. Sedan 2026-09-17
+ * följer scripts/typsnitt/ med deployen, eftersom delningsbilderna byggs på
+ * Vercel, men kontrollen står kvar: illustrationerna är redan banor när de
+ * committas, och bygget ska inte falla på en mapp som saknas.
  */
 function typsnittFinns() {
   return fs.existsSync(TYPSNITT_KATALOG) && fs.readdirSync(TYPSNITT_KATALOG).some((f) => f.endsWith('.ttf'));

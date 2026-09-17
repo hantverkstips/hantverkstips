@@ -5,6 +5,7 @@
  */
 import { getEntry, render } from 'astro:content';
 import Bas from '../../layouts/Bas.astro';
+import { delningsbild } from '../../lib/delningsbild';
 import { formateraDatum, isoDatum } from '../../lib/format';
 import {
   arPublicerad,
@@ -28,6 +29,7 @@ import {
 import { produkt as produktData } from '../../lib/strukturdata';
 import Brodsmulor from '../../components/ui/Brodsmulor.astro';
 import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Faq from '../../components/ui/Faq.astro';
 import Forfattarruta from '../../components/ui/Forfattarruta.astro';
 import Illustration from '../../components/ui/Illustration.astro';
 import Innehallsforteckning from '../../components/ui/Innehallsforteckning.astro';
@@ -128,6 +130,13 @@ const brodsmulor = [
   { namn: d.title },
 ];
 
+/**
+ * Delningsbilden i 1200 × 630, ritad ur titeln och sidans första illustration
+ * (scripts/generera-delningsbilder.mjs). Produktbilden är leverantörens och går
+ * aldrig ut som og:image. Saknas filen tar Bas sajtens standardbild.
+ */
+const ogBild = delningsbild('tester', entry.id);
+
 const strukturdata = produkt
   ? produktData({
       produkt,
@@ -143,6 +152,7 @@ const strukturdata = produkt
 <Bas
   title={d.seoTitle ?? d.title}
   description={d.description}
+  ogBild={ogBild}
   ogTyp="article"
   reklam={true}
   butikNamn={butik?.namn}
@@ -302,6 +312,7 @@ const strukturdata = produkt
             Kopknapp,
             Produktkort,
             Jamforelsetabell,
+            Faq,
           }}
         />
       </div>

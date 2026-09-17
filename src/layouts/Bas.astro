@@ -84,9 +84,20 @@ const sidtitel =
  * En liten SVG inlineas av Vite som data-URI, och en data-URI duger inte som
  * delningsbild. Då, och när sidan saknar egen bild, används den sajtgemensamma
  * bilden i 1200 × 630 (scripts/generera-delningsbilder.mjs).
+ *
+ * Vyerna skickar sedan 2026-09-17 sidans egen PNG ur public/og/, hämtad med
+ * delningsbild() i src/lib/delningsbild.ts, i stället för frontmatterns SVG.
  */
 const OG_STANDARD = '/og-standard.png';
 const ogBildUrl = new URL(ogBild && !ogBild.startsWith('data:') ? ogBild : OG_STANDARD, Astro.site);
+
+/**
+ * max-image-preview:large ber Google visa sidans bild i full bredd i sökresultat
+ * och i Discover; utan direktivet får en svensk sajt en miniatyr. Taggen står på
+ * varje sida, och på en noindex-sida står båda värdena i samma tagg: två
+ * robots-taggar med olika innehåll är odefinierat och Google tar den strängaste.
+ */
+const robots = noindex ? 'noindex, max-image-preview:large' : 'max-image-preview:large';
 
 const hubbar = await publicerade('pelare');
 const kategorier = await publicerade('kategorier');
@@ -146,7 +157,7 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
     <title>{sidtitel}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="robots" content={robots} />
     {paginering?.foregaende && <link rel="prev" href={new URL(paginering.foregaende, Astro.site)} />}
     {paginering?.nasta && <link rel="next" href={new URL(paginering.nasta, Astro.site)} />}
 

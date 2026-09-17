@@ -25,6 +25,7 @@ import { verktyg } from '../../lib/strukturdata';
 import { verktygsDelningsbild, verktygsillustration } from '../../lib/verktygsbild';
 import AvfuktareForm from '../../components/kalkyl/AvfuktareForm.astro';
 import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Faq from '../../components/ui/Faq.astro';
 import Markering from '../../components/ui/Markering.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
 import Produktkort from '../../components/ui/Produktkort.astro';
@@ -182,6 +183,25 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     grund: 'Källa',
     stod: 'Corroventa CTR STD-TT ger 0,76 och Meaco DD8L 0,99 vid 10 °C',
     url: 'https://www.corroventa.se/produkter/krypgrundsavfuktare/krypgrundsavfuktare-ctr-std-tt/',
+  },
+];
+
+/**
+ * Frågorna sist på sidan. Samma tal som i "Så räknar vi", inga nya antaganden.
+ */
+const FRAGOR = [
+  {
+    fraga: 'Hur stor avfuktare behöver jag?',
+    svar: 'Maskinen köps för det vatten som kommer in varje dygn, inte för luften som redan står i rummet. Kalkylatorn räknar på augusti, den blötaste månaden, och lägger på en marginal så att maskinen klarar dygnet på ungefär 18 timmar. Fyll i ytan, takhöjden och hur fuktigt det är i dag, så får du ett tal i liter per dygn att leta efter i butiken.',
+  },
+  {
+    fraga: 'Varför stämmer inte kapaciteten på förpackningen?',
+    svar: 'Tillverkarna mäter kondensmaskiner vid 30 grader och 80 procent luftfuktighet, och så varmt och blött blir det aldrig i en svensk källare. Samma maskin ger därför bara ungefär en tredjedel av det märkta talet i ett svalt utrymme. En sorptionsmaskin, som torkar luften med ett fuktsugande hjul i stället för kyla, tappar betydligt mindre. Kalkylatorn räknar om åt dig och visar den märkta kapaciteten du ska köpa efter.',
+  },
+  {
+    fraga: 'Kondens eller sorption, vilken ska jag välja?',
+    svar: 'Temperaturen avgör. En kondensavfuktare arbetar med kyla och tappar kraft när det blir svalt, så den hör hemma i en uppvärmd källare. En sorptionsmaskin håller sin kapacitet ner mot nollan och är det som gäller i krypgrund, ouppvärmt garage och sommarstuga. Kostar du på dig en för stor maskin i stället för en för liten har du sällan ångrat dig.',
+    lank: { text: 'Läs jämförelsen mellan sorption och kondens.', href: '/fukt/sorptionsavfuktare/' },
   },
 ];
 
@@ -452,5 +472,7 @@ const illustration = verktygsillustration(SLUG);
         </li>
       </ul>
     </section>
+
+    <Faq fragor={FRAGOR} />
   </div>
 </Bas>
