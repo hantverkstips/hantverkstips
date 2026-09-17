@@ -23,6 +23,7 @@ import GipspluggForm from '../kalkyl/GipspluggForm.astro';
 import GipsskruvForm from '../kalkyl/GipsskruvForm.astro';
 import InnervaggForm from '../kalkyl/InnervaggForm.astro';
 import KvadratmeterForm from '../kalkyl/KvadratmeterForm.astro';
+import MalaUteForm from '../kalkyl/MalaUteForm.astro';
 import Ikon from './Ikon.astro';
 
 interface Props {
@@ -41,6 +42,7 @@ const MED_FORMULAR = [
   'gipsplugg',
   'gipsskruv',
   'kvadratmeter',
+  'mala-ute',
 ];
 
 const { namn } = Astro.props;
@@ -77,6 +79,7 @@ const prefix = `${k.slug}-inbaddad-`;
   {namn === 'gipsplugg' && <GipspluggForm kompakt={true} idPrefix={prefix} knappText="Ge mig svaret" />}
   {namn === 'gipsskruv' && <GipsskruvForm kompakt={true} idPrefix={prefix} knappText="Ge mig skruven" />}
   {namn === 'kvadratmeter' && <KvadratmeterForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
+  {namn === 'mala-ute' && <MalaUteForm kompakt={true} idPrefix={prefix} knappText="Ge mig svaret" />}
 
   <p class="m-0 mt-4 text-liten text-blyerts-2">
     Knappen tar dig till kalkylatorn med dina värden ifyllda. Där står svaret med källan bakom varje tal.

@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="En liggande träpanel ritad i blyerts på linjerat papper, med en pensel som stryker färg på den. Till höger går solen ner bakom en horisontlinje. Ovanför står 15 grader och 65 procent, och en anteckning i rött säger sluta senast kl 16. Under solen står daggpunkt 8,5 grader.">
+  <!-- Anteckningsboken, verktygsskiss för /rakna/mala-ute/. Blyerts 2 px för panelen, penseln och
+       horisonten, blyerts-2 för solens strålar och panelens brädskarvar, snickarpenna för det nystrukna
+       färgfältet och klockslaget (det verktyget svarar med), tumstock bakom nyckeltalet kl 16.
+       Panelen x=60-360, fem liggande brädor y=120-300. Penseln lutar in från ovan vid x=200.
+       Solen är en halvcirkel på väg ner bakom horisonten vid y=250, x=470.
+       Handskrift i Caveat 500, 24 px, nyckeltalet 30 px, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Panelen: papper som fyllning så att linjeringen inte lyser igenom brädorna -->
+  <path d="M60,120 Q210,118 360,120 Q362,210 360,300 Q210,302 60,300 Q58,210 60,120" fill="#f5efe3"/>
+
+  <!-- Blyerts: panelens ytterkant -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M60,120 Q210,118 360,120"/>
+    <path d="M360,120 Q362,210 360,300"/>
+    <path d="M360,300 Q210,302 60,300"/>
+    <path d="M60,300 Q58,210 60,120"/>
+  </g>
+
+  <!-- Blyerts-2: brädskarvarna, liggande panel med fjäder och not som en liten skugga under varje bräda -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M60,156 Q210,154 360,156 M60,160 Q210,158 360,160"/>
+    <path d="M60,192 Q210,190 360,192 M60,196 Q210,194 360,196"/>
+    <path d="M60,228 Q210,226 360,228 M60,232 Q210,230 360,232"/>
+    <path d="M60,264 Q210,262 360,264 M60,268 Q210,266 360,268"/>
+    <path d="M96,130 q3,10 0,20 M240,168 q2,12 0,22 M150,240 q3,10 0,22 M300,276 q2,10 0,20"/>
+  </g>
+
+  <!-- Snickarpenna: det nystrukna färgfältet på de två översta brädorna, med en våt kant -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M72,134 Q140,132 208,134 M72,146 Q140,144 208,146"/>
+    <path d="M72,170 Q130,168 188,170 M72,182 Q130,180 188,182"/>
+    <path d="M208,128 q6,10 0,22 M188,164 q6,10 0,22"/>
+  </g>
+
+  <!-- Blyerts: penseln, skaftet snett uppifrån höger, borsten mot panelen vid x=200 -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M292,30 Q262,72 232,114"/>
+    <path d="M304,38 Q274,80 244,122"/>
+    <path d="M292,30 Q298,26 304,38"/>
+    <path d="M232,114 Q238,124 244,122"/>
+    <path d="M226,122 Q236,116 250,128 Q244,144 232,156 Q218,146 214,132 Q218,126 226,122"/>
+    <path d="M214,132 Q206,152 202,166 M222,140 Q216,156 214,170 M232,148 Q230,160 228,172"/>
+  </g>
+
+  <!-- Blyerts: horisonten och solen på väg ner -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round">
+    <path d="M400,250 Q480,248 570,250"/>
+    <path d="M436,250 A34,34 0 0 1 504,250"/>
+  </g>
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M470,196 v-14 M440,206 l-9,-11 M500,206 l9,-11 M424,232 l-13,-6 M516,232 l13,-6"/>
+  </g>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="392" y="80" width="150" height="34" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 467 97)"/>
+
+  <!-- Blyerts-2: pekpinne från klockslaget ner mot solen -->
+  <path d="M470,122 Q472,150 470,182" fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="60" y="80" fill="#625a50">15 °C, 65 % RF</text>
+    <text x="60" y="106" fill="#625a50">natt 8 °C</text>
+    <text x="398" y="108" font-size="30" fill="#ad3519">sluta kl 16</text>
+    <text x="400" y="290" fill="#625a50">daggpunkt 8,5 °C</text>
+    <text x="400" y="316" fill="#625a50">ytan 6 °C i natt</text>
+  </g>
+</svg>

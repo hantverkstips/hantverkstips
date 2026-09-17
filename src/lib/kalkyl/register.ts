@@ -93,6 +93,13 @@ export const KALKYLATORER: Kalkylator[] = [
     sasong: [3, 6],
     pelare: ['altan'],
   },
+  {
+    slug: 'mala-ute',
+    namn: 'Kan du måla ute i dag?',
+    rad: 'Temperatur, luftfuktighet, natt och klockslag ger om färgen hinner torka före daggen.',
+    sasong: [4, 10],
+    pelare: ['fasad', 'altan'],
+  },
 ];
 
 export function hittaKalkylator(slug: string): Kalkylator | undefined {

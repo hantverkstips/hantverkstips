@@ -1,0 +1,215 @@
+---
+/**
+ * Formuläret till verktyget "Kan du måla ute i dag?". Ett ställe: sidan
+ * /rakna/mala-ute/ renderar det i fullt format, och
+ * <Kalkylator namn="mala-ute" /> i en artikel renderar samma fält i kompakt
+ * format med action till verktygssidan.
+ *
+ * Ingen klient-JavaScript. Formuläret skickas som GET, och verktygssidan räknar.
+ *
+ * Alla props är valfria, eftersom det inbäddade formuläret inte har någon
+ * uträkning att visa värden ur; då står standardvärdena i fälten.
+ */
+import { FARGTYPER, STANDARD, YTOR, type MalaUteIndata } from '../../lib/kalkyl/mala-ute.ts';
+import { ETIKETT_KLASS, FALT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, ramKlass } from '../../lib/kalkyl/stil';
+
+interface Props {
+  /** Valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
+  indata?: MalaUteIndata;
+  /** Talen som de skrevs i adressen, så att ett felskrivet värde går att rätta. */
+  varden?: { temp: string; rf: string; natt: string; start: string; sol: string };
+  fel?: Partial<Record<keyof MalaUteIndata, string>>;
+  /** Inbäddad i en artikel: tätare fält, inga hjälprader. */
+  kompakt?: boolean;
+  /** Prefix på id-attributen, så att två formulär på samma sida inte krockar. */
+  idPrefix?: string;
+  knappText?: string;
+}
+
+const komma = (n: number) => String(n).replace('.', ',');
+
+const {
+  indata = STANDARD,
+  varden = {
+    temp: komma(STANDARD.luftTempC),
+    rf: String(STANDARD.rfProcent),
+    natt: komma(STANDARD.nattMinC),
+    start: String(STANDARD.startTimme),
+    sol: String(STANDARD.solnedgangTimme),
+  },
+  fel = {},
+  kompakt = false,
+  idPrefix = '',
+  knappText = 'Ge mig svaret',
+} = Astro.props;
+
+const id = (namn: string) => `${idPrefix}${namn}`;
+const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
+
+/** Vädret nu och i natt, ett fält per rad. */
+const vaderfalt = [
+  {
+    namn: 'temp',
+    etikett: 'Temperaturen nu',
+    enhet: '°C',
+    varde: varden.temp,
+    fel: fel.luftTempC,
+    hjalp: 'Temperaturen just nu utomhus i skuggan. Minusgrader skrivs med minustecken.',
+  },
+  {
+    namn: 'rf',
+    etikett: 'Luftfuktigheten nu',
+    enhet: '%',
+    varde: varden.rf,
+    fel: fel.rfProcent,
+    hjalp: 'Relativ luftfuktighet, det tal väderappen eller en hygrometer utomhus visar.',
+  },
+  {
+    namn: 'natt',
+    etikett: 'Lägsta temperatur i natt',
+    enhet: '°C',
+    varde: varden.natt,
+    fel: fel.nattMinC,
+    hjalp: 'Prognosens lägsta i natt. Den infaller oftast strax före soluppgången.',
+  },
+] as const;
+
+/** De två klockslagen delar rad. */
+const klockfalt = [
+  {
+    namn: 'start',
+    etikett: 'Du börjar måla kl',
+    varde: varden.start,
+    fel: fel.startTimme,
+  },
+  {
+    namn: 'sol',
+    etikett: 'Solen går ner kl',
+    varde: varden.sol,
+    fel: fel.solnedgangTimme,
+  },
+] as const;
+---
+
+<form method="get" action="/rakna/mala-ute/">
+  <div>
+    {
+      vaderfalt.map((f) => (
+        <div class="mb-4">
+          <label for={id(f.namn)} class={ETIKETT_KLASS}>
+            {f.etikett}
+          </label>
+          <div class="flex items-center gap-2">
+            <input
+              id={id(f.namn)}
+              name={f.namn}
+              type="text"
+              inputmode="decimal"
+              value={f.varde}
+              aria-describedby={f.fel ? id(`${f.namn}-fel`) : undefined}
+              class:list={[FALT_KLASS, ramKlass(Boolean(f.fel))]}
+            />
+            <span class="text-brod text-blyerts-2">{f.enhet}</span>
+          </div>
+          {f.fel ? (
+            <p id={id(`${f.namn}-fel`)} class={FEL_KLASS}>
+              {f.fel}
+            </p>
+          ) : (
+            !kompakt && <p class={HJALP_KLASS}>{f.hjalp}</p>
+          )}
+        </div>
+      ))
+    }
+  </div>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Klockslagen, hela timmar</legend>
+    <div class="grid grid-cols-2 gap-x-4">
+      {
+        klockfalt.map((f) => (
+          <div class="mb-2">
+            <label for={id(f.namn)} class="block mb-1 text-liten text-blyerts-2">
+              {f.etikett}
+            </label>
+            <input
+              id={id(f.namn)}
+              name={f.namn}
+              type="text"
+              inputmode="numeric"
+              value={f.varde}
+              aria-describedby={f.fel ? id(`${f.namn}-fel`) : undefined}
+              class:list={[FALT_KLASS, ramKlass(Boolean(f.fel))]}
+            />
+            {f.fel && (
+              <p id={id(`${f.namn}-fel`)} class={FEL_KLASS}>
+                {f.fel}
+              </p>
+            )}
+          </div>
+        ))
+      }
+    </div>
+    {
+      !kompakt && (
+        <p class={HJALP_KLASS}>
+          Solnedgången står i väderappen. Skriv hel timme: 20 för klockan åtta på kvällen.
+        </p>
+      )
+    }
+  </fieldset>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Färgtyp</legend>
+    <div class={radioKlass}>
+      {
+        FARGTYPER.map((f) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input type="radio" name="farg" value={f.varde} checked={indata.fargtyp === f.varde} />
+            {f.etikett}
+          </label>
+        ))
+      }
+    </div>
+    {
+      !kompakt && (
+        <p class={HJALP_KLASS}>
+          Står på burken. Torktiden och den lägsta temperaturen kommer ur ett datablad för varje typ, och källan
+          står i svaret.
+        </p>
+      )
+    }
+  </fieldset>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Ytan du målar ligger</legend>
+    <div class={radioKlass}>
+      {
+        YTOR.map((y) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input type="radio" name="yta" value={y.varde} checked={indata.yta === y.varde} />
+            {y.etikett}
+          </label>
+        ))
+      }
+    </div>
+    {
+      !kompakt && (
+        <p class={HJALP_KLASS}>
+          En panel i direkt sol är varmare än luften, och färgen torkar i penseln. Valet ger en varning, inte ett
+          stopp.
+        </p>
+      )
+    }
+  </fieldset>
+
+  <div class="mb-6">
+    <label class="flex min-h-11 items-center gap-2 text-brod">
+      <input type="checkbox" name="regn" value="ja" checked={indata.regn} />
+      Regn väntas inom 24 timmar
+    </label>
+    {!kompakt && <p class={HJALP_KLASS}>Enligt prognosen, oavsett hur lite. Ett dygn är tillverkarnas eget mått.</p>}
+  </div>
+
+  <button type="submit" class={KNAPP_KLASS}>{knappText}</button>
+</form>
