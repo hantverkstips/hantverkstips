@@ -51,6 +51,13 @@ export const KALKYLATORER: Kalkylator[] = [
     sasong: [10, 3],
     pelare: ['el', 'fukt'],
   },
+  {
+    slug: 'innervagg',
+    namn: 'Räkna reglar, gips och skruv till väggen',
+    rad: 'Längd, höjd och regelavstånd ger virke, skivor, skruv och ull.',
+    sasong: [1, 12],
+    pelare: ['inomhus'],
+  },
 ];
 
 export function hittaKalkylator(slug: string): Kalkylator | undefined {

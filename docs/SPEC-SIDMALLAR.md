@@ -658,6 +658,38 @@ Markup: H1 "Vad kostar maskinen i el? Räkna ut kWh och kronor", ingress på fyr
 
 `Produktkort.astro` fick samtidigt en diskret textlänk "Räkna elkostnaden" till `/rakna/elkostnad/?produkt=[slug]`, under nyckelvärdena och bara för produkter vars specs har `effekt_w`.
 
+#### 4.7.4 `src/pages/rakna/innervagg.astro` (byggd 2026-09-17)
+
+`export const prerender = false`, samma motivering och samma `Cache-Control` som de tre sidorna ovan. `Astro.locals.sidtyp = 'verktyg'`. `reklam={true}` med `butikNamn={butik?.namn}` som avfuktarsidan: räkningen pekar ut två produktegenskaper, antalet skruv och skruvlängden, och sidan visar därför två produktkort. Brödsmulor: Hantverkstips / Räkna själv (`/rakna/`) / Regelkalkylator. `bred={true}`.
+
+Formeln ligger i `src/lib/kalkyl/innervagg.ts`:
+
+```ts
+export interface InnervaggIndata { langdM: number; hojdM: number; regel: '45x70' | '45x95'; lag: 1 | 2; ccMm: 400 | 450 | 600; dorrar: number; ull: boolean }
+export const STANDARD = { langdM: 4, hojdM: 2.5, regel: '45x70', lag: 1, ccMm: 400, dorrar: 0, ull: true };
+export const GRANSER = { langdM: [0.5, 30], hojdM: [2, 4], dorrar: [0, 10] };
+export function ccStandardForLag(lag): 400 | 600;              // Svenskt Trä
+export function skruvPerKvm(ccMm): number;                     // c 200 i kant, c 300 i fält
+export function skruvPerKvmInnerlager(ccMm): number;           // c 750
+export function bastaHandelslangd(kapLangdM): { handelslangdM; reglarPerLangd; spillProcent };
+export function raknaInnervagg(i): InnervaggResultat;          // ok | ogiltig
+export function tolkaQuery(q): { indata: InnervaggIndata; harIndata: boolean };
+```
+
+Query: `langd`, `hojd`, `regel`, `lag`, `cc`, `dorrar`, `ull`. Saknas `cc` i adressen sätts regelavståndet av `ccStandardForLag()`, alltså c 400 mm för ett lag gips och c 600 mm för två, vilket är det Svenskt Trä anger för skivor som är 1 200 mm breda. Den delbara länken skriver alltid ut c-måttet, så en delad adress är entydig.
+
+Resultatet bär antalet lodräta reglar (väggens egna och dörrarnas extra var för sig), kaplängden, löpmeter virke med och utan spill, syll och hammarband, avväxling, handelslängden som spiller minst med antal längder och spillprocent, antal gipsskivor med och utan spill, skivytan, antal skruv, skruven avrundad uppåt till hela hundratal, antal 1 000-pack, hur många löpmeter ett pack räcker till, skruvlängden som text, kvadratmeter mineralull, ullens bredd och `gorInteDetHar` som en lista.
+
+**Konstanterna med källa.** Skivformat 1 200 × 2 500 mm (Norgips och Gyproc), skruvavstånd c 200 i kant och c 300 i fält samt c 750 på innersta laget (Norgips), kapmån 15 mm (Gyproc), ullbredd 455 och 610 mm (Norgips), skruvlängd 41 mm vid ett lag och 45 eller 51 vid två (vår gipsskruvguide). ANTAGANDE: spill 10 procent på skivor och 5 procent på virke, handelslängder 2,4 till 4,8 m, dörröppning 0,9 m bred med två extra reglar och en avväxling.
+
+**Råden.** `gorInteDetHar` är en lista och kan innehålla tre rader: c 600 mm under ett enda lag gips (Svenskt Trä anger c 400), skivskarv i linje med dörröppningens kant (Svenskt Trä förbjuder det) och vägg över 3 m på 45 × 70 (Gyproc anger bara 45 × 95 upp till 4 m).
+
+**Avvikelsen mot guidens materiallista.** `/inomhus/bygga-innervagg/` räknar per löpmeter och landar på 6,2 löpmeter virke per meter vägg, alltså cirka 25 m på en vägg som är 4 m lång. Talet är en täthet och rymmer inte regeln i den sista väggänden, som guidens egen text ändå ber om. Kalkylatorn räknar reglarna en och en, får åtta reglar i stället för knappt sju och landar på 27,9 löpmeter. Skivor, skruv och ull stämmer exakt mot guidens rader (7 skivor, 139 skruv, 10 kvm). Skillnaden står utskriven under antagandetabellen, och testskriptet asserterar den så att den inte kan glida i väg. Chefredaktören avgör om guidens inköpslista ska skrivas om.
+
+Markup: H1 "Räkna ut reglar, gipsskivor och skruv till innerväggen", ingress på tre meningar, `<Faktaruta variant="kortsvar">` med svaret, sedan formuläret och resultatet i två spalter på det linjerade papperet. De stora talen är två: antalet reglar med `<Markering>` och antalet gipsskivor. Under dem raderna med virke, handelslängd, skivor, skruv, pack, skruvlängd och ull, sedan "Gör inte det här" när något av råden gäller. Sedan H2 "Skruven och maskinen som räkningen pekar på" med `essve-fzb-39x41` och `makita-dfr550zx1` som kompakta Produktkort med `modul="kalkylator"`, där skruvkortets `forVem` säger hur många pack just den här räkningen behöver och maskinens säger "Från ungefär 300 skruv lönar sig en automat." Sedan H2 "Materialåtgång innervägg, så räknar regelkalkylatorn" (418 ord), H2 "Så räknar vi" med sju steg och antagandetabellen på elva rader, och H2 "Läs vidare" till `/inomhus/bygga-innervagg/` och `/inomhus/gipsskruv/`.
+
+`<title>` "Regelkalkylator, räkna reglar, gips och skruv till väggen", 57 tecken; med suffixet blir den 73 och layouten utelämnar det därför, precis som på de tre andra kalkylatorsidorna. Formuläret är inbäddat i `/inomhus/bygga-innervagg/` direkt efter punktlistan med antagandena i materialavsnittet, och i `/inomhus/gipsskruv/` direkt under skruvavståndstabellen.
+
 ### 4.8 `src/pages/om/index.astro` och `src/pages/om/[slug].astro`
 
 `index.astro` renderar `getEntry('sidor', 'om')`. `[slug].astro` har `getStaticPaths` från `publicerade('sidor')` utan `om` och `startsida`. Båda: brödsmulor Hantverkstips / {title} (index) respektive Hantverkstips / Om (`/om/`) / {title}. H1, meta "Uppdaterad {datum}" om den finns, `<Content components={{ h2: Pennstreck, Faktaruta, Varning, Markering }} />`. `reklam={false}`. Strukturerad data efter `strukturdata`: `Organization` ger `organisation()`, `Article` ger `artikel()` med redaktionen, `ingen` ger inget. Gemensam vy `vyer/Sida.astro` så att de två rutterna är tio rader var.

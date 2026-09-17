@@ -1,0 +1,226 @@
+---
+/**
+ * Formuläret till regel- och skruvräknaren. Ett ställe: sidan
+ * /rakna/innervagg/ renderar det i fullt format, och
+ * <Kalkylator namn="innervagg" /> i en artikel renderar samma fält i kompakt
+ * format med action till verktygssidan.
+ *
+ * Ingen klient-JavaScript. Formuläret skickas som GET, och verktygssidan räknar.
+ *
+ * Alla props är valfria, eftersom det inbäddade formuläret inte har någon
+ * uträkning att visa värden ur; då står standardvärdena i fälten.
+ */
+import {
+  REGELAVSTAND,
+  REGELDIMENSIONER,
+  SKIVLAG,
+  STANDARD,
+  type InnervaggIndata,
+} from '../../lib/kalkyl/innervagg.ts';
+import {
+  ETIKETT_KLASS,
+  FALT_KLASS,
+  FEL_KLASS,
+  HJALP_KLASS,
+  KNAPP_KLASS,
+  LANK_KLASS,
+  ramKlass,
+} from '../../lib/kalkyl/stil';
+
+interface Props {
+  /** Valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
+  indata?: InnervaggIndata;
+  /** Talen som de skrevs i adressen, så att ett felskrivet värde går att rätta. */
+  varden?: { langd: string; hojd: string; dorrar: string };
+  fel?: Partial<Record<keyof InnervaggIndata, string>>;
+  /** Inbäddad i en artikel: tätare fält, inga hjälprader. */
+  kompakt?: boolean;
+  /** Prefix på id-attributen, så att två formulär på samma sida inte krockar. */
+  idPrefix?: string;
+  knappText?: string;
+}
+
+const komma = (n: number) => String(n).replace('.', ',');
+
+const {
+  indata = STANDARD,
+  varden = {
+    langd: komma(STANDARD.langdM),
+    hojd: komma(STANDARD.hojdM),
+    dorrar: String(STANDARD.dorrar),
+  },
+  fel = {},
+  kompakt = false,
+  idPrefix = '',
+  knappText = 'Räkna ut',
+} = Astro.props;
+
+const id = (namn: string) => `${idPrefix}${namn}`;
+const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
+
+const talfalt = [
+  {
+    namn: 'langd',
+    etikett: 'Väggens längd',
+    enhet: 'm',
+    varde: varden.langd,
+    fel: fel.langdM,
+    inputmode: 'decimal',
+    hjalp: 'Mät längs strecket på golvet, från vägg till vägg.',
+  },
+  {
+    namn: 'hojd',
+    etikett: 'Rumshöjd',
+    enhet: 'm',
+    varde: varden.hojd,
+    fel: fel.hojdM,
+    inputmode: 'decimal',
+    hjalp: 'Golv till tak. Reglarna kapas 15 mm kortare än så.',
+  },
+] as const;
+---
+
+<form method="get" action="/rakna/innervagg/">
+  <div class:list={[kompakt && 'sm:grid sm:grid-cols-2 sm:gap-4']}>
+    {
+      talfalt.map((f) => (
+        <div class="mb-4">
+          <label for={id(f.namn)} class={ETIKETT_KLASS}>
+            {f.etikett}
+          </label>
+          <div class="flex items-center gap-2">
+            <input
+              id={id(f.namn)}
+              name={f.namn}
+              type="text"
+              inputmode={f.inputmode}
+              value={f.varde}
+              aria-describedby={f.fel ? id(`${f.namn}-fel`) : undefined}
+              class:list={[FALT_KLASS, ramKlass(Boolean(f.fel))]}
+            />
+            <span class="text-brod text-blyerts-2">{f.enhet}</span>
+          </div>
+          {f.fel ? (
+            <p id={id(`${f.namn}-fel`)} class={FEL_KLASS}>
+              {f.fel}
+            </p>
+          ) : (
+            !kompakt && f.hjalp && <p class={HJALP_KLASS}>{f.hjalp}</p>
+          )}
+        </div>
+      ))
+    }
+  </div>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Regeldimension</legend>
+    <div class={radioKlass}>
+      {
+        REGELDIMENSIONER.map((r) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input type="radio" name="regel" value={r.varde} checked={indata.regel === r.varde} />
+            {kompakt ? r.etikett.split(',')[0] : r.etikett}
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Skivlag per sida</legend>
+    <div class={radioKlass}>
+      {
+        SKIVLAG.map((s) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input type="radio" name="lag" value={String(s.varde)} checked={indata.lag === s.varde} />
+            {s.etikett}
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Regelavstånd</legend>
+    <div class={radioKlass}>
+      {
+        REGELAVSTAND.map((c) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input
+              type="radio"
+              name="cc"
+              value={String(c.varde)}
+              checked={indata.ccMm === c.varde}
+              aria-describedby={kompakt ? undefined : id('cc-hjalp')}
+            />
+            {c.etikett}
+          </label>
+        ))
+      }
+    </div>
+    {
+      !kompakt && (
+        <div id={id('cc-hjalp')} class={HJALP_KLASS}>
+          <p class="m-0">
+            Måttet är avståndet mellan reglarnas mitt. Branschorganisationen Svenskt Trä anger c&nbsp;400&nbsp;mm för
+            skivor som är 1&nbsp;200&nbsp;mm breda. Det glesare c&nbsp;600&nbsp;mm gäller först när du lägger två lag
+            gips med förskjutna skarvar.
+          </p>
+          <p class="m-0 mt-1">
+            Hela tabellen med källa per rad står i{' '}
+            <a href="/inomhus/bygga-innervagg/" class={LANK_KLASS}>
+              guiden om att bygga innervägg
+            </a>
+            .
+          </p>
+        </div>
+      )
+    }
+  </fieldset>
+
+  <div class="mb-4">
+    <label for={id('dorrar')} class={ETIKETT_KLASS}>Dörröppningar</label>
+    <div class="flex items-center gap-2">
+      <input
+        id={id('dorrar')}
+        name="dorrar"
+        type="text"
+        inputmode="numeric"
+        value={varden.dorrar}
+        aria-describedby={fel.dorrar ? id('dorrar-fel') : !kompakt ? id('dorrar-hjalp') : undefined}
+        class:list={[FALT_KLASS, ramKlass(Boolean(fel.dorrar)), 'max-w-32']}
+      />
+      <span class="text-brod text-blyerts-2">stycken</span>
+    </div>
+    {
+      fel.dorrar ? (
+        <p id={id('dorrar-fel')} class={FEL_KLASS}>
+          {fel.dorrar}
+        </p>
+      ) : (
+        !kompakt && (
+          <p id={id('dorrar-hjalp')} class={HJALP_KLASS}>
+            Varje öppning räknas som 0,9 m bred. Den får en regel på vardera sidan och en avväxling över, alltså den
+            liggande regeln som bär väggen ovanför dörren.
+          </p>
+        )
+      )
+    }
+  </div>
+
+  <fieldset class="m-0 mb-6 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Mineralull 45 mm</legend>
+    <div class={radioKlass}>
+      <label class="flex min-h-11 items-center gap-2 text-brod">
+        <input type="radio" name="ull" value="ja" checked={indata.ull} />
+        Ja
+      </label>
+      <label class="flex min-h-11 items-center gap-2 text-brod">
+        <input type="radio" name="ull" value="nej" checked={!indata.ull} />
+        Nej
+      </label>
+    </div>
+  </fieldset>
+
+  <button type="submit" class={KNAPP_KLASS}>{knappText}</button>
+</form>
