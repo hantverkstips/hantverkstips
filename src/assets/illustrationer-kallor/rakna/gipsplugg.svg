@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Genomskärning av en gipsvägg på linjerat papper. Skivan står som ett skrafferat band med måttet 12,5 millimeter över sig, och hålrummet bakom den är utmärkt. En plugg går genom skivan och viker ut två armar mot baksidan, och från skruvhuvudet hänger en vikt i en bygel. Nyckeltalet 20 kilo är markerat i tumstock, med anteckningen i rött att mer än så ska sitta i regeln.">
+  <!-- Anteckningsboken, verktygsskiss för /rakna/gipsplugg/. Blyerts 2 px för skivans kanter, pluggen,
+       skruven och vikten, blyerts-2 för skraffering, måttbygel och hjälplinjer, snickarpenna för pilen
+       till de utvikta armarna (den enda pennsaken), tumstock bakom nyckeltalet 20 kg.
+       Skala: skivan 28 px bred motsvarar 12,5 mm. Skivans framsida x=146, baksida x=118,
+       infästningen på y=150, vikten hänger i x=292.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2: skivans skraffering -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M118,42 l28,-16 M118,64 l28,-16 M118,86 l28,-16 M118,108 l28,-16 M118,130 l28,-16 M118,152 l28,-16 M118,174 l28,-16 M118,196 l28,-16 M118,218 l28,-16 M118,240 l28,-16 M118,262 l28,-16 M118,284 l28,-16 M118,306 l28,-16 M118,328 l28,-16"/>
+  </g>
+
+  <!-- Blyerts: skivans två kanter -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round">
+    <path d="M118,26 Q117,180 118,334"/>
+    <path d="M146,26 Q147,180 146,334"/>
+  </g>
+
+  <!-- Blyerts-2: måttbygel över skivans tjocklek och hjälplinje ut i hålrummet -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M118,78 h28 M118,73 v10 M146,73 v10"/>
+    <path d="M52,222 Q84,221 112,222"/>
+  </g>
+
+  <!-- Blyerts: pluggens hylsa i skivan, de utvikta armarna bakom den, skruven och huvudet -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M118,142 Q132,141 146,142 M118,158 Q132,157 146,158"/>
+    <path d="M116,146 Q98,138 100,116 Q110,122 118,124"/>
+    <path d="M116,154 Q98,162 100,184 Q110,178 118,176"/>
+    <path d="M104,150 Q178,149 252,150"/>
+    <path d="M252,140 h14 v20 h-14 z"/>
+  </g>
+
+  <!-- Blyerts: kroken ut från skruvhuvudet, bygeln och vikten som hänger -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M266,150 h14 Q292,150 292,162 L292,178"/>
+    <path d="M276,200 Q292,172 308,200"/>
+    <path d="M266,200 h52 l10,64 h-72 z"/>
+  </g>
+
+  <!-- Blyerts-2: skraffering i vikten -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M272,232 h40 M270,248 h44"/>
+  </g>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="346" y="212" width="82" height="28" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 387 226)"/>
+
+  <!-- Snickarpenna: pilen till de utvikta armarna -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M330,124 Q240,112 150,114"/>
+    <path d="M160,106 L148,114 L160,122"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="48" y="34" fill="#625a50">genomskärning av väggen</text>
+    <text x="156" y="66" fill="#625a50">12,5 mm</text>
+    <text x="48" y="212" fill="#625a50">hålrum</text>
+    <text x="336" y="90" fill="#ad3519">pluggen viker ut sig</text>
+    <text x="336" y="114" fill="#ad3519">bakom skivan</text>
+    <text x="352" y="235" font-size="26">20 kg</text>
+    <text x="346" y="286" fill="#ad3519">mer än så, i regeln</text>
+  </g>
+</svg>

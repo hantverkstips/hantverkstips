@@ -1,0 +1,174 @@
+---
+/**
+ * Formuläret till pluggväljaren för gipsvägg. Ett ställe: sidan
+ * /rakna/gipsplugg/ renderar det i fullt format, och
+ * <Kalkylator namn="gipsplugg" /> i en artikel renderar samma fält i kompakt
+ * format med action till verktygssidan.
+ *
+ * Ingen klient-JavaScript. Formuläret skickas som GET, och verktygssidan svarar.
+ *
+ * Alla props är valfria, eftersom det inbäddade formuläret inte har något
+ * resultat att visa värden ur; då står standardvärdena i fälten.
+ */
+import {
+  REGEL_VAL,
+  SAK_VAL,
+  SKIVA_VAL,
+  STANDARD,
+  type GipspluggIndata,
+} from '../../lib/kalkyl/gipsplugg.ts';
+import { ETIKETT_KLASS, FALT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, ramKlass } from '../../lib/kalkyl/stil';
+
+interface Props {
+  /** Valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
+  indata?: GipspluggIndata;
+  /** Talen som de skrevs i adressen, så att ett felskrivet värde går att rätta. */
+  varden?: { vikt: string; punkter: string };
+  fel?: Partial<Record<keyof GipspluggIndata, string>>;
+  /** Inbäddad i en artikel: tätare fält, inga hjälprader. */
+  kompakt?: boolean;
+  /** Prefix på id-attributen, så att två formulär på samma sida inte krockar. */
+  idPrefix?: string;
+  knappText?: string;
+}
+
+const komma = (n: number) => String(n).replace('.', ',');
+
+const {
+  indata = STANDARD,
+  varden = { vikt: komma(STANDARD.viktKg), punkter: String(STANDARD.punkter) },
+  fel = {},
+  kompakt = false,
+  idPrefix = '',
+  knappText = 'Ge mig svaret',
+} = Astro.props;
+
+const id = (namn: string) => `${idPrefix}${namn}`;
+const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
+
+const talfalt = [
+  {
+    namn: 'vikt',
+    etikett: 'Vad saken väger',
+    enhet: 'kg',
+    lage: 'decimal' as const,
+    varde: varden.vikt,
+    fel: fel.viktKg,
+    hjalp: 'Väg den, gissa inte. Ställ dig på badrumsvågen med saken i famnen och dra bort din egen vikt. En hylla räknas fylld, inte tom.',
+  },
+  {
+    namn: 'punkter',
+    etikett: 'Antal infästningspunkter',
+    enhet: 'st',
+    lage: 'numeric' as const,
+    varde: varden.punkter,
+    fel: fel.punkter,
+    hjalp: 'Alla skruvar eller krokar som saken hänger i. Två konsoler med två hål var är fyra punkter.',
+  },
+] as const;
+---
+
+<form method="get" action="/rakna/gipsplugg/">
+  <div class:list={[kompakt && 'sm:grid sm:grid-cols-2 sm:gap-4']}>
+    {
+      talfalt.map((f) => (
+        <div class="mb-4">
+          <label for={id(f.namn)} class={ETIKETT_KLASS}>
+            {f.etikett}
+          </label>
+          <div class="flex items-center gap-2">
+            <input
+              id={id(f.namn)}
+              name={f.namn}
+              type="text"
+              inputmode={f.lage}
+              value={f.varde}
+              aria-describedby={f.fel ? id(`${f.namn}-fel`) : undefined}
+              class:list={[FALT_KLASS, ramKlass(Boolean(f.fel))]}
+            />
+            <span class="text-brod text-blyerts-2">{f.enhet}</span>
+          </div>
+          {f.fel ? (
+            <p id={id(`${f.namn}-fel`)} class={FEL_KLASS}>
+              {f.fel}
+            </p>
+          ) : (
+            !kompakt && <p class={HJALP_KLASS}>{f.hjalp}</p>
+          )}
+        </div>
+      ))
+    }
+  </div>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Vad är det som ska upp?</legend>
+    <div class={radioKlass}>
+      {
+        SAK_VAL.map((v) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input type="radio" name="sak" value={v.varde} checked={indata.sak === v.varde} />
+            {kompakt ? v.kort : v.etikett}
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Skivtjocklek och antal lag</legend>
+    <div class={radioKlass}>
+      {
+        SKIVA_VAL.map((v) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input
+              type="radio"
+              name="skiva"
+              value={v.varde}
+              checked={indata.skiva === v.varde}
+              aria-describedby={kompakt ? undefined : id('skiva-hjalp')}
+            />
+            {kompakt ? v.kort : v.etikett}
+          </label>
+        ))
+      }
+    </div>
+    {
+      !kompakt && (
+        <p id={id('skiva-hjalp')} class={HJALP_KLASS}>
+          Skruva loss ett eluttag, med strömmen bruten, och mät tjockleken i kanten på hålet. Ett lag är 12,5 mm, den
+          skiva vi i Sverige kallar 13. Två lag är det dubbla, och den tunna skivan mäter 9,5 mm.
+        </p>
+      )
+    }
+  </fieldset>
+
+  <fieldset class="m-0 mb-6 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Sitter det en regel bakom där saken ska sitta?</legend>
+    <div class={radioKlass}>
+      {
+        REGEL_VAL.map((v) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input
+              type="radio"
+              name="regel"
+              value={v.varde}
+              checked={indata.regel === v.varde}
+              aria-describedby={kompakt ? undefined : id('regel-hjalp')}
+            />
+            {v.etikett}
+          </label>
+        ))
+      }
+    </div>
+    {
+      !kompakt && (
+        <p id={id('regel-hjalp')} class={HJALP_KLASS}>
+          Regeln är den lodräta trä- eller stålbiten som gipsskivan är skruvad fast i. Knacka, dra en magnet längs
+          väggen eller kör en regelsökare. Vet du inte svarar verktyget för det osäkra fallet.
+        </p>
+      )
+    }
+  </fieldset>
+
+  <button type="submit" class={KNAPP_KLASS}>{knappText}</button>
+</form>

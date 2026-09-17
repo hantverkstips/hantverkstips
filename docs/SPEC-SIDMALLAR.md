@@ -785,6 +785,46 @@ Markup: H1 "Räkna ut trall, reglar och plintar till altanen", ingress på tre m
 
 Testskriptet `scripts/test-kalkyl-altan.mjs` kör nio fall: standardaltanen, riktningen bytt, 145 mm trall, c 450 mm, 45 × 195 mm på lång spännvidd, 45 × 145 mm som inte räcker till 4 m djup, en liten altan på 2 × 2 m, en stor på 8 × 5 m och standardaltanen på befintlig grund. Utöver dem testas konstanterna mot underlaget, handelslängden, förpackningsvalet, gränserna och `tolkaQuery`.
 
+#### 4.7.7 `src/pages/rakna/gipsplugg.astro` (byggd 2026-09-17)
+
+`export const prerender = false`, samma motivering och samma `Cache-Control` som de sex sidorna ovan. `Astro.locals.sidtyp = 'verktyg'`. `reklam={false}`: inga pluggar finns i produktdatabasen, så sidan har varken produktkort eller reklamband. Brödsmulor: Hantverkstips / Räkna själv (`/rakna/`) / Vad håller i gipsväggen. `bred={true}`.
+
+Det andra beslutsverktyget, och det första som svarar med en tabell i stället för med ett tal. Läsaren fyller i vad saken väger, vad det är (tavla eller spegel, hylla, tv på fast fäste, tv på svängarm, skåp med lucka, handdukshängare eller krok, i tak), skivtjocklek och antal lag (12,5 mm i ett eller två lag, eller 9,5 mm), antal infästningspunkter och om det sitter en regel bakom. Svaret är ett av fyra: klisterkrok eller X-krok räcker, plugg räcker, sätt den i regeln, kortling behövs.
+
+Reglerna och tillverkarvärdena ligger i `src/lib/kalkyl/gipsplugg.ts`:
+
+```ts
+export interface GipspluggIndata { viktKg: number; sak: Sak; skiva: Skiva; punkter: number; regel: RegelBakom }
+export const STANDARD = { viktKg: 8, sak: 'hylla', skiva: 'ett-lag', punkter: 2, regel: 'vet-inte' };
+export const GRANSER = { viktKg: [0.1, 200], punkter: [1, 12] };
+export const INFASTNINGAR: Infastning[];                    // elva rader, enklast först
+export function barandePunkter(sak, punkter): number;       // övre raden vid hylla, skåp, svängarm
+export function lastPerPunkt(i): number;                    // kg per punkt, en decimal
+export function infastningarFor(i, last): InfastningRad[];  // raderna som gäller, med klarar-flagga
+export function raknaGipsplugg(i): GipspluggResultat;       // ok | ogiltig
+export function tolkaQuery(q): { indata: GipspluggIndata; harIndata: boolean };
+```
+
+Query: `vikt`, `sak`, `skiva`, `punkter`, `regel`. Resultatet bär beskedet, rubriken, ordet och resten till det stora formatet, förklaringen i ord, lasten per punkt, antalet bärande punkter, tabellen över infästningar, flaggan `ingenKlarar`, raden `utelamnade` som säger vad som är borta ur tabellen och varför, `kraverRegel` med sitt skäl, och `gorInteDetHar`.
+
+**Lasten per punkt.** Vikten delas på de punkter som faktiskt bär. En hylla och ett skåp får hela lasten på den övre raden, som räknas som halva antalet punkter avrundat nedåt och aldrig färre än en; en hylla vrider sig ut från väggen och ett skåp belastas av luckan som öppnas. Ett tv-fäste med svängarm multipliceras dessutom med 1,5 innan lasten delas. Faktorn är vår, inte en tillverkares, och den styr inte beskedet: svängarmen går alltid till regel eller kortling. Den visar hur stor lasten blir i den skruv som dras rakt ut ur väggen.
+
+**Tabellen.** Elva infästningar, sorterade från enklast till starkast, var och en med tillverkarens rekommenderade last per skivtyp och sin källa. Tre urval är våra: krokar och klisterremsor gäller bara en tavla eller en spegel, i tak räknar vi bara infästningar som viker ut sig bakom skivan, och klisterremsans tal prövas mot hela vikten eftersom 3M anger den per tavla och inte per remsa. En rad utan värde för den valda skivan faller bort helt, en rad som inte når upp står kvar gråmarkerad, och raden under tabellen säger vad som är borttaget. Källorna står i tabellfoten, en gång var.
+
+**Konstanterna med källa.** Självborrande gipsplugg 8 kg i ett lag och 7 i 9,5 mm, DuoBlade 10 och 20 kg (fischer). Kilformat clips 10 och 15, hålrumsplugg ø 6 mm 18 och 28, gipsankare 25 och 40, molly ø 10 mm 38 och 70, vipplugg 25 kg i tak (Gör Det Själv). X-krok 5 kg (BGA), klisterremsa 7 kg och klokrok 7 kg (3M), gipskrok i stål 20 kg (Habo). Skruv med plugg direkt i skivan 5 till 6 kg, avstånd 50 mm och 300 mm vid maxlast, och högst cirka 20 kg per fästpunkt i tak (Norgips). ANTAGANDE: gränsen på 20 kg, svängarmens faktor 1,5, övre raden som bärande, de tre urvalen ovan, och att svängarm och skåp alltid går till regel eller kortling.
+
+**20 kg-gränsen** är klustrets gemensamma, fastställd i `docs/INNEHALLSARKITEKTUR.md` avsnitt 2, och den gäller alltid: över 20 kg blir svaret regel när läsaren har en regel bakom, kortling när hen inte har det, och regel med en rad om att leta först när hen inte vet. Svängarm och skåp med lucka går samma väg oavsett vikt.
+
+**Råden.** `gorInteDetHar` kan innehålla fem rader: plugg i skivan för ett tv-fäste med svängarm, X-krok eller stift i tak, två infästningar närmare varandra än 50 mm, hela lasten i en enda punkt, och skåpets tomvikt i stället för den fyllda.
+
+Markup: H1 "Vad håller i gipsväggen? Välj plugg efter vikten", ingress på fyra meningar med fraserna "plugg gipsvägg", "gipsplugg", "hänga tungt i gipsvägg" och "tv-fäste på gipsvägg", `<Faktaruta variant="kortsvar">` med svaret på fem korta meningar, sedan formuläret och resultatet i två spalter på det linjerade papperet. Det stora "talet" är beskedets ord i `text-siffra` med `<Markering>`, med resten av beskedet på samma baslinje; under det lasten per punkt i `text-h1`, förklaringen, infästningstabellen med källrad, "Gör inte det här" och den delbara länken. Sedan H2 "Plugg i gipsvägg, vad gipspluggen bär och var gränsen går" (483 ord) med H3 "Hänga tungt i gipsvägg utan att öppna väggen" och H3 "Tv-fäste på gipsvägg, armen ändrar räkningen", H2 "Så bedömer vi" med åtta steg och antagandetabellen på tjugoen rader, H2 "Läs vidare" till `/inomhus/skruva-i-gipsvagg/`, `/inomhus/hanga-tavla-gipsvagg/` och `/inomhus/gipsskruv/`, och tre frågor i `<Faq>`.
+
+Sista raden i antagandetabellen säger att vår egen belastningsundersökning kommer: åtta pluggtyper dragna till brott med hängvåg i en vägg med 13 mm skiva, och att de talen då ersätter tillverkarnas. Samma löfte står i brödtexten under tabellen, och ingen egen siffra står i verktyget innan dess.
+
+`<title>` "Pluggväljare för gipsvägg, vad håller din vikt", 46 tecken; med suffixet blir den 62 och layouten utelämnar det därför, som på fem av de sex andra kalkylatorsidorna. Formuläret är inbäddat i `/inomhus/skruva-i-gipsvagg/` efter viktabellen och dess förklaring, och i `/inomhus/hanga-tavla-gipsvagg/` efter krokstabellen och faktarutan om avståndet mellan två krokar.
+
+Testskriptet `scripts/test-kalkyl-gipsplugg.mjs` kör tolv fall, ett per gren: tavlan som klarar sig på en krok, standardhyllan, samma hylla med regel bakom, hyllan över 20 kg med och utan regel, tv på fast fäste, tv på svängarm, badrumsskåpet, handdukshängaren, lampan i tak, hyllan i den tunna skivan där ingen infästning räcker, och spegeln som är för tung för en X-krok. Utöver dem testas tillverkarvärdena mot artiklarnas tabeller, 20 kg-gränsen, hävarmen, takets gräns, urvalen, råden, gränserna och `tolkaQuery`.
+
 ### 4.8 `src/pages/om/index.astro` och `src/pages/om/[slug].astro`
 
 `index.astro` renderar `getEntry('sidor', 'om')`. `[slug].astro` har `getStaticPaths` från `publicerade('sidor')` utan `om` och `startsida`. Båda: brödsmulor Hantverkstips / {title} (index) respektive Hantverkstips / Om (`/om/`) / {title}. H1, meta "Uppdaterad {datum}" om den finns, `<Content components={{ h2: Pennstreck, Faktaruta, Varning, Markering }} />`. `reklam={false}`. Strukturerad data efter `strukturdata`: `Organization` ger `organisation()`, `Article` ger `artikel()` med redaktionen, `ingen` ger inget. Gemensam vy `vyer/Sida.astro` så att de två rutterna är tio rader var.
