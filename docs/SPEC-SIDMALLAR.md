@@ -825,6 +825,46 @@ Sista raden i antagandetabellen säger att vår egen belastningsundersökning ko
 
 Testskriptet `scripts/test-kalkyl-gipsplugg.mjs` kör tolv fall, ett per gren: tavlan som klarar sig på en krok, standardhyllan, samma hylla med regel bakom, hyllan över 20 kg med och utan regel, tv på fast fäste, tv på svängarm, badrumsskåpet, handdukshängaren, lampan i tak, hyllan i den tunna skivan där ingen infästning räcker, och spegeln som är för tung för en X-krok. Utöver dem testas tillverkarvärdena mot artiklarnas tabeller, 20 kg-gränsen, hävarmen, takets gräns, urvalen, råden, gränserna och `tolkaQuery`.
 
+#### 4.7.8 `src/pages/rakna/gipsskruv.astro` (byggd 2026-09-17)
+
+`export const prerender = false`, samma motivering och samma `Cache-Control` som de sju sidorna ovan. `Astro.locals.sidtyp = 'verktyg'`. `reklam={true}` med `butikNamn={butik?.namn}` som innerväggsräknaren: svaret är en skruv, alltså en produktegenskap. Brödsmulor: Hantverkstips / Räkna själv (`/rakna/`) / Vilken gipsskruv. `bred={true}`.
+
+Rutten `/rakna/gipsskruv/` krockar inte med artikeln `/inomhus/gipsskruv/`. Samma slug i två samlingar är tillåtet så länge undermappen skiljer dem åt, och kontrollen i `scripts/kontrollera-innehall.ts` kollar dubbletter inom en samling, inte över hela sajten.
+
+Regler och längder ligger i `src/lib/kalkyl/gipsskruv.ts`:
+
+```ts
+export interface GipsskruvIndata { skiva: '9' | '12.5' | '15'; lag: 1 | 2; regel: 'tra' | 'stal-tunn' | 'stal-tjock'; fogtatning: boolean; miljo: 'torrt' | 'vatrum' | 'ute' }
+export const STANDARD = { skiva: '12.5', lag: 1, regel: 'tra', fogtatning: false, miljo: 'torrt' };
+export const HANDELSLANGDER_MM = [25, 30, 35, 38, 41, 45, 51, 55, 60, 65, 70, 75];
+export const LANGDER: Record<'tra' | 'stal', Record<string, Langdrad>>;   // artikelns längdtabell
+export function minstaLangd(i): number;                 // Norgips tumregel, fogtätningen inräknad
+export function narmastOver(langdMm): number;           // första handelslängd som räcker
+export function gangaFor(regel): 'grov' | 'fin';
+export function spetsFor(regel): 's-eller-nal' | 'nal' | 'borr';
+export function ytbehandlingFor(miljo, regel): Ytbehandling;
+export function raknaGipsskruv(i): GipsskruvResultat;   // ok | ogiltig
+export function tolkaQuery(q): { indata: GipsskruvIndata; harIndata: boolean };
+```
+
+Query: `skiva`, `lag`, `regel`, `fog`, `miljo`. Modulen har ingen `GRANSER`: varje fält är ett val ur en lista, det finns inga fria talfält, och valideringen sker mot värdelistorna. Ett värde utanför dem ger `ogiltig` med feltext på fältet, precis som ett tal utanför gränserna gör på de andra verktygen.
+
+**Längden.** Minsta längd räknas ur Norgips tumregel, alltså skivornas tjocklek plus 20 mm in i träregel eller plus 10 mm genom stålregel, med cirka 7 mm pålagt vid torr fogtätning. Talet finns sällan att köpa, så svaret är en handelslängd hämtad ur längdtabellen i `/inomhus/gipsskruv/`. Under svaret står minsta längd, närmaste handelslängd över, hur långt skruven går ner i regeln och radens andra längd, så att läsaren ser hela räkningen. Har läsaren fogtätning tas nästa längd upp från raden, och svaret höjs tills det når tumregeln.
+
+**De två raderna som avviker, och varför.** Ett lag 12,5 mm på trä får 41 mm fast 35 mm räcker, och ett lag 15 mm på stål får 30 mm fast 25 mm är minsta längd. Båda står som ANTAGANDE i tabellen, båda förklaras på skärmen på raden `anm`, och båda följer guidens egen text. Raderna för den tunna skivan på 9,5 mm står inte i artikelns tabell och är räknade ur tumregeln; resultatet bär `iTabellen: false`, och sidan skriver ut att raden är vår.
+
+**Gänga, spets och ytbehandling.** Grov gänga i trä och fin i stål (Gör Det Själv). S-spets eller nålspets i trä, nålspets i plåt upp till 0,9 mm och borrspets över (Gyproc QS Quick, Essve). Elförzinkad eller fosfaterad i torrt trä och fosfaterad mot stål, båda i korrosivitetsklass C1 (Essve), C4 eller rostfri A2 utomhus (Essve GU Corrseal och Beijer). Våtrummet får C4 av oss fast källorna nöjer sig med C1 bakom ett färdigt tätskikt, och det är märkt ANTAGANDE.
+
+**Råden.** `gorInteDetHar` kan innehålla fyra rader: grovgängad träskruv i stålregel, nålspets i plåt över 0,9 mm, den kortaste längden på raden i tak, och fosfaterad skruv i utegips.
+
+**Produktkorten.** `essve-fzb-39x41` visas bara när svaret är 41 mm med grov gänga på trä, alltså `visaBandadSkruv`, med `forVem` som säger att det är just den skruven i band. `makita-dfr550zx1` står alltid under med samma rad som innerväggsräknaren, "Från ungefär 300 skruv lönar sig en automat." Under korten står att bandet är gjort för träregel.
+
+Markup: H1 "Vilken gipsskruv ska du ha? Räkna ut längd och gänga", ingress på fyra meningar, `<Faktaruta variant="kortsvar">` med svaret på fem korta meningar, sedan formuläret och svaret i två spalter på det linjerade papperet. Det stora talet är längden i `text-siffra` med `<Markering>`, och under det gänga, spets och ytbehandling som tre rader med skälet under var och en, listan "Så kom längden fram", skruvavståndet med länk till `/rakna/innervagg/` för antalet, "Gör inte det här" och den delbara länken. Sedan H2 "Skruven och maskinen som svaret pekar på", H2 "Gipsskruv längd och gänga, och varför regeln avgör båda" (385 ord) med H3 "Gipsskruv stålregel, gränsen går vid 0,9 mm plåt", H2 "Så räknar vi" med sju steg och antagandetabellen på tjugo rader, H2 "Läs vidare" till `/inomhus/gipsskruv/`, `/rakna/innervagg/` och `/inomhus/bygga-innervagg/`, och tre frågor i `<Faq>`.
+
+Sökfraserna "vilken gipsskruv" (H1 och ingress), "gipsskruv längd" (H2) och "gipsskruv stålregel" (H3) ligger i rubrikerna och i första stycket. `<title>` "Vilken gipsskruv? Längd och gänga för din vägg", 46 tecken; med suffixet blir den 62 och layouten utelämnar det därför, som på sex av de sju andra kalkylatorsidorna. Meta description är 138 tecken. Formuläret är inbäddat i `/inomhus/gipsskruv/` direkt under längdtabellen och i `/inomhus/bygga-innervagg/` sist i skruvavsnittet.
+
+Testskriptet `scripts/test-kalkyl-gipsskruv.mjs` kör femton fall: konstanterna mot underlaget, minsta längd mot artikelns punktlista, hela längdtabellen mot artikelns tabell, ett lag 12,5 mm på trä (41 mm), två lag på trä (45 mm), ett lag på tunn stålregel (25 mm med fin gänga och nålspets), ett lag 15 mm på stål (30 mm med rådet om marginal), den tunna skivan i tre varianter, fogtätningen i två (45 mm och det tjockaste fallet på 60 mm), tjock plåt med borrspets, våtrum och utomhus mot C4, takrådet på varje svar, `narmastOver`, ogiltig indata och `tolkaQuery`.
+
 ### 4.8 `src/pages/om/index.astro` och `src/pages/om/[slug].astro`
 
 `index.astro` renderar `getEntry('sidor', 'om')`. `[slug].astro` har `getStaticPaths` från `publicerade('sidor')` utan `om` och `startsida`. Båda: brödsmulor Hantverkstips / {title} (index) respektive Hantverkstips / Om (`/om/`) / {title}. H1, meta "Uppdaterad {datum}" om den finns, `<Content components={{ h2: Pennstreck, Faktaruta, Varning, Markering }} />`. `reklam={false}`. Strukturerad data efter `strukturdata`: `Organization` ger `organisation()`, `Article` ger `artikel()` med redaktionen, `ingen` ger inget. Gemensam vy `vyer/Sida.astro` så att de två rutterna är tio rader var.

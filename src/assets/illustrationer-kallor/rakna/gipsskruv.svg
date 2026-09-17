@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Genomskärning av en vägg på linjerat papper. Träregeln står som ett brett band med ådring, och gipsskivan ligger som ett smalare skrafferat band framför den med måttet 12,5 millimeter över sig. En gipsskruv går genom skivan och in i regeln, och sträckan inne i regeln är utmärkt med en måttbygel. Nyckeltalet plus 20 millimeter i trä är markerat i tumstock, och under det står i rött att det räcker med plus 10 millimeter genom en stålregel.">
+  <!-- Anteckningsboken, verktygsskiss för /rakna/gipsskruv/. Blyerts 2 px för regelns och skivans
+       kanter och för skruven, blyerts-2 för ådring, skraffering, måttbyglar och hjälplinjer,
+       snickarpenna för anteckningen om stålregeln, tumstock bakom nyckeltalet + 20 mm i trä.
+       Skala: skivans 35 px motsvarar 12,5 mm, alltså 2,8 px per millimeter. Skruven går 56 px,
+       alltså 20 mm, in i regeln. Regelns framsida x=300, skivans framsida x=335, skruven på y=185.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2: ådring i träregeln -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M148,48 Q154,190 148,330"/>
+    <path d="M186,48 Q180,190 186,330"/>
+    <path d="M224,48 Q230,190 224,330"/>
+    <path d="M262,48 Q256,190 262,330"/>
+  </g>
+
+  <!-- Blyerts-2: skraffering i gipsskivan -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M300,70 l35,-20 M300,92 l35,-20 M300,114 l35,-20 M300,136 l35,-20 M300,158 l35,-20 M300,224 l35,-20 M300,246 l35,-20 M300,268 l35,-20 M300,290 l35,-20 M300,312 l35,-20 M300,334 l35,-20"/>
+  </g>
+
+  <!-- Blyerts: regelns och skivans kanter -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round">
+    <path d="M120,48 Q119,190 120,330"/>
+    <path d="M300,48 Q301,190 300,330"/>
+    <path d="M335,48 Q336,190 335,330"/>
+    <path d="M120,48 Q210,47 335,48"/>
+    <path d="M120,330 Q210,331 335,330"/>
+  </g>
+
+  <!-- Blyerts: skruven, spetsen i regeln och det försänkta huvudet i skivans yta -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M252,180 Q291,179 330,180"/>
+    <path d="M252,190 Q291,191 330,190"/>
+    <path d="M252,180 L244,185 L252,190"/>
+    <path d="M330,178 L336,170 L336,200 L330,192"/>
+  </g>
+
+  <!-- Blyerts-2: gängan längs skaftet -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M264,180 l-8,10 M276,180 l-8,10 M288,180 l-8,10 M300,180 l-8,10 M312,180 l-8,10 M324,180 l-8,10"/>
+  </g>
+
+  <!-- Blyerts-2: måttbygel över skivans tjocklek och över skruvens väg i regeln -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M300,82 h35 M300,77 v10 M335,77 v10"/>
+    <path d="M244,250 h56 M244,245 v10 M300,245 v10"/>
+    <path d="M106,206 h18 M112,200 l-6,6 l6,6"/>
+    <path d="M342,124 h-16 M332,118 l-6,6 l6,6"/>
+    <path d="M344,244 Q330,246 314,250"/>
+  </g>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="348" y="216" width="192" height="30" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 444 231)"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="48" y="34" fill="#625a50">snitt genom vägg och regel</text>
+    <text x="346" y="90" fill="#625a50">12,5 mm</text>
+    <text x="348" y="131" fill="#625a50">gipsskivan</text>
+    <text x="48" y="212" fill="#625a50">regeln</text>
+    <text x="352" y="239" font-size="26">+ 20 mm i trä</text>
+    <text x="348" y="300" fill="#ad3519">+ 10 mm genom stål</text>
+    <text x="348" y="326" fill="#ad3519">om regeln är plåt</text>
+  </g>
+</svg>

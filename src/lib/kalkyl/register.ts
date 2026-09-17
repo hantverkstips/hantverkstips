@@ -66,6 +66,13 @@ export const KALKYLATORER: Kalkylator[] = [
     pelare: ['inomhus'],
   },
   {
+    slug: 'gipsskruv',
+    namn: 'Vilken gipsskruv ska du ha?',
+    rad: 'Skivtjocklek, antal lag och regel ger längd, gänga och spets.',
+    sasong: [1, 12],
+    pelare: ['inomhus'],
+  },
+  {
     slug: 'bygglov-altan',
     namn: 'Behöver altanen bygglov?',
     rad: 'Höjd, avstånd och detaljplan ger svaret med lagrum.',

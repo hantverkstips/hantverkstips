@@ -20,6 +20,7 @@ import BygglovAltanForm from '../kalkyl/BygglovAltanForm.astro';
 import DaggpunktForm from '../kalkyl/DaggpunktForm.astro';
 import ElkostnadForm from '../kalkyl/ElkostnadForm.astro';
 import GipspluggForm from '../kalkyl/GipspluggForm.astro';
+import GipsskruvForm from '../kalkyl/GipsskruvForm.astro';
 import InnervaggForm from '../kalkyl/InnervaggForm.astro';
 import Ikon from './Ikon.astro';
 
@@ -29,7 +30,16 @@ interface Props {
 }
 
 /** Kalkylatorer som har ett formulär att bädda in. */
-const MED_FORMULAR = ['avfuktare', 'daggpunkt', 'elkostnad', 'innervagg', 'bygglov-altan', 'altan', 'gipsplugg'];
+const MED_FORMULAR = [
+  'avfuktare',
+  'daggpunkt',
+  'elkostnad',
+  'innervagg',
+  'bygglov-altan',
+  'altan',
+  'gipsplugg',
+  'gipsskruv',
+];
 
 const { namn } = Astro.props;
 const k = hittaKalkylator(namn);
@@ -63,6 +73,7 @@ const prefix = `${k.slug}-inbaddad-`;
   {namn === 'bygglov-altan' && <BygglovAltanForm kompakt={true} idPrefix={prefix} knappText="Ge mig svaret" />}
   {namn === 'altan' && <AltanForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'gipsplugg' && <GipspluggForm kompakt={true} idPrefix={prefix} knappText="Ge mig svaret" />}
+  {namn === 'gipsskruv' && <GipsskruvForm kompakt={true} idPrefix={prefix} knappText="Ge mig skruven" />}
 
   <p class="m-0 mt-4 text-liten text-blyerts-2">
     Knappen tar dig till kalkylatorn med dina värden ifyllda. Där står svaret med källan bakom varje tal.

@@ -1,0 +1,178 @@
+---
+/**
+ * Formuläret till skruvväljaren. Ett ställe: sidan /rakna/gipsskruv/ renderar
+ * det i fullt format, och <Kalkylator namn="gipsskruv" /> i en artikel renderar
+ * samma fält i kompakt format med action till verktygssidan.
+ *
+ * Ingen klient-JavaScript. Formuläret skickas som GET, och verktygssidan svarar.
+ *
+ * Alla fält är val ur listor, så komponenten har ingen `varden`-prop: det finns
+ * inga tal som läsaren kan skriva fel. Propen står ändå med i signaturen som en
+ * tom plats hos de andra formulären, och utelämnas här.
+ */
+import {
+  LAG_VAL,
+  MILJO_VAL,
+  REGEL_VAL,
+  SKIVA_VAL,
+  STANDARD,
+  type GipsskruvIndata,
+} from '../../lib/kalkyl/gipsskruv.ts';
+import { ETIKETT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS } from '../../lib/kalkyl/stil';
+
+interface Props {
+  /** Valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
+  indata?: GipsskruvIndata;
+  fel?: Partial<Record<keyof GipsskruvIndata, string>>;
+  /** Inbäddad i en artikel: tätare fält, inga hjälprader. */
+  kompakt?: boolean;
+  /** Prefix på id-attributen, så att två formulär på samma sida inte krockar. */
+  idPrefix?: string;
+  knappText?: string;
+}
+
+const { indata = STANDARD, fel = {}, kompakt = false, idPrefix = '', knappText = 'Ge mig skruven' } = Astro.props;
+
+const id = (namn: string) => `${idPrefix}${namn}`;
+const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
+---
+
+<form method="get" action="/rakna/gipsskruv/">
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Skivans tjocklek</legend>
+    <div class={radioKlass}>
+      {
+        SKIVA_VAL.map((v) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input
+              type="radio"
+              name="skiva"
+              value={v.varde}
+              checked={indata.skiva === v.varde}
+              aria-describedby={kompakt || fel.skiva ? undefined : id('skiva-hjalp')}
+            />
+            {kompakt ? v.kort : v.etikett}
+          </label>
+        ))
+      }
+    </div>
+    {
+      fel.skiva ? (
+        <p id={id('skiva-fel')} class={FEL_KLASS}>
+          {fel.skiva}
+        </p>
+      ) : (
+        !kompakt && (
+          <p id={id('skiva-hjalp')} class={HJALP_KLASS}>
+            Står det 13 mm på skivan är det den som kallas 12,5. Den tunna skivan säljs som 9 mm och mäter 9,5.
+          </p>
+        )
+      )
+    }
+  </fieldset>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Antal lag på den sida du skruvar</legend>
+    <div class={radioKlass}>
+      {
+        LAG_VAL.map((v) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input type="radio" name="lag" value={String(v.varde)} checked={indata.lag === v.varde} />
+            {kompakt ? v.kort : v.etikett}
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Regeln bakom skivan</legend>
+    <div class={radioKlass}>
+      {
+        REGEL_VAL.map((v) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input
+              type="radio"
+              name="regel"
+              value={v.varde}
+              checked={indata.regel === v.varde}
+              aria-describedby={kompakt ? undefined : id('regel-hjalp')}
+            />
+            {kompakt ? v.kort : v.etikett}
+          </label>
+        ))
+      }
+    </div>
+    {
+      !kompakt && (
+        <p id={id('regel-hjalp')} class={HJALP_KLASS}>
+          Godstjockleken är hur tjock plåten i regeln är, inte hur bred profilen är. En vanlig stomme till en innervägg
+          ligger under 0,9 mm. Bärande profiler och stommar i kontorshus ligger över.
+        </p>
+      )
+    }
+  </fieldset>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Torr fogtätning bakom skivan</legend>
+    <div class={radioKlass}>
+      <label class="flex min-h-11 items-center gap-2 text-brod">
+        <input
+          type="radio"
+          name="fog"
+          value="nej"
+          checked={!indata.fogtatning}
+          aria-describedby={kompakt ? undefined : id('fog-hjalp')}
+        />
+        Nej
+      </label>
+      <label class="flex min-h-11 items-center gap-2 text-brod">
+        <input
+          type="radio"
+          name="fog"
+          value="ja"
+          checked={indata.fogtatning}
+          aria-describedby={kompakt ? undefined : id('fog-hjalp')}
+        />
+        Ja
+      </label>
+    </div>
+    {
+      !kompakt && (
+        <p id={id('fog-hjalp')} class={HJALP_KLASS}>
+          Torr fogtätning är remsor som tätar mot ljud och drag i stället för fogmassa. De ligger mellan regeln och
+          skivan och lägger cirka 7 mm till tjockleken.
+        </p>
+      )
+    }
+  </fieldset>
+
+  <fieldset class="m-0 mb-6 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Var väggen står</legend>
+    <div class={radioKlass}>
+      {
+        MILJO_VAL.map((v) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input
+              type="radio"
+              name="miljo"
+              value={v.varde}
+              checked={indata.miljo === v.varde}
+              aria-describedby={kompakt ? undefined : id('miljo-hjalp')}
+            />
+            {kompakt ? v.kort : v.etikett}
+          </label>
+        ))
+      }
+    </div>
+    {
+      !kompakt && (
+        <p id={id('miljo-hjalp')} class={HJALP_KLASS}>
+          Miljön styr bara ytbehandlingen, aldrig längden. Utomhus betyder utegips bakom en fasad.
+        </p>
+      )
+    }
+  </fieldset>
+
+  <button type="submit" class={KNAPP_KLASS}>{knappText}</button>
+</form>
