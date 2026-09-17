@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Ett rum ritat uppifrån på linjerat papper. Väggarna är fyra streck i blyerts, och måttbyglar under och till vänster är märkta fyra meter och tre meter. Mitt i rummet står tolv kvadratmeter skrivet över en gul tumstockslapp. I den nedre väggen finns en öppning med en dörrslagning i rött, märkt dörr minus 1,89, och i den övre väggen en öppning med dubbla röda streck, märkt fönster minus 1,44.">
+  <!-- Anteckningsboken, verktygsskiss för /rakna/kvadratmeter/. Blyerts 2 px för rummets väggar,
+       blyerts-2 för måttbyglar och pekpinnar, snickarpenna för de två avdragen (dörrens slagning och
+       fönstrets karm) eftersom det är dem verktyget handlar om, tumstock bakom nyckeltalet 12 kvm.
+       Skala: rummet är 4 × 3 m och ritas 340 × 160 px, alltså 85 px per meter i sidled. Djupled är
+       hoptryckt för att skissen ska ligga i 5:3; den visar ordningen, inte proportionen.
+       Rummet x=140-480, y=100-260. Dörröppning x=260-330 i nedre väggen, fönster x=360-440 i övre.
+       Handskrift i Caveat 500, 26 px, nyckeltalet 30 px, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Golvytan, papper som fyllning så att linjeringen inte lyser igenom rummet -->
+  <path d="M140,100 Q310,98 480,100 Q478,180 480,260 Q310,262 140,260 Q142,180 140,100" fill="#f5efe3"/>
+
+  <!-- Blyerts: de fyra väggarna, med hål där dörren och fönstret sitter -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M140,100 Q250,98 360,100"/>
+    <path d="M440,100 Q460,99 480,100"/>
+    <path d="M480,100 Q478,180 480,260"/>
+    <path d="M480,260 Q405,261 330,260"/>
+    <path d="M260,260 Q200,261 140,260"/>
+    <path d="M140,260 Q142,180 140,100"/>
+  </g>
+
+  <!-- Snickarpenna: avdraget för dörren, alltså öppningen och dess slagning in i rummet -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round">
+    <path d="M260,260 Q259,230 258,201"/>
+    <path d="M258,201 C282,198 312,214 328,240 C330,246 330,253 330,259"/>
+  </g>
+
+  <!-- Snickarpenna: avdraget för fönstret, karmen som dubbelt streck i den övre väggen -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round">
+    <path d="M360,96 Q400,94 440,96"/>
+    <path d="M360,104 Q400,102 440,104"/>
+    <path d="M360,92 v16 M440,92 v16"/>
+  </g>
+
+  <!-- Blyerts-2: måttbygeln under rummet och måttbygeln till vänster -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M140,292 Q310,290 480,292 M140,286 v12 M480,286 v12"/>
+    <path d="M118,100 Q116,180 118,260 M112,100 h12 M112,260 h12"/>
+  </g>
+
+  <!-- Blyerts-2: pekpinnar från de två penna-etiketterna till sina öppningar -->
+  <path d="M340,308 Q320,290 306,272" fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round"/>
+  <path d="M392,60 Q396,74 398,88" fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round"/>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="228" y="158" width="118" height="34" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 287 175)"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="26" fill="#2a2521">
+    <text x="236" y="186" font-size="30">12 kvm</text>
+    <text x="168" y="326">4 m</text>
+    <text x="48" y="190">3 m</text>
+    <text x="344" y="330" fill="#ad3519">dörr −1,89</text>
+    <text x="300" y="52" fill="#ad3519">fönster −1,44</text>
+  </g>
+</svg>

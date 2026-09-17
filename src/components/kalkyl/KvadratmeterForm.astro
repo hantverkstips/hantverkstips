@@ -1,0 +1,346 @@
+---
+/**
+ * Formuläret till kvadratmeter- och åtgångsräknaren. Ett ställe: sidan
+ * /rakna/kvadratmeter/ renderar det i fullt format, och
+ * <Kalkylator namn="kvadratmeter" /> i en artikel renderar samma fält i kompakt
+ * format med action till verktygssidan.
+ *
+ * Ingen klient-JavaScript. Formuläret skickas som GET, och verktygssidan räknar.
+ *
+ * Alla props är valfria, eftersom det inbäddade formuläret inte har någon
+ * uträkning att visa värden ur; då står standardvärdena i fälten.
+ */
+import {
+  LAGGNINGAR,
+  MATERIAL_VAL,
+  RAKNAR_VAL,
+  STANDARD,
+  type KvadratmeterIndata,
+} from '../../lib/kalkyl/kvadratmeter.ts';
+import {
+  ETIKETT_KLASS,
+  FALT_KLASS,
+  FEL_KLASS,
+  HJALP_KLASS,
+  KNAPP_KLASS,
+  ramKlass,
+} from '../../lib/kalkyl/stil';
+
+interface Props {
+  /** Valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
+  indata?: KvadratmeterIndata;
+  /** Talen som de skrevs i adressen, så att ett felskrivet värde går att rätta. */
+  varden?: {
+    langd: string;
+    bredd: string;
+    takhojd: string;
+    dorrar: string;
+    dorrbredd: string;
+    dorrhojd: string;
+    fonster: string;
+    fonsterbredd: string;
+    fonsterhojd: string;
+    strykningar: string;
+    paket: string;
+  };
+  fel?: Partial<Record<keyof KvadratmeterIndata, string>>;
+  /** Inbäddad i en artikel: tätare fält, inga hjälprader. */
+  kompakt?: boolean;
+  /** Prefix på id-attributen, så att två formulär på samma sida inte krockar. */
+  idPrefix?: string;
+  knappText?: string;
+}
+
+const komma = (n: number) => String(n).replace('.', ',');
+
+const {
+  indata = STANDARD,
+  varden = {
+    langd: komma(STANDARD.langdM),
+    bredd: komma(STANDARD.breddM),
+    takhojd: komma(STANDARD.takhojdM),
+    dorrar: String(STANDARD.dorrar),
+    dorrbredd: komma(STANDARD.dorrBreddM),
+    dorrhojd: komma(STANDARD.dorrHojdM),
+    fonster: String(STANDARD.fonster),
+    fonsterbredd: komma(STANDARD.fonsterBreddM),
+    fonsterhojd: komma(STANDARD.fonsterHojdM),
+    strykningar: String(STANDARD.strykningar),
+    paket: '',
+  },
+  fel = {},
+  kompakt = false,
+  idPrefix = '',
+  knappText = 'Räkna ut',
+} = Astro.props;
+
+const id = (namn: string) => `${idPrefix}${namn}`;
+const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
+
+/** Rummets tre mått, som ligger överst och alltid syns. */
+const rumsfalt = [
+  {
+    namn: 'langd',
+    etikett: 'Rummets längd',
+    enhet: 'm',
+    varde: varden.langd,
+    fel: fel.langdM,
+    hjalp: 'Mät längs golvet, vägg till vägg.',
+  },
+  {
+    namn: 'bredd',
+    etikett: 'Rummets bredd',
+    enhet: 'm',
+    varde: varden.bredd,
+    fel: fel.breddM,
+    hjalp: 'Är rummet vinklat delar du upp det i två rektanglar och räknar varje för sig.',
+  },
+  {
+    namn: 'takhojd',
+    etikett: 'Takhöjd',
+    enhet: 'm',
+    varde: varden.takhojd,
+    fel: fel.takhojdM,
+    hjalp: 'Golv till tak. Ett svenskt hus från sjuttiotalet ligger oftast på 2,4 m.',
+  },
+] as const;
+
+/** Öppningarna som dras av från väggytan. Egna mått är valfria. */
+const oppningar = [
+  {
+    antal: { namn: 'dorrar', etikett: 'Antal dörrar', varde: varden.dorrar, fel: fel.dorrar },
+    bredd: { namn: 'dorrbredd', etikett: 'Dörrens bredd', varde: varden.dorrbredd, fel: fel.dorrBreddM },
+    hojd: { namn: 'dorrhojd', etikett: 'Dörrens höjd', varde: varden.dorrhojd, fel: fel.dorrHojdM },
+    hjalp:
+      'Måtten gäller hålet i väggen, inte dörrbladet. Dörrtillverkaren Swedoor anger 910 × 2110 mm för den vanligaste innerdörren, och det är avrundat till 0,9 × 2,1 m här.',
+  },
+  {
+    antal: { namn: 'fonster', etikett: 'Antal fönster', varde: varden.fonster, fel: fel.fonster },
+    bredd: {
+      namn: 'fonsterbredd',
+      etikett: 'Fönstrets bredd',
+      varde: varden.fonsterbredd,
+      fel: fel.fonsterBreddM,
+    },
+    hojd: { namn: 'fonsterhojd', etikett: 'Fönstrets höjd', varde: varden.fonsterhojd, fel: fel.fonsterHojdM },
+    hjalp:
+      'Måttet är hålet i väggen. Vårt standardfönster på 1,2 × 1,2 m är ett antagande, så har du ett annat fönster skriver du in det.',
+  },
+] as const;
+---
+
+<form method="get" action="/rakna/kvadratmeter/">
+  {/* Ett fält per rad. Kalkylatorkortet är en halv spalt brett på desktop, och
+      tre fält bredvid varandra där gör både etiketter och hjälprader oläsliga. */}
+  <div>
+    {
+      rumsfalt.map((f) => (
+        <div class="mb-4">
+          <label for={id(f.namn)} class={ETIKETT_KLASS}>
+            {f.etikett}
+          </label>
+          <div class="flex items-center gap-2">
+            <input
+              id={id(f.namn)}
+              name={f.namn}
+              type="text"
+              inputmode="decimal"
+              value={f.varde}
+              aria-describedby={f.fel ? id(`${f.namn}-fel`) : undefined}
+              class:list={[FALT_KLASS, ramKlass(Boolean(f.fel))]}
+            />
+            <span class="text-brod text-blyerts-2">{f.enhet}</span>
+          </div>
+          {f.fel ? (
+            <p id={id(`${f.namn}-fel`)} class={FEL_KLASS}>
+              {f.fel}
+            </p>
+          ) : (
+            !kompakt && f.hjalp && <p class={HJALP_KLASS}>{f.hjalp}</p>
+          )}
+        </div>
+      ))
+    }
+  </div>
+
+  {
+    oppningar.map((o) => (
+      <fieldset class="m-0 mb-4 p-0 border-0">
+        <legend class:list={[ETIKETT_KLASS, 'p-0']}>{o.antal.etikett.replace('Antal ', 'Avdrag för ')}</legend>
+        <div class="mb-2">
+          <label for={id(o.antal.namn)} class="block mb-1 text-liten text-blyerts-2">
+            {o.antal.etikett}
+          </label>
+          <div class="flex items-center gap-2">
+            <input
+              id={id(o.antal.namn)}
+              name={o.antal.namn}
+              type="text"
+              inputmode="numeric"
+              value={o.antal.varde}
+              aria-describedby={o.antal.fel ? id(`${o.antal.namn}-fel`) : undefined}
+              class:list={[FALT_KLASS, ramKlass(Boolean(o.antal.fel))]}
+            />
+            <span class="text-brod text-blyerts-2">st</span>
+          </div>
+          {o.antal.fel && (
+            <p id={id(`${o.antal.namn}-fel`)} class={FEL_KLASS}>
+              {o.antal.fel}
+            </p>
+          )}
+        </div>
+        {/* Bredd och höjd hör ihop och får dela rad. Mer än två fält bredvid
+            varandra ryms inte i kortets halva spalt. */}
+        <div class="grid grid-cols-2 gap-x-4">
+          {[o.bredd, o.hojd].map((f) => (
+            <div class="mb-2">
+              <label for={id(f.namn)} class="block mb-1 text-liten text-blyerts-2">
+                {f.etikett}
+              </label>
+              <div class="flex items-center gap-2">
+                <input
+                  id={id(f.namn)}
+                  name={f.namn}
+                  type="text"
+                  inputmode="decimal"
+                  value={f.varde}
+                  aria-describedby={f.fel ? id(`${f.namn}-fel`) : undefined}
+                  class:list={[FALT_KLASS, ramKlass(Boolean(f.fel))]}
+                />
+                <span class="text-brod text-blyerts-2">m</span>
+              </div>
+              {f.fel && (
+                <p id={id(`${f.namn}-fel`)} class={FEL_KLASS}>
+                  {f.fel}
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+        {!kompakt && <p class={HJALP_KLASS}>{o.hjalp}</p>}
+      </fieldset>
+    ))
+  }
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Vad du vill räkna ut</legend>
+    <div class={radioKlass}>
+      {
+        RAKNAR_VAL.map((r) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input type="radio" name="raknar" value={r.varde} checked={indata.raknar === r.varde} />
+            {r.etikett}
+          </label>
+        ))
+      }
+    </div>
+    {
+      !kompakt && (
+        <p class={HJALP_KLASS}>
+          Valet styr vilket tal som står stort. Alla tre ytorna räknas ändå ut och står under svaret.
+        </p>
+      )
+    }
+  </fieldset>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Vad ytan ska täckas med</legend>
+    <div class={radioKlass}>
+      {
+        MATERIAL_VAL.map((m) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input type="radio" name="material" value={m.varde} checked={indata.material === m.varde} />
+            {m.etikett}
+          </label>
+        ))
+      }
+    </div>
+    {
+      !kompakt && (
+        <p class={HJALP_KLASS}>
+          Materialet väljer sin egen yta: väggfärg och tapet går på väggarna efter avdrag, takfärg på taket, golv
+          och klinker på golvet.
+        </p>
+      )
+    }
+  </fieldset>
+
+  <div>
+    <div class="mb-4">
+      <label for={id('strykningar')} class={ETIKETT_KLASS}>Antal strykningar färg</label>
+      <div class="flex items-center gap-2">
+        <input
+          id={id('strykningar')}
+          name="strykningar"
+          type="text"
+          inputmode="numeric"
+          value={varden.strykningar}
+          aria-describedby={fel.strykningar ? id('strykningar-fel') : undefined}
+          class:list={[FALT_KLASS, ramKlass(Boolean(fel.strykningar))]}
+        />
+        <span class="text-brod text-blyerts-2">st</span>
+      </div>
+      {
+        fel.strykningar ? (
+          <p id={id('strykningar-fel')} class={FEL_KLASS}>
+            {fel.strykningar}
+          </p>
+        ) : (
+          !kompakt && <p class={HJALP_KLASS}>Färgtillverkarnas åtgångstal gäller per strykning. Två är normalt.</p>
+        )
+      }
+    </div>
+
+    <div class="mb-4">
+      <label for={id('paket')} class={ETIKETT_KLASS}>Kvm per paket golv, valfritt</label>
+      <div class="flex items-center gap-2">
+        <input
+          id={id('paket')}
+          name="paket"
+          type="text"
+          inputmode="decimal"
+          value={varden.paket}
+          placeholder="2,2"
+          aria-describedby={fel.paketKvm ? id('paket-fel') : undefined}
+          class:list={[FALT_KLASS, ramKlass(Boolean(fel.paketKvm))]}
+        />
+        <span class="text-brod text-blyerts-2">kvm</span>
+      </div>
+      {
+        fel.paketKvm ? (
+          <p id={id('paket-fel')} class={FEL_KLASS}>
+            {fel.paketKvm}
+          </p>
+        ) : (
+          !kompakt && (
+            <p class={HJALP_KLASS}>Står på paketet. Fyller du i det får du antalet paket i stället för bara kvm.</p>
+          )
+        )
+      }
+    </div>
+  </div>
+
+  <fieldset class="m-0 mb-6 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Läggning av golv eller klinker</legend>
+    <div class={radioKlass}>
+      {
+        LAGGNINGAR.map((l) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input type="radio" name="laggning" value={l.varde} checked={indata.laggning === l.varde} />
+            {l.etikett}
+          </label>
+        ))
+      }
+    </div>
+    {
+      !kompakt && (
+        <p class={HJALP_KLASS}>
+          Diagonalt lagt golv kapas i båda ändar av varje rad, och spillet stiger. Golvtillverkaren Kährs anger
+          sju till tio procent för det som inte läggs rakt.
+        </p>
+      )
+    }
+  </fieldset>
+
+  <button type="submit" class={KNAPP_KLASS}>{knappText}</button>
+</form>

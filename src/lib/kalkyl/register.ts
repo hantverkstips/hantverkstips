@@ -73,6 +73,13 @@ export const KALKYLATORER: Kalkylator[] = [
     pelare: ['inomhus'],
   },
   {
+    slug: 'kvadratmeter',
+    namn: 'Räkna ut kvadratmeter och åtgång',
+    rad: 'Mått, dörrar och fönster ger kvadratmeter, färg, tapetrullar och spill.',
+    sasong: [1, 12],
+    pelare: ['golv', 'inomhus', 'kok'],
+  },
+  {
     slug: 'bygglov-altan',
     namn: 'Behöver altanen bygglov?',
     rad: 'Höjd, avstånd och detaljplan ger svaret med lagrum.',

@@ -1,0 +1,728 @@
+---
+/**
+ * Kvadratmeter- och åtgångsräknaren. Formuläret skickas som GET till samma sida
+ * och beräkningen sker på servern, så sidan fungerar utan ett enda byte
+ * klient-JS. Kostnaden är en serverfunktion per anrop, och den hålls nere med
+ * CDN-cache. Se docs/SPEC-SIDMALLAR.md avsnitt 4.7.
+ *
+ * Formeln och alla antaganden ligger i src/lib/kalkyl/kvadratmeter.ts, och
+ * källan bakom varje konstant står i
+ * docs/briefer/underlag-kalkyl-kvadratmeter-2026-09-17.md. Sidan räknar
+ * ingenting själv, den visar bara resultatet och redovisar källorna.
+ *
+ * Varken färg, tapet eller golv finns i produktdatabasen, så sidan har varken
+ * produktkort eller reklamband.
+ */
+export const prerender = false;
+
+import Bas from '../../layouts/Bas.astro';
+import { formateraTal } from '../../lib/format';
+import {
+  BURKAR_LITER,
+  DORR_BREDD_M,
+  DORR_HOJD_M,
+  FARG_KVM_PER_LITER,
+  FONSTER_BREDD_M,
+  FONSTER_HOJD_M,
+  GRUNDFARG_KVM_PER_LITER,
+  OVERSKOTT_GRANS,
+  raknaKvadratmeter,
+  SPILL_GOLV,
+  SPILL_KLINKER,
+  STANDARD,
+  TAKFARG_KVM_PER_LITER,
+  TAPET_PASLAG_M,
+  TAPET_RAPPORT_M,
+  TAPETRULLE_BREDD_M,
+  TAPETRULLE_LANGD_M,
+  tolkaQuery,
+  type Burk,
+  type KvadratmeterIndata,
+  type KvadratmeterResultat,
+} from '../../lib/kalkyl/kvadratmeter';
+import { CELL_KLASS, ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
+import { verktyg } from '../../lib/strukturdata';
+import { verktygsDelningsbild, verktygsillustration } from '../../lib/verktygsbild';
+import KvadratmeterForm from '../../components/kalkyl/KvadratmeterForm.astro';
+import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Faq from '../../components/ui/Faq.astro';
+import Markering from '../../components/ui/Markering.astro';
+import Pennstreck from '../../components/ui/Pennstreck.astro';
+import StrukturData from '../../components/ui/StrukturData.astro';
+
+Astro.locals.sidtyp = 'verktyg';
+
+Astro.response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+
+const q = Astro.url.searchParams;
+const { indata } = tolkaQuery(q);
+const resultat = raknaKvadratmeter(indata);
+
+const fel = resultat.status === 'ogiltig' ? resultat.fel : {};
+// Vid ogiltig indata visas standardvärdenas resultat, med en rad som säger det.
+const visat: KvadratmeterResultat = resultat.status === 'ogiltig' ? raknaKvadratmeter(STANDARD) : resultat;
+const visatIndata: KvadratmeterIndata = resultat.status === 'ogiltig' ? STANDARD : indata;
+
+const komma = (n: number) => String(n).replace('.', ',');
+
+/** Tal i löptext: hela tal utan decimal, annars en eller två. "12", "2,6", "31,67". */
+function talText(n: number): string {
+  const rundat = Math.round(n * 100) / 100;
+  if (Number.isInteger(rundat)) return formateraTal(rundat);
+  if (Math.abs(Math.round(rundat * 10) / 10 - rundat) < 1e-9) return formateraTal(rundat, 1);
+  return formateraTal(rundat, 2);
+}
+
+/**
+ * Fältens värden kommer från query-strängen som den skrevs, inte från de tolkade
+ * talen: "fyra" eller "" blir NaN i tolkaQuery, och NaN i ett fält som läsaren
+ * ska rätta är obrukbart.
+ */
+function faltVarde(nyckel: string, standardVarde: number): string {
+  const ra = q.get(nyckel);
+  if (ra !== null) return ra;
+  return komma(standardVarde);
+}
+
+const varden = {
+  langd: faltVarde('langd', STANDARD.langdM),
+  bredd: faltVarde('bredd', STANDARD.breddM),
+  takhojd: faltVarde('takhojd', STANDARD.takhojdM),
+  dorrar: faltVarde('dorrar', STANDARD.dorrar),
+  dorrbredd: faltVarde('dorrbredd', STANDARD.dorrBreddM),
+  dorrhojd: faltVarde('dorrhojd', STANDARD.dorrHojdM),
+  fonster: faltVarde('fonster', STANDARD.fonster),
+  fonsterbredd: faltVarde('fonsterbredd', STANDARD.fonsterBreddM),
+  fonsterhojd: faltVarde('fonsterhojd', STANDARD.fonsterHojdM),
+  strykningar: faltVarde('strykningar', STANDARD.strykningar),
+  paket: q.get('paket') ?? '',
+};
+
+/**
+ * Delbar länk. Hela tillståndet ligger redan i query-strängen, så adressen är
+ * uträkningen. Den byggs av de tolkade värdena, inte av strängen läsaren skrev,
+ * och varje val skrivs ut, även de som kom från standardvalet.
+ */
+const delaQuery = new URLSearchParams({
+  langd: komma(visatIndata.langdM),
+  bredd: komma(visatIndata.breddM),
+  takhojd: komma(visatIndata.takhojdM),
+  dorrar: String(visatIndata.dorrar),
+  dorrbredd: komma(visatIndata.dorrBreddM),
+  dorrhojd: komma(visatIndata.dorrHojdM),
+  fonster: String(visatIndata.fonster),
+  fonsterbredd: komma(visatIndata.fonsterBreddM),
+  fonsterhojd: komma(visatIndata.fonsterHojdM),
+  raknar: visatIndata.raknar,
+  material: visatIndata.material,
+  strykningar: String(visatIndata.strykningar),
+  laggning: visatIndata.laggning,
+});
+if (visatIndata.paketKvm !== null) delaQuery.set('paket', komma(visatIndata.paketKvm));
+const delaLank = new URL(`/rakna/kvadratmeter/?${delaQuery.toString()}`, Astro.site ?? Astro.url).toString();
+
+/** Räkneord för de små talen, så att "1 burkar" aldrig kan uppstå. */
+const RAKNEORD = ['ingen', 'en', 'två', 'tre', 'fyra', 'fem', 'sex', 'sju', 'åtta', 'nio', 'tio'];
+
+/** "tre burkar om 2,5 liter och en om 1 liter". */
+function burkRad(burkar: Burk[]): string {
+  const delar = burkar.map((b, index) => {
+    const ord = RAKNEORD[b.antal] ?? formateraTal(b.antal);
+    const ordet = b.antal === 1 ? 'burk' : 'burkar';
+    return index === 0
+      ? `${ord} ${ordet} om ${talText(b.literPerBurk)} liter`
+      : `${ord} om ${talText(b.literPerBurk)} liter`;
+  });
+  if (delar.length <= 1) return delar[0] ?? '';
+  return `${delar.slice(0, -1).join(', ')} och ${delar[delar.length - 1]}`;
+}
+
+/**
+ * "En dörr räknad som 0,9 × 2,1 m", "två dörrar räknade som ...". Raden står
+ * bredvid avdraget, och ett tal i fel numerus läser sämre än ett tal i ord.
+ */
+function avdragRad(
+  antal: number,
+  ord: { noll: string; ental: string; flertal: string },
+  breddM: number,
+  hojdM: number,
+): string {
+  const mattet = `${talText(breddM)} × ${talText(hojdM)} m`;
+  if (antal === 0) return ord.noll;
+  const raknat = RAKNEORD[antal] ?? formateraTal(antal);
+  const inledning =
+    antal === 1 ? ord.ental : `${raknat.charAt(0).toUpperCase()}${raknat.slice(1)} ${ord.flertal}`;
+  return `${inledning} som ${mattet} drar bort`;
+}
+
+const MATERIALTEXT: Record<KvadratmeterIndata['material'], string> = {
+  inget: 'bara kvadratmeter',
+  vaggfarg: 'väggfärg',
+  takfarg: 'takfärg',
+  tapet: 'tapet',
+  parkett: 'parkett eller laminat',
+  klinker: 'klinker eller kakel',
+};
+
+/** Tal ur resultatet, färdigformaterade, så att markupen nedan blir läsbar. */
+const tal =
+  visat.status === 'ok'
+    ? {
+        golv: talText(visat.golvKvm),
+        tak: talText(visat.takKvm),
+        omkrets: talText(visat.omkretsM),
+        brutto: talText(visat.vaggarBruttoKvm),
+        avdragDorr: talText(visat.avdragDorrKvm),
+        avdragFonster: talText(visat.avdragFonsterKvm),
+        avdrag: talText(visat.avdragKvm),
+        netto: talText(visat.vaggarNettoKvm),
+        vald: talText(visat.valdKvm),
+        langd: talText(visatIndata.langdM),
+        bredd: talText(visatIndata.breddM),
+        takhojd: talText(visatIndata.takhojdM),
+        dorrar: formateraTal(visatIndata.dorrar),
+        fonster: formateraTal(visatIndata.fonster),
+        strykningar: formateraTal(visatIndata.strykningar),
+      }
+    : null;
+
+const titel = 'Räkna ut kvadratmeter, färg, tapet och golv';
+
+/** Antagandena i tabellen under "Så räknar vi". Samma tal som konstanterna i kalkylen. */
+const BECKERS_VAGG = 'https://beckers.se/produkter/scotte-7';
+const BECKERS_TAK = 'https://beckers.se/produkter/scotte-r2-takfarg';
+const BECKERS_GRUND = 'https://beckers.se/produkter/scotte-grund';
+const ALCRO =
+  'https://www.alcrostudio.se/sv-SE/pro/product/Milltex%207%20Matt%20T%C3%A4ckf%C3%A4rg/221002ASE20133';
+const NORDSJO = 'https://www.nordsjoprofessional.se/sv/produkter/nordsj%C3%B6-ambiance-smooth-silk';
+const BORASTAPETER = 'https://www.borastapeter.com/guider-sjalvhjalp/tapetkalkylator';
+const KAHRS = 'https://www.kahrs.com/se/b2b/fragor-och-svar/fragor-om-golv';
+const PERGO =
+  'https://www.pergogolv.se/sv-se/vanliga-fragor/laminatgolv/lagga/hur-mycket-golv-behover-jag-till-mitt-rum';
+const KAKELGIGANTEN = 'https://kakelgiganten.se/riktlinjer';
+const SWEDOOR = 'https://www.swedoor.se/tips-och-rad/mattabeller-innerdorrar';
+
+const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande'; stod: string; url?: string }[] = [
+  {
+    storhet: 'Väggfärgens åtgång',
+    varde: `${formateraTal(FARG_KVM_PER_LITER)} kvm per liter och strykning`,
+    grund: 'Källa',
+    stod: 'Färgtillverkaren Beckers anger 8 till 10 kvm per liter för Scotte 7. Vi räknar med den nedre kanten',
+    url: BECKERS_VAGG,
+  },
+  {
+    storhet: 'Samma tal hos två till',
+    varde: '8 till 10 kvm per liter',
+    grund: 'Källa',
+    stod: 'Färgtillverkaren Alcro anger 8 kvm per liter för Milltex 7 Matt Täckfärg',
+    url: ALCRO,
+  },
+  {
+    storhet: 'Och hos den tredje',
+    varde: '8 till 10 kvm per liter',
+    grund: 'Källa',
+    stod: 'Färgtillverkaren Nordsjö anger 8 till 10 kvm per liter för Ambiance Smooth Silk',
+    url: NORDSJO,
+  },
+  {
+    storhet: 'Takfärgens åtgång',
+    varde: `${formateraTal(TAKFARG_KVM_PER_LITER)} kvm per liter och strykning`,
+    grund: 'Källa',
+    stod: 'Beckers Scotte R2 Takfärg anger 8 kvm per liter, och Alcros Milltex 2 RF samma tal',
+    url: BECKERS_TAK,
+  },
+  {
+    storhet: 'Grundfärgens åtgång',
+    varde: `${formateraTal(GRUNDFARG_KVM_PER_LITER)} kvm per liter`,
+    grund: 'Källa',
+    stod: 'Beckers Scotte Grund anger 6 till 8 kvm per liter, alltså mindre än täckfärgen. Vi räknar med mitten',
+    url: BECKERS_GRUND,
+  },
+  {
+    storhet: 'Burkstorlekar',
+    varde: `${BURKAR_LITER.map((b) => talText(b)).join(', ')} liter`,
+    grund: 'Antagande',
+    stod: 'De storlekar inomhusfärg säljs i hos de svenska kedjorna. Vissa serier har också 3 och 5 liter',
+  },
+  {
+    storhet: 'Valet av burkar',
+    varde: `Högst ${formateraTal(OVERSKOTT_GRANS * 100)} procent över`,
+    grund: 'Antagande',
+    stod: 'Bland de kombinationer som lämnar högst så mycket över väljs den med färst burkar, och vid lika antal den med minst över',
+  },
+  {
+    storhet: 'Tapetrullens mått',
+    varde: `${talText(TAPETRULLE_BREDD_M)} × ${talText(TAPETRULLE_LANGD_M)} m`,
+    grund: 'Källa',
+    stod: 'Tapettillverkaren Boråstapeter anger 53 cm bredd och 10,05 m längd som det normala måttet',
+    url: BORASTAPETER,
+  },
+  {
+    storhet: 'Mönsterrapport',
+    varde: `${formateraTal(TAPET_RAPPORT_M * 100)} cm`,
+    grund: 'Antagande',
+    stod: 'Boråstapeters kollektioner ligger mellan 17,67 och 64 cm. Läs av rapporten på din egen rulle',
+    url: BORASTAPETER,
+  },
+  {
+    storhet: 'Påslag per våd',
+    varde: `${formateraTal(TAPET_PASLAG_M * 100)} cm`,
+    grund: 'Antagande',
+    stod: 'Fem centimeter i topp och botten för kap. Talet ger fyra våder per rulle vid 2,4 m takhöjd',
+  },
+  {
+    storhet: 'Tapetens avdrag',
+    varde: 'Dörren, inte fönstret',
+    grund: 'Antagande',
+    stod: 'En dörr tar bort hela våder. Tapeten ska ändå upp ovanför och ner under ett fönster',
+  },
+  {
+    storhet: 'Spill på parkett och laminat',
+    varde: `${formateraTal(SPILL_GOLV.rak * 100)} procent rakt lagt`,
+    grund: 'Källa',
+    stod: 'Golvtillverkaren Kährs anger cirka 5 procent, och 7 till 10 procent vid komplexa mönster',
+    url: KAHRS,
+  },
+  {
+    storhet: 'Samma tal för laminat',
+    varde: `${formateraTal(SPILL_GOLV.diagonal * 100)} procent diagonalt`,
+    grund: 'Källa',
+    stod: 'Golvtillverkaren Pergo anger 5 procent i ett vanligt rum och 10 procent i ett rum med svåra ytor',
+    url: PERGO,
+  },
+  {
+    storhet: 'Spill på kakel och klinker',
+    varde: `${formateraTal(SPILL_KLINKER.rak * 100)} och ${formateraTal(SPILL_KLINKER.diagonal * 100)} procent`,
+    grund: 'Källa',
+    stod: 'Kakelleverantören Kakelgiganten anger 10 procent rakt lagt och 15 procent i mönster eller diagonalt',
+    url: KAKELGIGANTEN,
+  },
+  {
+    storhet: 'Dörröppningens mått',
+    varde: `${talText(DORR_BREDD_M)} × ${talText(DORR_HOJD_M)} m`,
+    grund: 'Källa',
+    stod: 'Dörrtillverkaren Swedoor anger 910 × 2110 mm som öppningsmått för den vanligaste innerdörren',
+    url: SWEDOOR,
+  },
+  {
+    storhet: 'Fönstrets mått',
+    varde: `${talText(FONSTER_BREDD_M)} × ${talText(FONSTER_HOJD_M)} m`,
+    grund: 'Antagande',
+    stod: 'Modulsystemet är en standard, men vilket mått som är vanligast i svenska bostäder är vår gissning',
+  },
+  {
+    storhet: 'Rummets form',
+    varde: 'En rektangel',
+    grund: 'Antagande',
+    stod: 'Ett vinklat rum delas upp i två rektanglar och räknas en åt gången, sedan läggs talen ihop',
+  },
+];
+
+/** Frågorna sist på sidan. Talen är desamma som i brödtexten och i tabellen. */
+const FRAGOR = [
+  {
+    fraga: 'Hur räknar jag ut kvadratmeter på en vägg?',
+    svar: 'Ta rummets omkrets gånger takhöjden, och dra sedan av dörrar och fönster. Ett rum på fyra gånger tre meter har omkretsen fjorton meter, och med takhöjden 2,5 m blir väggarna 35 kvm före avdrag. En innerdörr tar bort 1,89 kvm och ett fönster på 1,2 gånger 1,2 m tar bort 1,44 kvm. Kvar blir knappt 32 kvm, och det är den ytan färgen ska räcka till.',
+  },
+  {
+    fraga: 'Hur mycket färg går det åt per kvadratmeter?',
+    svar: 'En liter räcker till mellan åtta och tio kvadratmeter, per strykning. Beckers och Nordsjö anger båda det spannet för sina väggfärger, och Alcro anger åtta. Räkna alltså med åtta kvadratmeter per liter, så räcker färgen även på ett spacklat underlag som suger. Ska väggen målas två gånger dubblas talet, och en grundstrykning på obehandlat underlag drar ännu mer.',
+  },
+  {
+    fraga: 'Hur många tapetrullar behöver jag till ett rum?',
+    svar: 'Räkna våder, inte kvadratmeter. En rulle är 53 cm bred och 10,05 m lång enligt tapettillverkaren Boråstapeter, och varje våd är takhöjden plus tio centimeter för kap. Vid 2,5 m takhöjd går det tre våder ur en rulle. Har tapeten ett mönster som ska passas kapas våden vid en hel rapport, och då kan en rulle tappa en hel våd.',
+  },
+];
+
+/** Slug, namn och beskrivning på ett ställe: brödsmulan, og:image och WebApplication läser samma. */
+const SLUG = 'kvadratmeter';
+const VERKTYGSNAMN = 'Kvadratmeterräknare';
+const BESKRIVNING =
+  'Räkna ut kvadratmeter för golv, väggar och tak med avdrag för dörr och fönster, och få liter färg, antal tapetrullar och kvm golv med källa per tal.';
+const illustration = verktygsillustration(SLUG);
+---
+
+<Bas
+  title={titel}
+  description={BESKRIVNING}
+  reklam={false}
+  brodsmulor={[
+    { namn: 'Hantverkstips', href: '/' },
+    { namn: 'Räkna själv', href: '/rakna/' },
+    { namn: VERKTYGSNAMN },
+  ]}
+  bred={true}
+  ogBild={verktygsDelningsbild(SLUG)}
+>
+  <StrukturData
+    slot="head"
+    data={verktyg({ url: `/rakna/${SLUG}/`, namn: VERKTYGSNAMN, beskrivning: BESKRIVNING })}
+  />
+
+  <div class="mx-auto w-full max-w-lasbredd">
+    {/*
+      Sidhuvudet: rubrik och ingress till vänster i 7/12, skissen till höger i
+      5/12 på desktop, under ingressen på mobil. Bilden är dekorativ, H1 bär
+      betydelsen, därför tom alt. Den är sidans LCP-bild och laddas därför
+      eagert med fetchpriority. Saknas filen visas ingen bild alls.
+    */}
+    <section class="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-7">
+        <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">
+          Räkna ut kvadratmeter och hur mycket färg, tapet eller golv du behöver
+        </h1>
+        <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
+          Fyll i rummets längd, bredd och takhöjd, så får du golvet, väggarna och taket i kvadratmeter med dörren och
+          fönstret avdragna. Hur mycket färg behöver jag, hur många tapetrullar går det åt och hur räknar jag ut golv
+          med spill: alla tre svaren står under kvadratmetertalet. Åtgången kommer från färg- och golvtillverkarnas
+          egna uppgifter, och varje tal har en källa eller ett antagande under sig.
+        </p>
+      </div>
+
+      {
+        illustration && (
+          <div class="lg:col-span-5">
+            <img
+              src={illustration.src}
+              alt=""
+              width={illustration.width}
+              height={illustration.height}
+              fetchpriority="high"
+              decoding="async"
+              class="block h-auto w-full rounded-sm border border-linje"
+            />
+          </div>
+        )
+      }
+    </section>
+
+    {
+      visat.status === 'ok' && tal && (
+        <Faktaruta variant="kortsvar">
+          <p class="m-0 leading-6">Mät rummet i längd, bredd och takhöjd först.</p>
+          <p class="m-0 leading-6">
+            Golvet blir <Markering>{tal.golv} kvm</Markering>, och taket lika mycket.
+          </p>
+          <p class="m-0 leading-6">Väggarna går på {tal.brutto} kvm före avdrag.</p>
+          <p class="m-0 leading-6">Dörren och fönstret tar bort {tal.avdrag} kvm.</p>
+          <p class="m-0 leading-6">Kvar att måla eller tapetsera blir {tal.netto} kvm.</p>
+        </Faktaruta>
+      )
+    }
+
+    <div class="linjerat mt-8 lg:grid lg:grid-cols-2 lg:gap-8">
+      {/* Formuläret ligger i src/components/kalkyl/KvadratmeterForm.astro, så att
+          <Kalkylator namn="kvadratmeter" /> i en artikel visar exakt samma fält. */}
+      <KvadratmeterForm indata={indata} varden={varden} fel={fel} />
+
+      <div class="mt-8 border-t border-linje pt-6 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
+        {
+          visat.status === 'ok' && tal && (
+            <>
+              {resultat.status === 'ogiltig' && (
+                <p class="m-0 mb-2 text-liten text-varning">Visar standardvärden tills indatan är rättad.</p>
+              )}
+              <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
+                Rum på {tal.langd} × {tal.bredd} m, takhöjd {tal.takhojd} m, {MATERIALTEXT[visatIndata.material]}
+              </p>
+              {/* Enheten står på samma rad som talet, på talets baslinje
+                  (DESIGN.md avsnitt 5.8). Radbryter på smal skärm. */}
+              <p class="m-0 mt-1 flex flex-wrap items-baseline gap-x-2">
+                <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
+                  <Markering>{tal.vald}</Markering>
+                </span>
+                <span class="text-ingress lg:text-ingress-lg">kvm {visat.valdNamn}</span>
+              </p>
+
+              {visat.farg && (
+                <p class="m-0 mt-2 flex flex-wrap items-baseline gap-x-2">
+                  <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
+                    {talText(visat.farg.literAttKopa)}
+                  </span>
+                  <span class="text-ingress lg:text-ingress-lg">liter färg att köpa</span>
+                </p>
+              )}
+              {visat.tapet && (
+                <p class="m-0 mt-2 flex flex-wrap items-baseline gap-x-2">
+                  <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
+                    {formateraTal(visat.tapet.rullar)}
+                  </span>
+                  <span class="text-ingress lg:text-ingress-lg">tapetrullar</span>
+                </p>
+              )}
+              {visat.golv && (
+                <p class="m-0 mt-2 flex flex-wrap items-baseline gap-x-2">
+                  <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
+                    {talText(visat.golv.kvmAttKopa)}
+                  </span>
+                  <span class="text-ingress lg:text-ingress-lg">kvm golv att köpa</span>
+                </p>
+              )}
+
+              <ul class="m-0 mt-4 p-0 list-none text-brod tabular-nums">
+                <li class="border-t border-linje py-2">Golvet mäter {tal.golv} kvm, och taket lika mycket</li>
+                <li class="border-t border-linje py-2">
+                  Omkretsen är {tal.omkrets} m, alltså {tal.brutto} kvm vägg före avdrag
+                </li>
+                <li class="border-t border-linje py-2">
+                  {avdragRad(
+                    visatIndata.dorrar,
+                    { noll: 'Ingen dörr ifylld, alltså inget avdrag', ental: 'En dörr räknad', flertal: 'dörrar räknade' },
+                    visatIndata.dorrBreddM,
+                    visatIndata.dorrHojdM,
+                  )}{' '}
+                  {visatIndata.dorrar > 0 && `${tal.avdragDorr} kvm`}
+                </li>
+                <li class="border-t border-linje py-2">
+                  {avdragRad(
+                    visatIndata.fonster,
+                    {
+                      noll: 'Inget fönster ifyllt, alltså inget avdrag',
+                      ental: 'Ett fönster räknat',
+                      flertal: 'fönster räknade',
+                    },
+                    visatIndata.fonsterBreddM,
+                    visatIndata.fonsterHojdM,
+                  )}{' '}
+                  {visatIndata.fonster > 0 && `${tal.avdragFonster} kvm`}
+                </li>
+                <li class="border-t border-linje py-2">Väggarna efter avdrag blir {tal.netto} kvm</li>
+
+                {visat.farg && (
+                  <>
+                    <li class="border-t border-linje py-2">
+                      Färgen ska täcka {talText(visat.farg.ytaKvm)} kvm, alltså {visat.farg.ytaNamn}
+                    </li>
+                    <li class="border-t border-linje py-2">
+                      {tal.strykningar} strykningar ger {talText(visat.farg.literRaknat)} liter räknat
+                    </li>
+                    <li class="border-t border-linje py-2">Köp {burkRad(visat.farg.burkar)}</li>
+                    <li class="border-t border-linje py-2">
+                      På obehandlat underlag går det {talText(visat.farg.grundLiterRaknat)} liter grundfärg till,
+                      alltså {burkRad(visat.farg.grundBurkar)}
+                    </li>
+                  </>
+                )}
+
+                {visat.tapet && (
+                  <>
+                    <li class="border-t border-linje py-2">
+                      {formateraTal(visat.tapet.antalVader)} våder täcker de {talText(visat.tapet.vaderBreddM)} m
+                      vägg som ska tapetseras, alltså omkretsen utan dörröppningarna
+                    </li>
+                    <li class="border-t border-linje py-2">
+                      Varje våd blir {talText(visat.tapet.vadLangdM)} m lång, alltså{' '}
+                      {formateraTal(visat.tapet.vaderPerRulle)} våder ur en rulle
+                    </li>
+                    <li class="border-t border-linje py-2">
+                      Med mönsterpassning blir våden {talText(visat.tapet.vadLangdMonsterM)} m, och då behövs{' '}
+                      {formateraTal(visat.tapet.rullarMonster)} rullar
+                    </li>
+                  </>
+                )}
+
+                {visat.golv && (
+                  <>
+                    <li class="border-t border-linje py-2">
+                      Spillpåslaget är {formateraTal(visat.golv.spillProcent)} procent på {talText(visat.golv.ytaKvm)}{' '}
+                      kvm golv
+                    </li>
+                    {visat.golv.antalPaket !== null && visat.golv.paketKvm !== null ? (
+                      <li class="border-t border-linje py-2">
+                        Paket om {talText(visat.golv.paketKvm)} kvm ger{' '}
+                        {formateraTal(visat.golv.antalPaket)} paket, alltså {talText(visat.golv.kvmIPaketen ?? 0)} kvm
+                        hem
+                      </li>
+                    ) : (
+                      <li class="border-t border-linje py-2">
+                        Fyll i kvadratmeter per paket, så räknar verktyget om talet till antal paket
+                      </li>
+                    )}
+                  </>
+                )}
+              </ul>
+
+              {visat.gorInteDetHar.length > 0 && (
+                <>
+                  <p class="m-0 mt-4 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">Gör inte det här</p>
+                  {visat.gorInteDetHar.map((rad) => (
+                    <p class="m-0 mt-1 text-brod">{rad}</p>
+                  ))}
+                </>
+              )}
+
+              <p class="m-0 mt-4">
+                <a href="#sa-raknar-vi" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
+                  Så räknar vi
+                </a>
+              </p>
+
+              {/* Dela. Uträkningen står i adressen, så ett skrivskyddat fält
+                  räcker: markera och kopiera fungerar utan en rad JavaScript. */}
+              <div class="mt-4 border-t border-linje pt-4">
+                <label for="dela" class={ETIKETT_KLASS}>
+                  Dela uträkningen
+                </label>
+                <input id="dela" type="text" readonly value={delaLank} class:list={[FALT_KLASS, 'border-blyerts-2']} />
+                <p class="m-0 mt-1 text-liten text-blyerts-2">Adressen innehåller dina värden. Markera och kopiera.</p>
+              </div>
+            </>
+          )
+        }
+      </div>
+    </div>
+
+    <section>
+      <Pennstreck id="rakna-ut-kvadratmeter">
+        Räkna ut kvadratmeter steg för steg, och hur mycket färg du behöver
+      </Pennstreck>
+      <p class="m-0 text-brod lg:text-brod-lg">
+        Ta ett rum på fyra gånger tre meter med takhöjden 2,5&nbsp;m, en dörr och ett fönster. Golvet är det enkla:
+        längden gånger bredden ger 12&nbsp;kvm, och taket är lika stort. Väggarna kräver ett steg till. Omkretsen är
+        två gånger längden plus två gånger bredden, alltså 14&nbsp;m, och omkretsen gånger takhöjden ger 35&nbsp;kvm.
+        Där stannar marknadens räknare.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Sedan kommer avdragen, och det är där skillnaden sitter. En innerdörr har ett hål i väggen på ungefär
+        0,9&nbsp;×&nbsp;2,1&nbsp;m, alltså 1,89&nbsp;kvm. Ett fönster på 1,2&nbsp;×&nbsp;1,2&nbsp;m tar bort
+        1,44&nbsp;kvm. Väggarna landar på 31,67&nbsp;kvm netto. Drygt tre kvadratmeter låter lite, men det är en tiondel
+        av färgen.
+      </p>
+      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">
+        Hur mycket färg behöver jag till de kvadratmetrarna?
+      </h3>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Färgtillverkarna anger åtgången per liter och strykning. Beckers och Nordsjö skriver båda 8 till 10&nbsp;kvm per
+        liter för sina väggfärger, och Alcro skriver 8. Vi räknar med det lägsta talet, för en spacklad vägg suger mer
+        än en som redan är målad. Två strykningar på 31,67&nbsp;kvm blir alltså knappt åtta liter, och då är en burk om
+        tio liter svaret. Kalkylatorn tar färst burkar av dem som lämnar högst 30&nbsp;procent över, för små burkar
+        kostar mer per liter. Till taket, som bara drar tre liter, blir svaret i stället 2,5&nbsp;liter plus en
+        literburk. Är väggen obehandlad tillkommer en grundstrykning, och grundfärg drar mer: Beckers anger 6 till
+        8&nbsp;kvm per liter för sin grundfärg.
+      </p>
+      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">
+        Hur många tapetrullar går det åt i samma rum?
+      </h3>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Tapet räknas i våder, inte i kvadratmeter, och det är därför en kvadratmeteryta inte räcker som svar. Rullen är
+        0,53&nbsp;m bred och 10,05&nbsp;m lång enligt tapettillverkaren Boråstapeter. Dörrens bredd går bort ur
+        omkretsen, men inte fönstrets: tapeten ska ändå upp ovanför och ner under det. Kvar blir 13,1&nbsp;m att
+        tapetsera, alltså 25 våder. Varje våd är takhöjden plus tio centimeter för kap,
+        och tre sådana går ur en rulle. Nio rullar. Har tapeten ett mönster som ska passas kapas våden i stället vid en
+        hel mönsterrapport, och då kan en rulle tappa en våd.
+      </p>
+      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">
+        Räkna ut golv, och lägg på spillet innan du beställer
+      </h3>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Golvytan är redan känd, 12&nbsp;kvm, men den siffran ska aldrig beställas rakt av. Golvtillverkaren Kährs anger
+        cirka fem procent spill vid rak läggning, och sju till tio procent när golvet läggs i mönster eller diagonalt.
+        Kakelleverantören Kakelgiganten anger tio procent för klinker och femton när plattorna läggs diagonalt, för
+        varje rad kapas då i båda ändar. Tolv kvadratmeter parkett blir alltså 12,6 att köpa, och tolv kvadratmeter
+        klinker blir 13,2. Med paketstorleken ifylld avrundas talet uppåt till hela paket, och det är det talet som
+        stämmer med kvittot. Bänkskivans yta räknas separat, i{' '}
+        <a href="/kok/slipa-bankskiva/" class={LANK_KLASS}>
+          guiden om att slipa och olja bänkskivan
+        </a>
+        , och virket till en ny vägg i{' '}
+        <a href="/inomhus/bygga-innervagg/" class={LANK_KLASS}>
+          guiden om att bygga innervägg
+        </a>
+        .
+      </p>
+    </section>
+
+    <section>
+      <Pennstreck id="sa-raknar-vi">Så räknar vi</Pennstreck>
+      <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg">
+        <li class="mb-2">Längden gånger bredden ger golvet, och taket får samma tal.</li>
+        <li class="mb-2">Längden plus bredden gånger två ger omkretsen, och omkretsen gånger takhöjden ger väggarna.</li>
+        <li class="mb-2">
+          Varje dörr och varje fönster dras av med sin egen yta, och du kan skriva in egna mått i stället för våra.
+        </li>
+        <li class="mb-2">
+          Färgen räknas på ytan gånger antalet strykningar, delat med tillverkarnas åtgång per liter.
+        </li>
+        <li class="mb-2">
+          Litertalet rundas upp till burkar. Färst burkar vinner, men bara bland dem som lämnar högst 30 procent över.
+        </li>
+        <li class="mb-2">
+          Tapeten räknas i våder: omkretsen minus dörrarnas bredd, delat med rullens bredd och avrundat uppåt.
+        </li>
+        <li class="mb-2">
+          Vådens längd är takhöjden plus påslaget, och med mönsterpassning avrundas den uppåt till hel rapport.
+        </li>
+        <li>Golvet får sitt spillpåslag efter material och läggning, och sedan avrundning uppåt till hela paket.</li>
+      </ol>
+
+      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad siffrorna vilar på</h3>
+      <div class="mt-4 overflow-x-auto">
+        <table class="w-full border-collapse text-liten tabular-nums">
+          <caption class="sr-only">Antaganden och källor i kvadratmeterräknaren</caption>
+          <thead>
+            <tr class="border-b border-linje text-left">
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Storhet</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Vi räknar med</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Källa eller antagande</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              antaganden.map((a) => (
+                <tr>
+                  <th scope="row" class:list={[CELL_KLASS, 'text-left font-normal']}>
+                    {a.storhet}
+                  </th>
+                  <td class={CELL_KLASS}>{a.varde}</td>
+                  <td class={CELL_KLASS}>
+                    {a.grund}.{' '}
+                    {a.url ? (
+                      <a href={a.url} rel={a.url.startsWith('/') ? undefined : 'nofollow'} class={LANK_KLASS}>
+                        {a.stod}
+                      </a>
+                    ) : (
+                      a.stod
+                    )}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <p class="m-0 mt-6 text-brod lg:text-brod-lg">
+        Två rader i tabellen är svagare än de andra, och det står där. Fönstrets mått är vårt antagande: modulsystemet
+        är en standard hos alla svenska tillverkare, men ingen publicerar vilket mått som faktiskt sitter i flest
+        svenska bostäder. Mönsterrapporten är också vår, eftersom den varierar från tapet till tapet. Båda går att
+        skriva över: fönstret har egna fält i formuläret, och rapporten läser du av på rullen innan du bestämmer dig.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Metoden bakom våra siffror står på <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar vi</a>.
+      </p>
+    </section>
+
+    <section>
+      <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
+      <ul class="m-0 p-0 list-none">
+        <li class="border-t border-linje">
+          <a href="/inomhus/bygga-innervagg/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
+            Bygga innervägg med reglar och gips, och vad materialet kostar
+          </a>
+        </li>
+        <li class="border-t border-linje">
+          <a href="/kok/slipa-bankskiva/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
+            Slipa och olja bänkskivan, steg för steg
+          </a>
+        </li>
+        <li class="border-t border-linje">
+          <a href="/rakna/innervagg/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
+            Räkna ut reglar, gipsskivor och skruv till innerväggen
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <Faq fragor={FRAGOR} />
+  </div>
+</Bas>
