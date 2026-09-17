@@ -126,11 +126,9 @@ export default defineConfig({
   // Canonical måste peka på adressen som svarar 200. Samma värde som SAJT i
   // src/lib/strukturdata.ts. Se docs/ARKITEKTUR.md.
   site: 'https://www.hantverkstips.se',
-  // Artiklar som flyttat pelare när strukturen gjordes om 2026-09-17. Permanent.
-  redirects: {
-    '/inomhus/dreva-fonster/': '/fasad/dreva-fonster/',
-    '/inomhus/slipa-bankskiva/': '/kok/slipa-bankskiva/',
-  },
+  // Flyttade artiklar omdirigeras med serverrutter i src/pages/inomhus/, inte med
+  // redirects här: adaptern skriver regeln utan avslutande snedstreck och den
+  // matchar då aldrig med trailingSlash 'always' (2026-09-17).
   trailingSlash: 'always',
   integrations: [mdx(), sitemap({ filter: iSitemap })],
   // Två innehållsfiler med samma id (filnamn) eller två sidor på samma adress
