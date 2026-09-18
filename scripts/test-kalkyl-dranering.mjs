@@ -270,6 +270,14 @@ test('torr plast och ogjort test ger båda gör det billiga först', () => {
   assert.equal(ogjort.besked, 'billiga-forst');
   /* Torr plast betyder fel vägg, inte friskt hus. */
   assert.ok(torrt.regler.some((g) => g.text.includes('fel vägg')), 'raden om fel vägg saknas');
+  /* Ett ogjort test ska säga i klartext varifrån vattnet kan komma, med samma
+     tre ställen som /fukt/fukt-i-kallaren/ räknar upp. Raden får aldrig bli en
+     bild läsaren måste tolka. */
+  const treStallen = ogjort.regler.find((g) => g.text.includes('ett av tre ställen'));
+  assert.ok(treStallen, 'raden om vattnets tre ursprung saknas');
+  for (const ord of ['markfukt', 'kondens', 'läckage']) {
+    assert.ok(treStallen.text.includes(ord), `${ord} saknas bland de tre ställena`);
+  }
   /* Standardvärdet är ett ogjort test, alltså sajtens eget råd. */
   assert.equal(STANDARD.tejptest, 'inte-gjort');
 });

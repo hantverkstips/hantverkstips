@@ -418,19 +418,19 @@ export const GRANSER = {
  */
 
 const GOR_INTE_GRAV_FORE_TESTET =
-  'Gräv inte innan tejptestet har svarat. En bit plastfolie tejpad mot källarväggen i två dygn skiljer markfukt från kondens, och de två kräver olika saker av dig. Testet kostar en rulle tejp, grävningen kostar som ett badrum.';
+  'Gräv inte innan tejptestet har svarat. En bit plastfolie mot källarväggen i två dygn skiljer markfukt från kondens, och de två kräver helt olika saker av dig. Testet kostar en rulle tejp. Grävningen kostar som ett badrum.';
 
 const GOR_INTE_AVFUKTARE_MOT_MARKFUKT =
-  'Köp inte en avfuktare mot markfukt. Maskinen sänker luftfuktigheten i rummet, avdunstningen ur väggen ökar, och väggen suger efter mer vatten ur marken. Betongen är lika våt och du betalar för det dygnet runt.';
+  'Köp inte en avfuktare mot markfukt. Maskinen torkar luften i rummet, avdunstningen ur väggen ökar, och väggen suger efter mer vatten ur marken. Betongen är lika våt, och du betalar för det dygnet runt.';
 
 const GOR_INTE_OFFERT_UTAN_MATVARDEN =
-  'Ta inte en offert på en åtgärd utan en fuktutredning med mätvärden. Du vill ha relativ luftfuktighet och temperatur i materialet, var i huset mätningen gjordes och vilken slutsats de drar av just de talen. Ett papper som säger att dränering rekommenderas utan en enda siffra är ett säljbesök.';
+  'Ta inte en offert på en åtgärd innan du har en fuktutredning med mätvärden. Du vill se luftfuktighet och temperatur i materialet, var i huset mätningen gjordes och vilken slutsats de drar av just de talen. Ett papper utan en enda siffra är ett säljbesök.';
 
 const GOR_INTE_FOREBYGGANDE =
-  'Gräv inte förebyggande när källaren bara används som källare. Villaägarnas rådgivare säger rakt ut att det finns roligare saker att lägga pengarna på, och en dränering som inte behövdes kostar mer än allt annat på den här sidan tillsammans.';
+  'Gräv inte förebyggande när källaren bara används som källare. Villaägarnas rådgivare säger rakt ut att det finns roligare saker att lägga pengarna på, och en grävning som inte behövdes kostar mer än allt annat på den här sidan tillsammans.';
 
 const GOR_INTE_PLAST_MOT_VAGGEN =
-  'Sätt inte en plastmatta direkt mot väggen som enda utvändiga fuktskydd. Den kalla marken gör att fukten stannar i väggen i stället för att vandra ut, avråder Villaägarna. Skyddet ska både stoppa vattnet och släppa ut det som redan sitter i betongen.';
+  'Sätt inte en plastmatta direkt mot väggen som enda skydd utifrån. Den kalla marken gör att fukten stannar i väggen i stället för att vandra ut, varnar Villaägarna. Skyddet ska stoppa vattnet och samtidigt släppa ut det som redan sitter i betongen.';
 
 /** Decimalkomma accepteras: '2,5' blir 2.5. Tomt eller skräp ger NaN. */
 function tillTal(v: string | null): number {
@@ -613,25 +613,25 @@ export function raknaDranering(i: DraneringIndata): DraneringResultat {
   if (i.tejptest === 'markfukt') {
     regler.push({
       utfall: 'grav',
-      text: 'Plasten är våt på väggsidan, alltså kommer vattnet genom betongen. Fukttransporten från marken är främst kapillär, ibland genom diffusion, och skyddet mot den hör hemma på utsidan av väggen. Allt du gör på insidan flyttar problemet i stället för att lösa det.',
+      text: 'Plasten är våt på väggsidan. Vattnet kommer alltså genom betongen, och det är markfukt. Skyddet mot den sitter på utsidan av väggen. Allt du gör inifrån flyttar problemet i stället för att lösa det.',
       kalla: 'Boverket, fuktinträngning från mark till källarvägg. Tejptestet beskrivs av tidningen Gör Det Själv',
     });
   } else if (i.tejptest === 'kondens') {
     regler.push({
       utfall: 'mat',
-      text: `Plasten är våt på rumssidan, alltså kommer vattnet ur luften du vädrar in. Det är kondens, och det är den enda av orsakerna där en maskin är rätt svar. En avfuktare kostar ${kronor(AVFUKTARE_KR)} kr, en omdränering ${faktorMotAvfuktare} gånger så mycket.`,
+      text: `Plasten är våt på rumssidan. Vattnet kommer alltså ur luften, och det är kondens. Det är det enda av de tre fallen där en maskin hjälper. En avfuktare kostar ${kronor(AVFUKTARE_KR)} kr, grävningen ${faktorMotAvfuktare} gånger mer.`,
       kalla: 'Tejptestet beskrivs av tidningen Gör Det Själv. Avfuktarens pris är läst hos Proffsmagasinet',
     });
   } else if (i.tejptest === 'torrt') {
     regler.push({
       utfall: 'billigt',
-      text: 'Torr plast på båda sidor betyder inte att huset är friskt, det betyder att du tejpade på fel vägg. Flytta plasten till den lägsta punkten på en vägg som ligger mot mark, helst i ett hörn, och gör om testet innan du bestämmer något.',
+      text: 'Torrt på båda sidor betyder oftast fel vägg, inte friskt hus. Flytta plasten till den lägsta punkten på en vägg som ligger mot mark, helst i ett hörn, och gör om testet.',
       kalla: 'Tidningen Gör Det Själv, bekämpa fukt i källaren',
     });
   } else {
     regler.push({
       utfall: 'billigt',
-      text: 'Tejptestet är inte gjort, och utan det vet du inte vilket av tre vatten du har. Skär en bit plastfolie på 50 gånger 50 cm, tejpa den tätt mot källarväggen där den ser våtast ut och vänta minst två dygn. Det är den billigaste mätningen som finns i ett källarplan.',
+      text: 'Vattnet i en källare kommer från ett av tre ställen: markfukt genom väggen, kondens ur luften, eller ett läckage som kommer med regnet. Tejptestet säger vilket av dem du har, och det kostar en bit plast och två dygn.',
       kalla: 'Tidningen Gör Det Själv, bekämpa fukt i källaren',
     });
   }
@@ -640,13 +640,13 @@ export function raknaDranering(i: DraneringIndata): DraneringResultat {
   if (gammal) {
     regler.push({
       utfall: i.tejptest === 'markfukt' ? 'grav' : 'ok',
-      text: `Dräneringen är ${i.alderAr} år gammal. En gammal dränering kan fungera i femtio år, särskilt om källaren bara används som källare, så åldern ensam är inget skäl att gräva. Tillsammans med markfukt på plasten är den det.`,
+      text: `Dräneringen är ${i.alderAr} år gammal. Villaägarna säger att en dränering kan hålla i femtio år, så åldern ensam är inget skäl att gräva. Tillsammans med markfukt på plasten är den det.`,
       kalla: 'Villaägarna, måste du dränera huset. Gränsen på 30 år är vår',
     });
   } else {
     regler.push({
       utfall: 'ok',
-      text: `Dräneringen är ${i.alderAr} år gammal, alltså långt från de femtio år Villaägarna säger att en dränering kan fungera. Är källaren ändå fuktig ligger felet troligen ovan mark, i stuprör, markfall eller en otät genomföring.`,
+      text: `Dräneringen är ${i.alderAr} år gammal, alltså långt från de femtio år Villaägarna räknar med. Är källaren ändå fuktig sitter felet troligen ovan mark, i ett stuprör, i markfallet eller i en otät genomföring.`,
       kalla: 'Villaägarna, måste du dränera huset',
     });
   }
@@ -654,14 +654,14 @@ export function raknaDranering(i: DraneringIndata): DraneringResultat {
   // 8c. Det billiga, som alltid ska göras först.
   regler.push({
     utfall: 'billigt',
-    text: `Stuprören ska leda vattnet ut från huset, marken ska luta bort från grunden och dagvattenbrunnen ska vara rensad. På ett tak på ${TAK_KVM} kvm blir ${REGN_MM} mm regn ${kronor(REGN_LITER)} liter vatten som måste ta sig någonstans. Rinner det ner längs grundmuren spelar det ingen roll hur ny dräneringen är.`,
+    text: `Stuprören ska leda bort vattnet, marken ska luta från huset och dagvattenbrunnen ska vara rensad. Ett tak på ${TAK_KVM} kvm lämnar ifrån sig ${kronor(REGN_LITER)} liter vid ett rejält regn.`,
     kalla: 'Skadedjurs- och besiktningsföretaget Anticimex, fukt i källare och grund',
   });
 
   // 8d. Fuktutredningen, som är det enda som gör en offert läsbar.
   regler.push({
     utfall: 'mat',
-    text: `En fuktutredning med mätvärden hos ett saneringsföretag kostar ${kronor(FUKTUTREDNING_KR)} kr inklusive moms, och grävningen kostar ${faktorMotUtredning} gånger så mycket. Be om relativ luftfuktighet och temperatur i materialet, var mätningen gjordes och vilken slutsats de drar av just de talen.`,
+    text: `En fuktutredning med mätvärden kostar ${kronor(FUKTUTREDNING_KR)} kr, grävningen ${faktorMotUtredning} gånger mer. Be om utredningen först, inte om en offert på en åtgärd.`,
     kalla: 'Saneringsföretaget Ocab, listpris på fuktkontroll av källarutrymme',
   });
 
@@ -669,13 +669,19 @@ export function raknaDranering(i: DraneringIndata): DraneringResultat {
   if (i.atkomst !== 'fri' || i.schaktDjupM !== SCHAKTDJUP_REFERENS_M) {
     const del =
       i.atkomst === 'berg'
-        ? 'Berg eller sten i schakten betyder hydraulhammare eller sprängning innan röret kan läggas'
+        ? 'Berg eller sten i schakten betyder sprängning eller hydraulhammare innan röret kan läggas'
         : i.atkomst === 'trang'
           ? 'En trång tomt betyder handgrävning på de sidor maskinen inte når'
-          : `Schaktdjupet ${meter(i.schaktDjupM)} skiljer sig från de ${meter(SCHAKTDJUP_REFERENS_M)} vi räknar som normalt`;
+          : `Schakten går ner till ${meter(i.schaktDjupM)}, inte till de ${meter(SCHAKTDJUP_REFERENS_M)} vi räknar som normalt djup`;
+    // Djup och åtkomst kan ta ut varandra. Då blir "i stället för" en jämförelse
+    // mellan två lika tal, och raden säger i stället att talet står kvar.
+    const prisdel =
+      arbeteLagKrPerM === ARBETE_KR_PER_LOPMETER
+        ? `Arbetet hamnar ändå på Villaägarnas eget tal, ${kronor(ARBETE_KR_PER_LOPMETER)} kr per löpmeter.`
+        : `Därför ligger arbetet på ${kronor(arbeteLagKrPerM)} kr per löpmeter i stället för ${kronor(ARBETE_KR_PER_LOPMETER)}.`;
     regler.push({
       utfall: 'ok',
-      text: `${del}, och det är därför arbetet ligger på ${kronor(arbeteLagKrPerM)} kr per löpmeter i stället för ${kronor(ARBETE_KR_PER_LOPMETER)}. Villaägarna namnger grävdjup, bergsprängning och markförhållanden som det som driver priset men sätter ingen siffra på dem, och påslagen kommer därför från BraByggares egen prislista.`,
+      text: `${del}. ${prisdel}`,
       kalla: 'Villaägarna för spannet, byggsajten BraByggare för påslagen på djup och trång tomt',
     });
   }
@@ -684,7 +690,7 @@ export function raknaDranering(i: DraneringIndata): DraneringResultat {
   if (i.atkomst === 'berg') {
     regler.push({
       utfall: 'ok',
-      text: `Ska berget sprängas tillkommer fasta kostnader utanför meterpriset. Etableringen av borriggen ligger runt ${kronor(SPRANGNING_ETABLERING_KR)} kr för ett normalt uppdrag, och att täcka husen omkring runt ${kronor(SPRANGNING_TACKNING_KR)} kr. Be entreprenören prissätta dem för sig i offerten.`,
+      text: `Sprängning har fasta kostnader som inte ryms i ett meterpris. Borriggen kostar runt ${kronor(SPRANGNING_ETABLERING_KR)} kr att etablera, täckningen av husen omkring runt ${kronor(SPRANGNING_TACKNING_KR)} kr. Be om dem som egna rader i offerten.`,
       kalla: 'Tjänsteförmedlaren HelpHero, kunskapsbank om bergsprängning',
     });
   }
@@ -692,16 +698,16 @@ export function raknaDranering(i: DraneringIndata): DraneringResultat {
   // 8g. Rotavdraget, och fällan som ingen annan svensk sida skriver ut.
   regler.push({
     utfall: 'ok',
-    text: `Att dränera husgrunder ger rätt till rotavdrag, alltså ${Math.round(ROT_ANDEL * 100)} procent av arbetskostnaden och högst ${kronor(ROT_TAK_KR)} kr per person och år. Men maskinell utrustning är undantagen, och grävmaskinen är en stor del av notan. Vi räknar med att tre femtedelar av arbetsposten är avdragsgill, alltså ${kronor(rot.avdragKr)} kr på den undre kanten. Be om en faktura där maskinhyran står på egen rad.`,
+    text: `Dränering ger rotavdrag, men inte på maskinhyran, och grävmaskinen är en stor del av notan. Här blir avdraget ${kronor(rot.avdragKr)} kr, räknat på tre femtedelar av arbetet. Be om en faktura där maskinen står på egen rad.`,
     kalla: 'Skatteverket, så fungerar rotavdraget, och listan över arbete som ger rätt till avdrag. Femtedelarna är vårt antagande',
   });
 
   const beskedRad =
     besked === 'dranera'
-      ? `Markfukt på plasten och en dränering som passerat trettio år. Räkna med ${kronor(summaLagKr)} till ${kronor(summaHogKr)} kr för hela grunden, och ta in offerter först när du har en fuktutredning med mätvärden i handen.`
+      ? `Markfukt på plasten och en dränering som passerat trettio år. Räkna med ${kronor(summaLagKr)} till ${kronor(summaHogKr)} kr för hela grunden. Ta in offerter först när du har en fuktutredning med mätvärden.`
       : besked === 'mat-forst'
-        ? `Vattnet kommer ur luften, inte ur marken. En avfuktare och en hygrometer kostar knappt sex tusen kronor tillsammans, och den här grävningen börjar på ${kronor(summaLagKr)} kr. Mät i en vinter innan du river upp tomten.`
-        : `Stuprör, markfall och en rensad dagvattenbrunn kostar dig en helg. Grävningen börjar på ${kronor(summaLagKr)} kr. Gör det billiga först, mät sedan, och gräv sist.`;
+        ? `Vattnet kommer ur luften, inte ur marken. En avfuktare kostar knappt sex tusen kronor, den här grävningen börjar på ${kronor(summaLagKr)} kr. Mät över en vinter innan du river upp tomten.`
+        : `Stuprör, markfall och en rensad dagvattenbrunn kostar dig en helg. Grävningen börjar på ${kronor(summaLagKr)} kr. Gör det billiga först, mät sedan, gräv sist.`;
 
   const gorInteDetHar = [
     GOR_INTE_GRAV_FORE_TESTET,

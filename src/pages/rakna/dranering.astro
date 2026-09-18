@@ -175,13 +175,13 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Schaktdjup, referens',
     varde: `${meterText(SCHAKTDJUP_REFERENS_M)}${HART}m`,
     grund: 'Antagande',
-    stod: 'Villaägarna anger inget djup. En full källare har sulan på ungefär två meter, och där är faktorn 1',
+    stod: 'Villaägarna anger inget djup. En full källare har sulan på ungefär två meter, och där gör djupet inget påslag',
   },
   {
     storhet: 'Djupets påslag',
     varde: `${Math.round(DJUP_PASLAG_PER_M * 100)}${HART}% per meter`,
     grund: 'Källa',
-    stod: 'Byggsajten BraByggare, 25 till 50 procent per halvmeter. Vi tar nedre kanten, och att kurvan är rak är vårt',
+    stod: 'Byggsajten BraByggare, 25 till 50 procent per halvmeter. Vi tar den nedre kanten. Att kurvan är rak är vårt eget antagande',
     url: BRABYGGARE,
   },
   {
@@ -206,10 +206,17 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     url: BRABYGGARE,
   },
   {
-    storhet: 'Sprängning, fast del',
-    varde: `${kr(SPRANGNING_ETABLERING_KR)} och ${kr(SPRANGNING_TACKNING_KR)}${HART}kr`,
+    storhet: 'Sprängning, etablering',
+    varde: `${kr(SPRANGNING_ETABLERING_KR)}${HART}kr`,
     grund: 'Källa',
-    stod: 'Tjänsteförmedlaren HelpHero, etablering av borrigg och täckning av omgivningen. Står som egen rad i svaret',
+    stod: 'Tjänsteförmedlaren HelpHero, att få borriggen på plats för ett normalt uppdrag. Står som egen rad i svaret',
+    url: HELPHERO,
+  },
+  {
+    storhet: 'Sprängning, täckning',
+    varde: `${kr(SPRANGNING_TACKNING_KR)}${HART}kr`,
+    grund: 'Källa',
+    stod: 'HelpHero, att täcka husen omkring så att stenen stannar på tomten. Ligger också utanför meterpriset',
     url: HELPHERO,
   },
   {
@@ -240,17 +247,24 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     url: MARKGROSSEN,
   },
   {
-    storhet: 'Makadam och fiberduk',
-    varde: '100 kr per ton, 5 kr per kvm',
+    storhet: 'Makadam',
+    varde: `100${HART}kr per ton`,
     grund: 'Källa',
-    stod: 'Mark och Anläggning, riktvärden per kvartal, exklusive moms. Sidan anger två olika datum och är ett grovt riktvärde',
+    stod: 'Mark och Anläggning, riktvärde exklusive moms. Sidan anger två olika datum och duger bara som grovt riktvärde',
+    url: ANLAGGNING,
+  },
+  {
+    storhet: 'Fiberduk',
+    varde: `5${HART}kr per kvm`,
+    grund: 'Källa',
+    stod: 'Mark och Anläggning, riktvärde exklusive moms. Den minsta posten i materialet',
     url: ANLAGGNING,
   },
   {
     storhet: 'Schaktbredd',
     varde: `Cirka 1${HART}m`,
     grund: 'Källa',
-    stod: 'Försäkringsbolaget GarBo, schaktet grävs cirka en meter brett längs väggarna',
+    stod: 'Försäkringsbolaget GarBo, schakten grävs cirka en meter bred längs väggarna',
     url: GARBO,
   },
   {
@@ -268,17 +282,30 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     url: BRABYGGARE,
   },
   {
-    storhet: 'Återställning, rabatt och altan',
-    varde: `${ATERSTALLNING.rabatt.lagKrPerM} respektive ${ATERSTALLNING.altan.lagKrPerM}${HART}kr per meter`,
+    storhet: 'Återställning, rabatt',
+    varde: `${ATERSTALLNING.rabatt.lagKrPerM} till ${ATERSTALLNING.rabatt.hogKrPerM}${HART}kr per meter`,
     grund: 'Antagande',
-    stod: 'Ingen källa vi hittat prissätter någon av dem. Altanen är att skruva loss, spara virket och bygga upp igen',
+    stod: 'Ingen källa vi hittat prissätter en rabatt. Vi lägger den mellan gräsmattan och en hårdgjord yta',
+  },
+  {
+    storhet: 'Återställning, altan',
+    varde: `${ATERSTALLNING.altan.lagKrPerM} till ${ATERSTALLNING.altan.hogKrPerM}${HART}kr per meter`,
+    grund: 'Antagande',
+    stod: 'Ingen källa prissätter den heller. Altanen ska skruvas loss, virket sparas och däcket byggas upp igen',
   },
   {
     storhet: 'Rotavdrag',
-    varde: `${Math.round(ROT_ANDEL * 100)}${HART}%, högst ${kr(ROT_TAK_KR)}${HART}kr`,
+    varde: `${Math.round(ROT_ANDEL * 100)}${HART}% av arbetet`,
     grund: 'Källa',
     stod: 'Skatteverket. Att dränera husgrunder står i listan över arbete som ger rätt till avdrag',
     url: SKATTEVERKET_LISTA,
+  },
+  {
+    storhet: 'Rotavdragets tak',
+    varde: `${kr(ROT_TAK_KR)}${HART}kr per person`,
+    grund: 'Källa',
+    stod: 'Skatteverket, taket per person och år. Nivån var tillfälligt högre under 2025 och är tillbaka på trettio procent',
+    url: SKATTEVERKET,
   },
   {
     storhet: 'Rotgrundande del av arbetet',
@@ -312,7 +339,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Fuktutredning med mätvärden',
     varde: `${kr(FUKTUTREDNING_KR)}${HART}kr inklusive moms`,
     grund: 'Källa',
-    stod: 'Saneringsföretaget Ocab, fuktkontroll av källarutrymme upp till 75 kvm. Polygon tar 6 230 kr för samma sak',
+    stod: 'Saneringsföretaget Ocab, fuktkontroll av källarutrymme upp till 75 kvm. Branschkollegan Polygon tar 6 230 kr för samma sak',
     url: OCAB,
   },
   {
@@ -349,15 +376,15 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
 const FRAGOR = [
   {
     fraga: 'Vad kostar det att dränera om ett hus?',
-    svar: 'Arbetet ligger på 3 000 kr per löpmeter husgrund och kan gå upp till det dubbla, säger Villaägarna. En vanlig villa har 40 löpmeter runt huset, alltså 120 000 kr när tomten är lätt och 240 000 kr när den inte är det. Till det kommer material för ungefär 300 till 900 kr per meter och att lägga tillbaka gräset, gången eller asfalten ovanpå schakten.',
+    svar: 'Villaägarna sätter arbetet till 3 000 kr per löpmeter husgrund och skriver att det kan gå upp till det dubbla. Ett vanligt hus har 40 löpmeter runt grunden. Är tomten lätt landar arbetet då på 120 000 kr, och är den svår på 240 000 kr. Till det kommer materialet, ungefär 300 till 900 kr per meter, och att lägga tillbaka gräset, gången eller asfalten ovanpå schakten.',
   },
   {
     fraga: 'Hur länge håller en dränering?',
-    svar: 'Villaägarna säger att en gammal dränering kan fungera i femtio år, särskilt om källaren bara används som källare och inte som bostad. Branschens egna tal är kortare, oftast trettio till femtio år, och ett företag anger tjugo år som teknisk livslängd. Åldern ensam är inget skäl att gräva. Det är fukt i källaren som är skälet, och åldern säger bara hur troligt det är att dräneringen är orsaken.',
+    svar: 'Villaägarna säger att en gammal dränering kan fungera i femtio år, särskilt om källaren bara används som källare och inte som bostad. Branschens egna tal är kortare, oftast trettio till femtio år, och försäkringsbolaget GarBo anger tjugo år som teknisk livslängd. Åldern ensam är ändå inget skäl att gräva. Det är fukten i källaren som är skälet, och åldern säger bara hur troligt det är att dräneringen är orsaken.',
   },
   {
     fraga: 'Räcker en avfuktare i stället för dränering?',
-    svar: 'Bara om vattnet kommer ur luften. Tejpa en bit plastfolie tätt mot källarväggen i två dygn. Blir plasten våt på rumssidan är det kondens, och då är en avfuktare rätt svar för ungefär sex tusen kronor. Blir den våt på väggsidan kommer vattnet genom betongen, och en avfuktare gör då ingen nytta alls: den ökar avdunstningen ur väggen, som suger efter mer vatten ur marken.',
+    svar: 'Bara om vattnet kommer ur luften. Tejpa en bit plastfolie tätt mot källarväggen och vänta två dygn. Blir plasten våt på rumssidan är det kondens, och då gör en avfuktare jobbet för ungefär sex tusen kronor. Blir den våt på väggsidan kommer vattnet genom betongen, och då hjälper ingen maskin. Avfuktaren ökar tvärtom avdunstningen ur väggen, som suger efter mer vatten ur marken.',
   },
 ];
 
@@ -365,7 +392,7 @@ const FRAGOR = [
 const SLUG = 'dranering';
 const VERKTYGSNAMN = 'Dränering';
 const BESKRIVNING =
-  'Fyll i husets mått, schaktdjup, tomt och vad tejptestet gav, så får du priset per löpmeter, hela grunden och besked om du behöver gräva alls.';
+  'Räkna ut vad en dränering kostar per löpmeter och för hela grunden. Verktyget säger också om du behöver gräva alls, eller om en avfuktare räcker.';
 const illustration = verktygsillustration(SLUG);
 ---
 
@@ -399,10 +426,10 @@ const illustration = verktygsillustration(SLUG);
           Vad kostar dränering? Räkna per löpmeter, och se om du behöver gräva
         </h1>
         <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
-          Fyll i husets två mått, hur djupt schaktet går, hur tomten ser ut runt huset och vad som ligger ovanpå, så
-          räknar verktyget ut arbetet per löpmeter och vad hela grunden kostar. Sedan kommer den fråga som ingen annan
-          svensk sida ställer: behöver du gräva alls? Dräneringens ålder och vad tejptestet på källarväggen gav avgör
-          om svaret blir dränera om, mät först eller gör det billiga först.
+          En omdränering kostar som en begagnad bil, och många som söker på priset behöver aldrig gräva. Fyll i husets
+          två mått, hur djupt schakten går och vad som ligger ovanpå, så får du arbetet per löpmeter och en summa för
+          hela grunden. Sedan svarar verktyget på det prislistorna hoppar över: ska du gräva, eller räcker det med en
+          avfuktare?
         </p>
       </div>
 
@@ -427,10 +454,10 @@ const illustration = verktygsillustration(SLUG);
       visat.status === 'ok' && (
         <Faktaruta variant="kortsvar">
           <p class="m-0 leading-6">Räkna med <Markering>3 000 kr per löpmeter</Markering> husgrund i arbete.</p>
-          <p class="m-0 leading-6">Är tomten svår blir det det dubbla.</p>
-          <p class="m-0 leading-6">En vanlig villa har 40 löpmeter runt huset.</p>
-          <p class="m-0 leading-6">Tejpa plast på källarväggen först, det avgör om du ska gräva alls.</p>
-          <p class="m-0 leading-6">En avfuktare kostar en tjugondel av en grävning, och löser bara kondens.</p>
+          <p class="m-0 leading-6">Är tomten svår blir summan den dubbla.</p>
+          <p class="m-0 leading-6">Ett vanligt hus har 40 löpmeter runt grunden.</p>
+          <p class="m-0 leading-6">Tejpa plast på källarväggen innan du beställer något.</p>
+          <p class="m-0 leading-6">Plasten säger om du ska gräva eller köpa en avfuktare.</p>
         </Faktaruta>
       )
     }
@@ -461,7 +488,7 @@ const illustration = verktygsillustration(SLUG);
                 </span>
               </p>
               <p class="m-0 mt-2 text-liten text-blyerts-2">
-                {kr(visat.arbeteLagKrPerM)} till {kr(visat.arbeteHogKrPerM)}&nbsp;kr per löpmeter, vid{' '}
+                {kr(visat.arbeteLagKrPerM)} till {kr(visat.arbeteHogKrPerM)}&nbsp;kr per löpmeter. Räknat på{' '}
                 {meterText(visatIndata.schaktDjupM)}&nbsp;m schaktdjup och {TEJP_TEXT[visatIndata.tejptest]}.
               </p>
 
@@ -507,20 +534,18 @@ const illustration = verktygsillustration(SLUG);
 
               <ul class="m-0 mt-4 p-0 list-none text-brod tabular-nums">
                 <li class="border-t border-linje py-2">
-                  Rotavdrag {kr(visat.rotavdragKr)}&nbsp;kr på den undre kanten, räknat på den del av arbetet som inte
-                  är maskinhyra
+                  Rotavdrag {kr(visat.rotavdragKr)}&nbsp;kr på den undre kanten, räknat utan maskinhyran
                 </li>
                 <li class="border-t border-linje py-2">
-                  Kvar att betala {kr(visat.efterRotLagKr)} till {kr(visat.efterRotHogKr)}&nbsp;kr, för en ägare med
-                  hela avdraget kvar i år
+                  Kvar att betala {kr(visat.efterRotLagKr)} till {kr(visat.efterRotHogKr)}&nbsp;kr, om du inte använt
+                  rotavdraget till något annat i år
                 </li>
                 <li class="border-t border-linje py-2">
-                  En avfuktare kostar {kr(AVFUKTARE_KR)}&nbsp;kr, och grävningen {visat.faktorMotAvfuktare} gånger så
-                  mycket
+                  En avfuktare kostar {kr(AVFUKTARE_KR)}&nbsp;kr, grävningen {visat.faktorMotAvfuktare} gånger mer
                 </li>
                 <li class="border-t border-linje py-2">
-                  En fuktutredning med mätvärden kostar {kr(FUKTUTREDNING_KR)}&nbsp;kr, och grävningen{' '}
-                  {visat.faktorMotUtredning} gånger så mycket
+                  En fuktutredning kostar {kr(FUKTUTREDNING_KR)}&nbsp;kr, grävningen {visat.faktorMotUtredning} gånger
+                  mer
                 </li>
               </ul>
 
@@ -551,7 +576,7 @@ const illustration = verktygsillustration(SLUG);
               ))}
 
               <p class="m-0 mt-4 text-liten text-blyerts-2">
-                Talen är storleksordningar för att jämföra åtgärder med, inte en offert. Priset på ett markarbete sätts
+                Talen är storleksordningar att jämföra åtgärder med, inte en offert. Vad ett markarbete kostar avgörs
                 av vad som ligger i marken, och det syns först när schakten är öppen.
               </p>
 
@@ -581,52 +606,70 @@ const illustration = verktygsillustration(SLUG);
     <section>
       <Pennstreck id="dranering-kostnad">Dränering, kostnad per löpmeter och om du behöver gräva alls</Pennstreck>
       <p class="m-0 text-brod lg:text-brod-lg">
-        Frågan vad kostar dränering har ett svar som går att slå upp och ett som ingen ger dig. Det första är priset:
         Villaägarna sätter arbetet till cirka 3 000&nbsp;kr per löpmeter husgrund och skriver att det kan gå upp till
-        det dubbla. Löpmetern är hela varvet runt huset, så en villa på 12 gånger 8&nbsp;meter har 40 löpmeter och
-        landar på 120 000&nbsp;kr när tomten är lätt. Det andra svaret är det du egentligen är ute efter, och det är
-        om grävningen behövs.
+        det dubbla. Löpmetern är hela varvet runt huset, så ett hus på 12 gånger 8&nbsp;meter har 40 löpmeter och
+        landar på 120 000&nbsp;kr när tomten är lätt. Så långt är svaret detsamma i vilken prislista som helst. Det du
+        inte hittar där är frågan om grävningen behövs.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Gör det billiga först. Stuprören ska leda bort vattnet, marken ska luta från huset, och dagvattenbrunnen ska
+        vara rensad. Besiktningsföretaget Anticimex sätter siffror på varför. Ett tak på 150&nbsp;kvm är en stor
+        tratt. Ett regn på 20&nbsp;mm ger 3 000 liter vatten som ska ta vägen någonstans, och rinner det ner längs
+        grundmuren spelar det ingen roll hur ny dräneringen är.
       </p>
       <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Hur länge håller en dränering?</h3>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Villaägarnas rådgivare är ovanligt ärliga här. En gammal dränering kan fungera i femtio år, särskilt om
-        källaren bara används som källare, och de tycker att det finns roligare saker att lägga pengarna på än att
-        gräva förebyggande. Branschen själv säger kortare: trettio till femtio år är det vanligaste talet, och ett
-        företag anger tjugo år som teknisk livslängd. Vi sätter gränsen vid trettio år, men bara tillsammans med
-        markfukt på plasten. En dränering från sjuttiotalet i ett hus utan fuktproblem ska ligga kvar i marken.
-        Nyanseringen som ingen konkurrent tar upp ligger i Villaägarnas eget villkor: femtio år gäller en källare som
-        används som källare. Ska du inreda den till sovrum är kraven andra, och då räknas dräneringen som en del av
-        ombyggnaden.
+        Villaägarnas rådgivare är ovanligt raka här. En gammal dränering kan fungera i femtio år, särskilt om källaren
+        bara används som källare, och de tycker att det finns roligare saker att lägga pengarna på än att gräva i
+        förebyggande syfte. Branschen själv säger kortare. Trettio till femtio år är det vanligaste talet, och
+        försäkringsbolaget GarBo anger tjugo år som teknisk livslängd.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Vi sätter gränsen vid trettio år, men bara tillsammans med markfukt på plasten. En dränering från sjuttiotalet
+        i ett hus utan fuktproblem ska ligga kvar i marken. Villkoret i Villaägarnas mening är värt att läsa en gång
+        till: femtio år gäller en källare som används som källare. Ska du inreda den till sovrum är kraven andra, och
+        då hör dräneringen till ombyggnaden.
       </p>
       <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad som gör priset dubbelt så högt</h3>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
         Villaägarna namnger tre saker bakom fördubblingen: grävdjup, bergsprängning och markförhållanden. Ingen av dem
-        får en siffra. Vi har därför tagit talen från byggsajten BraByggares egen prislista, som är den enda svenska
-        källa vi hittat med en djuptrappa: varje extra halvmeter lägger på 25 till 50 procent, och en trång tomt med
-        under tre meter mellan hus och gräns ger 10 till 25 procent i merarbete. Vi räknar med den nedre kanten på
-        djupet och den övre på trångt, för den som kryssar i rutan har ett verkligt problem. Berget är vårt eget tal,
-        och sprängningens fasta kostnader ligger utanför meterpriset, eftersom de inte blir billigare för att huset är
-        litet. Be entreprenören prissätta etablering och täckning för sig, så ser du vad själva metern kostar.
+        får en siffra. Talen kommer därför från byggsajten BraByggares prislista, den enda svenska källa vi hittat som
+        har en djuptrappa. Varje extra halvmeter lägger på 25 till 50 procent, och en trång tomt med under tre meter
+        mellan hus och gräns ger 10 till 25 procent i merarbete.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Vi räknar med den nedre kanten på djupet och den övre på den trånga tomten, för den som kryssar i den rutan
+        har ett verkligt problem och inte ett gränsfall. Berget är vårt eget tal. Sprängningens fasta kostnader ligger
+        utanför meterpriset, eftersom de inte blir billigare för att huset är litet. Be entreprenören prissätta
+        etablering och täckning för sig, så ser du vad själva metern kostar.
       </p>
       <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Rotavdraget, och fällan i det</h3>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
         Att dränera husgrunder står i Skatteverkets lista över arbete som ger rätt till rotavdrag, alltså 30 procent av
         arbetskostnaden och högst 50 000&nbsp;kr per person och år. Två rader längre ner i samma lista står det som
-        ingen annan svensk kostnadssida skriver ut: du får inte avdrag för maskinell utrustning, uttryckligen
-        grävmaskiner och borraggregat. En dränering är till stor del grävmaskin och lass med massor, så avdraget
-        träffar en mindre del av notan än den som räknar 30 procent på hela arbetsposten tror. Vi räknar med att tre
-        femtedelar av arbetet är avdragsgillt, och det talet är vårt. Be om en faktura där maskinhyran står på egen
-        rad, så vet du i stället för att gissa.
+        ingen annan svensk kostnadssida skriver ut: avdrag ges inte för maskinell utrustning, uttryckligen grävmaskiner
+        och borraggregat. En dränering är till stor del grävmaskin och lass med massor. Avdraget träffar alltså en
+        mindre del av notan än du tror om du räknar 30 procent på hela arbetsposten.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Vi räknar med att tre femtedelar av arbetet är avdragsgillt, och det talet är vårt. Be om en faktura där
+        maskinhyran står på egen rad, så vet du i stället för att gissa. Äger ni huset tillsammans har ni ett tak var,
+        och då går det att dra dubbelt så mycket.
       </p>
       <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Avfuktare eller dränering</h3>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Det här är skillnaden mellan rätt och fel diagnos, och den är en faktor tjugo. Tejpa en bit plastfolie på
-        50 gånger 50&nbsp;cm tätt mot källarväggen där den ser våtast ut och vänta minst två dygn. Droppar på plastens
-        rumssida betyder att luften bär mer vatten än den kalla väggen tål, alltså kondens, och då är en avfuktare rätt
-        maskin. Droppar på väggsidan betyder att vattnet kommer genom betongen. Boverket är tydlig med att skyddet mot
-        markfukt hör hemma på utsidan av väggen, och en avfuktare mot markfukt är samma tankefel i elektrisk form:
-        luften i rummet torkar, avdunstningen ur väggen ökar, och väggen suger efter mer vatten ur marken. Hela testet
-        står i{' '}
+        Skillnaden mellan rätt och fel diagnos är minst en faktor tjugo. Tejpa en bit plastfolie på 50 gånger
+        50&nbsp;cm tätt mot källarväggen där den ser våtast ut och vänta minst två dygn.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Sitter dropparna på plastens rumssida bär luften mer vatten än den kalla väggen tål. Det är kondens, och då är
+        en avfuktare rätt maskin. Sitter de på väggsidan kommer vattnet genom betongen i stället. Myndigheten Boverket
+        beskriver den transporten som främst kapillär, ibland som vattenånga rakt genom materialet, och är tydlig med
+        att skyddet mot markfukt hör hemma på utsidan av väggen.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        En avfuktare mot markfukt är samma tankefel i elektrisk form. Luften i rummet torkar, avdunstningen ur väggen
+        ökar, och väggen suger efter mer vatten ur marken. Hela testet står i{' '}
         <a href="/fukt/fukt-i-kallaren/" class={LANK_KLASS}>
           guiden om fukt i källaren
         </a>
@@ -650,25 +693,25 @@ const illustration = verktygsillustration(SLUG);
           övre.
         </li>
         <li class="mb-2">
-          Schaktdjupet flyttar hela spannet: {Math.round(DJUP_PASLAG_PER_M * 100)} procent per meter över eller under
-          de {meterText(SCHAKTDJUP_REFERENS_M)} meter vi räknar som normala, klämt så att ytterlägena inte skenar.
+          Schaktdjupet flyttar hela spannet. Varje meter över eller under de {meterText(SCHAKTDJUP_REFERENS_M)} meter
+          vi räknar som normala ändrar arbetet med {Math.round(DJUP_PASLAG_PER_M * 100)} procent. Ändringen håller sig
+          inom fasta gränser, så att en riktigt djup schakt inte får priset att skena.
         </li>
         <li class="mb-2">
-          Åtkomsten flyttar det en gång till, med ett påslag för trång tomt och ett större för berg. Sprängningens
+          Åtkomsten flyttar spannet en gång till, med ett påslag för trång tomt och ett större för berg. Sprängningens
           fasta kostnader står som en egen rad och räknas aldrig per meter.
         </li>
         <li class="mb-2">
-          Påslaget slår igenom helt på den undre kanten och halvt på den övre. Villaägarnas fördubbling är redan
-          motiverad med djup och berg, så att räkna påslaget fullt ut i båda ändarna vore att ta samma svårighet två
-          gånger.
+          Påslaget slår igenom helt på den undre kanten och halvt på den övre. Fördubblingen är redan motiverad med
+          djup och berg, så att räkna påslaget fullt ut i båda ändarna vore att ta samma svårighet två gånger.
         </li>
         <li class="mb-2">
-          Materialet läggs på med 300 till 900 kr per löpmeter vid normalt djup, och det skalar rakt mot djupet:
-          dubbelt så djup schakt är dubbelt så hög skiva mot väggen.
+          Materialet läggs på med 300 till 900 kr per löpmeter vid normalt djup. Det följer djupet rakt av, för
+          dubbelt så djup schakt kräver dubbelt så hög skiva mot väggen.
         </li>
         <li class="mb-2">
-          Återställningen läggs på efter vad som ligger ovanpå schakten, från gräs till altan. Schaktet är ungefär en
-          meter brett, så kronor per meter är också kronor per kvadratmeter.
+          Återställningen beror på vad som ligger ovanpå schakten, från gräs till altan. Schakten är ungefär en meter
+          bred, så kronor per meter är också kronor per kvadratmeter.
         </li>
         <li class="mb-2">
           Rotavdraget dras från arbetet, men bara från den del som inte är maskinhyra, och det stannar vid taket per
@@ -716,8 +759,8 @@ const illustration = verktygsillustration(SLUG);
           <tfoot>
             <tr>
               <td colspan="3" class="p-2 text-liten text-blyerts-2">
-                Priserna är hämtade 18 september 2026, utom avfuktaren och fuktkontrollen som lästes 16 september 2026.
-                Ett materialpris är färskvara och bör läsas om varje halvår. Raderna märkta Antagande är våra.
+                Priserna är hämtade 18 september 2026. Avfuktaren och fuktkontrollen lästes 16 september 2026. Ett
+                materialpris är färskvara och läses om varje halvår. Raderna märkta Antagande är våra egna tal.
               </td>
             </tr>
           </tfoot>
@@ -725,24 +768,23 @@ const illustration = verktygsillustration(SLUG);
       </div>
 
       <p class="m-0 mt-6 text-brod lg:text-brod-lg">
-        Sex rader i tabellen är märkta Antagande, och det står där. Referensdjupet på två meter, hur mycket av
-        påslaget som slår igenom på den övre kanten, påslaget för berg, summan av materialposterna, spannet för
-        rabatt och altan, och hur stor del av arbetet som är rotgrundande. En sjunde rad är vår tolkning av en källa:
-        gränsen vid trettio år är vald ur Husgrunders spann på 25 till 30. De två som betyder mest för svaret är
-        gränsen och rotandelen, och båda ligger åt det försiktiga hållet. Verktyget säger hellre mät en gång till än
-        gräv i onödan, och lovar hellre ett för litet rotavdrag än ett för stort.
+        Raderna märkta Antagande är våra egna tal, inte hämtade någonstans ifrån. Två av dem styr svaret mer än de
+        andra. Det ena är gränsen vid trettio år, vald ur Husgrunders spann på 25 till 30. Det andra är att tre
+        femtedelar av arbetet är rotgrundande. Båda ligger åt det försiktiga hållet: verktyget säger hellre mät en
+        gång till än gräv i onödan, och lovar hellre ett för litet rotavdrag än ett för stort.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        En kontroll mot marknaden är värd att göra själv. Vår totalsumma landar på{' '}
+        Gör gärna en rimlighetskontroll mot marknaden. För grunden du fyllt i landar vår totalsumma på{' '}
         {visat.status === 'ok' ? `${kr(visat.summaLagKrPerM)} till ${kr(visat.summaHogKrPerM)}` : '3 400 till 7 200'}
-        &nbsp;kr per löpmeter för den grund du fyllt i. Byggkedjornas egna guider anger 2 500 till 7 500&nbsp;kr per
-        meter inklusive material och arbete, och de ligger alltså i samma härad. Skillnaden är att de inte säger var
-        talen kommer ifrån, och att ingen av dem frågar om du behöver gräva.
+        &nbsp;kr per löpmeter. Byggkedjornas egna guider anger 2 500 till 7 500&nbsp;kr per meter inklusive material
+        och arbete, alltså samma härad. Skillnaden är att de inte säger var talen kommer ifrån, och att ingen av dem
+        frågar om du behöver gräva.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Två saker kan verktyget inte se. Vad som ligger i marken, alltså gamla ledningar, fyllning av byggavfall eller
-        en grundmur som visar sig vara otät när den blottas, och om huset har krypgrund under en del av
-        bottenvåningen, som är en annan byggnadsdel med egna regler. Metoden bakom våra siffror står på{' '}
+        Två saker kan verktyget inte se. Det första är vad som ligger i marken: gamla ledningar, fyllning av
+        byggavfall, eller en grundmur som visar sig vara otät när den blottas. Det andra är krypgrunden. Har huset
+        krypgrund under en del av bottenvåningen är det en annan byggnadsdel med egna regler, och den räknas inte
+        här. Metoden bakom våra siffror står på{' '}
         <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar vi</a>.
       </p>
     </section>
