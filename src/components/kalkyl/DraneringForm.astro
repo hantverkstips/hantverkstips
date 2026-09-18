@@ -1,0 +1,231 @@
+---
+/**
+ * Formuläret till verktyget "Dränering och källare, kostnad och nytta". Ett
+ * ställe: sidan /rakna/dranering/ renderar det i fullt format, och
+ * <Kalkylator namn="dranering" /> i en artikel renderar samma fält i kompakt
+ * format med action till verktygssidan.
+ *
+ * Ingen klient-JavaScript. Formuläret skickas som GET, och verktygssidan räknar.
+ *
+ * Alla props är valfria, eftersom det inbäddade formuläret inte har någon
+ * uträkning att visa värden ur; då står standardvärdena i fälten.
+ */
+import {
+  ATERSTALLNINGAR,
+  ATKOMSTER,
+  SCHAKTDJUP_REFERENS_M,
+  STANDARD,
+  TEJPTESTER,
+  type DraneringIndata,
+} from '../../lib/kalkyl/dranering.ts';
+import { ETIKETT_KLASS, FALT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, ramKlass } from '../../lib/kalkyl/stil';
+
+interface Props {
+  /** Valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
+  indata?: DraneringIndata;
+  /** Talen som de skrevs i adressen, så att ett felskrivet värde går att rätta. */
+  varden?: { langd: string; bredd: string; djup: string; alder: string };
+  fel?: Partial<Record<keyof DraneringIndata, string>>;
+  /** Inbäddad i en artikel: tätare fält, inga hjälprader. */
+  kompakt?: boolean;
+  /** Prefix på id-attributen, så att två formulär på samma sida inte krockar. */
+  idPrefix?: string;
+  knappText?: string;
+}
+
+const komma = (n: number) => String(n).replace('.', ',');
+
+const {
+  indata = STANDARD,
+  varden = {
+    langd: komma(STANDARD.husLangdM),
+    bredd: komma(STANDARD.husBreddM),
+    djup: komma(STANDARD.schaktDjupM),
+    alder: String(STANDARD.alderAr),
+  },
+  fel = {},
+  kompakt = false,
+  idPrefix = '',
+  knappText = 'Räkna ut',
+} = Astro.props;
+
+const id = (namn: string) => `${idPrefix}${namn}`;
+const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
+
+/** Husets två mått delar rad. Omkretsen räknas fram, läsaren slipper mäta runt. */
+const matt = [
+  { namn: 'langd', etikett: 'Husets längd', varde: varden.langd, fel: fel.husLangdM },
+  { namn: 'bredd', etikett: 'Husets bredd', varde: varden.bredd, fel: fel.husBreddM },
+] as const;
+---
+
+<form method="get" action="/rakna/dranering/">
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Husets mått utvändigt</legend>
+    <div class="grid grid-cols-2 gap-x-4">
+      {
+        matt.map((f) => (
+          <div class="mb-2">
+            <label for={id(f.namn)} class="block mb-1 text-liten text-blyerts-2">
+              {f.etikett}
+            </label>
+            <div class="flex items-center gap-2">
+              <input
+                id={id(f.namn)}
+                name={f.namn}
+                type="text"
+                inputmode="decimal"
+                value={f.varde}
+                aria-describedby={f.fel ? id(`${f.namn}-fel`) : undefined}
+                class:list={[FALT_KLASS, ramKlass(Boolean(f.fel))]}
+              />
+              <span class="text-brod text-blyerts-2">m</span>
+            </div>
+            {f.fel && (
+              <p id={id(`${f.namn}-fel`)} class={FEL_KLASS}>
+                {f.fel}
+              </p>
+            )}
+          </div>
+        ))
+      }
+    </div>
+    {
+      !kompakt && (
+        <p class={HJALP_KLASS}>
+          Två mått räcker. Omkretsen räknas fram, och det är den som är löpmetern priset går på.
+        </p>
+      )
+    }
+  </fieldset>
+
+  <div class="mb-4">
+    <label for={id('djup')} class={ETIKETT_KLASS}>Schaktdjup</label>
+    <div class="flex items-center gap-2">
+      <input
+        id={id('djup')}
+        name="djup"
+        type="text"
+        inputmode="decimal"
+        value={varden.djup}
+        aria-describedby={fel.schaktDjupM ? id('djup-fel') : undefined}
+        class:list={[FALT_KLASS, ramKlass(Boolean(fel.schaktDjupM))]}
+      />
+      <span class="text-brod text-blyerts-2">m</span>
+    </div>
+    {
+      fel.schaktDjupM ? (
+        <p id={id('djup-fel')} class={FEL_KLASS}>
+          {fel.schaktDjupM}
+        </p>
+      ) : (
+        !kompakt && (
+          <p class={HJALP_KLASS}>
+            Ner till dräneringsledningen vid sulan, alltså underkant källarvägg. En full källare ligger runt{' '}
+            {komma(SCHAKTDJUP_REFERENS_M)} m, en souterräng grundare på husets höga sida.
+          </p>
+        )
+      )
+    }
+  </div>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Så ser tomten ut runt huset</legend>
+    <div class={radioKlass}>
+      {
+        ATKOMSTER.map((a) => (
+          <label class="flex min-h-11 items-start gap-2 py-1 text-brod">
+            <input type="radio" name="atkomst" value={a.varde} checked={indata.atkomst === a.varde} class="mt-1.5" />
+            <span>
+              {a.etikett}
+              {!kompakt && <span class="block text-liten text-blyerts-2">{a.hjalp}</span>}
+            </span>
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Ovanpå schakten ligger</legend>
+    <div class={radioKlass}>
+      {
+        ATERSTALLNINGAR.map((a) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input type="radio" name="aterstall" value={a.varde} checked={indata.aterstallning === a.varde} />
+            {a.etikett}
+          </label>
+        ))
+      }
+    </div>
+    {
+      !kompakt && (
+        <p class={HJALP_KLASS}>
+          Välj det dyraste som ligger längs mer än en vägg. Allt ska upp och tillbaka igen.
+        </p>
+      )
+    }
+  </fieldset>
+
+  <div class="mb-4">
+    <label for={id('alder')} class={ETIKETT_KLASS}>Dräneringens ålder</label>
+    <div class="flex items-center gap-2">
+      <input
+        id={id('alder')}
+        name="alder"
+        type="text"
+        inputmode="numeric"
+        value={varden.alder}
+        aria-describedby={fel.alderAr ? id('alder-fel') : undefined}
+        class:list={[FALT_KLASS, ramKlass(Boolean(fel.alderAr))]}
+      />
+      <span class="text-brod text-blyerts-2">år</span>
+    </div>
+    {
+      fel.alderAr ? (
+        <p id={id('alder-fel')} class={FEL_KLASS}>
+          {fel.alderAr}
+        </p>
+      ) : (
+        !kompakt && (
+          <p class={HJALP_KLASS}>
+            Vet du inte, skriv husets ålder. Dräneringen är lika gammal som huset tills någon grävt om den.
+          </p>
+        )
+      )
+    }
+  </div>
+
+  <fieldset class="m-0 mb-6 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Vad tejptestet visade</legend>
+    <div class={radioKlass}>
+      {
+        TEJPTESTER.map((t) => (
+          <label class="flex min-h-11 items-start gap-2 py-1 text-brod">
+            <input type="radio" name="tejp" value={t.varde} checked={indata.tejptest === t.varde} class="mt-1.5" />
+            <span>
+              {t.etikett}
+              {!kompakt && <span class="block text-liten text-blyerts-2">{t.hjalp}</span>}
+            </span>
+          </label>
+        ))
+      }
+    </div>
+    {
+      !kompakt && (
+        <p class={HJALP_KLASS}>
+          En bit plastfolie tejpad tätt mot källarväggen i minst två dygn. Hela testet står i{' '}
+          <a
+            href="/fukt/fukt-i-kallaren/"
+            class="text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+          >
+            guiden om fukt i källaren
+          </a>
+          .
+        </p>
+      )
+    }
+  </fieldset>
+
+  <button type="submit" class={KNAPP_KLASS}>{knappText}</button>
+</form>

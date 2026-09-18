@@ -90,13 +90,20 @@ function symbolInnehall() {
   return utanHolje(fs.readFileSync(SYMBOL, 'utf8'));
 }
 
-/** Den konverterade skissen för ett verktyg, 600 × 360 och utan <text>. */
+/**
+ * Den konverterade skissen för ett verktyg, 600 × 360 och utan <text>.
+ * Saknas filen returneras null: ett nytt verktyg ska gå att bygga innan
+ * designansvarig hunnit rita skissen, precis som src/lib/verktygsbild.ts är
+ * byggd för. Delningsbilden får då tumstocken till höger, som en innehållssida
+ * utan egen bild, och varningen säger vilken fil som fattas.
+ */
 function skissInnehall(slug) {
   const fil = path.join(SKISSER, `${slug}.svg`);
   if (!fs.existsSync(fil)) {
-    throw new Error(
-      `Skissen saknas: ${path.relative(ROT, fil)}. Rita källan i src/assets/illustrationer-kallor/rakna/ och kör npm run illustrationer.`,
+    varna(
+      `Skissen saknas: ${path.relative(ROT, fil)}. Delningsbilden får tumstocken så länge. Rita källan i src/assets/illustrationer-kallor/rakna/ och kör npm run illustrationer.`,
     );
+    return null;
   }
   const svg = fs.readFileSync(fil, 'utf8');
   if (/<text[\s>]/.test(svg)) {
@@ -346,6 +353,8 @@ function delaITvaRader(font, text, storlek) {
  * skillnad från artikeltitlarna som får gå på upp till tre.
  */
 function verktygSvg(font, kalkylator) {
+  const skiss = skissInnehall(kalkylator.slug);
+
   // Skissen: 600 × 360 skalad till 560 px bredd, lodrätt centrerad.
   const skissBredd = 560;
   const skissSkala = skissBredd / 600;
@@ -367,10 +376,14 @@ function verktygSvg(font, kalkylator) {
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${B}" height="${H}" viewBox="0 0 ${B} ${H}">
   <rect width="${B}" height="${H}" fill="${PAPPER}"/>
-  <g transform="translate(${skissX} ${skissY}) scale(${skissSkala.toFixed(5)})">
-    ${skissInnehall(kalkylator.slug)}
+  ${
+    skiss === null
+      ? symbolFragment()
+      : `<g transform="translate(${skissX} ${skissY}) scale(${skissSkala.toFixed(5)})">
+    ${skiss}
   </g>
-  <rect x="${skissX + 0.5}" y="${skissY + 0.5}" width="${skissBredd - 1}" height="${(skissHojd - 1).toFixed(1)}" rx="2" fill="none" stroke="${LINJE}" stroke-width="1"/>
+  <rect x="${skissX + 0.5}" y="${skissY + 0.5}" width="${skissBredd - 1}" height="${(skissHojd - 1).toFixed(1)}" rx="2" fill="none" stroke="${LINJE}" stroke-width="1"/>`
+  }
   <path d="${bana1.d}" fill="${BLYERTS}"/>
   <path d="${bana2.d}" fill="${BLYERTS}"/>
   ${pennstreck(bana2.bredd, rad2 + storlek * 0.52, storlek, NAMN_BREDD)}

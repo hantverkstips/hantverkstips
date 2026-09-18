@@ -94,6 +94,15 @@ export const KALKYLATORER: Kalkylator[] = [
     pelare: ['altan'],
   },
   {
+    slug: 'dranering',
+    namn: 'Vad kostar det att dränera om huset?',
+    rad: 'Mått, djup och tejptest ger pris per löpmeter och om du behöver gräva.',
+    /* Dräneringsjobb upphandlas på våren och utförs innan tjälen kommer, så
+       frågan ställs från snösmältningen till oktober. */
+    sasong: [3, 10],
+    pelare: ['grund', 'fukt'],
+  },
+  {
     slug: 'mala-ute',
     namn: 'Kan du måla ute i dag?',
     rad: 'Temperatur, luftfuktighet, natt och klockslag ger om färgen hinner torka före daggen.',

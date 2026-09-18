@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Genomskärning genom husets grundmur på linjerat papper. Till höger står källarväggen med bjälklaget över och källargolvet under, och nederst breddar den sig till en grundsula. Marken utanför lutar bort från huset, och en streckad linje visar schaktet som grävts ner längs muren, från markytan snett ner till botten vid sulan. I botten ligger dräneringsröret i genomskärning som två cirklar i varandra, omgivet av makadam ritad som små stenar. Mot väggens utsida står fuktspärren som en noppad linje från markytan ner till sulan. En måttbygel mellan markytan och rörets botten är märkt 2 m djup. Anteckningarna säger 40 meter runt huset och det gulmarkerade nyckeltalet från 136 000 kronor, och i rött pekar två pilar in genom väggen ovanför sulan, märkta markfukt, med en pöl på källargolvet innanför.">
+  <!-- Anteckningsboken, verktygsskiss för /rakna/dranering/. Blyerts 2 px för markytan, källarväggen,
+       bjälklaget, källargolvet, grundsulan, fuktspärren och dräneringsröret, blyerts-2 streckat för
+       schaktkanten genom marken (det enda som är borta när jobbet är klart), blyerts-2 1,25 px för
+       markens skraffering, makadamen och pekpinnen, blyerts-2 1,5 px för måttbygeln, snickarpenna
+       2,5 px för markfukten som trycker in genom väggen och pölen på golvet (den enda pennsaken),
+       tumstock bakom nyckeltalet från 136 000 kr.
+       Exemplet är kalkylatorns eget standardfall i src/lib/kalkyl/dranering.ts: hus 12 × 8 m,
+       alltså 40 m omkrets, schakt 2 m, fri tomt och gräs ovanpå, vilket ger 136 000 kr som
+       undre kant. Ändras konstanterna där ändras talet här.
+       Avsteg från "allt under mark streckas": i ett snitt är marken uppskuren, så muren, sulan, röret
+       och fuktspärren ritas i blyerts trots att de ligger under mark. Streckat sparas till schaktkanten,
+       som är det enda som verkligen inte finns kvar att se. Rent ovan-under-mark hade lämnat nästan
+       hela skissen i streck och gjort den till gröt på 375 px.
+       Skala i höjdled: måttbygeln 2 m är 169 px, alltså 1 px cirka 12 mm. Marken faller 29 px på
+       328 px, knappt 9 procent, bort från huset. Sidled följer höjdled så nära det går att läsa:
+       muren 34 px = 0,40 m, sulan 60 px bred = 0,71 m, sockeln 36 px = 0,43 m över mark. Röret är
+       ritat med 26 px diameter i stället för skalans 9, annars försvinner det på mobil.
+       Väggen x=380-414, y=50-300. Sulan x=360-420, y=294-318. Röret mitt i (336,306).
+       Måttbygeln står på x=314 med ett glapp för måttet, som i en ritning.
+       Markytan går från (52,169) till (380,140). Schaktkanten (196,156) till (310,336).
+       Handskrift i Caveat 500, 26 px, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2: markens skraffering, tre rader utanför schaktet och en under källargolvet.
+       Raderna slutar innan schaktkanten så att den orörda marken syns som orörd. -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M58,182 l10,10 M84,182 l10,10 M110,182 l10,10 M136,182 l10,10 M162,182 l10,10 M188,182 l10,10"/>
+    <path d="M58,222 l10,10 M84,222 l10,10 M110,222 l10,10 M136,222 l10,10 M162,222 l10,10 M188,222 l10,10 M214,222 l10,10"/>
+    <path d="M58,262 l10,10 M84,262 l10,10 M110,262 l10,10 M136,262 l10,10 M162,262 l10,10 M188,262 l10,10 M214,262 l10,10 M240,262 l10,10"/>
+    <path d="M440,320 l10,10 M466,320 l10,10 M492,320 l10,10 M518,320 l10,10 M544,320 l10,10"/>
+  </g>
+
+  <!-- Blyerts-2 streckat: schaktkanten, från markytan snett ner till botten och in mot sulan -->
+  <path d="M196,156 Q250,244 310,336 Q336,336 360,333 L360,318" fill="none" stroke="#625a50" stroke-width="1.5" stroke-dasharray="7 6" stroke-linecap="round"/>
+
+  <!-- Blyerts-2: makadamen runt röret, som små stenar -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25">
+    <circle cx="336" cy="283" r="4"/>
+    <circle cx="321" cy="288" r="3.5"/>
+    <circle cx="352" cy="288" r="3.5"/>
+    <circle cx="306" cy="301" r="3.5"/>
+    <circle cx="354" cy="300" r="3.5"/>
+    <circle cx="322" cy="325" r="3.5"/>
+    <circle cx="338" cy="329" r="4"/>
+    <circle cx="354" cy="321" r="4"/>
+  </g>
+
+  <!-- Blyerts: markytan med fall bort från huset, källarväggen, bjälklaget, källargolvet, grundsulan -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M52,169 Q134,163 216,155 Q298,148 380,140"/>
+    <path d="M380,50 Q378,172 380,296"/>
+    <path d="M414,50 Q416,176 414,301"/>
+    <path d="M414,104 Q496,102 578,104"/>
+    <path d="M414,300 Q496,302 578,300"/>
+    <path d="M360,294 Q370,292 380,294"/>
+    <path d="M360,293 Q359,306 360,318"/>
+    <path d="M360,318 Q390,320 420,318"/>
+    <path d="M420,318 Q421,309 420,300"/>
+  </g>
+
+  <!-- Blyerts: fuktspärren mot väggens utsida, noppad, från markytan ner till sulan -->
+  <path d="M370,134 q-7,9 0,18 q-7,9 0,18 q-7,9 0,18 q-7,9 0,18 q-7,9 0,18 q-7,9 0,18 q-7,9 0,18 q-7,9 0,18 q-7,7 0,14" fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Blyerts: dräneringsröret i genomskärning, i botten utanför sulan -->
+  <g fill="none" stroke="#2a2521" stroke-width="2">
+    <circle cx="336" cy="306" r="13"/>
+    <circle cx="336" cy="306" r="7"/>
+  </g>
+
+  <!-- Blyerts-2: måttbygeln för schaktdjupet, från markytan till rörets botten, och pekpinnen till röret -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M314,150 Q313,172 314,196 M314,226 Q313,272 314,319 M305,150 h18 M305,319 h18"/>
+  </g>
+  <path d="M250,338 Q280,337 306,327" fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round"/>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="144" y="79" width="178" height="30" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 233 94)"/>
+
+  <!-- Snickarpenna: markfukten som trycker in genom väggen ovanför sulan, och pölen innanför -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M352,246 Q395,243 438,246 M426,239 L438,246 L426,253"/>
+    <path d="M352,274 Q395,271 438,274 M426,267 L438,274 L426,281"/>
+    <path d="M416,298 Q432,294 450,299"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="26" fill="#2a2521">
+    <text x="150" y="62" fill="#625a50">40 m runt huset</text>
+    <text x="150" y="102">från 136 000 kr</text>
+    <text x="272" y="221" fill="#625a50">2 m djup</text>
+    <text x="100" y="344">dräneringsrör</text>
+    <text x="470" y="150" fill="#625a50">källare</text>
+    <text x="440" y="230" fill="#ad3519">markfukt</text>
+  </g>
+</svg>
