@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="En stor gipsskruv sedd från sidan, med försänkt huvud och gänga, på väg in genom en gipsskiva i genomskärning och vidare in i den tjockare regeln bakom. Ett tumstockssegment ligger under spetsen och visar hur långt in i regeln skruven går.">
+  <!-- Varumärkesillustration för /rakna/gipsskruv/, riktning 1. Samma hand som symbolen, startsidans
+       hero (hus-tumstock.svg) och dräneringsbilden: konturer i blyerts 2 px med runda ändar,
+       tumstocken som den enda fyllda färgen, ingen linjering, ingen skraffering, transparent
+       bakgrund, ett rött pennstreck som signatur.
+       Motivet är skruven, och den är bildens största form: samma skruv som i heron, där den är på
+       väg in i väggen, men här uppförstorad till huvudform. Den går från vänstra kanten till en bit
+       in i regeln, alltså 86 procent av bredden, och huvudet är dubbelt så högt som skaftet. Utan
+       spår i huvudet lästes silhuetten som en pil eller en dart i det första utkastet 2026-09-19,
+       så huvudet har fått spåret man sätter bitset i, ritat som ett V in i den plana ytan. Det är
+       den detalj som gör att bilden läses som en skruv på en sekund. Väggen är ett snitt i två skikt: den smala
+       gipsskivan och den tjocka regeln bakom, och linjerna bryts där skruven passerar, så att
+       skruven ligger framför. Ingen ådring, inga små gängor: gängan är åtta snedstreck som håller
+       vid 343 px.
+       Tumstocken är accent: ett segment under spetsen, från regelns framsida till spetsen, alltså
+       precis den sträcka sidan räknar ut. Det enda gula i bilden.
+       Ingen text-nod och inga läsbara tal: npm run illustrationer rör inte filen och den har ingen
+       källa under illustrationer-kallor. Skala 600 × 360 som räknarnas skisser.
+       Motivet är ritat i sin egen skala (skruven 513 px lång, huvudet 118 px högt mot skaftets 60,
+       väggen 292 px bred, bbox x 1–594, y -2,5–342,5) och läggs ut med
+       transform="translate(23.71 22.12) scale(0.9287)" i yttre g:et. Uppmätt på den renderade
+       bilden blir det 551 px brett (91,8 procent) och 321 px högt (89,2 procent), med 24,5 px
+       marginal i sidled och 19,5 px i höjdled. Tunnaste linje 1,4 i motivets skala.
+       Tokens: tumstock #e8b830, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519. -->
+
+  <g transform="translate(23.71 22.12) scale(0.9287)">
+
+    <!-- Väggen i genomskärning: gipsskivan närmast, regeln bakom. Linjerna bryts för skruven. -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M300,0 Q446,-3 592,0"/>
+      <path d="M300,318 Q446,321 592,318"/>
+      <path d="M592,0 Q594,159 592,318"/>
+      <path d="M300,0 Q298,62 300,125"/>
+      <path d="M300,193 Q298,256 300,318"/>
+      <path d="M362,0 Q364,62 362,125"/>
+      <path d="M362,193 Q364,256 362,318"/>
+    </g>
+
+    <!-- Skruven: försänkt huvud, skaft och spets, i ett drag -->
+    <path d="M3,100 Q25,114 46,129 Q243,126 440,129 Q478,144 516,159 Q478,174 440,189 Q243,192 46,189 Q25,204 3,218 Q1,159 3,100 Z" fill="none" stroke="#2a2521" stroke-width="2" stroke-linejoin="round"/>
+
+    <!-- Spåret i skruvhuvudet, så att silhuetten läses som en skruv och inte som en pil -->
+    <path d="M3,140 Q15,150 26,159 Q15,168 3,178" fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Gängan -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round">
+      <path d="M68,187 L88,131"/>
+      <path d="M108,187 L128,131"/>
+      <path d="M148,187 L168,131"/>
+      <path d="M188,187 L208,131"/>
+      <path d="M228,187 L248,131"/>
+      <path d="M268,187 L288,131"/>
+      <path d="M308,187 L328,131"/>
+      <path d="M348,187 L368,131"/>
+      <path d="M388,187 L408,131"/>
+      <path d="M428,187 L448,133"/>
+      <path d="M462,180 L478,146"/>
+    </g>
+
+    <!-- Tumstocken som mått på hur långt spetsen går in i regeln -->
+    <g transform="translate(362 243)">
+      <rect x="0" y="-9" width="154" height="18" rx="9" fill="#e8b830" stroke="#2a2521" stroke-width="2"/>
+      <path d="M22,9 V2 M44,9 V5 M66,9 V5 M88,9 V2 M110,9 V5 M132,9 V5" fill="none" stroke="#2a2521" stroke-width="1.4" stroke-linecap="round"/>
+    </g>
+
+    <!-- Snickarpennans signatur under motivet -->
+    <path d="M170,338 Q245,343 320,336 Q395,333 470,338" fill="none" stroke="#ad3519" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+</svg>

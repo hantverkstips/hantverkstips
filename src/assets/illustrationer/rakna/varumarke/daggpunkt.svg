@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Ett fönster sett inifrån, med mittpost och fönsterbräda, där stora droppar rinner ner på glaset och vatten har samlats i en pöl på fönsterbrädan, och en termometer med fylld kula hänger på väggen till höger om fönstret.">
+  <!-- Varumärkesillustration för /rakna/daggpunkt/, riktning 1. Samma hand som symbolen,
+       startsidans hero (hus-tumstock.svg) och dranering.svg: konturer i blyerts 2 px med runda
+       ändar, ingen linjering, transparent bakgrund, ett rött pennstreck som signatur.
+       Motivet är "den kalla ytan blir våt" och ska förstås på en sekund. Den kalla ytan är ett
+       fönster sett rakt inifrån, den största formen, och dropparna på glaset är de näst största:
+       två stora droppar med rinnspår ner från bågens överkant, en mindre längre ner, och en pöl
+       på fönsterbrädan. Brädan är ritad med översidan synlig i perspektiv just för att pölen ska
+       ligga på något och läsas som en pöl och inte som en kulle. Droppen är heroens droppe, samma
+       form i två storlekar, inte en ny.
+       Termometern till höger är accenten och är med av den anledning DESIGN.md anger: den läses
+       vid 343 px, där kulan blir 33 px och hela termometern 27 × 115 px. Kulan och pelaren är
+       fyllda i blyerts så att termometern får sin silhuett; det är samma slags blyertsfyllning som
+       nitarna i heroens tumstocksleder.
+       Tumstocken finns inte i bilden. Regeln i DESIGN.md avsnitt 7 säger accent där den hjälper,
+       annars inte alls, och daggpunkten mäts inte med måttstock. Bilden har därför ingen gul yta.
+       Ingen text-nod och inga läsbara tal: skalstrecken på termometern är fem streck utan värden.
+       npm run illustrationer rör inte filen och den har ingen källa under illustrationer-kallor.
+       Skala 600 × 360, samma 5:3 som räknarnas skisser.
+       Motivet är ritat i sin egen skala (bbox x 4–592, y 6–344) och läggs ut med
+       transform="translate(17.81 14.27) scale(0.947)" i yttre g:et. Uppmätt på den renderade
+       bilden blir det 560 px brett (93,3 procent) och 321 px högt (89,2 procent), med 20 px
+       marginal i sidled och 19–20 px i höjdled. Tunnaste linje är 1,4 i motivets skala, knappt
+       1 px vid 343 px bredd.
+       Tokens: blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 (används inte). -->
+
+  <defs>
+    <!-- Heroens droppe i två storlekar, ritade i sin slutliga storlek så att linjebredden inte skalas -->
+    <g id="droppe-stor" fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M36,0 C33,6 0,45 0,69 A36,36 0 0 0 72,69 C72,45 39,6 36,0"/>
+      <path d="M18,72 Q19.8,86.4 32.4,91.2"/>
+    </g>
+    <g id="droppe-liten" fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M25,0 C23,4.2 0,31.3 0,48 A25,25 0 0 0 50,48 C50,31.3 27,4.2 25,0"/>
+      <path d="M12.5,50 Q13.8,60 22.5,63.4"/>
+    </g>
+  </defs>
+
+  <g transform="translate(17.81 14.27) scale(0.947)">
+
+    <!-- Fönsterkarmen, bågen och mittposten -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10,266 Q6,136 10,6 Q213,9 416,6 Q420,136 416,266 Q213,269 10,266 Z"/>
+      <path d="M28,248 Q24,136 28,24 Q214,27 400,24 Q404,136 400,248 Q214,251 28,248 Z"/>
+    </g>
+    <g fill="none" stroke="#2a2521" stroke-width="1.75" stroke-linecap="round">
+      <path d="M213,27 Q216,136 213,248"/>
+    </g>
+
+    <!-- Fönsterbrädan, med översidan synlig i perspektiv så att pölen har något att ligga på -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20,268 Q213,271 406,268"/>
+      <path d="M4,286 Q213,289 422,286"/>
+      <path d="M20,268 L4,286"/>
+      <path d="M406,268 L422,286"/>
+      <path d="M12,302 Q213,305 414,302"/>
+      <path d="M4,286 L12,302"/>
+      <path d="M422,286 L414,302"/>
+    </g>
+
+    <!-- Rinnspåren ner från bågens överkant -->
+    <g fill="none" stroke="#2a2521" stroke-width="1.4" stroke-linecap="round">
+      <path d="M102,26 Q97,40 102,54"/>
+      <path d="M284,26 Q289,43 284,60"/>
+    </g>
+
+    <!-- Dropparna på glaset -->
+    <use href="#droppe-stor" x="66" y="54"/>
+    <use href="#droppe-stor" x="248" y="60"/>
+    <use href="#droppe-liten" x="322" y="166"/>
+
+    <!-- Vattnet som samlats i en pöl på fönsterbrädan -->
+    <path d="M108,279 Q124,270 182,269 Q242,268 258,276 Q244,284 182,285 Q120,285 108,279 Z" fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Termometern på väggen till höger -->
+    <path d="M536,244 Q533,152 536,60 A16,16 0 0 1 568,60 Q571,152 568,244" fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="552" cy="252" r="30" fill="#2a2521" stroke="#2a2521" stroke-width="2"/>
+    <path d="M552,240 Q554,195 552,150" fill="none" stroke="#2a2521" stroke-width="13" stroke-linecap="round"/>
+    <g fill="none" stroke="#625a50" stroke-width="1.4" stroke-linecap="round">
+      <path d="M572,92 H592 M572,142 H592 M572,192 H592"/>
+      <path d="M572,117 H584 M572,167 H584"/>
+    </g>
+
+    <!-- Snickarpennans signatur under motivet -->
+    <path d="M170,339 Q244,344 318,337 Q392,334 466,339" fill="none" stroke="#ad3519" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+</svg>

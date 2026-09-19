@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="En gipsvägg i genomskärning från sidan med en lång hylla som sticker ut från väggen på en konsol. På hyllan står tre böcker, varav en lutar mot de andra, och i väggen sitter en plugg vars två armar har vikt ut sig bakom gipsskivan.">
+  <!-- Varumärkesillustration för /rakna/gipsplugg/, riktning 1. Samma hand som symbolen, startsidans
+       hero (hus-tumstock.svg) och dräneringsbilden: konturer i blyerts 2 px med runda ändar, ingen
+       linjering, ingen skraffering, transparent bakgrund, ett rött pennstreck som signatur.
+       Motivet är lasten, inte infästningen, eftersom sidan svarar på vad väggen orkar bära (regeln
+       i DESIGN.md avsnitt 7: det sidan handlar om ska vara den största formen). Därför är hyllan
+       bildens längsta form, den går tvärs över nästan hela bredden, och böckerna ovanpå är tunga
+       block som en sjuåring känner igen. Väggen är två lodräta linjer med kapade ändar, alltså ett
+       snitt genom gipsskivan, och pluggen är en enkel hylsa genom skivan med två armar utvikta
+       bakom den. Konsolen under hyllan pekar ner mot pluggen och binder ihop last och infästning.
+       Ingen tumstock här: det finns inget mått i bilden som den skulle hjälpa, och enligt beslutet
+       2026-09-19 ritas den hellre inte alls än som utfyllnad. Det röda pennstrecket bär signaturen.
+       Ingen text-nod och inga läsbara tal: npm run illustrationer rör inte filen och den har ingen
+       källa under illustrationer-kallor. Skala 600 × 360 som räknarnas skisser.
+       Motivet är ritat i sin egen skala (skivans snitt 54 px brett, hyllan 508 px lång, pluggens
+       armar 46 px, bbox x -16–594, y -2–348,5) och läggs ut med transform="translate(35.83 21.63)
+       scale(0.9141)" i yttre g:et. Uppmätt på den renderade bilden blir det 558 px brett
+       (93,0 procent) och 321 px högt (89,2 procent), med 21,0 px marginal i sidled och 19,5 px i
+       höjdled. Tunnaste linje 2 i motivets skala.
+       Tokens: tumstock #e8b830, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519. -->
+
+  <g transform="translate(35.83 21.63) scale(0.9141)">
+
+    <!-- Gipsskivan i genomskärning, kapad upptill och nedtill -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M30,0 Q28,159 30,318"/>
+      <path d="M84,0 Q86,159 84,318"/>
+      <path d="M30,0 Q57,-2 84,0"/>
+      <path d="M30,318 Q57,320 84,318"/>
+    </g>
+
+    <!-- Pluggen: hylsan genom skivan, kragen mot väggytan och de två armarna som vikt ut sig bakom -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M30,196 Q65,194 100,196"/>
+      <path d="M30,228 Q65,230 100,228"/>
+      <path d="M100,186 Q102,212 100,238"/>
+      <g transform="translate(30 200) rotate(206)">
+        <path d="M0,-8 Q23,-10 46,-8 Q49,0 46,8 Q23,10 0,8"/>
+      </g>
+      <g transform="translate(30 224) rotate(154)">
+        <path d="M0,-8 Q23,-10 46,-8 Q49,0 46,8 Q23,10 0,8"/>
+      </g>
+    </g>
+
+    <!-- Hyllan: bildens längsta form, från väggytan och ut -->
+    <path d="M84,150 Q338,147 592,150 Q594,164 592,178 Q338,181 84,178 Q82,164 84,150 Z" fill="none" stroke="#2a2521" stroke-width="2" stroke-linejoin="round"/>
+
+    <!-- Konsolen under hyllan, ner mot pluggen -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M100,180 Q98,234 100,288"/>
+      <path d="M100,288 Q182,234 264,180"/>
+    </g>
+
+    <!-- Böckerna: två stående och en som lutar mot dem -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M320,150 Q319,96 320,42 Q350,39 380,42 Q381,96 380,150"/>
+      <path d="M388,150 Q387,88 388,26 Q420,23 452,26 Q453,88 452,150"/>
+      <g transform="rotate(-11 530 150)">
+        <path d="M472,150 Q471,102 472,54 Q501,51 530,54 Q531,102 530,150"/>
+      </g>
+    </g>
+
+    <!-- Snickarpennans signatur under motivet -->
+    <path d="M160,344 Q235,349 310,342 Q385,339 460,344" fill="none" stroke="#ad3519" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -38,13 +38,14 @@ import {
 } from '../../lib/kalkyl/mala-ute';
 import { CELL_KLASS, ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
 import { verktyg } from '../../lib/strukturdata';
-import { verktygsDelningsbild, verktygsillustration } from '../../lib/verktygsbild';
+import { verktygsDelningsbild, verktygsillustration, verktygsVarumarkesbild } from '../../lib/verktygsbild';
 import MalaUteForm from '../../components/kalkyl/MalaUteForm.astro';
 import Faktaruta from '../../components/ui/Faktaruta.astro';
 import Faq from '../../components/ui/Faq.astro';
 import Markering from '../../components/ui/Markering.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
 import StrukturData from '../../components/ui/StrukturData.astro';
+import Illustration from '../../components/ui/Illustration.astro';
 
 Astro.locals.sidtyp = 'verktyg';
 
@@ -309,6 +310,13 @@ const VERKTYGSNAMN = 'Måla ute i dag';
 const BESKRIVNING =
   'Fyll i temperatur, luftfuktighet, nattens lägsta och klockslag, så säger verktyget om färgen hinner torka före daggen och om dagen duger.';
 const illustration = verktygsillustration(SLUG);
+/**
+ * Varumärkesbilden i sidhuvudet, sedan 2026-09-19 (docs/DESIGN.md avsnitt 7).
+ * Finns den står skissen i stället i "Så räknar vi", där måtten förklarar
+ * räkningen. Finns den inte visas skissen i sidhuvudet som förut.
+ */
+const varumarke = verktygsVarumarkesbild(SLUG);
+const huvudbild = varumarke ?? illustration;
 ---
 
 <Bas
@@ -330,10 +338,12 @@ const illustration = verktygsillustration(SLUG);
 
   <div class="mx-auto w-full max-w-lasbredd">
     {/*
-      Sidhuvudet: rubrik och ingress till vänster i 7/12, skissen till höger i
+      Sidhuvudet: rubrik och ingress till vänster i 7/12, bilden till höger i
       5/12 på desktop, under ingressen på mobil. Bilden är dekorativ, H1 bär
       betydelsen, därför tom alt. Den är sidans LCP-bild och laddas därför
-      eagert med fetchpriority. Saknas filen visas ingen bild alls.
+      eagert med fetchpriority. Varumärkesbilden har transparent bakgrund och
+      ligger som heron utan ram; skissen är ett urklipp och får ramen. Saknas
+      båda visas ingen bild alls.
     */}
     <section class="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-8">
       <div class="lg:col-span-7">
@@ -349,16 +359,16 @@ const illustration = verktygsillustration(SLUG);
       </div>
 
       {
-        illustration && (
+        huvudbild && (
           <div class="lg:col-span-5">
             <img
-              src={illustration.src}
+              src={huvudbild.src}
               alt=""
-              width={illustration.width}
-              height={illustration.height}
+              width={huvudbild.width}
+              height={huvudbild.height}
               fetchpriority="high"
               decoding="async"
-              class="block h-auto w-full rounded-sm border border-linje"
+              class:list={['block h-auto w-full', !varumarke && 'rounded-sm border border-linje']}
             />
           </div>
         )
@@ -536,6 +546,15 @@ const illustration = verktygsillustration(SLUG);
 
     <section>
       <Pennstreck id="sa-raknar-vi">Så räknar vi</Pennstreck>
+      {
+        varumarke && illustration && (
+          <Illustration
+            namn="rakna/mala-ute"
+            alt="Liggande träpanel som stryks med en pensel medan solen går ner, med 15 grader, 65 procent luftfuktighet och daggpunkten 8,5 grader."
+            bildtext="Det verktyget räknar på: värmen, fukten och tiden kvar till solnedgången."
+          />
+        )
+      }
       <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg">
         <li class="mb-2">
           Daggpunkten räknas ur temperaturen och luftfuktigheten nu med Magnus-formeln, samma som daggpunktskalkylatorn.

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="En maskin som en hög rektangel med galler står på golvet, och dess sladd hänger i en båge ner mot golvet och fram till en stickkontakt vars två stift pekar mot ett vägguttag, med ett elskåp och en gul blixt på väggen ovanför uttaget.">
+  <!-- Varumärkesillustration för /rakna/elkostnad/, riktning 1. Samma hand som symbolen,
+       startsidans hero (hus-tumstock.svg) och dranering.svg: konturer i blyerts 2 px med runda
+       ändar, ingen linjering, transparent bakgrund, ett rött pennstreck som signatur.
+       Motivet är "maskinen drar ström" och ska förstås på en sekund. Maskinen till vänster är
+       exakt samma rektangel som i varumärkesbilden för /rakna/avfuktare/ (lock, fyra
+       gallerlameller, vred, behållare), den största formen. Sladden är motivet enligt briefen:
+       den löper i en slak båge från maskinens sida ner mot golvet och fram till stickkontakten,
+       vars två stift pekar rakt mot vägguttagets två hål. Kontakten är inte instucken, den står
+       en bit ifrån, så att både kontakt och uttag syns hela och båda går att känna igen.
+       Elskåpet med blixten är heroens elskåp, inte en ny form. Blixten är fylld i tumstock och är
+       bildens enda gula yta. Tumstocken som måttstock finns inte med: regeln i DESIGN.md avsnitt 7
+       säger accent där den hjälper, och elkostnad mäts inte med måttstock, men den gula blixten
+       ger bilden samma färg som sina syskon och säger "el" på en sekund.
+       Golvlinjen ligger på y=310 och är samma nivå över hela bilden.
+       Ingen text-nod och inga läsbara tal: npm run illustrationer rör inte filen och den har ingen
+       källa under illustrationer-kallor. Skala 600 × 360, samma 5:3 som räknarnas skisser.
+       Motivet är ritat i sin egen skala (bbox x 4–596, y 6–343) och läggs ut med
+       transform="translate(16.22 14.92) scale(0.946)" i yttre g:et. Uppmätt på den renderade
+       bilden blir det 562 px brett (93,7 procent) och 320 px högt (88,9 procent), med 19 px
+       marginal i sidled och 19–21 px i höjdled. Tunnaste linje är 1,4 i
+       motivets skala, knappt 1 px vid 343 px bredd.
+       Tokens: tumstock #e8b830, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519. -->
+
+  <g transform="translate(16.22 14.92) scale(0.946)">
+
+    <!-- Golvet. Samma nivå över hela bilden. -->
+    <path d="M4,310 Q150,307 300,310.5 Q450,313.5 596,310" fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Maskinen på golvet: samma rektangel som i avfuktarens varumärkesbild -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M28,310 Q25.5,194 28,78 Q114,81 200,78 Q202.5,194 200,310"/>
+      <path d="M28,110 Q114,113 200,110"/>
+      <path d="M28,288 Q114,291 200,288"/>
+      <circle cx="172" cy="94" r="5.5"/>
+    </g>
+    <g fill="none" stroke="#2a2521" stroke-width="1.75" stroke-linecap="round">
+      <path d="M42,160 Q114,162 186,160"/>
+      <path d="M42,180 Q114,182 186,180"/>
+      <path d="M42,200 Q114,202 186,200"/>
+      <path d="M42,220 Q114,222 186,220"/>
+    </g>
+
+    <!-- Sladden: slak båge från maskinens sida ner mot golvet och fram till kontakten -->
+    <path d="M200,128 C250,152 234,278 276,290 C296,296 288,248 296,228" fill="none" stroke="#2a2521" stroke-width="3" stroke-linecap="round"/>
+
+    <!-- Stickkontakten med två stift -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M298,196 Q294,223 298,250 Q330,253 362,250 Q364,223 362,196 Q330,193 298,196 Z"/>
+    </g>
+    <path d="M362,212 H394 M362,236 H394" fill="none" stroke="#2a2521" stroke-width="4.5" stroke-linecap="round"/>
+
+    <!-- Vägguttaget -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M424,182 Q420,220 424,258 Q460,262 496,258 Q500,220 496,182 Q460,178 424,182 Z"/>
+    </g>
+    <circle cx="460" cy="220" r="27" fill="none" stroke="#2a2521" stroke-width="1.75"/>
+    <g fill="#2a2521">
+      <circle cx="447" cy="220" r="7"/>
+      <circle cx="473" cy="220" r="7"/>
+    </g>
+
+    <!-- Elskåpet med blixten, heroens elskåp. Blixten är bildens enda gula yta. -->
+    <path d="M400,150 Q398,78 400,6 Q460,9 520,6 Q522,78 520,150 Q460,147 400,150 Z" fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M468.25,22 L427,82.5 H457.25 L449,132 L493,66 H462.75 L471,24.75 Z" fill="#e8b830" stroke="#2a2521" stroke-width="2" stroke-linejoin="round"/>
+
+    <!-- Snickarpennans signatur under motivet -->
+    <path d="M172,338 Q246,343 320,336 Q394,333 468,338" fill="none" stroke="#ad3519" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+</svg>

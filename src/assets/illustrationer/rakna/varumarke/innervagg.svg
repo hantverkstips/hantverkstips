@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="En bit av en regelvägg rakt framifrån: ett hammarband som löper överst, en syll som löper nederst och fyra lodräta reglar som står mellan dem med öppna fack emellan. Till höger ligger en gipsskiva över stommen, större än väggen så att den syns ligga framför, och tvärs över ett av facken ligger ett tumstockssegment som mått på avståndet mellan två reglar.">
+  <!-- Varumärkesillustration för /rakna/innervagg/, riktning 1. Samma hand som symbolen, startsidans
+       hero (hus-tumstock.svg) och dräneringsbilden: konturer i blyerts 2 px med runda ändar,
+       tumstocken som den enda fyllda färgen, ingen linjering, ingen skraffering, transparent
+       bakgrund, ett rött pennstreck som signatur.
+       Motivet är reglarna (regeln i DESIGN.md avsnitt 7). Två utkast föll 2026-09-19, båda uppmätta
+       på den renderade bilden, och båda av samma skäl: en sluten rektangel delad av lodräta streck
+       läses som en dörrspegel eller en grind, aldrig som en stomme, hur breda facken än görs. Det
+       som löser det är inte proportionen utan att delarna syns ligga över varandra. Därför är detta
+       en bit av en vägg, inte en hel: hammarbandet och syllen löper förbi den yttersta regeln och
+       är kapade rakt av till vänster, reglarna står mellan dem utan att nå bildens kant, och
+       gipsskivan ligger ovanpå alltihop, 40 px utanför stommen upptill och nedtill. Ingenting är
+       fyllt, så plankorna tar helt enkelt slut där skivan börjar. Den tunna linjen innanför skivans
+       vänsterkant är den försänkta kanten.
+       Regel 38 px mot fack på 102, alltså fack nära tre gånger regeln, så att tomrummet mellan
+       reglarna bär läsningen.
+       Tumstocken är accent, inte motiv: ett segment vågrätt från regelmitt till regelmitt i det
+       andra facket, alltså c-måttet, och det enda gula i bilden.
+       Ingen text-nod och inga läsbara tal: npm run illustrationer rör inte filen och den har ingen
+       källa under illustrationer-kallor. Skala 600 × 360 som räknarnas skisser, så att bilden ligger
+       på samma gallerikort som skissen.
+       Motivet är ritat i sin egen skala (stomme 700 × 300, regel 38, fack 102, skiva 160 bred,
+       bbox x -2–702, y -42,5–358,5) och läggs ut med transform="translate(21.45 54.34)
+       scale(0.7953)" i yttre g:et. Uppmätt på den renderade bilden blir det 561 px brett
+       (93,5 procent) och 319 px högt (88,6 procent), med 19,5 px marginal i sidled och 20,5 px i
+       höjdled.
+       Tunnaste linje 1,4 i motivets skala, knappt 1 px vid 343 px bredd.
+       Tokens: tumstock #e8b830, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519. -->
+
+  <g transform="translate(21.45 54.34) scale(0.7953)">
+
+    <!-- Hammarbandet och syllen: två plankor som löper förbi reglarna och är kapade till vänster -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M0,2 Q-2,18 0,34"/>
+      <path d="M0,0 Q270,-3 540,0"/>
+      <path d="M0,36 Q270,33 540,36"/>
+      <path d="M0,266 Q-2,282 0,298"/>
+      <path d="M0,264 Q270,267 540,264"/>
+      <path d="M0,300 Q270,303 540,300"/>
+    </g>
+
+    <!-- Fyra reglar mellan hammarband och syll -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round">
+      <path d="M50,36 Q48,150 50,264"/>
+      <path d="M88,36 Q90,150 88,264"/>
+      <path d="M190,36 Q188,150 190,264"/>
+      <path d="M228,36 Q230,150 228,264"/>
+      <path d="M330,36 Q328,150 330,264"/>
+      <path d="M368,36 Q370,150 368,264"/>
+      <path d="M470,36 Q468,150 470,264"/>
+      <path d="M508,36 Q510,150 508,264"/>
+    </g>
+
+    <!-- Gipsskivan, lagd över stommen och medvetet större än den -->
+    <path d="M540,-40 Q620,-43 700,-40 Q703,150 700,340 Q620,343 540,340 Q538,150 540,-40 Z" fill="none" stroke="#2a2521" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M554,-24 Q556,150 554,324" fill="none" stroke="#2a2521" stroke-width="1.6" stroke-linecap="round"/>
+
+    <!-- Tumstocken som c-mått, från regelmitt till regelmitt i det andra facket -->
+    <g transform="translate(209 150)">
+      <rect x="0" y="-9" width="140" height="18" rx="9" fill="#e8b830" stroke="#2a2521" stroke-width="2"/>
+      <path d="M18,9 V2 M38,9 V5 M58,9 V5 M78,9 V5 M98,9 V2 M118,9 V5 M138,9 V5" fill="none" stroke="#2a2521" stroke-width="1.4" stroke-linecap="round"/>
+    </g>
+
+    <!-- Snickarpennans signatur under motivet -->
+    <path d="M100,354 Q175,359 250,352 Q325,349 400,354" fill="none" stroke="#ad3519" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+</svg>

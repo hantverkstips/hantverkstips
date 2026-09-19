@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Ett hus med sadeltak, fönster och dörr står till vänster, och utanför husets högra vägg ligger en altan som fyller resten av bilden, sedd snett uppifrån så att trallbrädorna syns som ett band av parallella brädor. Under altankanten går en regel, och två plintar är nedgrävda i den skrafferade marken. En tumstock ligger uppslagen tvärs över trallen.">
+  <!-- Varumärkesillustration för /rakna/altan/, riktning 1. Samma hand som symbolen, startsidans
+       hero (hus-tumstock.svg) och dräneringsbilden: konturer i blyerts 2 px med runda ändar,
+       tumstocken som den enda fyllda färgen, ingen linjering, transparent bakgrund, ett rött
+       pennstreck som signatur.
+       Huset är samma hus som i dräneringsbilden, i samma skala, flyttat med translate(-296 39):
+       bredd 230, vägg 121, samma 33,7 graders takfall, samma fönster, dörr och skorsten. Sajten
+       har ett hus och en altan, inte flera.
+       Motivet är altanen, inte huset: den tar 352 av motivets 592 px i bredd och ligger i bildens
+       mitt och högra del. Den är ritad snett uppifrån så att en sjuåring ser de tre delarna
+       verktyget räknar på ovanpå varandra: trallbrädorna som ett band av parallella brädor,
+       regeln som en liggande balk under kanten, och två plintar som går ner i marken.
+       Markytan ligger på y=238 i hela bilden och bryts bara där plintarna står i den, så att en
+       plint är nedgrävd och inte ett block på en backe. Plintarna går tydligt under markytan,
+       dels för att det är så de sätts, dels för att marken annars blir tom yta.
+       Skrafferingen följer skissernas värden (10 px streck, 45 grader, blyerts-2 1,4 px) men
+       glest, 26 px mellan strecken, och strecken som skulle hamna inne i en plint är utelämnade.
+       Tumstocken är bara accent: ett segment som ligger uppslaget tvärs över trallen, det enda
+       gula i bilden, och det som säger att sidan räknar och inte bara visar.
+       Ingen text-nod och inga läsbara tal: npm run illustrationer rör inte filen och den har
+       ingen källa under illustrationer-kallor. Skala 600 × 360, alltså 5:3 som räknarnas skisser.
+       Motivet är ritat i sin egen skala (bbox x 5–597, y 39–376,5) och läggs ut med
+       transform="translate(15.88 -16.12) scale(0.944)" i yttre g:et. Uppmätt på den renderade
+       bilden blir det 558,8 px brett (93,1 procent) och 318,6 px högt (88,5 procent), med 20,6 px
+       marginal i sidled och 20,7 px i höjdled. Tunnaste linje är 1,4 i motivets skala, knappt
+       1 px vid 343 px bredd.
+       Tokens: tumstock #e8b830, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519. -->
+
+  <g transform="translate(15.88 -16.12) scale(0.944)">
+
+    <!-- Marken. Den enda skrafferingen i bilden, glesare än skissernas. -->
+    <g fill="none" stroke="#625a50" stroke-width="1.4" stroke-linecap="round">
+      <path d="M20,248 l10,10 M46,248 l10,10 M72,248 l10,10 M98,248 l10,10 M124,248 l10,10 M150,248 l10,10 M176,248 l10,10 M202,248 l10,10 M228,248 l10,10 M254,248 l10,10 M280,248 l10,10 M332,248 l10,10 M358,248 l10,10 M384,248 l10,10 M410,248 l10,10 M436,248 l10,10 M514,248 l10,10 M540,248 l10,10 M566,248 l10,10"/>
+      <path d="M33,280 l10,10 M59,280 l10,10 M85,280 l10,10 M111,280 l10,10 M137,280 l10,10 M163,280 l10,10 M189,280 l10,10 M215,280 l10,10 M241,280 l10,10 M267,280 l10,10 M345,280 l10,10 M371,280 l10,10 M397,280 l10,10 M423,280 l10,10 M501,280 l10,10 M527,280 l10,10 M553,280 l10,10 M579,280 l10,10"/>
+      <path d="M20,312 l10,10 M46,312 l10,10 M72,312 l10,10 M98,312 l10,10 M124,312 l10,10 M150,312 l10,10 M176,312 l10,10 M202,312 l10,10 M228,312 l10,10 M254,312 l10,10 M280,312 l10,10 M306,312 l10,10 M332,312 l10,10 M358,312 l10,10 M384,312 l10,10 M410,312 l10,10 M436,312 l10,10 M462,312 l10,10 M488,312 l10,10 M514,312 l10,10 M540,312 l10,10 M566,312 l10,10"/>
+      <path d="M33,344 l10,10 M59,344 l10,10 M85,344 l10,10 M111,344 l10,10 M137,344 l10,10 M163,344 l10,10 M189,344 l10,10 M215,344 l10,10 M241,344 l10,10 M267,344 l10,10 M293,344 l10,10 M319,344 l10,10 M345,344 l10,10 M371,344 l10,10 M397,344 l10,10 M423,344 l10,10 M449,344 l10,10 M475,344 l10,10 M501,344 l10,10 M527,344 l10,10 M553,344 l10,10 M579,344 l10,10"/>
+    </g>
+
+    <!-- Huset och markytan. En och samma nivå, y=238, bruten bara vid plintarna. -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6,239.2 Q10,238.4 14,238"/>
+      <path d="M14,238 Q129,240.4 244,238"/>
+      <path d="M244,238 Q268,238.8 292,238"/>
+      <path d="M330,238 Q391,239.4 452,238"/>
+      <path d="M490,238 Q542,239.2 594,238"/>
+      <path d="M14,238 Q16.4,177.5 14,117"/>
+      <path d="M244,238 Q241.6,177.5 244,117"/>
+      <path d="M8,121 Q70.1,83 129,40.3 Q187.9,83 250,121"/>
+      <path d="M184,77 Q186,65 184,53 Q194,55 204,53 Q202,71.7 204,90.4"/>
+      <path d="M172,238 Q174,204.5 172,171 Q189,173 206,171 Q204,204.5 206,238"/>
+      <path d="M52,134 Q72,136 92,134 Q90,153 92,172 Q72,170 52,172 Q54,153 52,134 Z"/>
+    </g>
+    <g fill="none" stroke="#2a2521" stroke-width="1.75" stroke-linecap="round">
+      <path d="M72,134 Q70.4,153 72,172"/>
+      <path d="M52,153 Q72,154.6 92,153"/>
+    </g>
+
+    <!-- Altanen: trallplanet snett uppifrån, kantens framsida, regeln under och två plintar -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M244,188 Q395,189.6 546,188"/>
+      <path d="M244,136 Q420,137.4 596,136"/>
+      <path d="M546,188 Q572.4,162.6 596,136"/>
+      <path d="M244,198 Q395,199.6 546,198"/>
+      <path d="M546,188 L546,198"/>
+      <path d="M546,198 Q572.4,172.6 596,146"/>
+      <path d="M596,136 L596,146"/>
+      <path d="M266,200 Q395,201.4 524,200 L524,218 Q395,219.4 266,218 Z"/>
+      <path d="M292,218 Q311,219.2 330,218 L330,296 Q311,297 292,296 Z"/>
+      <path d="M452,218 Q471,219.2 490,218 L490,296 Q471,297 452,296 Z"/>
+    </g>
+
+    <!-- Trallbrädorna. Tunnare än altanens kant, så att kanten håller ihop formen. -->
+    <g fill="none" stroke="#2a2521" stroke-width="1.75" stroke-linecap="round">
+      <path d="M264.1,188 Q290.1,161 314.1,136"/>
+      <path d="M284.3,188 Q308.3,163 334.3,136"/>
+      <path d="M304.4,188 Q330.4,161 354.4,136"/>
+      <path d="M324.5,188 Q348.5,163 374.5,136"/>
+      <path d="M344.6,188 Q370.6,161 394.6,136"/>
+      <path d="M364.8,188 Q388.8,163 414.8,136"/>
+      <path d="M384.9,188 Q410.9,161 434.9,136"/>
+      <path d="M405,188 Q429,163 455,136"/>
+      <path d="M425.1,188 Q451.1,161 475.1,136"/>
+      <path d="M445.3,188 Q469.3,163 495.3,136"/>
+      <path d="M465.4,188 Q491.4,161 515.4,136"/>
+      <path d="M485.5,188 Q509.5,163 535.5,136"/>
+      <path d="M505.6,188 Q531.6,161 555.6,136"/>
+      <path d="M525.8,188 Q549.8,163 575.8,136"/>
+    </g>
+
+    <!-- Tumstocken, uppslagen tvärs över trallen. Enda gula ytan, bara accent. -->
+    <g transform="translate(286 178) rotate(-10)">
+      <rect x="0" y="-8.5" width="128" height="17" rx="8.5" fill="#e8b830" stroke="#2a2521" stroke-width="2"/>
+      <path d="M16,8.5 V2 M32,8.5 V4.5 M48,8.5 V4.5 M64,8.5 V2 M80,8.5 V4.5 M96,8.5 V4.5 M112,8.5 V2" fill="none" stroke="#2a2521" stroke-width="1.4" stroke-linecap="round"/>
+    </g>
+
+    <!-- Snickarpennans signatur under motivet -->
+    <path d="M192,372 Q267,376.7 342,369.5 Q417,366.5 492,371.5" fill="none" stroke="#ad3519" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+</svg>

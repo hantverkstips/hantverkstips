@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="En husvägg med liggande panel, fönster och takfot fyller bildens vänstra del. Vänstra halvan av väggen är målad och ligger som en gul yta, den högra är omålad. Vid gränsen mellan dem står en bred pensel med gula borst mot väggen, med skaftet ut åt höger. Till höger om huset står solen lågt och halvvägs bakom horisonten, med några strålar, och marken under är skrafferad.">
+  <!-- Varumärkesillustration för /rakna/mala-ute/, riktning 1. Samma hand som symbolen,
+       startsidans hero (hus-tumstock.svg) och dräneringsbilden: konturer i blyerts 2 px med runda
+       ändar, tumstock som den enda fyllda färgen, ingen linjering, transparent bakgrund, ett rött
+       pennstreck som signatur.
+       Motivet är penseln mot väggen: den är 196 px lång i motivets 592 px och ligger mitt i
+       bilden, och det den gör syns direkt eftersom väggen är målad på ena sidan om den och omålad
+       på den andra. Den målade halvan är fylld i tumstock och penselns borst är fyllda i samma
+       färg, så att en sjuåring ser att färgen kommer från penseln. Konturen runt borsten hålls
+       kvar i blyerts 2 px, annars hade borsten flutit ihop med den målade väggen.
+       Panelbrädorna och väggens högra kant är brutna där penseln går fram, på samma sätt som
+       tumstockens streck utelämnas där skruven sitter i startsidans hero. En kontur ovanpå
+       genomgående linjer hade lästs som genomskinlig vid 343 px.
+       Solen ligger lågt och halvvägs bakom horisonten, för det är det andra sidan svarar på: hur
+       sent på dagen du kan stryka. Den ritas som en båge över marklinjen med några strålar, och
+       marklinjen går över den, så att solen är bakom horisonten och inte framför.
+       Markytan ligger på y=250 i hela bilden, både under väggen och under solen. Skrafferingen
+       följer skissernas värden (10 px streck, 45 grader, blyerts-2 1,4 px) men glest, 26 px
+       mellan strecken.
+       Ingen text-nod och inga läsbara tal: npm run illustrationer rör inte filen och den har
+       ingen källa under illustrationer-kallor. Skala 600 × 360, alltså 5:3 som räknarnas skisser.
+       Motivet är ritat i sin egen skala (bbox x 3–595, y 10–352) och läggs ut med
+       transform="translate(19.88 10.43) scale(0.9368)" i yttre g:et. Uppmätt på den renderade
+       bilden blir det 554,6 px brett (92,4 procent) och 320,4 px högt (89,0 procent), med 22,7 px
+       marginal i sidled och 19,8 px i höjdled. Tunnaste linje är 1,4 i motivets skala, knappt
+       1 px vid 343 px bredd.
+       Tokens: tumstock #e8b830, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519. -->
+
+  <g transform="translate(19.88 10.43) scale(0.9368)">
+
+    <!-- Den målade halvan av väggen. Enda fyllda ytan utom penselns borst. -->
+    <path d="M13,21 L176,20 Q170,72 176,126 Q183,152 175,178 Q170,216 176,249 L13,249 Z" fill="#e8b830"/>
+
+    <!-- Marken. Den enda skrafferingen i bilden, glesare än skissernas. -->
+    <g fill="none" stroke="#625a50" stroke-width="1.4" stroke-linecap="round">
+      <path d="M16,260 l10,10 M42,260 l10,10 M68,260 l10,10 M94,260 l10,10 M120,260 l10,10 M146,260 l10,10 M172,260 l10,10 M198,260 l10,10 M224,260 l10,10 M250,260 l10,10 M276,260 l10,10 M302,260 l10,10 M328,260 l10,10 M354,260 l10,10 M380,260 l10,10 M406,260 l10,10 M432,260 l10,10 M458,260 l10,10 M484,260 l10,10 M510,260 l10,10 M536,260 l10,10 M562,260 l10,10"/>
+      <path d="M29,290 l10,10 M55,290 l10,10 M81,290 l10,10 M107,290 l10,10 M133,290 l10,10 M159,290 l10,10 M185,290 l10,10 M211,290 l10,10 M237,290 l10,10 M263,290 l10,10 M289,290 l10,10 M315,290 l10,10 M341,290 l10,10 M367,290 l10,10 M393,290 l10,10 M419,290 l10,10 M445,290 l10,10 M471,290 l10,10 M497,290 l10,10 M523,290 l10,10 M549,290 l10,10 M575,290 l10,10"/>
+      <path d="M16,320 l10,10 M42,320 l10,10 M68,320 l10,10 M94,320 l10,10 M120,320 l10,10 M146,320 l10,10 M172,320 l10,10 M198,320 l10,10 M224,320 l10,10 M250,320 l10,10 M276,320 l10,10 M302,320 l10,10 M328,320 l10,10 M354,320 l10,10 M380,320 l10,10 M406,320 l10,10 M432,320 l10,10 M458,320 l10,10 M484,320 l10,10 M510,320 l10,10 M536,320 l10,10 M562,320 l10,10"/>
+    </g>
+
+    <!-- Solen, lågt och halvvägs bakom horisonten -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M406,250 C406,209 438,178 478,178 C518,178 550,210 550,250"/>
+      <path d="M555.3,229.3 L578.4,223.1"/>
+      <path d="M534.6,193.4 L555.8,172.2"/>
+      <path d="M498.7,172.7 L508.5,136"/>
+      <path d="M457.3,172.7 L447.5,136"/>
+      <path d="M421.4,193.4 L400.2,172.2"/>
+      <path d="M400.7,229.3 L379.5,223.6"/>
+    </g>
+
+    <!-- Husväggen: takfot, hörnbräda och kanter. Högra kanten är bruten där penseln går fram. -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4,12 Q157,10.6 318,12"/>
+      <path d="M12,20 Q161,21.4 310,20"/>
+      <path d="M12,20 Q14,135 12,250"/>
+      <path d="M310,20 Q308,96 310,172"/>
+      <path d="M310,208 Q311,229 310,250"/>
+      <path d="M4,251 Q8,250.3 12,250"/>
+      <path d="M12,250 Q161,251.6 310,250"/>
+      <path d="M310,250 Q452,252 594,250"/>
+    </g>
+
+    <!-- Panelen, fönstret och gränsen mellan målat och omålat. Brutna där penseln går fram. -->
+    <g fill="none" stroke="#2a2521" stroke-width="1.75" stroke-linecap="round">
+      <path d="M26,24 Q28,137 26,250"/>
+      <path d="M12,50 Q161,51.4 310,50"/>
+      <path d="M12,84 Q161,85.6 310,84"/>
+      <path d="M12,118 Q161,119.4 310,118"/>
+      <path d="M12,152 Q91,153.4 170,152"/>
+      <path d="M264,152 Q287,153 310,152"/>
+      <path d="M12,186 Q98,187.4 184,186"/>
+      <path d="M12,220 Q161,221.4 310,220"/>
+      <path d="M262,58 Q260.4,84 262,110"/>
+    </g>
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M228,58 Q262,60 296,58 Q294,84 296,110 Q262,108 228,110 Q230,84 228,58 Z"/>
+      <path d="M176,20 Q170,72 176,126"/>
+      <path d="M175,178 Q170,216 176,249"/>
+    </g>
+
+    <!-- Penseln: borst fyllda i tumstock, holk och skaft i kontur -->
+    <g transform="translate(176 152) rotate(16)">
+      <path d="M0,-25 Q-4,0 0,25 L44,28 L44,-28 Z" fill="#e8b830" stroke="#2a2521" stroke-width="2" stroke-linejoin="round"/>
+      <g fill="none" stroke="#2a2521" stroke-width="1.4" stroke-linecap="round">
+        <path d="M10,-16 L40,-17 M10,0 L40,0 M10,16 L40,17"/>
+      </g>
+      <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M44,-28 L68,-28 L68,28 L44,28"/>
+        <path d="M56,-28 L56,28" stroke-width="1.4"/>
+        <path d="M68,-26 Q86,-20 104,-13 Q128,-10 152,-12 Q172,-13 184,-7 Q190,0 184,7 Q172,13 152,12 Q128,10 104,13 Q86,20 68,26"/>
+      </g>
+    </g>
+
+    <!-- Snickarpennans signatur under motivet -->
+    <path d="M190,348 Q265,352.3 340,345 Q415,342 490,347" fill="none" stroke="#ad3519" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+</svg>

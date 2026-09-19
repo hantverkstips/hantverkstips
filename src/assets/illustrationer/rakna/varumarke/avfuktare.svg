@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Ett hus med sadeltak och skorsten där marklinjen skär tvärs genom väggarna, så att husets nedre halva är en källare under mark med skrafferad jord på båda sidor, och i källaren står en avfuktare som en hög rektangel med galler, med en pil som visar att luften dras dit från den vänstra väggen där droppar rinner ner, och en tumstock liggande på källargolvet.">
+  <!-- Varumärkesillustration för /rakna/avfuktare/, riktning 1. Samma hand som symbolen,
+       startsidans hero (hus-tumstock.svg) och dranering.svg: konturer i blyerts 2 px med runda
+       ändar, tumstocken som den enda fyllda färgen, ingen linjering, transparent bakgrund, ett
+       rött pennstreck som signatur. Huset är heroens hus: sadeltak, skorsten, raka väggar.
+       Motivet är "maskinen i källaren" och ska förstås på en sekund. Marklinjen går rakt igenom
+       huset på samma nivå som marken utanför (y=142 på båda sidor, erfarenheten från
+       dräneringsbilden 2026-09-19: markytan ska vara entydig), så att husets nedre halva läses
+       som en källare under jord. Där står avfuktaren, en hög rektangel med lock, fyra
+       gallerlameller, vred och vattenbehållare, näst största formen i bilden efter själva huset
+       och det enda föremålet i källaren som har detaljer. Pilen visar att den fuktiga luften dras
+       från den vänstra väggen, där tre droppar rinner ner, in i gallret. Droppen är heroens
+       droppe i större skala, inte en ny form. Tumstocken är bara en accent: ett segment liggande
+       på källargolvet som säger att det är rummets storlek som avgör maskinens storlek, det enda
+       gula i bilden.
+       Ingen text-nod och inga läsbara tal: npm run illustrationer rör inte filen och den har ingen
+       källa under illustrationer-kallor. Skala 600 × 360, samma 5:3 som räknarnas skisser.
+       Motivet är ritat i sin egen skala (bbox x 4–596, y 6–344) och läggs ut med
+       transform="translate(16.52 14.63) scale(0.945)" i yttre g:et. Uppmätt på den renderade
+       bilden blir det 562 px brett (93,7 procent) och 321 px högt (89,2 procent), med 19 px
+       marginal i sidled och 19–20 px i höjdled. Tunnaste linje är 1,4 i motivets skala, knappt
+       1 px vid 343 px bredd.
+       Tokens: tumstock #e8b830, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519. -->
+
+  <defs>
+    <!-- Heroens droppe, ritad i sin slutliga storlek 32 × 47 så att linjebredden inte skalas -->
+    <g id="droppe" fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M16,0 C14.7,2.7 0,20 0,30.7 A16,16 0 0 0 32,30.7 C32,20 17.3,2.7 16,0"/>
+      <path d="M8,32 Q8.8,38.4 14.4,40.5"/>
+    </g>
+  </defs>
+
+  <g transform="translate(16.52 14.63) scale(0.945)">
+
+    <!-- Jorden utanför källarväggarna. Den enda skrafferingen, 10 px streck, 45 grader, 26 px isär -->
+    <g fill="none" stroke="#625a50" stroke-width="1.4" stroke-linecap="round">
+      <path d="M4,154 l10,10 M30,154 l10,10 M56,154 l10,10 M82,154 l10,10 M108,154 l10,10 M134,154 l10,10 M480,154 l10,10 M506,154 l10,10 M532,154 l10,10 M558,154 l10,10 M584,154 l10,10"/>
+      <path d="M17,190 l10,10 M43,190 l10,10 M69,190 l10,10 M95,190 l10,10 M121,190 l10,10 M493,190 l10,10 M519,190 l10,10 M545,190 l10,10 M571,190 l10,10"/>
+      <path d="M4,226 l10,10 M30,226 l10,10 M56,226 l10,10 M82,226 l10,10 M108,226 l10,10 M134,226 l10,10 M480,226 l10,10 M506,226 l10,10 M532,226 l10,10 M558,226 l10,10 M584,226 l10,10"/>
+      <path d="M17,262 l10,10 M43,262 l10,10 M69,262 l10,10 M95,262 l10,10 M121,262 l10,10 M493,262 l10,10 M519,262 l10,10 M545,262 l10,10 M571,262 l10,10"/>
+      <path d="M4,298 l10,10 M30,298 l10,10 M56,298 l10,10 M82,298 l10,10 M108,298 l10,10 M134,298 l10,10 M480,298 l10,10 M506,298 l10,10 M532,298 l10,10 M558,298 l10,10 M584,298 l10,10"/>
+    </g>
+
+    <!-- Huset, marklinjen tvärs igenom det, och källaren under mark -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4,141 Q77,138.5 150,142.5"/>
+      <path d="M150,142.5 Q310,145.5 470,142.5"/>
+      <path d="M470,142.5 Q533,139 596,142"/>
+      <path d="M150,86 Q152.4,202 150,318"/>
+      <path d="M470,86 Q467.6,202 470,318"/>
+      <path d="M150,318 Q310,321 470,318"/>
+      <path d="M142,90 Q226.6,48.6 310,6 Q393.4,48.6 478,90"/>
+      <path d="M404,54 Q406,40 404,26 Q416,28 428,26 Q426,45 428,66"/>
+    </g>
+
+    <!-- Avfuktaren på källargolvet: lock, galler, vred och vattenbehållare -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M326,316 Q323.5,246 326,172 Q390,175 454,172 Q456.5,246 454,316"/>
+      <path d="M326,202 Q390,205 454,202"/>
+      <path d="M326,296 Q390,299 454,296"/>
+      <circle cx="428" cy="187" r="5.5"/>
+    </g>
+    <g fill="none" stroke="#2a2521" stroke-width="1.75" stroke-linecap="round">
+      <path d="M338,232 Q390,234 442,232"/>
+      <path d="M338,248 Q390,250 442,248"/>
+      <path d="M338,264 Q390,266 442,264"/>
+      <path d="M338,280 Q390,282 442,280"/>
+    </g>
+
+    <!-- Luften från den fuktiga väggen in i gallret -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M194,240 Q258,210 322,252"/>
+      <path d="M310.2,244.5 L322,252 L308.6,256.2"/>
+    </g>
+
+    <!-- Dropparna på den vänstra källarväggen -->
+    <use href="#droppe" x="154" y="152"/>
+    <use href="#droppe" x="154" y="202"/>
+    <use href="#droppe" x="158" y="252"/>
+
+    <!-- Tumstocken som accent: rummets storlek, liggande på golvet -->
+    <g transform="translate(186 308) rotate(-0.8)">
+      <rect x="0" y="-8" width="124" height="16" rx="8" fill="#e8b830" stroke="#2a2521" stroke-width="2"/>
+      <path d="M14,8 V2 M30,8 V4.5 M46,8 V4.5 M62,8 V4.5 M78,8 V2 M94,8 V4.5 M110,8 V4.5" fill="none" stroke="#2a2521" stroke-width="1.4" stroke-linecap="round"/>
+    </g>
+
+    <!-- Snickarpennans signatur under motivet -->
+    <path d="M172,339 Q246,344 320,337 Q394,334 468,339" fill="none" stroke="#ad3519" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+</svg>
