@@ -596,6 +596,7 @@ Varje kalkylator är en egen sida med egen sökfras och resultatet i adressen. M
 
 **Bilderna, tillagda 2026-09-17.** Två filer per verktyg, båda namngivna efter slugen, båda ritade av designansvarig: skissen i `src/assets/illustrationer/rakna/[slug].svg` (600 × 360, alltså 5:3 som artikelkorten, under 40 kB) och delningsbilden i `public/og/rakna-[slug].png` (1200 × 630). Sidorna läser dem genom `src/lib/verktygsbild.ts`, som ligger utanför `src/lib/kalkyl/` för att formelmodulerna ska gå att köra med node i testskripten:
 
+- `verktygsVarumarkesbild(slug)` (tillagd 2026-09-19) slår upp varumärkesillustrationen i `src/assets/illustrationer/rakna/varumarke/[slug].svg` på samma sätt. Sidhuvudet och galleriet visar den när den finns och faller annars tillbaka på skissen; skissen står då i stället i avsnittet "Så räknar vi" som `<Illustration>`. Se `docs/DESIGN.md` avsnitt 7, Illustrationer för verktygen.
 - `verktygsillustration(slug)` slår upp skissen i en eager `import.meta.glob` och ger `undefined` när filen inte finns. En slug utan skiss är alltså inget byggfel: verktygssidan visar ingen bild, och galleriets kort visar det blanka bladet med pelarikonen, precis som ett artikelkort utan illustration.
 - `verktygsDelningsbild(slug)` ger strängen `/og/rakna-[slug].png`, som skickas till `<Bas ogBild={...}>`. Ingen kontroll behövs: sökvägen pekar i `public/`, och layouten gör om den till en absolut adress med `new URL(..., Astro.site)`.
 

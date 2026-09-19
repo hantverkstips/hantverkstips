@@ -24,6 +24,22 @@ export function verktygsillustration(slug: string): ImageMetadata | undefined {
 }
 
 /**
+ * Varumärkesillustrationerna, tillagda 2026-09-19: tumstocken som form, ingen
+ * text, samma stil som symbolen och startsidans hero. Sidhuvudet och galleriet
+ * visar den när den finns och skissen annars, så verktyg utan varumärkesbild
+ * fungerar som förut. Se docs/DESIGN.md avsnitt 7, Illustrationer för verktygen.
+ */
+const varumarkesbilder = import.meta.glob<ImageMetadata>('../assets/illustrationer/rakna/varumarke/*.svg', {
+  eager: true,
+  import: 'default',
+});
+
+/** Varumärkesillustrationen till verktyget, 600 × 360 (5:3). `undefined` när den inte är ritad. */
+export function verktygsVarumarkesbild(slug: string): ImageMetadata | undefined {
+  return varumarkesbilder[`../assets/illustrationer/rakna/varumarke/${slug}.svg`];
+}
+
+/**
  * Delningsbilden i 1200 × 630, ritad till public/og/. Sökvägen är en sträng i
  * public och behöver ingen kontroll: saknas filen faller layouten aldrig, och
  * delningstjänsten tar sajtens standardbild.

@@ -15,7 +15,7 @@
 import Bas from '../../layouts/Bas.astro';
 import { KALKYLATORER } from '../../lib/kalkyl/register';
 import { hittaPelare, PELARE } from '../../lib/pelare';
-import { verktygsillustration } from '../../lib/verktygsbild';
+import { verktygsillustration, verktygsVarumarkesbild } from '../../lib/verktygsbild';
 import Artikelkort from '../../components/ui/Artikelkort.astro';
 
 /**
@@ -30,7 +30,7 @@ const kort = KALKYLATORER.map((k) => {
     etikett: `Räkna själv · ${pelare.kort}`,
     rubrik: k.namn,
     beskrivning: k.rad,
-    illustration: verktygsillustration(k.slug),
+    illustration: verktygsVarumarkesbild(k.slug) ?? verktygsillustration(k.slug),
     pelare: pelare.slug,
     href: `/rakna/${k.slug}/`,
   };
