@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Samma trädäck men lagt på betongplattor. Snittet går längs regeln, så trallbrädorna syns i genomskärning överst. Regeln vilar på två betongplattor som står med 2 m mellan sig på makadamen, och mellan plattorna hänger den fritt och böjer sig svagt. En ring i penna kring regelns mitt är märkt inget stöd här. Under plattorna ligger makadam och fast underlag.">
+  <!-- Anteckningsboken. Samma snitt som tradack-sektion, men skuret längs regeln i stället
+       för tvärs, så att det fria spannet syns. Blyerts 2 px för trall, regel, plattor och
+       botten på urgrävningen, blyerts-2 för stenar, markduk, skraffering, ledare och måttbygel,
+       snickarpenna för ringen kring det fria spannet (enda pennsaken), tumstock bakom
+       nyckeltalet 2 m.
+       Skalan är inte densamma åt båda håll här: 0,205 px per mm i sidled för att 2 m ska
+       rymmas i bredden, 0,35 px per mm i höjdled som i den andra skissen. Regeln är därför
+       ritad kortare än den är, men rätt hög. Nedböjningen är överdriven för att synas.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2: makadamen som små stenar -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linejoin="round">
+    <path d="M50,218 q1,-4 5,-3 q4,1 3,4 q-1,3 -5,2 q-4,-1 -3,-3 z M92,215 q2,-4 6,-2 q3,2 1,5 q-2,3 -6,1 q-3,-1 -1,-4 z M134,220 q0,-4 5,-4 q5,0 4,4 q-1,3 -5,3 q-4,0 -4,-3 z M176,217 q1,-4 5,-3 q4,1 3,4 q-1,3 -5,2 q-4,-1 -3,-3 z M218,221 q2,-4 6,-2 q3,2 1,5 q-2,3 -6,1 q-3,-1 -1,-4 z M260,216 q0,-4 5,-4 q5,0 4,4 q-1,3 -5,3 q-4,0 -4,-3 z M302,219 q1,-4 5,-3 q4,1 3,4 q-1,3 -5,2 q-4,-1 -3,-3 z M344,214 q2,-4 6,-2 q3,2 1,5 q-2,3 -6,1 q-3,-1 -1,-4 z M386,220 q0,-4 5,-4 q5,0 4,4 q-1,3 -5,3 q-4,0 -4,-3 z M428,218 q1,-4 5,-3 q4,1 3,4 q-1,3 -5,2 q-4,-1 -3,-3 z M470,215 q2,-4 6,-2 q3,2 1,5 q-2,3 -6,1 q-3,-1 -1,-4 z M512,219 q0,-4 5,-4 q5,0 4,4 q-1,3 -5,3 q-4,0 -4,-3 z M554,220 q1,-4 5,-3 q4,1 3,4 q-1,3 -5,2 q-4,-1 -3,-3 z"/>
+    <path d="M70,250 q0,-4 5,-4 q5,0 4,4 q-1,3 -5,3 q-4,0 -4,-3 z M112,255 q1,-4 5,-3 q4,1 3,4 q-1,3 -5,2 q-4,-1 -3,-3 z M154,252 q2,-4 6,-2 q3,2 1,5 q-2,3 -6,1 q-3,-1 -1,-4 z M196,258 q0,-4 5,-4 q5,0 4,4 q-1,3 -5,3 q-4,0 -4,-3 z M238,254 q1,-4 5,-3 q4,1 3,4 q-1,3 -5,2 q-4,-1 -3,-3 z M280,251 q2,-4 6,-2 q3,2 1,5 q-2,3 -6,1 q-3,-1 -1,-4 z M322,257 q0,-4 5,-4 q5,0 4,4 q-1,3 -5,3 q-4,0 -4,-3 z M364,259 q1,-4 5,-3 q4,1 3,4 q-1,3 -5,2 q-4,-1 -3,-3 z M406,254 q2,-4 6,-2 q3,2 1,5 q-2,3 -6,1 q-3,-1 -1,-4 z M448,250 q0,-4 5,-4 q5,0 4,4 q-1,3 -5,3 q-4,0 -4,-3 z M490,257 q1,-4 5,-3 q4,1 3,4 q-1,3 -5,2 q-4,-1 -3,-3 z M532,253 q2,-4 6,-2 q3,2 1,5 q-2,3 -6,1 q-3,-1 -1,-4 z M574,256 q0,-4 5,-4 q5,0 4,4 q-1,3 -5,3 q-4,0 -4,-3 z"/>
+  </g>
+
+  <!-- Blyerts-2: skraffering i fast underlag -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M44,284 l10,10 M66,284 l10,10 M88,284 l10,10 M110,284 l10,10 M132,284 l10,10 M154,284 l10,10 M176,284 l10,10 M198,284 l10,10 M220,284 l10,10 M242,284 l10,10 M264,284 l10,10 M286,284 l10,10 M308,284 l10,10 M330,284 l10,10 M352,284 l10,10 M374,284 l10,10 M396,284 l10,10 M418,284 l10,10 M440,284 l10,10 M462,284 l10,10 M484,284 l10,10 M506,284 l10,10 M528,284 l10,10 M550,284 l10,10 M572,284 l10,10"/>
+    <path d="M55,306 l10,10 M77,306 l10,10 M99,306 l10,10 M121,306 l10,10 M143,306 l10,10 M165,306 l10,10 M187,306 l10,10 M209,306 l10,10 M231,306 l10,10 M253,306 l10,10 M275,306 l10,10 M297,306 l10,10 M319,306 l10,10 M341,306 l10,10 M363,306 l10,10 M385,306 l10,10 M407,306 l10,10 M429,306 l10,10 M451,306 l10,10 M473,306 l10,10 M495,306 l10,10 M517,306 l10,10 M539,306 l10,10 M561,306 l10,10 M583,306 l10,10"/>
+    <path d="M44,328 l10,10 M66,328 l10,10 M88,328 l10,10 M110,328 l10,10 M132,328 l10,10 M154,328 l10,10 M176,328 l10,10 M198,328 l10,10 M220,328 l10,10 M242,328 l10,10 M264,328 l10,10 M286,328 l10,10 M308,328 l10,10 M330,328 l10,10 M352,328 l10,10 M374,328 l10,10 M396,328 l10,10 M418,328 l10,10 M440,328 l10,10 M462,328 l10,10 M484,328 l10,10 M506,328 l10,10 M528,328 l10,10 M550,328 l10,10 M572,328 l10,10"/>
+  </g>
+
+  <!-- Blyerts: trallen i genomskärning, regeln som spänner, de två plattorna och
+       botten på urgrävningen -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M46,124 Q303,136 560,124"/>
+    <path d="M46,134 Q303,146 560,134"/>
+    <path d="M46,187 Q303,199 560,187"/>
+    <path d="M46,124 Q45,155 46,187"/>
+    <path d="M560,124 Q561,155 560,187"/>
+    <path d="M59,187 Q95,186.5 131,187 Q132,196 131,205 Q95,205.5 59,205 Q58,196 59,187 Z"/>
+    <path d="M469,187 Q505,186.5 541,187 Q542,196 541,205 Q505,205.5 469,205 Q468,196 469,187 Z"/>
+    <path d="M44,275 Q160,273 276,277 Q392,281 500,276 Q550,274 600,277"/>
+  </g>
+
+  <!-- Blyerts: springorna mellan trallbrädorna -->
+  <g fill="none" stroke="#2a2521" stroke-width="1.5" stroke-linecap="round">
+    <path d="M76,125.3 L76,135.3 M106,126.5 L106,136.5 M136,127.5 L136,137.5 M166,128.3 L166,138.3 M196,129 L196,139 M226,129.5 L226,139.5 M256,129.8 L256,139.8 M286,130 L286,140 M316,130 L316,140 M346,129.8 L346,139.8 M376,129.5 L376,139.5 M406,129 L406,139 M436,128.4 L436,138.4 M466,127.6 L466,137.6 M496,126.6 L496,136.6 M526,125.5 L526,135.5"/>
+  </g>
+
+  <!-- Blyerts-2: markduken ovanpå makadamen -->
+  <path d="M44,205 Q322,207 600,205" fill="none" stroke="#625a50" stroke-width="1.5" stroke-dasharray="6 4" stroke-linecap="round"/>
+
+  <!-- Blyerts-2: måttbygeln för avståndet mellan plattorna, med tickarna rakt över
+       plattornas mitt -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M95,100 Q300,99 505,100 M95,94 Q95.5,100 95,106 M505,94 Q505.5,100 505,106"/>
+  </g>
+
+  <!-- Blyerts-2: förlängningslinjer så att måttet hör ihop med plattorna -->
+  <g fill="none" stroke="#625a50" stroke-width="1" stroke-dasharray="3 3" stroke-opacity="0.7" stroke-linecap="round">
+    <path d="M95,108 V184 M505,108 V184"/>
+  </g>
+
+  <!-- Blyerts-2: ledare -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M92,70 L70,120"/>
+    <path d="M452,208 L452,172"/>
+    <path d="M116,210 L98,198"/>
+  </g>
+
+  <!-- Papperslappar bakom handskrift som ligger över stenar och skraffering -->
+  <g fill="#f5efe3">
+    <rect x="274" y="70" width="52" height="26"/>
+    <rect x="40" y="212" width="142" height="26"/>
+    <rect x="394" y="212" width="158" height="26"/>
+    <rect x="244" y="220" width="146" height="26"/>
+    <rect x="40" y="244" width="116" height="26"/>
+    <rect x="394" y="286" width="152" height="26"/>
+  </g>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="274" y="70" width="52" height="26" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 300 83)"/>
+
+  <!-- Snickarpenna: ringen kring det fria spannet, öppen som när man ringar för hand -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M238,170 Q236,142 300,140 Q364,142 362,170 Q360,190 316,188"/>
+    <path d="M302,218 L312,190"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="46" y="64" fill="#625a50">trall</text>
+    <text x="280" y="92">2 m</text>
+    <text x="46" y="234" fill="#625a50">betongplatta</text>
+    <text x="250" y="242" fill="#ad3519">inget stöd här</text>
+    <text x="400" y="234" fill="#625a50">regel 45 × 145</text>
+    <text x="46" y="266" fill="#625a50">makadam</text>
+    <text x="400" y="308" fill="#625a50">fast underlag</text>
+  </g>
+</svg>

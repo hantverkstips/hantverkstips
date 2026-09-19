@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Två närbilder av samma spricka i en betongvägg. Till vänster en klick gips lagd tvärs över sprickan i mars, hel. Till höger samma gipsklick i september, med en spricka rakt igenom sig, inringad med snickarpenna.">
+  <!-- Anteckningsboken. Blyertsskiss på linjerat papper. Betongen skrafferad i blyerts-2,
+       sprickan och gipsklicken i blyerts, brottet i gipset och ringen i snickarpenna.
+       Nyckeltalet 6 månader har gul markering. Handskrift i Caveat 500, konverteras till banor.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Överstrykning med tumstocksgul bakom nyckeltalet -->
+  <rect x="446" y="28" width="118" height="24" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 505 40)"/>
+
+  <!-- Blyerts: betongytorna i snitt, två närbilder av samma vägg -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M69,101 Q175,98 281,101 M69,269 Q175,272 281,269"/>
+    <path d="M70,100 Q68,185 70,270 M280,100 Q282,185 280,270"/>
+    <path d="M319,101 Q425,98 531,101 M319,269 Q425,272 531,269"/>
+    <path d="M320,100 Q318,185 320,270 M530,100 Q532,185 530,270"/>
+  </g>
+
+  <!-- Blyerts-2, tunn: betongskraffering -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M80,112 l9,9 M102,112 l9,9 M190,112 l9,9 M212,112 l9,9 M234,112 l9,9 M256,112 l9,9"/>
+    <path d="M80,140 l9,9 M102,140 l9,9 M212,140 l9,9 M234,140 l9,9 M256,140 l9,9"/>
+    <path d="M80,224 l9,9 M102,224 l9,9 M124,224 l9,9 M212,224 l9,9 M234,224 l9,9 M256,224 l9,9"/>
+    <path d="M80,248 l9,9 M102,248 l9,9 M124,248 l9,9 M190,248 l9,9 M212,248 l9,9 M234,248 l9,9 M256,248 l9,9"/>
+    <path d="M330,112 l9,9 M352,112 l9,9 M440,112 l9,9 M462,112 l9,9 M484,112 l9,9 M506,112 l9,9"/>
+    <path d="M330,140 l9,9 M352,140 l9,9 M462,140 l9,9 M484,140 l9,9 M506,140 l9,9"/>
+    <path d="M330,224 l9,9 M352,224 l9,9 M374,224 l9,9 M462,224 l9,9 M484,224 l9,9 M506,224 l9,9"/>
+    <path d="M330,248 l9,9 M352,248 l9,9 M374,248 l9,9 M440,248 l9,9 M462,248 l9,9 M484,248 l9,9 M506,248 l9,9"/>
+  </g>
+
+  <!-- Blyerts: sprickan, samma form i båda närbilderna. Linjen bryts där gipsklicken
+       ligger framför, så att klicken syns ligga ovanpå sprickan -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M118,266 Q136,232 152,212"/>
+    <path d="M172,156 Q184,130 196,106"/>
+    <path d="M368,266 Q386,232 402,212"/>
+    <path d="M422,156 Q434,130 446,106"/>
+  </g>
+
+  <!-- Blyerts: gipsklicken tvärs över sprickan, en hel och en sprucken -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M112,168 Q160,158 208,170 Q212,186 206,200 Q158,210 114,198 Q108,184 112,168"/>
+    <path d="M362,168 Q410,158 458,170 Q462,186 456,200 Q408,210 364,198 Q358,184 362,168"/>
+  </g>
+
+  <!-- Snickarpenna: brottet i den högra gipsklicken och den öppna ringen runt den -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M400,208 L410,194 L401,180 L413,166 L407,158"/>
+    <path d="M478,200 Q432,222 388,210 Q344,198 348,172 Q352,148 400,146 Q448,146 472,168"/>
+  </g>
+
+  <!-- Papperslappar bakom handskriften -->
+  <rect x="48" y="284" width="226" height="52" fill="#f5efe3"/>
+  <rect x="300" y="284" width="250" height="52" fill="#f5efe3"/>
+
+  <!-- Handskrivna anteckningar (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="48" y="47.5" fill="#625a50">en klick gips tvärs över sprickan</text>
+    <text x="452" y="47.5">6 månader</text>
+    <text x="52" y="306" fill="#625a50">i mars, med datum på</text>
+    <text x="52" y="330" fill="#625a50">fortfarande hel</text>
+    <text x="304" y="306" fill="#625a50">i september</text>
+    <text x="304" y="330" fill="#ad3519">sprucken, alltså rörelse</text>
+  </g>
+</svg>

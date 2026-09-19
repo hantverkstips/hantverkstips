@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Genomskärning av en altan intill ett hus. Underst plintar i marken, ovanpå dem en bärlina, ovanpå den reglar i genomskärning och överst trallen. Ett mått visar 600 millimeter mellan två reglars mitt, ett annat plintavståndet mellan två plintrader. En anteckning i rött pekar på att plinten ska stå på dränerande botten.">
+  <!-- Anteckningsboken. Blyerts 2 px för husvägg, trall, reglar, bärlina, plintar och mark.
+       Blyerts-2 för markskraffering, måttbyglar och streckade hjälplinjer. Snickarpennan bara
+       på anteckningen om dränerande botten. Tumstock bakom nyckeltalet c 600.
+       Skala vågrätt: 1 m = 100 px, så reglarnas c 600 mm blir 60 px. Plintavståndet
+       är inte ett fast mått utan följer av bärlinan och reglarnas fria längd, och
+       bygeln under marken är därför namngiven i stället för satt i meter.
+       Tjocklekarna är schematiska, inte i skala. Marklinje y=290.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2: markskraffering under marklinjen -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M62,293 l-8,10 M84,293 l-8,10 M150,293 l-8,10 M172,293 l-8,10 M194,293 l-8,10 M216,293 l-8,10 M238,293 l-8,10 M260,293 l-8,10 M282,293 l-8,10 M304,293 l-8,10 M326,293 l-8,10 M348,293 l-8,10 M392,293 l-8,10 M414,293 l-8,10 M436,293 l-8,10 M458,293 l-8,10 M480,293 l-8,10 M502,293 l-8,10 M524,293 l-8,10 M546,293 l-8,10 M568,293 l-8,10"/>
+  </g>
+
+  <!-- Blyerts-2: väggen i genomskärning, skrafferad som betong -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M58,86 l-10,10 M58,108 l-10,10 M58,130 l-10,10 M58,152 l-10,10 M58,174 l-10,10 M58,196 l-10,10 M58,218 l-10,10 M58,240 l-10,10 M58,262 l-10,10 M58,284 l-10,10"/>
+  </g>
+
+  <!-- Blyerts: marklinjen, bruten där plintarna går ner, och husväggen -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M44,290 Q70,289 98,290"/>
+    <path d="M126,290 Q237,288 348,290"/>
+    <path d="M376,290 Q478,289 582,290"/>
+    <path d="M46,72 Q45,180 46,296"/>
+    <path d="M60,72 Q61,180 60,296"/>
+    <path d="M44,72 Q53,70 62,72"/>
+  </g>
+
+  <!-- Blyerts: trallen som ett lager sett från sidan -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M62,176 Q233,174 404,176"/>
+    <path d="M62,192 Q233,190 404,192"/>
+    <path d="M62,176 V192 M404,176 V192"/>
+  </g>
+
+  <!-- Blyerts: reglarna i genomskärning, c 600 mm isär -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M75,192 h14 v30 h-14 z"/>
+    <path d="M135,192 h14 v30 h-14 z"/>
+    <path d="M195,192 h14 v30 h-14 z"/>
+    <path d="M255,192 h14 v30 h-14 z"/>
+    <path d="M315,192 h14 v30 h-14 z"/>
+    <path d="M375,192 h14 v30 h-14 z"/>
+  </g>
+
+  <!-- Blyerts: bärlinan och de två plintarna -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M68,222 Q230,220 392,222"/>
+    <path d="M68,252 Q230,250 392,252"/>
+    <path d="M68,222 V252 M392,222 V252"/>
+    <path d="M100,252 Q101,285 100,318"/>
+    <path d="M124,252 Q125,285 124,318"/>
+    <path d="M98,318 Q112,320 126,318"/>
+    <path d="M350,252 Q351,285 350,318"/>
+    <path d="M374,252 Q375,285 374,318"/>
+    <path d="M348,318 Q362,320 376,318"/>
+  </g>
+
+  <!-- Blyerts-2: streckade hjälplinjer upp till c-måttet och ner till plintmåttet -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-dasharray="7 5">
+    <path d="M202,192 V166"/>
+    <path d="M262,192 V166"/>
+    <path d="M112,318 V328"/>
+    <path d="M362,318 V328"/>
+  </g>
+
+  <!-- Blyerts-2: måttbyglar -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M202,161 H262 M202,156 v10 M262,156 v10"/>
+    <path d="M112,332 H362 M112,327 v10 M362,327 v10"/>
+  </g>
+
+  <!-- Blyerts-2: korta pekare från etiketterna in mot plinten -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M410,278 Q392,278 378,282"/>
+  </g>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="198" y="126" width="68" height="25" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 232 138)"/>
+
+  <!-- Snickarpenna: pilen till anteckningen om dränerande botten -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M418,326 Q400,320 382,312"/>
+    <path d="M382,312 l10,1 M382,312 l3,9"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="22" fill="#2a2521">
+    <text x="414" y="190">trall 28 mm</text>
+    <text x="414" y="214">regel 45 × 145</text>
+    <text x="414" y="244">bärlina 45 × 170</text>
+    <text x="414" y="276">plint</text>
+    <text x="202" y="147" font-size="24">c 600</text>
+    <text x="182" y="354" font-size="24" fill="#625a50">plintavstånd</text>
+    <text x="414" y="318" fill="#ad3519">dränerande</text>
+    <text x="414" y="340" fill="#ad3519">botten här</text>
+  </g>
+</svg>

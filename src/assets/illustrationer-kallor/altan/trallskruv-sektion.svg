@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Genomskärning genom en trallbräda och regeln under. En trallskruv går genom brädan med den släta halsen och tar gänga först i regeln. Måtten är 28 millimeter trall och 55 millimeter skruv. En anteckning i rött säger att huvudet ska ligga en millimeter under ytan.">
+  <!-- Anteckningsboken. Blyerts 2 px för trall, regel och skruv, blyerts-2 för måttbyglar,
+       ändträ och anteckningar, snickarpenna för huvudets djup (enda pennsaken),
+       tumstock bakom nyckeltalet 55 mm. Skala: 1 mm = 3 px. Trallens ovansida y=130,
+       trallens undersida y=214 (28 mm), skruvens huvud y=133 (1 mm under ytan),
+       gängan börjar y=217 och spetsen slutar y=298 (55 mm från huvudet).
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts: trallbrädan i genomskärning, regeln under, båda kapade i sidled -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M210,130 Q340,128 470,130"/>
+    <path d="M210,214 Q340,212 470,214"/>
+    <path d="M212,130 Q210,172 212,214"/>
+    <path d="M468,130 Q470,172 468,214"/>
+    <path d="M250,214 Q252,272 250,330"/>
+    <path d="M430,214 Q428,272 430,330"/>
+    <path d="M252,330 Q340,328 428,330"/>
+  </g>
+
+  <!-- Blyerts-2: ändträ i regeln, tre korta årsringar -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M322,246 Q362,234 402,248"/>
+    <path d="M334,286 Q374,274 414,288"/>
+  </g>
+
+  <!-- Blyerts: trallskruven. Försänkt huvud, slät hals genom trallen, gänga i regeln -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M279,133 H301 L294,146 H286 Z"/>
+    <path d="M286,146 V217 M294,146 V217"/>
+    <path d="M286,217 V290 M294,217 V290"/>
+    <path d="M286,290 L290,298 L294,290"/>
+  </g>
+  <g fill="none" stroke="#2a2521" stroke-width="1.5" stroke-linecap="round">
+    <path d="M281,229 L299,222 M281,238 L299,231 M281,247 L299,240 M281,256 L299,249 M281,265 L299,258 M281,274 L299,267 M281,283 L299,276 M281,292 L299,285"/>
+  </g>
+
+  <!-- Blyerts-2: måttbyglar för tralltjocklek och skruvlängd, med streckade hjälplinjer -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M190,130 V214 M185,130 h10 M185,214 h10"/>
+    <path d="M500,133 V298 M495,133 h10 M495,298 h10"/>
+  </g>
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-dasharray="7 5">
+    <path d="M470,133 H496"/>
+    <path d="M430,298 H496"/>
+  </g>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="506" y="202" width="70" height="28" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 541 216)"/>
+
+  <!-- Snickarpenna: pil ner mot skruvhuvudet -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M368,94 Q338,112 304,129"/>
+    <path d="M304,129 l10,-2 M304,129 l2,-10"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="48" y="52" fill="#625a50">gängan tar bara i regeln</text>
+    <text x="48" y="80" fill="#625a50">halsen är slät genom trallen</text>
+    <text x="364" y="56" fill="#ad3519">huvudet 1 mm</text>
+    <text x="364" y="80" fill="#ad3519">under ytan</text>
+    <text x="48" y="178" fill="#625a50">28 mm trall</text>
+    <text x="48" y="276" fill="#625a50">regeln under</text>
+    <text x="512" y="222">55 mm</text>
+  </g>
+</svg>

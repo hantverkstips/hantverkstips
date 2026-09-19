@@ -42,6 +42,7 @@ import Faq from '../../components/ui/Faq.astro';
 import Markering from '../../components/ui/Markering.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
 import StrukturData from '../../components/ui/StrukturData.astro';
+import Tabellyta from '../../components/ui/Tabellyta.astro';
 import Illustration from '../../components/ui/Illustration.astro';
 
 Astro.locals.sidtyp = 'verktyg';
@@ -404,7 +405,7 @@ const huvudbild = varumarke ?? illustration;
               <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
                 Infästningar i {SKIVA_TEXT[visatIndata.skiva]}
               </p>
-              <div class="mt-2 overflow-x-auto">
+              <Tabellyta kolumner={3} class="mt-2">
                 <table class="w-full border-collapse text-liten tabular-nums">
                   <caption class="sr-only">
                     Infästningar som klarar {talText(visat.lastPerPunktKg)} kg per punkt, enklast först
@@ -435,7 +436,7 @@ const huvudbild = varumarke ?? illustration;
                     ))}
                   </tbody>
                 </table>
-              </div>
+              </Tabellyta>
               <p class="m-0 mt-2 text-liten text-blyerts-2">
                 Tillverkarens rekommenderade last per infästning, inte brottlast. Källor:{' '}
                 {tabellKallor.map((k, i) => (
@@ -456,13 +457,13 @@ const huvudbild = varumarke ?? illustration;
               )}
               {visat.utelamnade && <p class="m-0 mt-2 text-liten text-blyerts-2">{visat.utelamnade}</p>}
 
+              {/* "Gör inte det här" står som eget H2 under verktyget.
+                  Infästningstabellen är själva svaret och stannar i spalten. */}
               {visat.gorInteDetHar.length > 0 && (
-                <>
-                  <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">Gör inte det här</p>
-                  {visat.gorInteDetHar.map((rad) => (
-                    <p class="m-0 mt-1 text-brod">{rad}</p>
-                  ))}
-                </>
+                <p class="m-0 mt-4 text-liten text-blyerts-2">
+                  Vad du inte ska göra{' '}
+                  <a href="#gor-inte-det-har" class={LANK_KLASS}>står under verktyget</a>.
+                </p>
               )}
 
               <p class="m-0 mt-4">
@@ -485,6 +486,20 @@ const huvudbild = varumarke ?? illustration;
         }
       </div>
     </div>
+
+    {/* Råden står i läsbredd direkt under verktyget, inte i spalten: en läsare
+        som just fått ett besked läser svaret, inte motiveringarna bredvid
+        formuläret. Se SPEC-SIDMALLAR.md 4.7. */}
+    {
+      visat.status === 'ok' && visat.gorInteDetHar.length > 0 && (
+        <section>
+          <Pennstreck id="gor-inte-det-har">Gör inte det här</Pennstreck>
+          {visat.gorInteDetHar.map((rad, i) => (
+            <p class:list={['m-0 text-brod lg:text-brod-lg', i > 0 && 'mt-4']}>{rad}</p>
+          ))}
+        </section>
+      )
+    }
 
     <section>
       <Pennstreck id="plugg-i-gipsvagg">Plugg i gipsvägg, vad gipspluggen bär och var gränsen går</Pennstreck>
@@ -578,7 +593,7 @@ const huvudbild = varumarke ?? illustration;
       </ol>
 
       <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad siffrorna vilar på</h3>
-      <div class="mt-4 overflow-x-auto">
+      <Tabellyta kolumner={3} class="mt-4">
         <table class="w-full border-collapse text-liten tabular-nums">
           <caption class="sr-only">Tillverkarvärden, källor och antaganden i pluggväljaren för gipsvägg</caption>
           <thead>
@@ -611,7 +626,7 @@ const huvudbild = varumarke ?? illustration;
             }
           </tbody>
         </table>
-      </div>
+      </Tabellyta>
 
       <p class="m-0 mt-6 text-brod lg:text-brod-lg">
         Talen i tabellen är tillverkarnas och leverantörernas rekommenderade last per infästning, inte brottlast. De

@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Två skisser av samma golvbjälklag i genomskärning, den vänstra märkt rätt och den högra märkt fel. I den vänstra ligger ångspärren bara överst, närmast bostaden, som två våder som går omlott med en måttbygel över överlappet, och isoleringens undersida är öppen mot krypgrunden. I den högra ligger det dessutom en plastfolie under isoleringen, och droppar sitter fast inne i isoleringen.">
+  <!-- Anteckningsboken. Blyerts 2 px för golv, bjälkar och bjälklagets kanter, blyerts-2 för
+       ångspärren och isolerskrafferingen, snickarpenna för plasten på fel plats och dropparna
+       (enda pennsaken), tumstock bakom nyckeltalet 200 mm. Handskrift i Caveat 500.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="176" y="56" width="72" height="25" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 212 68)"/>
+
+  <!-- Blyerts: golv, bjälkar och bjälklagets underkant i båda snitten -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M96,150 Q192,148 288,150"/>
+    <path d="M96,218 Q192,220 288,218"/>
+    <path d="M130,160 Q129,189 130,218 M190,160 Q189,189 190,218 M250,160 Q249,189 250,218"/>
+    <path d="M336,150 Q432,148 528,150"/>
+    <path d="M336,218 Q432,220 528,218"/>
+    <path d="M370,160 Q369,189 370,218 M430,160 Q429,189 430,218 M490,160 Q489,189 490,218"/>
+  </g>
+
+  <!-- Blyerts-2: ångspärren överst i båda snitten. I det vänstra snittet ligger den
+       som två våder omlott, så att nyckeltalet 200 mm har något att peka på. -->
+  <g fill="none" stroke="#625a50" stroke-width="3.5" stroke-linecap="round">
+    <path d="M98,157 Q150,159 208,157"/>
+    <path d="M186,162 Q240,160 286,162"/>
+    <path d="M338,159 Q432,161 526,159"/>
+  </g>
+
+  <!-- Blyerts-2: måttbygel över överlappet, och pekare upp till etiketten -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M186,144 Q197,143 208,144 M186,140 v9 M208,140 v9"/>
+    <path d="M198,86 Q196,112 197,138"/>
+  </g>
+
+  <!-- Blyerts-2: isolerskraffering mellan bjälkarna -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M108,168 l9,9 M150,168 l9,9 M210,168 l9,9 M264,168 l9,9"/>
+    <path d="M108,192 l9,9 M150,192 l9,9 M210,192 l9,9 M264,192 l9,9"/>
+    <path d="M348,168 l9,9 M390,168 l9,9 M450,168 l9,9 M504,168 l9,9"/>
+    <path d="M348,192 l9,9 M390,192 l9,9 M450,192 l9,9 M504,192 l9,9"/>
+  </g>
+
+  <!-- Blyerts-2: luften som får passera ut ur det vänstra snittet -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M152,226 Q151,238 152,248 M146,240 L152,249 L158,240"/>
+    <path d="M212,226 Q211,238 212,248 M206,240 L212,249 L218,240"/>
+  </g>
+
+  <!-- Snickarpenna: plasten på fel plats och dropparna som blir kvar i isoleringen -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M338,228 Q432,230 526,228"/>
+    <path d="M352,186 C351,188 348,191 348,194 A4,4 0 0 0 356,194 C356,191 353,188 352,186"/>
+    <path d="M414,192 C413,194 410,197 410,200 A4,4 0 0 0 418,200 C418,197 415,194 414,192"/>
+    <path d="M472,184 C471,186 468,189 468,192 A4,4 0 0 0 476,192 C476,189 473,186 472,184"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="96" y="76" fill="#625a50">överlapp 200 mm</text>
+    <text x="96" y="126" font-size="30">rätt</text>
+    <text x="336" y="126" font-size="30" fill="#ad3519">fel</text>
+    <text x="96" y="292">ångspärr överst</text>
+    <text x="96" y="320" fill="#625a50">undersidan torkar</text>
+    <text x="336" y="292" fill="#ad3519">plast även under</text>
+    <text x="336" y="320" fill="#ad3519">fukten blir kvar</text>
+  </g>
+</svg>

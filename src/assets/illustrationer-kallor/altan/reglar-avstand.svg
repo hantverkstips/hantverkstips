@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Altanens bjälklag sett uppifrån. Två bärlinor löper vågrätt, var och en uppburen av tre plintar, och åtta reglar löper tvärs över dem. En måttbygel överst visar c 600 mellan två reglar. En måttbygel till höger visar 2,3 meter mellan bärlinorna, med anteckningen att spännvidden är måttet mellan bärlinorna och inte altanens längd.">
+  <!-- Anteckningsboken, skiss uppifrån. Blyerts 2 px för bärlinor, reglar och plintar,
+       blyerts-2 för måttbyglar, ledarlinjer och etiketter, snickarpenna för den enda sak
+       som pekas ut: att spännvidden mäts mellan bärlinorna. Tumstock bakom nyckeltalet c 600.
+       Skala: 1 m = 85 px. Reglar med 51 px mellanrum (c 600 mm), bärlinornas mitt y=113 och
+       y=309, alltså 196 px och 2,3 m emellan. Handskrift i Caveat 500, konverteras till banor.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts: bärlinorna som band, plintarna under dem, reglarna tvärs över -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M80,108 Q272,106 464,108"/>
+    <path d="M80,118 Q272,116 464,118"/>
+    <path d="M80,107 V119 M464,107 V119"/>
+    <path d="M80,304 Q272,302 464,304"/>
+    <path d="M80,314 Q272,312 464,314"/>
+    <path d="M80,303 V315 M464,303 V315"/>
+    <circle cx="115.5" cy="113" r="11"/>
+    <circle cx="272" cy="113" r="11"/>
+    <circle cx="428.5" cy="113" r="11"/>
+    <circle cx="115.5" cy="309" r="11"/>
+    <circle cx="272" cy="309" r="11"/>
+    <circle cx="428.5" cy="309" r="11"/>
+    <path d="M90,96 Q91.5,213 90,330"/>
+    <path d="M141,96 Q139.5,213 141,330"/>
+    <path d="M192,96 Q193.5,213 192,330"/>
+    <path d="M243,96 Q241.5,213 243,330"/>
+    <path d="M294,96 Q295.5,213 294,330"/>
+    <path d="M345,96 Q343.5,213 345,330"/>
+    <path d="M396,96 Q397.5,213 396,330"/>
+    <path d="M447,96 Q445.5,213 447,330"/>
+  </g>
+
+  <!-- Blyerts-2: måttbygel för c-måttet överst, måttbygel för spännvidden till höger -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M90,86 H141 M90,81 v10 M141,81 v10"/>
+    <path d="M506,113 V309 M501,113 h10 M501,309 h10"/>
+  </g>
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-dasharray="7 5">
+    <path d="M464,113 H502"/>
+    <path d="M464,309 H502"/>
+  </g>
+
+  <!-- Blyerts-2: ledarlinjer från etiketterna till det de heter -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M488,78 Q470,84 452,94"/>
+    <path d="M97,342 Q92,330 88,318"/>
+  </g>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="81" y="53" width="70" height="25" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 116 65)"/>
+
+  <!-- Snickarpenna: den enda pilen, från anteckningen upp till spännviddens bygel -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M505,342 Q507,331 506,320"/>
+    <path d="M506,320 l-6,9 M506,320 l6,9"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24">
+    <text x="115" y="72" text-anchor="middle" fill="#2a2521">c 600</text>
+    <text x="560" y="72" text-anchor="end" fill="#625a50">reglar</text>
+    <text x="516" y="218" fill="#625a50">2,3 m</text>
+    <text x="52" y="352" fill="#625a50">bärlina</text>
+    <text x="186" y="352" fill="#ad3519">spännvidd, inte altanens längd</text>
+  </g>
+</svg>

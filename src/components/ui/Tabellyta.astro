@@ -1,0 +1,40 @@
+---
+/**
+ * Behållaren runt en handskriven tabell i en .astro-sida: ledtexten
+ * "Dra i sidled för att se hela tabellen" på mobil, sidledsscroll inuti
+ * behållaren (aldrig i sidan) och den tonade högerkanten som visar att det
+ * finns mer. Samma yta och samma klasser som brödtabellerna i MDX får av
+ * hast-pluginet i astro.config.mjs och som Jamforelsetabell använder.
+ *
+ * Stilguiden avsnittet om tabeller och docs/DESIGN.md avsnitt 6, Tabell i
+ * brödtext: raden står över varje tabell från tre kolumner, och bara på mobil.
+ * Från lg får tabellen plats, och då är både ledtexten och kanten fel.
+ *
+ * Brödtabellerna i MDX avgör antalet kolumner med :has() i global.css,
+ * eftersom pluginet inte vet vad tabellen innehåller. Här vet anroparen det,
+ * så kolumnerna är en prop: ett tal går att läsa i koden, och villkoret
+ * fungerar också i webbläsare utan :has().
+ */
+interface Props {
+  /** Antal kolumner i tabellen. Ledtexten visas från tre. */
+  kolumner: number;
+  /** Klasser på blocket, för marginalen runt tabellen. */
+  class?: string;
+}
+
+const { kolumner, class: klass } = Astro.props;
+const visaLedtext = kolumner >= 3;
+---
+
+<div class:list={[klass]}>
+  {
+    visaLedtext && (
+      <p class="lg:hidden m-0 mb-2 text-liten text-blyerts-2">Dra i sidled för att se hela tabellen</p>
+    )
+  }
+  <div class="tabell-yta">
+    <div class="tabell-behallare">
+      <slot />
+    </div>
+  </div>
+</div>

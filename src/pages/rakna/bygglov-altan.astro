@@ -40,6 +40,7 @@ import Faq from '../../components/ui/Faq.astro';
 import Markering from '../../components/ui/Markering.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
 import StrukturData from '../../components/ui/StrukturData.astro';
+import Tabellyta from '../../components/ui/Tabellyta.astro';
 import Illustration from '../../components/ui/Illustration.astro';
 
 Astro.locals.sidtyp = 'verktyg';
@@ -353,27 +354,6 @@ const huvudbild = varumarke ?? illustration;
                 {talText(visatIndata.avstandGransM)} m till tomtgränsen, {takText}
               </p>
 
-              {visat.bedomningar.map((b) => (
-                <>
-                  {visat.bedomningar.length > 1 && (
-                    <p class="m-0 mt-6 font-sans text-h3 lg:text-h3-lg text-blyerts">
-                      {b.fall}: {b.svar === 'ja' ? 'bygglov' : b.svar === 'nej' ? 'inget bygglov' : 'fråga kommunen'}
-                    </p>
-                  )}
-                  <ul class="m-0 mt-4 p-0 list-none text-brod">
-                    {b.regler.map((regel) => (
-                      <li class="mb-3 border-l-2 border-linje pl-3">
-                        <span class="block text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
-                          {UTFALL_ETIKETT[regel.utfall]}
-                        </span>
-                        <span class="block">{regel.text}</span>
-                        <span class="block text-liten text-blyerts-2">{regel.lagrum}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              ))}
-
               <div class="mt-6 border-t border-linje pt-4">
                 <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
                   Bygger du utan lov när lov krävs
@@ -388,22 +368,15 @@ const huvudbild = varumarke ?? illustration;
                   {formateraTal(visat.avgiftGrundKr)} kr i grunden plus {formateraTal(visat.avgiftTillaggKr)} kr för
                   ytan, räknat på prisbasbeloppet {formateraTal(PRISBASBELOPP_KR)} kr
                 </p>
-                <p class="m-0 mt-2 text-brod">
-                  Avgiften tas ut även om du inte visste bättre. Den kan sättas ned till{' '}
-                  {formateraTal(visat.avgiftHalvKr)} kr eller {formateraTal(visat.avgiftFjardedelKr)} kr om den är
-                  orimlig, och den faller bort helt om du river eller rättar innan nämnden tagit upp ärendet på ett
-                  sammanträde. Sedan får du söka lov i efterhand ändå.
-                </p>
+                {/* Vad avgiften innebär står i "Så bedömer vi". Spalten bär
+                    talet, inte förklaringen till det. */}
               </div>
 
-              <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">Gör inte det här</p>
-              {visat.gorInteDetHar.map((rad) => (
-                <p class="m-0 mt-1 text-brod">{rad}</p>
-              ))}
-
-              <p class="m-0 mt-6 text-brod">{RAD_KOMMUNEN}</p>
-              <p class="m-0 mt-2 text-liten text-blyerts-2">
-                Reglerna gäller sedan den {REGLERNA_GALLER_FRAN}, då lag 2025:974 trädde i kraft.
+              {/* Reglerna med lagrum och "Gör inte det här" står som egna H2
+                  under verktyget. Spalten pekar dit med en rad. */}
+              <p class="m-0 mt-4 text-liten text-blyerts-2">
+                Varför det blev så, och vad du inte ska göra,{' '}
+                <a href="#darfor-blev-svaret-sa" class={LANK_KLASS}>står under verktyget</a>.
               </p>
 
               <p class="m-0 mt-4">
@@ -426,6 +399,50 @@ const huvudbild = varumarke ?? illustration;
         }
       </div>
     </div>
+
+    {/* Reglerna med lagrum och råden står i läsbredd direkt under verktyget,
+        inte i spalten: en läsare som just fått ett besked läser svaret, inte
+        femton motiveringar bredvid formuläret. Se SPEC-SIDMALLAR.md 4.7. */}
+    {
+      visat.status === 'ok' && (
+        <>
+          <section>
+            <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
+            {visat.bedomningar.map((b) => (
+              <>
+                {visat.bedomningar.length > 1 && (
+                  <p class="m-0 mt-6 font-sans text-h3 lg:text-h3-lg text-blyerts">
+                    {b.fall}: {b.svar === 'ja' ? 'bygglov' : b.svar === 'nej' ? 'inget bygglov' : 'fråga kommunen'}
+                  </p>
+                )}
+                <ul class="m-0 p-0 list-none text-brod lg:text-brod-lg">
+                  {b.regler.map((regel) => (
+                    <li class="mb-4 border-l-2 border-linje pl-4">
+                      <span class="block text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
+                        {UTFALL_ETIKETT[regel.utfall]}
+                      </span>
+                      <span class="block">{regel.text}</span>
+                      <span class="block text-liten text-blyerts-2">{regel.lagrum}</span>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ))}
+            <p class="m-0 mt-4 text-brod lg:text-brod-lg">{RAD_KOMMUNEN}</p>
+            <p class="m-0 mt-2 text-liten text-blyerts-2">
+              Reglerna gäller sedan den {REGLERNA_GALLER_FRAN}, då lag 2025:974 trädde i kraft.
+            </p>
+          </section>
+
+          <section>
+            <Pennstreck id="gor-inte-det-har">Gör inte det här</Pennstreck>
+            {visat.gorInteDetHar.map((rad, i) => (
+              <p class:list={['m-0 text-brod lg:text-brod-lg', i > 0 && 'mt-4']}>{rad}</p>
+            ))}
+          </section>
+        </>
+      )
+    }
 
     <section>
       <Pennstreck id="bygglov-altan-2025">Bygglov altan, de tre måtten och vad som ändrades 1 december 2025</Pennstreck>
@@ -513,7 +530,7 @@ const huvudbild = varumarke ?? illustration;
       </ol>
 
       <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad svaret vilar på</h3>
-      <div class="mt-4 overflow-x-auto">
+      <Tabellyta kolumner={3} class="mt-4">
         <table class="w-full border-collapse text-liten tabular-nums">
           <caption class="sr-only">Regler, lagrum och antaganden i bygglovsverktyget för altan</caption>
           <thead>
@@ -546,7 +563,7 @@ const huvudbild = varumarke ?? illustration;
             }
           </tbody>
         </table>
-      </div>
+      </Tabellyta>
 
       <p class="m-0 mt-6 text-brod lg:text-brod-lg">
         Verktyget är vägledning, inte ett myndighetsbeslut. Det läser lagen och Boverkets vägledning på de uppgifter du
@@ -559,6 +576,16 @@ const huvudbild = varumarke ?? illustration;
         altan. Prisbasbeloppet för 2026 är {formateraTal(PRISBASBELOPP_KR)}&nbsp;kr, och det fastställer regeringen om
         året. Ändras talet till nästa år ändras avgiften med det.
       </p>
+      {
+        visat.status === 'ok' && (
+          <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+            Avgiften tas ut även om du inte visste bättre. Den kan sättas ned till{' '}
+            {formateraTal(visat.avgiftHalvKr)} kr eller {formateraTal(visat.avgiftFjardedelKr)} kr om den är orimlig,
+            och den faller bort helt om du river eller rättar innan nämnden tagit upp ärendet på ett sammanträde.
+            Sedan får du söka lov i efterhand ändå.
+          </p>
+        )
+      }
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
         Metoden bakom våra siffror står på <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar vi</a>.
       </p>

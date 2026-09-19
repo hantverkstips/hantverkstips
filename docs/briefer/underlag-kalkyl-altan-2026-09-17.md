@@ -86,7 +86,7 @@ Skruvlängd 55 mm för 28 mm trall, ytterdiameter minst 4,2 mm, alltså den hand
 
 Två skruv per korsning följer av TräGuidens regel om dubbel infästning för brädor från 95 mm, inte av skruvtillverkaren.
 
-**ANTAGANDE**: kalkylatorn räknar upp till hel förpackning om 250 eller 500 skruv och väljer den storlek som ger minst överskott. 500-packet finns inte hos alla kedjor; 250 och 1 000 är de säkra. Den som köper 1 000-pack läser talet "räknat antal" i stället.
+**KÄLLA sedan 2026-09-19**: kalkylatorn räknar upp till hel förpackning om 250 eller 1 000 skruv och väljer den storlek som ger minst överskott. Butikskontrollen 2026-09-19 av skribenten på trallskruv gav Bauhaus 200 och 250 stycken, Byggmax 250, K-Bygg och Essve 250 stycken och hink om 1 000. Ingen av dem säljer 500, vilket var den andra storleken fram till dess. Antagandet nedan är alltså avgjort, och punkt 4 i avsnitt 7 är besvarad.
 
 ## 5. Handelslängder och spill
 
@@ -102,14 +102,15 @@ Två skruv per korsning följer av TräGuidens regel om dubbel infästning för 
 | `TRALLBREDDER` | 95, 120, 145 mm | Källa, byggbeskrivningen och TräGuidens tabell 3 |
 | `SPRINGA_MM` | 95 → 5, 120 → 6, 145 → 7 | Källa, TräGuiden, kant till kant minus bredd |
 | `REGELAVSTAND` | 450 och 600 mm | Källa för 600, antagande för 450 |
-| `MAX_SPANNVIDD_M` | se tabellen i avsnitt 3 | Källa för 45 × 145, antagande för 170 och 195 |
-| `BARLINA_TEXT` | 45 × 170 mm | Antagande, stött av TräGuiden |
-| `PLINTAVSTAND_M` | 2,5 | Källa, Altanplaneraren och TräGuiden |
+| `MAX_SPANNVIDD_M` | Lathunden 8:2021 sid. 30, C24 | Källa sedan 2026-09-19, hela tabellen |
+| bärlinans dimension | samma som regeln | Antagande sedan 2026-09-19, `BARLINA_TEXT` borta |
+| `PLINTAVSTAND_M` | Lathunden 8:2021 sid. 24, C24 | Källa sedan 2026-09-19, hela tabellen. Var 2,5 m rakt av |
+| `CC_ANDEL_AV_PLINTAVSTAND` | 4 | Antagande, hur Lathundens D/4-rad tillämpas |
 | `SKRUV_PER_KORSNING` | 2 | Källa, TräGuiden, brädor från 95 mm |
 | `SKRUV_TEXT` | 4,2 × 55 mm, A4 | Källa, TräGuidens tabell, handelsbeteckning ur Essve |
 | `HANDELSLANGDER_M` | 3,6, 4,2, 4,8 | Antagande |
 | `SPILL_TRALL` | 0,10 | Antagande |
-| `FORPACKNINGAR` | 250 och 500 | Antagande |
+| `FORPACKNINGAR` | 250 och 1 000 | Källa sedan 2026-09-19, butikskontroll |
 | `FALL` | 1:100 | Källa, byggbeskrivningen |
 
 ## 7. Vad chefredaktören verifierar i webbläsare
@@ -118,8 +119,8 @@ Tabellerna hos Svenskt Trä ligger som bilder och gick inte att läsa maskinellt
 
 1. **Tabell 1 och 2** på [byggbeskrivningar.se, Montering av trall](https://www.byggbeskrivningar.se/utvandigt/montering-av-trall/), alltså minsta tjocklek mot c-mått och skruvlängd. Vi har talen via TräGuiden; kontrollen gäller att Svenskt Trä säger samma sak i sin broschyr.
 2. **Tabell 3** på samma sida, kant-till-kant-avstånd. Kontrollera 100, 126 och 152 mm för 95, 120 och 145 mm bred impregnerad furu.
-3. **Spännvidden för 45 × 170 och 45 × 195 mm** vid c 600 mm. Våra tal, 2,70 och 3,10 m, är antaganden. Rätt källa är Svenskt Träs spännviddstabell för altanbjälklag, som ligger bakom AltanGuiden på byggbeskrivningar.se och i TräGuidens hjälpmedel. Blir talen andra ändras `MAX_SPANNVIDD_M` och testskriptet.
-4. **Förpackningsstorlekarna** på trallskruv 4,2 × 55 mm i A4, alltså om 250 och 500 är de storlekar läsaren möter i butik, eller om 250 och 1 000 är rätt par.
+3. ~~**Spännvidden för 45 × 170 och 45 × 195 mm** vid c 600 mm.~~ **Avklarad 2026-09-19.** Skribenten på `/altan/reglar-avstand-och-dimensioner/` hittade primärkällan i PDF: Svenskt Trä, Lathunden 8:2021, sid. 30. Talen är 2,71 och 3,11 m, alltså en centimeter över våra antaganden, och hela tabellen ligger nu i modulen med Lathunden som källa. Se `docs/briefer/underlag-reglar-avstand-2026-09-19.md` avsnitt 2.2.
+4. ~~**Förpackningsstorlekarna** på trallskruv 4,2 × 55 mm i A4.~~ **Avklarad 2026-09-19.** Butikskontroll: Bauhaus 200 och 250, Byggmax 250, K-Bygg och Essve 250 samt hink om 1 000. Ingen säljer 500. `FORPACKNINGAR` är därför 250 och 1 000, märkt Källa.
 5. **Fallet 1:100.** Byggbeskrivningen anger det; kontrollera om Svenskt Trä också anger ett minsta fall för altaner som ligger mot husvägg.
 
-Punkt 3 är den enda som kan ändra ett tal läsaren ser som ett beslut. Tills den är gjord står raden om spännvidd i antagandetabellen märkt Antagande, inte Källa.
+Samma hämtning gav plintavståndet, som var det enda egentliga felet i modulen: `PLINTAVSTAND_M` var 2,5 m rakt av, och Lathunden sid. 24 ger 1,38 till 2,49 m beroende på bärlinans dimension och reglarnas fria längd. Verktyget gav alltså för få plintar fram till 2026-09-19. Kvar som antagande är att bärlinan har samma dimension som regeln, och hur Lathundens rad om förhållandet mellan c-måttet och plintavståndet tillämpas; den sistnämnda ska teknisk ansvarig ta ställning till, se kommentaren vid `CC_ANDEL_AV_PLINTAVSTAND`.

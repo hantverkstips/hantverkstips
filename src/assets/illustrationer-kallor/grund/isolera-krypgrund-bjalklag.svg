@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Skiss av en uteluftsventilerad krypgrund i genomskärning där golvbjälklaget är tilläggsisolerat. Ångspärren ligger överst i bjälklaget, mot bostaden, isoleringen ligger mellan bjälkarna och i ett obrutet lager under dem, och de två lagren är måttsatta till 145 respektive 50 millimeter. Uteluft kommer in genom ventilen i grundmuren till höger, och droppar sitter på isoleringens undersida. Anteckningen säger att grunden blir kallare och att luftfuktigheten når 75 procent i juli.">
+  <!-- Anteckningsboken. Blyerts 2 px för hus, bjälklag och grundmur, blyerts-2 för isolerskraffering,
+       ångspärr, markplast, måttbyglar och uteluften (en förutsättning, inte problemet), snickarpenna
+       för dropparna och anteckningen om kylan, som hör ihop till en sak. Tumstock bakom nyckeltalet
+       75 %. Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Tumstock bakom nyckeltalet, bara bakom talet -->
+  <rect x="104" y="212" width="52" height="25" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 130 224)"/>
+
+  <!-- Blyerts: golv, bjälklag, väggar, grundmur, mark -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M74,112 Q257,110 440,112"/>
+    <path d="M74,126 Q257,128 440,126"/>
+    <path d="M74,150 Q257,152 440,150"/>
+    <path d="M74,164 Q257,166 440,164"/>
+    <path d="M86,112 Q85,84 86,54"/>
+    <path d="M430,112 Q431,84 430,54"/>
+    <path d="M76,164 Q75,212 76,263"/>
+    <path d="M96,164 Q97,212 96,263"/>
+    <path d="M74,262 Q86,264 98,262"/>
+    <path d="M418,164 Q417,174 418,184"/>
+    <path d="M418,208 Q417,236 418,263"/>
+    <path d="M438,164 Q439,174 438,184"/>
+    <path d="M438,208 Q439,236 438,263"/>
+    <path d="M416,262 Q428,264 440,262"/>
+    <path d="M414,184 Q428,185 442,184"/>
+    <path d="M414,208 Q428,209 442,208"/>
+    <path d="M96,258 Q257,260 418,258"/>
+    <path d="M0,232 Q38,233 78,232"/>
+    <path d="M436,232 Q518,233 600,232"/>
+    <!-- bjälkar i snittet, bara i det övre lagret -->
+    <path d="M140,127 Q139,138 140,149 M206,127 Q205,138 206,149 M272,127 Q271,138 272,149 M338,127 Q337,138 338,149"/>
+  </g>
+
+  <!-- Blyerts-2: ångspärren överst i bjälklaget och plastfolien på marken -->
+  <g fill="none" stroke="#625a50" stroke-width="3.5" stroke-linecap="round">
+    <path d="M80,120 Q257,118 434,120"/>
+    <path d="M104,254 Q257,256 410,254"/>
+  </g>
+
+  <!-- Blyerts-2: isolerskraffering mellan bjälkarna och i lagret under -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M104,131 l10,10 M152,131 l10,10 M174,131 l10,10 M218,131 l10,10 M240,131 l10,10 M284,131 l10,10 M306,131 l10,10 M350,131 l10,10 M372,131 l10,10 M394,131 l10,10"/>
+    <path d="M104,153 l8,8 M132,153 l8,8 M160,153 l8,8 M188,153 l8,8 M216,153 l8,8 M244,153 l8,8 M272,153 l8,8 M300,153 l8,8 M328,153 l8,8 M356,153 l8,8 M384,153 l8,8 M406,153 l8,8"/>
+  </g>
+
+  <!-- Blyerts-2: markskraffering i grunden och utanför -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M104,266 l10,10 M126,266 l10,10 M148,266 l10,10 M170,266 l10,10 M192,266 l10,10 M214,266 l10,10 M236,266 l10,10 M258,266 l10,10 M280,266 l10,10 M302,266 l10,10 M324,266 l10,10 M346,266 l10,10 M368,266 l10,10 M390,266 l10,10"/>
+    <path d="M114,288 l10,10 M136,288 l10,10 M158,288 l10,10 M180,288 l10,10 M202,288 l10,10 M224,288 l10,10 M246,288 l10,10 M268,288 l10,10 M290,288 l10,10 M312,288 l10,10 M334,288 l10,10 M356,288 l10,10 M378,288 l10,10"/>
+    <path d="M104,310 l10,10 M126,310 l10,10 M148,310 l10,10 M170,310 l10,10 M192,310 l10,10 M214,310 l10,10 M236,310 l10,10 M258,310 l10,10 M280,310 l10,10 M302,310 l10,10 M324,310 l10,10 M346,310 l10,10 M368,310 l10,10 M390,310 l10,10"/>
+    <path d="M4,238 l10,10 M26,238 l10,10 M48,238 l10,10"/>
+    <path d="M14,260 l10,10 M36,260 l10,10 M58,260 l10,10"/>
+    <path d="M4,282 l10,10 M26,282 l10,10 M48,282 l10,10"/>
+    <path d="M448,244 l10,10 M470,244 l10,10 M492,244 l10,10 M514,244 l10,10 M536,244 l10,10 M558,244 l10,10 M580,244 l10,10"/>
+    <path d="M458,266 l10,10 M480,266 l10,10 M502,266 l10,10 M524,266 l10,10 M546,266 l10,10 M568,266 l10,10"/>
+  </g>
+
+  <!-- Blyerts-2: måttbyglar på de två isolerlagren, och pilen för uteluften -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M452,127 Q451,138 452,149 M447,127 h10 M447,149 h10"/>
+    <path d="M452,151 Q451,157 452,163 M447,151 h10 M447,163 h10"/>
+    <path d="M594,196 Q540,195 490,197 Q470,198 452,197"/>
+    <path d="M462,190 L451,197 L462,204"/>
+  </g>
+
+  <!-- Snickarpenna: dropparna under isoleringen och anteckningen om kylan -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M130,168 C129,170 126,173 126,176 A4,4 0 0 0 134,176 C134,173 131,170 130,168"/>
+    <path d="M172,168 C171,170 168,173 168,176 A4,4 0 0 0 176,176 C176,173 173,170 172,168"/>
+    <path d="M214,168 C213,170 210,173 210,176 A4,4 0 0 0 218,176 C218,173 215,170 214,168"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="110" y="90">ångspärren överst, mot bostaden</text>
+    <text x="110" y="200" fill="#ad3519">grunden blir kallare</text>
+    <text x="110" y="230" fill="#ad3519">75 % luftfuktighet i juli</text>
+    <text x="466" y="136" fill="#625a50">145 mm</text>
+    <text x="466" y="166" fill="#625a50">50 mm</text>
+    <text x="470" y="222" fill="#625a50">uteluft in</text>
+  </g>
+</svg>

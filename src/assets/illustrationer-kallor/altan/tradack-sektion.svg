@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Snitt genom ett lågt trädäck på mark, med husväggen till vänster. Hela däcket lutar bort från huset, och en pil i penna följer golvytan utåt. Underst fast underlag, ovanpå det ett lager makadam på 200 mm ritat som små stenar, en streckad markduk över makadamen, tre markreglar av 45 × 95 mm som ligger direkt på duken med grundisoleringspapp på översidan, och trallen på 28 mm överst. Makadambäddens översida lutar lika mycket som golvet, och avståndet mellan två reglar är c 600 mm.">
+  <!-- Anteckningsboken. Blyerts 2 px för trall, markreglar, husvägg och botten på urgrävningen,
+       blyerts-2 för makadamstenarna, markduken, pappen, skrafferingen, ledarna och måttbygeln,
+       snickarpenna för fallpilen som ligger längs golvytan (enda pennsaken),
+       tumstock bakom nyckeltalet c 600.
+       Skala cirka 0,35 px per mm åt båda håll: trall 28 mm = 10 px, regel 95 mm = 34 px,
+       makadam 200 mm = 74 px, c 600 mm = 210 px.
+       Fallet är ritat 22 px på 480 px, alltså mer än verkligt fall, för att synas. Trall,
+       reglarnas underkant, markduken och makadambäddens botten lutar alla lika mycket,
+       eftersom fallet läggs i bädden och inte i trallen.
+       Etiketterna ligger under däcket så att pilen får ha golvytan för sig själv.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2: makadamen som små stenar, raderna följer bäddens lutning -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linejoin="round">
+    <path d="M90,208 q1,-4 5,-3 q4,1 3,4 q-1,3 -5,2 q-4,-1 -3,-3 z M132,207 q2,-4 6,-2 q3,2 1,5 q-2,3 -6,1 q-3,-1 -1,-4 z M174,214 q0,-4 5,-4 q5,0 4,4 q-1,3 -5,3 q-4,0 -4,-3 z M216,213 q1,-4 5,-3 q4,1 3,4 q-1,3 -5,2 q-4,-1 -3,-3 z M258,219 q2,-4 6,-2 q3,2 1,5 q-2,3 -6,1 q-3,-1 -1,-4 z M300,216 q0,-4 5,-4 q5,0 4,4 q-1,3 -5,3 q-4,0 -4,-3 z M342,221 q1,-4 5,-3 q4,1 3,4 q-1,3 -5,2 q-4,-1 -3,-3 z M384,218 q2,-4 6,-2 q3,2 1,5 q-2,3 -6,1 q-3,-1 -1,-4 z M426,226 q0,-4 5,-4 q5,0 4,4 q-1,3 -5,3 q-4,0 -4,-3 z M468,226 q1,-4 5,-3 q4,1 3,4 q-1,3 -5,2 q-4,-1 -3,-3 z M510,224 q2,-4 6,-2 q3,2 1,5 q-2,3 -6,1 q-3,-1 -1,-4 z M552,230 q0,-4 5,-4 q5,0 4,4 q-1,3 -5,3 q-4,0 -4,-3 z M588,233 q1,-4 5,-3 q4,1 3,4 q-1,3 -5,2 q-4,-1 -3,-3 z"/>
+    <path d="M110,223 q0,-4 5,-4 q5,0 4,4 q-1,3 -5,3 q-4,0 -4,-3 z M152,228 q1,-4 5,-3 q4,1 3,4 q-1,3 -5,2 q-4,-1 -3,-3 z M194,225 q2,-4 6,-2 q3,2 1,5 q-2,3 -6,1 q-3,-1 -1,-4 z M236,233 q0,-4 5,-4 q5,0 4,4 q-1,3 -5,3 q-4,0 -4,-3 z M278,233 q1,-4 5,-3 q4,1 3,4 q-1,3 -5,2 q-4,-1 -3,-3 z M320,232 q2,-4 6,-2 q3,2 1,5 q-2,3 -6,1 q-3,-1 -1,-4 z M362,238 q0,-4 5,-4 q5,0 4,4 q-1,3 -5,3 q-4,0 -4,-3 z M404,241 q1,-4 5,-3 q4,1 3,4 q-1,3 -5,2 q-4,-1 -3,-3 z M446,241 q2,-4 6,-2 q3,2 1,5 q-2,3 -6,1 q-3,-1 -1,-4 z M488,239 q0,-4 5,-4 q5,0 4,4 q-1,3 -5,3 q-4,0 -4,-3 z M530,246 q1,-4 5,-3 q4,1 3,4 q-1,3 -5,2 q-4,-1 -3,-3 z M572,245 q2,-4 6,-2 q3,2 1,5 q-2,3 -6,1 q-3,-1 -1,-4 z"/>
+    <path d="M90,237 q2,-4 6,-2 q3,2 1,5 q-2,3 -6,1 q-3,-1 -1,-4 z M132,243 q0,-4 5,-4 q5,0 4,4 q-1,3 -5,3 q-4,0 -4,-3 z M174,246 q1,-4 5,-3 q4,1 3,4 q-1,3 -5,2 q-4,-1 -3,-3 z M216,246 q2,-4 6,-2 q3,2 1,5 q-2,3 -6,1 q-3,-1 -1,-4 z M258,245 q0,-4 5,-4 q5,0 4,4 q-1,3 -5,3 q-4,0 -4,-3 z M300,252 q1,-4 5,-3 q4,1 3,4 q-1,3 -5,2 q-4,-1 -3,-3 z M342,251 q2,-4 6,-2 q3,2 1,5 q-2,3 -6,1 q-3,-1 -1,-4 z M384,257 q0,-4 5,-4 q5,0 4,4 q-1,3 -5,3 q-4,0 -4,-3 z M426,254 q1,-4 5,-3 q4,1 3,4 q-1,3 -5,2 q-4,-1 -3,-3 z M468,259 q2,-4 6,-2 q3,2 1,5 q-2,3 -6,1 q-3,-1 -1,-4 z M510,255 q0,-4 5,-4 q5,0 4,4 q-1,3 -5,3 q-4,0 -4,-3 z M552,263 q1,-4 5,-3 q4,1 3,4 q-1,3 -5,2 q-4,-1 -3,-3 z M588,263 q2,-4 6,-2 q3,2 1,5 q-2,3 -6,1 q-3,-1 -1,-4 z"/>
+    <path d="M110,259 q1,-4 5,-3 q4,1 3,4 q-1,3 -5,2 q-4,-1 -3,-3 z M152,258 q2,-4 6,-2 q3,2 1,5 q-2,3 -6,1 q-3,-1 -1,-4 z M194,264 q0,-4 5,-4 q5,0 4,4 q-1,3 -5,3 q-4,0 -4,-3 z M236,261 q1,-4 5,-3 q4,1 3,4 q-1,3 -5,2 q-4,-1 -3,-3 z M278,266 q2,-4 6,-2 q3,2 1,5 q-2,3 -6,1 q-3,-1 -1,-4 z M320,263 q0,-4 5,-4 q5,0 4,4 q-1,3 -5,3 q-4,0 -4,-3 z M362,271 q1,-4 5,-3 q4,1 3,4 q-1,3 -5,2 q-4,-1 -3,-3 z M404,271 q2,-4 6,-2 q3,2 1,5 q-2,3 -6,1 q-3,-1 -1,-4 z M446,270 q0,-4 5,-4 q5,0 4,4 q-1,3 -5,3 q-4,0 -4,-3 z M488,275 q1,-4 5,-3 q4,1 3,4 q-1,3 -5,2 q-4,-1 -3,-3 z M530,278 q2,-4 6,-2 q3,2 1,5 q-2,3 -6,1 q-3,-1 -1,-4 z M572,278 q0,-4 5,-4 q5,0 4,4 q-1,3 -5,3 q-4,0 -4,-3 z"/>
+  </g>
+
+  <!-- Blyerts-2: skraffering i fast underlag och i husväggen under mark -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M48,300 l10,10 M70,300 l10,10 M92,300 l10,10 M114,300 l10,10 M136,300 l10,10 M158,300 l10,10 M180,300 l10,10 M202,300 l10,10 M224,300 l10,10 M246,300 l10,10 M268,300 l10,10 M290,300 l10,10 M312,300 l10,10 M334,300 l10,10 M356,300 l10,10 M378,300 l10,10 M400,300 l10,10 M422,300 l10,10 M444,300 l10,10 M466,300 l10,10 M488,300 l10,10 M510,300 l10,10 M532,300 l10,10 M554,300 l10,10 M576,300 l10,10"/>
+    <path d="M59,322 l10,10 M81,322 l10,10 M103,322 l10,10 M125,322 l10,10 M147,322 l10,10 M169,322 l10,10 M191,322 l10,10 M213,322 l10,10 M235,322 l10,10 M257,322 l10,10 M279,322 l10,10 M301,322 l10,10 M323,322 l10,10 M345,322 l10,10 M367,322 l10,10 M389,322 l10,10 M411,322 l10,10 M433,322 l10,10 M455,322 l10,10 M477,322 l10,10 M499,322 l10,10 M521,322 l10,10 M543,322 l10,10 M565,322 l10,10 M587,322 l10,10"/>
+    <path d="M48,344 l10,10 M70,344 l10,10 M92,344 l10,10 M114,344 l10,10 M136,344 l10,10 M158,344 l10,10 M180,344 l10,10 M202,344 l10,10 M224,344 l10,10 M246,344 l10,10 M268,344 l10,10 M290,344 l10,10 M312,344 l10,10 M334,344 l10,10 M356,344 l10,10 M378,344 l10,10 M400,344 l10,10 M422,344 l10,10 M444,344 l10,10 M466,344 l10,10 M488,344 l10,10 M510,344 l10,10 M532,344 l10,10 M554,344 l10,10 M576,344 l10,10"/>
+    <path d="M46,200 l10,10 M46,226 l10,10 M46,252 l10,10 M58,213 l10,10 M58,239 l10,10"/>
+  </g>
+
+  <!-- Blyerts: husvägg, botten på urgrävningen, trall och de tre markreglarna.
+       Allt under trallen lutar lika mycket som trallen. -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M44,28 Q43,148 44,268"/>
+    <path d="M74,28 Q75,148 74,268"/>
+    <path d="M44,28 Q59,27 74,28"/>
+    <path d="M44,266 Q160,264 276,272 Q392,280 500,284 Q550,287 600,292"/>
+    <path d="M86,150 Q326,160 566,172"/>
+    <path d="M86,160 Q326,170 566,182"/>
+    <path d="M86,150 Q85,155 86,160"/>
+    <path d="M566,172 Q567,177 566,182"/>
+    <path d="M102,161 Q110,160.5 118,161 Q119,178 118,195 Q110,195.5 102,195 Q101,178 102,161 Z"/>
+    <path d="M312,171 Q320,170.5 328,171 Q329,188 328,205 Q320,205.5 312,205 Q311,188 312,171 Z"/>
+    <path d="M522,180 Q530,179.5 538,180 Q539,197 538,214 Q530,214.5 522,214 Q521,197 522,180 Z"/>
+    <path d="M110,151 Q110.5,167 110,183"/>
+    <path d="M320,161 Q320.5,177 320,193"/>
+    <path d="M530,171 Q530.5,187 530,202"/>
+  </g>
+
+  <!-- Blyerts-2: grundisoleringspappen på reglarnas översida, nedvikt i kanterna -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M98,159 Q110,158.5 122,159 M98,159 Q97.5,162 98,165 M122,159 Q122.5,162 122,165"/>
+    <path d="M308,169 Q320,168.5 332,169 M308,169 Q307.5,172 308,175 M332,169 Q332.5,172 332,175"/>
+    <path d="M518,178 Q530,177.5 542,178 M518,178 Q517.5,181 518,184 M542,178 Q542.5,181 542,184"/>
+  </g>
+
+  <!-- Blyerts-2: markduken ovanpå makadamen, med samma lutning som golvet -->
+  <path d="M78,193 Q339,205 600,218" fill="none" stroke="#625a50" stroke-width="1.5" stroke-dasharray="6 4" stroke-linecap="round"/>
+
+  <!-- Blyerts-2: måttbygeln för c-avståndet, i luftspalten under däcket -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M110,180 Q215,179 320,180 M110,174 Q110.5,180 110,186 M320,174 Q320.5,180 320,186"/>
+  </g>
+
+  <!-- Blyerts-2: ledare. De två som pekar på trall och regel kommer uppifrån vänster,
+       där pilen inte går; resten kommer underifrån. -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M188,80 L214,155"/>
+    <path d="M243,114 L314,176"/>
+    <path d="M215,200 L215,182"/>
+    <path d="M498,186 L528,180"/>
+    <path d="M482,222 L505,212"/>
+  </g>
+
+  <!-- Papperslappar bakom handskrift som ligger över stenar och skraffering -->
+  <g fill="#f5efe3">
+    <rect x="344" y="176" width="160" height="24"/>
+    <rect x="179" y="200" width="62" height="26"/>
+    <rect x="394" y="210" width="84" height="26"/>
+    <rect x="174" y="240" width="180" height="26"/>
+    <rect x="374" y="308" width="150" height="26"/>
+  </g>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="179" y="200" width="62" height="26" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 210 213)"/>
+
+  <!-- Snickarpenna: fallet, ritat längs golvytan och parallellt med den -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M300,151 Q428,157 556,163"/>
+    <path d="M546,157 L558,163 L547,169"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="46" y="28" fill="#625a50">huset</text>
+    <text x="82" y="86" fill="#625a50">trall 28 mm</text>
+    <text x="300" y="96" fill="#ad3519">fall ut från huset</text>
+    <text x="82" y="120" fill="#625a50">markregel 45 × 95</text>
+    <text x="350" y="196" fill="#625a50">papp på regeln</text>
+    <text x="185" y="222">c 600</text>
+    <text x="400" y="232" fill="#625a50">markduk</text>
+    <text x="180" y="262" fill="#625a50">makadam 200 mm</text>
+    <text x="380" y="330" fill="#625a50">fast underlag</text>
+  </g>
+</svg>

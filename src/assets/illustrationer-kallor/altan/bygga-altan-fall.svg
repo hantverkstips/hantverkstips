@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Genomskärning av en altan från husväggen och utåt. Trallbrädorna ligger i en rad med springor mellan sig och hela golvet lutar nedåt bort från huset. Under trallen en regel som vilar på två bärlinor på plintar, där den yttre är utmärkt som lägre än den inre. Ett mått visar sex millimeter rörelsefog mot väggen, nyckeltalet en centimeter fall per meter är gulmarkerat, och en anteckning säger att fallet ligger i reglarna, inte i trallen. En röd pil följer golvets lutning utåt och två droppar rinner av över altanens ytterkant.">
+  <!-- Anteckningsboken. Blyerts 2 px för husvägg, trallbrädor, regel, bärlinor, plintar och mark.
+       Blyerts-2 för markskraffering, måttbygel och etiketter. Snickarpennan för fallet:
+       pilen längs golvet och dropparna vid kanten, som hör ihop till en sak: vattnet går ut och av.
+       Anteckningen om att fallet ligger i reglarna är en förklaring och står därför i blyerts.
+       Tumstock bakom nyckeltalet.
+       Lutningen och springorna är överdrivna för att synas, tjocklekarna är schematiska.
+       Marklinje y=296. Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2: markskraffering under marklinjen -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M62,299 l-8,10 M84,299 l-8,10 M150,299 l-8,10 M172,299 l-8,10 M194,299 l-8,10 M216,299 l-8,10 M238,299 l-8,10 M260,299 l-8,10 M282,299 l-8,10 M304,299 l-8,10 M326,299 l-8,10 M392,299 l-8,10 M414,299 l-8,10 M436,299 l-8,10 M458,299 l-8,10 M480,299 l-8,10 M502,299 l-8,10 M524,299 l-8,10 M546,299 l-8,10 M568,299 l-8,10"/>
+  </g>
+
+  <!-- Blyerts-2: väggen i genomskärning, skrafferad som betong -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M58,92 l-10,10 M58,114 l-10,10 M58,136 l-10,10 M58,158 l-10,10 M58,180 l-10,10 M58,202 l-10,10 M58,224 l-10,10 M58,246 l-10,10 M58,268 l-10,10 M58,290 l-10,10"/>
+  </g>
+
+  <!-- Blyerts: marklinjen, bruten där plintarna går ner, och husväggen -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M44,296 Q70,295 98,296"/>
+    <path d="M124,296 Q236,294 348,296"/>
+    <path d="M374,296 Q478,295 582,296"/>
+    <path d="M46,78 Q45,190 46,302"/>
+    <path d="M60,78 Q61,190 60,302"/>
+    <path d="M44,78 Q53,76 62,78"/>
+  </g>
+
+  <!-- Blyerts: trallbrädorna i genomskärning, springa mellan varje, hela raden faller utåt -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M68,170 h34 v11 h-34 z"/>
+    <path d="M108,173 h34 v11 h-34 z"/>
+    <path d="M148,175 h34 v11 h-34 z"/>
+    <path d="M188,178 h34 v11 h-34 z"/>
+    <path d="M228,181 h34 v11 h-34 z"/>
+    <path d="M268,184 h34 v11 h-34 z"/>
+    <path d="M308,186 h34 v11 h-34 z"/>
+    <path d="M348,189 h34 v11 h-34 z"/>
+    <path d="M388,192 h34 v11 h-34 z"/>
+  </g>
+
+  <!-- Blyerts: regeln under trallen, samma fall -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M66,182 Q246,193 426,205"/>
+    <path d="M66,204 Q246,215 426,227"/>
+    <path d="M66,182 V204 M426,205 V227"/>
+  </g>
+
+  <!-- Blyerts: bärlinorna i genomskärning, den yttre lägre, och plintarna under -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M96,204 h30 v30 h-30 z"/>
+    <path d="M346,224 h30 v30 h-30 z"/>
+    <path d="M100,234 Q101,278 100,322"/>
+    <path d="M122,234 Q123,278 122,322"/>
+    <path d="M98,322 Q111,324 124,322"/>
+    <path d="M350,254 Q351,290 350,322"/>
+    <path d="M372,254 Q373,290 372,322"/>
+    <path d="M348,322 Q361,324 374,322"/>
+  </g>
+
+  <!-- Blyerts-2: måttbygel över rörelsefogen mot väggen -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M60,152 H68 M60,147 v10 M68,147 v10"/>
+    <path d="M64,157 Q64,163 64,168"/>
+  </g>
+
+  <!-- Blyerts-2: korta pekare från etiketterna -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M434,212 Q430,214 424,216"/>
+    <path d="M150,222 Q140,220 130,218"/>
+    <path d="M392,286 Q384,284 376,282"/>
+    <path d="M326,262 Q337,254 348,242"/>
+  </g>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="238" y="104" width="158" height="26" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 317 117)"/>
+
+  <!-- Snickarpenna: pilen längs fallet och dropparna som rinner ut över kanten -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M118,158 Q222,166 326,174"/>
+    <path d="M326,174 l-10,-3 M326,174 l-9,6"/>
+    <path d="M436,212 Q444,224 440,232 Q434,239 429,232 Q426,223 436,212 Z" fill="#ad3519" stroke="none"/>
+    <path d="M458,250 Q464,260 461,267 Q456,273 452,267 Q449,259 458,250 Z" fill="#ad3519" stroke="none"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="22" fill="#2a2521">
+    <text x="76" y="144" fill="#625a50">6 mm mot väggen</text>
+    <text x="438" y="206">regel</text>
+    <text x="154" y="228">inre bärlina</text>
+    <text x="168" y="256">yttre bärlina,</text>
+    <text x="168" y="278">ligger lägre</text>
+    <text x="396" y="292">plint</text>
+    <text x="244" y="125" font-size="24">1 cm fall per meter</text>
+    <text x="66" y="76" font-size="24">fallet ligger i reglarna,</text>
+    <text x="66" y="100" font-size="24">inte i trallen</text>
+  </g>
+</svg>

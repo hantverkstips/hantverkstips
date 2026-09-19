@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Genomskärning av den färdiga schakten längs en källarvägg. Från muren och utåt sitter fuktskyddet mot grundmuren, sedan makadam runt dräneringsröret med fiberduken streckad omkring, och överst återfyllning med en tydlig gräns upp mot den finkorniga jorden närmast markytan. Ett mått mellan grundsulans underkant och rörets underkant visar 100 mm.">
+  <!-- Anteckningsboken. Blyertsskiss på linjerat papper, huvudbild till /grund/dranera-hus/.
+       Den visar något annat än verktygsskissen src/assets/illustrationer/rakna/dranering.svg,
+       som visar hela husets snitt med schaktdjupet. Den här är inzoomad på schakten och visar
+       lagrens ordning från muren och utåt, alltså det som ska vara gjort innan gropen fylls igen.
+       Blyerts 2 px: markytan, grundmuren med brottlinje, grundsulan, fuktskyddet, kantlisten,
+       dräneringsröret.
+       Blyerts-2 1,75 px: gränsen mellan den finkorniga jorden överst och massorna under.
+       Blyerts-2 1,5 px: schaktkanten (kort streck), fiberduken (långt streck), måttbygeln.
+       Blyerts-2 1,25 px: markens och betongens skraffering, det packade lagrets linje, makadamen,
+       måttets hjälplinjer, pekpinnarna.
+       Snickarpenna 2,5 px: vattnets väg ner genom stenen in i röret, med sin anteckning.
+       Tumstock bakom nyckeltalet 100 mm under sulan.
+       Rättat 2026-09-19 efter granskningen: fiberduken streckad och etiketterad, pennpilen har fått
+       sin text, måttbygeln flyttad till de två punkter måttet gäller (sulans underkant och rörets),
+       och gränsen för den finkorniga jorden ritad som en egen heldragen linje.
+       Måtten är källornas: 100 mm mellan sulans underkant och rörets underkant (Isodrän),
+       finkornig jord överst och packning i lager (Isodrän och GarBo), makadam runt röret
+       (GarBo, Bolist, HelpHero), fuktskyddet avslutat strax under markytan (Isola).
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2: den orörda markens skraffering till vänster om schaktkanten -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M56,152 l10,10 M84,151 l10,10 M112,150 l10,10 M140,149 l10,10 M168,148 l10,10"/>
+    <path d="M68,188 l10,10 M96,188 l10,10 M124,188 l10,10 M152,188 l10,10 M180,188 l10,10"/>
+    <path d="M56,224 l10,10 M84,224 l10,10 M112,224 l10,10 M140,224 l10,10 M168,224 l10,10"/>
+    <path d="M60,312 l10,10 M88,312 l10,10 M116,312 l10,10 M144,312 l10,10 M172,312 l10,10"/>
+  </g>
+
+  <!-- Blyerts-2: betongens skraffering inne i grundmuren -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M452,86 l10,10 M486,86 l10,10"/>
+    <path d="M452,120 l10,10 M486,120 l10,10"/>
+    <path d="M452,154 l10,10 M486,154 l10,10"/>
+    <path d="M452,188 l10,10 M486,188 l10,10"/>
+    <path d="M452,222 l10,10 M486,222 l10,10"/>
+  </g>
+
+  <!-- Blyerts-2 streckat kort: schaktkanten, gränsen mellan orörd mark och återfyllning -->
+  <path d="M210,128 Q218,222 222,320" fill="none" stroke="#625a50" stroke-width="1.5" stroke-dasharray="7 6" stroke-linecap="round"/>
+
+  <!-- Blyerts-2 heldraget: gränsen mellan den finkorniga jorden överst och massorna under -->
+  <path d="M214,162 Q326,160 434,162" fill="none" stroke="#625a50" stroke-width="1.75" stroke-linecap="round"/>
+  <!-- Blyerts-2 streckat, tunt: skarven mellan två packade lager massor -->
+  <path d="M216,204 Q326,202 434,204" fill="none" stroke="#625a50" stroke-width="1.25" stroke-dasharray="6 7" stroke-linecap="round"/>
+
+  <!-- Blyerts-2: makadamen runt röret, som spridda stenar -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25">
+    <circle cx="244" cy="264" r="4"/>
+    <circle cx="278" cy="258" r="3.5"/>
+    <circle cx="312" cy="265" r="4.5"/>
+    <circle cx="400" cy="260" r="3.5"/>
+    <circle cx="236" cy="292" r="3.5"/>
+    <circle cx="300" cy="294" r="4"/>
+    <circle cx="252" cy="304" r="4"/>
+    <circle cx="298" cy="306" r="3.5"/>
+    <circle cx="262" cy="278" r="3"/>
+    <circle cx="330" cy="280" r="4"/>
+    <circle cx="336" cy="308" r="3"/>
+    <circle cx="388" cy="264" r="3"/>
+    <circle cx="272" cy="304" r="4.5"/>
+    <circle cx="356" cy="258" r="3.5"/>
+    <circle cx="228" cy="308" r="3"/>
+    <circle cx="332" cy="242" r="3"/>
+    <circle cx="286" cy="240" r="3.5"/>
+    <circle cx="386" cy="240" r="3"/>
+  </g>
+
+  <!-- Blyerts-2 streckat långt: fiberduken över, utanför och under makadamen -->
+  <path d="M434,240 Q326,246 220,252 Q216,288 220,316 Q326,320 428,316" fill="none" stroke="#625a50" stroke-width="1.5" stroke-dasharray="13 5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Blyerts-2: måttet mellan grundsulans underkant och rörets underkant, med korta hjälplinjer -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-dasharray="5 5">
+    <path d="M388,282 H420"/>
+    <path d="M358,304 H406"/>
+  </g>
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M396,282 Q395,293 396,304 M388,282 h16 M388,304 h16"/>
+  </g>
+
+  <!-- Blyerts: markytan med fall bort från huset, grundmuren med brottlinje, grundsulan -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M52,140 Q140,136 210,132 Q326,126 440,120"/>
+    <path d="M440,66 q10,-5 20,0 q10,5 20,0 q10,-5 20,0 q10,5 20,0"/>
+    <path d="M440,68 Q438,158 440,250"/>
+    <path d="M520,68 Q522,158 520,250"/>
+    <path d="M418,250 Q429,248 440,250"/>
+    <path d="M520,250 Q530,248 540,250"/>
+    <path d="M418,251 Q417,266 418,282"/>
+    <path d="M418,282 Q479,284 540,282"/>
+    <path d="M540,282 Q541,266 540,250"/>
+  </g>
+
+  <!-- Blyerts: fuktskyddet mot murens utsida, noppat, från strax under markytan ner till sulan -->
+  <path d="M434,126 q-7,9 0,18 q-7,9 0,18 q-7,9 0,18 q-7,9 0,18 q-7,9 0,18 q-7,9 0,18 q-7,8 0,16" fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round"/>
+  <!-- Blyerts: kantlisten upptill -->
+  <path d="M424,124 Q433,123 443,126" fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Blyerts: dräneringsröret i genomskärning -->
+  <g fill="none" stroke="#2a2521" stroke-width="2">
+    <circle cx="360" cy="290" r="14"/>
+    <circle cx="360" cy="290" r="7.5"/>
+  </g>
+
+  <!-- Blyerts-2: pekpinnar till etiketterna -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M228,52 Q248,92 266,140"/>
+    <path d="M400,52 Q420,84 432,116"/>
+    <path d="M150,258 Q186,266 218,276"/>
+    <path d="M256,292 Q286,286 314,282"/>
+    <path d="M402,328 Q402,318 398,310"/>
+  </g>
+
+  <!-- Papperslappar bakom anteckningarna så att skrafferingen och stenen inte stör -->
+  <g fill="#f5efe3">
+    <rect x="52" y="244" width="96" height="24" transform="rotate(-1 100 256)"/>
+    <rect x="50" y="280" width="206" height="24" transform="rotate(-1 153 292)"/>
+    <rect x="244" y="212" width="206" height="24"/>
+    <rect x="230" y="326" width="206" height="24"/>
+  </g>
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="232" y="327" width="202" height="24" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 333 339)"/>
+
+  <!-- Snickarpenna: vattnet som söker sig ner genom stenen in i röret, med sin anteckning -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M414,236 Q392,262 374,278 M374,268 L373,280 L362,278"/>
+  </g>
+
+  <!-- Handskrivna anteckningar (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="54" y="44">finkornig jord överst</text>
+    <text x="298" y="44" fill="#625a50">fuktskydd mot muren</text>
+    <text x="248" y="230" fill="#ad3519">vattnet ner i röret</text>
+    <text x="56" y="262" fill="#625a50">fiberduk</text>
+    <text x="56" y="298" fill="#625a50">makadam runt röret</text>
+    <text x="236" y="344">100 mm under sulan</text>
+  </g>
+</svg>

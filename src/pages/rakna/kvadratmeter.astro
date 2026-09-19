@@ -49,6 +49,7 @@ import Faq from '../../components/ui/Faq.astro';
 import Markering from '../../components/ui/Markering.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
 import StrukturData from '../../components/ui/StrukturData.astro';
+import Tabellyta from '../../components/ui/Tabellyta.astro';
 import Illustration from '../../components/ui/Illustration.astro';
 
 Astro.locals.sidtyp = 'verktyg';
@@ -675,7 +676,7 @@ const huvudbild = varumarke ?? illustration;
       </ol>
 
       <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad siffrorna vilar på</h3>
-      <div class="mt-4 overflow-x-auto">
+      <Tabellyta kolumner={3} class="mt-4">
         <table class="w-full border-collapse text-liten tabular-nums">
           <caption class="sr-only">Antaganden och källor i kvadratmeterräknaren</caption>
           <thead>
@@ -708,7 +709,7 @@ const huvudbild = varumarke ?? illustration;
             }
           </tbody>
         </table>
-      </div>
+      </Tabellyta>
 
       <p class="m-0 mt-6 text-brod lg:text-brod-lg">
         Två rader i tabellen är svagare än de andra, och det står där. Fönstrets mått är vårt antagande: modulsystemet

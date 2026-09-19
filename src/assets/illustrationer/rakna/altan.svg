@@ -1,10 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Altan uppifrån på linjerat papper. Nio trallbrädor ligger som vågräta band längs långsidan, och under dem går fem streckade reglar tvärs brädorna. Nio streckade cirklar i tre rader visar plintarna. En måttbygel mellan två reglar under altanen är märkt c 600, en skruvad anteckning säger trall 28 gånger 120, och en rödmarkerad springa mellan två brädor är märkt 5 millimeter springa.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Altan uppifrån på linjerat papper. Nio trallbrädor ligger som vågräta band längs långsidan, och under dem går fem streckade reglar tvärs brädorna. Tolv streckade cirklar i tre rader om fyra visar plintarna. En måttbygel mellan två reglar under altanen är märkt c 600, en skruvad anteckning säger trall 28 gånger 120, och en rödmarkerad springa mellan två brädor är märkt 5 millimeter springa.">
   <!-- Anteckningsboken, verktygsskiss för /rakna/altan/. Blyerts 2 px för altanens kant och trallbrädornas
        skarvar, blyerts-2 streckat för reglarna under trallen och för plintarna, blyerts-2 för måttbygel och
        pekpinne, snickarpenna för ringen runt en springa (den enda pennsaken), tumstock bakom nyckeltalet c 600.
        Skala i sidled: regelmitt var 80 px = 600 mm, alltså 1 px cirka 7,5 mm. Djupled är inte i samma skala;
        skissen visar ordningen, inte proportionen.
-       Altanen x=110-520, y=86-286. Reglar x=140, 220, 300, 380, 460. Plintar i tre rader, som standardaltanen.
+       Altanen x=110-520, y=86-286. Reglar x=140, 220, 300, 380, 460. Plintar i tre rader om fyra, som
+       standardaltanen efter rättningen mot Lathunden 8:2021.
        Handskrift i Caveat 500, 26 px, konverteras till banor vid bygget.
        Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
   <defs>
@@ -28,17 +29,22 @@
     <path d="M460,88 Q459,187 460,284"/>
   </g>
 
-  <!-- Blyerts-2 streckat: plintarna, tre rader om tre, alltså standardaltanens nio.
-       Raderna ligger mitt på en bräda, aldrig på en skarv, så att ringen syns hel. -->
+  <!-- Blyerts-2 streckat: plintarna, tre rader om fyra, alltså standardaltanens tolv. Fyra per bärlina
+       eftersom 45 × 145 tar högst 1,64 m mellan plintarna (Lathunden 8:2021). Jämnt fördelade längs
+       bärlinan, x=150, 260, 370, 480. Raderna ligger mitt på en bräda, aldrig på en skarv, så att
+       ringen syns hel. -->
   <g fill="none" stroke="#625a50" stroke-width="1.75" stroke-dasharray="4 4">
     <circle cx="150" cy="97" r="11"/>
-    <circle cx="315" cy="97" r="11"/>
+    <circle cx="260" cy="97" r="11"/>
+    <circle cx="370" cy="97" r="11"/>
     <circle cx="480" cy="97" r="11"/>
     <circle cx="150" cy="186" r="11"/>
-    <circle cx="315" cy="186" r="11"/>
+    <circle cx="260" cy="186" r="11"/>
+    <circle cx="370" cy="186" r="11"/>
     <circle cx="480" cy="186" r="11"/>
     <circle cx="150" cy="275" r="11"/>
-    <circle cx="315" cy="275" r="11"/>
+    <circle cx="260" cy="275" r="11"/>
+    <circle cx="370" cy="275" r="11"/>
     <circle cx="480" cy="275" r="11"/>
   </g>
 

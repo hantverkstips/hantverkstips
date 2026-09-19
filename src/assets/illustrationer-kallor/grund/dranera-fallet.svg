@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Huset sett rakt uppifrån på linjerat papper, ritat som en rektangel. Runt huset går dräneringsledningen som en sluten slinga strax utanför väggarna, med en rensbrunn ritad som en liten cirkel i vart och ett av de fyra hörnen. Ledningens högsta punkt ligger i det övre vänstra hörnet och är märkt högpunkt i hörnet. Röda pilar visar hur vattnet rinner åt två håll från högpunkten, längs ovansidan och längs vänstersidan, och möts vid uppsamlingsbrunnen som ligger som en större cirkel utanför det nedre högra hörnet. Anteckningarna säger fem mm per meter med gul markering, tjugo meter åt varje håll inne i huset och hundra mm lägre vid brunnen.">
+  <!-- Anteckningsboken. Blyertsskiss på linjerat papper, andra illustrationen till /grund/dranera-hus/.
+       Planvy, alltså huset uppifrån, till skillnad från snitten i dranera-lagren.svg och i
+       verktygsskissen rakna/dranering.svg. Den visar det ett snitt inte kan visa: att ledningen är
+       en slinga med en högpunkt och ett fall åt två håll, och hur stor höjdskillnaden blir.
+       Blyerts 2 px: husets kontur och dräneringsledningen.
+       Blyerts-2 1,5 px: rensbrunnarna i hörnen, uppsamlingsbrunnen, ledningen ut till den.
+       Blyerts-2 1,25 px: pekpinnar och måttmarkeringar.
+       Snickarpenna 2,5 px: vattnets riktning från högpunkten åt två håll, den enda pennsaken.
+       Tumstock bakom nyckeltalet 5 mm per meter, som är fallet Isodrän anger.
+       Räkningen i bilden är vår: 12 gånger 8 m ger 40 löpmeter, alltså cirka 20 m från högpunkt
+       till brunn åt vardera hållet, vilket vid 5 mm per meter blir 100 mm höjdskillnad.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts: husets kontur uppifrån, 12 gånger 8 meter -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M178,114 Q300,112 422,114"/>
+    <path d="M422,114 Q424,196 422,278"/>
+    <path d="M422,278 Q418,279 412,279 M412,279 V295 M412,295 Q392,296 372,295 M372,295 V279 M372,279 Q275,281 178,278"/>
+    <path d="M178,278 Q176,196 178,114"/>
+  </g>
+
+  <!-- Blyerts: dräneringsledningen som en slinga strax utanför väggarna -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round">
+    <path d="M156,88 Q300,85 444,88"/>
+    <path d="M448,92 Q450,196 448,300"/>
+    <path d="M444,304 Q300,307 156,304"/>
+    <path d="M152,300 Q150,196 152,92"/>
+  </g>
+
+  <!-- Blyerts-2: rensbrunnarna i de fyra hörnen och uppsamlingsbrunnen utanför -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5">
+    <circle cx="152" cy="88" r="9"/>
+    <circle cx="448" cy="88" r="9"/>
+    <circle cx="448" cy="304" r="9"/>
+    <circle cx="152" cy="304" r="9"/>
+    <circle cx="518" cy="322" r="16"/>
+    <circle cx="518" cy="322" r="8"/>
+  </g>
+  <path d="M456,308 Q484,314 504,318" fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Blyerts-2: pekpinnar -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M178,54 Q160,68 144,79"/>
+    <path d="M272,330 Q216,322 162,312"/>
+    <path d="M520,268 Q521,284 518,302"/>
+  </g>
+
+  <!-- Papperslappar bakom anteckningarna -->
+  <g fill="#f5efe3">
+    <rect x="200" y="171" width="212" height="26"/>
+    <rect x="200" y="207" width="202" height="26"/>
+    <rect x="326" y="26" width="164" height="28"/>
+    <rect x="446" y="242" width="148" height="26"/>
+  </g>
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="328" y="28" width="160" height="26" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 408 41)"/>
+
+  <!-- Snickarpenna: vattnets riktning från högpunkten åt två håll, ner till brunnen -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M236,100 Q300,97 364,100 M352,93 L365,100 L352,107"/>
+    <path d="M165,150 Q162,196 165,242 M158,230 L165,243 L172,230"/>
+    <path d="M236,292 Q300,295 364,292 M352,285 L365,292 L352,299"/>
+  </g>
+
+  <!-- Handskrivna anteckningar (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="26" fill="#2a2521">
+    <text x="52" y="44" fill="#625a50">högpunkt i hörnet</text>
+    <text x="332" y="48">5 mm per meter</text>
+    <text x="204" y="190" fill="#625a50">20 m åt varje håll</text>
+    <text x="204" y="226">ger 100 mm fall</text>
+    <text x="276" y="340" fill="#625a50">rensbrunn i hörnen</text>
+    <text x="450" y="260">brunnen lägst</text>
+  </g>
+</svg>

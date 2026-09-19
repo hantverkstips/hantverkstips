@@ -5,15 +5,26 @@
  *
  * Varje konstant står namngiven nedan med källa eller ANTAGANDE i kommentaren.
  * Underlaget med hämtningsdatum och länk per rad ligger i
- * docs/briefer/underlag-kalkyl-altan-2026-09-17.md.
+ * docs/briefer/underlag-kalkyl-altan-2026-09-17.md, och spännvidderna,
+ * plintavstånden och förpackningsstorlekarna kommer sedan 2026-09-19 ur
+ * docs/briefer/underlag-reglar-avstand-2026-09-19.md, som hämtade primärkällan
+ * Svenskt Trä, Lathunden 8:2021.
  *
  * Testas av scripts/test-kalkyl-altan.mjs mot räkneexemplen i underlaget.
  */
 
 export type Trallbredd = 95 | 120 | 145;
 export type Riktning = 'langsida' | 'kortsida';
-export type Regelavstand = 450 | 600;
-export type Regeldimension = '45x145' | '45x170' | '45x195';
+/**
+ * Centrumavstånden Lathundens altantabell har kolumner för. Tidigare hette det
+ * täta måttet c 450 mm, vilket inte stod i någon tabell utan låg mellan två av
+ * dem. Sedan 2026-09-19 är båda måtten Lathundens egna, så att väljaren och
+ * tabellen på /altan/reglar-avstand-och-dimensioner/ säger samma sak.
+ */
+export type Regelavstand = 400 | 600;
+export type Regeldimension = '45x120' | '45x145' | '45x170' | '45x195' | '45x220';
+/** Bärlinedimensionerna i Lathundens plintavståndstabell. 70 × 220 finns bara där. */
+export type Barlinedimension = Regeldimension | '70x220';
 export type Grund = 'plintar' | 'befintlig';
 
 export interface AltanIndata {
@@ -76,6 +87,14 @@ export type AltanResultat =
       antalPlintar: number;
       /** Antal plintar i varje rad, alltså under en bärlina. */
       plintarPerRad: number;
+      /** Största avstånd mellan två plintar i meter. Noll utan plintar. */
+      plintavstandM: number;
+      /** Den rad i Lathundens plintavståndstabell räkningen läst, i meter. Noll utan plintar. */
+      friLangdTabellM: number;
+      /** Bärlinans dimension, antagen lika med regelns. */
+      barlina: Barlinedimension;
+      /** Bärlinans dimension som text, "45 × 145 mm". */
+      barlinaText: string;
       /** Antal korsningar mellan bräda och regel. */
       antalKorsningar: number;
       /** Trallskruv, räknat tal. */
@@ -142,26 +161,85 @@ export const INFASTNING_TEXT =
   'Reglarna fästs i bärlinan med vinkelbeslag och ankarskruv, eller snedskruvas med två skruv per infästning. Beslagen ska vara varmförzinkade eller rostfria, som trallskruven.';
 
 /**
- * Största spännvidd i meter för reglarna mellan två bärlinor, per dimension och
- * c-mått. Raden för 45 × 145 är Källa (Altanplaneraren, branschens
- * dimensioneringstabell för villaaltan utan tak: 2,30 m vid c 600 mm och 2,60 m
- * vid tätare c-mått). Raderna för 45 × 170 och 45 × 195 är ANTAGANDE, byggda på
- * samma källas trappa mellan dimensionerna. Underlaget avsnitt 7 punkt 3 säger
- * vad chefredaktören ska verifiera mot Svenskt Träs egen tabell.
+ * Största fria längd i meter för reglarna mellan två bärlinor, per dimension och
+ * c-mått. KÄLLA: Svenskt Trä, Lathunden, hjälpreda för byggare, utgåva 8:2021,
+ * sid. 30, tabellen "Golvbjälkar av konstruktionsvirke i ett fack till altan
+ * (0,30 kN/m²), maximal fri längd", kolumnerna C24 vid c 600 och c 400 mm.
+ * Talen står ordagrant som de står i tabellen, inte avrundade.
+ *
+ * Tabellhuvudets förutsättningar: konstruktionsvirke C24, golv av minst 22 mm
+ * trall G4-2 eller bättre, EKS 11, säkerhetsklass 1, klimatklass 3, nedböjning
+ * begränsad till 1/200 av spännvidden. Tabellen har ingen snözon som
+ * ingångsvärde; den som bygger i en hög snözon kör sitt eget fall genom Svenskt
+ * Träs dimensioneringsprogram.
+ *
+ * Raderna var till 2026-09-19 märkta ANTAGANDE med Altanplaneraren som stöd.
+ * Lathunden bekräftar dem på centimetern, och märkningen är därför borta.
+ * 45 × 95 mm finns inte i Lathundens altantabell och erbjuds därför inte.
  */
 export const MAX_SPANNVIDD_M: Record<Regeldimension, Record<Regelavstand, number>> = {
-  '45x145': { 450: 2.6, 600: 2.3 },
-  '45x170': { 450: 3.0, 600: 2.7 },
-  '45x195': { 450: 3.45, 600: 3.1 },
+  '45x120': { 400: 2.19, 600: 1.91 },
+  '45x145': { 400: 2.64, 600: 2.31 },
+  '45x170': { 400: 3.1, 600: 2.71 },
+  '45x195': { 400: 3.56, 600: 3.11 },
+  '45x220': { 400: 4.01, 600: 3.51 },
 };
 
 /**
- * Bärlinan. ANTAGANDE att den är 45 × 170 mm, stött av TräGuiden: bärlinor
- * byggs oftast av den dimensionen och har som mest 2,5 meters avstånd mellan
- * plintarna. Grövre bärlina ger färre plintar, klenare ger fler.
+ * De fria längder Lathundens plintavståndstabell har kolumner för, i meter.
+ * Ett mellanläge rundas uppåt till närmaste kolumn, se tabelleradFriLangd().
  */
-export const BARLINA_TEXT = '45 × 170 mm';
-export const PLINTAVSTAND_M = 2.5;
+export const FRI_LANGD_TABELL_M = [2.4, 3.6, 4.8] as const;
+export type FriLangd = (typeof FRI_LANGD_TABELL_M)[number];
+
+/**
+ * Maximalt plintavstånd (D) i meter per bärlinedimension och golvbjälkarnas
+ * fria längd (L). KÄLLA: Lathunden 8:2021, sid. 24, tabellen "Bärlinor av
+ * konstruktionsvirke till golvbjälkar i ett fack till altan (0,45 kN/m²),
+ * plintavstånd", kolumnerna C24.
+ *
+ * Tabellhuvudet: bärlinor med två eller flera fack med samma plintavstånd, alla
+ * bärlinor i samma dimension och hållfasthetsklass, C24, EKS 11, säkerhetsklass
+ * 1, klimatklass 3, nedböjning 1/300.
+ *
+ * Tabellen ersatte 2026-09-19 den fasta konstanten 2,5 m, som var för generös:
+ * 2,5 m kräver en bärlina på 45 × 220 mm och bara vid den kortaste fria längden.
+ * Kalkylatorn gav alltså för få plintar. 70 × 220 står med för att tabellen ska
+ * vara hel; den är ingen regeldimension och nås därför inte av räkningen i dag.
+ */
+export const PLINTAVSTAND_M: Record<Barlinedimension, Record<FriLangd, number>> = {
+  '45x120': { 2.4: 1.38, 3.6: 1.03, 4.8: 0.83 },
+  '45x145': { 2.4: 1.64, 3.6: 1.25, 4.8: 1.0 },
+  '45x170': { 2.4: 1.92, 3.6: 1.47, 4.8: 1.18 },
+  '45x195': { 2.4: 2.2, 3.6: 1.68, 4.8: 1.35 },
+  '45x220': { 2.4: 2.49, 3.6: 1.9, 4.8: 1.53 },
+  '70x220': { 2.4: 3.1, 3.6: 2.56, 4.8: 2.18 },
+};
+
+/**
+ * ANTAGANDE: bärlinan har samma dimension som reglarna. Det är det vanligaste
+ * på en villaaltan, men inte givet; Svenskt Träs egen byggbeskrivning bygger
+ * bärlinan av en grövre dimension än golvbjälkarna. Väljer läsaren en grövre
+ * bärlina än reglarna tål den ett längre plintavstånd än verktyget räknar med,
+ * alltså ligger talet på säkra sidan.
+ */
+export function barlinaFor(regel: Regeldimension): Barlinedimension {
+  return regel;
+}
+
+/**
+ * Förhållandet mellan reglarnas centrumavstånd och plintavståndet. Lathunden
+ * sid. 24 skriver villkoret som att golvbjälkarnas centrumavstånd (C)
+ * rekommenderas vara högst plintavståndet delat med fyra.
+ *
+ * OBS, och det här är en läsning som teknisk ansvarig ska ta ställning till:
+ * bokstavligt betyder villkoret D minst 4 × C, alltså en undre gräns för
+ * plintavståndet. Vi tillämpar det i stället som ett tak, D högst 4 × C. Det ger
+ * alltid fler plintar och aldrig färre, så resultatet är på säkra sidan oavsett
+ * vilken läsning som är den rätta. Den bokstavliga läsningen hade i stället
+ * krävt en grövre bärlina vid c 600 mm, vilket är ett annat slags svar.
+ */
+export const CC_ANDEL_AV_PLINTAVSTAND = 4;
 
 /**
  * Handelslängder på trall i meter. ANTAGANDE: det här är de längder
@@ -176,11 +254,12 @@ export const HANDELSLANGDER_M = [3.6, 4.2, 4.8] as const;
 export const SPILL_TRALL = 0.1;
 
 /**
- * Förpackningsstorlekar på trallskruv. ANTAGANDE: 250 och 500 är de storlekar
- * kedjorna säljer 4,2 × 55 i. Underlaget avsnitt 7 punkt 4 ska kontrollera om
- * 250 och 1 000 är det rätta paret.
+ * Förpackningsstorlekar på trallskruv. KÄLLA: butikskontroll 2026-09-19 av
+ * skribenten på trallskruv. Bauhaus säljer 200 och 250 stycken, Byggmax 250,
+ * K-Bygg och Essve 250 stycken och hink om 1 000. Ingen av dem säljer 500.
+ * Paret var till 2026-09-19 märkt ANTAGANDE och stod som 250 och 500.
  */
-export const FORPACKNINGAR = [250, 500] as const;
+export const FORPACKNINGAR = [250, 1000] as const;
 
 /** Fallet ut från huset. Källa: byggbeskrivningen Altan, cirka 1:100. */
 export const FALL_TEXT = '1:100, alltså en centimeter per meter';
@@ -198,13 +277,15 @@ export const RIKTNINGAR: { varde: Riktning; etikett: string }[] = [
 
 export const REGELAVSTAND: { varde: Regelavstand; etikett: string }[] = [
   { varde: 600, etikett: 'c 600 mm' },
-  { varde: 450, etikett: 'c 450 mm' },
+  { varde: 400, etikett: 'c 400 mm' },
 ];
 
 export const REGELDIMENSIONER: { varde: Regeldimension; etikett: string }[] = [
+  { varde: '45x120', etikett: '45 × 120 mm' },
   { varde: '45x145', etikett: '45 × 145 mm' },
   { varde: '45x170', etikett: '45 × 170 mm' },
   { varde: '45x195', etikett: '45 × 195 mm' },
+  { varde: '45x220', etikett: '45 × 220 mm' },
 ];
 
 export const GRUNDER: { varde: Grund; etikett: string }[] = [
@@ -235,7 +316,7 @@ export const GRANSER = {
  */
 
 /** "45x145" blir "45 × 145 mm", alltså måttet som det skrivs i löptext. */
-function dimensionText(regel: Regeldimension): string {
+function dimensionText(regel: Barlinedimension): string {
   return `${regel.replace('x', ' × ')} mm`;
 }
 
@@ -328,11 +409,33 @@ function arTrallbredd(n: number): n is Trallbredd {
 }
 
 function arCc(n: number): n is Regelavstand {
-  return n === 450 || n === 600;
+  return n === 400 || n === 600;
 }
 
 function arRegel(v: string | null): v is Regeldimension {
-  return v === '45x145' || v === '45x170' || v === '45x195';
+  return REGELDIMENSIONER.some((r) => r.varde === v);
+}
+
+/**
+ * Den fria längd i tabellen som gäller för en uträknad spännvidd. Ett mellanläge
+ * rundas uppåt till närmaste kolumn: en regel som går 1,5 m läses på raden för
+ * 2,4 m, vilket ger ett kortare plintavstånd än en interpolering hade gett och
+ * alltså fler plintar. Vi hittar inte på tal mellan Lathundens kolumner.
+ */
+export function tabelleradFriLangd(spannviddM: number): FriLangd {
+  for (const l of FRI_LANGD_TABELL_M) if (spannviddM <= l + 1e-9) return l;
+  return FRI_LANGD_TABELL_M[FRI_LANGD_TABELL_M.length - 1];
+}
+
+/**
+ * Största avstånd mellan två plintar i meter. Två villkor, och det strängaste
+ * gäller: bärlinans egen tabellrad vid den fria längd reglarna har, och
+ * förhållandet till reglarnas centrumavstånd (se CC_ANDEL_AV_PLINTAVSTAND).
+ */
+export function plintavstand(regel: Regeldimension, spannviddM: number, ccMm: Regelavstand): number {
+  const tabellvarde = PLINTAVSTAND_M[barlinaFor(regel)][tabelleradFriLangd(spannviddM)];
+  const efterCc = (ccMm / 1000) * CC_ANDEL_AV_PLINTAVSTAND;
+  return Math.min(tabellvarde, efterCc);
 }
 
 /** Läser adressen. Skräp faller tillbaka på standardvärdet, inte på ett fel. */
@@ -349,8 +452,12 @@ export function tolkaQuery(q: URLSearchParams): { indata: AltanIndata; harIndata
   const raTrallbredd = tillTal(q.get('trallbredd'));
   const trallbreddMm: Trallbredd = arTrallbredd(raTrallbredd) ? raTrallbredd : STANDARD.trallbreddMm;
 
+  /* Delade länkar från före 2026-09-19 bär cc=450, ett mått som inte finns i
+     Lathundens tabell. De läses som c 400 mm, alltså tätare än läsaren skrev
+     och därför på säkra sidan; att tyst falla tillbaka på c 600 hade gett
+     glesare reglar än hon bad om. */
   const raCc = tillTal(q.get('cc'));
-  const ccMm: Regelavstand = arCc(raCc) ? raCc : STANDARD.ccMm;
+  const ccMm: Regelavstand = arCc(raCc) ? raCc : raCc === 450 ? 400 : STANDARD.ccMm;
 
   const raRegel = q.get('regel');
   const regel: Regeldimension = arRegel(raRegel) ? raRegel : STANDARD.regel;
@@ -434,9 +541,11 @@ export function raknaAltan(i: AltanIndata): AltanResultat {
   const spannviddM = plintar ? regelLangdM / fack : null;
   const lopmeterBarlinor = antalBarlinor * trallLangdM;
 
-  // Steg 6. Plintarna. Varje bärlina vilar på en rad plintar, och avståndet
-  // mellan två plintar sätts av bärlinans dimension.
-  const plintarPerRad = plintar ? Math.ceil(trallLangdM / PLINTAVSTAND_M - 1e-9) + 1 : 0;
+  // Steg 6. Plintarna. Varje bärlina vilar på en rad plintar. Avståndet mellan
+  // två plintar slås upp i Lathundens bärlinetabell på bärlinans dimension och
+  // reglarnas fria längd, och kapas sedan av förhållandet till c-måttet.
+  const plintavstandM = plintar ? plintavstand(i.regel, spannviddM ?? 0, i.ccMm) : 0;
+  const plintarPerRad = plintar ? Math.ceil(trallLangdM / plintavstandM - 1e-9) + 1 : 0;
   const antalPlintar = antalBarlinor * plintarPerRad;
 
   // Steg 7. Skruven. Två per korsning mellan bräda och regel, uppåt till hel
@@ -477,6 +586,10 @@ export function raknaAltan(i: AltanIndata): AltanResultat {
     maxSpannviddM,
     antalPlintar,
     plintarPerRad,
+    plintavstandM,
+    friLangdTabellM: plintar ? tabelleradFriLangd(spannviddM ?? 0) : 0,
+    barlina: barlinaFor(i.regel),
+    barlinaText: dimensionText(barlinaFor(i.regel)),
     antalKorsningar,
     antalSkruv,
     forpackningStorlek: forpackning.storlek,

@@ -51,6 +51,7 @@ import Illustration from '../../components/ui/Illustration.astro';
 import Markering from '../../components/ui/Markering.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
 import StrukturData from '../../components/ui/StrukturData.astro';
+import Tabellyta from '../../components/ui/Tabellyta.astro';
 import Verktygskort from '../../components/ui/Verktygskort.astro';
 
 Astro.locals.sidtyp = 'verktyg';
@@ -554,7 +555,7 @@ const huvudbild = varumarke ?? illustration;
       </p>
 
       <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad svaret vilar på</h3>
-      <div class="mt-4 overflow-x-auto">
+      <Tabellyta kolumner={3} class="mt-4">
         <table class="w-full border-collapse text-liten tabular-nums">
           <caption class="sr-only">Gränser, priser och antaganden i självbesiktningen av källaren</caption>
           <thead>
@@ -595,7 +596,7 @@ const huvudbild = varumarke ?? illustration;
             </tr>
           </tfoot>
         </table>
-      </div>
+      </Tabellyta>
 
       <p class="m-0 mt-6 text-brod lg:text-brod-lg">
         Tre saker kan verktyget inte se. Det första är fukten inne i materialet, som kräver en givare borrad i

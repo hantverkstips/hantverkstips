@@ -17,7 +17,7 @@ export const prerender = false;
 import Bas from '../../layouts/Bas.astro';
 import { formateraTal } from '../../lib/format';
 import {
-  BARLINA_TEXT,
+  CC_ANDEL_AV_PLINTAVSTAND,
   FALL_TEXT,
   MAX_SPANNVIDD_M,
   PLINTAVSTAND_M,
@@ -39,6 +39,7 @@ import Faq from '../../components/ui/Faq.astro';
 import Markering from '../../components/ui/Markering.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
 import StrukturData from '../../components/ui/StrukturData.astro';
+import Tabellyta from '../../components/ui/Tabellyta.astro';
 import Illustration from '../../components/ui/Illustration.astro';
 
 Astro.locals.sidtyp = 'verktyg';
@@ -126,6 +127,9 @@ const tal =
         maxSpannvidd: formateraTal(visat.maxSpannviddM, 1),
         plintar: formateraTal(visat.antalPlintar),
         plintarPerRad: formateraTal(visat.plintarPerRad),
+        plintavstand: formateraTal(visat.plintavstandM, 2),
+        barlinaText: visat.barlinaText,
+        friLangdTabell: formateraTal(visat.friLangdTabellM, 1),
         skruv: formateraTal(visat.antalSkruv),
         packText: packRad(visat.antalForpackningar, visat.forpackningStorlek),
         skruvAttKopa: formateraTal(visat.skruvAttKopa),
@@ -143,6 +147,8 @@ const TRAGUIDEN = 'https://www.traguiden.se/konstruktion/konstruktiv-utformning/
 const BYGGBESKRIVNING = 'https://www.byggbeskrivningar.se/utvandigt/altan/';
 const PRINCIPLOSNING =
   'https://www.traguiden.se/konstruktion/konstruktionsexempel/altaner-balkonger-och-skarmtak/altanbjalklag/principlosning/';
+/** Primärkällan bakom spännvidderna och plintavstånden, hämtad 2026-09-19. */
+const LATHUNDEN = 'https://www.svenskttra.se/siteassets/5-publikationer/pdfer/st-lathunden-2021-med-utvik.pdf';
 
 const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande'; stod: string; url?: string }[] = [
   {
@@ -161,9 +167,10 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
   },
   {
     storhet: 'Det täta regelavståndet',
-    varde: 'c 450 mm',
-    grund: 'Antagande',
-    stod: 'Tabellen knyter måttet till värmebehandlad trall på 26 mm. Under 28 mm trall är det tätare än kravet, alltså på säkra sidan',
+    varde: 'c 400 mm',
+    grund: 'Källa',
+    stod: 'Lathunden 8:2021 sid. 30 har kolumner för c 600, 400 och 300 mm. Måttet c 450 mm, som verktyget erbjöd före 19 september 2026, står inte i någon tabell',
+    url: LATHUNDEN,
   },
   {
     storhet: 'Springa vid montering',
@@ -188,29 +195,45 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
   },
   {
     storhet: 'Spännvidd, 45 × 145 mm',
-    varde: `${formateraTal(MAX_SPANNVIDD_M['45x145'][600], 1)} m vid c 600 mm`,
+    varde: `${formateraTal(MAX_SPANNVIDD_M['45x145'][600], 2)} m vid c 600 mm`,
     grund: 'Källa',
-    stod: 'Branschens dimensioneringstabell för villaaltan utan tak. Vid c 450 mm gäller 2,6 m',
+    stod: 'Lathunden 8:2021 sid. 30, golvbjälkar till altan i C24. Vid c 400 mm gäller 2,64 m. Svenskt Träs egen byggbeskrivning lägger samma dimension med 2 400 mm fri längd',
+    url: LATHUNDEN,
   },
   {
-    storhet: 'Spännvidd, 45 × 170 och 45 × 195 mm',
-    varde: `${formateraTal(MAX_SPANNVIDD_M['45x170'][600], 1)} och ${formateraTal(MAX_SPANNVIDD_M['45x195'][600], 1)} m vid c 600 mm`,
-    grund: 'Antagande',
-    stod: 'Trappan mellan dimensionerna i samma tabell. Talen ska verifieras mot Svenskt Träs egen spännviddstabell innan de kallas källa',
+    storhet: 'Spännvidd, övriga dimensioner',
+    varde: `${formateraTal(MAX_SPANNVIDD_M['45x120'][600], 2)} till ${formateraTal(MAX_SPANNVIDD_M['45x220'][600], 2)} m vid c 600 mm`,
+    grund: 'Källa',
+    stod: 'Samma tabell, raderna 45 × 120, 170, 195 och 220 mm. 45 × 95 mm står inte i tabellen och erbjuds därför inte',
+    url: LATHUNDEN,
+  },
+  {
+    storhet: 'Tabellens förutsättningar',
+    varde: 'C24, EKS 11',
+    grund: 'Källa',
+    stod: 'Lathundens tabellhuvud: hållfasthetsklass C24, säkerhetsklass 1, klimatklass 3, nedböjning högst en tvåhundradel av spännvidden. Ingen snözon är ingångsvärde',
+    url: LATHUNDEN,
   },
   {
     storhet: 'Bärlinans dimension',
-    varde: BARLINA_TEXT,
+    varde: 'Samma som regeln',
     grund: 'Antagande',
-    stod: 'TräGuiden utgår från den dimensionen på en villaaltan, och handeln lagerför den',
+    stod: 'Det vanligaste på en villaaltan, men inte givet. Svenskt Träs byggbeskrivning bygger bärlinan grövre än golvbjälkarna, och en grövre bärlina tål ett längre plintavstånd än verktyget räknar med',
     url: PRINCIPLOSNING,
   },
   {
     storhet: 'Avstånd mellan plintar',
-    varde: `${formateraTal(PLINTAVSTAND_M, 1)} m`,
+    varde: `${formateraTal(PLINTAVSTAND_M['45x120'][4.8], 2)} till ${formateraTal(PLINTAVSTAND_M['45x220'][2.4], 2)} m`,
     grund: 'Källa',
-    stod: 'Så långt en bärlina på 45 × 170 mm får spänna. Grövre bärlina ger färre plintar',
-    url: PRINCIPLOSNING,
+    stod: 'Lathunden 8:2021 sid. 24, bärlinor till golvbjälkar i ett fack. Avståndet slås upp på bärlinans dimension och reglarnas fria längd, och en fri längd mellan två kolumner läses på den längre. Verktyget räknade före 19 september 2026 med 2,5 m rakt av och gav då för få plintar',
+    url: LATHUNDEN,
+  },
+  {
+    storhet: 'Plintavstånd mot c-mått',
+    varde: `Högst ${CC_ANDEL_AV_PLINTAVSTAND} gånger c-måttet`,
+    grund: 'Antagande',
+    stod: 'Lathunden sid. 24 rekommenderar att reglarnas centrumavstånd är högst plintavståndet delat med fyra. Vi tillämpar villkoret som ett tak på plintavståndet, vilket alltid ger fler plintar och aldrig färre',
+    url: LATHUNDEN,
   },
   {
     storhet: 'Fall på färdigt golv',
@@ -233,9 +256,9 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
   },
   {
     storhet: 'Förpackning på trallskruv',
-    varde: '250 eller 500',
-    grund: 'Antagande',
-    stod: 'Kalkylatorn väljer den storlek som ger minst överskott. Vissa kedjor säljer 1 000-pack i stället',
+    varde: '250 eller 1 000',
+    grund: 'Källa',
+    stod: 'Butikskontroll 19 september 2026: Bauhaus säljer 200 och 250 stycken, Byggmax 250, K-Bygg och Essve 250 och hink om 1 000. Ingen säljer 500. Kalkylatorn väljer den storlek som ger minst överskott',
   },
 ];
 
@@ -251,7 +274,7 @@ const FRAGOR = [
   },
   {
     fraga: 'Hur många plintar behöver altanen?',
-    svar: 'Räkna raderna först, inte plintarna. Varje bärlina vilar på en rad plintar, och hur många bärlinor altanen behöver bestäms av hur långt reglarna får spänna. En regel på 45 × 145 mm klarar 2,3 meter, så en altan som är tre meter djup får en bärlinrad på mitten. Sedan sätts plintarna i varje rad med högst 2,5 meter mellan sig.',
+    svar: 'Räkna raderna först, inte plintarna. Varje bärlina vilar på en rad plintar, och hur många bärlinor altanen behöver bestäms av hur långt reglarna får spänna. En regel på 45 × 145 mm klarar 2,31 meter enligt Svenskt Trä, så en altan som är tre meter djup får en bärlinrad på mitten. Sedan sätts plintarna i varje rad efter vad bärlinan bär: en bärlina på 45 × 145 mm tål 1,64 meter mellan plintarna när reglarna går högst 2,4 meter. En altan på 4 gånger 3 meter får därför tolv plintar, fyra i var och en av de tre raderna.',
     lank: { text: 'Höjden över mark avgör i sin tur om bygget behöver lov.', href: '/altan/bygglov-altan/' },
   },
 ];
@@ -382,14 +405,15 @@ const huvudbild = varumarke ?? illustration;
                 {visat.antalBarlinor > 0 ? (
                   <>
                     <li class="border-t border-linje py-2">
-                      {tal.barlinor} bärlinor i {BARLINA_TEXT}, alltså {tal.lopmeterBarlinor} löpmeter
+                      {tal.barlinor} bärlinor i {tal.barlinaText}, alltså {tal.lopmeterBarlinor} löpmeter
                     </li>
                     <li class="border-t border-linje py-2">
                       Reglarna spänner {tal.spannvidd} m mellan bärlinorna, och dimensionen klarar{' '}
                       {tal.maxSpannvidd} m
                     </li>
                     <li class="border-t border-linje py-2">
-                      {tal.plintar} plintar, alltså {tal.plintarPerRad} i varje rad
+                      {tal.plintar} plintar, alltså {tal.plintarPerRad} i varje rad, med högst{' '}
+                      {tal.plintavstand} m mellan två plintar
                     </li>
                   </>
                 ) : (
@@ -457,16 +481,29 @@ const huvudbild = varumarke ?? illustration;
         Reglarna går tvärs trallen, med högst c&nbsp;600&nbsp;mm mellan sig, alltså 600&nbsp;mm mellan reglarnas mitt.
         Det måttet hör ihop med att trallen är 28&nbsp;mm tjock. En tunnare bräda vill ha tätare reglar, annars fjädrar
         golvet när någon går på det. Skruven följer sedan direkt ur stommen: varje ställe där en bräda korsar en regel
-        får två skruv, eftersom en bräda från 95&nbsp;mm skulle kupa sig med bara en.
+        får två skruv, eftersom en bräda från 95&nbsp;mm skulle kupa sig med bara en. Vilket stål skruven ska vara i,
+        och varför fel val syns som svarta ringar kring varje huvud efter ett par somrar, står i{' '}
+        <a href="/altan/trallskruv/" class:list={[LANK_KLASS]}>trallskruv, vilken som håller i tjugo år</a>.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
         Plintarna är det som förvånar flest. De följer inte altanens yta, de följer regeln. Reglarna vilar på bärlinor,
         och hur långt en regel får spänna mellan två bärlinor bestäms av hur hög den är. En regel på 45&nbsp;×&nbsp;145
-        mm klarar 2,3&nbsp;m. En altan som är tre meter djup får därför en bärlinrad på mitten, och den raden är i sin
-        tur en rad plintar i marken. Byter du till 45&nbsp;×&nbsp;195&nbsp;mm bär reglarna hela djupet i ett spann, och
-        tre plintar försvinner ur listan. Det är därför valet av regeldimension är dyrare eller billigare än det ser ut
-        i prislistan. Inom varje rad sätts plintarna med som mest 2,5&nbsp;m mellan sig, vilket är så långt en bärlina
-        på 45&nbsp;×&nbsp;170&nbsp;mm får spänna.
+        mm klarar 2,31&nbsp;m enligt Svenskt Träs tabell. En altan som är tre meter djup får därför en bärlinrad på
+        mitten, och den raden är i sin tur en rad plintar i marken. Byter du till 45&nbsp;×&nbsp;195&nbsp;mm bär
+        reglarna hela djupet i ett spann, och en hel rad plintar försvinner ur listan. Det är därför valet av
+        regeldimension är dyrare eller billigare än det ser ut i prislistan.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Inom varje rad står plintarna tätare än de flesta tror. Avståndet är inte ett fast mått utan följer bärlinans
+        dimension och hur långt reglarna spänner: en bärlina på 45&nbsp;×&nbsp;145&nbsp;mm bär 1,64&nbsp;m mellan
+        plintarna när reglarna går högst 2,4&nbsp;m, och bara 1,25&nbsp;m när de går 3,6&nbsp;m. Ju längre reglarna
+        spänner, desto mer last kommer ner i bärlinan, och desto tätare måste den stödjas. Talen står i Lathundens
+        tabell över bärlinor, och tabellen sätter plintavståndet lägre än de 2,5&nbsp;m verktyget räknade med fram till
+        den 19 september 2026. Hela tabellen står i{' '}
+        <a href="/altan/reglar-avstand-och-dimensioner/" class={LANK_KLASS}>
+          sidan om avstånd mellan reglar och plintar
+        </a>
+        .
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
         Det kalkylatorn inte räknar är höjden över mark, och det är den som avgör om bygget kräver lov. Reglerna står i{' '}
@@ -487,7 +524,7 @@ const huvudbild = varumarke ?? illustration;
         varumarke && illustration && (
           <Illustration
             namn="rakna/altan"
-            alt="Altan uppifrån med nio trallbrädor, fem reglar tvärs under dem och nio plintar, en måttbygel märkt c 600 och en springa på 5 millimeter."
+            alt="Altan uppifrån med nio trallbrädor, fem reglar tvärs under dem och tolv plintar, en måttbygel märkt c 600 och en springa på 5 millimeter."
             bildtext="Det verktyget räknar på: altanens mått, regelavståndet och springan mellan brädorna."
           />
         )
@@ -513,7 +550,12 @@ const huvudbild = varumarke ?? illustration;
           tills spännvidden ligger under taket.
         </li>
         <li class="mb-2">
-          Varje bärlinrad får plintar med högst 2,5 m mellan sig, och en plint i vardera änden.
+          Plintavståndet slås upp i Svenskt Träs bärlinetabell på bärlinans dimension, som antas vara regelns, och på
+          reglarnas fria längd. En fri längd mellan två kolumner läses på den längre, alltså på säkra sidan.
+        </li>
+        <li class="mb-2">
+          Avståndet kapas sedan till högst fyra gånger reglarnas c-mått, och varje bärlinrad får plintar med det
+          avståndet och en plint i vardera änden.
         </li>
         <li>
           Brädor gånger reglar ger korsningarna, korsningarna gånger två ger skruven, och talet rundas upp till hel
@@ -522,7 +564,7 @@ const huvudbild = varumarke ?? illustration;
       </ol>
 
       <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad siffrorna vilar på</h3>
-      <div class="mt-4 overflow-x-auto">
+      <Tabellyta kolumner={3} class="mt-4">
         <table class="w-full border-collapse text-liten tabular-nums">
           <caption class="sr-only">Antaganden och källor i trallkalkylatorn</caption>
           <thead>
@@ -555,14 +597,17 @@ const huvudbild = varumarke ?? illustration;
             }
           </tbody>
         </table>
-      </div>
+      </Tabellyta>
 
       <p class="m-0 mt-6 text-brod lg:text-brod-lg">
-        Två rader i tabellen är svagare än de andra, och det står där. Spännvidden för de två högre reglarna är räknad
-        ur trappan mellan dimensionerna, inte avläst i en publicerad tabell. Räknar du på en altan som ligger nära
-        gränsen, eller som ska bära ett spabad eller en tung vedeldad badtunna, ska en konstruktör titta på bjälklaget.
-        TräGuiden säger själva att bärförmågan ska dimensioneras, och det gäller alltid när lasten är något annat än
-        folk som sitter och äter.
+        Spännvidderna och plintavstånden är sedan den 19 september 2026 avlästa i Svenskt Träs egen tabell, inte
+        räknade ur trappan mellan dimensionerna. Två rader vilar fortfarande på oss: att bärlinan har samma dimension
+        som regeln, och hur vi tillämpar förhållandet mellan c-måttet och plintavståndet. Båda ligger åt det hållet som
+        ger fler plintar. Tabellen gäller C24 och har ingen snözon som ingångsvärde; bygger du i fjälltrakterna eller i
+        Norrlands inland ska du köra ditt eget fall genom Svenskt Träs dimensioneringsprogram. Räknar du på en altan
+        som ska bära ett spabad eller en tung vedeldad badtunna ska en konstruktör titta på bjälklaget. TräGuiden säger
+        själva att bärförmågan ska dimensioneras, och det gäller alltid när lasten är något annat än folk som sitter
+        och äter.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
         Metoden bakom våra siffror står på <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar vi</a>.
@@ -572,6 +617,11 @@ const huvudbild = varumarke ?? illustration;
     <section>
       <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
       <ul class="m-0 p-0 list-none">
+        <li class="border-t border-linje">
+          <a href="/altan/reglar-avstand-och-dimensioner/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
+            Avstånd mellan reglar och plintar, tabellen du letar efter
+          </a>
+        </li>
         <li class="border-t border-linje">
           <a href="/altan/bygglov-altan/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
             Bygglov för altan, de tre måtten och vad som ändrades

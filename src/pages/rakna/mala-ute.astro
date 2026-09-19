@@ -45,6 +45,7 @@ import Faq from '../../components/ui/Faq.astro';
 import Markering from '../../components/ui/Markering.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
 import StrukturData from '../../components/ui/StrukturData.astro';
+import Tabellyta from '../../components/ui/Tabellyta.astro';
 import Illustration from '../../components/ui/Illustration.astro';
 
 Astro.locals.sidtyp = 'verktyg';
@@ -444,31 +445,11 @@ const huvudbild = varumarke ?? illustration;
                 </li>
               </ul>
 
-              <ul class="m-0 mt-4 p-0 list-none text-brod">
-                {visat.regler.map((regel) => (
-                  <li
-                    class:list={[
-                      'mb-3 border-l-2 pl-3',
-                      regel.utfall === 'stopp' ? 'border-varning' : regel.utfall === 'ok' ? 'border-linje' : 'border-blyerts-2',
-                    ]}
-                  >
-                    <span class="block text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
-                      {UTFALL_ETIKETT[regel.utfall]}
-                    </span>
-                    <span class="block">{regel.text}</span>
-                    <span class="block text-liten text-blyerts-2">{regel.kalla}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <p class="m-0 mt-4 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">Gör inte det här</p>
-              {visat.gorInteDetHar.map((rad) => (
-                <p class="m-0 mt-1 text-brod">{rad}</p>
-              ))}
-
+              {/* Reglerna med källa och "Gör inte det här" står som egna H2
+                  under verktyget. Spalten pekar dit med en rad. */}
               <p class="m-0 mt-4 text-liten text-blyerts-2">
-                Svaret bygger på att luften i kväll är samma som nu. Byter vädret luftmassa, med en front eller en
-                vind som vänder, gäller inte daggpunkten längre.
+                Varför det blev så, och vad du inte ska göra,{' '}
+                <a href="#darfor-blev-svaret-sa" class={LANK_KLASS}>står under verktyget</a>.
               </p>
 
               <p class="m-0 mt-4">
@@ -491,6 +472,46 @@ const huvudbild = varumarke ?? illustration;
         }
       </div>
     </div>
+
+    {/* Reglerna med källa och råden står i läsbredd direkt under verktyget,
+        inte i spalten: en läsare som just fått ett svar läser talet, inte
+        femton motiveringar bredvid formuläret. Se SPEC-SIDMALLAR.md 4.7. */}
+    {
+      visat.status === 'ok' && (
+        <>
+          <section>
+            <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
+            <ul class="m-0 p-0 list-none text-brod lg:text-brod-lg">
+              {visat.regler.map((regel) => (
+                <li
+                  class:list={[
+                    'mb-4 border-l-2 pl-4',
+                    regel.utfall === 'stopp' ? 'border-varning' : regel.utfall === 'ok' ? 'border-linje' : 'border-blyerts-2',
+                  ]}
+                >
+                  <span class="block text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
+                    {UTFALL_ETIKETT[regel.utfall]}
+                  </span>
+                  <span class="block">{regel.text}</span>
+                  <span class="block text-liten text-blyerts-2">{regel.kalla}</span>
+                </li>
+              ))}
+            </ul>
+            <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+              Svaret bygger på att luften i kväll är samma som nu. Byter vädret luftmassa, med en front eller en vind
+              som vänder, gäller inte daggpunkten längre.
+            </p>
+          </section>
+
+          <section>
+            <Pennstreck id="gor-inte-det-har">Gör inte det här</Pennstreck>
+            {visat.gorInteDetHar.map((rad, i) => (
+              <p class:list={['m-0 text-brod lg:text-brod-lg', i > 0 && 'mt-4']}>{rad}</p>
+            ))}
+          </section>
+        </>
+      )
+    }
 
     <section>
       <Pennstreck id="mala-ute-temperatur">Måla ute: temperatur, luftfuktighet och natten som avgör</Pennstreck>
@@ -583,7 +604,7 @@ const huvudbild = varumarke ?? illustration;
       </ol>
 
       <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad svaret vilar på</h3>
-      <div class="mt-4 overflow-x-auto">
+      <Tabellyta kolumner={3} class="mt-4">
         <table class="w-full border-collapse text-liten tabular-nums">
           <caption class="sr-only">Gränser, torktider och antaganden i verktyget måla ute i dag</caption>
           <thead>
@@ -624,7 +645,7 @@ const huvudbild = varumarke ?? illustration;
             </tr>
           </tfoot>
         </table>
-      </div>
+      </Tabellyta>
 
       <p class="m-0 mt-6 text-brod lg:text-brod-lg">
         Fyra rader i tabellen är våra egna, och det står där. Att torktiden fortsätter att fördubblas neråt från
