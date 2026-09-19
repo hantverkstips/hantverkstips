@@ -52,7 +52,12 @@ const jamforelser = (
     (await publicerade('jamforelser')).map(async (e) => ({ e, p: await pelareForKategori(e.data.kategori) })),
   )
 ).filter((j) => j.p === slug);
-const kalkylatorer = KALKYLATORER.filter((k) => k.kategori && kategorier.some((x) => x.id === k.kategori));
+// Samma tvåledade filter som Kortgrupp.astro: pelarleden först, sedan kategorileden.
+// Rättat 2026-09-20; tidigare räknades bara kategorileden, så Räkna-gruppen doldes
+// på varje pelare utan kategorisida trots att kalkylatorer hörde dit.
+const kalkylatorer = KALKYLATORER.filter(
+  (k) => k.pelare?.includes(slug) || (k.kategori !== undefined && kategorier.some((x) => x.id === k.kategori)),
+);
 
 const antal = {
   'hitta-felet': artiklar.filter((e) => e.data.typ === 'problemguide' || e.data.typ === 'kunskap').length,

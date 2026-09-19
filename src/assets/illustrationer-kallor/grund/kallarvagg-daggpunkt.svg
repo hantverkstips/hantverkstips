@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Två snitt genom samma källarvägg med lika mycket isolering, ritade med grundmuren prickad på samma plats i båda. I det vänstra snittet ligger en tredjedel av isoleringen utanför muren och resten innanför, och den röda streckade daggpunktslinjen stannar ute i det yttre lagret. I det högra ligger all isolering innanför muren, och linjen har flyttat in i betongen. Murarna är märkta varm och torr respektive kall och fuktig.">
+  <!-- Anteckningsboken. Prickar är betong, kryss är isolering, snedstreck är mark, samma
+       teckenspråk som kallarvagg-inifran. Muren ligger på samma plats i båda snitten och
+       isolermängden är lika stor, så det enda som flyttar sig är fördelningen och linjen.
+       Vänster: 26 enheter ute och 52 inne, alltså exakt en tredjedel ute, och varje måttbygel
+       spänner över precis det etiketten säger. Höger: 78 enheter, allt inne.
+       Blyerts 2 px för mur, mark och golv, blyerts-2 för prickar, kryss, skraffering och
+       byglar, snickarpenna bara för daggpunktslinjen och dess två etiketter, som hör ihop till
+       en sak. Tumstock bakom nyckeltalet en tredjedel. Handskrift i Caveat 500, 24 px, vågrätt
+       genomgående, konverteras till banor av npm run illustrationer.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Tumstock bakom nyckeltalet en tredjedel -->
+  <rect x="98" y="36" width="126" height="25" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 161 48)"/>
+
+  <!-- Blyerts: markytor, grundmurar, isolerlager och golv -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- vänster snitt: en tredjedel ute, resten inne -->
+    <path d="M44,128 Q70,129 96,128"/>
+    <path d="M96,128 Q109,127 122,128"/>
+    <path d="M96,128 Q95,208 96,288"/>
+    <path d="M96,288 Q109,289 122,288"/>
+    <path d="M122,112 Q150,113 178,112"/>
+    <path d="M122,112 Q121,206 122,300"/>
+    <path d="M178,112 Q179,206 178,300"/>
+    <path d="M116,300 Q150,301 184,300"/>
+    <path d="M178,128 Q204,127 230,128"/>
+    <path d="M230,128 Q231,208 230,288"/>
+    <path d="M178,288 Q204,289 230,288"/>
+    <path d="M230,288 Q261,289 292,288"/>
+    <!-- höger snitt: allt inne -->
+    <path d="M314,128 Q353,129 392,128"/>
+    <path d="M392,112 Q420,113 448,112"/>
+    <path d="M392,112 Q391,206 392,300"/>
+    <path d="M448,112 Q449,206 448,300"/>
+    <path d="M386,300 Q420,301 454,300"/>
+    <path d="M448,128 Q487,127 526,128"/>
+    <path d="M526,128 Q527,208 526,288"/>
+    <path d="M448,288 Q487,289 526,288"/>
+    <path d="M526,288 Q544,289 562,288"/>
+  </g>
+
+  <!-- Blyerts-2: markskraffering utanför de två murarna -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M48,136 l10,10 M70,136 l10,10"/>
+    <path d="M58,158 l10,10 M80,158 l10,10"/>
+    <path d="M48,180 l10,10 M70,180 l10,10"/>
+    <path d="M58,202 l10,10 M80,202 l10,10"/>
+    <path d="M48,224 l10,10 M70,224 l10,10"/>
+    <path d="M58,246 l10,10 M80,246 l10,10"/>
+    <path d="M48,268 l10,10 M70,268 l10,10"/>
+    <path d="M58,290 l10,10 M80,290 l10,10"/>
+    <path d="M318,136 l10,10 M340,136 l10,10 M362,136 l10,10"/>
+    <path d="M328,158 l10,10 M350,158 l10,10 M372,158 l10,10"/>
+    <path d="M318,180 l10,10 M340,180 l10,10 M362,180 l10,10"/>
+    <path d="M328,202 l10,10 M350,202 l10,10 M372,202 l10,10"/>
+    <path d="M318,224 l10,10 M340,224 l10,10 M362,224 l10,10"/>
+    <path d="M328,246 l10,10 M350,246 l10,10 M372,246 l10,10"/>
+    <path d="M318,268 l10,10 M340,268 l10,10 M362,268 l10,10"/>
+    <path d="M328,290 l10,10 M350,290 l10,10 M372,290 l10,10"/>
+  </g>
+
+  <!-- Blyerts-2: betongprickar i de två grundmurarna -->
+  <g fill="#625a50" stroke="none">
+    <circle cx="132" cy="124" r="1.4"/><circle cx="154" cy="120" r="1.4"/><circle cx="170" cy="130" r="1.4"/>
+    <circle cx="142" cy="146" r="1.4"/><circle cx="164" cy="142" r="1.4"/><circle cx="128" cy="154" r="1.4"/>
+    <circle cx="152" cy="166" r="1.4"/><circle cx="172" cy="162" r="1.4"/><circle cx="134" cy="176" r="1.4"/>
+    <circle cx="162" cy="188" r="1.4"/><circle cx="140" cy="196" r="1.4"/><circle cx="172" cy="204" r="1.4"/>
+    <circle cx="128" cy="212" r="1.4"/><circle cx="154" cy="220" r="1.4"/><circle cx="172" cy="228" r="1.4"/>
+    <circle cx="138" cy="236" r="1.4"/><circle cx="162" cy="244" r="1.4"/><circle cx="130" cy="254" r="1.4"/>
+    <circle cx="170" cy="262" r="1.4"/><circle cx="146" cy="270" r="1.4"/><circle cx="128" cy="280" r="1.4"/>
+    <circle cx="164" cy="286" r="1.4"/><circle cx="140" cy="294" r="1.4"/>
+    <circle cx="402" cy="124" r="1.4"/><circle cx="424" cy="120" r="1.4"/><circle cx="440" cy="130" r="1.4"/>
+    <circle cx="412" cy="146" r="1.4"/><circle cx="434" cy="142" r="1.4"/><circle cx="398" cy="154" r="1.4"/>
+    <circle cx="422" cy="166" r="1.4"/><circle cx="442" cy="162" r="1.4"/><circle cx="404" cy="176" r="1.4"/>
+    <circle cx="432" cy="188" r="1.4"/><circle cx="410" cy="196" r="1.4"/><circle cx="442" cy="204" r="1.4"/>
+    <circle cx="398" cy="212" r="1.4"/><circle cx="424" cy="220" r="1.4"/><circle cx="442" cy="228" r="1.4"/>
+    <circle cx="408" cy="236" r="1.4"/><circle cx="432" cy="244" r="1.4"/><circle cx="400" cy="254" r="1.4"/>
+    <circle cx="440" cy="262" r="1.4"/><circle cx="416" cy="270" r="1.4"/><circle cx="398" cy="280" r="1.4"/>
+    <circle cx="434" cy="286" r="1.4"/><circle cx="410" cy="294" r="1.4"/>
+  </g>
+
+  <!-- Blyerts-2: isoleringen som kryss. Vänster: ett smalt lager ute och ett dubbelt så brett inne -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M101,136 l8,8 M109,136 l-8,8 M101,158 l8,8 M109,158 l-8,8 M101,180 l8,8 M109,180 l-8,8 M101,202 l8,8 M109,202 l-8,8 M101,224 l8,8 M109,224 l-8,8 M101,246 l8,8 M109,246 l-8,8 M101,268 l8,8 M109,268 l-8,8"/>
+    <path d="M186,136 l8,8 M194,136 l-8,8 M210,136 l8,8 M218,136 l-8,8"/>
+    <path d="M186,158 l8,8 M194,158 l-8,8 M210,158 l8,8 M218,158 l-8,8"/>
+    <path d="M186,180 l8,8 M194,180 l-8,8 M210,180 l8,8 M218,180 l-8,8"/>
+    <path d="M186,202 l8,8 M194,202 l-8,8 M210,202 l8,8 M218,202 l-8,8"/>
+    <path d="M186,224 l8,8 M194,224 l-8,8 M210,224 l8,8 M218,224 l-8,8"/>
+    <path d="M186,246 l8,8 M194,246 l-8,8 M210,246 l8,8 M218,246 l-8,8"/>
+    <path d="M186,268 l8,8 M194,268 l-8,8 M210,268 l8,8 M218,268 l-8,8"/>
+    <path d="M456,136 l8,8 M464,136 l-8,8 M480,136 l8,8 M488,136 l-8,8 M504,136 l8,8 M512,136 l-8,8"/>
+    <path d="M456,158 l8,8 M464,158 l-8,8 M480,158 l8,8 M488,158 l-8,8 M504,158 l8,8 M512,158 l-8,8"/>
+    <path d="M456,180 l8,8 M464,180 l-8,8 M480,180 l8,8 M488,180 l-8,8 M504,180 l8,8 M512,180 l-8,8"/>
+    <path d="M456,202 l8,8 M464,202 l-8,8 M480,202 l8,8 M488,202 l-8,8 M504,202 l8,8 M512,202 l-8,8"/>
+    <path d="M456,224 l8,8 M464,224 l-8,8 M480,224 l8,8 M488,224 l-8,8 M504,224 l8,8 M512,224 l-8,8"/>
+    <path d="M456,246 l8,8 M464,246 l-8,8 M480,246 l8,8 M488,246 l-8,8 M504,246 l8,8 M512,246 l-8,8"/>
+    <path d="M456,268 l8,8 M464,268 l-8,8 M480,268 l8,8 M488,268 l-8,8 M504,268 l8,8 M512,268 l-8,8"/>
+  </g>
+
+  <!-- Blyerts-2: måttbyglar. Varje bygel spänner över exakt det etiketten säger -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M96,116 Q109,115 122,116 M96,111 v10 M122,111 v10"/>
+    <path d="M124,64 Q118,86 114,108"/>
+    <path d="M178,116 Q204,115 230,116 M178,111 v10 M230,111 v10"/>
+    <path d="M448,116 Q487,115 526,116 M448,111 v10 M526,111 v10"/>
+  </g>
+
+  <!-- Snickarpenna: daggpunktens läge, ute i det yttre lagret till vänster och inne i muren till höger -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="7 6">
+    <path d="M109,122 Q108,210 109,300"/>
+    <path d="M420,122 Q419,210 420,300"/>
+  </g>
+
+  <!-- Handskrift (Caveat), allt vågrätt -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="44" y="54" fill="#625a50">minst</text>
+    <text x="102" y="54" fill="#625a50">en tredjedel</text>
+    <text x="238" y="54" fill="#625a50">ute</text>
+    <text x="204" y="92" fill="#625a50" text-anchor="middle">resten inne</text>
+    <text x="487" y="92" fill="#625a50" text-anchor="middle">allt inne</text>
+    <text x="109" y="326" fill="#ad3519" text-anchor="middle">daggpunkt</text>
+    <text x="420" y="326" fill="#ad3519" text-anchor="middle">daggpunkt</text>
+    <text x="150" y="352" text-anchor="middle">varm och torr</text>
+    <text x="420" y="352" text-anchor="middle">kall och fuktig</text>
+  </g>
+</svg>

@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Snitt genom ett källargolv. Överst golvskivan, under den en ventilerad luftspalt med knoppar, sedan en tunn betongplatta och därunder marken, som är mycket tjockare och vars skraffering löper ut ur bildens underkant. Röda pilar visar markfukten gå upp genom marken och plattan och sedan vidare åt vänster ut genom spalten. Inne i betongplattan står 85 procent relativ fuktighet med gul markering.">
+  <!-- Anteckningsboken. Blyertsskiss på linjerat papper. Mark och betong skrafferade
+       i blyerts-2, lagren i blyerts, markfuktens väg i snickarpenna. Nyckeltalet
+       85 % relativ fuktighet har gul markering och ligger inne i det lager det gäller.
+       Marken är medvetet tjockare än plattan och saknar underkant, så att den läses
+       som mark och inte som ett fjärde lager.
+       Handskrift i Caveat 500, konverteras till banor med npm run illustrationer.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50,
+       penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2, tunn: skraffering i marken, glesare, och löper ut ur underkanten -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M84,198 l9,9 M114,198 l9,9 M144,198 l9,9 M174,198 l9,9 M204,198 l9,9 M234,198 l9,9 M264,198 l9,9 M294,198 l9,9 M324,198 l9,9 M354,198 l9,9 M384,198 l9,9 M414,198 l9,9 M444,198 l9,9 M474,198 l9,9 M504,198 l9,9"/>
+    <path d="M84,262 l9,9 M114,262 l9,9 M144,262 l9,9 M174,262 l9,9 M204,262 l9,9 M234,262 l9,9 M264,262 l9,9 M294,262 l9,9 M324,262 l9,9 M354,262 l9,9 M384,262 l9,9 M414,262 l9,9 M444,262 l9,9 M474,262 l9,9 M504,262 l9,9"/>
+    <path d="M84,318 l9,9 M114,318 l9,9 M144,318 l9,9 M174,318 l9,9 M204,318 l9,9 M234,318 l9,9 M264,318 l9,9 M294,318 l9,9 M324,318 l9,9 M354,318 l9,9 M384,318 l9,9 M414,318 l9,9 M474,318 l9,9 M504,318 l9,9"/>
+    <path d="M84,350 l9,9 M114,350 l9,9 M144,350 l9,9 M174,350 l9,9 M204,350 l9,9 M234,350 l9,9 M264,350 l9,9 M294,350 l9,9 M324,350 l9,9 M354,350 l9,9 M384,350 l9,9 M414,350 l9,9 M444,350 l9,9 M474,350 l9,9 M504,350 l9,9"/>
+  </g>
+
+  <!-- Blyerts-2, tunn: skraffering i betongplattan, tätare -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M82,162 l9,9 M100,162 l9,9 M118,162 l9,9 M136,162 l9,9 M154,162 l9,9 M172,162 l9,9 M190,162 l9,9 M208,162 l9,9 M226,162 l9,9 M244,162 l9,9 M262,162 l9,9 M280,162 l9,9 M298,162 l9,9 M316,162 l9,9 M334,162 l9,9 M352,162 l9,9 M370,162 l9,9 M388,162 l9,9 M406,162 l9,9 M424,162 l9,9 M442,162 l9,9 M460,162 l9,9 M478,162 l9,9 M496,162 l9,9 M514,162 l9,9"/>
+  </g>
+
+  <!-- Blyerts: lagergränserna. Marken saknar underkant med flit -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M69,121 Q300,118 531,121"/>
+    <path d="M69,142 Q300,145 531,142"/>
+    <path d="M69,156 Q300,153 531,156"/>
+    <path d="M69,188 Q300,191 531,188"/>
+    <path d="M70,119 Q68,240 70,360"/>
+    <path d="M530,119 Q532,240 530,360"/>
+  </g>
+
+  <!-- Blyerts: luftspaltsmattans knoppar -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M90,155 q6,-24 12,0 M120,155 q6,-24 12,0 M150,155 q6,-24 12,0 M180,155 q6,-24 12,0 M210,155 q6,-24 12,0 M240,155 q6,-24 12,0 M270,155 q6,-24 12,0 M300,155 q6,-24 12,0 M330,155 q6,-24 12,0 M360,155 q6,-24 12,0 M390,155 q6,-24 12,0 M420,155 q6,-24 12,0 M450,155 q6,-24 12,0 M480,155 q6,-24 12,0 M510,155 q6,-24 12,0"/>
+  </g>
+
+  <!-- Blyerts-2, tunn: pekare från handskriften ner till sitt lager -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M92,68 Q96,94 100,118"/>
+    <path d="M508,68 Q512,108 512,148"/>
+  </g>
+
+  <!-- Snickarpenna: markfukten upp genom mark och platta, sedan ut med spaltluften -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M478,352 Q476,250 478,158"/>
+    <path d="M471,167 L478,156 L485,167"/>
+    <path d="M508,352 Q506,250 508,158"/>
+    <path d="M501,167 L508,156 L515,167"/>
+    <path d="M466,150 Q290,146 112,150"/>
+    <path d="M121,144 L110,150 L121,156"/>
+  </g>
+
+  <!-- Papperslappar bakom handskriften -->
+  <rect x="78" y="158" width="392" height="30" fill="#f5efe3"/>
+  <rect x="224" y="230" width="206" height="28" fill="#f5efe3"/>
+
+  <!-- Överstrykning med tumstocksgul bakom nyckeltalet, inne i betongplattan -->
+  <rect x="230" y="159" width="234" height="26" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 347 172)"/>
+
+  <!-- Handskrivna anteckningar (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="86" y="60" fill="#625a50">golvskivan</text>
+    <text x="300" y="60" fill="#625a50">ventilerad luftspalt</text>
+    <text x="200" y="108" fill="#ad3519">markfukten ut med spalten</text>
+    <text x="86" y="180" fill="#625a50">betongplattan</text>
+    <text x="236" y="180">85 % relativ fuktighet</text>
+    <text x="230" y="250" fill="#625a50">mark utan isolering</text>
+  </g>
+</svg>

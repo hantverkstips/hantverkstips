@@ -227,9 +227,18 @@ tillfället heller. Formuleringen är återgiven ur
 - **"20 graders lutning tre meter bort från huset"** står hos Bolist, HelpHero och
   Markexperter, och som "helst med 20 graders lutning" hos Vi i Villa. Räkningen:
   tan 20° är 0,364, alltså 36 cm per meter och 1,09 m på tre meter. Talet som avses är
-  1:20, alltså 5 cm per meter och 15 cm på tre meter. **Ingen källa vi kunnat läsa anger
-  1:20 med avsändare.** Sidan skriver därför ut 1:20 som vårt eget riktvärde, med
-  räkningen som visar varför tjugo grader inte kan stämma, och säger att talet är vårt.
+  1:20, alltså 5 cm per meter och 15 cm på tre meter.
+- **1:20 har avsändare, rättat 2026-09-20.** Vid första hämtningen hittade vi ingen källa
+  som angav 1:20 med namn, och sidan skrev därför ut talet som vårt eget. Det stämmer inte:
+  två isolertillverkare anger det ordagrant, hämtade i
+  `docs/briefer/underlag-isolera-kallarvagg-2026-09-19.md`.
+  [Rockwool](https://www.rockwool.com/se/produkter-och-konstruktioner/yttervagg/betong/):
+  "Markytan ska luta minst 1:20 (ca 3º) inom 3 m från byggnaden."
+  [Paroc, projekteringsstöd fuktsäkra konstruktioner](https://www.paroc.com/sv/documents/uploads/paroc-moisture-guide):
+  "det rekommenderade fallet bort från byggnaden 1:20 på ett avstånd av 3 m (cirka 15 cm
+  höjdskillnad på en sträcka av 3 m)." Rockwools parentes om ungefär tre grader är dessutom
+  den rakaste motbilden till de tjugo graderna som cirkulerar. Båda ligger nu i sidans
+  källförteckning, och meningen om att talet är vårt eget är struken.
 
 ### Dagvattnet
 
@@ -287,7 +296,7 @@ gräva upp, och säger rakt ut att ingen av våra källor anger ett intervall.
 | isodran.se, monteringsanvisning som PDF | Filen är inskannade bilder utan textlager | Arbetsinstruktionen på webbsidan gav allt vi behövde. PDF:en kan innehålla figurerna 3a och 3b som instruktionen hänvisar till |
 | mobergsbygghandel.se, System Platon Grund | PDF utan textlager | Överlapp mellan våder, infästningsavstånd och avslutning nedtill saknas därför i vårt underlag. Sidan skriver inga tal om det |
 | Svenskt Vatten, dagvattenregler | Ingen central regel hittad i läsbar form. Servisbroschyren 2022 kom upp i sökningen men är en PDF | Vi lutar oss på en kommun (Kristinehamn) och skriver ut att regeln ska kontrolleras lokalt |
-| Marklutning 1:20 med avsändare | Bara entreprenörsbloggar utan avsändare | Om en myndighet eller Villaägarna anger 1:20 bör raden bytas mot den källan. Nu står talet som vårt |
+| Marklutning 1:20 med avsändare | Löst 2026-09-20 | Rockwool och Paroc anger 1:20 ordagrant, hämtade i underlaget för isolera källarvägg. Raden är kvar bara som historik |
 | Spolbrunn, intervall och placering | Bara entreprenörsbloggar | Samma sak. Rådet står som vårt |
 
 ## 4. Verifieringspunkter ur septemberunderlaget

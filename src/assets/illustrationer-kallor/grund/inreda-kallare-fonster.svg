@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Ett källarfönster sett inifrån rummet, med golvlinjen under och väggen skrafferad på båda sidor. Öppningen är ritad i skala, halvannan gång så hög som den är bred. Tre måttbyglar visar bredden 0,60 meter, höjden 0,90 meter och avståndet 1,20 meter från öppningens underkant ner till golvet. Uppe till vänster står bredd plus höjd, minst 1,50 meter, med gul markering bakom talet. En röd pil går ut genom fönstret och uppåt, med anteckningen upp ur fönsterbrunnen.">
+  <!-- Anteckningsboken. Blyertsskiss på linjerat papper. Väggen skrafferad i
+       blyerts-2, karm, båge och golvlinje i blyerts, måttbyglar i blyerts-2,
+       vägen ut i snickarpenna. Nyckeltalet 1,50 m har gul markering bakom talet.
+       Skala: 110 användarenheter per meter. Öppningen är 66 × 99 enheter, alltså
+       0,60 × 0,90 m, och golvet ligger 132 enheter under öppningens underkant,
+       alltså 1,20 m. Måtten i bilden är ritade i den skalan och går att mäta.
+       Handskrift i Caveat 500, konverteras till banor med npm run illustrationer.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50,
+       penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2, tunn: väggytan runt fönstret -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M84,100 l9,9 M106,100 l9,9 M128,100 l9,9 M150,100 l9,9 M172,100 l9,9"/>
+    <path d="M84,196 l9,9 M106,196 l9,9 M128,196 l9,9 M150,196 l9,9 M172,196 l9,9"/>
+    <path d="M84,248 l9,9 M106,248 l9,9 M128,248 l9,9 M150,248 l9,9 M172,248 l9,9"/>
+    <path d="M84,288 l9,9 M106,288 l9,9 M128,288 l9,9 M150,288 l9,9 M172,288 l9,9"/>
+    <path d="M430,180 l9,9 M452,180 l9,9 M474,180 l9,9 M496,180 l9,9 M518,180 l9,9"/>
+    <path d="M430,248 l9,9 M452,248 l9,9 M474,248 l9,9 M496,248 l9,9 M518,248 l9,9"/>
+    <path d="M430,288 l9,9 M452,288 l9,9 M474,288 l9,9 M496,288 l9,9 M518,288 l9,9"/>
+    <path d="M238,288 l9,9 M260,288 l9,9 M282,288 l9,9 M304,288 l9,9 M326,288 l9,9"/>
+  </g>
+
+  <!-- Blyerts: golvlinjen -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M69,323 Q300,326 531,323"/>
+  </g>
+
+  <!-- Blyerts: fönsterkarmen, bågen och den fria öppningen innanför -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M229,72 Q283,70 337,72 M229,211 Q283,213 337,211"/>
+    <path d="M230,71 Q228,141 230,212 M336,71 Q338,141 336,212"/>
+    <path d="M239,82 Q283,80 327,82 M239,201 Q283,203 327,201"/>
+    <path d="M240,82 Q238,141 240,201 M326,82 Q328,141 326,201"/>
+    <path d="M249,92 Q283,90 317,92 M249,191 Q283,193 317,191"/>
+    <path d="M250,92 Q248,141 250,191 M316,92 Q318,141 316,191"/>
+    <path d="M321,134 L321,152"/>
+  </g>
+
+  <!-- Blyerts-2, tunn: tre måttbyglar, alla i bildens skala -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M204,92 H220 M204,191 H220"/>
+    <path d="M212,92 Q209,141 212,191"/>
+    <path d="M250,223 V239 M316,223 V239"/>
+    <path d="M250,231 Q283,234 316,231"/>
+    <path d="M364,191 H380 M364,323 H380"/>
+    <path d="M372,191 Q369,257 372,323"/>
+  </g>
+
+  <!-- Snickarpenna: vägen ut genom fönstret och upp -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M290,152 Q348,140 414,116 Q474,94 512,84"/>
+    <path d="M501,80 L514,83 L506,94"/>
+  </g>
+
+  <!-- Papperslappar bakom handskriften -->
+  <rect x="120" y="126" width="78" height="28" fill="#f5efe3"/>
+  <rect x="246" y="242" width="78" height="28" fill="#f5efe3"/>
+  <rect x="380" y="244" width="78" height="28" fill="#f5efe3"/>
+  <rect x="370" y="22" width="222" height="30" fill="#f5efe3"/>
+
+  <!-- Överstrykning med tumstocksgul, bara bakom talet -->
+  <rect x="256" y="22" width="88" height="26" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 300 35)"/>
+
+  <!-- Handskrivna anteckningar (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="54" y="44">bredd + höjd, minst</text>
+    <text x="262" y="44">1,50 m</text>
+    <text x="376" y="44" fill="#ad3519">upp ur fönsterbrunnen</text>
+    <text x="126" y="146" fill="#625a50">0,90 m</text>
+    <text x="252" y="262" fill="#625a50">0,60 m</text>
+    <text x="386" y="264" fill="#625a50">1,20 m</text>
+  </g>
+</svg>

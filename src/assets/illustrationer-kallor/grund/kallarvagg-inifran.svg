@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Snitt genom en källarvägg med marken till vänster och rummet till höger. Grundmuren är ritad prickad och är tjock i förhållande till resten. Direkt mot betongen sitter en tunn takboard, sedan ett isolerlager i kryss med en stålregel i, och ytterst en gipsskiva. Måttbygeln över isoleringen är märkt max 70 mm, med talet gulmarkerat, och takboarden har en egen etikett. Mellan isoleringen och gipsskivan är en plastfolie ritad och överkryssad i rött, med anteckningen ingen plastfolie.">
+  <!-- Anteckningsboken. Prickar är betong, kryss är isolering, snedstreck är mark, samma
+       teckenspråk som kallarvagg-daggpunkt. Skalan är 2 mm per enhet och hålls genom hela
+       snittet: muren 100 enheter är 200 mm som i Rockwools tabell, takboarden 10 enheter är
+       20 mm och isolerlagret 35 enheter är 70 mm. Därför syns det att lagret är tunt mot muren,
+       vilket är avsnittets hela poäng. Ingen luftspalt ritas, eftersom skiktföljden i texten är
+       Parocs och där ligger takboarden direkt mot betongen.
+       Blyerts 2 px för mur, takboard, stålregel, gips och golv, blyerts-2 för prickar, kryss,
+       skraffering, plastfolien, måttbygeln och pekarna. Snickarpenna bara för krysset över
+       folien och dess anteckning, som hör ihop till en sak. Tumstock bakom nyckeltalet 70 mm.
+       Handskrift i Caveat 500, 24 px, konverteras av npm run illustrationer.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Tumstock bakom nyckeltalet 70 mm -->
+  <rect x="250" y="66" width="70" height="25" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 285 78)"/>
+
+  <!-- Blyerts: markyta, grundmur, takboard, isolerlager, stålregel, gipsskiva och golv -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M42,112 Q85,113 128,112"/>
+    <path d="M128,92 Q178,93 228,92"/>
+    <path d="M128,92 Q127,205 128,318"/>
+    <path d="M228,92 Q229,205 228,318"/>
+    <path d="M122,318 Q178,319 234,318"/>
+    <path d="M228,112 Q233,111 238,112"/>
+    <path d="M238,112 Q237,205 238,298"/>
+    <path d="M228,298 Q233,299 238,298"/>
+    <path d="M238,112 Q255,111 273,112"/>
+    <path d="M273,112 Q274,205 273,298"/>
+    <path d="M238,298 Q255,299 273,298"/>
+    <path d="M250,112 Q249,205 250,298"/>
+    <path d="M262,112 Q263,205 262,298"/>
+    <path d="M288,112 Q287,205 288,298"/>
+    <path d="M296,112 Q297,205 296,298"/>
+    <path d="M288,112 Q292,111 296,112"/>
+    <path d="M296,298 Q434,299 572,298"/>
+  </g>
+
+  <!-- Blyerts-2: markskraffering utanför muren -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M46,120 l10,10 M68,120 l10,10 M90,120 l10,10 M112,120 l10,10"/>
+    <path d="M56,142 l10,10 M78,142 l10,10 M100,142 l10,10"/>
+    <path d="M46,164 l10,10 M68,164 l10,10 M90,164 l10,10 M112,164 l10,10"/>
+    <path d="M56,186 l10,10 M78,186 l10,10 M100,186 l10,10"/>
+    <path d="M46,208 l10,10 M68,208 l10,10 M90,208 l10,10 M112,208 l10,10"/>
+    <path d="M56,230 l10,10 M78,230 l10,10 M100,230 l10,10"/>
+    <path d="M46,252 l10,10 M68,252 l10,10 M90,252 l10,10 M112,252 l10,10"/>
+    <path d="M56,274 l10,10 M78,274 l10,10 M100,274 l10,10"/>
+    <path d="M46,296 l10,10 M68,296 l10,10 M90,296 l10,10 M112,296 l10,10"/>
+    <path d="M56,318 l10,10 M78,318 l10,10 M100,318 l10,10"/>
+  </g>
+
+  <!-- Blyerts-2: betongprickar i grundmuren -->
+  <g fill="#625a50" stroke="none">
+    <circle cx="140" cy="106" r="1.4"/><circle cx="168" cy="102" r="1.4"/><circle cx="196" cy="110" r="1.4"/><circle cx="216" cy="104" r="1.4"/>
+    <circle cx="152" cy="128" r="1.4"/><circle cx="182" cy="124" r="1.4"/><circle cx="210" cy="132" r="1.4"/><circle cx="134" cy="138" r="1.4"/>
+    <circle cx="164" cy="150" r="1.4"/><circle cx="194" cy="146" r="1.4"/><circle cx="220" cy="154" r="1.4"/><circle cx="142" cy="162" r="1.4"/>
+    <circle cx="176" cy="170" r="1.4"/><circle cx="206" cy="166" r="1.4"/><circle cx="134" cy="182" r="1.4"/><circle cx="160" cy="188" r="1.4"/>
+    <circle cx="190" cy="194" r="1.4"/><circle cx="218" cy="186" r="1.4"/><circle cx="146" cy="206" r="1.4"/><circle cx="174" cy="212" r="1.4"/>
+    <circle cx="204" cy="206" r="1.4"/><circle cx="222" cy="218" r="1.4"/><circle cx="136" cy="226" r="1.4"/><circle cx="164" cy="234" r="1.4"/>
+    <circle cx="194" cy="230" r="1.4"/><circle cx="214" cy="242" r="1.4"/><circle cx="148" cy="250" r="1.4"/><circle cx="178" cy="256" r="1.4"/>
+    <circle cx="206" cy="252" r="1.4"/><circle cx="132" cy="268" r="1.4"/><circle cx="160" cy="274" r="1.4"/><circle cx="192" cy="278" r="1.4"/>
+    <circle cx="220" cy="270" r="1.4"/><circle cx="144" cy="292" r="1.4"/><circle cx="172" cy="298" r="1.4"/><circle cx="202" cy="294" r="1.4"/>
+    <circle cx="218" cy="306" r="1.4"/><circle cx="136" cy="310" r="1.4"/><circle cx="184" cy="312" r="1.4"/>
+  </g>
+
+  <!-- Blyerts-2: isoleringen som kryss, på båda sidor om stålregeln -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M230,122 l6,6 M236,122 l-6,6 M230,144 l6,6 M236,144 l-6,6 M230,166 l6,6 M236,166 l-6,6 M230,188 l6,6 M236,188 l-6,6 M230,210 l6,6 M236,210 l-6,6 M230,232 l6,6 M236,232 l-6,6 M230,254 l6,6 M236,254 l-6,6 M230,276 l6,6 M236,276 l-6,6"/>
+    <path d="M240,122 l7,7 M247,122 l-7,7 M264,122 l7,7 M271,122 l-7,7"/>
+    <path d="M240,144 l7,7 M247,144 l-7,7 M264,144 l7,7 M271,144 l-7,7"/>
+    <path d="M240,166 l7,7 M247,166 l-7,7 M264,166 l7,7 M271,166 l-7,7"/>
+    <path d="M240,188 l7,7 M247,188 l-7,7 M264,188 l7,7 M271,188 l-7,7"/>
+    <path d="M240,210 l7,7 M247,210 l-7,7 M264,210 l7,7 M271,210 l-7,7"/>
+    <path d="M240,232 l7,7 M247,232 l-7,7 M264,232 l7,7 M271,232 l-7,7"/>
+    <path d="M240,254 l7,7 M247,254 l-7,7 M264,254 l7,7 M271,254 l-7,7"/>
+    <path d="M240,276 l7,7 M247,276 l-7,7 M264,276 l7,7 M271,276 l-7,7"/>
+  </g>
+
+  <!-- Blyerts-2: plastfolien mellan isolering och gipsskiva, den som inte ska sitta där -->
+  <path d="M277,112 Q276,205 277,298" fill="none" stroke="#625a50" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Blyerts-2: måttbygel över isoleringen och pekare till takboard, regel, folie och gips -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M238,100 Q255,99 273,100 M238,95 v10 M273,95 v10"/>
+    <path d="M226,50 Q230,76 233,106"/>
+    <path d="M302,145 Q282,156 258,168"/>
+    <path d="M302,204 Q292,206 281,208"/>
+    <path d="M302,269 Q300,268 297,266"/>
+  </g>
+
+  <!-- Snickarpenna: krysset över plastfolien -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round">
+    <path d="M267,212 Q277,222 287,232"/>
+    <path d="M287,212 Q277,222 267,232"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="222" y="56" fill="#625a50" text-anchor="end">takboard 20 mm</text>
+    <text x="210" y="84" fill="#625a50">max</text>
+    <text x="254" y="84" fill="#625a50">70 mm</text>
+    <text x="306" y="152">stålregel, aldrig trä</text>
+    <text x="306" y="210" fill="#ad3519">ingen plastfolie</text>
+    <text x="306" y="276">gipsskiva</text>
+  </g>
+</svg>
