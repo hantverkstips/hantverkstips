@@ -314,7 +314,9 @@ export const ROT_TAK_KR = 50000;
  * del grävmaskin och transport av massor. BraByggare anger att arbetet är 35
  * till 50 procent av totalpriset medan vår arbetspost är närmare nio
  * tiondelar, så skillnaden är just maskinen och lassen. Vi räknar med att tre
- * femtedelar av arbetsposten är rotgrundande arbete.
+ * femtedelar av arbetsposten är rotgrundande arbete. Källa för undantaget:
+ * Skatteverket, ger arbetet rätt till rotavdrag, under "Inget avdrag ges för".
+ * https://www.skatteverket.se/foretag/skatterochavdrag/rotochrut/gerarbetetratttillrotavdrag.4.5c1163881590be297b5173bf.html
  */
 export const ROT_GRUNDANDE_ANDEL = 0.6;
 
