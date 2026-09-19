@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Skiss av en källare i genomskärning på linjerat papper, med de tre ställen du går till i tur och ordning. Först den vänstra källarväggen nedtill, där en avgränsad remsa från golvet och en bit upp visar flagnande färg och saltutfällning, märkt 1 väggen. Sedan en bit plast uppsatt på väggen med en tejpbit snett över vart och ett av de fyra hörnen, märkt 2 tejpen, inringad med en röd ring som inte sluter och med anteckningen markfukt eller kondens under. Sist en hygrometer på en hylla vid den högra väggen, märkt 3 hygrometern, med det gulmarkerade nyckeltalet över 75 procent RF ovanför taket. Marken utanför källarväggarna är skrafferad, och överst står anteckningen gå igenom i ordning.">
+  <!-- Anteckningsboken, verktygsskiss för /rakna/kallare/. Skissen visar verktygets grepp: att gå
+       igenom källaren i ordning, tre stopp numrerade 1, 2 och 3, alltså kalkylatorns tre frågor.
+       Den upprepar varken fukt/kallarsymptom.svg (de tre symptomen och var de sitter) eller
+       fukt/tejptest.svg (vilken sida av plasten dropparna hamnar på).
+       Blyerts 2 px för bjälklag, källarväggar, golvplatta, markytan, den skadade zonen nedtill,
+       plastbiten med sina fyra hörntejper, hyllan och hygrometern. Blyerts-2 1,25 px för
+       skrafferingen i jorden, i väggsnitten och i plattan, och för flagorna i den skadade zonen.
+       Snickarpenna 2,5 px för den enda sak som pekar: den öppna ringen runt tejplappen, med
+       anteckningen markfukt eller kondens i samma färg. Tumstock bakom nyckeltalet över 75 % RF.
+       Nyckeltalet är hygrometerns gräns, inte tejptestets två dygn: två dygn är en förutsättning
+       för att kunna läsa av, 75 procent relativ luftfuktighet är talet diagnosen vänder på.
+       Boverket anger det i BBR 6:52 som kritiskt fukttillstånd när materialets eget värde inte är
+       väl undersökt, samma tal som i /fukt/fukt-i-kallaren/ och /kunskap/fukt/luftfuktighet-inomhus/.
+       Rummet: väggarnas snitt x=96-120 och x=500-524, bjälklag y=98-118, platta y=302-320.
+       Stopp 1 är remsan mot den vänstra väggen, x=120-153, y=247-301, avgränsad uppåt och utåt
+       så att den läses som en del av väggen och inte som ett föremål på golvet. Stopp 2 är
+       plastbiten x=254-326, y=174-246 med hörntejperna och den öppna ringen runt. Stopp 3 är
+       hyllan y=248 med hygrometern x=414-478, y=204-248.
+       Tejpen ligger över plastens hörn, så kanterna är kapade 6 px före hörnen och tejpen syns
+       ligga framför. Glappet är just 6 px: med ett större glapp slöt ögat fyrkanten till en
+       cirkel vid 343 px, särskilt innanför den runda pennringen.
+       Handskrift i Caveat 500, 24 px, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Överstrykning med tumstocksgul bakom nyckeltalet -->
+  <rect x="378" y="48.5" width="150" height="30" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 453 63.5)"/>
+
+  <!-- Blyerts-2: jorden utanför källarväggarna, väggsnitten, plattan och jorden under den -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M50,142 l10,10 M72,142 l10,10 M50,176 l10,10 M72,176 l10,10 M50,210 l10,10 M72,210 l10,10 M50,244 l10,10 M72,244 l10,10 M50,278 l10,10 M72,278 l10,10"/>
+    <path d="M528,142 l10,10 M550,142 l10,10 M572,142 l10,10 M528,176 l10,10 M550,176 l10,10 M572,176 l10,10 M528,210 l10,10 M550,210 l10,10 M572,210 l10,10 M528,244 l10,10 M550,244 l10,10 M572,244 l10,10 M528,278 l10,10 M550,278 l10,10 M572,278 l10,10"/>
+    <path d="M100,128 l10,10 M100,158 l10,10 M100,188 l10,10 M100,218 l10,10 M100,248 l10,10 M100,278 l10,10"/>
+    <path d="M504,128 l10,10 M504,158 l10,10 M504,188 l10,10 M504,218 l10,10 M504,248 l10,10 M504,278 l10,10"/>
+    <path d="M140,305 l10,10 M200,305 l10,10 M260,305 l10,10 M320,305 l10,10 M380,305 l10,10 M440,305 l10,10 M496,305 l10,10"/>
+    <path d="M110,330 l10,10 M136,330 l10,10 M162,330 l10,10 M444,330 l10,10 M470,330 l10,10 M496,330 l10,10"/>
+  </g>
+
+  <!-- Blyerts: markytan ute, bjälklaget, källarväggarna i snitt och golvplattan -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M46,128 Q71,126 96,128"/>
+    <path d="M524,128 Q551,126 578,128"/>
+    <path d="M96,98 Q310,96 524,98"/>
+    <path d="M118,118 Q310,120 502,118"/>
+    <path d="M96,98 Q94,208 96,302"/>
+    <path d="M120,118 Q122,210 120,302"/>
+    <path d="M524,98 Q526,208 524,302"/>
+    <path d="M500,118 Q498,210 500,302"/>
+    <path d="M94,302 Q310,300 526,302"/>
+    <path d="M94,320 Q310,322 526,320"/>
+  </g>
+
+  <!-- Stopp 1. Blyerts: den skadade zonen mot den vänstra väggen, flagnande färg och salt -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M120,248 Q136,242 152,247"/>
+    <path d="M152,247 Q148,274 153,301"/>
+  </g>
+  <g fill="none" stroke="#2a2521" stroke-width="1.75" stroke-linecap="round">
+    <path d="M126,259 Q134,256 143,260"/>
+    <path d="M125,272 Q134,269 144,273"/>
+    <path d="M127,285 Q135,282 145,286"/>
+    <path d="M129,295 Q136,293 144,296"/>
+  </g>
+  <g fill="#625a50" stroke="none">
+    <circle cx="133" cy="265" r="1.6"/>
+    <circle cx="146" cy="267" r="1.6"/>
+    <circle cx="139" cy="279" r="1.6"/>
+    <circle cx="131" cy="290" r="1.6"/>
+  </g>
+
+  <!-- Stopp 2. Blyerts: plastbiten med en tejpbit över varje hörn. Kanterna är kapade före
+       hörnen, så att tejpen syns ligga framför plasten -->
+  <g fill="none" stroke="#2a2521" stroke-width="1.75" stroke-linecap="round">
+    <path d="M260,175 Q290,173 320,175"/>
+    <path d="M260,245 Q290,247 320,245"/>
+    <path d="M255,180 Q253,210 255,240"/>
+    <path d="M325,180 Q327,210 325,240"/>
+  </g>
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <g transform="translate(254 174) rotate(45)"><rect x="-15" y="-6" width="30" height="12" rx="2"/></g>
+    <g transform="translate(326 174) rotate(-45)"><rect x="-15" y="-6" width="30" height="12" rx="2"/></g>
+    <g transform="translate(254 246) rotate(-45)"><rect x="-15" y="-6" width="30" height="12" rx="2"/></g>
+    <g transform="translate(326 246) rotate(45)"><rect x="-15" y="-6" width="30" height="12" rx="2"/></g>
+  </g>
+
+  <!-- Stopp 3. Blyerts: hyllan med konsol mot väggen, och hygrometern med sin visartavla -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M398,248 Q450,246 500,248"/>
+    <path d="M482,250 Q491,258 499,266"/>
+    <path d="M414,204 Q446,202 478,204 Q476,226 478,248 Q446,246 414,248 Q416,226 414,204 Z"/>
+    <path d="M463,226 A17,17 0 1 1 462.8,225.2"/>
+    <path d="M446,226 Q451,221 456,217"/>
+  </g>
+
+  <!-- Snickarpenna: den öppna ringen runt tejplappen, det enda som pekar -->
+  <path d="M346,186 Q334,160 290,158 Q236,156 234,210 Q232,258 288,262 Q330,264 346,244" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="52" y="47.5" fill="#625a50">gå igenom i ordning</text>
+    <text x="384" y="71.5">över 75 % RF</text>
+    <text x="128" y="215.5">1 väggen</text>
+    <text x="258" y="143.5">2 tejpen</text>
+    <text x="366" y="167.5">3 hygrometern</text>
+    <text x="250" y="287.5" fill="#ad3519">markfukt eller kondens</text>
+  </g>
+</svg>

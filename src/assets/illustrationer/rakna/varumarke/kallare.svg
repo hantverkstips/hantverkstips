@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Ett hus med sadeltak, skorsten, fönster och dörr, där marklinjen skär tvärs genom väggarna så att husets nedre halva är en källare under mark med skrafferad jord på båda sidor. På källarväggen sitter en stor fyrkantig bit plast uppsatt med en tejpbit snett över vart och ett av de fyra hörnen, och innanför plasten står tre droppar. Mot den högra källarväggen lutar en tumstock.">
+  <!-- Varumärkesillustration för /rakna/kallare/, riktning 1. Samma hand som symbolen,
+       startsidans hero (hus-tumstock.svg), dranering.svg och avfuktare.svg: konturer i blyerts
+       2 px med runda ändar, tumstocken som den enda fyllda färgen, ingen linjering, transparent
+       bakgrund, ett rött pennstreck som signatur. Huset är heroens hus, samma proportion som i
+       avfuktare.svg, här med fönster och dörr så att det läses som ett hus på en sekund.
+       Motivet är "titta på källarväggen". Marklinjen går rakt igenom huset på samma nivå som
+       marken utanför (y=146,5 på båda sidor, erfarenheten från dräneringsbilden 2026-09-19:
+       markytan ska vara entydig), så att husets nedre halva läses som en källare under jord.
+       Där sitter tejplappen, 140 × 122, näst största formen i bilden efter huset och det enda
+       föremålet i källaren med detaljer: en tejpbit snett över vart och ett av de fyra hörnen,
+       och tre droppar innanför plasten. Plastens kanter är kapade strax före hörnen, så att
+       tejpen syns ligga framför och inte bredvid (erfarenheten från innerväggsbilden: delarna
+       ska synas ligga över varandra, aldrig lösas med en fylld yta). Samma grepp på skorstenen,
+       som bryter takfallet där den går fram. Kanterna slutar bara 6 px från hörnet: större glapp
+       gjorde att ögat slöt fyrkanten till en cirkel vid 343 px.
+       Tumstocken är bara en accent: ett segment lutat mot den högra källarväggen, det enda gula
+       i bilden.
+       Skiljer sig från avfuktare.svg genom att källaren är tom så när som på lappen: där är
+       motivet en hög maskin med galler, här en bred fyrkant med tejp.
+       Ingen text-nod och inga läsbara tal: npm run illustrationer rör inte filen och den har ingen
+       källa under illustrationer-kallor. Skala 600 × 360, samma 5:3 som räknarnas skisser.
+       Motivet är ritat i sin egen skala (bbox x 4–596, y 6–344, kvot 592/338 = 1,75) och läggs ut
+       med transform="translate(17.23 15.04) scale(0.94257)" i yttre g:et. Uppmätt på den renderade
+       bilden, med linjebredderna inräknade, blir det 560,0 px brett (93,3 procent) och 319,0 px
+       högt (88,6 procent), kvot 1,755, med 20,0 px marginal i sidled och 19,8 respektive 21,3 px
+       i höjdled. Tunnaste linje är 1,4 i motivets skala, knappt
+       1 px vid 343 px bredd.
+       Tokens: tumstock #e8b830, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519. -->
+
+  <defs>
+    <!-- Heroens droppe, ritad i sin slutliga storlek 32 × 47 så att linjebredden inte skalas -->
+    <g id="droppe" fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M16,0 C14.7,2.7 0,20 0,30.7 A16,16 0 0 0 32,30.7 C32,20 17.3,2.7 16,0"/>
+      <path d="M8,32 Q8.8,38.4 14.4,40.5"/>
+    </g>
+  </defs>
+
+  <g transform="translate(17.23 15.04) scale(0.94257)">
+
+    <!-- Jorden utanför källarväggarna. Den enda skrafferingen, 10 px streck, 45 grader, 26 px isär -->
+    <g fill="none" stroke="#625a50" stroke-width="1.4" stroke-linecap="round">
+      <path d="M4,158 l10,10 M30,158 l10,10 M56,158 l10,10 M82,158 l10,10 M108,158 l10,10 M134,158 l10,10 M480,158 l10,10 M506,158 l10,10 M532,158 l10,10 M558,158 l10,10 M584,158 l10,10"/>
+      <path d="M17,194 l10,10 M43,194 l10,10 M69,194 l10,10 M95,194 l10,10 M121,194 l10,10 M493,194 l10,10 M519,194 l10,10 M545,194 l10,10 M571,194 l10,10"/>
+      <path d="M4,230 l10,10 M30,230 l10,10 M56,230 l10,10 M82,230 l10,10 M108,230 l10,10 M134,230 l10,10 M480,230 l10,10 M506,230 l10,10 M532,230 l10,10 M558,230 l10,10 M584,230 l10,10"/>
+      <path d="M17,266 l10,10 M43,266 l10,10 M69,266 l10,10 M95,266 l10,10 M121,266 l10,10 M493,266 l10,10 M519,266 l10,10 M545,266 l10,10 M571,266 l10,10"/>
+      <path d="M4,302 l10,10 M30,302 l10,10 M56,302 l10,10 M82,302 l10,10 M108,302 l10,10 M134,302 l10,10 M480,302 l10,10 M506,302 l10,10 M532,302 l10,10 M558,302 l10,10 M584,302 l10,10"/>
+    </g>
+
+    <!-- Huset: takfallet brutet där skorstenen går fram, marklinjen tvärs igenom väggarna,
+         källaren under mark, fönster och dörr på den del av väggen som står ovan jord -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M142,90 Q226.6,48.6 310,6 Q356,29 400,51"/>
+      <path d="M432,67 Q455,78.5 478,90"/>
+      <path d="M404,53 Q403,38 404,24 Q416,26 428,24 Q427,45 428,66"/>
+      <path d="M4,145 Q77,142.5 150,146.5"/>
+      <path d="M150,146.5 Q310,149.5 470,146.5"/>
+      <path d="M470,146.5 Q533,143 596,146"/>
+      <path d="M150,86 Q152,202 150,318"/>
+      <path d="M470,86 Q468,202 470,318"/>
+      <path d="M150,318 Q310,321 470,318"/>
+      <path d="M186,101 Q206,99 226,101 Q224,119 226,138 Q206,136 186,138 Q188,119 186,101 Z"/>
+      <path d="M378,147 Q380,120 378,93 Q393,95 408,93 Q406,120 408,147"/>
+    </g>
+    <g fill="none" stroke="#2a2521" stroke-width="1.75" stroke-linecap="round">
+      <path d="M206,101 Q204,119 206,138"/>
+      <path d="M186,119 Q206,120.6 226,119"/>
+    </g>
+
+    <!-- Tejplappen på källarväggen. En tejpbit över varje hörn, och plastens kanter är
+         kapade före hörnen så att tejpen syns ligga framför -->
+    <g fill="none" stroke="#2a2521" stroke-width="1.75" stroke-linecap="round">
+      <path d="M182,175 Q246,172 310,175"/>
+      <path d="M182,295 Q246,298 310,295"/>
+      <path d="M177,180 Q174,235 177,290"/>
+      <path d="M315,180 Q318,235 315,290"/>
+    </g>
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <g transform="translate(176 174) rotate(45)"><rect x="-22" y="-7.5" width="44" height="15" rx="2"/></g>
+      <g transform="translate(316 174) rotate(-45)"><rect x="-22" y="-7.5" width="44" height="15" rx="2"/></g>
+      <g transform="translate(176 296) rotate(-45)"><rect x="-22" y="-7.5" width="44" height="15" rx="2"/></g>
+      <g transform="translate(316 296) rotate(45)"><rect x="-22" y="-7.5" width="44" height="15" rx="2"/></g>
+    </g>
+
+    <!-- Dropparna innanför plasten -->
+    <use href="#droppe" x="196" y="182"/>
+    <use href="#droppe" x="252" y="190"/>
+    <use href="#droppe" x="212" y="234"/>
+
+    <!-- Tumstocken som accent, lutad mot den högra källarväggen -->
+    <g transform="translate(404 314) rotate(-60)">
+      <rect x="0" y="-8" width="124" height="16" rx="8" fill="#e8b830" stroke="#2a2521" stroke-width="2"/>
+      <path d="M14,8 V2 M30,8 V4.5 M46,8 V4.5 M62,8 V4.5 M78,8 V2 M94,8 V4.5 M110,8 V4.5" fill="none" stroke="#2a2521" stroke-width="1.4" stroke-linecap="round"/>
+    </g>
+
+    <!-- Snickarpennans signatur under motivet -->
+    <path d="M172,339 Q246,344 320,337 Q394,334 468,339" fill="none" stroke="#ad3519" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+</svg>

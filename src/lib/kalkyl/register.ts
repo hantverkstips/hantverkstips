@@ -103,6 +103,17 @@ export const KALKYLATORER: Kalkylator[] = [
     pelare: ['grund', 'fukt'],
   },
   {
+    slug: 'kallare',
+    namn: 'Vad är det för fukt i källaren?',
+    rad: 'Vad du ser, tejptestet och hygrometern ger diagnosen och nästa steg.',
+    /* "fukt i källaren" toppar i september (880 sökningar) och bottnar i
+       december till januari (170), enligt docs/SOKORDSANALYS.md. Kondensen i en
+       uppvärmd källare är dessutom ett sommarproblem, juli till september enligt
+       guiden, så frågan ställs från högsommaren till dess källaren blir kall. */
+    sasong: [7, 10],
+    pelare: ['fukt', 'grund'],
+  },
+  {
     slug: 'mala-ute',
     namn: 'Kan du måla ute i dag?',
     rad: 'Temperatur, luftfuktighet, natt och klockslag ger om färgen hinner torka före daggen.',

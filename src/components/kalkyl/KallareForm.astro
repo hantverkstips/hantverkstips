@@ -1,0 +1,173 @@
+---
+/**
+ * Formuläret till verktyget "Självbesiktning av källaren". Ett ställe: sidan
+ * /rakna/kallare/ renderar det i fullt format, och <Kalkylator namn="kallare" />
+ * i en artikel renderar samma fält i kompakt format med action till
+ * verktygssidan.
+ *
+ * Ingen klient-JavaScript. Formuläret skickas som GET, och verktygssidan bedömer.
+ *
+ * Fälten står i guidens ordning: titta först, tejpa sedan, mät. Först då
+ * kommer de två frågorna om sammanhanget, alltså årstiden och vad källaren
+ * används till.
+ *
+ * Alla props är valfria, eftersom det inbäddade formuläret inte har någon
+ * bedömning att visa värden ur; då står standardvärdena i fälten.
+ */
+import {
+  ANVANDNINGAR,
+  ARSTIDER,
+  KRITISK_RF,
+  STANDARD,
+  SYMPTOM,
+  TEJPTESTER,
+  type KallareIndata,
+} from '../../lib/kalkyl/kallare.ts';
+import { ETIKETT_KLASS, FALT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, ramKlass } from '../../lib/kalkyl/stil';
+
+interface Props {
+  /** Valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
+  indata?: KallareIndata;
+  /** Talet som det skrevs i adressen, så att ett felskrivet värde går att rätta. */
+  varden?: { rf: string };
+  fel?: Partial<Record<keyof KallareIndata, string>>;
+  /** Inbäddad i en artikel: tätare fält, inga hjälprader. */
+  kompakt?: boolean;
+  /** Prefix på id-attributen, så att två formulär på samma sida inte krockar. */
+  idPrefix?: string;
+  knappText?: string;
+}
+
+const {
+  indata = STANDARD,
+  varden = { rf: '' },
+  fel = {},
+  kompakt = false,
+  idPrefix = '',
+  knappText = 'Ge mig svaret',
+} = Astro.props;
+
+const id = (namn: string) => `${idPrefix}${namn}`;
+const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
+const valda = new Set(indata.symptom);
+---
+
+<form method="get" action="/rakna/kallare/">
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Vad ser du i källaren?</legend>
+    <div class={radioKlass}>
+      {
+        SYMPTOM.map((s) => (
+          <label class="flex min-h-11 items-start gap-2 py-1 text-brod">
+            <input type="checkbox" name="se" value={s.varde} checked={valda.has(s.varde)} class="mt-1.5" />
+            <span>{s.etikett}</span>
+          </label>
+        ))
+      }
+    </div>
+    {
+      !kompakt && (
+        <p class={HJALP_KLASS}>
+          Kryssa i allt som stämmer. Vad varje rad betyder står i svaret, inte här, så att du kryssar efter vad du ser
+          och inte efter vad du hoppas. Har du inte varit nere ännu, ta med en ficklampa och en torr trasa.
+        </p>
+      )
+    }
+  </fieldset>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Vad tejptestet visade</legend>
+    <div class={radioKlass}>
+      {
+        TEJPTESTER.map((t) => (
+          <label class="flex min-h-11 items-start gap-2 py-1 text-brod">
+            <input type="radio" name="tejp" value={t.varde} checked={indata.tejptest === t.varde} class="mt-1.5" />
+            <span>
+              {t.etikett}
+              {!kompakt && <span class="block text-liten text-blyerts-2">{t.hjalp}</span>}
+            </span>
+          </label>
+        ))
+      }
+    </div>
+    {
+      !kompakt && (
+        <p class={HJALP_KLASS}>
+          En bit plastfolie tejpad tätt mot källarväggen i minst två dygn. Hela testet står i{' '}
+          <a
+            href="/fukt/fukt-i-kallaren/"
+            class="text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+          >
+            guiden om fukt i källaren
+          </a>
+          .
+        </p>
+      )
+    }
+  </fieldset>
+
+  <div class="mb-4">
+    <label for={id('rf')} class={ETIKETT_KLASS}>Hygrometern visar</label>
+    <div class="flex items-center gap-2">
+      <input
+        id={id('rf')}
+        name="rf"
+        type="text"
+        inputmode="decimal"
+        value={varden.rf}
+        placeholder="Inte mätt"
+        aria-describedby={fel.luftfuktighet ? id('rf-fel') : id('rf-hjalp')}
+        class:list={[FALT_KLASS, ramKlass(Boolean(fel.luftfuktighet))]}
+      />
+      <span class="text-brod text-blyerts-2">%</span>
+    </div>
+    {
+      fel.luftfuktighet ? (
+        <p id={id('rf-fel')} class={FEL_KLASS}>
+          {fel.luftfuktighet}
+        </p>
+      ) : (
+        <p id={id('rf-hjalp')} class={HJALP_KLASS}>
+          Relativ luftfuktighet, alltså hur mycket vatten luften bär jämfört med vad den klarar vid sin temperatur.
+          Lämna fältet tomt om du inte mätt. Boverkets gräns går vid {KRITISK_RF} procent.
+        </p>
+      )
+    }
+  </div>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>När tittar du?</legend>
+    <div class={radioKlass}>
+      {
+        ARSTIDER.map((a) => (
+          <label class="flex min-h-11 items-start gap-2 py-1 text-brod">
+            <input type="radio" name="arstid" value={a.varde} checked={indata.arstid === a.varde} class="mt-1.5" />
+            <span>
+              {a.etikett}
+              {!kompakt && <span class="block text-liten text-blyerts-2">{a.hjalp}</span>}
+            </span>
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <fieldset class="m-0 mb-6 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Vad används källaren till?</legend>
+    <div class={radioKlass}>
+      {
+        ANVANDNINGAR.map((a) => (
+          <label class="flex min-h-11 items-start gap-2 py-1 text-brod">
+            <input type="radio" name="bruk" value={a.varde} checked={indata.anvandning === a.varde} class="mt-1.5" />
+            <span>
+              {a.etikett}
+              {!kompakt && <span class="block text-liten text-blyerts-2">{a.hjalp}</span>}
+            </span>
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <button type="submit" class={KNAPP_KLASS}>{knappText}</button>
+</form>

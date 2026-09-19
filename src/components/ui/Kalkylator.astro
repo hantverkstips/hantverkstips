@@ -23,6 +23,7 @@ import ElkostnadForm from '../kalkyl/ElkostnadForm.astro';
 import GipspluggForm from '../kalkyl/GipspluggForm.astro';
 import GipsskruvForm from '../kalkyl/GipsskruvForm.astro';
 import InnervaggForm from '../kalkyl/InnervaggForm.astro';
+import KallareForm from '../kalkyl/KallareForm.astro';
 import KvadratmeterForm from '../kalkyl/KvadratmeterForm.astro';
 import MalaUteForm from '../kalkyl/MalaUteForm.astro';
 import Ikon from './Ikon.astro';
@@ -45,6 +46,7 @@ const MED_FORMULAR = [
   'kvadratmeter',
   'mala-ute',
   'dranering',
+  'kallare',
 ];
 
 const { namn } = Astro.props;
@@ -83,6 +85,7 @@ const prefix = `${k.slug}-inbaddad-`;
   {namn === 'kvadratmeter' && <KvadratmeterForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'mala-ute' && <MalaUteForm kompakt={true} idPrefix={prefix} knappText="Ge mig svaret" />}
   {namn === 'dranering' && <DraneringForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
+  {namn === 'kallare' && <KallareForm kompakt={true} idPrefix={prefix} knappText="Ge mig svaret" />}
 
   <p class="m-0 mt-4 text-liten text-blyerts-2">
     Knappen tar dig till kalkylatorn med dina värden ifyllda. Där står svaret med källan bakom varje tal.
