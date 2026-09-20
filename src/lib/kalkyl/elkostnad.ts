@@ -96,13 +96,13 @@ export const PERIODER: { dagar: number; etikett: string }[] = [
 
 /** Hjälptexten under gångtiden. Vår erfarenhet, inte uppmätt drifttid. */
 export const GANGTIDER: { timmar: number; vad: string }[] = [
-  { timmar: 8, vad: 'en avfuktare som stängs av av sin fuktgivare går cirka 8 timmar' },
+  { timmar: 8, vad: 'en avfuktare som styrs av sin fuktgivare går cirka 8 timmar' },
   { timmar: 5, vad: 'en värmefläkt på termostat går 4 till 6 timmar' },
   { timmar: 24, vad: 'en maskin som aldrig stängs av går 24 timmar' },
 ];
 
 const GOR_INTE_DYGNET_RUNT =
-  'Låt inte avfuktaren gå dygnet runt utan hygrostat. Hygrostaten är givaren som stoppar maskinen när luften nått rätt fuktighet, och en maskin som aldrig slår av kostar tre gånger så mycket som en som styrs av den. Dessutom torkar den källaren torrare än den behöver vara. Sitter givaren i maskinen räcker det att ställa den på 55 procent luftfuktighet.';
+  'En avfuktare som aldrig slår av kostar tre gånger så mycket som en som styrs av sin hygrostat, och den torkar dessutom källaren torrare än den behöver vara. Hygrostaten är givaren som stoppar maskinen när luften nått rätt fuktighet. Sitter den i maskinen räcker det att ställa den på 55 procent luftfuktighet, så slipper du dygnet-runt-driften.';
 
 /** Decimalkomma accepteras: '7,4' blir 7.4. Tomt eller skräp ger NaN. */
 function tillTal(v: string | null): number {

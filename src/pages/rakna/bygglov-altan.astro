@@ -210,7 +210,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     url: 'https://lagen.nu/2011:338',
   },
   {
-    storhet: 'Huset verktyget räknar på',
+    storhet: 'Huset jag räknar på',
     varde: 'en- eller tvåbostadshus',
     grund: 'Antagande',
     stod: 'Villa, parhus eller radhus med egen tomt. Gränsen på 30 kvm gäller inte flerbostadshus, och då krävs bygglov för taket',
@@ -234,7 +234,7 @@ const FRAGOR = [
   },
   {
     fraga: `Vad ändrades ${REGLERNA_GALLER_FRAN}?`,
-    svar: 'Då trädde lag 2025:974 i kraft, och hela bygglovskapitlet i plan- och bygglagen byttes ut. Altanregeln står nu i 9 kap. 19 § och är skriven tvärtom mot den gamla, alltså som en regel om när lov krävs i stället för ett undantag. Orden friggebod, attefallshus och attefallsaltan är borta ur lagtexten, och med dem försvann kravet på anmälan och startbesked för det som är lovfritt. Måtten är oförändrade, så en altan som var fri förut är fri nu också.',
+    svar: 'Då trädde lag 2025:974 i kraft, och hela bygglovskapitlet i plan- och bygglagen byttes ut. Altanregeln står nu i 9 kap. 19 § och är skriven tvärtom mot den gamla, som en regel om när lov krävs i stället för som ett undantag. Orden friggebod, attefallshus och attefallsaltan är borta ur lagtexten, och med dem försvann kravet på anmälan och startbesked för det som är lovfritt. Måtten är oförändrade, så en altan som var fri förut är fri nu också.',
     lank: { text: 'Hela genomgången står i artikeln om bygglov för altan.', href: '/altan/bygglov-altan/' },
   },
   {
@@ -251,7 +251,7 @@ const FRAGOR = [
 const SLUG = 'bygglov-altan';
 const VERKTYGSNAMN = 'Bygglov för altan';
 const BESKRIVNING =
-  'Fyll i höjd, avstånd och detaljplan, så säger verktyget om altanen behöver bygglov. Varje svar har sin paragraf, och du ser vad ett bygge utan lov kostar.';
+  'Fyll i höjd, avstånd och detaljplan, så får du veta om altanen behöver bygglov. Varje svar har sin paragraf, och du ser vad ett bygge utan lov kostar.';
 const illustration = verktygsillustration(SLUG);
 /**
  * Varumärkesbilden i sidhuvudet, sedan 2026-09-19 (docs/DESIGN.md avsnitt 7).
@@ -293,8 +293,8 @@ const huvudbild = varumarke ?? illustration;
         <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">Behöver din altan bygglov? Fyll i måtten och få svar</h1>
         <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
           Två mått avgör om du får bygga altanen utan bygglov: hur högt golvet ligger över marken, med gränsen vid
-          1,8 meter, och om altanen står inom 3,6 meter från huset. Fyll i dem, så svarar verktyget ja, nej eller
-          kanske, och skriver ut paragrafen bakom varje rad. Paragrafen skrevs om den 1 december 2025, så en hel del
+          1,8 meter, och om altanen står inom 3,6 meter från huset. Fyll i dem, så svarar jag ja, nej eller kanske,
+          och skriver ut paragrafen bakom varje rad. Paragrafen skrevs om den 1 december 2025, så en hel del
           av det som står på nätet är fel i dag. Svaret här är vägledning, och det är byggnadsnämnden i din kommun
           som fattar beslutet.
         </p>
@@ -320,7 +320,7 @@ const huvudbild = varumarke ?? illustration;
     {
       visat.status === 'ok' && (
         <Faktaruta variant="kortsvar">
-          <p class="m-0 leading-6">För altanen du fyllt i svarar verktyget {visat.svarRubrik.toLowerCase()}.</p>
+          <p class="m-0 leading-6">Måtten som står i formuläret ger svaret {visat.svarRubrik.toLowerCase()}.</p>
           <p class="m-0 leading-6">
             Inom detaljplan går gränsen vid <Markering>1,8 m över marken</Markering> när altanen står nära huset, och
             längre bort från byggnaden sjunker den till 1,2 m.
@@ -363,7 +363,7 @@ const huvudbild = varumarke ?? illustration;
 
               <div class="mt-6 border-t border-linje pt-4">
                 <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
-                  Bygger du utan lov när lov krävs
+                  Om lov krävs och du bygger ändå
                 </p>
                 <p class="m-0 mt-1 flex flex-wrap items-baseline gap-x-2">
                   <span class="font-serif text-h1 lg:text-h1-lg text-blyerts tabular-nums">
@@ -452,7 +452,7 @@ const huvudbild = varumarke ?? illustration;
     }
 
     <section>
-      <Pennstreck id="bygglov-altan-2025">Bygglov altan enligt plan- och bygglagen 9 kap. 19 §, de tre måtten och vad som ändrades 1 december 2025</Pennstreck>
+      <Pennstreck id="bygglov-altan-2025">Bygglov för altan, de tre måtten i plan- och bygglagen 9 kap. 19 § och vad som ändrades 1 december 2025</Pennstreck>
       <p class="m-0 text-brod lg:text-brod-lg">
         Den 1 december 2025 trädde lag 2025:974 i kraft, och då upphävdes hela bygglovskapitlet i plan- och bygglagen
         och ersattes av ett nytt. Paragrafen som alla hänvisade till förut, 9 kap. 4 f §, finns inte kvar. Altanregeln
@@ -502,7 +502,7 @@ const huvudbild = varumarke ?? illustration;
           <Illustration
             namn="rakna/bygglov-altan"
             alt="Hus i sidovy med en altan på plintar, måttsatt 1,8 m upp från marken, 3,6 m ut från fasaden och 4,5 m till tomtgränsen"
-            bildtext="De tre måtten verktyget bedömer: höjden över marken, avståndet till huset och avståndet till tomtgränsen."
+            bildtext="De tre måtten jag bedömer är höjden över marken, avståndet till huset och avståndet till tomtgränsen."
           />
         )
       }
@@ -515,7 +515,7 @@ const huvudbild = varumarke ?? illustration;
           Ligger tomten utanför detaljplan finns ingen måttregel, och höjden spelar då ingen roll för lovplikten.
         </li>
         <li class="mb-2">
-          Vet du inte vilket som gäller kör verktyget båda fallen och visar svaret för vart och ett.
+          Vet du inte vilket som gäller kör jag båda fallen och visar svaret för vart och ett.
         </li>
         <li class="mb-2">
           Tak med väggar eller inglasning gör altanen till en tillbyggnad, och då prövas ytan mot{' '}
@@ -539,14 +539,14 @@ const huvudbild = varumarke ?? illustration;
         </li>
       </ol>
 
-      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad svaret vilar på</h3>
+      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad siffrorna vilar på</h3>
       <Tabellyta kolumner={3} class="mt-4">
         <table class="w-full border-collapse text-liten tabular-nums">
           <caption class="sr-only">Regler, lagrum och antaganden i bygglovsverktyget för altan</caption>
           <thead>
             <tr class="border-b border-linje text-left">
               <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Vad</th>
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Verktyget går på</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Jag går på</th>
               <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Källa eller antagande</th>
             </tr>
           </thead>
@@ -576,10 +576,10 @@ const huvudbild = varumarke ?? illustration;
       </Tabellyta>
 
       <p class="m-0 mt-6 text-brod lg:text-brod-lg">
-        Verktyget ger vägledning, och beslutet fattar byggnadsnämnden i din kommun. Verktyget läser lagen och
-        Boverkets vägledning på de uppgifter du fyller i, och det kan inte se din detaljplan, dina
-        områdesbestämmelser eller ett strandskydd vid vattnet. Bara nämnden kan ge ett bindande besked. Avgiften
-        som räknas ut är byggsanktionsavgiften, och bygglovsavgiften i efterhand tillkommer.
+        Jag läser lagen och Boverkets vägledning på de uppgifter du fyller i, och det är vägledning. Din detaljplan,
+        dina områdesbestämmelser och ett strandskydd vid vattnet ser jag inte härifrån, och beslutet fattar
+        byggnadsnämnden i din kommun. Bara nämnden kan ge ett bindande besked. Avgiften jag räknar ut är
+        byggsanktionsavgiften, och bygglovsavgiften i efterhand tillkommer.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
         Avgiften är ett kvarts prisbasbelopp i grunden, plus en halv hundradel av prisbasbeloppet per kvadratmeter

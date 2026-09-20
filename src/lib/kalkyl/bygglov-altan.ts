@@ -150,8 +150,8 @@ export const RAD_KOMMUNEN =
   'Kommunen har sista ordet. Byggnadsnämnden prövar just din altan, och detaljplanen eller områdesbestämmelserna kan lägga till lovplikt utöver lagen. Skicka ett mejl med ett foto och de två måtten, det kostar ingenting.';
 
 export const SVAR_RUBRIK: Record<Svar, string> = {
-  nej: 'Nej, inget bygglov',
-  ja: 'Ja, bygglov',
+  nej: 'Nej, du slipper bygglov',
+  ja: 'Ja, du behöver bygglov',
   kanske: 'Troligen, fråga kommunen',
 };
 
@@ -306,7 +306,7 @@ function takRegel(i: BygglovAltanIndata): Regel | null {
   const lovfri = i.ytaKvm <= LOVFRI_TILLBYGGNAD_KVM;
   const inledning =
     i.tak === 'vaggar'
-      ? 'Väggar eller inglasning gör altanen till en tillbyggnad, alltså något som ökar husets volym.'
+      ? 'Väggar eller inglasning gör altanen till en tillbyggnad, för då växer husets volym.'
       : `Ett tak utan väggar räknas som yta under tak, och även det är en tillbyggnad. Den gamla regeln om skärmtak på ${matt(15, 'kvm')} finns inte kvar.`;
   const jamforelse = `Altanen är ${matt(i.ytaKvm, 'kvm')} och gränsen för en lovfri tillbyggnad går vid ${matt(LOVFRI_TILLBYGGNAD_KVM, 'kvm')}.`;
   const dom = lovfri
@@ -381,16 +381,16 @@ export function bedomFall(planlagt: boolean, i: BygglovAltanIndata): Bedomning {
 }
 
 const GOR_INTE_BYGG_FORST =
-  'Bygg inte först och fråga sedan. Byggsanktionsavgiften ovanför tas ut även om du inte visste bättre, du får söka lov i efterhand ändå, och får du inget lov kan nämnden kräva att du river altanen.';
+  'Den som bygger först och frågar sedan får betala byggsanktionsavgiften ovanför även utan att ha vetat bättre, får söka lov i efterhand ändå, och kan få ett rivningskrav från nämnden om lovet inte beviljas. Fråga först.';
 
 const GOR_INTE_BARA_GOLVET =
-  'Räkna inte bara altanens golv när du mäter tillbyggnaden. Hela ytan under taket räknas, gränsen gäller alla lovfria tillbyggnader på huset tillsammans, och tillbyggnaden får inte bli högre än husets taknock.';
+  'Hela ytan under taket räknas när du mäter tillbyggnaden, inte bara altanens golv. Gränsen gäller dessutom alla lovfria tillbyggnader på huset tillsammans, och tillbyggnaden får inte bli högre än husets taknock.';
 
 const GOR_INTE_MUNTLIGT_JA =
-  'Nöj dig inte med ett muntligt ja från grannen. Boverket vill ha medgivandet skriftligt, och enklast är att grannen skriver under en ritning över tomten med altanen inritad. Spara pappret, för det är den dagen grannen säljer som du behöver det.';
+  'Ett muntligt ja från grannen är värt ingenting den dag hon säljer. Boverket vill ha medgivandet skriftligt, och enklast är att grannen skriver under en ritning över tomten med altanen inritad. Spara pappret.';
 
 const GOR_INTE_MAT_PA_OVANSIDAN =
-  'Mät inte höjden på tomtens höga sida. Sluttar marken mäter du altanen där den är som högst, från marken upp till golvets ovansida, och ett tätt plank ovanpå räknas in i samma mått.';
+  'Sluttar marken mäter du altanen där den är som högst, från marken upp till golvets ovansida, och ett tätt plank ovanpå räknas in i samma mått. Måttet på tomtens höga sida säger ingenting.';
 
 export function raknaBygglovAltan(i: BygglovAltanIndata): BygglovAltanResultat {
   const fel: Partial<Record<keyof BygglovAltanIndata, string>> = {};

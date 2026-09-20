@@ -290,22 +290,22 @@ export const GRANSER = {
  */
 
 const GOR_INTE_EXAKT_YTAN =
-  'Köp inte exakt den yta du räknat fram. Talet är rummets mått, inte ditt kap, och varje hörn och varje kapad rad äter av högen. Spillpåslaget i svaret är det minsta du ska lägga på.';
+  'Talet du räknat fram är rummets mått, inte ditt kap. Varje hörn och varje kapad rad äter av högen, så spillpåslaget i svaret är det minsta du ska lägga på. Exakt yta köper ingen som lagt golv förut.';
 
 const GOR_INTE_UTAN_LAGNINGSRESERV =
-  'Lämna inte butiken utan några brädor över. Spricker en bricka om tre år går den inte att byta mot en bräda ur en annan tillverkningssats, för nyansen och ytbehandlingen har hunnit ändras. Lägg det som blir kvar på vinden i stället för att räkna hem exakt.';
+  'Spricker en bricka om tre år går den inte att byta mot en bräda ur en annan tillverkningssats, för nyansen och ytbehandlingen har hunnit ändras. Lägg därför det som blir över på vinden i stället för att räkna hem exakt.';
 
 const GOR_INTE_UTAN_PLATTRESERV =
-  'Lämna inte butiken utan några plattor över. Knäcks en platta när en gryta faller går den inte att ersätta med samma sort om fem år, för då är serien utbytt eller färgsatsen har glidit. Lägg undan en kartong i stället för att räkna hem exakt.';
+  'Den dag en gryta faller och knäcker en platta är serien utbytt eller färgsatsen har glidit. Lägg undan en kartong nu, så slipper du leta om fem år.';
 
 const GOR_INTE_BLANDA_PARTIER =
-  'Blanda inte två färgpartier på samma vägg. Burkar med olika satsnummer kan skilja sig i nyans, och skillnaden syns först när den andra burken möter den första mitt på väggen i dagsljus. Köp allt du behöver på en gång, och är ytan stor rör du ihop burkarna i en hink innan du börjar.';
+  'Burkar med olika satsnummer kan skilja sig i nyans, och skillnaden syns först när den andra burken möter den första mitt på väggen i dagsljus. Köp allt du behöver på en gång, och är ytan stor rör du ihop burkarna i en hink innan du börjar.';
 
 const GOR_INTE_EN_STRYKNING =
-  'Nöj dig inte med en strykning på en vägg som byter kulör. Täckfärgen är gjord för att ligga i två skikt, och tillverkarnas tal för hur långt den räcker gäller per strykning. En enda omgång ser klar ut i lampljus och randig i motljus.';
+  'En enda strykning på en vägg som byter kulör ser klar ut i lampljus och randig i motljus. Täckfärgen är gjord för två skikt, och tillverkarnas tal för hur långt den räcker gäller per strykning.';
 
 const GOR_INTE_UTAN_AVDRAG =
-  'Räkna inte bort dörren och fönstret i huvudet efteråt. Du har varken dörr eller fönster ifyllt, så väggytan här är hela omkretsen gånger höjden. Har rummet en dörr fyller du i den, annars köper du färg till en yta som inte finns.';
+  'Du har varken dörr eller fönster ifyllt, så väggytan här är hela omkretsen gånger höjden. Har rummet en dörr fyller du i den, annars köper du färg till en yta som inte finns.';
 
 /** Decimalkomma accepteras: '2,5' blir 2.5. Tomt eller skräp ger NaN. */
 function tillTal(v: string | null): number {
@@ -563,7 +563,7 @@ export function raknaKvadratmeter(i: KvadratmeterIndata): KvadratmeterResultat {
         ? 'vägg efter avdrag'
         : i.raknar === 'tak'
           ? 'tak'
-          : 'golv, väggar och tak';
+          : 'golv, väggar och tak tillsammans';
 
   // Steg 5. Åtgången. Materialet väljer sin egen yta, så att ett svar aldrig kan
   // bli åtgång på fel yta.

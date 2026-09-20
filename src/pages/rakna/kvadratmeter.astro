@@ -158,7 +158,7 @@ function avdragRad(
 }
 
 const MATERIALTEXT: Record<KvadratmeterIndata['material'], string> = {
-  inget: 'bara kvadratmeter',
+  inget: 'inget material valt',
   vaggfarg: 'väggfärg',
   takfarg: 'takfärg',
   tapet: 'tapet',
@@ -194,7 +194,7 @@ const besked = (() => {
   if (visat.farg) {
     return {
       rubrik: `Köp ${talText(visat.farg.literAttKopa)} liter färg, ${burkRad(visat.farg.burkar)}.`,
-      rad: `Det räcker till ${tal.strykningar} strykningar på ${talText(visat.farg.ytaKvm)} kvm, alltså ${visat.farg.ytaNamn}.`,
+      rad: `Det räcker till ${tal.strykningar} strykningar på ${talText(visat.farg.ytaKvm)} kvm, det vill säga ${visat.farg.ytaNamn}.`,
     };
   }
   if (visat.tapet) {
@@ -205,7 +205,7 @@ const besked = (() => {
   }
   if (visat.golv) {
     const paket =
-      visat.golv.antalPaket !== null ? `, alltså ${formateraTal(visat.golv.antalPaket)} paket` : '';
+      visat.golv.antalPaket !== null ? `, och det är ${formateraTal(visat.golv.antalPaket)} paket` : '';
     return {
       rubrik: `Köp ${talText(visat.golv.kvmAttKopa)} kvm golv${paket}.`,
       rad: `Det är golvets ${talText(visat.golv.ytaKvm)} kvm med ${formateraTal(visat.golv.spillProcent)} procent spill pålagt.`,
@@ -266,7 +266,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Hur långt grundfärgen räcker',
     varde: `${formateraTal(GRUNDFARG_KVM_PER_LITER)} kvm per liter`,
     grund: 'Källa',
-    stod: 'Beckers Scotte Grund anger 6 till 8 kvm per liter, alltså mindre än täckfärgen. Jag räknar med mitten',
+    stod: 'Beckers Scotte Grund anger 6 till 8 kvm per liter, mindre än täckfärgen. Jag räknar med mitten',
     url: BECKERS_GRUND,
   },
   {
@@ -279,7 +279,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Hur burkarna väljs',
     varde: `Högst ${formateraTal(OVERSKOTT_GRANS * 100)} procent över`,
     grund: 'Antagande',
-    stod: 'Bland de kombinationer som lämnar högst så mycket över tar jag den med färst burkar, och vid lika antal den som lämnar minst över',
+    stod: 'Bland de kombinationer som lämnar högst så mycket över tar jag den med minst antal burkar, och vid lika antal den som lämnar minst över',
   },
   {
     storhet: 'Tapetrullens mått',
@@ -439,14 +439,16 @@ const huvudbild = varumarke ?? illustration;
     {
       visat.status === 'ok' && tal && (
         <Faktaruta variant="kortsvar">
-          <p class="m-0 leading-6">Börja med att mäta rummets längd, bredd och takhöjd.</p>
           <p class="m-0 leading-6">
-            Golvet blir <Markering>{tal.golv} kvm</Markering>, och taket lika mycket.
+            Golvet i rummet är <Markering>{tal.golv} kvm</Markering>, och taket lika mycket.
           </p>
           <p class="m-0 leading-6">
             Väggarna är {tal.brutto} kvm före avdrag, och dörren och fönstret tar bort {tal.avdrag} kvm av det.
           </p>
-          <p class="m-0 leading-6">Kvar att måla eller tapetsera är {tal.netto} kvm.</p>
+          <p class="m-0 leading-6">
+            Kvar att måla eller tapetsera är {tal.netto} kvm. Allt det här bygger på tre mått, längden, bredden och
+            takhöjden, så mät dem först.
+          </p>
         </Faktaruta>
       )
     }
@@ -543,84 +545,110 @@ const huvudbild = varumarke ?? illustration;
         <section>
           <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
           <ul class="m-0 p-0 list-none text-brod lg:text-brod-lg tabular-nums">
-            <li class="border-t border-linje py-2">Golvet mäter {tal.golv} kvm, och taket är lika stort</li>
-            <li class="border-t border-linje py-2">
-              Omkretsen är {tal.omkrets} m, och gånger takhöjden ger det {tal.brutto} kvm vägg före avdrag
+            <li class="mb-4 border-l-2 border-linje pl-4">
+              <span class="block">
+                Golvet mäter {tal.golv} kvm, och taket är lika stort. Omkretsen är {tal.omkrets} m, och gånger
+                takhöjden ger det {tal.brutto} kvm vägg före avdrag.
+              </span>
+              <span class="block text-liten text-blyerts-2">Bara dina tre mått, multiplicerade med varandra.</span>
             </li>
-            <li class="border-t border-linje py-2">
-              {avdragRad(
-                visatIndata.dorrar,
-                { noll: 'Du har inte fyllt i någon dörr, så där blir det inget avdrag', ental: 'En dörr räknad', flertal: 'dörrar räknade' },
-                visatIndata.dorrBreddM,
-                visatIndata.dorrHojdM,
-              )}{' '}
-              {visatIndata.dorrar > 0 && `${tal.avdragDorr} kvm`}
+            <li class="mb-4 border-l-2 border-linje pl-4">
+              <span class="block">
+                {avdragRad(
+                  visatIndata.dorrar,
+                  { noll: 'Du har inte fyllt i någon dörr, så där blir det inget avdrag', ental: 'En dörr räknad', flertal: 'dörrar räknade' },
+                  visatIndata.dorrBreddM,
+                  visatIndata.dorrHojdM,
+                ) +
+                  (visatIndata.dorrar > 0 ? ` ${tal.avdragDorr} kvm` : '') +
+                  '. ' +
+                  avdragRad(
+                    visatIndata.fonster,
+                    {
+                      noll: 'Du har inte fyllt i något fönster, så där blir det inget avdrag',
+                      ental: 'Ett fönster räknat',
+                      flertal: 'fönster räknade',
+                    },
+                    visatIndata.fonsterBreddM,
+                    visatIndata.fonsterHojdM,
+                  ) +
+                  (visatIndata.fonster > 0 ? ` ${tal.avdragFonster} kvm` : '') +
+                  `. Väggarna efter avdrag blir ${tal.netto} kvm.`}
+              </span>
+              <span class="block text-liten text-blyerts-2">
+                Dörrmåttet är Swedoors öppningsmått för den vanligaste innerdörren, avrundat. Fönstermåttet är min
+                gissning tills du skriver in ditt eget.
+              </span>
             </li>
-            <li class="border-t border-linje py-2">
-              {avdragRad(
-                visatIndata.fonster,
-                {
-                  noll: 'Du har inte fyllt i något fönster, så där blir det inget avdrag',
-                  ental: 'Ett fönster räknat',
-                  flertal: 'fönster räknade',
-                },
-                visatIndata.fonsterBreddM,
-                visatIndata.fonsterHojdM,
-              )}{' '}
-              {visatIndata.fonster > 0 && `${tal.avdragFonster} kvm`}
-            </li>
-            <li class="border-t border-linje py-2">Väggarna efter avdrag blir {tal.netto} kvm</li>
 
             {visat.farg && (
               <>
-                <li class="border-t border-linje py-2">
-                  Färgen ska täcka {talText(visat.farg.ytaKvm)} kvm, alltså {visat.farg.ytaNamn}
+                <li class="mb-4 border-l-2 border-linje pl-4">
+                  <span class="block">
+                    Färgen ska täcka {talText(visat.farg.ytaKvm)} kvm, {visat.farg.ytaNamn}. {tal.strykningar}{' '}
+                    strykningar ger {talText(visat.farg.literRaknat)} liter räknat, och det blir{' '}
+                    {burkRad(visat.farg.burkar)} att köpa.
+                  </span>
+                  <span class="block text-liten text-blyerts-2">
+                    8 kvm per liter och strykning enligt Beckers, Alcro och Nordsjö. Valet av burkar är min regel om
+                    högst 30 procent över.
+                  </span>
                 </li>
-                <li class="border-t border-linje py-2">
-                  {tal.strykningar} strykningar ger {talText(visat.farg.literRaknat)} liter räknat
-                </li>
-                <li class="border-t border-linje py-2">Det blir {burkRad(visat.farg.burkar)} att köpa</li>
-                <li class="border-t border-linje py-2">
-                  Är underlaget obehandlat går det {talText(visat.farg.grundLiterRaknat)} liter grundfärg till, alltså{' '}
-                  {burkRad(visat.farg.grundBurkar)}
+                <li class="mb-4 border-l-2 border-linje pl-4">
+                  <span class="block">
+                    Är underlaget obehandlat går det {talText(visat.farg.grundLiterRaknat)} liter grundfärg till, och
+                    det blir {burkRad(visat.farg.grundBurkar)}.
+                  </span>
+                  <span class="block text-liten text-blyerts-2">7 kvm per liter, mitten av Beckers 6 till 8.</span>
                 </li>
               </>
             )}
 
             {visat.tapet && (
               <>
-                <li class="border-t border-linje py-2">
-                  {formateraTal(visat.tapet.antalVader)} våder täcker de {talText(visat.tapet.vaderBreddM)} m vägg
-                  som ska tapetseras, alltså omkretsen utan dörröppningarna
+                <li class="mb-4 border-l-2 border-linje pl-4">
+                  <span class="block">
+                    {formateraTal(visat.tapet.antalVader)} våder täcker de {talText(visat.tapet.vaderBreddM)} m vägg
+                    som ska tapetseras (omkretsen utan dörröppningarna). Varje våd blir{' '}
+                    {talText(visat.tapet.vadLangdM)} m lång, så det går {formateraTal(visat.tapet.vaderPerRulle)}{' '}
+                    våder ur en rulle.
+                  </span>
+                  <span class="block text-liten text-blyerts-2">
+                    Rullen är 0,53 × 10,05 m enligt Boråstapeter. Påslaget 10 cm per våd är mitt.
+                  </span>
                 </li>
-                <li class="border-t border-linje py-2">
-                  Varje våd blir {talText(visat.tapet.vadLangdM)} m lång, så det går{' '}
-                  {formateraTal(visat.tapet.vaderPerRulle)} våder ur en rulle
-                </li>
-                <li class="border-t border-linje py-2">
-                  Ska mönstret passas blir våden {talText(visat.tapet.vadLangdMonsterM)} m, och då behöver du{' '}
-                  {formateraTal(visat.tapet.rullarMonster)} rullar
+                <li class="mb-4 border-l-2 border-linje pl-4">
+                  <span class="block">
+                    Ska mönstret passas blir våden {talText(visat.tapet.vadLangdMonsterM)} m, och då behöver du{' '}
+                    {formateraTal(visat.tapet.rullarMonster)} rullar.
+                  </span>
+                  <span class="block text-liten text-blyerts-2">
+                    Rapporten 53 cm är min gissning. Läs av din egen på rullen.
+                  </span>
                 </li>
               </>
             )}
 
             {visat.golv && (
-              <>
-                <li class="border-t border-linje py-2">
+              <li class="mb-4 border-l-2 border-linje pl-4">
+                <span class="block">
                   Jag lägger på {formateraTal(visat.golv.spillProcent)} procent spill på golvets{' '}
-                  {talText(visat.golv.ytaKvm)} kvm
-                </li>
-                {visat.golv.antalPaket !== null && visat.golv.paketKvm !== null ? (
-                  <li class="border-t border-linje py-2">
-                    Med paket om {talText(visat.golv.paketKvm)} kvm blir det {formateraTal(visat.golv.antalPaket)}{' '}
-                    paket, alltså {talText(visat.golv.kvmIPaketen ?? 0)} kvm hem
-                  </li>
-                ) : (
-                  <li class="border-t border-linje py-2">
-                    Fyll i hur många kvadratmeter det är i ett paket, så räknar jag om talet till antal paket
-                  </li>
-                )}
-              </>
+                  {talText(visat.golv.ytaKvm)} kvm.{' '}
+                  {visat.golv.antalPaket !== null && visat.golv.paketKvm !== null ? (
+                    <>
+                      Med paket om {talText(visat.golv.paketKvm)} kvm blir det {formateraTal(visat.golv.antalPaket)}{' '}
+                      paket, och {talText(visat.golv.kvmIPaketen ?? 0)} kvm hem.
+                    </>
+                  ) : (
+                    <>Fyll i hur många kvadratmeter det är i ett paket, så räknar jag om talet till antal paket.</>
+                  )}
+                </span>
+                <span class="block text-liten text-blyerts-2">
+                  {visatIndata.material === 'klinker'
+                    ? 'Spillet är Kakelgigantens, 10 procent rakt och 15 diagonalt.'
+                    : 'Spillet är Kährs och Pergos, cirka 5 procent rakt och upp till 10 diagonalt.'}
+                </span>
+              </li>
             )}
           </ul>
 
@@ -641,13 +669,14 @@ const huvudbild = varumarke ?? illustration;
     <section>
       <Pennstreck id="rakna-ut-kvadratmeter">Räkna ut kvadratmeter på ett rum med dörr och fönster</Pennstreck>
       <p class="m-0 text-brod lg:text-brod-lg">
-        Ta ett rum på fyra gånger tre meter med takhöjden 2,5&nbsp;m, en dörr och ett fönster. Golvet är det enkla.
-        Längden gånger bredden ger 12&nbsp;kvm, och taket är lika stort. Väggarna kräver ett steg till. Omkretsen är
-        två gånger längden plus två gånger bredden, alltså 14&nbsp;m, och omkretsen gånger takhöjden ger 35&nbsp;kvm.
+        Rummet i exemplet är fyra gånger tre meter med takhöjden 2,5&nbsp;m, en dörr och ett fönster. Golvet är det
+        enkla. Längden gånger bredden ger 12&nbsp;kvm, och taket är lika stort. Väggarna kräver ett steg till.
+        Omkretsen är två gånger längden plus två gånger bredden, 14&nbsp;m, och omkretsen gånger takhöjden ger
+        35&nbsp;kvm.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
         Sedan kommer avdragen, och det är dem folk glömmer. En innerdörr sitter i ett hål i väggen på ungefär
-        0,9&nbsp;×&nbsp;2,1&nbsp;m, alltså 1,89&nbsp;kvm. Ett fönster på 1,2&nbsp;×&nbsp;1,2&nbsp;m tar bort
+        0,9&nbsp;×&nbsp;2,1&nbsp;m, eller 1,89&nbsp;kvm. Ett fönster på 1,2&nbsp;×&nbsp;1,2&nbsp;m tar bort
         1,44&nbsp;kvm till. Väggarna landar på 31,67&nbsp;kvm. Drygt tre kvadratmeter låter inte mycket, men det är
         en tiondel av färgen, och det är en burk du slipper bära hem.
       </p>
@@ -659,7 +688,7 @@ const huvudbild = varumarke ?? illustration;
         10&nbsp;kvm per liter för sina väggfärger, och Alcro skriver 8. Jag räknar med det lägsta talet, för en
         spacklad vägg suger mer än en som redan är målad, och det är bättre att ha en halv liter över än att stå
         med en torr rulle. Två strykningar på 31,67&nbsp;kvm blir knappt åtta liter, och då är en burk om tio liter
-        svaret. Verktyget tar färst möjliga burkar av dem som lämnar högst 30&nbsp;procent över, eftersom små burkar
+        svaret. Verktyget tar minsta antalet burkar av dem som lämnar högst 30&nbsp;procent över, eftersom små burkar
         kostar mer per liter. Taket drar bara tre liter, och där blir svaret i stället en burk om 2,5&nbsp;liter
         plus en literburk. Är väggen obehandlad ska den grundas först, och grundfärg drar mer. Beckers anger 6 till
         8&nbsp;kvm per liter för sin grundfärg.
@@ -671,7 +700,7 @@ const huvudbild = varumarke ?? illustration;
         Tapet räknar du i våder, inte i kvadratmeter, och det är därför kvadratmetertalet inte räcker som svar.
         Rullen är 0,53&nbsp;m bred och 10,05&nbsp;m lång enligt tapettillverkaren Boråstapeter. Dörrens bredd går
         bort ur omkretsen, men inte fönstrets, för tapeten ska ändå upp ovanför och ner under det. Kvar blir
-        13,1&nbsp;m att tapetsera, alltså 25 våder. Varje våd är takhöjden plus tio centimeter för kap, och tre
+        13,1&nbsp;m att tapetsera, och det är 25 våder. Varje våd är takhöjden plus tio centimeter för kap, och tre
         sådana går ur en rulle. Det blir nio rullar. Har tapeten ett mönster som ska passas kapar du våden vid en
         hel mönsterrapport i stället, och då kan en rulle tappa en våd.
       </p>
@@ -718,11 +747,11 @@ const huvudbild = varumarke ?? illustration;
           Färgen räknar jag på ytan gånger antalet strykningar, delat med tillverkarnas åtgång per liter.
         </li>
         <li class="mb-2">
-          Litertalet rundar jag upp till burkar. Färst burkar vinner, men bara bland dem som lämnar högst 30 procent
-          över.
+          Litertalet rundar jag upp till burkar. Minsta antalet burkar vinner, men bara bland dem som lämnar högst
+          30 procent över.
         </li>
         <li class="mb-2">
-          Tapeten räknar jag i våder, alltså omkretsen minus dörrarnas bredd, delat med rullens bredd och avrundat
+          Tapeten räknar jag i våder. Omkretsen minus dörrarnas bredd delar jag med rullens bredd och avrundar
           uppåt.
         </li>
         <li class="mb-2">
@@ -768,15 +797,12 @@ const huvudbild = varumarke ?? illustration;
       </Tabellyta>
 
       <p class="m-0 mt-6 text-brod lg:text-brod-lg">
-        Två rader i tabellen är svagare än de andra. Fönstrets mått är min gissning. Modulsystemet är en standard
-        hos alla svenska tillverkare, men ingen publicerar vilket mått som faktiskt sitter i flest bostäder.
-        Mönsterrapporten är också min, för den skiljer sig från tapet till tapet. Båda går att skriva över. Fönstret
-        har egna fält i formuläret, och rapporten läser du av på rullen innan du bestämmer dig.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        När du är nöjd med svaret ligger hela uträkningen i adressfältet, så du kan skicka länken till den som ska
-        handla. Hur jag hämtar tal från tillverkarna står på sidan{' '}
-        <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar vi</a>.
+        Allt i tabellen som är märkt Antagande går att skriva över i formuläret utom burkstorlekarna. Fönstret har
+        egna fält, och mönsterrapporten läser du av på rullen innan du bestämmer dig. Modulsystemet för fönster är
+        en standard hos alla svenska tillverkare, men ingen publicerar vilket mått som sitter i flest bostäder, så
+        1,2 × 1,2 m är en gissning jag gärna får rättad av dig. När du är nöjd med svaret ligger hela uträkningen i
+        adressfältet, så du kan skicka länken till den som ska handla. Hur jag hämtar tal från tillverkarna står på
+        sidan <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar jag</a>.
       </p>
     </section>
 

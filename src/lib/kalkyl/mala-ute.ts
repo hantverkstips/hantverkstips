@@ -301,18 +301,18 @@ export const GRANSER = {
  */
 
 const GOR_INTE_MORGONDAGG =
-  'Måla inte på morgondaggen. Panelen är våt tills solen och vinden torkat den, ofta fram till sen förmiddag, och färg på en fuktig yta fäster sämre och kan få blåsor. Känn med handflatan på skuggsidan innan du öppnar burken.';
+  'Känn med handflatan på skuggsidan innan du öppnar burken. Panelen är våt av morgondaggen tills solen och vinden torkat den, ofta fram till sen förmiddag, och färg på en fuktig yta fäster sämre och kan få blåsor.';
 
 const GOR_INTE_VARM_PANEL =
-  'Måla inte i direkt sol på en varm panel. Färgen börjar torka i penseln innan den är utstruken, och du får ränder och sämre vidhäftning. Följ skuggan runt huset i stället.';
+  'På en varm panel i direkt sol börjar färgen torka i penseln innan den är utstruken, och du får ränder och sämre vidhäftning. Följ skuggan runt huset i stället.';
 
 const GOR_INTE_LITA_PA_DAGEN =
-  'Lita inte på dagstemperaturen när natten blir kall. Tillverkarnas gräns gäller yta och luft hela dygnet och inte bara medan du målar, och en oljefärg härdar långt in i natten.';
+  'En fin dag med kall natt är den vanligaste fällan. Tillverkarnas gräns gäller yta och luft hela dygnet och inte bara medan du målar, och en oljefärg härdar långt in i natten.';
 
-const GOR_INTE_VATT_VIRKE = `Måla inte på virke med mer än ${FUKTKVOT_MAX_PROCENT} procent fuktkvot. Det är gränsen hos både Svenskt Trä och färgtillverkarna, och en panel som stått i regn eller nyss tvättats ligger över den i flera dagar. Mät med en resistansmätare på skuggsidan.`;
+const GOR_INTE_VATT_VIRKE = `Mät fuktkvoten i virket med en resistansmätare på skuggsidan. Gränsen är ${FUKTKVOT_MAX_PROCENT} procent hos både Svenskt Trä och färgtillverkarna, och en panel som stått i regn eller nyss tvättats ligger över den i flera dagar.`;
 
 const GOR_INTE_DAGEN_FORE_REGN =
-  'Måla inte dagen före regn. Beckers vill ha ett dygn utan regn och dagg efter målningen, och en träolja behöver lika länge innan den tål vatten. Ett regn på färsk färg ger fläckar som inte går att tvätta bort.';
+  'Ett regn på färsk färg ger fläckar som inte går att tvätta bort. Beckers vill ha ett dygn utan regn och dagg efter målningen, och en träolja behöver lika länge innan den tål vatten, så måla inte dagen före regn.';
 
 /** Decimalkomma accepteras: '12,5' blir 12.5. Tomt eller skräp ger NaN. */
 function tillTal(v: string | null): number {
@@ -536,7 +536,7 @@ export function raknaMalaUte(i: MalaUteIndata): MalaUteResultat {
               ? 'Träoljan torkar igenom först nästa dag, så natten ingår alltid i torktiden.'
               : overmalningsbarIdagH >= 24
                 ? 'Färgen är övermålningsbar först nästa dag vid dagens väder, så natten ingår i torktiden.'
-                : `Färgen är övermålningsbar först ${klockslag(overmalningsbarKl)}, alltså efter solnedgången ${klockslag(i.solnedgangTimme)}, och torkar därför genom natten.`;
+                : `Färgen är övermålningsbar först ${klockslag(overmalningsbarKl)}, efter solnedgången ${klockslag(i.solnedgangTimme)}, och torkar därför genom natten.`;
       regler.push({
         utfall: 'stopp',
         text: `Natten går ner till ${gradEnhet(i.nattMinC)}, under färgens gräns på ${gradEnhet(farg.minTempC)}. ${skal} Tillverkarna vill att gränsen håller hela dygnet, inte bara medan du målar.`,
@@ -565,7 +565,7 @@ export function raknaMalaUte(i: MalaUteIndata): MalaUteResultat {
     const text =
       senasteSlutTimme < 0
         ? `Du börjar ${klockslag(i.startTimme)}, men ${farg.namn.toLowerCase()} behöver ${timmar(klibbfriIdagH)} till klibbfri vid dagens väder och ska vara klibbfri ${DAGG_MARGINAL_H} timmar före solnedgången ${klockslag(i.solnedgangTimme)}. Det ryms inte i en dag. Börja i gryningen en varmare dag.`
-        : `Du börjar ${klockslag(i.startTimme)}, men senaste klockslaget att sluta är redan ${senasteSlutText}: solnedgången ${klockslag(i.solnedgangTimme)} minus ${DAGG_MARGINAL_H} timmar minus ${timmar(klibbfriIdagH)} till klibbfri vid dagens väder. Färgen hinner inte torka före kvällskylan.`;
+        : `Du börjar ${klockslag(i.startTimme)}, men senaste klockslaget att sluta är redan ${senasteSlutText}. Solen går ner ${klockslag(i.solnedgangTimme)}, färgen ska vara klibbfri ${DAGG_MARGINAL_H} timmar innan, och det tar ${timmar(klibbfriIdagH)} vid dagens väder. Färgen hinner inte torka före kvällskylan.`;
     regler.push({
       utfall: 'stopp',
       text,
@@ -579,7 +579,7 @@ export function raknaMalaUte(i: MalaUteIndata): MalaUteResultat {
     if (!forSent) {
       regler.push({
         utfall: 'sluta',
-        text: `Daggpunkten är ${gradEnhet(daggpunktC)}, och ytan går ner till ${gradEnhet(ytTempNattC)} i natt, alltså under den. Dagg faller. Sluta senast ${senasteSlutText}, så är färgen klibbfri ${DAGG_MARGINAL_H} timmar före solnedgången.`,
+        text: `Daggpunkten är ${gradEnhet(daggpunktC)}, och ytan går ner till ${gradEnhet(ytTempNattC)} i natt, under den. Dagg faller. Sluta senast ${senasteSlutText}, så är färgen klibbfri ${DAGG_MARGINAL_H} timmar före solnedgången.`,
         kalla: 'Beckers Perfekt Fasad och Alcro, dagg inom två timmar. Daggpunkten enligt Magnus-formeln',
       });
     } else {
@@ -592,7 +592,7 @@ export function raknaMalaUte(i: MalaUteIndata): MalaUteResultat {
   } else {
     regler.push({
       utfall: 'ok',
-      text: `Daggpunkten är ${gradEnhet(daggpunktC)}, och ytan stannar på ${gradEnhet(ytTempNattC)} i natt, alltså ${gradEnhet(marginalC)} över. Det blir ingen dagg om luften är densamma i kväll. Sluta ändå senast ${senasteSlutText}, för det är vad tillverkarna menar med i god tid.`,
+      text: `Daggpunkten är ${gradEnhet(daggpunktC)}, och ytan stannar på ${gradEnhet(ytTempNattC)} i natt, ${gradEnhet(marginalC)} över. Det blir ingen dagg om luften är densamma i kväll. Sluta ändå senast ${senasteSlutText}, för det är vad tillverkarna menar med i god tid.`,
       kalla: 'Daggpunkten enligt Magnus-formeln. Marginalen är mitt antagande',
     });
   }

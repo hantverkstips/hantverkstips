@@ -265,18 +265,18 @@ export const AGARVAL: { varde: number; etikett: string }[] = [
  */
 
 const GOR_INTE_PROCENT_PA_HELA_FAKTURAN =
-  'Räkna inte procentsatsen på hela fakturan. Avdraget gäller bara arbetet, så material och resor står utanför. Är materialet halva notan blir avdraget hälften så stort som du trodde, och mellanskillnaden får du stå för själv.';
+  'Det vanligaste felet är att räkna procentsatsen på hela fakturan. Avdraget gäller bara arbetet, så material och resor står utanför. Är materialet halva notan blir avdraget hälften så stort som du trodde, och mellanskillnaden får du stå för själv.';
 
 const GOR_INTE_MASKINHYRA_I_ARBETET =
-  'Låt inte maskinhyran ligga inne i arbetsposten. Skatteverket undantar maskinell utrustning med namn, alltså grävmaskiner, borraggregat och liknande. Maskinistens arbetade tid ger däremot avdrag. Det är bara maskinen som inte gör det, så be om en faktura där de två står på var sin rad.';
+  'Står maskinhyran inne i arbetsposten får du ett avdrag på papperet som Skatteverket sedan drar tillbaka. De undantar maskinell utrustning med namn, som grävmaskiner och borraggregat. Maskinistens arbetade tid ger däremot avdrag. Det är bara maskinen som inte gör det, så be om en faktura där de två står på var sin rad.';
 
 const GOR_INTE_GAMMAL_FAKTURA =
-  'Betala inte en gammal faktura nu och räkna med den procentsats som gällde när den skrevs. Det är dagen du betalar som avgör. Arbetet ska dessutom vara klart, och företaget ska ha skickat in sin begäran om utbetalning senast den 31 januari året efter att du betalade.';
+  'En gammal faktura som du betalar i dag får dagens procentsats, inte den som gällde när den skrevs. Det är dagen du betalar som räknas. Arbetet ska dessutom vara klart, och företaget ska ha skickat in sin begäran om utbetalning senast den 31 januari året efter att du betalade.';
 
 const GOR_INTE_DELA_MED_ICKE_AGARE =
-  'Dela inte avdraget med någon som inte äger och bor i bostaden. Skatteverket kräver båda delarna, och den som står utanför har ingen egen gräns att lägga till. En sambo utan andel i huset gör alltså ingen skillnad för notan.';
+  'Bara den som både äger och bor i bostaden kan dela på avdraget, och Skatteverket kräver båda delarna. En sambo utan andel i huset har ingen egen gräns att lägga till, hur mycket hon än betalar av notan.';
 
-const GOR_INTE_NYBYGGT_HUS = `Räkna inte med rotavdrag för ombyggnad av ett nybyggt hus. Är huset yngre än ${NYBYGGT_SPARRAR_AR} år, räknat från värdeåret, ger ombyggnad och tillbyggnad inget avdrag alls. Reparation och underhåll ger det hur gammalt huset än är, så red ut med hantverkaren vilket av de två ni gör innan fakturan skrivs.`;
+const GOR_INTE_NYBYGGT_HUS = `Bor du i ett nybyggt hus, yngre än ${NYBYGGT_SPARRAR_AR} år räknat från värdeåret, ger ombyggnad och tillbyggnad inget avdrag alls. Reparation och underhåll ger det hur gammalt huset än är. Red ut med hantverkaren vilket av de två ni gör, för det ska stå rätt på fakturan.`;
 
 /** Decimalkomma accepteras: '12 500,50' blir 12500.5. Tomt fält ger NaN. */
 function tillTal(v: string | null): number {
@@ -443,7 +443,7 @@ export function raknaRotavdrag(i: RotavdragIndata): RotavdragResultat {
     slag: 'arbete',
     text:
       i.materialkostnadKr > 0
-        ? `Bara arbetet ger avdrag. Av din faktura på ${kronor(fakturaKr)} kr står ${kronor(utanAvdragKr)} kr utanför, alltså material och annat som inte är arbete. Maskiner är dessutom undantagna med namn hos Skatteverket, så grävmaskiner, borraggregat och liknande ger inget avdrag ens när de står på arbetsraden.`
+        ? `Bara arbetet ger avdrag. Av din faktura på ${kronor(fakturaKr)} kr står ${kronor(utanAvdragKr)} kr utanför, och det är material och annat som inte är arbete. Maskiner är dessutom undantagna med namn hos Skatteverket, så grävmaskiner, borraggregat och liknande ger inget avdrag ens när de står på arbetsraden.`
         : 'Bara arbetet ger avdrag. Material och resor gör det inte, och maskiner är dessutom undantagna med namn hos Skatteverket, så grävmaskiner, borraggregat och liknande ger inget avdrag ens när de står på arbetsraden.',
     kalla: 'Skatteverket, ger arbetet rätt till rotavdrag',
     url: SKATTEVERKET_GER_RATT,
@@ -476,7 +476,7 @@ export function raknaRotavdrag(i: RotavdragIndata): RotavdragResultat {
   // 3b. Femårsregeln. Den skiljer ombyggnad från reparation, och den saknas i hela fältet.
   regler.push({
     slag: 'arbete',
-    text: `Är huset yngre än ${NYBYGGT_SPARRAR_AR} år ger ombyggnad och tillbyggnad inget avdrag. Åren räknas från värdeåret, alltså det år huset stod färdigt, och det är hela året som räknas. Reparation och underhåll ger avdrag hur gammalt huset än är, så red ut med hantverkaren vilket av de två ni gör innan fakturan skrivs.`,
+    text: `Är huset yngre än ${NYBYGGT_SPARRAR_AR} år ger ombyggnad och tillbyggnad inget avdrag. Åren räknas från värdeåret, det år huset stod färdigt, och det är hela året som räknas. Reparation och underhåll ger avdrag hur gammalt huset än är, så red ut med hantverkaren vilket av de två ni gör innan fakturan skrivs.`,
     kalla: 'Skatteverket, så fungerar rotavdraget',
     url: SKATTEVERKET_ROTAVDRAGET,
   });

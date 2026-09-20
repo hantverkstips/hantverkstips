@@ -184,9 +184,9 @@ export const REGEL_VAL: { varde: RegelBakom; etikett: string }[] = [
 
 /** Skivan i ord, för metaraden under beskedet. */
 export const SKIVA_TEXT: Record<Skiva, string> = {
-  'ett-lag': 'ett lag 12,5 mm gips',
-  'tva-lag': 'två lag 12,5 mm gips',
-  tunn: 'ett lag 9,5 mm gips',
+  'ett-lag': 'en vägg med ett lag 12,5 mm gips',
+  'tva-lag': 'en vägg med två lag 12,5 mm gips',
+  tunn: 'en vägg med ett lag 9,5 mm gips',
 };
 
 /** Saken i ord, för metaraden under beskedet. */
@@ -411,7 +411,7 @@ function lastText(i: GipspluggIndata, barande: number): string {
     return `Armen gör vikten till en hävarm. Jag räknar med att den övre skruvraden får bära hela vikten gånger ${String(SVANGARM_FAKTOR).replace('.', ',')}, fördelad på ${punktOrd(barande)}. Det är min regel, ingen tillverkares.`;
   }
   if (i.sak === 'skap') {
-    return `Ett skåp belastas ojämnt varje gång någon öppnar luckan. Därför lägger jag hela vikten på de övre fästena, alltså ${punktOrd(barande)} av ${i.punkter}.`;
+    return `Ett skåp belastas ojämnt varje gång någon öppnar luckan. Därför lägger jag hela vikten på de övre fästena, ${punktOrd(barande)} av ${i.punkter}.`;
   }
   if (i.sak === 'hylla') {
     return `En hylla vill vrida sig ut från väggen, så de övre fästena bär nästan allt. Jag lägger hela vikten på ${punktOrd(barande)} av ${i.punkter}.`;
@@ -470,29 +470,29 @@ function utelamnadeText(sak: Sak, skiva: Skiva): string | null {
   }
   if (skiva === 'tunn') {
     delar.push(
-      'Hålrumsplugg, gipsankare, molly och clips saknas också. Källorna anger inga värden för den tunna skivan, och en siffra jag gissat fram är ingen siffra.',
+      'De kraftigare pluggarna, hålrumsplugg, gipsankare, molly och clips, saknas också. Källorna anger inga värden för dem i den tunna skivan, och en siffra jag gissat fram är ingen siffra.',
     );
   } else if (skiva === 'tva-lag' && sak !== 'tak') {
     delar.push(
-      'Den självborrande gipspluggen saknas också. fischer anger inget värde för två lag, och metallvarianten ska dessutom förborras med en borr på ø 8 mm när den går genom två skivor.',
+      'Den självborrande gipspluggen saknas också. Tillverkaren fischer anger inget värde för två lag, och metallvarianten ska dessutom förborras med en borr på ø 8 mm när den går genom två skivor.',
     );
   }
   return delar.length > 0 ? delar.join(' ') : null;
 }
 
 const GOR_INTE_SVANGARM =
-  'Sätt inte ett tv-fäste med svängarm i en plugg, hur högt tal det än står på förpackningen. Armen drar den övre skruvraden rakt ut ur väggen, och tillverkarnas tal gäller en vikt som hänger stilla. Fästet ska ha träskruv i två reglar, eller i en kortling du satt in själv.';
+  'Armen på ett tv-fäste drar den övre skruvraden rakt ut ur väggen, och tillverkarnas tal gäller en vikt som hänger stilla. Därför sitter ett fäste med svängarm aldrig i en plugg, hur högt tal det än står på förpackningen. Det ska ha träskruv i två reglar, eller i en kortling du satt in själv.';
 
 const GOR_INTE_XKROK_TAK =
-  'Slå inte upp en X-krok eller ett stift i taket. Norgips skriver rakt ut att de inte fungerar där, eftersom lasten drar rakt ut ur skivan i stället för nedåt längs den. I tak gäller en infästning som viker ut sig bakom gipset.';
+  'I ett tak drar lasten rakt ut ur skivan i stället för nedåt längs den, och där fungerar varken X-krok eller stift. Det skriver Norgips rakt ut. I tak gäller en infästning som viker ut sig bakom gipset.';
 
-const GOR_INTE_TATT = `Sätt inte två infästningar närmare varandra än ${MIN_AVSTAND_MM}${HART}mm. Då delar de på samma bit gips och bryter loss den tillsammans. Ska varje infästning bära sin maxlast vill Norgips ha minst ${MAXLAST_AVSTAND_MM}${HART}mm mellan dem.`;
+const GOR_INTE_TATT = `Två infästningar närmare varandra än ${MIN_AVSTAND_MM}${HART}mm delar på samma bit gips och bryter loss den tillsammans. Håll minst det avståndet, och ska varje infästning bära sin maxlast vill Norgips ha minst ${MAXLAST_AVSTAND_MM}${HART}mm mellan dem.`;
 
 const GOR_INTE_EN_PUNKT =
-  'Häng inte något tungt i en enda punkt. Två infästningar med avstånd emellan delar lasten på två bitar gips, och saken slipper dessutom hänga snett två veckor senare.';
+  'Hänger något tungt i en enda punkt sitter hela lasten i en bit gips, och saken hänger snett två veckor senare. Två infästningar med avstånd emellan delar lasten på två bitar.';
 
 const GOR_INTE_TOMVIKT =
-  'Räkna inte på skåpets tomvikt. Ett överskåp med porslin i landar snabbt på det dubbla, och det är den fyllda vikten som hänger i infästningen.';
+  'Ett överskåp med porslin i landar snabbt på dubbla tomvikten, och det är den fyllda vikten som hänger i infästningen. Räkna på skåpet fullt.';
 
 export function raknaGipsplugg(i: GipspluggIndata): GipspluggResultat {
   const fel: Partial<Record<keyof GipspluggIndata, string>> = {};

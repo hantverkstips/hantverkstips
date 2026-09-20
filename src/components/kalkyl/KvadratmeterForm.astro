@@ -223,7 +223,7 @@ const oppningar = [
   }
 
   <fieldset class="m-0 mb-4 p-0 border-0">
-    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Vilken yta vill du se stort</legend>
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Vilken yta ska stå överst i svaret?</legend>
     <div class={radioKlass}>
       {
         RAKNAR_VAL.map((r) => (
@@ -292,7 +292,7 @@ const oppningar = [
     </div>
 
     <div class="mb-4">
-      <label for={id('paket')} class={ETIKETT_KLASS}>Kvm per paket golv, valfritt</label>
+      <label for={id('paket')} class={ETIKETT_KLASS}>Kvadratmeter i ett paket golv, om du vet det</label>
       <div class="flex items-center gap-2">
         <input
           id={id('paket')}

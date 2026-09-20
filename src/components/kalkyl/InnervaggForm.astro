@@ -113,7 +113,7 @@ const talfalt = [
   </div>
 
   <fieldset class="m-0 mb-4 p-0 border-0">
-    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Hur grova reglar</legend>
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Hur grova ska reglarna vara?</legend>
     <div class={radioKlass}>
       {
         REGELDIMENSIONER.map((r) => (
@@ -127,7 +127,7 @@ const talfalt = [
   </fieldset>
 
   <fieldset class="m-0 mb-4 p-0 border-0">
-    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Hur många lag gips per sida</legend>
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Hur många lag gips per sida?</legend>
     <div class={radioKlass}>
       {
         SKIVLAG.map((s) => (
@@ -209,7 +209,7 @@ const talfalt = [
   </div>
 
   <fieldset class="m-0 mb-6 p-0 border-0">
-    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Mineralull 45 mm i facken</legend>
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Mineralull 45 mm mellan reglarna</legend>
     <div class={radioKlass}>
       <label class="flex min-h-11 items-center gap-2 text-brod">
         <input type="radio" name="ull" value="ja" checked={indata.ull} />

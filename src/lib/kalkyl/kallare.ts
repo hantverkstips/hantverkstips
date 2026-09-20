@@ -259,7 +259,7 @@ export const TEJPTESTER: { varde: Tejptest; etikett: string; hjalp: string }[] =
   {
     varde: 'inte-gjort',
     etikett: 'Jag har inte gjort testet',
-    hjalp: 'Det kostar dig en bit plastfolie och två dygn.',
+    hjalp: 'Då gör du det i kväll. En bit plastfolie och tejp är allt som behövs.',
   },
 ];
 
@@ -279,12 +279,12 @@ export const ARSTIDER: { varde: Arstid; etikett: string; hjalp: string }[] = [
 export const ANVANDNINGAR: { varde: Anvandning; etikett: string; hjalp: string }[] = [
   {
     varde: 'kallare',
-    etikett: 'Bara källare, alltså förråd, tvättstuga eller pannrum',
+    etikett: 'Bara källare, som förråd, tvättstuga eller pannrum',
     hjalp: 'Kraven är lägre, och en gammal dränering får leva vidare längre.',
   },
   {
     varde: 'bebodd',
-    etikett: 'Inredd och bebodd, alltså sovrum, gillestuga eller kontor',
+    etikett: 'Inredd och bebodd, som sovrum, gillestuga eller kontor',
     hjalp: 'Då gäller kraven på ett bostadsrum, och fukten blir en hälsofråga.',
   },
 ];
@@ -326,16 +326,16 @@ export const GRANSER = {
  */
 
 const GOR_INTE_AVFUKTARE_MOT_MARKFUKT =
-  'Köp inte en avfuktare mot markfukt. Maskinen torkar luften i rummet, mer vatten dunstar ur väggen, och väggen suger efter mer ur marken. Betongen är lika våt som förut, och du betalar för det dygnet runt.';
+  'En avfuktare mot markfukt torkar luften i rummet, och då dunstar mer vatten ur väggen, som suger efter mer ur marken. Betongen är lika våt som förut, och du betalar för det dygnet runt. Skyddet mot markfukt sitter på utsidan av väggen, så spara pengarna till det.';
 
 const GOR_INTE_LITA_PA_TORR_PLAST =
-  'Lita inte på torr plast. Torrt på båda sidor betyder oftast att du tejpade på fel vägg, och sällan att källaren är frisk. Flytta plasten till den lägsta punkten på en vägg som ligger mot mark, helst i ett hörn, och gör om testet.';
+  'Torr plast på båda sidor betyder oftast att du tejpade på fel vägg, och sällan att källaren är frisk. Flytta plasten till den lägsta punkten på en vägg som ligger mot mark, helst i ett hörn, och gör om testet innan du drar någon slutsats.';
 
 const GOR_INTE_OFFERT_UTAN_MATVARDEN =
-  'Ring inte efter en offert på en åtgärd innan du har en fuktutredning med mätvärden. Du vill se luftfuktighet och temperatur i materialet, var i huset de mätte och vilken slutsats de drar av just de talen. Ett papper utan en enda siffra är ett säljbesök.';
+  'Be om en fuktutredning med mätvärden före offerten på åtgärden. Du vill se luftfuktighet och temperatur i materialet, var i huset de mätte och vilken slutsats de drar av just de talen. Kommer det ett papper utan en enda siffra har du fått ett säljbesök.';
 
 const GOR_INTE_TAT_MATTA =
-  'Sätt inte en tät plastmatta mot källarväggens utsida som enda fuktskydd. Villaägarna avråder från det, för den kalla marken gör att fukten fastnar i väggen i stället för att vandra ut. Skyddet ska stoppa vattnet utifrån och samtidigt släppa ut det som redan sitter i betongen.';
+  'Den som sätter en tät plastmatta mot källarväggens utsida som enda fuktskydd får en vägg där fukten fastnar i stället för att vandra ut, för marken utanför är kall. Villaägarna avråder från det. Skyddet ska stoppa vattnet utifrån och samtidigt släppa ut det som redan sitter i betongen.';
 
 /** Decimalkomma accepteras: '72,5' blir 72.5. Tomt fält ger null, skräp ger NaN. */
 function tillTal(v: string | null): number {
@@ -462,7 +462,7 @@ export function bedomKallare(i: KallareIndata): KallareResultat {
   // Steg 1. Titta. En rad per kryss, med guidens egen tolkning på raden.
   const titta: Regel[] = valda.map((s) => ({
     steg: 'titta',
-    text: `${s.etikett}. Det pekar mot ${s.trolig.toLowerCase()}, och nästa steg enligt tabellen är: ${s.nastaSteg.toLowerCase()}.`,
+    text: `${s.etikett}. Det brukar betyda ${s.trolig.toLowerCase()}, så nästa steg är ${s.nastaSteg.toLowerCase()}.`,
     kalla: s.kalla,
   }));
   if (valda.length === 0) {
@@ -519,13 +519,13 @@ export function bedomKallare(i: KallareIndata): KallareResultat {
   } else if (overKritiskRf) {
     mat.push({
       steg: 'mat',
-      text: `Hygrometern visar ${String(i.luftfuktighet).replace('.', ',')} procent relativ luftfuktighet, alltså över Boverkets gräns på ${KRITISK_RF} procent. Så högt bör luften inte ligga någon längre tid.`,
+      text: `Hygrometern visar ${String(i.luftfuktighet).replace('.', ',')} procent relativ luftfuktighet, och det är över Boverkets gräns på ${KRITISK_RF} procent. Så högt bör luften inte ligga någon längre tid.`,
       kalla: 'Boverket, högsta tillåtna fukttillstånd (BBR 6:52). Villaägarna säger samma sak i praktisk form',
     });
   } else {
     mat.push({
       steg: 'mat',
-      text: `Hygrometern visar ${String(i.luftfuktighet).replace('.', ',')} procent relativ luftfuktighet, alltså under Boverkets gräns på ${KRITISK_RF} procent. Talet gäller bara där givaren ligger, och bakom en skiva mot ytterväggen är luften fuktigare än så.`,
+      text: `Hygrometern visar ${String(i.luftfuktighet).replace('.', ',')} procent relativ luftfuktighet, och det är under Boverkets gräns på ${KRITISK_RF} procent. Talet gäller bara där givaren ligger, och bakom en skiva mot ytterväggen är luften fuktigare än så.`,
       kalla: 'Boverket, högsta tillåtna fukttillstånd (BBR 6:52)',
     });
   }
@@ -591,12 +591,12 @@ export function bedomKallare(i: KallareIndata): KallareResultat {
   if (diagnos === 'kondens') {
     atgarda.push({
       steg: 'atgarda',
-      text: `Det här är fallet där en maskin gör jobbet. En kondensavfuktare till en källare på 40 kvm kostar ${kronor(AVFUKTARE_KR)} kr. Ställ hygrostaten, alltså givaren som startar och stoppar maskinen, på ${HYGROSTAT_RF} procent.`,
+      text: `Det här är fallet där en maskin gör jobbet. En kondensavfuktare till en källare på 40 kvm kostar ${kronor(AVFUKTARE_KR)} kr. Ställ hygrostaten på ${HYGROSTAT_RF} procent. Hygrostaten är givaren som startar och stoppar maskinen.`,
       kalla: `Proffsmagasinet för priset, läst 16 september 2026. Börvärdet på ${HYGROSTAT_RF} procent är mitt`,
     });
     atgarda.push({
       steg: 'atgarda',
-      text: 'Håller källaren över 10 grader året om räcker en kondensavfuktare. Går den under 10 grader en längre period på vintern avfrostar kylslingan i stället för att fälla ut vatten, och då ska du ha en sorptionsavfuktare, alltså en maskin med ett fuktsugande hjul.',
+      text: 'Håller källaren över 10 grader året om räcker en kondensavfuktare. Går den under 10 grader en längre period på vintern avfrostar kylslingan i stället för att fälla ut vatten, och då ska du ha en sorptionsavfuktare. Den torkar luften med ett fuktsugande hjul i stället för med kyla.',
       kalla: 'Guiden om fukt i källaren, och sidan om sorptionsavfuktare',
     });
   }
@@ -610,7 +610,7 @@ export function bedomKallare(i: KallareIndata): KallareResultat {
   if (diagnos === 'oklart') {
     atgarda.push({
       steg: 'atgarda',
-      text: `Köp ingen maskin och beställ ingen grävning innan plasten har svarat. Tejptestet är det som skiljer markfukt från kondens, och det kostar en bit plastfolie och ${TEJPTEST_DYGN} dygn.`,
+      text: `Köp ingen maskin och beställ ingen grävning innan plasten har svarat. Tejptestet är det som skiljer markfukt från kondens, och du har svaret om ${TEJPTEST_DYGN} dygn.`,
       kalla: 'Guiden om fukt i källaren',
     });
   }

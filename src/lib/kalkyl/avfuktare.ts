@@ -122,7 +122,7 @@ const TEMPERATURLAGEN: Temperaturlage[] = [
     faktor: 0.3,
     faktorMin: 0.25,
     faktorMax: 0.35,
-    kapacitetVillkor: '30 °C och 80 % RF',
+    kapacitetVillkor: '30 grader och 80 procent luftfuktighet',
   },
   {
     varde: 'fem_till_15',
@@ -133,7 +133,7 @@ const TEMPERATURLAGEN: Temperaturlage[] = [
     faktor: 0.8,
     faktorMin: 0.75,
     faktorMax: 1.0,
-    kapacitetVillkor: '20 °C och 60 % RF',
+    kapacitetVillkor: '20 grader och 60 procent luftfuktighet',
   },
   {
     varde: 'under_5',
@@ -143,13 +143,13 @@ const TEMPERATURLAGEN: Temperaturlage[] = [
     faktor: 0.65,
     faktorMin: 0.65,
     faktorMax: 0.65,
-    kapacitetVillkor: '20 °C och 60 % RF',
+    kapacitetVillkor: '20 grader och 60 procent luftfuktighet',
   },
 ];
 
 /** Under 5 grader räknar vi inte. Texten är produktexpertens, underlagets avsnitt 4. */
 const UNDER_FEM_GRADER =
-  'Under 5 grader tappar även en sorptionsmaskin farten, och en kondensmaskin står stilla. Läs guiden om krypgrunden innan du köper något.';
+  'Under 5 grader tappar även en sorptionsmaskin farten, och en kondensmaskin står stilla. Läs om fukten i huset först, så att du inte köper en maskin till ett problem den inte kan lösa.';
 
 export const STANDARD: AvfuktareIndata = {
   ytaKvm: 40,
@@ -162,9 +162,9 @@ export const STANDARD: AvfuktareIndata = {
 export const GRANSER = { ytaKvm: [5, 300], takhojdM: [0.5, 4] } as const;
 
 export const FUKTNIVAER: { varde: Fuktniva; etikett: string }[] = [
-  { varde: 'medel', etikett: '60 till 70 procent, det luktar lite unket' },
-  { varde: 'hog', etikett: '70 till 80 procent, det finns fuktfläckar och det luktar' },
-  { varde: 'mycket_hog', etikett: 'över 80 procent, det syns mögel' },
+  { varde: 'medel', etikett: '60 till 70 procent luftfuktighet, det luktar lite unket' },
+  { varde: 'hog', etikett: '70 till 80 procent luftfuktighet, det finns fuktfläckar och det luktar' },
+  { varde: 'mycket_hog', etikett: 'över 80 procent luftfuktighet, det syns mögel' },
 ];
 
 export const TEMPERATURVAL: { varde: Temperaturval; etikett: string }[] = TEMPERATURLAGEN.map((t) => ({
@@ -242,7 +242,7 @@ export function raknaAvfuktare(i: AvfuktareIndata): AvfuktareResultat {
   if (Number.isFinite(i.ytaKvm) && i.ytaKvm > ytaMax) {
     return {
       status: 'utanfor',
-      text: 'Över 300 kvm skulle jag sätta in två maskiner eller en fast installation. Läs guiden om krypgrunden först.',
+      text: 'Över 300 kvm skulle jag sätta in två maskiner eller en fast installation. Så stora ytor räknar jag inte på här, så läs om fukten i huset och ta det därifrån.',
     };
   }
 

@@ -147,13 +147,13 @@ export const ATGARDSTEXT: Record<Atgard, string> = {
 };
 
 const GOR_INTE_VINTER_BOSTAD =
-  'Köp ingen avfuktare till ett sovrum som immar i januari. Uteluften är torr den här tiden på året, så ett fönster på vid gavel i fem minuter gör samma jobb gratis. Maskinen rör inte orsaken.';
+  'Ett sovrum som immar i januari behöver ingen maskin. Uteluften är torr den här tiden på året, så ett fönster på vid gavel i fem minuter gör samma jobb gratis. Den som köper en avfuktare till ett sovrum i januari har betalat för att slippa öppna fönstret.';
 
 const GOR_INTE_SOMMAR_KALLT =
-  'Vädra inte en fuktig sommardag. Uteluft på 20 grader bär mer vatten än den kalla luften därinne, och det vattnet fälls ut på väggen så fort det kommer in.';
+  'Väggen blir blötare för varje fönster du öppnar en fuktig sommardag. Uteluft på 20 grader bär mer vatten än den kalla luften därinne, och det vattnet fälls ut på väggen så fort det kommer in. Vädra inte förrän det är kallare ute än inne.';
 
 const GOR_INTE_VINTER_KALLT =
-  'Ställ inte en kondensavfuktare i ett kallt utrymme på vintern. Den lägger mer tid på att avfrosta sig själv än på att avfukta. Där är en sorptionsavfuktare rätt maskin.';
+  'I ett kallt utrymme på vintern lägger en kondensavfuktare mer tid på att avfrosta sig själv än på att avfukta. Där är en sorptionsavfuktare rätt maskin, så spara pengarna tills du står med rätt sort i handen.';
 
 /**
  * Mättnadsångtryck i hPa vid temperaturen, Magnus-formeln.

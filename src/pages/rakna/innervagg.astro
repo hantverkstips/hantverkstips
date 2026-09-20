@@ -132,8 +132,8 @@ const tal =
 /** Raden på skruvkortet säger vad just den här räkningen behöver. */
 const packRad =
   visat.status === 'ok' && tal
-    ? `Din vägg behöver ${tal.packOrd} pack. Ett band räcker till ungefär ${tal.packRacker} löpmeter vägg.`
-    : 'Ett band på 1 000 skruv räcker till ungefär 29 löpmeter vägg.';
+    ? `Din vägg behöver ${tal.packOrd} band om 1 000 skruv. Ett band räcker till ungefär ${tal.packRacker} löpmeter vägg.`
+    : 'Ett band om 1 000 skruv räcker till ungefär 29 löpmeter vägg.';
 
 const titel = 'Räkna reglar och gips till innerväggen';
 
@@ -141,7 +141,7 @@ const titel = 'Räkna reglar och gips till innerväggen';
 const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande'; stod: string; url?: string }[] = [
   {
     storhet: 'Gipsskivans format',
-    varde: `${formateraTal(SKIVA_BREDD_MM)} × ${formateraTal(SKIVA_HOJD_MM)} mm, alltså 3 kvm`,
+    varde: `${formateraTal(SKIVA_BREDD_MM)} × ${formateraTal(SKIVA_HOJD_MM)} mm, det är 3 kvm`,
     grund: 'Källa',
     stod: 'Normalskivan i Norgips och Gyprocs system, 12,5 mm tjock',
     url: 'https://www.norgips.se/kunskapsbank/att-tanka-pa-innan-montering/',
@@ -221,11 +221,11 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
 const FRAGOR = [
   {
     fraga: 'Hur många reglar går det åt till en innervägg?',
-    svar: 'Dela väggens längd med c-måttet, alltså avståndet från mitten av en regel till mitten av nästa, och avrunda uppåt. Lägg sedan till en regel som stänger det sista facket. Ta en vägg på fyra meter med reglar på c 600 mm. Den får åtta reglar, och den sista står i väggänden. Varje dörröppning lägger till två reglar och en avväxling över öppningen.',
+    svar: 'Dela väggens längd med c-måttet och avrunda uppåt. C-måttet är avståndet från mitten av en regel till mitten av nästa. Lägg sedan till en regel som stänger det sista facket. En vägg på fyra meter med reglar på c 600 mm får åtta reglar, och den sista står i väggänden. Varje dörröppning lägger till två reglar och en avväxling över öppningen.',
   },
   {
     fraga: 'Ska reglarna sitta på c 400 eller c 600 mm?',
-    svar: 'Med två lag gips på varje sida räcker c 600 mm. Bygger du med ett lag väljer verktyget c 400 mm åt dig, för annars ger väggen efter mellan reglarna när någon lutar sig mot den. Branschorganisationen Svenskt Trä knyter det glesare måttet till dubbla skivlag med förskjutna skarvar, medan skivtillverkarna anger det för sina egna system utan det villkoret. Jag går på Svenskt Trä, och det är bra att veta att källorna skiljer sig innan du sågar.',
+    svar: 'Med två lag gips på varje sida räcker c 600 mm. Bygger du med ett lag väljer verktyget c 400 mm åt dig, för annars ger väggen efter mellan reglarna när någon lutar sig mot den. Mellanvalet c 450 mm finns med eftersom mineralullen säljs i 455 mm bredd som passar det måttet, enligt Norgips. Branschorganisationen Svenskt Trä knyter det glesare måttet till dubbla skivlag med förskjutna skarvar, medan skivtillverkarna anger det för sina egna system utan det villkoret. Jag går på Svenskt Trä, och det är bra att veta att källorna skiljer sig innan du sågar.',
     lank: { text: 'Hela ordningen står i guiden om att bygga innervägg.', href: '/inomhus/bygga-innervagg/' },
   },
   {
@@ -280,8 +280,8 @@ const huvudbild = varumarke ?? illustration;
       <div class="lg:col-span-7">
         <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">Så mycket reglar, gips och skruv går åt till din innervägg</h1>
         <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
-          Fyll i hur lång väggen ska bli, hur högt det är till taket och hur tätt reglarna ska sitta, så får du en
-          lista att ta med till bygghandeln. Den säger hur många reglar, gipsskivor och skruv som går åt per
+          Hur lång väggen ska bli, hur högt det är till taket och hur tätt reglarna ska sitta är allt jag behöver
+          för att ge dig en lista att ta med till bygghandeln. Den säger hur många reglar, gipsskivor och skruv som går åt per
           löpmeter vägg, och hur mycket mineralull du behöver i facken. Spillet ligger redan på, och varje tal har en
           källa eller ett antagande som du kan läsa längre ner.
         </p>
@@ -309,7 +309,8 @@ const huvudbild = varumarke ?? illustration;
         <Faktaruta variant="kortsvar">
           <p class="m-0 leading-6">Din vägg behöver {tal.reglar} stående reglar.</p>
           <p class="m-0 leading-6">
-            Virket går på <Markering>{tal.virke} löpmeter</Markering>, med syll och hammarband inräknade.
+            Virket går på <Markering>{tal.virke} löpmeter</Markering>, och då är regeln längs golvet och regeln
+            under taket inräknade.
           </p>
           <p class="m-0 leading-6">
             Det går åt {tal.skivor} gipsskivor, och du ska köpa {tal.skruvAttKopa} gipsskruv.
@@ -340,13 +341,12 @@ const huvudbild = varumarke ?? illustration;
                 {tal.skruvAttKopa} gipsskruv.
               </p>
               <p class="m-0 mt-1 text-brod">
-                Det ger {tal.reglar} stående reglar när du kapat dem, och spillet på både virke och skivor ligger
-                redan på.
+                Det ger {tal.reglar} stående reglar när du kapat dem, och spillet på virke och skivor är inräknat.
                 {tal.ull && <> Ta med {tal.ull} kvm mineralull till facken.</>}
               </p>
 
               <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
-                Vägg på {tal.langd} m, {regelText} på c {tal.cc} mm
+                Vägg på {tal.langd} m, {regelText}, {tal.cc} mm från regelmitt till regelmitt
               </p>
               {/* Enheten står på samma rad som talet, på talets baslinje
                   (DESIGN.md avsnitt 5.8). Radbryter på smal skärm. */}
@@ -401,31 +401,55 @@ const huvudbild = varumarke ?? illustration;
         <section>
           <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
           <ul class="m-0 p-0 list-none text-brod lg:text-brod-lg tabular-nums">
-            <li class="border-t border-linje py-2">
-              Virket är {tal.virke} löpmeter, alltså {tal.syllHammarband} m syll och hammarband plus reglarna
-              {visat.avvaxlingM > 0 && <> och {tal.avvaxling} m avväxling över dörren</>}
+            <li class="mb-4 border-l-2 border-linje pl-4">
+              <span class="block">
+                Virket är {tal.virke} löpmeter. {tal.syllHammarband} m av det är syll och hammarband, resten är
+                reglarna
+                {visat.avvaxlingM > 0 && <> och {tal.avvaxling} m avväxling över dörren</>}. Med spillet inräknat
+                blir det {tal.virkeMedSpill} löpmeter.
+                {visat.antalReglarDorr > 0 && <> {tal.reglarDorr} av reglarna står vid dörröppningarna.</>}
+              </span>
+              <span class="block text-liten text-blyerts-2">
+                Reglarna kapas 15 mm kortare än rumshöjden enligt Gyproc. Spillet på fem procent är mitt.
+              </span>
             </li>
-            <li class="border-t border-linje py-2">Med spillet inräknat blir det {tal.virkeMedSpill} löpmeter</li>
-            <li class="border-t border-linje py-2">
-              {tal.antalLangder} reglar om {tal.handelslangd} m är den handelslängd som spiller minst, {tal.spill}{' '}
-              procent
+            <li class="mb-4 border-l-2 border-linje pl-4">
+              <span class="block">
+                {tal.antalLangder} reglar om {tal.handelslangd} m är den handelslängd som spiller minst, {tal.spill}{' '}
+                procent.
+              </span>
+              <span class="block text-liten text-blyerts-2">
+                Längderna 2,4 till 4,8 m är de byggvaruhusen brukar lagerföra. Ingen publicerad standard.
+              </span>
             </li>
-            <li class="border-t border-linje py-2">
-              Skivorna täcker {tal.skivyta} kvm, och med spillet blir det {tal.skivorMedSpill} skivor
+            <li class="mb-4 border-l-2 border-linje pl-4">
+              <span class="block">
+                Skivorna täcker {tal.skivyta} kvm, och med spillet blir det {tal.skivorMedSpill} skivor.
+              </span>
+              <span class="block text-liten text-blyerts-2">
+                Skivan på 1 200 × 2 500 mm är normalskivan hos Norgips och Gyproc. Spillet på tio procent är mitt.
+              </span>
             </li>
-            <li class="border-t border-linje py-2">
-              Räknat går det åt {tal.skruv} gipsskruv, och jag rundar upp till {tal.skruvAttKopa}
+            <li class="mb-4 border-l-2 border-linje pl-4">
+              <span class="block">
+                Räknat går det åt {tal.skruv} gipsskruv, och jag rundar upp till {tal.skruvAttKopa}. {packRad} Skruven
+                ska vara {visat.skruvLangdText}.
+              </span>
+              <span class="block text-liten text-blyerts-2">
+                Skruvavstånden c 200 mm i kant och c 300 mm i fält är Norgips och Svenskt Träs. Längden kommer ur
+                Norgips tumregel om 20 mm ner i träet.
+              </span>
             </li>
-            <li class="border-t border-linje py-2">{packRad}</li>
-            <li class="border-t border-linje py-2">Skruven ska vara {visat.skruvLangdText}</li>
             {tal.ull && (
-              <li class="border-t border-linje py-2">
-                Ullen är {tal.ull} kvm mineralull i 45 mm tjocklek
-                {tal.ullBredd ? <>, och den finns i {tal.ullBredd} mm bredd</> : <>, och den får du kapa själv</>}
+              <li class="mb-4 border-l-2 border-linje pl-4">
+                <span class="block">
+                  Ullen är {tal.ull} kvm mineralull i 45 mm tjocklek
+                  {tal.ullBredd ? <>, och den finns i {tal.ullBredd} mm bredd</> : <>, och den får du kapa själv</>}.
+                </span>
+                <span class="block text-liten text-blyerts-2">
+                  Bredderna 455 och 610 mm anger Norgips. För c 400 mm anger ingen tillverkare någon bredd.
+                </span>
               </li>
-            )}
-            {visat.antalReglarDorr > 0 && (
-              <li class="border-t border-linje py-2">{tal.reglarDorr} av reglarna står vid dörröppningarna</li>
             )}
           </ul>
 
@@ -467,12 +491,12 @@ const huvudbild = varumarke ?? illustration;
     <section>
       <Pennstreck id="materialatgang-innervagg">Materialåtgången till en innervägg, regel för regel</Pennstreck>
       <p class="m-0 text-brod lg:text-brod-lg">
-        Grundtanken är att en vägg är samma sak om och om igen. Därför räknar jag allt per löpmeter vägg och gångrar
+        Grundtanken är att en vägg är samma sak om och om igen. Därför räknar jag allt per löpmeter vägg och multiplicerar
         sedan med din längd. Syllen mot golvet och hammarbandet mot taket ger två meter virke per löpmeter, innan en
         enda stående regel är kapad. Hur många reglar det går åt får du genom att dela väggens längd med c-måttet.
         Det måttet är avståndet från mitten av en regel till mitten av nästa, och det skrivs c&nbsp;400&nbsp;mm,
-        c&nbsp;450&nbsp;mm eller c&nbsp;600&nbsp;mm. Sedan lägger du till en regel som stänger det sista facket. Ta
-        en vägg som är fyra meter lång. Med reglar på c&nbsp;600&nbsp;mm blir det sju fack, alltså åtta reglar, och
+        c&nbsp;450&nbsp;mm eller c&nbsp;600&nbsp;mm. Sedan lägger du till en regel som stänger det sista facket.
+        Säg att väggen är fyra meter lång. Med reglar på c&nbsp;600&nbsp;mm blir det sju fack och åtta reglar, och
         den sista står i väggänden.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
@@ -529,7 +553,7 @@ const huvudbild = varumarke ?? illustration;
         </li>
         <li class="mb-2">Varje dörröppning lägger till två reglar och en avväxling över öppningen.</li>
         <li class="mb-2">
-          Virket är syll och hammarband, alltså väggens längd två gånger, plus reglarna kapade till rumshöjden minus
+          Virket är syll och hammarband (väggens längd två gånger) plus reglarna kapade till rumshöjden minus
           15 mm.
         </li>
         <li class="mb-2">
@@ -589,11 +613,8 @@ const huvudbild = varumarke ?? illustration;
         Jämför du med materiallistan i guiden om innerväggen ser du att den landar på 6,2 löpmeter virke per meter
         vägg, vilket är lite mindre än här. Guidens tal är en täthet, och den rymmer inte regeln i den sista
         väggänden. Verktyget räknar reglarna en och en och hamnar därför någon regel högre på en kort vägg. Köp
-        efter verktygets tal. En regel för mycket kapar du alltid till kortlingar.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Hur jag läser tillverkarnas tal och vad jag räknar som eget antagande står på sidan{' '}
-        <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar vi</a>.
+        efter verktygets tal. En regel för mycket kapar du alltid till kortlingar. Vill du veta hur jag läser
+        tillverkarnas tal finns det på sidan <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar jag</a>.
       </p>
     </section>
 

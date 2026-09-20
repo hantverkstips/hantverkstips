@@ -332,13 +332,13 @@ export function spetsFor(regel: Regel): Spets {
   return regel === 'stal-tunn' ? 'nal' : 'borr';
 }
 
-const GOR_INTE_GROV_I_STAL = `Sätt inte en grovgängad träskruv i en stålregel. Det är det vanligaste felet jag ser på ett bygge. Skruven snurrar utan att ta, och den som håller i dragaren tror att batteriet är slut. I stål gäller fin gänga, enligt tidningen Gör Det Själv.`;
+const GOR_INTE_GROV_I_STAL = `Det vanligaste felet jag ser på ett bygge är en grovgängad träskruv i en stålregel. Skruven snurrar utan att ta, och den som håller i dragaren tror att batteriet är slut. I stål gäller fin gänga, enligt tidningen Gör Det Själv.`;
 
-const GOR_INTE_NAL_I_TJOCK_PLAT = `Tryck inte på med en nålspets i plåt över ${mm(PLAT_GRANS_MM)}. Nålen tar inte hål hur hårt du än pressar, och spetsen blir rund. Gyproc anger högst ${mm(PLAT_GRANS_MM)} godstjocklek för sin skruv mot stålprofiler, och över det ska skruven ha borrspets.`;
+const GOR_INTE_NAL_I_TJOCK_PLAT = `I plåt över ${mm(PLAT_GRANS_MM)} tar en nålspets inte hål hur hårt du än pressar, och spetsen blir rund. Gyproc anger högst ${mm(PLAT_GRANS_MM)} godstjocklek för sin skruv mot stålprofiler, så över det ska skruven ha borrspets.`;
 
-const GOR_INTE_KORT_I_TAK = `Ta inte den kortaste längden på raden när du skruvar i tak. Branschorganisationen Svenskt Trä anger 30 mm mot trä för ett lag, och en skruv på 30 mm går bara 17,5 mm ner i regeln, vilket är under Norgips 20 mm. I en vägg håller det. I ett tak hänger skivan i skruvarna, och där tar jag aldrig något kortare än raden säger.`;
+const GOR_INTE_KORT_I_TAK = `I ett tak hänger skivan i skruvarna, så där tar jag aldrig den kortaste längden på raden. Branschorganisationen Svenskt Trä anger 30 mm mot trä för ett lag, och en skruv på 30 mm går bara 17,5 mm ner i regeln, under de 20 mm Norgips vill ha. I en vägg håller det, i ett tak vill jag ha marginalen.`;
 
-const GOR_INTE_FOSFATERAD_UTE = `Skruva inte utegips med fosfaterad skruv. Den ligger i korrosivitetsklass C1 enligt Essve, klassen för torra inomhusmiljöer, och den rostar där den sitter. Utomhus gäller C4 eller rostfri A2.`;
+const GOR_INTE_FOSFATERAD_UTE = `En fosfaterad skruv i utegips rostar där den sitter. Den ligger i korrosivitetsklass C1 enligt Essve, klassen för torra inomhusmiljöer. Utomhus gäller C4 eller rostfri A2.`;
 
 export type GipsskruvResultat =
   | {

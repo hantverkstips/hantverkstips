@@ -170,7 +170,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Löpmeter',
     varde: 'Husets omkrets',
     grund: 'Källa',
-    stod: 'Villaägarna räknar löpmetern längs husets ytterväggar, alltså hela varvet runt',
+    stod: 'Villaägarna räknar löpmetern längs husets ytterväggar, hela varvet runt',
     url: VILLAAGARNA,
   },
   {
@@ -313,7 +313,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Del av arbetet som ger rotavdrag',
     varde: 'Tre femtedelar',
     grund: 'Antagande',
-    stod: 'Skatteverket undantar maskinell utrustning, alltså grävmaskinen. Hur stor del av notan den är får du räkna själv, och tre femtedelar är min uppskattning',
+    stod: 'Skatteverket undantar maskinell utrustning, och grävmaskinen är just det. Hur stor del av notan den är får du räkna själv, och tre femtedelar är min uppskattning',
     url: SKATTEVERKET,
   },
   {
@@ -394,7 +394,7 @@ const FRAGOR = [
 const SLUG = 'dranering';
 const VERKTYGSNAMN = 'Dränering';
 const BESKRIVNING =
-  'Räkna ut vad en dränering kostar per löpmeter och för hela grunden. Verktyget säger också om du behöver gräva alls, eller om en avfuktare räcker.';
+  'Räkna ut vad en dränering kostar per löpmeter och för hela grunden. Du får också veta om du behöver gräva alls, eller om en avfuktare räcker.';
 const illustration = verktygsillustration(SLUG);
 /**
  * Varumärkesbilden i sidhuvudet, sedan 2026-09-19 (docs/DESIGN.md avsnitt 7).
@@ -437,10 +437,10 @@ const huvudbild = varumarke ?? illustration;
           Vad kostar dränering? Räkna per löpmeter, och se om du behöver gräva
         </h1>
         <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
-          En omdränering kostar som en begagnad bil, och en hel del av dem som söker på priset behöver aldrig gräva.
+          En omdränering kostar som en begagnad bil, och en hel del av dem som slår upp priset behöver aldrig gräva.
           Fyll i husets två mått, hur djupt schakten går och vad som ligger ovanpå, så får du arbetet per löpmeter och
-          en summa för hela grunden. Sedan får du svar på det prislistorna hoppar över, alltså om du ska gräva alls
-          eller om en avfuktare räcker.
+          en summa för hela grunden. Sedan får du svar på det prislistorna hoppar över, om du ska gräva alls eller
+          om en avfuktare räcker.
         </p>
       </div>
 
@@ -507,8 +507,9 @@ const huvudbild = varumarke ?? illustration;
                 </span>
               </p>
               <p class="m-0 mt-2 text-liten text-blyerts-2">
-                Det är {kr(visat.arbeteLagKrPerM)} till {kr(visat.arbeteHogKrPerM)}&nbsp;kr per löpmeter, räknat på{' '}
-                {meterText(visatIndata.schaktDjupM)}&nbsp;m schaktdjup och {TEJP_TEXT[visatIndata.tejptest]}.
+                Det är {kr(visat.arbeteLagKrPerM)} till {kr(visat.arbeteHogKrPerM)}&nbsp;kr per löpmeter vid{' '}
+                {meterText(visatIndata.schaktDjupM)}&nbsp;m schaktdjup. Beskedet ovanför bygger på{' '}
+                {TEJP_TEXT[visatIndata.tejptest]}.
               </p>
 
               <table class="mt-4 w-full border-collapse text-brod tabular-nums">
@@ -550,7 +551,7 @@ const huvudbild = varumarke ?? illustration;
 
               <ul class="m-0 mt-4 p-0 list-none text-brod tabular-nums">
                 <li class="border-t border-linje py-2">
-                  Rotavdraget blir {kr(visat.rotavdragKr)}&nbsp;kr på den undre kanten, räknat utan maskinhyran.
+                  Rotavdraget blir {kr(visat.rotavdragKr)}&nbsp;kr räknat på det lägre priset, och utan maskinhyran.
                 </li>
                 <li class="border-t border-linje py-2">
                   Du får kvar {kr(visat.efterRotLagKr)} till {kr(visat.efterRotHogKr)}&nbsp;kr att betala, om du inte
@@ -621,6 +622,12 @@ const huvudbild = varumarke ?? illustration;
                 </li>
               ))}
             </ul>
+            <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+              Vad som ligger i marken vet jag inte. Gamla ledningar, fyllning av byggavfall eller en grundmur som
+              visar sig vara otät när den blottas syns först när schakten är öppen, och det är därför talen ovan är
+              storleksordningar och ingen offert. Har huset krypgrund under en del av bottenvåningen är det en annan
+              byggnadsdel med egna regler, och den räknas inte här.
+            </p>
           </section>
 
           <section>
@@ -671,21 +678,21 @@ const huvudbild = varumarke ?? illustration;
         av det som ska stå i offerten.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Verktyget räknar med den nedre kanten på djupet och den övre på den trånga tomten, för den som kryssar i den
+        Jag räknar med den nedre kanten på djupet och den övre på den trånga tomten, för den som kryssar i den
         rutan har ett verkligt problem och inte ett gränsfall. Berget är mitt eget tal. Sprängningens fasta kostnader
         ligger utanför meterpriset, eftersom de inte blir billigare för att huset är litet. Be entreprenören
         prissätta etablering och täckning för sig, så ser du vad själva metern kostar.
       </p>
       <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Rotavdraget, och fällan i det</h3>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Att dränera husgrunder står i Skatteverkets lista över arbete som ger rätt till rotavdrag, alltså 30 procent av
+        Att dränera husgrunder står i Skatteverkets lista över arbete som ger rätt till rotavdrag, 30 procent av
         arbetskostnaden och högst 50 000&nbsp;kr per person och år. Två rader längre ner i samma lista står det som är
         lätt att missa: avdrag ges inte för maskinell utrustning, och Skatteverket nämner grävmaskiner och borraggregat
-        med namn. En dränering är till stor del grävmaskin och lass med massor. Avdraget träffar alltså en mindre del
+        med namn. En dränering är till stor del grävmaskin och lass med massor. Avdraget träffar därför en mindre del
         av notan än du tror, om du räknar 30 procent på hela arbetsposten.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Verktyget räknar med att tre femtedelar av arbetet ger avdrag, och det talet är mitt. Be om en faktura där
+        Jag räknar med att tre femtedelar av arbetet ger avdrag, och det talet är mitt. Be om en faktura där
         maskinhyran står på egen rad, så vet du i stället för att gissa. Äger ni huset tillsammans har ni en gräns var,
         och då går det att dra av dubbelt så mycket. Hela regelverket, med gränserna och betalningsdatumet, räknar du
         på i{' '}
@@ -723,14 +730,13 @@ const huvudbild = varumarke ?? illustration;
           <Illustration
             namn="rakna/dranering"
             alt="Grundmur i genomskärning med schakten längs väggen, dräneringsröret i botten och markfukt som trycker in genom väggen"
-            bildtext="Det verktyget räknar på är djupet ner till röret, varvet runt huset och var vattnet kommer in."
+            bildtext="Det jag räknar på är djupet ner till röret, varvet runt huset och var vattnet kommer in."
           />
         )
       }
       <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg">
         <li class="mb-2">
-          Löpmetern är husets omkrets, alltså två gånger längden plus bredden. Du mäter två sidor, och verktyget
-          räknar varvet.
+          Löpmetern är husets omkrets, två gånger längden plus bredden. Du mäter två sidor, och jag räknar varvet.
         </li>
         <li class="mb-2">
           Arbetet är Villaägarnas {kr(ARBETE_KR_PER_LOPMETER)} kr per löpmeter i undre kanten och det dubbla i den
@@ -767,14 +773,14 @@ const huvudbild = varumarke ?? illustration;
         </li>
       </ol>
 
-      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad svaret vilar på</h3>
+      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad siffrorna vilar på</h3>
       <Tabellyta kolumner={3} class="mt-4">
         <table class="w-full border-collapse text-liten tabular-nums">
           <caption class="sr-only">Priser, gränser och antaganden i dräneringskalkylatorn</caption>
           <thead>
             <tr class="border-b border-linje text-left">
               <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Vad</th>
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Verktyget räknar med</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Jag räknar med</th>
               <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Källa eller antagande</th>
             </tr>
           </thead>
@@ -812,27 +818,17 @@ const huvudbild = varumarke ?? illustration;
       </Tabellyta>
 
       <p class="m-0 mt-6 text-brod lg:text-brod-lg">
-        Raderna märkta Antagande är mina egna tal, inte hämtade någonstans ifrån. Två av dem styr svaret mer än de
-        andra. Det ena är gränsen vid trettio år, vald ur Husgrunders spann på 25 till 30. Det andra är att tre
-        femtedelar av arbetet ger rotavdrag. Båda ligger åt det försiktiga hållet. Verktyget säger hellre mät en gång
-        till än gräv i onödan, och det lovar hellre ett för litet rotavdrag än ett för stort.
+        Två av raderna märkta Antagande styr svaret mer än de andra, och de är värda att känna till. Gränsen vid
+        trettio år har jag valt ur Husgrunders spann på 25 till 30, och att tre femtedelar av arbetet ger rotavdrag
+        är min uppskattning. Båda lutar åt det försiktiga hållet, för jag säger hellre mät en gång till än gräv i
+        onödan, och lovar hellre ett för litet rotavdrag än ett för stort.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
         Jämför gärna med offerten du får. För grunden du fyllt i landar hela jobbet på{' '}
         {visat.status === 'ok' ? `${kr(visat.summaLagKrPerM)} till ${kr(visat.summaHogKrPerM)}` : '3 400 till 7 200'}
         &nbsp;kr per löpmeter med material och återställning inräknade. Ligger offerten långt utanför det spannet ska
-        entreprenören kunna säga varför, rad för rad.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Två saker kan verktyget inte se. Det första är vad som ligger i marken, alltså gamla ledningar, fyllning av
-        byggavfall eller en grundmur som visar sig vara otät när den blottas. Det andra är krypgrunden. Har huset
-        krypgrund under en del av bottenvåningen är det en annan byggnadsdel med egna regler, och den räknas inte
-        här. Hur jag jobbar med tal och källor står på sidan{' '}
+        entreprenören kunna säga varför, rad för rad. Hur jag jobbar med tal och källor står på sidan{' '}
         <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar jag</a>.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Talen här är storleksordningar att jämföra åtgärder med, och ingen offert. Vad ett markarbete kostar avgörs av
-        vad som ligger i marken, och det syns först när schakten är öppen.
       </p>
     </section>
 

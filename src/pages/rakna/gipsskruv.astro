@@ -78,14 +78,21 @@ const delaLank = new URL(`/rakna/gipsskruv/?${delaQuery.toString()}`, Astro.site
 
 const butik = await hamtaButik();
 
-const titel = 'Vilken gipsskruv? Rätt längd och gänga';
+const titel = 'Vilken gipsskruv passar din vägg?';
+
+/**
+ * Första bokstaven i gemen när ordet står mitt i en mening. Beteckningar som
+ * S-spets, C4 och A2 ska stå som på förpackningen, så bara ett inledande
+ * vanligt ord sänks.
+ */
+const iMening = (s: string) => (/^[A-ZÅÄÖ][a-zåäö]/.test(s) ? s.charAt(0).toLowerCase() + s.slice(1) : s);
 
 /** Beskedet överst i spalten: köp den här skruven. */
 const beskedRubrik =
   visat.status === 'ok'
-    ? `Köp ${visat.langdText} gipsskruv med ${visat.gangaText.toLowerCase()} och ${visat.spetsText.toLowerCase()}.`
+    ? `Köp ${visat.langdText} gipsskruv med ${iMening(visat.gangaText)} och ${iMening(visat.spetsText)}.`
     : '';
-const beskedRad = visat.status === 'ok' ? `Ytbehandlingen ska vara ${visat.ytbehandling.kort.toLowerCase()}.` : '';
+const beskedRad = visat.status === 'ok' ? `Ytbehandlingen ska vara ${iMening(visat.ytbehandling.kort)}.` : '';
 
 /** Källorna, en gång var, så att tabellen nedan blir läsbar. */
 const NORGIPS = 'https://www.norgips.se/kunskapsbank/att-tanka-pa-innan-montering/';
@@ -155,7 +162,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Ett lag 15 mm på stål',
     varde: '30 mm, inte 25',
     grund: 'Antagande',
-    stod: 'Mitt val. Minsta längd är 25 mm, alltså precis på gränsen, och 30 mm ger marginal',
+    stod: 'Mitt val. Minsta längd är 25 mm, precis på gränsen, och 30 mm ger marginal',
     url: '/inomhus/gipsskruv/',
   },
   {
@@ -168,7 +175,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Svenskt Trä om längden',
     varde: '30 mm på ett lag',
     grund: 'Källa',
-    stod: 'Branschorganisationen Svenskt Trä. Den skruven går 17,5 mm ner i regeln, alltså under Norgips 20 mm, och jag följer Norgips',
+    stod: 'Branschorganisationen Svenskt Trä. Den skruven går 17,5 mm ner i regeln, under de 20 mm Norgips vill ha, och jag följer Norgips',
     url: SVENSKT_TRA,
   },
   {
@@ -210,7 +217,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Ytbehandling inomhus',
     varde: 'korrosivitetsklass C1',
     grund: 'Källa',
-    stod: 'Fosfaterad och blankförzinkad skruv ligger i C1, alltså torra inomhusmiljöer, enligt Essve',
+    stod: 'Fosfaterad och blankförzinkad skruv ligger i C1, klassen för torra inomhusmiljöer, enligt Essve',
     url: ESSVE_BORRSPETS,
   },
   {
@@ -428,44 +435,78 @@ const huvudbild = varumarke ?? illustration;
         <section>
           <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
           <ul class="m-0 p-0 list-none text-brod lg:text-brod-lg">
-            <li class="flex justify-between gap-4 border-t border-linje py-2">
-              <span>Minst enligt Norgips tumregel</span>
-              <span class="shrink-0 tabular-nums whitespace-nowrap">{mm(visat.minstaLangdMm)}</span>
+            <li class="mb-4 border-l-2 border-linje pl-4">
+              <span class="block">
+                Minsta längd enligt tumregeln är {mm(visat.minstaLangdMm)}, och den närmaste längd som går att köpa är{' '}
+                {mm(visat.narmastOverMm)}. Med {visat.langdText} går skruven {mm(visat.iRegelnMm)} in i regeln.
+                {visat.alternativMm !== null && (
+                  <> Den andra längden som också går enligt längdtabellen i guiden är {mm(visat.alternativMm)}.</>
+                )}
+              </span>
+              <span class="block text-liten text-blyerts-2">
+                Tumregeln är Norgips, skivan plus 20 mm i trä eller 10 mm genom stål. Handelslängderna är Essves.
+                Längdtabellen är min egen i guiden om gipsskruv.
+              </span>
             </li>
-            <li class="flex justify-between gap-4 border-t border-linje py-2">
-              <span>Närmaste längd som går att köpa</span>
-              <span class="shrink-0 tabular-nums whitespace-nowrap">{mm(visat.narmastOverMm)}</span>
-            </li>
-            <li class="flex justify-between gap-4 border-t border-linje py-2">
-              <span>Så långt går skruven in i regeln</span>
-              <span class="shrink-0 tabular-nums whitespace-nowrap">{mm(visat.iRegelnMm)}</span>
-            </li>
-            {visat.alternativMm !== null && (
-              <li class="flex justify-between gap-4 border-t border-b border-linje py-2">
-                <span>Den andra längden på samma rad i tabellen</span>
-                <span class="shrink-0 tabular-nums whitespace-nowrap">{mm(visat.alternativMm)}</span>
+            {(visat.anm || visat.fogtatningText || !visat.iTabellen) && (
+              <li class="mb-4 border-l-2 border-linje pl-4">
+                <span class="block">
+                  {visat.anm}
+                  {visat.anm && visat.fogtatningText ? ' ' : ''}
+                  {visat.fogtatningText}
+                  {!visat.iTabellen && (
+                    <>
+                      {visat.anm || visat.fogtatningText ? ' ' : ''}
+                      Den tunna skivan står inte i längdtabellen i guiden. Raden här är räknad ur tumregeln på samma
+                      sätt som de andra.
+                    </>
+                  )}
+                </span>
+                <span class="block text-liten text-blyerts-2">
+                  {visat.fogtatningText
+                    ? 'Påslaget för torr fogtätning, cirka 7 mm, är Norgips.'
+                    : 'Avvikelsen från närmaste längd är mitt val, för marginalens skull.'}
+                </span>
               </li>
             )}
+            <li class="mb-4 border-l-2 border-linje pl-4">
+              <span class="block">
+                {visat.gangaSkal} {visat.spetsSkal}
+                {visat.spets === 's-eller-nal' && (
+                  <> S-spets och nålspets är två sorters vass spets, och i virke spelar det ingen roll vilken du tar.</>
+                )}
+              </span>
+              <span class="block text-liten text-blyerts-2">
+                Gängan enligt tidningen Gör Det Själv. Gränsen 0,9 mm plåt är Gyprocs, spannen för nål- och
+                borrspets är Essves.
+              </span>
+            </li>
+            <li class="mb-4 border-l-2 border-linje pl-4">
+              <span class="block">{visat.ytbehandling.text}</span>
+              <span class="block text-liten text-blyerts-2">
+                Korrosivitetsklasserna är Essves, och att rostfri A2 motsvarar C4 säger byggvaruhuset Beijer. Steget
+                upp i våtrum är mitt.
+              </span>
+            </li>
+            <li class="mb-4 border-l-2 border-linje pl-4">
+              <span class="block">
+                {visat.skruvavstandText} Hur många skruv väggen drar beror på ytan, och det räknar{' '}
+                <a href="/rakna/innervagg/" class={LANK_KLASS}>
+                  regelkalkylatorn
+                </a>{' '}
+                ut åt dig, med besked om ett band räcker.
+              </span>
+              <span class="block text-liten text-blyerts-2">Skruvavstånden är Norgips och Svenskt Träs.</span>
+            </li>
+            <li class="mb-4 border-l-2 border-linje pl-4">
+              <span class="block">
+                Det jag inte vet är hur din vägg ser ut. Regeln kan vara skev, skivan kan redan sitta uppe, och ska
+                väggen brandklassas har den tätare skruvning i alla lag. Står det något annat på förpackningen du
+                håller i handen går förpackningen före, för det är den skruven du har.
+              </span>
+              <span class="block text-liten text-blyerts-2">Ingen källa, bara sunt förnuft.</span>
+            </li>
           </ul>
-          {visat.anm && <p class="m-0 mt-4 text-brod lg:text-brod-lg">{visat.anm}</p>}
-          {visat.fogtatningText && <p class="m-0 mt-4 text-brod lg:text-brod-lg">{visat.fogtatningText}</p>}
-          {!visat.iTabellen && (
-            <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-              Den tunna skivan står inte i längdtabellen i guiden. Raden här är räknad ur tumregeln på samma sätt
-              som de andra.
-            </p>
-          )}
-          <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-            {visat.gangaSkal} {visat.spetsSkal}
-          </p>
-          <p class="m-0 mt-4 text-brod lg:text-brod-lg">{visat.ytbehandling.text}</p>
-          <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-            {visat.skruvavstandText} Hur många skruv väggen drar beror på ytan, och det räknar{' '}
-            <a href="/rakna/innervagg/" class={LANK_KLASS}>
-              regelkalkylatorn
-            </a>{' '}
-            ut åt dig, med besked om ett pack räcker.
-          </p>
 
           <h3 id="gor-inte-det-har" class="m-0 mt-6 font-sans text-h3 lg:text-h3-lg text-blyerts">
             Gör inte det här
@@ -483,7 +524,7 @@ const huvudbild = varumarke ?? illustration;
         {
           visat.status === 'ok' && visat.visaBandadSkruv
             ? 'Svaret är en skruv som finns i band, och band är hela poängen när en vägg ska klä sig själv på en förmiddag.'
-            : 'Den här längden köper du lös i påse. Bandet i butiken är 41 mm för träregel, alltså inte den skruv du fick, men maskinen matar hela spannet.'
+            : 'Den här längden köper du lös i påse. Bandet i butiken är 41 mm för träregel, inte den skruv du fick, men maskinen matar hela spannet.'
         }
       </p>
       <div class="grid gap-4 lg:grid-cols-2">
@@ -519,7 +560,7 @@ const huvudbild = varumarke ?? illustration;
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
         Längden räknar du rakt fram. Gipstillverkaren Norgips vill att skruven går {mm(TRA_IN_I_REGEL_MM)} in i en
         träregel, och de millimetrarna lägger du till skivans tjocklek. Ett lag på 12,5 mm hamnar då på 32,5 mm, och
-        den längden finns inte i hyllan. Du tar närmaste handelslängd över, alltså 35 mm, och ändå skriver jag 41 mm
+        den längden finns inte i hyllan. Du tar närmaste handelslängd över, 35 mm, och ändå skriver jag 41 mm
         på den raden. Skillnaden kostar ingenting och köper marginal för en regel som är skev.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
@@ -578,8 +619,9 @@ const huvudbild = varumarke ?? illustration;
           tabellen i min guide om gipsskruv, som i sin tur är räknad ur tumregeln och Essves längder.
         </li>
         <li class="mb-2">
-          Två rader avviker med flit, och båda säger det på skärmen. Ett lag 12,5 mm på trä får 41 mm i stället för
-          35, och ett lag 15 mm på stål får 30 mm i stället för 25. Båda handlar om marginal.
+          Två rader i tabellen skiljer sig medvetet från närmaste längd, och det står vid raden. Ett lag 12,5 mm på
+          trä får 41 mm i stället för 35, och ett lag 15 mm på stål får 30 mm i stället för 25. Båda handlar om
+          marginal.
         </li>
         <li class="mb-2">
           Gängan följer regeln, grov i trä och fin i stål. Spetsen följer underlaget, och i plåt går gränsen vid{' '}
@@ -598,7 +640,7 @@ const huvudbild = varumarke ?? illustration;
           <thead>
             <tr class="border-b border-linje text-left">
               <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Mått eller regel</th>
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Jag går på</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Jag räknar med</th>
               <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Källa eller antagande</th>
             </tr>
           </thead>
@@ -628,14 +670,9 @@ const huvudbild = varumarke ?? illustration;
       </Tabellyta>
 
       <p class="m-0 mt-6 text-brod lg:text-brod-lg">
-        Talen kommer från tillverkarnas egna webbsidor, från Svenskt Trä och från Essve, och de står länkade rad
-        för rad. Står det något annat på förpackningen du håller i handen går förpackningen före, för det är den
-        skruven du har.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Det verktyget inte vet är hur din vägg ser ut. Regeln kan vara skev, skivan kan redan sitta uppe, och ska
-        väggen brandklassas har den tätare skruvning i alla lag. Vad jag hämtat från tillverkarna och vad jag mätt
-        själv står på sidan <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar vi</a>.
+        Ingenting på den här sidan är mätt av mig. Talen kommer från tillverkarnas egna webbsidor, från Svenskt Trä
+        och från Essve, och de står länkade rad för rad, så du kan gå till källan och läsa själv. Vilka källor jag
+        litar på och varför står på sidan <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar jag</a>.
       </p>
     </section>
 

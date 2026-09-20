@@ -281,7 +281,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Radon',
     varde: '200 becquerel per kubikmeter',
     grund: 'Källa',
-    stod: 'Strålsäkerhetsmyndigheten, referensnivå som årsmedelvärde. Verktyget mäter inte radon och ser det inte',
+    stod: 'Strålsäkerhetsmyndigheten, referensnivå som årsmedelvärde. Jag mäter inte radon och ser det inte här',
     url: STRALSAKERHET,
   },
 ];
@@ -298,7 +298,7 @@ const FRAGOR = [
   },
   {
     fraga: 'Kan jag besiktiga källaren själv?',
-    svar: 'Så långt det här verktyget går, ja. Du kan se symptomen, göra tejptestet och läsa av en hygrometer, och det räcker för att skilja markfukt från kondens och läckage. Det du inte kan göra själv är att mäta fukten inne i materialet eller se vad som växer bakom en skiva. Kommer du inte längre, be om en fuktutredning med mätvärden och inte om en offert på en åtgärd.',
+    svar: 'Så långt den här genomgången går, ja. Du kan se symptomen, göra tejptestet och läsa av en hygrometer, och det räcker för att skilja markfukt från kondens och läckage. Det du inte kan göra själv är att mäta fukten inne i materialet eller se vad som växer bakom en skiva. Kommer du inte längre, be om en fuktutredning med mätvärden och inte om en offert på en åtgärd.',
   },
 ];
 
@@ -348,10 +348,11 @@ const huvudbild = varumarke ?? illustration;
           Gå igenom källaren själv och få veta varifrån vattnet kommer
         </h1>
         <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
-          Vattnet i en källare kommer från ett av tre håll: genom väggen från marken, ur luften i rummet, eller in
-          genom en otäthet när det regnar. En avfuktare löser det mittersta, och mot de andra två är den bortkastade
-          pengar. Kryssa i vad du ser, vad hygrometern visar och vad tejptestet gav, alltså en bit plastfolie som
-          suttit tätt mot väggen i två dygn. Då får du en trolig orsak, nästa steg och det du inte ska göra.
+          Vattnet i en källare kommer från ett av tre håll. Markfukt går genom väggen, kondens fälls ut ur luften i
+          rummet, och ett läckage tar sig in genom en otäthet när det regnar. En avfuktare löser bara det mittersta,
+          och mot de andra två är den bortkastade pengar. Kryssa i vad du ser, vad hygrometern visar och vad
+          tejptestet gav. Tejptestet är en bit plastfolie som suttit tätt mot väggen i två dygn. Då får du en trolig
+          orsak, nästa steg och det du inte ska göra.
         </p>
       </div>
 
@@ -483,7 +484,7 @@ const huvudbild = varumarke ?? illustration;
         mot en av dem. Det är hela skälet till att jag säger vänta med plånboken tills plasten på väggen har svarat.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Markfukten går rakt genom betongen. Boverket beskriver det som att vattnet sugs upp genom porerna, som i ett
+        Markfukten går rakt genom betongen. Boverket beskriver det som att vattnet sugs upp genom porerna, som i en
         sockerbit i kaffet, och ibland vandrar det som ånga tvärs genom materialet. Det går så långsamt att det kan ta
         många år innan du märker något. Skyddet mot markfukt hör hemma på utsidan av väggen, och det är därför en
         avfuktare inne i rummet är fel maskin. Luften torkar, mer vatten dunstar ur väggen, och betongen suger efter
@@ -496,7 +497,7 @@ const huvudbild = varumarke ?? illustration;
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
         Kondensen vädrar du in själv. En källarvägg håller gärna 12&nbsp;grader, och luften du släpper in en varm
         eftermiddag i augusti börjar fälla ut vatten redan vid 14,4&nbsp;grader. Det talet gäller luft på
-        20&nbsp;grader och 70&nbsp;procent relativ luftfuktighet, alltså en helt vanlig sommardag. Väggen blir våt i
+        20&nbsp;grader och 70&nbsp;procent relativ luftfuktighet, en helt vanlig sommardag. Väggen blir våt i
         samma stund som du ställer upp fönstret. Det här är det enda av de tre fallen där en avfuktare gör jobbet,
         och hur stor den behöver vara beror på rummets volym och hur fuktig luften är.
       </p>
@@ -509,7 +510,7 @@ const huvudbild = varumarke ?? illustration;
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
         Att gissa fel kostar mer än några hundralappar. En avfuktare mot markfukt är {kronor(AVFUKTARE_KR)}&nbsp;kr
         som inte gör någon nytta alls, och en dränering som inte behövdes är tjugo gånger den summan. Två dygn med
-        en bit plast på väggen är det billigaste du kan göra åt den risken. Hela testet, med bild på båda utfallen,
+        en bit plast på väggen skyddar dig mot båda. Hela testet, med bild på båda utfallen,
         står i{' '}
         <a href="/fukt/fukt-i-kallaren/" class={LANK_KLASS}>
           guiden om fukt i källaren
@@ -525,7 +526,7 @@ const huvudbild = varumarke ?? illustration;
           <Illustration
             namn="rakna/kallare"
             alt="Källare i genomskärning med tre numrerade stopp: flagnande färg på väggen, en tejpad plastbit och en hygrometer på hyllan"
-            bildtext="Stopp ett är väggen med salt och flagnande färg nedtill. Stopp två är plasten, tejpad över alla fyra hörnen. Stopp tre är hygrometern, som här visar över 75 procent relativ luftfuktighet, alltså över Boverkets gräns."
+            bildtext="Stopp ett är väggen med salt och flagnande färg nedtill. Stopp två är plasten, tejpad över alla fyra hörnen. Stopp tre är hygrometern, som här visar över 75 procent relativ luftfuktighet, och det är över Boverkets gräns."
           />
         )
       }
@@ -541,7 +542,7 @@ const huvudbild = varumarke ?? illustration;
         </li>
         <li class="mb-2">
           Sedan det du ser. Varje kryssruta hör till en rad i min tabell över symptom och trolig orsak. Pekar två
-          rader åt olika håll lämnar verktyget frågan öppen i stället för att gissa.
+          rader åt olika håll lämnar jag frågan öppen i stället för att gissa.
         </li>
         <li class="mb-2">
           Hygrometern kommer sist. Den säger att luften är fuktig, aldrig varifrån vattnet kommer, så den kan aldrig
@@ -564,14 +565,14 @@ const huvudbild = varumarke ?? illustration;
         källa jag hittat rangordnar dem mot varandra, så den raden står märkt som antagande i tabellen nedan.
       </p>
 
-      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad svaret vilar på</h3>
+      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad siffrorna vilar på</h3>
       <Tabellyta kolumner={3} class="mt-4">
         <table class="w-full border-collapse text-liten tabular-nums">
           <caption class="sr-only">Gränser, priser och antaganden i självbesiktningen av källaren</caption>
           <thead>
             <tr class="border-b border-linje text-left">
               <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Vad</th>
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Verktyget räknar med</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Jag räknar med</th>
               <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Källa eller antagande</th>
             </tr>
           </thead>
@@ -609,14 +610,19 @@ const huvudbild = varumarke ?? illustration;
       </Tabellyta>
 
       <p class="m-0 mt-6 text-brod lg:text-brod-lg">
-        Tre saker kan verktyget inte se. Det första är fukten inne i materialet, som kräver en givare borrad i
-        betongen och inte ett öga i ett rum. Det andra är det som växer bakom en skiva eller en träpanel mot
-        ytterväggen, och där är mitt råd att skruva loss en bit i det hörn som luktar mest innan du köper något. Det
-        tredje är radon. Samma otäta vägg och samma springa mot golvet som släpper in markfukt släpper in markluft,
-        och radon syns inte på plasten och bryr sig inte om din avfuktare.
+        Fukten inne i materialet ser jag inte härifrån. Den kräver en givare borrad i betongen, inte ett öga i ett
+        rum.
+      </p>
+      <p class="m-0 mt-2 text-brod lg:text-brod-lg">
+        Det som växer bakom en skiva eller en träpanel mot ytterväggen ser jag inte heller. Skruva loss en bit i det
+        hörn som luktar mest, så vet du.
+      </p>
+      <p class="m-0 mt-2 text-brod lg:text-brod-lg">
+        Radon syns varken på plasten eller på hygrometern. Samma otäta vägg och samma springa mot golvet som
+        släpper in markfukt släpper in markluft, och radon bryr sig inte om din avfuktare.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Verktyget ger dig en trolig orsak. Det ersätter ingen fuktutredning med mätvärden, och det är en sådan du
+        Det du får här är en trolig orsak. Den ersätter ingen fuktutredning med mätvärden, och det är en sådan du
         ska be om när du inte kommer längre själv. Var talen kommer ifrån och hur jag kontrollerar dem står på sidan{' '}
         <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar jag</a>.
       </p>

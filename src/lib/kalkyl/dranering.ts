@@ -380,7 +380,7 @@ export const TEJPTESTER: { varde: Tejptest; etikett: string; hjalp: string }[] =
     etikett: 'Torrt på båda sidor',
     hjalp: 'Då satt plasten troligen på fel vägg. Flytta den och gör om testet.',
   },
-  { varde: 'inte-gjort', etikett: 'Jag har inte gjort testet', hjalp: 'Det kostar dig en bit plast och två dygn.' },
+  { varde: 'inte-gjort', etikett: 'Jag har inte gjort testet', hjalp: 'Gör det innan du ringer någon. Två dygn räcker.' },
 ];
 
 export const BESKED_RUBRIK: Record<Besked, string> = {
@@ -420,19 +420,19 @@ export const GRANSER = {
  */
 
 const GOR_INTE_GRAV_FORE_TESTET =
-  'Gräv inte innan tejptestet har svarat. En bit plastfolie mot källarväggen i två dygn skiljer markfukt från kondens, och de två kräver helt olika saker av dig. Testet kostar en rulle tejp, och grävningen kostar som ett badrum.';
+  'Vänta med grävmaskinen tills tejptestet har svarat. En bit plastfolie mot källarväggen i två dygn skiljer markfukt från kondens, och de två kräver helt olika saker av dig. Det är två dygn du har råd med när grävningen ligger på över hundra tusen.';
 
 const GOR_INTE_AVFUKTARE_MOT_MARKFUKT =
-  'Köp inte en avfuktare mot markfukt. Maskinen torkar luften i rummet, mer vatten dunstar ur väggen, och väggen suger efter mer ur marken. Betongen är lika våt som förut, och du betalar för det dygnet runt.';
+  'Står maskinen redan i källaren och plasten säger markfukt, sälj den. En avfuktare torkar luften i rummet, mer vatten dunstar ur väggen, och väggen suger efter mer ur marken. Betongen är lika våt som förut, och du betalar för det dygnet runt.';
 
 const GOR_INTE_OFFERT_UTAN_MATVARDEN =
-  'Ta inte in en offert på en åtgärd innan du har en fuktutredning med mätvärden. Du vill se luftfuktighet och temperatur i materialet, var i huset de mätte och vilken slutsats de drar av just de talen. Ett papper utan en enda siffra är ett säljbesök.';
+  'Ett papper utan en enda siffra är ett säljbesök, inte en utredning. Be om fuktutredningen med mätvärden först. Du vill se luftfuktighet och temperatur i materialet, var i huset de mätte och vilken slutsats de drar av just de talen. Offerten på åtgärden kommer sedan.';
 
 const GOR_INTE_FOREBYGGANDE =
-  'Gräv inte för säkerhets skull när källaren bara används som källare. Villaägarnas rådgivare säger rakt ut att det finns roligare saker att lägga pengarna på, och en grävning som inte behövdes kostar mer än allt annat på den här sidan tillsammans.';
+  'Används källaren bara som källare finns det inget skäl att gräva för säkerhets skull. Villaägarnas rådgivare säger rakt ut att det finns roligare saker att lägga pengarna på, och en grävning som inte behövdes kostar mer än allt annat på den här sidan tillsammans.';
 
 const GOR_INTE_PLAST_MOT_VAGGEN =
-  'Sätt inte en plastmatta direkt mot väggen som enda skydd utifrån. Villaägarna varnar för det, eftersom den kalla marken gör att fukten stannar i väggen i stället för att vandra ut. Skyddet ska stoppa vattnet och samtidigt släppa ut det som redan sitter i betongen.';
+  'En plastmatta direkt mot väggen som enda skydd utifrån ger en vägg där fukten stannar kvar i stället för att vandra ut, eftersom marken utanför är kall. Villaägarna varnar för det. Skyddet ska stoppa vattnet och samtidigt släppa ut det som redan sitter i betongen.';
 
 /** Decimalkomma accepteras: '2,5' blir 2.5. Tomt eller skräp ger NaN. */
 function tillTal(v: string | null): number {
@@ -615,13 +615,13 @@ export function raknaDranering(i: DraneringIndata): DraneringResultat {
   if (i.tejptest === 'markfukt') {
     regler.push({
       utfall: 'grav',
-      text: 'Plasten är våt på väggsidan. Vattnet kommer alltså genom betongen, och det är markfukt. Skyddet mot den sitter på utsidan av väggen, så allt du gör inifrån flyttar problemet i stället för att lösa det.',
+      text: 'Plasten är våt på väggsidan. Då kommer vattnet genom betongen, och det är markfukt. Skyddet mot den sitter på utsidan av väggen, så allt du gör inifrån flyttar problemet i stället för att lösa det.',
       kalla: 'Boverket, fuktinträngning från mark till källarvägg. Tejptestet beskrivs av tidningen Gör Det Själv',
     });
   } else if (i.tejptest === 'kondens') {
     regler.push({
       utfall: 'mat',
-      text: `Plasten är våt på rumssidan. Vattnet kommer alltså ur luften, och det är kondens. Det är det enda av de tre fallen där en maskin hjälper. En avfuktare kostar ${kronor(AVFUKTARE_KR)} kr, och grävningen kostar ${faktorMotAvfuktare} gånger mer.`,
+      text: `Plasten är våt på rumssidan. Då kommer vattnet ur luften, och det är kondens. Det är det enda av de tre fallen där en maskin hjälper. En avfuktare kostar ${kronor(AVFUKTARE_KR)} kr, och grävningen kostar ${faktorMotAvfuktare} gånger mer.`,
       kalla: 'Tejptestet beskrivs av tidningen Gör Det Själv. Avfuktarens pris är läst hos Proffsmagasinet',
     });
   } else if (i.tejptest === 'torrt') {
@@ -633,7 +633,7 @@ export function raknaDranering(i: DraneringIndata): DraneringResultat {
   } else {
     regler.push({
       utfall: 'billigt',
-      text: 'Vattnet i en källare kommer från ett av tre ställen: markfukt genom väggen, kondens ur luften, eller ett läckage som kommer med regnet. Tejptestet säger vilket av dem du har, och det kostar dig en bit plast och två dygn.',
+      text: 'Vattnet i en källare kommer från ett av tre ställen: markfukt genom väggen, kondens ur luften, eller ett läckage som kommer med regnet. Tejptestet säger vilket av dem du har, och du kan göra det i kväll.',
       kalla: 'Tidningen Gör Det Själv, bekämpa fukt i källaren',
     });
   }
@@ -648,7 +648,7 @@ export function raknaDranering(i: DraneringIndata): DraneringResultat {
   } else {
     regler.push({
       utfall: 'ok',
-      text: `Dräneringen är ${i.alderAr} år gammal, alltså långt från de femtio år Villaägarna räknar med. Är källaren ändå fuktig sitter felet troligen ovan mark, i ett stuprör, i markfallet eller i en otät genomföring.`,
+      text: `Dräneringen är ${i.alderAr} år gammal, långt från de femtio år Villaägarna räknar med. Är källaren ändå fuktig sitter felet troligen ovan mark, i ett stuprör, i markfallet eller i en otät genomföring.`,
       kalla: 'Villaägarna, måste du dränera huset',
     });
   }

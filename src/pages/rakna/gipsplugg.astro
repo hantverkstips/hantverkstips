@@ -334,11 +334,10 @@ const huvudbild = varumarke ?? illustration;
       <div class="lg:col-span-7">
         <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">Vad håller i gipsväggen? Välj plugg efter vikten</h1>
         <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
-          Det som avgör vad en gipsvägg tål är inte hur tung saken är, utan hur tung den är per skruv. Fyll i
+          En gipsvägg tål mer än folk tror, men det är vikten per skruv som räknas, inte vikten på saken. Fyll i
           vikten, vad det är och hur många punkter den hänger i, så säger jag om det räcker med en krok, en plugg i
-          skivan, en skruv i regeln eller en kortling bakom gipset. Kortlingen är en träbit du sätter in vågrätt
-          mellan två reglar när det inte finns någon regel där saken ska sitta. Varje plugg står med den vikt
-          tillverkaren anger för just din skiva, och över 20 kg går min gräns för vad som får hänga i skivan alls.
+          skivan, en skruv i regeln eller en kortling bakom gipset. En kortling är en träbit du sätter in vågrätt
+          mellan två reglar. Över 20 kg går min gräns för vad som får hänga i skivan alls.
         </p>
       </div>
 
@@ -439,13 +438,36 @@ const huvudbild = varumarke ?? illustration;
       visat.status === 'ok' && (
         <section>
           <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
-          <p class="m-0 text-brod lg:text-brod-lg">{visat.svarText}</p>
+          <ul class="m-0 p-0 list-none text-brod lg:text-brod-lg">
+            <li class="mb-4 border-l-2 border-linje pl-4">
+              <span class="block">{visat.svarText}</span>
+              <span class="block text-liten text-blyerts-2">
+                {visat.kraverRegel
+                  ? 'Gränsen 20 kg och regeln om arm och lucka är mina. Norgips skriver bara "tyngre saker" utan tal.'
+                  : 'Talen per infästning är tillverkarnas rekommenderade last, inte brottlast.'}
+              </span>
+            </li>
+            <li class="mb-4 border-l-2 border-linje pl-4">
+              <span class="block">{visat.lastText}</span>
+              <span class="block text-liten text-blyerts-2">
+                Att den övre raden bär allt på en hylla, och faktorn 1,5 på en svängarm, är mina antaganden.
+              </span>
+            </li>
+            <li class="mb-4 border-l-2 border-linje pl-4">
+              <span class="block">
+                Det jag inte vet är hur din vägg mår. Skivan kan vara skadad sedan förut, hålet kan redan vara
+                urborrat, och det kan ligga en elkabel bakom. Borra aldrig rakt över eller rakt under ett uttag eller
+                en strömbrytare, och kör en regelsökare över ytan innan borren går i.
+              </span>
+              <span class="block text-liten text-blyerts-2">Ingen källa, bara erfarenhet.</span>
+            </li>
+          </ul>
 
           {/* Tabellen: infästningarna som gäller för den här saken, enklast
               först. Det som inte räcker står kvar gråmarkerat, så att läsaren
               ser hur långt ifrån det är. */}
           <h3 class="m-0 mt-6 font-sans text-h3 lg:text-h3-lg text-blyerts">
-            Infästningar som är märkta för {talText(visat.lastPerPunktKg)} kg per punkt i {SKIVA_TEXT[visatIndata.skiva]}
+            Infästningar som klarar {talText(visat.lastPerPunktKg)} kg per punkt i {SKIVA_TEXT[visatIndata.skiva]}
           </h3>
           <Tabellyta kolumner={3} class="mt-4">
             <table class="w-full border-collapse text-liten tabular-nums">
@@ -493,8 +515,8 @@ const huvudbild = varumarke ?? illustration;
           </p>
           {visat.ingenKlarar && (
             <p class="m-0 mt-4 text-brod lg:text-brod-lg text-varning">
-              Ingen rad i tabellen är märkt för lasten per punkt. Fler infästningspunkter sänker lasten, men över
-              min gräns hjälper inte det heller. Då ska saken i regeln eller i en kortling.
+              Ingen infästning i tabellen är märkt för din last per punkt. Fler infästningspunkter sänker lasten,
+              men över min gräns hjälper inte det heller. Då ska saken i regeln eller i en kortling.
             </p>
           )}
           {visat.utelamnade && <p class="m-0 mt-4 text-brod lg:text-brod-lg">{visat.utelamnade}</p>}
@@ -520,8 +542,8 @@ const huvudbild = varumarke ?? illustration;
       <Pennstreck id="plugg-i-gipsvagg">Hur mycket en plugg i gipsvägg håller innan 20 kilo blir för mycket</Pennstreck>
       <p class="m-0 text-brod lg:text-brod-lg">
         En gipsskiva bär mer än folk tror och mycket mindre än de hoppas. Det som avgör är sällan hur tung saken är,
-        utan hur tung den är per skruv. Ta en vägghylla på 80 cm. Tom väger den några kilo, men fyll den med
-        kokböcker och du ligger på 25 kg. Hänger den i fyra punkter blir det ändå drygt 6 kg på varje.
+        utan hur tung den är per skruv. En vägghylla på 80 cm väger några kilo tom, men fyll den med kokböcker och
+        du ligger på 25 kg. Hänger den i fyra punkter blir det ändå drygt 6 kg på varje.
         Gipstillverkaren Norgips sätter gränsen för en skruv med plugg direkt i skivan vid som mest{' '}
         {NORGIPS_SKIVAN_KG}&nbsp;kg, så den hyllan är fortfarande inom vad väggen klarar per punkt.
       </p>
@@ -581,12 +603,12 @@ const huvudbild = varumarke ?? illustration;
           räknar jag som halva antalet punkter, avrundat nedåt.
         </li>
         <li class="mb-2">
-          Ett tv-fäste med svängarm gångrar jag dessutom med {komma(SVANGARM_FAKTOR)} innan lasten delas. Det är
+          Ett tv-fäste med svängarm multiplicerar jag dessutom med {komma(SVANGARM_FAKTOR)} innan lasten delas. Det är
           min hävarmsregel, inte en tillverkares.
         </li>
         <li class="mb-2">
           Väger saken mer än {GRANS_REGEL_KG}&nbsp;kg blir svaret regel eller kortling, oavsett vad tabellen säger.
-          Samma sak gäller allt som sitter på en arm eller skiftar, alltså svängarmen och skåpet med lucka.
+          Samma sak gäller allt som sitter på en arm eller skiftar, som svängarmen och skåpet med lucka.
         </li>
         <li class="mb-2">
           Sedan prövar jag lasten per punkt mot varje infästning som finns angiven för den skiva du valt. Raden som
@@ -613,7 +635,7 @@ const huvudbild = varumarke ?? illustration;
           <thead>
             <tr class="border-b border-linje text-left">
               <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Infästning eller regel</th>
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Jag går på</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Jag räknar med</th>
               <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Källa eller antagande</th>
             </tr>
           </thead>
@@ -649,15 +671,10 @@ const huvudbild = varumarke ?? illustration;
         förpackningen i din hand är det förpackningen som gäller.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        I vinter bygger jag en vägg med 13 mm skiva och drar åtta pluggtyper till brott med hängvåg. Då får du både
-        brottlasten och den last där skivan börjar ge sig, och de talen ersätter tillverkarnas här. Tills dess står
-        ingen egen siffra i verktyget. Planen för den mätningen står på sidan{' '}
-        <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar vi</a>.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Verktyget kan inte se din vägg. Det vet inte om skivan är skadad sedan förut, om hålet redan är urborrat
-        eller om det ligger en elkabel bakom. Borra aldrig rakt över eller rakt under ett uttag eller en
-        strömbrytare, och kör en regelsökare över ytan innan borren går i.
+        Tabellen skrivs om den dag jag dragit åtta pluggtyper till brott med hängvåg i en vägg med 13 mm skiva,
+        och det är planerat till vintern. Då får du både brottlasten och den last där skivan börjar ge sig, i
+        stället för tillverkarnas tal. Tills dess står ingen egen siffra i verktyget, och det står också på sidan{' '}
+        <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar jag</a>.
       </p>
     </section>
 

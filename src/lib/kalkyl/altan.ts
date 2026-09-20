@@ -158,7 +158,7 @@ export const SKRUV_TEXT = '4,2 × 55 mm trallskruv i rostfritt A4';
  * anger snedspikning eller vinkelbeslag mellan bärlinorna.
  */
 export const INFASTNING_TEXT =
-  'Reglarna fästs i bärlinan med vinkelbeslag och ankarskruv, eller snedskruvas med två skruv per infästning. Beslagen ska vara varmförzinkade eller rostfria, som trallskruven.';
+  'Fäst varje regel i bärlinan med ett vinkelbeslag och ankarskruv, eller skruva den snett med två skruv. Beslagen ska vara varmförzinkade eller rostfria, som trallskruven.';
 
 /**
  * Största fria längd i meter för reglarna mellan två bärlinor, per dimension och
@@ -262,7 +262,7 @@ export const SPILL_TRALL = 0.1;
 export const FORPACKNINGAR = [250, 1000] as const;
 
 /** Fallet ut från huset. Källa: byggbeskrivningen Altan, cirka 1:100. */
-export const FALL_TEXT = '1:100, alltså en centimeter per meter';
+export const FALL_TEXT = '1:100, en centimeter per meter';
 
 export const TRALLBREDDER: { varde: Trallbredd; etikett: string }[] = [
   { varde: 95, etikett: '95 mm, smal bräda som rör sig minst' },
@@ -335,21 +335,20 @@ function radSpannvidd(regel: Regeldimension, cc: Regelavstand, behovM: number, r
   );
   const meningar = [
     `Spänn inte ${dimensionText(regel)} längre än ${max} m mellan bärlinorna.`,
-    `Reglarna ska gå ${behov} m här.`,
-    `Altanen får därför ${RAKNEORD[rader] ?? rader} bärlinrader, och plintarna under dem är inräknade i talet.`,
+    `Här behöver reglarna gå ${behov} m, så altanen får ${RAKNEORD[rader] ?? rader} bärlinrader, och plintarna under dem är inräknade i talet.`,
   ];
-  if (battre) meningar.push(`Med ${dimensionText(battre)} räcker en rad mindre.`);
+  if (battre) meningar.push(`Byter du till ${dimensionText(battre)} räcker en rad mindre.`);
   return meningar.join(' ');
 }
 
 const GOR_INTE_TAT_SPRINGA =
-  'Skruva inte ihop brädorna tätare än fem millimeter. Branschorganisationen Svenskt Trä anger springan efter brädans bredd, och den breda brädan rör sig mest. Lägger du dem kant i kant sväller de mot varandra första hösten, och då buktar golvet.';
+  'Den breda brädan rör sig mest, och lägger du brädorna kant i kant sväller de mot varandra första hösten så att golvet buktar. Svenskt Trä anger springan efter brädans bredd, och fem millimeter är det minsta du ska ha.';
 
 const GOR_INTE_UTAN_FALL =
-  'Lägg inte trallen vågrätt. Bjälklaget ska luta ut från huset, cirka en centimeter per meter, annars blir varje springa en ränna som håller kvar vattnet. Lägg fallet i reglarna innan trallen skruvas, för efteråt går det inte att rätta till.';
+  'Lägg fallet i reglarna redan när du sätter dem, cirka en centimeter per meter ut från huset. En trall som ligger vågrätt får en ränna i varje springa som håller kvar vattnet, och efteråt går det inte att rätta till.';
 
 const GOR_INTE_SKARV_UTANFOR_REGEL =
-  'Skarva aldrig en trallbräda i luften. Altanen är längre än den längsta brädan i hyllan, så brädorna måste mötas, och de ska mötas mitt över en regel med varsin skruv. Lägg skarvarna förskjutna mellan raderna, annars får golvet en fog rakt igenom.';
+  'Altanen är längre än den längsta brädan i hyllan, så brädorna måste mötas, och de ska mötas mitt över en regel med varsin skruv. En skarv i luften mellan två reglar håller inte. Lägg skarvarna förskjutna mellan raderna, annars får golvet en fog rakt igenom.';
 
 /** Decimalkomma accepteras: '2,5' blir 2.5. Tomt eller skräp ger NaN. */
 function tillTal(v: string | null): number {

@@ -118,7 +118,7 @@ const beskedRad =
 
 const KORT_SVAR_YTA = {
   kondens: 'Din kallaste yta är kallare än så, och där släpper luften ifrån sig vattnet.',
-  mogelrisk: 'Din kallaste yta är varmare än så, så den blir inte våt.',
+  mogelrisk: 'Din kallaste yta är varmare än så och blir inte våt, men luften alldeles intill den är för fuktig.',
   ingen_risk: 'Din kallaste yta är varmare än så, så den blir inte våt.',
 } as const;
 
@@ -141,7 +141,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     url: 'https://www.boverket.se/sv/PBL-kunskapsbanken/regler-om-byggande/boverkets-byggregler/fuktsakerhet/hogsta-tillatna-fukttillstand/',
   },
   {
-    storhet: 'Hur många gram vatten luften bär per kubikmeter',
+    storhet: 'Hur många gram vatten luften bär per kubikmeter. Raden är för den som vill räkna efter',
     varde: '216,68 × ångtrycket delat med temperaturen i kelvin',
     grund: 'Källa',
     stod: 'Allmänna gaslagen för vattenånga, samma härledning som Magnus-formeln',
@@ -262,8 +262,8 @@ const huvudbild = varumarke ?? illustration;
           <p class="m-0 leading-6">Daggpunkten i ditt rum ligger på {tal.daggpunkt} grader.</p>
           <p class="m-0 leading-6">{KORT_SVAR_YTA[visat.bedomning]}</p>
           <p class="m-0 leading-6">
-            Luften alldeles intill ytan hamnar ändå på{' '}
-            <Markering>{tal.rfYta} procent luftfuktighet</Markering>, och Boverkets gräns för mögel går vid{' '}
+            Luften intill ytan ligger på <Markering>{tal.rfYta} procent luftfuktighet</Markering>,{' '}
+            {visat.bedomning === 'ingen_risk' ? 'under' : 'över'} Boverkets gräns för mögel på{' '}
             {KRITISKT_FUKTTILLSTAND_RF} procent.
           </p>
           <p class="m-0 leading-6">
@@ -304,8 +304,8 @@ const huvudbild = varumarke ?? illustration;
                 <span class="text-ingress lg:text-ingress-lg">grader</span>
               </p>
               <p class="m-0 mt-2 text-liten text-blyerts-2">
-                Räknat på {tal.luftTemp} grader och {tal.rfInne} procent luftfuktighet inne. Formeln kan slå{' '}
-                {formateraTal(visat.osakerhetC, 2)} grader åt endera hållet.
+                Räknat på {tal.luftTemp} grader och {tal.rfInne} procent luftfuktighet inne. Formeln kan visa{' '}
+                {formateraTal(visat.osakerhetC, 2)} grader för mycket eller för lite.
               </p>
               <p class="m-0 mt-1 text-liten text-blyerts-2">
                 Din kallaste yta på {tal.ytTemp} grader ligger {tal.marginal} grader{' '}
@@ -348,52 +348,85 @@ const huvudbild = varumarke ?? illustration;
       visat.status === 'ok' && tal && (
         <section>
           <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
-          <p class="m-0 text-brod lg:text-brod-lg">
-            {visat.bedomning === 'kondens' ? (
-              <>
-                Din yta ligger {tal.marginal} grader under daggpunkten. Så länge luften inne är så här fuktig fälls
-                det ut vatten på den, och det syns som imma på glas eller som en mörk fläck på en tapetserad vägg.
-                Luften inne bär {tal.anghalt} gram vatten per kubikmeter, och det räcker för att fylla den kalla
-                luften intill ytan helt.
-              </>
-            ) : visat.bedomning === 'mogelrisk' ? (
-              <>
-                Din yta klarar sig undan kondensen med {tal.marginal} grader till godo, men luften alldeles intill
-                den ligger på {tal.rfYta} procent, och Boverkets gräns går vid {KRITISKT_FUKTTILLSTAND_RF}. Står det
-                så vecka efter vecka växer mögel på ytan utan att den någonsin varit blöt. Luften inne bär{' '}
-                {tal.anghalt} gram vatten per kubikmeter.
-              </>
-            ) : (
-              <>
-                Din yta har {tal.marginal} grader till godo mot daggpunkten, och luften intill den håller{' '}
-                {tal.rfYta} procent, vilket är under Boverkets gräns på {KRITISKT_FUKTTILLSTAND_RF}. Luften inne bär{' '}
-                {tal.anghalt} gram vatten per kubikmeter. Det är ett rum som mår bra.
-              </>
-            )}
-          </p>
-
-          {visat.bedomning !== 'ingen_risk' && (
-            <>
-              <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-                {visat.ytanMasteBliVarmare ? (
+          <ul class="m-0 p-0 list-none text-brod lg:text-brod-lg">
+            <li class="mb-4 border-l-2 border-linje pl-4">
+              <span class="block">
+                {visat.bedomning === 'kondens' ? (
                   <>
-                    Det går inte att vädra sig ur det här. Du skulle behöva ner till {tal.rfKrav} procent
-                    luftfuktighet inne, och så torr luft står ingen ut med. Ytan måste i stället upp till{' '}
-                    {tal.ytTempKrav} grader, och det gör du med värme eller isolering.
+                    Din yta ligger {tal.marginal} grader under daggpunkten. Så länge luften inne är så här fuktig
+                    fälls det ut vatten på den, och det syns som imma på glas eller som en mörk fläck på en
+                    tapetserad vägg. Luften inne bär {tal.anghalt} gram vatten per kubikmeter, och det räcker för att
+                    fylla den kalla luften intill ytan helt.
+                  </>
+                ) : visat.bedomning === 'mogelrisk' ? (
+                  <>
+                    Din yta klarar sig undan kondensen med {tal.marginal} grader till godo, men luften alldeles
+                    intill den ligger på {tal.rfYta} procent, och Boverkets gräns går vid {KRITISKT_FUKTTILLSTAND_RF}.
+                    Står det så vecka efter vecka växer mögel på ytan utan att den någonsin varit blöt. Luften inne
+                    bär {tal.anghalt} gram vatten per kubikmeter.
                   </>
                 ) : (
                   <>
-                    Det finns två vägar under gränsen, och du behöver bara en av dem. Antingen får du ner
-                    luftfuktigheten inne till {tal.rfKrav} procent, eller så får du upp ytan till {tal.ytTempKrav}{' '}
-                    grader.
+                    Din yta har {tal.marginal} grader till godo mot daggpunkten, och luften intill den håller{' '}
+                    {tal.rfYta} procent, vilket är under Boverkets gräns på {KRITISKT_FUKTTILLSTAND_RF}. Luften inne
+                    bär {tal.anghalt} gram vatten per kubikmeter. Det är ett rum som mår bra.
                   </>
                 )}
-              </p>
-              <ul class="m-0 mt-4 p-0 list-none text-brod lg:text-brod-lg">
-                {visat.atgarder.map((a) => (
-                  <li class="mb-2 border-l-2 border-linje pl-3">{ATGARDSTEXT[a]}</li>
-                ))}
-              </ul>
+              </span>
+              <span class="block text-liten text-blyerts-2">
+                Gränsen 75 procent är Boverkets, BBR 6:52. Daggpunkten kommer ur Magnus-formeln enligt Lawrence 2005.
+              </span>
+            </li>
+
+            {visat.bedomning !== 'ingen_risk' && (
+              <li class="mb-4 border-l-2 border-linje pl-4">
+                <span class="block">
+                  {visat.ytanMasteBliVarmare ? (
+                    <>
+                      Det går inte att vädra sig ur det här. Du skulle behöva ner till {tal.rfKrav} procent
+                      luftfuktighet inne, och så torr luft står ingen ut med. Ytan måste i stället upp till{' '}
+                      {tal.ytTempKrav} grader, och det gör du med värme eller isolering.
+                    </>
+                  ) : (
+                    <>
+                      Det finns två vägar under gränsen, och du behöver bara en av dem. Antingen får du ner
+                      luftfuktigheten inne till {tal.rfKrav} procent, eller så får du upp ytan till{' '}
+                      {tal.ytTempKrav} grader.
+                    </>
+                  )}
+                </span>
+                <span class="block text-liten text-blyerts-2">
+                  Båda talen är samma formel räknad baklänges. Gränsen 25 procent inne, där jag slutar föreslå vädring,
+                  är mitt eget val.
+                </span>
+              </li>
+            )}
+
+            {visat.atgarder.map((a) => (
+              <li class="mb-4 border-l-2 border-linje pl-4">
+                <span class="block">{ATGARDSTEXT[a]}</span>
+                <span class="block text-liten text-blyerts-2">
+                  {a === 'avfuktare'
+                    ? 'Mitt råd. Att uteluften i augusti bär mer vatten än en kall källare följer av SMHI:s tal för sommarluft.'
+                    : a === 'vadra'
+                      ? 'Mitt råd. Att vinterluft bär nästan inget vatten följer av Magnus-formeln vid minusgrader.'
+                      : 'Mitt råd, inget krav från någon källa.'}
+                </span>
+              </li>
+            ))}
+
+            <li class="mb-4 border-l-2 border-linje pl-4">
+              <span class="block">
+                Det svaga ledet är det du matade in. En hygrometer för ett par hundralappar kan visa några
+                procentenheter fel, och väggens temperatur är en gissning tills du mätt den med en IR-termometer. Ta
+                svaret som ett spann på några grader, och lita mer på det ju bättre du mätt.
+              </span>
+              <span class="block text-liten text-blyerts-2">Min erfarenhet, ingen publicerad siffra.</span>
+            </li>
+          </ul>
+
+          {visat.bedomning !== 'ingen_risk' && (
+            <>
               {visat.gorInteDetHar && (
                 <>
                   <h3 id="gor-inte-det-har" class="m-0 mt-6 font-sans text-h3 lg:text-h3-lg text-blyerts">
@@ -501,8 +534,8 @@ const huvudbild = varumarke ?? illustration;
           där, även utan en enda droppe.
         </li>
         <li>
-          Till sist vänder jag på räkningen två gånger, för att hitta vilken luftfuktighet inne som ger 75 procent
-          vid ytan, och vilken yttemperatur som gör samma sak med den luft du har i dag.
+          Till sist räknar jag baklänges. Först letar jag upp den luftfuktighet inne som ger 75 procent vid ytan.
+          Sedan letar jag upp den yttemperatur som ger 75 procent med den luft du har i dag.
         </li>
       </ol>
 
@@ -543,13 +576,10 @@ const huvudbild = varumarke ?? illustration;
       </Tabellyta>
 
       <p class="m-0 mt-6 text-brod lg:text-brod-lg">
-        Det svaga i räkningen är inte formeln utan det du matar in. En hygrometer för ett par hundralappar kan visa
-        några procentenheter fel, och väggens temperatur är en gissning tills du mätt den med en IR-termometer. Så
-        ta svaret som ett spann på några grader, och lita mer på det ju bättre du mätt.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Hur jag hämtar tal och när jag mätt själv står på sidan{' '}
-        <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar vi</a>.
+        Själva formeln har jag inte räknat fram själv, den är Lawrence 2005 rakt av, och den osäkerhet på 0,35
+        grader som står i spalten är hans. De tre yttemperaturerna i hjälptexten är däremot mina, och de byts mot
+        uppmätta tal så snart jag haft IR-termometern på tillräckligt många väggar. Hur jag skiljer på läst och mätt
+        står på sidan <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar jag</a>.
       </p>
     </section>
 

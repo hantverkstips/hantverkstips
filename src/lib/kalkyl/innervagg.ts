@@ -220,13 +220,13 @@ export function ccStandardForLag(lag: Skivlag): Regelavstand {
  * "1 200 mm" aldrig bryts mitt itu på en mobilskärm.
  */
 const GOR_INTE_CC600_ETT_LAG =
-  'Sätt inte reglarna på c 600 mm under ett enda lag gips. Branschorganisationen Svenskt Trä anger c 400 mm för skivor som är 1 200 mm breda, och det glesare måttet knyter de till två lag med förskjutna skarvar. Väggen håller ändå, men den ger efter mellan reglarna när någon lutar sig mot den.';
+  'Under ett enda lag gips ger en vägg på c 600 mm efter mellan reglarna när någon lutar sig mot den. Branschorganisationen Svenskt Trä anger c 400 mm för skivor som är 1 200 mm breda, och det glesare måttet knyter de till två lag med förskjutna skarvar. Väggen håller ändå, men den känns billig.';
 
 const GOR_INTE_SKARV_VID_DORR =
-  'Lägg inte en skivskarv i linje med dörröppningens kant. Svenskt Trä förbjuder det uttryckligen, och det är den spricka jag ser oftast i en hemmabyggd vägg. Kapa i stället ett L-format stycke skiva som går förbi hörnet, eller flytta skarven en halv skivbredd åt sidan.';
+  'Den spricka jag ser oftast i en hemmabyggd vägg går från dörröppningens hörn, och den kommer av en skivskarv i linje med kanten. Svenskt Trä förbjuder det uttryckligen. Kapa i stället ett L-format stycke skiva som går förbi hörnet, eller flytta skarven en halv skivbredd åt sidan.';
 
 const GOR_INTE_HOG_VAGG_45X70 =
-  'Bygg inte en vägg över 3 m hög på reglar som är 45 × 70 mm. Gipstillverkaren Gyproc anger den grövre dimensionen 45 × 95 mm upp till 4 m höjd, och för den klenare anger de ingen höjd alls.';
+  'Över 3 m i höjd räcker inte reglar på 45 × 70 mm. Gipstillverkaren Gyproc anger den grövre dimensionen 45 × 95 mm upp till 4 m, och för den klenare anger de ingen höjd alls.';
 
 /** Decimalkomma accepteras: '2,5' blir 2.5. Tomt eller skräp ger NaN. */
 function tillTal(v: string | null): number {

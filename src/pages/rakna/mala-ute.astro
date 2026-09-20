@@ -284,7 +284,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Fuktkvot i virket',
     varde: `Högst ${FUKTKVOT_MAX_PROCENT} %`,
     grund: 'Källa',
-    stod: 'Branschorganisationen Svenskt Trä och TräGuiden. Verktyget kan inte mäta den, rådet står under svaret',
+    stod: 'Branschorganisationen Svenskt Trä och TräGuiden. Jag kan inte mäta den härifrån, så rådet står under svaret',
     url: TRAGUIDEN,
   },
 ];
@@ -349,11 +349,11 @@ const huvudbild = varumarke ?? illustration;
     <section class="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-8">
       <div class="lg:col-span-7">
         <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">
-          Hinner färgen torka innan daggen faller? Räkna på dagen och natten
+          Kan du måla ute i dag? Se om färgen hinner torka innan daggen faller
         </h1>
         <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
           Fyll i temperaturen och luftfuktigheten just nu, nattens lägsta enligt prognosen och när solen går ner, så
-          räknar verktyget ut om färgen hinner bli klibbfri innan daggen faller. Det prövar också dagen mot
+          räknar jag ut om färgen hinner bli klibbfri innan daggen faller. Jag prövar också dagen mot
           färgtillverkarnas egna gränser för kyla, fukt, regn och sol, och skriver ut vem som säger vad. Svaret blir
           ja, ja men sluta senast ett visst klockslag, eller vänta.
         </p>
@@ -381,7 +381,7 @@ const huvudbild = varumarke ?? illustration;
         <Faktaruta variant="kortsvar">
           <p class="m-0 leading-6">
             Titta på natten först. Fasadfärg vill ha <Markering>minst 7 grader</Markering> på yta och luft ända tills
-            den torkat, och en kall natt fäller dagen.
+            den torkat, och en kall natt kan stoppa hela dagen.
           </p>
           <p class="m-0 leading-6">Över 80 procent luftfuktighet ska du inte måla alls.</p>
           <p class="m-0 leading-6">
@@ -405,8 +405,9 @@ const huvudbild = varumarke ?? illustration;
                 <p class="m-0 mb-2 text-liten text-varning">Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.</p>
               )}
               <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
-                {FARGTEXT[visatIndata.fargtyp]}, {gradText(visatIndata.luftTempC)}&nbsp;°C och{' '}
-                {formateraTal(visatIndata.rfProcent)}&nbsp;%, natt {gradText(visatIndata.nattMinC)}&nbsp;°C
+                {FARGTEXT[visatIndata.fargtyp]} vid {gradText(visatIndata.luftTempC)}&nbsp;°C och{' '}
+                {formateraTal(visatIndata.rfProcent)}&nbsp;% luftfuktighet, natten ner till{' '}
+                {gradText(visatIndata.nattMinC)}&nbsp;°C
               </p>
               {/* Det stora talet är klockslaget eller ordet Vänta, med resten av
                   svaret på samma baslinje där enheten står på de andra kalkylatorerna. */}
@@ -426,7 +427,7 @@ const huvudbild = varumarke ?? illustration;
                   Daggpunkten ligger på {gradText(visat.daggpunktC)}&nbsp;°C, räknad med Magnus-formeln.
                 </li>
                 <li class="border-t border-linje py-2">
-                  Ytan går ner till {gradText(visat.ytTempNattC)}&nbsp;°C i natt, alltså{' '}
+                  Ytan går ner till {gradText(visat.ytTempNattC)}&nbsp;°C i natt, och det är{' '}
                   {visat.marginalC >= 0 ? `${gradText(visat.marginalC)}${HART}°C över` : `${gradText(-visat.marginalC)}${HART}°C under`}{' '}
                   daggpunkten.
                 </li>
@@ -435,10 +436,10 @@ const huvudbild = varumarke ?? illustration;
                 </li>
                 <li class="border-t border-linje py-2">
                   Färgen blir klibbfri på {timText(visat.klibbfriIdagH)} i dag, mot {timText(visat.farg.klibbfriH)} i
-                  databladet vid {TORKTID_REFERENS_C}&nbsp;°C och {TORKTID_REFERENS_RF}&nbsp;%.
+                  tillverkarens datablad, som gäller vid {TORKTID_REFERENS_C}&nbsp;°C och {TORKTID_REFERENS_RF}&nbsp;%.
                 </li>
                 <li class="border-t border-linje py-2">
-                  Den går att måla över efter {timText(visat.overmalningsbarIdagH)}, alltså{' '}
+                  Den går att måla över efter {timText(visat.overmalningsbarIdagH)}, det vill säga{' '}
                   {visat.overmalningsbarKl < 24 ? `kl ${Math.floor(visat.overmalningsbarKl)}` : 'först i morgon'}.
                 </li>
                 <li class="border-t border-linje py-2">
@@ -500,8 +501,9 @@ const huvudbild = varumarke ?? illustration;
               ))}
             </ul>
             <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-              Svaret bygger på att luften i kväll är samma som nu. Byter vädret luft, med en front eller en vind som
-              vänder, gäller inte daggpunkten längre.
+              Svaret bygger på att luften i kväll är samma som nu, och det är det enda jag inte kan se härifrån.
+              Byter vädret luft, med en front eller en vind som vänder, gäller inte daggpunkten längre. Titta på
+              prognosen för luftfuktigheten i kväll och inte bara på temperaturen.
             </p>
           </section>
 
@@ -538,14 +540,13 @@ const huvudbild = varumarke ?? illustration;
       <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Varför daggen är farligare än kylan</h3>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
         Daggpunkten är den temperatur där luften inte kan bära mer vatten, och allt som är kallare än så blir vått.
-        Ta en dag på 15&nbsp;grader med 65&nbsp;procent luftfuktighet. Daggpunkten ligger då på 8,5&nbsp;grader, och
-        den följer med luften in i kvällen. Panelen blir dessutom kallare än luften när himlen är klar, för den
-        strålar ut sin värme mot natthimlen, och jag räknar med två grader. En natt som prognosen sätter till
-        8&nbsp;grader ger alltså en panel på 6, och den ligger under daggpunkten. Daggen lägger sig i färgen innan
-        den bildat film, och du får matta fläckar och en yta som fäster sämre. Tillverkarna vill därför att färgen är
-        klibbfri i god tid före kvällen, och Beckers skriver två timmar. Verktyget räknar baklänges från solnedgången,
-        minus två timmar, minus torktiden till klibbfri vid dagens väder, och där står klockslaget du senast måste
-        sluta.
+        En dag på 15&nbsp;grader med 65&nbsp;procent luftfuktighet har daggpunkten 8,5&nbsp;grader, och den följer
+        med luften in i kvällen. Panelen blir dessutom kallare än luften när himlen är klar, för den strålar ut sin
+        värme mot natthimlen, och jag räknar med två grader. En natt som prognosen sätter till 8&nbsp;grader ger en
+        panel på 6, och den ligger under daggpunkten. Daggen lägger sig i färgen innan den bildat film, och du får
+        matta fläckar och en yta som fäster sämre. Tillverkarna vill därför att färgen är klibbfri i god tid före
+        kvällen, och Beckers skriver två timmar. Jag räknar baklänges från solnedgången, minus två timmar, minus
+        torktiden till klibbfri vid dagens väder, och där står klockslaget du senast måste sluta.
       </p>
       <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Måla ute på våren och hösten</h3>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
@@ -574,7 +575,7 @@ const huvudbild = varumarke ?? illustration;
           <Illustration
             namn="rakna/mala-ute"
             alt="Liggande träpanel som stryks med en pensel medan solen går ner, märkt 15 grader, 65 procent och daggpunkt 8,5 grader"
-            bildtext="Det verktyget räknar på är värmen, fukten och tiden som är kvar till solnedgången."
+            bildtext="Det jag räknar på är värmen, fukten och tiden som är kvar till solnedgången."
           />
         )
       }
@@ -606,14 +607,14 @@ const huvudbild = varumarke ?? illustration;
         </li>
       </ol>
 
-      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad svaret vilar på</h3>
+      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad siffrorna vilar på</h3>
       <Tabellyta kolumner={3} class="mt-4">
         <table class="w-full border-collapse text-liten tabular-nums">
           <caption class="sr-only">Gränser, torktider och antaganden i verktyget måla ute i dag</caption>
           <thead>
             <tr class="border-b border-linje text-left">
               <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Vad</th>
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Verktyget räknar med</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Jag räknar med</th>
               <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Källa eller antagande</th>
             </tr>
           </thead>
@@ -650,20 +651,12 @@ const huvudbild = varumarke ?? illustration;
       </Tabellyta>
 
       <p class="m-0 mt-6 text-brod lg:text-brod-lg">
-        Fyra rader i tabellen är mina egna, och det står där. Att torktiden fortsätter att fördubblas neråt från
-        Beckers punkt vid 15&nbsp;grader är min kurva, att fuktig luft lägger på hälften är mitt tal, att ytan ligger
-        två grader under luften på kvällen är vad jag sett av dagg på bilar och tak, och att en oljefärg alltid torkar
-        över natten är min tolkning av hur den härdar. Alla fyra ligger åt det försiktiga hållet, så verktyget säger
-        hellre vänta en dag för mycket än ja en dag för lite.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        En sak kan verktyget inte se, och det är om luften byts i kväll. Daggpunkten följer vattnet i luften, och
-        kommer en front med annan luft gäller talet inte längre. Titta på prognosen för luftfuktigheten i kväll och
-        inte bara på temperaturen.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Hur jag skiljer tillverkarnas tal från mina egna står på sidan{' '}
-        <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar jag</a>.
+        Tillverkarna ger mig punkterna, och kurvorna mellan dem har jag dragit själv. Att torktiden fortsätter att
+        fördubblas neråt från Beckers punkt vid 15&nbsp;grader är min kurva, att fuktig luft lägger på hälften är
+        mitt tal, att ytan ligger två grader under luften på kvällen är vad jag sett av dagg på bilar och tak, och att
+        en oljefärg alltid torkar över natten är min tolkning av hur den härdar. Alla fyra ligger åt det försiktiga
+        hållet, så jag säger hellre vänta en dag för mycket än ja en dag för lite. Hur jag skiljer tillverkarnas tal
+        från mina egna står på sidan <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar jag</a>.
       </p>
     </section>
 

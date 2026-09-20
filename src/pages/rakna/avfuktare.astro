@@ -260,9 +260,10 @@ const huvudbild = varumarke ?? illustration;
       <div class="lg:col-span-7">
         <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">Hur stor avfuktare behöver du?</h1>
         <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
-          Fyll i golvytan, takhöjden och hur fuktigt det är i dag, så får du veta hur många liter per dygn maskinen
-          måste klara. Talet du får är det som ska stå på lådan, omräknat från en svensk källare i augusti. Ta det
-          som ett minsta krav med marginal, för lådans siffra och verkligheten är två olika saker.
+          Storleken på avfuktaren hänger på hur mycket vatten som kommer in i utrymmet varje dygn, och det räknar
+          jag ut åt dig ur golvytan, takhöjden och hur fuktigt det är i dag. Svaret får du som liter per dygn, och
+          jag räknar om det till talet som ska stå på lådan, eftersom tillverkaren mäter i ett klimat som en svensk
+          källare aldrig har. Ta det som ett minsta krav med marginal.
         </p>
       </div>
 
@@ -326,7 +327,8 @@ const huvudbild = varumarke ?? illustration;
                   {visat.temperaturC} grader motsvarar det ungefär {visat.literPerDygnVerklig} liter om dygnet.
                 </p>
                 <p class="m-0 mt-1 text-liten text-blyerts-2">
-                  Räknat på {formateraTal(visat.volymM3, 1)} m³ och {fuktnivaEtikett(visatIndata.fuktniva)}.
+                  Räknat på {formateraTal(visat.volymM3, 1)} m³ och{' '}
+                  {fuktnivaEtikett(visatIndata.fuktniva).split(',')[0]} i dag.
                 </p>
                 <p class="m-0 mt-4 text-brod">
                   Omräkningen från lådans siffra till din källare är det osäkraste i hela räkningen, så läs talet
@@ -410,9 +412,9 @@ const huvudbild = varumarke ?? illustration;
       }
       <p class="m-0 text-brod lg:text-brod-lg">
         Det första att förstå är att luften som redan står i rummet inte är problemet. En källare på 96 m³ vid 15
-        grader och 75 procent luftfuktighet bär 0,9 liter vatten, och att ta ner den till 55 procent kostar
-        maskinen ett kvarts glas. Det som avgör storleken är vattnet som kommer in varje dygn, genom väggen och med
-        uteluften. Så jag räknar på augusti, som är den värsta månaden, och så här går det till.
+        grader och 75 procent luftfuktighet bär 0,9 liter vatten, och att ta ner den till 55 procent betyder ett par
+        deciliter för maskinen, en gång. Storleken styrs i stället av vattnet som kommer in varje dygn, genom väggen
+        och med uteluften. Så jag räknar på augusti, som är den värsta månaden, och så här går det till.
       </p>
       <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg">
         <li class="mb-2">
@@ -424,8 +426,8 @@ const huvudbild = varumarke ?? illustration;
           att ligga på 55 procent av det.
         </li>
         <li class="mb-2">
-          Först tar jag ut det vatten som redan står i luften, alltså skillnaden mellan din fuktnivå och 55
-          procent. Det är ett par deciliter och görs en gång.
+          Först tar jag ut det vatten som redan står i luften. Det är skillnaden mellan din fuktnivå och 55
+          procent, ett par deciliter som tas en gång.
         </li>
         <li class="mb-2">
           Sedan uteluften. Ett halvt luftbyte i timmen bär in augustiluft med 10 gram vatten per kubikmeter, och ju
@@ -486,13 +488,11 @@ const huvudbild = varumarke ?? illustration;
       </Tabellyta>
 
       <p class="m-0 mt-6 text-brod lg:text-brod-lg">
-        Två av raderna är gissningar jag gärna vill byta mot mätningar: hur mycket fukt som kommer upp ur marken,
-        och hur mycket en kondensmaskin tappar vid 15 grader. I höst ställer jag en avfuktare i en riktig källare
-        och räknar liter i tanken, och då får formeln stå till svars.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Vad som är läst ur datablad och vad som är mätt står på sidan{' '}
-        <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar vi</a>.
+        I höst står en avfuktare i en riktig källare i sju dygn, med liter i tanken och elmätaren avlästa varje
+        morgon. Det är det enda sättet att få veta om marginalen 1,3 är rätt, och om fukten upp ur marken verkligen
+        ligger på de 10 och 40 gram jag gissat. Tills dess är de två raderna, och kondensmaskinens 30 procent vid 15
+        grader, räkningens svagaste punkter. Läs mer om vad som är läst och vad som är mätt på sidan{' '}
+        <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar jag</a>.
       </p>
     </section>
 
