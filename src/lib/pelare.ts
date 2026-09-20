@@ -53,7 +53,7 @@ export const PELARE = [
   },
   {
     slug: 'grund',
-    namn: 'Grund och dränering',
+    namn: 'Grund, källare och dränering',
     kort: 'Grund',
     ikon: 'grund',
     grupp: 'ute',
