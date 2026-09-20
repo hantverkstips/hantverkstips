@@ -93,7 +93,7 @@ const matt = [
     {
       !kompakt && (
         <p class={HJALP_KLASS}>
-          Två mått räcker. Omkretsen räknas fram, och det är den som är löpmetern priset går på.
+          Två mått räcker. Verktyget räknar fram omkretsen, och det är den som är löpmetern priset går på.
         </p>
       )
     }
@@ -121,8 +121,8 @@ const matt = [
       ) : (
         !kompakt && (
           <p class={HJALP_KLASS}>
-            Ner till dräneringsledningen vid sulan, alltså underkant källarvägg. En full källare ligger runt{' '}
-            {komma(SCHAKTDJUP_REFERENS_M)} m, en souterräng grundare på husets höga sida.
+            Mät ner till dräneringsröret vid sulan, alltså underkanten på källarväggen. En full källare ligger runt{' '}
+            {komma(SCHAKTDJUP_REFERENS_M)} m, och en souterräng ligger grundare på husets höga sida.
           </p>
         )
       )
@@ -130,7 +130,7 @@ const matt = [
   </div>
 
   <fieldset class="m-0 mb-4 p-0 border-0">
-    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Så ser tomten ut runt huset</legend>
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Hur ser tomten ut runt huset?</legend>
     <div class={radioKlass}>
       {
         ATKOMSTER.map((a) => (
@@ -147,7 +147,7 @@ const matt = [
   </fieldset>
 
   <fieldset class="m-0 mb-4 p-0 border-0">
-    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Ovanpå schakten ligger</legend>
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Vad ligger ovanpå schakten?</legend>
     <div class={radioKlass}>
       {
         ATERSTALLNINGAR.map((a) => (
@@ -161,7 +161,7 @@ const matt = [
     {
       !kompakt && (
         <p class={HJALP_KLASS}>
-          Välj det dyraste som ligger längs mer än en vägg. Allt ska upp och tillbaka igen.
+          Välj det dyraste som ligger längs mer än en vägg, för allt ska upp och läggas tillbaka igen.
         </p>
       )
     }
@@ -189,7 +189,7 @@ const matt = [
       ) : (
         !kompakt && (
           <p class={HJALP_KLASS}>
-            Vet du inte, skriv husets ålder. Dräneringen är lika gammal som huset tills någon grävt om den.
+            Vet du inte, skriv husets ålder. Dräneringen är lika gammal som huset tills någon har grävt om den.
           </p>
         )
       )
@@ -197,7 +197,7 @@ const matt = [
   </div>
 
   <fieldset class="m-0 mb-6 p-0 border-0">
-    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Vad tejptestet visade</legend>
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Vad visade plasten på källarväggen?</legend>
     <div class={radioKlass}>
       {
         TEJPTESTER.map((t) => (
@@ -214,7 +214,7 @@ const matt = [
     {
       !kompakt && (
         <p class={HJALP_KLASS}>
-          En bit plastfolie tejpad tätt mot källarväggen i minst två dygn. Hela testet står i{' '}
+          Tejptestet är en bit plastfolie som får sitta tätt mot källarväggen i minst två dygn. Hur du gör det står i{' '}
           <a
             href="/fukt/fukt-i-kallaren/"
             class="text-penna underline decoration-1 underline-offset-2 hover:decoration-2"

@@ -147,7 +147,7 @@ export const REGLERNA_GALLER_FRAN = '1 december 2025';
  * områdesbestämmelser.
  */
 export const RAD_KOMMUNEN =
-  'Kommunen har sista ordet. Byggnadsnämnden prövar just din altan, och detaljplanen eller områdesbestämmelserna kan lägga till lovplikt utöver lagen. Ett mejl med ett foto och de två måtten kostar ingenting.';
+  'Kommunen har sista ordet. Byggnadsnämnden prövar just din altan, och detaljplanen eller områdesbestämmelserna kan lägga till lovplikt utöver lagen. Skicka ett mejl med ett foto och de två måtten, det kostar ingenting.';
 
 export const SVAR_RUBRIK: Record<Svar, string> = {
   nej: 'Nej, inget bygglov',
@@ -269,7 +269,7 @@ function hojdRegel(i: BygglovAltanIndata): Regel {
 function utanforPlanRegel(): Regel {
   return {
     utfall: 'nej',
-    text: 'Tomten ligger utanför detaljplan. Då finns inga mått att hålla sig till för en altan, varken för höjden eller för avståndet till huset, skriver myndigheten Boverket. Kvar står kravet att altanen ska passa in i omgivningen och inte bli en betydande olägenhet för grannen.',
+    text: 'Tomten ligger utanför detaljplan. Då finns det inga mått att hålla sig till för en altan, varken för höjden eller för avståndet till huset, skriver Boverket. Kvar står kravet att altanen ska passa in i omgivningen och inte bli en betydande olägenhet för grannen.',
     lagrum: 'Boverket. Måttregeln i 9 kap. 19 § gäller bara inom detaljplan',
   };
 }
@@ -334,7 +334,7 @@ function vardefulltRegel(i: BygglovAltanIndata): Regel | null {
   }
   return {
     utfall: 'kanske',
-    text: 'Du vet inte om huset eller området är utpekat som särskilt värdefullt. Är det utpekat krävs bygglov även för en altan som annars hade varit lovfri. Kommunens bygglovsavdelning svarar på frågan på ett mejl.',
+    text: 'Du vet inte om huset eller området är utpekat som särskilt värdefullt. Är det utpekat krävs bygglov även för en altan som annars hade varit lovfri. Mejla kommunens bygglovsavdelning, så får du svar på frågan.',
     lagrum: 'Plan- och bygglagen 9 kap. 37 och 38 §§',
   };
 }
@@ -381,16 +381,16 @@ export function bedomFall(planlagt: boolean, i: BygglovAltanIndata): Bedomning {
 }
 
 const GOR_INTE_BYGG_FORST =
-  'Bygg inte först och fråga sedan. Byggsanktionsavgiften ovanför tas ut även om du inte visste bättre, du får söka lov i efterhand ändå, och får du inget lov kan nämnden kräva att altanen rivs.';
+  'Bygg inte först och fråga sedan. Byggsanktionsavgiften ovanför tas ut även om du inte visste bättre, du får söka lov i efterhand ändå, och får du inget lov kan nämnden kräva att du river altanen.';
 
 const GOR_INTE_BARA_GOLVET =
   'Räkna inte bara altanens golv när du mäter tillbyggnaden. Hela ytan under taket räknas, gränsen gäller alla lovfria tillbyggnader på huset tillsammans, och tillbyggnaden får inte bli högre än husets taknock.';
 
 const GOR_INTE_MUNTLIGT_JA =
-  'Nöj dig inte med ett muntligt ja från grannen. Boverket vill ha medgivandet skriftligt, och enklast är att grannen skriver under en ritning över tomten med altanen inritad. Spara pappret.';
+  'Nöj dig inte med ett muntligt ja från grannen. Boverket vill ha medgivandet skriftligt, och enklast är att grannen skriver under en ritning över tomten med altanen inritad. Spara pappret, för det är den dagen grannen säljer som du behöver det.';
 
 const GOR_INTE_MAT_PA_OVANSIDAN =
-  'Mät inte höjden på tomtens höga sida. Sluttar marken mäts altanen där den är som högst, från marken upp till golvets ovansida, och ett tätt plank ovanpå räknas in i samma mått.';
+  'Mät inte höjden på tomtens höga sida. Sluttar marken mäter du altanen där den är som högst, från marken upp till golvets ovansida, och ett tätt plank ovanpå räknas in i samma mått.';
 
 export function raknaBygglovAltan(i: BygglovAltanIndata): BygglovAltanResultat {
   const fel: Partial<Record<keyof BygglovAltanIndata, string>> = {};
@@ -400,16 +400,16 @@ export function raknaBygglovAltan(i: BygglovAltanIndata): BygglovAltanResultat {
   const [ytaMin, ytaMax] = GRANSER.ytaKvm;
 
   if (!Number.isFinite(i.hojdM) || i.hojdM < hojdMin || i.hojdM > hojdMax) {
-    fel.hojdM = `Ange altangolvets höjd över marken mellan ${hojdMin} och ${hojdMax} meter`;
+    fel.hojdM = `Skriv altangolvets höjd över marken mellan ${hojdMin} och ${hojdMax} meter`;
   }
   if (!Number.isFinite(i.avstandByggnadM) || i.avstandByggnadM < byggnadMin || i.avstandByggnadM > byggnadMax) {
-    fel.avstandByggnadM = `Ange avståndet till närmaste byggnad mellan ${byggnadMin} och ${byggnadMax} meter`;
+    fel.avstandByggnadM = `Skriv avståndet till närmaste byggnad mellan ${byggnadMin} och ${byggnadMax} meter`;
   }
   if (!Number.isFinite(i.avstandGransM) || i.avstandGransM < gransMin || i.avstandGransM > gransMax) {
-    fel.avstandGransM = `Ange avståndet till tomtgränsen mellan ${gransMin} och ${gransMax} meter`;
+    fel.avstandGransM = `Skriv avståndet till tomtgränsen mellan ${gransMin} och ${gransMax} meter`;
   }
   if (!Number.isFinite(i.ytaKvm) || i.ytaKvm < ytaMin || i.ytaKvm > ytaMax) {
-    fel.ytaKvm = `Ange altanens yta mellan ${ytaMin} och ${ytaMax} kvadratmeter`;
+    fel.ytaKvm = `Skriv altanens yta mellan ${ytaMin} och ${ytaMax} kvadratmeter`;
   }
   if (Object.keys(fel).length > 0) return { status: 'ogiltig', fel };
 

@@ -343,10 +343,10 @@ function radSpannvidd(regel: Regeldimension, cc: Regelavstand, behovM: number, r
 }
 
 const GOR_INTE_TAT_SPRINGA =
-  'Skruva inte ihop brädorna tätare än fem millimeter. Branschorganisationen Svenskt Trä anger springan efter brädans bredd, och den breda brädan rör sig mest. Lägger du dem kant i kant sväller de mot varandra första hösten, och då buktar golvet i stället för att ligga.';
+  'Skruva inte ihop brädorna tätare än fem millimeter. Branschorganisationen Svenskt Trä anger springan efter brädans bredd, och den breda brädan rör sig mest. Lägger du dem kant i kant sväller de mot varandra första hösten, och då buktar golvet.';
 
 const GOR_INTE_UTAN_FALL =
-  'Lägg inte trallen vågrätt. Bjälklaget ska luta ut från huset, cirka en centimeter per meter, annars blir varje springa en ränna som håller kvar vattnet. Fallet läggs i reglarna innan trallen skruvas, för efteråt går det inte att rätta.';
+  'Lägg inte trallen vågrätt. Bjälklaget ska luta ut från huset, cirka en centimeter per meter, annars blir varje springa en ränna som håller kvar vattnet. Lägg fallet i reglarna innan trallen skruvas, för efteråt går det inte att rätta till.';
 
 const GOR_INTE_SKARV_UTANFOR_REGEL =
   'Skarva aldrig en trallbräda i luften. Altanen är längre än den längsta brädan i hyllan, så brädorna måste mötas, och de ska mötas mitt över en regel med varsin skruv. Lägg skarvarna förskjutna mellan raderna, annars får golvet en fog rakt igenom.';
@@ -485,10 +485,10 @@ export function raknaAltan(i: AltanIndata): AltanResultat {
   const [breddMin, breddMax] = GRANSER.breddM;
 
   if (!Number.isFinite(i.langdM) || i.langdM < langdMin || i.langdM > langdMax) {
-    fel.langdM = `Ange altanens längd mellan ${langdMin} och ${langdMax} meter`;
+    fel.langdM = `Skriv altanens längd mellan ${langdMin} och ${langdMax} meter`;
   }
   if (!Number.isFinite(i.breddM) || i.breddM < breddMin || i.breddM > breddMax) {
-    fel.breddM = `Ange altanens bredd mellan ${breddMin} och ${breddMax} meter`;
+    fel.breddM = `Skriv altanens bredd mellan ${breddMin} och ${breddMax} meter`;
   }
   if (Object.keys(fel).length > 0) return { status: 'ogiltig', fel };
 

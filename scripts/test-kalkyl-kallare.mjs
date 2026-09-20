@@ -50,7 +50,7 @@ function symptomtabellen() {
   const rader = [];
   let iTabell = false;
   for (const rad of GUIDEN.split('\n')) {
-    if (rad.startsWith('| Vad du ser |')) {
+    if (rad.startsWith('| Det du ser |')) {
       iTabell = true;
       continue;
     }
@@ -114,9 +114,9 @@ test('radernas ordning är tabellens, och pekar på rätt av de tre vattnen', ()
 });
 
 test('tejptestets tre utfall står i guiden och har var sin rad i verktyget', () => {
-  assert.match(GUIDEN, /Droppar på plastens utsida, mot rummet, betyder[\s\S]*?Det är kondens\./);
+  assert.match(GUIDEN, /Droppar på plastens utsida, mot rummet, betyder[\s\S]*?Det är kondens[.,]/);
   assert.match(GUIDEN, /Droppar på insidan, mot väggen, betyder[\s\S]*?Det är markfukt\./);
-  assert.match(GUIDEN, /Torr plast på båda sidor betyder inte att du är frisk\./);
+  assert.match(GUIDEN, /Torr plast på båda sidor betyder[^.]*inte att du är frisk\./);
   assert.deepEqual(
     TEJPTESTER.map((t) => t.varde),
     ['markfukt', 'kondens', 'torrt', 'inte-gjort'],
@@ -133,13 +133,13 @@ test('talen i guidens kostnadstabell är modulens konstanter', () => {
 
 test('Boverkets gräns, Villaägarnas femtio år och Anticimex tal står i guiden', () => {
   assert.equal(KRITISK_RF, 75);
-  assert.match(GUIDEN, new RegExp(`I BBR 6:52 anges ${KRITISK_RF} procent relativ luftfuktighet`));
+  assert.match(GUIDEN, new RegExp(`BBR 6:52[^.]*${KRITISK_RF} procent relativ luftfuktighet`));
   assert.equal(KAN_HALLA_AR, 50);
   assert.match(GUIDEN, /kan fungera i femtio år/);
   assert.equal(HYGROSTAT_RF, 60);
-  assert.match(GUIDEN, new RegExp(`Ställ hygrostaten[\\s\\S]*?på ${HYGROSTAT_RF} procent`));
+  assert.match(GUIDEN, new RegExp(`hygrostaten[^.]*${HYGROSTAT_RF} procent`));
   assert.equal(REGN_LITER, 3000);
-  assert.match(GUIDEN, new RegExp(`På ett tak på ${TAK_KVM} kvm blir ${REGN_MM} mm regn ${kronor(REGN_LITER)} liter`));
+  assert.match(GUIDEN, new RegExp(`tak på ${TAK_KVM} kvm[^.]*${kronor(REGN_LITER)} liter[^.]*${REGN_MM} mm regn`));
 });
 
 // ---------------------------------------------------------------------------
@@ -149,7 +149,7 @@ test('fall 1: tomt formulär ger vet inte än, och pekar på tejptestet', () => 
   const r = ok({}, 'standardvärdena');
   assert.equal(r.diagnos, 'oklart');
   assert.equal(r.beskedRubrik, BESKED_RUBRIK.oklart);
-  assert.equal(r.nastaStegLank.href, `${GUIDE}#tejptestet-två-dygn-och-en-bit-plast`);
+  assert.equal(r.nastaStegLank.href, `${GUIDE}#tejptestet-svarar-på-två-dygn`);
   assert.equal(r.visaAvfuktare, false);
   assert.equal(r.visaDranering, false);
   assert.equal(r.visaUtredning, true);
@@ -164,7 +164,7 @@ test('fall 2: vita ränder på betongen ger markfukt, som tabellens första rad'
   assert.equal(r.visaDranering, true);
   assert.match(text(r), /Villaägarna, saltutfällningar/);
   // Tejptestet är ogjort, så nästa steg är fortfarande plasten.
-  assert.equal(r.nastaStegLank.href, `${GUIDE}#tejptestet-två-dygn-och-en-bit-plast`);
+  assert.equal(r.nastaStegLank.href, `${GUIDE}#tejptestet-svarar-på-två-dygn`);
 });
 
 test('fall 3: färg som släpper nedersta halvmetern ger markfukt', () => {
@@ -186,7 +186,7 @@ test('fall 4: imma på kallvattenrör ger kondens', () => {
 test('fall 5: mörk fläck i hörnet bakom hyllan ger kondens', () => {
   const r = ok({ symptom: ['horn'] }, 'mörkt hörn');
   assert.equal(r.diagnos, 'kondens');
-  assert.equal(r.valdaSymptom[0].nastaSteg, 'Flytta hyllan, mät om efter två veckor');
+  assert.equal(r.valdaSymptom[0].nastaSteg, 'Flytta hyllan och mät igen om två veckor');
 });
 
 test('fall 6: pöl vid en rörgenomföring efter regn ger läckage', () => {
@@ -195,7 +195,7 @@ test('fall 6: pöl vid en rörgenomföring efter regn ger läckage', () => {
   assert.equal(r.visaAvfuktare, false);
   assert.equal(r.visaDranering, false);
   assert.equal(r.visaUtredning, true);
-  assert.equal(r.nastaStegLank.href, `${GUIDE}#läckage-vattnet-kommer-efter-regn`);
+  assert.equal(r.nastaStegLank.href, `${GUIDE}#läckage-kommer-med-regnet`);
   assert.match(text(r), /Följ vattnet uppåt och utåt/);
 });
 
@@ -211,7 +211,7 @@ test('fall 8: tejptestet säger markfukt, och då hjälper ingen maskin', () => 
   assert.equal(r.diagnos, 'markfukt');
   assert.equal(r.visaDranering, true);
   assert.equal(r.visaAvfuktare, false);
-  assert.equal(r.nastaStegLank.href, `${GUIDE}#markfukt-vattnet-kommer-genom-väggen`);
+  assert.equal(r.nastaStegLank.href, `${GUIDE}#markfukt-i-källaren-kommer-genom-väggen`);
   assert.match(text(r), /skyddet mot den hör hemma på utsidan av väggen/i);
   assert.match(text(r), new RegExp(`${kronor(DRANERING_KR_PER_LOPMETER)} kr per löpmeter`));
 });
@@ -220,7 +220,7 @@ test('fall 9: tejptestet säger kondens, och då är avfuktaren rätt maskin', (
   const r = ok({ tejptest: 'kondens' }, 'plast våt på rumssidan');
   assert.equal(r.diagnos, 'kondens');
   assert.equal(r.visaAvfuktare, true);
-  assert.equal(r.nastaStegLank.href, `${GUIDE}#kondens-du-vädrar-in-vattnet-själv`);
+  assert.equal(r.nastaStegLank.href, `${GUIDE}#kondens-i-källaren-vädrar-du-in-själv`);
 });
 
 test('fall 10: torr plast på båda sidor betyder fel vägg, inte frisk källare', () => {
@@ -228,7 +228,7 @@ test('fall 10: torr plast på båda sidor betyder fel vägg, inte frisk källare
   assert.equal(r.diagnos, 'oklart');
   assert.match(text(r), /betyder inte att du är frisk/);
   assert.match(text(r), /fel vägg/);
-  assert.equal(r.nastaStegLank.href, `${GUIDE}#tejptestet-två-dygn-och-en-bit-plast`);
+  assert.equal(r.nastaStegLank.href, `${GUIDE}#tejptestet-svarar-på-två-dygn`);
 });
 
 test('fall 11: tejptestet vinner över symptomen', () => {

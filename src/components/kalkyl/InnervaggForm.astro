@@ -66,7 +66,7 @@ const talfalt = [
     varde: varden.langd,
     fel: fel.langdM,
     inputmode: 'decimal',
-    hjalp: 'Mät längs strecket på golvet, från vägg till vägg.',
+    hjalp: 'Mät längs strecket på golvet där väggen ska stå, från vägg till vägg.',
   },
   {
     namn: 'hojd',
@@ -75,7 +75,7 @@ const talfalt = [
     varde: varden.hojd,
     fel: fel.hojdM,
     inputmode: 'decimal',
-    hjalp: 'Golv till tak. Reglarna kapas 15 mm kortare än så.',
+    hjalp: 'Mät från golvet till taket. Reglarna kapar du 15 mm kortare än så.',
   },
 ] as const;
 ---
@@ -113,7 +113,7 @@ const talfalt = [
   </div>
 
   <fieldset class="m-0 mb-4 p-0 border-0">
-    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Regeldimension</legend>
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Hur grova reglar</legend>
     <div class={radioKlass}>
       {
         REGELDIMENSIONER.map((r) => (
@@ -127,7 +127,7 @@ const talfalt = [
   </fieldset>
 
   <fieldset class="m-0 mb-4 p-0 border-0">
-    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Skivlag per sida</legend>
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Hur många lag gips per sida</legend>
     <div class={radioKlass}>
       {
         SKIVLAG.map((s) => (
@@ -162,12 +162,12 @@ const talfalt = [
       !kompakt && (
         <div id={id('cc-hjalp')} class={HJALP_KLASS}>
           <p class="m-0">
-            Måttet är avståndet mellan reglarnas mitt. Branschorganisationen Svenskt Trä anger c&nbsp;400&nbsp;mm för
-            skivor som är 1&nbsp;200&nbsp;mm breda. Det glesare c&nbsp;600&nbsp;mm gäller först när du lägger två lag
-            gips med förskjutna skarvar.
+            Måttet är avståndet från mitten av en regel till mitten av nästa. Branschorganisationen Svenskt Trä
+            anger c&nbsp;400&nbsp;mm för skivor som är 1&nbsp;200&nbsp;mm breda, och det glesare
+            c&nbsp;600&nbsp;mm först när du lägger två lag gips med förskjutna skarvar.
           </p>
           <p class="m-0 mt-1">
-            Hela tabellen med källa per rad står i{' '}
+            Hela tabellen med källa per rad hittar du i{' '}
             <a href="/inomhus/bygga-innervagg/" class={LANK_KLASS}>
               guiden om att bygga innervägg
             </a>
@@ -200,8 +200,8 @@ const talfalt = [
       ) : (
         !kompakt && (
           <p id={id('dorrar-hjalp')} class={HJALP_KLASS}>
-            Varje öppning räknas som 0,9 m bred. Den får en regel på vardera sidan och en avväxling över, alltså den
-            liggande regeln som bär väggen ovanför dörren.
+            Varje öppning räknar jag som 0,9 m bred. Den får en regel på vardera sidan och en avväxling över. Avväxlingen
+            är den liggande regeln som bär väggen ovanför dörren.
           </p>
         )
       )
@@ -209,7 +209,7 @@ const talfalt = [
   </div>
 
   <fieldset class="m-0 mb-6 p-0 border-0">
-    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Mineralull 45 mm</legend>
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Mineralull 45 mm i facken</legend>
     <div class={radioKlass}>
       <label class="flex min-h-11 items-center gap-2 text-brod">
         <input type="radio" name="ull" value="ja" checked={indata.ull} />

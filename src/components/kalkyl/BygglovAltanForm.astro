@@ -66,7 +66,7 @@ const talfalt = [
     enhet: 'm',
     varde: varden.avstand,
     fel: fel.avstandByggnadM,
-    hjalp: 'Från fasaden till altanens ytterkant. Noll meter betyder att altanen ligger mot huset. Lagen säger en byggnad, så garaget och förrådet räknas också.',
+    hjalp: 'Mät från fasaden till altanens ytterkant. Noll meter betyder att altanen ligger mot huset. Lagen säger en byggnad, så garaget och förrådet räknas också.',
   },
   {
     namn: 'grans',
@@ -74,7 +74,7 @@ const talfalt = [
     enhet: 'm',
     varde: varden.grans,
     fel: fel.avstandGransM,
-    hjalp: 'Till den närmaste gränsen. Går gränsen mot en gata eller en park är kommunen din granne.',
+    hjalp: 'Mät till den närmaste gränsen. Går gränsen mot en gata eller en park är kommunen din granne.',
   },
   {
     namn: 'yta',
@@ -82,7 +82,7 @@ const talfalt = [
     enhet: 'kvm',
     varde: varden.yta,
     fel: fel.ytaKvm,
-    hjalp: 'Används till två saker: byggsanktionsavgiften, och gränsen på 30 kvm när altanen får tak eller inglasning.',
+    hjalp: 'Ytan används till två saker, byggsanktionsavgiften och gränsen på 30 kvm när altanen får tak eller inglasning.',
   },
 ] as const;
 ---
@@ -149,7 +149,7 @@ const talfalt = [
   </div>
 
   <fieldset class="m-0 mb-4 p-0 border-0">
-    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Tak över altanen</legend>
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Har altanen tak?</legend>
     <div class={radioKlass}>
       {
         TAK_VAL.map((v) => (
@@ -197,8 +197,8 @@ const talfalt = [
     {
       !kompakt && (
         <p id={id('vardefullt-hjalp')} class={HJALP_KLASS}>
-          Gäller hus och områden som kommunen pekat ut som kulturhistoriskt värdefulla, ofta i detaljplanen eller i ett
-          kulturmiljöprogram. Där krävs bygglov även för en altan som annars hade varit fri.
+          Det gäller hus och områden som kommunen pekat ut som kulturhistoriskt värdefulla, ofta i detaljplanen eller
+          i ett kulturmiljöprogram. Där krävs bygglov även för en altan som annars hade varit fri.
         </p>
       )
     }

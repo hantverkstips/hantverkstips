@@ -62,7 +62,7 @@ const talfalt = [
     enhet: 'm',
     varde: varden.langd,
     fel: fel.langdM,
-    hjalp: 'Mät ytterkant till ytterkant på det färdiga golvet.',
+    hjalp: 'Mät från ytterkant till ytterkant på det färdiga golvet.',
   },
   {
     namn: 'bredd',
@@ -70,7 +70,7 @@ const talfalt = [
     enhet: 'm',
     varde: varden.bredd,
     fel: fel.breddM,
-    hjalp: 'Ut från husväggen, om altanen ligger mot huset.',
+    hjalp: 'Mät ut från husväggen, om altanen ligger mot huset.',
   },
 ] as const;
 ---
@@ -128,8 +128,8 @@ const talfalt = [
     {
       !kompakt && (
         <p id={id('trall-hjalp')} class={HJALP_KLASS}>
-          Kalkylatorn räknar på 28 mm tjock trall. Det är den tjocklek branschorganisationen Svenskt Trä anger för
-          reglar på c&nbsp;600&nbsp;mm. Tunnare brädor vill ha tätare reglar.
+          Verktyget räknar på 28 mm tjock trall. Det är den tjocklek branschorganisationen Svenskt Trä anger för
+          reglar på c&nbsp;600&nbsp;mm, och tunnare brädor behöver tätare reglar.
         </p>
       )
     }
@@ -156,8 +156,8 @@ const talfalt = [
     {
       !kompakt && (
         <p id={id('riktning-hjalp')} class={HJALP_KLASS}>
-          Reglarna går alltid tvärs trallen, så valet vänder hela stommen. Brädor längs långsidan ger färre och längre
-          brädor, och reglar längs kortsidan ger tvärtom.
+          Reglarna går alltid tvärs trallen, så valet vänder hela stommen. Trall längs långsidan ger färre och längre
+          brädor, och trall längs kortsidan ger fler och kortare.
         </p>
       )
     }
@@ -185,9 +185,9 @@ const talfalt = [
       !kompakt && (
         <div id={id('cc-hjalp')} class={HJALP_KLASS}>
           <p class="m-0">
-            Måttet är avståndet mellan reglarnas mitt. Svenskt Trä anger c&nbsp;600&nbsp;mm som största avstånd under
-            28&nbsp;mm trall. Det täta c&nbsp;400&nbsp;mm ger ett stummare golv, och det är också måttet tunnare
-            brädor kräver.
+            Måttet är avståndet från mitten av en regel till mitten av nästa. Svenskt Trä anger c&nbsp;600&nbsp;mm
+            som största avstånd under 28&nbsp;mm trall. Det täta c&nbsp;400&nbsp;mm ger ett stummare golv, och det är
+            också måttet tunnare brädor kräver.
           </p>
         </div>
       )
@@ -215,7 +215,7 @@ const talfalt = [
     {
       !kompakt && (
         <p id={id('regel-hjalp')} class={HJALP_KLASS}>
-          Den högre regeln spänner längre mellan bärlinorna, och då behövs färre plintar. Kalkylatorn säger till när
+          Den högre regeln spänner längre mellan bärlinorna, och då behövs färre plintar. Verktyget säger till när
           dimensionen inte räcker till altanens djup.
         </p>
       )
@@ -245,8 +245,8 @@ const talfalt = [
         <div id={id('grund-hjalp')} class={HJALP_KLASS}>
           <p class="m-0">
             Plintar betyder att du gjuter eller gräver ner betongplintar och lägger bärlinor på dem. Ligger altanen på
-            en gjuten platta eller på befintliga murar behövs varken bärlinor eller plintar, och kalkylatorn räknar då
-            bara trall, reglar och skruv.
+            en gjuten platta eller på murar som redan finns behövs varken bärlinor eller plintar, och verktyget
+            räknar då bara trall, reglar och skruv.
           </p>
           <p class="m-0 mt-1">
             Höjden över mark avgör om bygget behöver lov. Det svaret får du i{' '}

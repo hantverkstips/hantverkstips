@@ -333,7 +333,7 @@ test('inga stegmått, aldrig inga mått: föreskriften har åtta bindande tal', 
 test('sidan säger att beslutet att mäta mot upphävda råd är vårt', () => {
   const sidan = readFileSync(new URL('../src/pages/rakna/trappa.astro', import.meta.url), 'utf8');
   // Raden märkt Antagande, och standarden vi inte läst.
-  assert.match(sidan, /Att vi mäter mot de gamla råden/);
+  assert.match(sidan, /Att jag mäter mot de gamla råden/);
   assert.match(sidan, /SIS\/TS 59:2025/);
   assert.match(sidan, /Inte läst/);
   /*

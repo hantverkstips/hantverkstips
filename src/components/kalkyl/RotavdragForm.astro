@@ -51,17 +51,17 @@ const id = (namn: string) => `${idPrefix}${namn}`;
 const faktura = [
   {
     namn: 'arbete',
-    etikett: 'Arbetskostnad på fakturan',
+    etikett: 'Vad arbetet kostar på fakturan',
     varde: varden.arbete,
     fel: fel.arbetskostnadKr,
-    hjalp: 'Inklusive moms, och bara arbetet. Står maskinhyran på samma rad, be om en faktura där den står för sig.',
+    hjalp: 'Beloppet med moms, och bara arbetet. Står maskinhyran på samma rad, be om en faktura där den står för sig.',
   },
   {
     namn: 'material',
     etikett: 'Material och annat på fakturan',
     varde: varden.material,
     fel: fel.materialkostnadKr,
-    hjalp: 'Frivilligt. Fyller du i det ser du hur stor del av notan som inte ger något avdrag alls. Maskinhyra och resekostnader hör hemma här.',
+    hjalp: 'Frivilligt. Fyller du i det ser du hur stor del av notan som inte ger något avdrag. Maskinhyra och resor hör hit.',
   },
 ] as const;
 
@@ -69,18 +69,18 @@ const faktura = [
 const taken = [
   {
     namn: 'rot',
-    etikett: 'Rotavdrag du redan använt i år',
+    etikett: 'Rotavdrag ni redan använt i år',
     varde: varden.rot,
     fel: fel.utnyttjatRotKr,
-    hjalp: `Summan för alla ägare tillsammans. Den äter både av rot-taket och av det gemensamma taket på ${kronor(GEMENSAMT_TAK_KR)} kr.`,
+    hjalp: `Summan för alla ägare tillsammans. Den räknas av både från rotavdragets egen gräns och från den gemensamma gränsen för rot och rut på ${kronor(GEMENSAMT_TAK_KR)} kr.`,
     platshallare: '0',
   },
   {
     namn: 'rut',
-    etikett: 'Rutavdrag du redan använt i år',
+    etikett: 'Rutavdrag ni redan använt i år',
     varde: varden.rut,
     fel: fel.utnyttjatRutKr,
-    hjalp: 'Städning, flytt, trädgård och liknande. Den äter bara av det gemensamma taket, inte av rot-taket.',
+    hjalp: 'Städning, flytt, trädgård och sådant. Den räknas bara av från den gemensamma gränsen, inte från rotavdragets egen.',
     platshallare: '0',
   },
   {
@@ -88,7 +88,7 @@ const taken = [
     etikett: 'Din preliminära skatt i år',
     varde: varden.skatt,
     fel: fel.skattKr,
-    hjalp: 'Frivilligt. Avdraget kan aldrig bli större än skatten du betalar, och för den som tjänar lite är det den gränsen som gäller.',
+    hjalp: 'Frivilligt. Avdraget kan aldrig bli större än skatten du betalar in, och tjänar du lite är det den gränsen som stoppar först.',
     platshallare: 'Vet inte',
   },
 ] as const;
@@ -128,7 +128,7 @@ const taken = [
   </fieldset>
 
   <fieldset class="m-0 mb-4 p-0 border-0">
-    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Så många äger bostaden</legend>
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Hur många äger bostaden?</legend>
     <div class="flex flex-wrap gap-x-4">
       {
         AGARVAL.map((a) => (
@@ -145,8 +145,8 @@ const taken = [
       ) : (
         !kompakt && (
           <p class={HJALP_KLASS}>
-            Räkna bara dem som står på bostaden och betalar för arbetet. Varje ägare har ett eget tak på{' '}
-            {kronor(ROT_TAK_KR)} kr, så två ägare bär dubbelt så mycket.
+            Räkna bara dem som står som ägare och är med och betalar. Var och en får dra av{' '}
+            {kronor(ROT_TAK_KR)} kr per år, så två ägare får dra av dubbelt så mycket.
           </p>
         )
       )
@@ -154,7 +154,7 @@ const taken = [
   </fieldset>
 
   <fieldset class="m-0 mb-6 p-0 border-0">
-    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Vad är redan utnyttjat i år?</legend>
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Vad har ni redan använt i år?</legend>
     {
       taken.map((f) => (
         <div class="mb-3">

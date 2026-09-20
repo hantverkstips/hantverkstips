@@ -265,18 +265,18 @@ export const AGARVAL: { varde: number; etikett: string }[] = [
  */
 
 const GOR_INTE_PROCENT_PA_HELA_FAKTURAN =
-  'Räkna inte procentsatsen på hela fakturan. Avdraget gäller arbetskostnaden och ingenting annat, så material och resor ligger utanför. På en nota där materialet är halva summan blir avdraget hälften av vad du trodde, och mellanskillnaden är din.';
+  'Räkna inte procentsatsen på hela fakturan. Avdraget gäller bara arbetet, så material och resor står utanför. Är materialet halva notan blir avdraget hälften så stort som du trodde, och mellanskillnaden får du stå för själv.';
 
 const GOR_INTE_MASKINHYRA_I_ARBETET =
-  'Låt inte maskinhyran ligga i arbetsposten. Skatteverket undantar maskinell utrustning uttryckligen, alltså grävmaskiner, borraggregat och liknande. Maskinistens arbetade tid ger däremot avdrag, det är bara maskinen som inte gör det, så be om en faktura där de två står på var sin rad.';
+  'Låt inte maskinhyran ligga inne i arbetsposten. Skatteverket undantar maskinell utrustning med namn, alltså grävmaskiner, borraggregat och liknande. Maskinistens arbetade tid ger däremot avdrag. Det är bara maskinen som inte gör det, så be om en faktura där de två står på var sin rad.';
 
 const GOR_INTE_GAMMAL_FAKTURA =
-  'Betala inte en faktura från förra året nu och räkna med den högre procentsatsen. Det är dagen du betalar som avgör, inte fakturans datum. Arbetet ska dessutom vara utfört, och företagets ansökan om utbetalning ska vara inne senast den 31 januari året efter att du betalade.';
+  'Betala inte en gammal faktura nu och räkna med den procentsats som gällde när den skrevs. Det är dagen du betalar som avgör. Arbetet ska dessutom vara klart, och företaget ska ha skickat in sin begäran om utbetalning senast den 31 januari året efter att du betalade.';
 
 const GOR_INTE_DELA_MED_ICKE_AGARE =
-  'Dela inte avdraget med någon som inte äger och bor i bostaden. Skatteverket kräver båda delarna, och den som står utanför har inget eget tak att lägga till. En sambo utan andel i bostaden hjälper alltså inte notan.';
+  'Dela inte avdraget med någon som inte äger och bor i bostaden. Skatteverket kräver båda delarna, och den som står utanför har ingen egen gräns att lägga till. En sambo utan andel i huset gör alltså ingen skillnad för notan.';
 
-const GOR_INTE_NYBYGGT_HUS = `Räkna inte med rotavdrag på ett nybyggt hus. Är huset yngre än ${NYBYGGT_SPARRAR_AR} år, räknat från värdeåret, ger ombyggnad och tillbyggnad inget avdrag alls. Reparation och underhåll gör det däremot, oavsett husets ålder, och gränsen mellan de två är det första du ska reda ut med hantverkaren.`;
+const GOR_INTE_NYBYGGT_HUS = `Räkna inte med rotavdrag för ombyggnad av ett nybyggt hus. Är huset yngre än ${NYBYGGT_SPARRAR_AR} år, räknat från värdeåret, ger ombyggnad och tillbyggnad inget avdrag alls. Reparation och underhåll ger det hur gammalt huset än är, så red ut med hantverkaren vilket av de två ni gör innan fakturan skrivs.`;
 
 /** Decimalkomma accepteras: '12 500,50' blir 12500.5. Tomt fält ger NaN. */
 function tillTal(v: string | null): number {
@@ -356,7 +356,7 @@ export function raknaRotavdrag(i: RotavdragIndata): RotavdragResultat {
     fel.materialkostnadKr = `Ange materialkostnaden i kronor, mellan ${kronor(GRANSER.materialkostnadKr[0])} och ${kronor(GRANSER.materialkostnadKr[1])}, eller lämna fältet tomt`;
   }
   if (!inom(i.antalAgare, GRANSER.antalAgare) || !Number.isInteger(i.antalAgare)) {
-    fel.antalAgare = `Ange antalet ägare som hela år, mellan ${GRANSER.antalAgare[0]} och ${GRANSER.antalAgare[1]}`;
+    fel.antalAgare = `Ange antalet ägare som ett helt tal, mellan ${GRANSER.antalAgare[0]} och ${GRANSER.antalAgare[1]}`;
   }
   if (!inom(i.utnyttjatRotKr, GRANSER.utnyttjatRotKr)) {
     fel.utnyttjatRotKr = 'Ange det utnyttjade rotavdraget i kronor, eller lämna fältet tomt';
@@ -417,21 +417,21 @@ export function raknaRotavdrag(i: RotavdragIndata): RotavdragResultat {
   // Beskedet i spalten: en rubrik och en rad, aldrig mer.
   const beskedRubrik =
     begransatAv === 'procent'
-      ? `${ROT_PROCENT} procent av arbetet`
+      ? `Du får ${ROT_PROCENT} procent av arbetskostnaden`
       : begransatAv === 'skatt'
-        ? 'Skatten sätter gränsen'
+        ? 'Skatten räcker inte till hela avdraget'
         : begransatAv === 'gemensamt-tak'
-          ? 'Det gemensamma taket slog i'
-          : 'Rot-taket slog i';
+          ? 'Rutavdraget har redan tagit sin del'
+          : 'Gränsen per person stoppar en del av avdraget';
 
   const beskedRad =
     begransatAv === 'procent'
-      ? 'Inget tak slog i, så avdraget är hela procentsatsen på arbetskostnaden.'
+      ? 'Ingen av de tre gränserna stoppar avdraget, så räkna med hela procentsatsen.'
       : begransatAv === 'skatt'
-        ? `Avdraget kan inte bli större än skatten du betalar, och därför försvann ${kronor(kapatKr)} kr.`
+        ? `Avdraget kan aldrig bli större än skatten du betalar in, så ${kronor(kapatKr)} kr faller bort.`
         : begransatAv === 'gemensamt-tak'
-          ? `Rot och rut räknas ihop, och det taket hade du redan ätit av. Därför försvann ${kronor(kapatKr)} kr.`
-          : `Arbetskostnaden är större än taket bär, så ${kronor(kapatKr)} kr av avdraget föll bort.`;
+          ? `Rot och rut delar på samma gräns, och rut tog sin bit först. Därför faller ${kronor(kapatKr)} kr bort.`
+          : `${kronor(kapatKr)} kr faller bort i år. Betalar du en del efter nyår hamnar den delen på nästa års gräns.`;
 
   const agarText =
     i.antalAgare === 1 ? 'en ägare' : `${i.antalAgare} ägare`;
@@ -443,8 +443,8 @@ export function raknaRotavdrag(i: RotavdragIndata): RotavdragResultat {
     slag: 'arbete',
     text:
       i.materialkostnadKr > 0
-        ? `Bara arbetskostnaden ger avdrag. Av din faktura på ${kronor(fakturaKr)} kr står ${kronor(utanAvdragKr)} kr utanför, alltså material och annat som inte är arbete. Maskinell utrustning är undantagen med namns nämnande: grävmaskiner, borraggregat och liknande ger inget avdrag ens när de står på arbetsraden.`
-        : 'Bara arbetskostnaden ger avdrag. Material och resor gör det inte, och maskinell utrustning är undantagen med namns nämnande: grävmaskiner, borraggregat och liknande ger inget avdrag ens när de står på arbetsraden.',
+        ? `Bara arbetet ger avdrag. Av din faktura på ${kronor(fakturaKr)} kr står ${kronor(utanAvdragKr)} kr utanför, alltså material och annat som inte är arbete. Maskiner är dessutom undantagna med namn hos Skatteverket, så grävmaskiner, borraggregat och liknande ger inget avdrag ens när de står på arbetsraden.`
+        : 'Bara arbetet ger avdrag. Material och resor gör det inte, och maskiner är dessutom undantagna med namn hos Skatteverket, så grävmaskiner, borraggregat och liknande ger inget avdrag ens när de står på arbetsraden.',
     kalla: 'Skatteverket, ger arbetet rätt till rotavdrag',
     url: SKATTEVERKET_GER_RATT,
   });
@@ -452,7 +452,7 @@ export function raknaRotavdrag(i: RotavdragIndata): RotavdragResultat {
   // 2. Procentsatsen, och vad den ger på just den här arbetskostnaden.
   regler.push({
     slag: 'procent',
-    text: `Företaget får dra av högst ${ROT_PROCENT} procent av arbetskostnaden på fakturan. På ${kronor(i.arbetskostnadKr)} kr i arbete blir det ${kronor(raktAvdragKr)} kr, innan något tak vägs in.`,
+    text: `Företaget får dra av högst ${ROT_PROCENT} procent av arbetskostnaden på fakturan. På dina ${kronor(i.arbetskostnadKr)} kr i arbete blir det ${kronor(raktAvdragKr)} kr, innan någon gräns är vägd.`,
     kalla: 'Skatteverket, så fungerar rotavdraget',
     url: SKATTEVERKET_ROTAVDRAGET,
   });
@@ -468,7 +468,7 @@ export function raknaRotavdrag(i: RotavdragIndata): RotavdragResultat {
    */
   regler.push({
     slag: 'datum',
-    text: `Det är dagen du betalar fakturan som avgör procentsatsen, inte fakturans datum. Den högre nivån på ${ROT_PROCENT_HOJT} procent gällde färdiga arbeten som betalades mellan ${HOJNINGEN_FRAN} och ${HOJNINGEN_TILL}, så betalar du i dag gäller ${ROT_PROCENT} procent. Arbetet ska dessutom vara utfört, och företagets ansökan om utbetalning ska vara inne senast den ${ANSOKAN_SENAST}.`,
+    text: `Det är dagen du betalar fakturan som avgör procentsatsen, inte dagen fakturan skrevs. Den höjda nivån på ${ROT_PROCENT_HOJT} procent gällde färdiga arbeten som betalades mellan ${HOJNINGEN_FRAN} och ${HOJNINGEN_TILL}, så betalar du nu gäller ${ROT_PROCENT} procent. Arbetet ska vara klart, och företagets begäran om utbetalning ska vara inne senast den ${ANSOKAN_SENAST}.`,
     kalla: 'Skatteverket, så fungerar rotavdraget',
     url: SKATTEVERKET_ROTAVDRAGET,
   });
@@ -476,7 +476,7 @@ export function raknaRotavdrag(i: RotavdragIndata): RotavdragResultat {
   // 3b. Femårsregeln. Den skiljer ombyggnad från reparation, och den saknas i hela fältet.
   regler.push({
     slag: 'arbete',
-    text: `Är huset yngre än ${NYBYGGT_SPARRAR_AR} år ger ombyggnad och tillbyggnad inget avdrag. Åren räknas från värdeåret, alltså det år huset byggdes färdigt, och det är året som gäller, inte dagen. Reparation och underhåll ger däremot avdrag oavsett hur gammalt huset är, så gränsen mellan de två är värd att reda ut med hantverkaren innan fakturan skrivs.`,
+    text: `Är huset yngre än ${NYBYGGT_SPARRAR_AR} år ger ombyggnad och tillbyggnad inget avdrag. Åren räknas från värdeåret, alltså det år huset stod färdigt, och det är hela året som räknas. Reparation och underhåll ger avdrag hur gammalt huset än är, så red ut med hantverkaren vilket av de två ni gör innan fakturan skrivs.`,
     kalla: 'Skatteverket, så fungerar rotavdraget',
     url: SKATTEVERKET_ROTAVDRAGET,
   });
@@ -484,8 +484,8 @@ export function raknaRotavdrag(i: RotavdragIndata): RotavdragResultat {
   // 4. Taket per person, med ägarna inräknade.
   regler.push({
     slag: 'tak',
-    text: `Rotavdraget är högst ${kronor(ROT_TAK_KR)} kr per person och år. Bostaden har ${agarText} som kan dela på det, så taket för det här jobbet är ${kronor(rotTakTotaltKr)} kr.${
-      i.utnyttjatRotKr > 0 ? ` Av det är ${kronor(i.utnyttjatRotKr)} kr redan utnyttjat i år.` : ''
+    text: `Rotavdraget är högst ${kronor(ROT_TAK_KR)} kr per person och år. Bostaden har ${agarText} som kan dela på det, så gränsen för det här jobbet är ${kronor(rotTakTotaltKr)} kr.${
+      i.utnyttjatRotKr > 0 ? ` Av det har ni redan använt ${kronor(i.utnyttjatRotKr)} kr i år.` : ''
     }`,
     kalla: 'Skatteverket, så fungerar rotavdraget',
     url: SKATTEVERKET_ROTAVDRAGET,
@@ -494,8 +494,8 @@ export function raknaRotavdrag(i: RotavdragIndata): RotavdragResultat {
   // 5. Det gemensamma taket. Två tal i samma mening, för de två talen är jämförelsen.
   regler.push({
     slag: 'tak',
-    text: `Rot och rut räknas ihop och är tillsammans högst ${kronor(GEMENSAMT_TAK_KR)} kr per person och år, varav rot får vara ${kronor(ROT_TAK_KR)} kr. Med ${agarText} är det gemensamma taket ${kronor(gemensamtTakTotaltKr)} kr.${
-      i.utnyttjatRutKr > 0 ? ` Rutavdraget du redan tagit ut, ${kronor(i.utnyttjatRutKr)} kr, ligger inne i det.` : ''
+    text: `Rot och rut räknas ihop och får tillsammans inte gå över ${kronor(GEMENSAMT_TAK_KR)} kr per person och år, och av det får högst ${kronor(ROT_TAK_KR)} kr vara rot. Med ${agarText} blir den gemensamma gränsen ${kronor(gemensamtTakTotaltKr)} kr.${
+      i.utnyttjatRutKr > 0 ? ` Rutavdraget ni redan använt, ${kronor(i.utnyttjatRutKr)} kr, ligger inne i det.` : ''
     }`,
     kalla: 'Skatteverket, rot och rut',
     url: SKATTEVERKET_ROT_OCH_RUT,
@@ -506,8 +506,8 @@ export function raknaRotavdrag(i: RotavdragIndata): RotavdragResultat {
     slag: 'skatt',
     text:
       i.skattKr === null
-        ? `Avdraget kan aldrig bli större än skatten du betalar in under året. Det räknas av mot ${SKATTER_SOM_RAKNAS_AV}. Du har inte fyllt i någon skatt, så den gränsen är inte vägd här, och för den som tjänar lite är det ofta den som sätter taket och inte beloppet ovan.`
-        : `Avdraget kan aldrig bli större än skatten du betalar in under året. Du har fyllt i ${kronor(i.skattKr)} kr, och efter det som redan är utnyttjat finns ${kronor(kvarSkatt)} kr kvar att räkna av mot. Avdraget räknas av mot ${SKATTER_SOM_RAKNAS_AV}.`,
+        ? `Avdraget kan aldrig bli större än skatten du betalar in under året, och det räknas av mot ${SKATTER_SOM_RAKNAS_AV}. Du har inte fyllt i någon skatt, så den gränsen är inte vägd här. Tjänar du lite är det ofta den som stoppar först, inte beloppen ovan.`
+        : `Avdraget kan aldrig bli större än skatten du betalar in under året. Du har fyllt i ${kronor(i.skattKr)} kr, och efter det ni redan använt finns ${kronor(kvarSkatt)} kr kvar att räkna av mot. Skatten som räknas är ${SKATTER_SOM_RAKNAS_AV}.`,
     kalla: 'Skatteverket, svar på frågan om hur mycket du måste tjäna',
     url: SKATTEVERKET_SKATTEN,
   });
@@ -515,7 +515,7 @@ export function raknaRotavdrag(i: RotavdragIndata): RotavdragResultat {
   // 7. Vem som får göra avdraget alls. Sex villkor, inte tre.
   regler.push({
     slag: 'arbete',
-    text: 'Du ska äga bostaden under den period arbetet utförs och bo i den, eller låta en förälder göra det. Du ska ha fyllt 18 år senast vid årets slut, vara obegränsat skattskyldig i Sverige och betala med kort eller överföring. En hyrd bostad ger inget rotavdrag alls, oavsett vad du gör i den, och kontanter, arbete du utför åt dig själv och arbete du köper av en närstående ger det inte heller.',
+    text: 'Du ska äga bostaden medan arbetet görs och bo i den, eller låta en förälder bo där. Du ska ha fyllt 18 år senast vid årets slut, vara obegränsat skattskyldig i Sverige och betala med kort eller överföring. En hyrd bostad ger inget rotavdrag alls, vad du än gör i den. Kontanter ger inget avdrag, arbete du gör själv ger inget, och arbete du köper av en närstående ger inget heller.',
     kalla: 'Skatteverket, så fungerar rotavdraget',
     url: SKATTEVERKET_ROTAVDRAGET,
   });

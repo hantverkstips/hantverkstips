@@ -2,7 +2,7 @@
 namn: Redaktionen
 yrke: Redaktion
 presentation: Vi granskar tillverkarnas datablad och räknar själva. Ingen egen mätning är publicerad än, och det står där den saknas.
-utkast: false
+utkast: true
 ---
 
 Redaktionen står som författare på kategorisidor, kalkylatorer och sidor där ingen enskild person skrivit texten. I september 2026 är det alla sidor. Sajten är nystartad av Christian Karlsson, och en författarsida med namn, yrke, år i yrket och foto kommer när den första egna mätningen är publicerad.

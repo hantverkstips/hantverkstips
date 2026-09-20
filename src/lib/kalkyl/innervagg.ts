@@ -170,13 +170,13 @@ export const SKRUVLANGD_TEXT: Record<Skivlag, string> = {
 };
 
 export const REGELDIMENSIONER: { varde: Regeldimension; etikett: string }[] = [
-  { varde: '45x70', etikett: '45 × 70 mm, rumsdelare i normal takhöjd' },
-  { varde: '45x95', etikett: '45 × 95 mm, vägg över 3 m eller tjockare ull' },
+  { varde: '45x70', etikett: '45 × 70 mm, räcker till en rumsdelare i normal takhöjd' },
+  { varde: '45x95', etikett: '45 × 95 mm, för en vägg över 3 m eller tjockare ull' },
 ];
 
 export const SKIVLAG: { varde: Skivlag; etikett: string }[] = [
-  { varde: 1, etikett: 'Ett lag per sida' },
-  { varde: 2, etikett: 'Två lag per sida' },
+  { varde: 1, etikett: 'Ett lag' },
+  { varde: 2, etikett: 'Två lag' },
 ];
 
 export const REGELAVSTAND: { varde: Regelavstand; etikett: string }[] = [
@@ -220,13 +220,13 @@ export function ccStandardForLag(lag: Skivlag): Regelavstand {
  * "1 200 mm" aldrig bryts mitt itu på en mobilskärm.
  */
 const GOR_INTE_CC600_ETT_LAG =
-  'Sätt inte reglarna på c 600 mm under ett enda lag gips. Branschorganisationen Svenskt Trä anger c 400 mm för skivor som är 1 200 mm breda. Det glesare måttet knyter de till två lag med förskjutna skarvar. Väggen håller ändå, men den ger efter mellan reglarna när någon lutar sig mot den.';
+  'Sätt inte reglarna på c 600 mm under ett enda lag gips. Branschorganisationen Svenskt Trä anger c 400 mm för skivor som är 1 200 mm breda, och det glesare måttet knyter de till två lag med förskjutna skarvar. Väggen håller ändå, men den ger efter mellan reglarna när någon lutar sig mot den.';
 
 const GOR_INTE_SKARV_VID_DORR =
-  'Lägg inte en skivskarv i linje med dörröppningens kant. Svenskt Trä förbjuder det uttryckligen, och det är den spricka du ser oftast i en hemmabyggd vägg. Kapa i stället ett L-format stycke skiva som går förbi hörnet, eller flytta skarven en halv skivbredd åt sidan.';
+  'Lägg inte en skivskarv i linje med dörröppningens kant. Svenskt Trä förbjuder det uttryckligen, och det är den spricka jag ser oftast i en hemmabyggd vägg. Kapa i stället ett L-format stycke skiva som går förbi hörnet, eller flytta skarven en halv skivbredd åt sidan.';
 
 const GOR_INTE_HOG_VAGG_45X70 =
-  'Bygg inte en vägg över 3 m hög på reglar som är 45 × 70 mm. Gipstillverkaren Gyproc anger den grövre dimensionen 45 × 95 mm upp till 4 m höjd. För den klenare finns ingen höjd angiven alls.';
+  'Bygg inte en vägg över 3 m hög på reglar som är 45 × 70 mm. Gipstillverkaren Gyproc anger den grövre dimensionen 45 × 95 mm upp till 4 m höjd, och för den klenare anger de ingen höjd alls.';
 
 /** Decimalkomma accepteras: '2,5' blir 2.5. Tomt eller skräp ger NaN. */
 function tillTal(v: string | null): number {
@@ -337,13 +337,13 @@ export function raknaInnervagg(i: InnervaggIndata): InnervaggResultat {
   const [dorrMin, dorrMax] = GRANSER.dorrar;
 
   if (!Number.isFinite(i.langdM) || i.langdM < langdMin || i.langdM > langdMax) {
-    fel.langdM = `Ange väggens längd mellan ${String(langdMin).replace('.', ',')} och ${langdMax} meter`;
+    fel.langdM = `Skriv väggens längd som ett tal mellan ${String(langdMin).replace('.', ',')} och ${langdMax} meter`;
   }
   if (!Number.isFinite(i.hojdM) || i.hojdM < hojdMin || i.hojdM > hojdMax) {
-    fel.hojdM = `Ange rumshöjd mellan ${hojdMin} och ${hojdMax} meter`;
+    fel.hojdM = `Skriv en rumshöjd mellan ${hojdMin} och ${hojdMax} meter`;
   }
   if (!Number.isFinite(i.dorrar) || !Number.isInteger(i.dorrar) || i.dorrar < dorrMin || i.dorrar > dorrMax) {
-    fel.dorrar = `Ange antal dörröppningar som ett helt tal mellan ${dorrMin} och ${dorrMax}`;
+    fel.dorrar = `Skriv antalet dörröppningar som ett helt tal mellan ${dorrMin} och ${dorrMax}`;
   }
   /* Bara när både längden och dörrarna i sig är giltiga. Ett fel per fält. */
   if (fel.langdM === undefined && fel.dorrar === undefined && i.dorrar > 0) {

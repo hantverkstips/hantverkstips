@@ -85,7 +85,7 @@ const rumsfalt = [
     enhet: 'm',
     varde: varden.langd,
     fel: fel.langdM,
-    hjalp: 'Mät längs golvet, vägg till vägg.',
+    hjalp: 'Mät längs golvet, från vägg till vägg.',
   },
   {
     namn: 'bredd',
@@ -93,7 +93,7 @@ const rumsfalt = [
     enhet: 'm',
     varde: varden.bredd,
     fel: fel.breddM,
-    hjalp: 'Är rummet vinklat delar du upp det i två rektanglar och räknar varje för sig.',
+    hjalp: 'Är rummet vinklat delar du upp det i två rektanglar och räknar dem var för sig.',
   },
   {
     namn: 'takhojd',
@@ -101,7 +101,7 @@ const rumsfalt = [
     enhet: 'm',
     varde: varden.takhojd,
     fel: fel.takhojdM,
-    hjalp: 'Golv till tak. Ett svenskt hus från sjuttiotalet ligger oftast på 2,4 m.',
+    hjalp: 'Mät från golvet till taket.',
   },
 ] as const;
 
@@ -112,7 +112,7 @@ const oppningar = [
     bredd: { namn: 'dorrbredd', etikett: 'Dörrens bredd', varde: varden.dorrbredd, fel: fel.dorrBreddM },
     hojd: { namn: 'dorrhojd', etikett: 'Dörrens höjd', varde: varden.dorrhojd, fel: fel.dorrHojdM },
     hjalp:
-      'Måtten gäller hålet i väggen, inte dörrbladet. Dörrtillverkaren Swedoor anger 910 × 2110 mm för den vanligaste innerdörren, och det är avrundat till 0,9 × 2,1 m här.',
+      'Måtten gäller hålet i väggen, inte dörrbladet. Dörrtillverkaren Swedoor anger 910 × 2110 mm för den vanligaste innerdörren, och jag har rundat det till 0,9 × 2,1 m.',
   },
   {
     antal: { namn: 'fonster', etikett: 'Antal fönster', varde: varden.fonster, fel: fel.fonster },
@@ -124,7 +124,7 @@ const oppningar = [
     },
     hojd: { namn: 'fonsterhojd', etikett: 'Fönstrets höjd', varde: varden.fonsterhojd, fel: fel.fonsterHojdM },
     hjalp:
-      'Måttet är hålet i väggen. Vårt standardfönster på 1,2 × 1,2 m är ett antagande, så har du ett annat fönster skriver du in det.',
+      'Måttet är hålet i väggen. Fönstret på 1,2 × 1,2 m är min gissning på ett vanligt fönster, så har du ett annat skriver du in det.',
   },
 ] as const;
 ---
@@ -223,7 +223,7 @@ const oppningar = [
   }
 
   <fieldset class="m-0 mb-4 p-0 border-0">
-    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Vad du vill räkna ut</legend>
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Vilken yta vill du se stort</legend>
     <div class={radioKlass}>
       {
         RAKNAR_VAL.map((r) => (
@@ -237,7 +237,7 @@ const oppningar = [
     {
       !kompakt && (
         <p class={HJALP_KLASS}>
-          Valet styr vilket tal som står stort. Alla tre ytorna räknas ändå ut och står under svaret.
+          Valet styr bara vilket tal som står stort. Alla tre ytorna räknar jag ändå ut, och de står under svaret.
         </p>
       )
     }
@@ -258,8 +258,8 @@ const oppningar = [
     {
       !kompakt && (
         <p class={HJALP_KLASS}>
-          Materialet väljer sin egen yta: väggfärg och tapet går på väggarna efter avdrag, takfärg på taket, golv
-          och klinker på golvet.
+          Materialet hamnar på sin egen yta. Väggfärg och tapet räknar jag på väggarna efter avdrag, takfärg på
+          taket, och golv och klinker på golvet.
         </p>
       )
     }
@@ -286,7 +286,7 @@ const oppningar = [
             {fel.strykningar}
           </p>
         ) : (
-          !kompakt && <p class={HJALP_KLASS}>Färgtillverkarnas åtgångstal gäller per strykning. Två är normalt.</p>
+          !kompakt && <p class={HJALP_KLASS}>Tillverkarnas tal för hur långt färgen räcker gäller per strykning, och två strykningar är det normala.</p>
         )
       }
     </div>
@@ -313,7 +313,7 @@ const oppningar = [
           </p>
         ) : (
           !kompakt && (
-            <p class={HJALP_KLASS}>Står på paketet. Fyller du i det får du antalet paket i stället för bara kvm.</p>
+            <p class={HJALP_KLASS}>Talet står på paketet. Fyller du i det får du antalet paket, inte bara kvadratmeter.</p>
           )
         )
       }
@@ -335,8 +335,8 @@ const oppningar = [
     {
       !kompakt && (
         <p class={HJALP_KLASS}>
-          Diagonalt lagt golv kapas i båda ändar av varje rad, och spillet stiger. Golvtillverkaren Kährs anger
-          sju till tio procent för det som inte läggs rakt.
+          Lägger du golvet diagonalt kapas varje rad i båda ändar, och då blir spillet större. Golvtillverkaren
+          Kährs anger sju till tio procent för allt som inte läggs rakt.
         </p>
       )
     }

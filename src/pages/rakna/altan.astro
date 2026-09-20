@@ -140,7 +140,7 @@ const tal =
       }
     : null;
 
-const titel = 'Trallkalkylator, räkna trall, reglar och plintar';
+const titel = 'Räkna ut trall och plintar till altanen';
 
 /** Antagandena i tabellen under "Så räknar vi". Samma tal som konstanterna i kalkylen. */
 const TRAGUIDEN = 'https://www.traguiden.se/konstruktion/konstruktiv-utformning/tradack/tradack/laggning-av-trall/';
@@ -169,7 +169,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Det täta regelavståndet',
     varde: 'c 400 mm',
     grund: 'Källa',
-    stod: 'Lathunden 8:2021 sid. 30 har kolumner för c 600, 400 och 300 mm. Måttet c 450 mm, som verktyget erbjöd före 19 september 2026, står inte i någon tabell',
+    stod: 'Lathunden 8:2021 sid. 30 har kolumner för c 600, 400 och 300 mm, och det är därför verktyget bara erbjuder mått som står i tabellen',
     url: LATHUNDEN,
   },
   {
@@ -225,14 +225,14 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Avstånd mellan plintar',
     varde: `${formateraTal(PLINTAVSTAND_M['45x120'][4.8], 2)} till ${formateraTal(PLINTAVSTAND_M['45x220'][2.4], 2)} m`,
     grund: 'Källa',
-    stod: 'Lathunden 8:2021 sid. 24, bärlinor till golvbjälkar i ett fack. Avståndet slås upp på bärlinans dimension och reglarnas fria längd, och en fri längd mellan två kolumner läses på den längre. Verktyget räknade före 19 september 2026 med 2,5 m rakt av och gav då för få plintar',
+    stod: 'Lathunden 8:2021 sid. 24, bärlinor till golvbjälkar i ett fack. Avståndet slås upp på bärlinans dimension och reglarnas fria längd, och en fri längd mellan två kolumner läses på den längre',
     url: LATHUNDEN,
   },
   {
     storhet: 'Plintavstånd mot c-mått',
     varde: `Högst ${CC_ANDEL_AV_PLINTAVSTAND} gånger c-måttet`,
     grund: 'Antagande',
-    stod: 'Lathunden sid. 24 rekommenderar att reglarnas centrumavstånd är högst plintavståndet delat med fyra. Vi tillämpar villkoret som ett tak på plintavståndet, vilket alltid ger fler plintar och aldrig färre',
+    stod: 'Lathunden sid. 24 rekommenderar att reglarnas centrumavstånd är högst plintavståndet delat med fyra. Jag tillämpar villkoret som ett tak på plintavståndet, vilket alltid ger fler plintar och aldrig färre',
     url: LATHUNDEN,
   },
   {
@@ -258,7 +258,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Förpackning på trallskruv',
     varde: '250 eller 1 000',
     grund: 'Källa',
-    stod: 'Butikskontroll 19 september 2026: Bauhaus säljer 200 och 250 stycken, Byggmax 250, K-Bygg och Essve 250 och hink om 1 000. Ingen säljer 500. Kalkylatorn väljer den storlek som ger minst överskott',
+    stod: 'Min egen butikskontroll 19 september 2026: Bauhaus säljer 200 och 250 stycken, Byggmax 250, K-Bygg och Essve 250 och hink om 1 000. Ingen säljer 500. Verktyget väljer den storlek som ger minst överskott',
   },
 ];
 
@@ -274,7 +274,7 @@ const FRAGOR = [
   },
   {
     fraga: 'Hur många plintar behöver altanen?',
-    svar: 'Räkna raderna först, inte plintarna. Varje bärlina vilar på en rad plintar, och hur många bärlinor altanen behöver bestäms av hur långt reglarna får spänna. En regel på 45 × 145 mm klarar 2,31 meter enligt Svenskt Trä, så en altan som är tre meter djup får en bärlinrad på mitten. Sedan sätts plintarna i varje rad efter vad bärlinan bär: en bärlina på 45 × 145 mm tål 1,64 meter mellan plintarna när reglarna går högst 2,4 meter. En altan på 4 gånger 3 meter får därför tolv plintar, fyra i var och en av de tre raderna.',
+    svar: 'Räkna raderna först, inte plintarna. Varje bärlina vilar på en rad plintar, och hur många bärlinor altanen behöver bestäms av hur långt reglarna får spänna. En regel på 45 × 145 mm klarar 2,31 meter enligt Svenskt Trä, så en altan som är tre meter djup får en bärlinrad på mitten. Sedan sätts plintarna i varje rad efter vad bärlinan bär. En bärlina på 45 × 145 mm tål 1,64 meter mellan plintarna när reglarna går högst 2,4 meter. En altan på 4 gånger 3 meter får därför tolv plintar, fyra i var och en av de tre raderna.',
     lank: { text: 'Höjden över mark avgör i sin tur om bygget behöver lov.', href: '/altan/bygglov-altan/' },
   },
 ];
@@ -283,7 +283,7 @@ const FRAGOR = [
 const SLUG = 'altan';
 const VERKTYGSNAMN = 'Trallkalkylator';
 const BESKRIVNING =
-  'Räkna trall, reglar, bärlinor, plintar och trallskruv till altanen ur längd, bredd och riktning. Varje tal har en källa eller ett antagande under sig.';
+  'Skriv in altanens längd och bredd, så får du veta hur mycket trall du ska köpa, i löpmeter och antal längder, och hur många reglar och plintar som ska under.';
 const illustration = verktygsillustration(SLUG);
 /**
  * Varumärkesbilden i sidhuvudet, sedan 2026-09-19 (docs/DESIGN.md avsnitt 7).
@@ -324,9 +324,9 @@ const huvudbild = varumarke ?? illustration;
       <div class="lg:col-span-7">
         <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">Räkna ut trall, reglar och plintar till altanen</h1>
         <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
-          Fyll i altanens längd och bredd, så ger trallkalkylatorn dig trallen i löpmeter, antalet reglar och hur många
-          plintar altanen behöver. Hur mycket trall behöver jag är frågan de flesta står med mitt i bygghandeln, och
-          här kan du räkna trall innan du kör dit. Varje tal har en källa eller ett antagande under sig.
+          Fyll i altanens längd och bredd, så får du trallen i löpmeter och antal längder att köpa, reglarna under den
+          och hur många plintar altanen behöver. Frågan brukar dyka upp när man redan står i bygghandeln, så räkna
+          här innan du kör dit. Varje tal har en källa eller ett antagande under sig.
         </p>
       </div>
 
@@ -350,13 +350,14 @@ const huvudbild = varumarke ?? illustration;
     {
       visat.status === 'ok' && tal && (
         <Faktaruta variant="kortsvar">
-          <p class="m-0 leading-6">Mät altanen i längd och bredd först.</p>
           <p class="m-0 leading-6">
-            Altanen tar <Markering>{tal.trall} löpmeter trall</Markering> innan spillet är pålagt.
+            Altanen tar <Markering>{tal.trall} löpmeter trall</Markering> innan spillet är pålagt, och stommen under
+            den blir {tal.reglar} reglar tvärs brädorna.
           </p>
-          <p class="m-0 leading-6">Stommen blir {tal.reglar} reglar tvärs brädorna.</p>
-          {visat.antalPlintar > 0 && <p class="m-0 leading-6">Under dem står {tal.plintar} plintar.</p>}
-          <p class="m-0 leading-6">Trallskruven går på {tal.skruv} stycken, två per korsning.</p>
+          {visat.antalPlintar > 0 && (
+            <p class="m-0 leading-6">Under reglarna står {tal.plintar} plintar, fördelade på {tal.barlinor} rader.</p>
+          )}
+          <p class="m-0 leading-6">Trallskruven går på {tal.skruv} stycken, två i varje korsning.</p>
         </Faktaruta>
       )
     }
@@ -371,7 +372,7 @@ const huvudbild = varumarke ?? illustration;
           visat.status === 'ok' && tal && (
             <>
               {resultat.status === 'ogiltig' && (
-                <p class="m-0 mb-2 text-liten text-varning">Visar standardvärden tills indatan är rättad.</p>
+                <p class="m-0 mb-2 text-liten text-varning">Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.</p>
               )}
               <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
                 Altan på {tal.yta} kvm, trall {riktningText} i {tal.trallbredd} mm
@@ -386,45 +387,46 @@ const huvudbild = varumarke ?? illustration;
               </p>
               <p class="m-0 mt-2 flex flex-wrap items-baseline gap-x-2">
                 <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">{tal.antalLangder}</span>
-                <span class="text-ingress lg:text-ingress-lg">längder à {tal.handelslangd} m</span>
+                <span class="text-ingress lg:text-ingress-lg">längder à {tal.handelslangd} m att köpa</span>
               </p>
               <p class="m-0 mt-2 text-liten text-blyerts-2">
-                {tal.brador} brädor på {tal.trallLangd} m, med {tal.springa} mm springa emellan
+                Det blir {tal.brador} brädor på {tal.trallLangd} m, med {tal.springa} mm springa emellan.
               </p>
 
               <ul class="m-0 mt-4 p-0 list-none text-brod tabular-nums">
                 <li class="border-t border-linje py-2">
-                  {tal.trallMedSpill} löpmeter med spillpåslaget på {tal.spillAntagande} procent
+                  Med spillpåslaget på {tal.spillAntagande} procent blir det {tal.trallMedSpill} löpmeter.
                 </li>
                 <li class="border-t border-linje py-2">
-                  Längderna lämnar {tal.spill} procent kap i högen
+                  Längderna lämnar {tal.spill} procent kap i högen.
                 </li>
                 <li class="border-t border-linje py-2">
-                  {tal.reglar} reglar à {tal.regelLangd} m i {regelText}, alltså {tal.lopmeterReglar} löpmeter
+                  Du behöver {tal.reglar} reglar à {tal.regelLangd} m i {regelText}, alltså {tal.lopmeterReglar}{' '}
+                  löpmeter.
                 </li>
                 {visat.antalBarlinor > 0 ? (
                   <>
                     <li class="border-t border-linje py-2">
-                      {tal.barlinor} bärlinor i {tal.barlinaText}, alltså {tal.lopmeterBarlinor} löpmeter
+                      Under dem går {tal.barlinor} bärlinor i {tal.barlinaText}, alltså {tal.lopmeterBarlinor} löpmeter.
                     </li>
                     <li class="border-t border-linje py-2">
                       Reglarna spänner {tal.spannvidd} m mellan bärlinorna, och dimensionen klarar{' '}
-                      {tal.maxSpannvidd} m
+                      {tal.maxSpannvidd} m.
                     </li>
                     <li class="border-t border-linje py-2">
-                      {tal.plintar} plintar, alltså {tal.plintarPerRad} i varje rad, med högst{' '}
-                      {tal.plintavstand} m mellan två plintar
+                      Det blir {tal.plintar} plintar, alltså {tal.plintarPerRad} i varje rad, med högst{' '}
+                      {tal.plintavstand} m mellan två plintar.
                     </li>
                   </>
                 ) : (
                   <li class="border-t border-linje py-2">
-                    Inga bärlinor och inga plintar: reglarna vilar på den grund som redan finns
+                    Inga bärlinor och inga plintar, för reglarna vilar på den grund som redan finns.
                   </li>
                 )}
                 <li class="border-t border-linje py-2">
-                  {tal.skruv} trallskruv räknat, alltså {tal.packText}
+                  Skruven blir {tal.skruv} stycken, alltså {tal.packText}.
                 </li>
-                <li class="border-t border-linje py-2">Skruven är {visat.skruvText}</li>
+                <li class="border-t border-linje py-2">Köp {visat.skruvText}.</li>
               </ul>
 
               <p class="m-0 mt-2 text-liten text-blyerts-2">{visat.infastningText}</p>
@@ -440,7 +442,7 @@ const huvudbild = varumarke ?? illustration;
 
               <p class="m-0 mt-4">
                 <a href="#sa-raknar-vi" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
-                  Så räknar vi
+                  Så räknar jag
                 </a>
               </p>
 
@@ -451,7 +453,7 @@ const huvudbild = varumarke ?? illustration;
                   Dela uträkningen
                 </label>
                 <input id="dela" type="text" readonly value={delaLank} class:list={[FALT_KLASS, 'border-blyerts-2']} />
-                <p class="m-0 mt-1 text-liten text-blyerts-2">Adressen innehåller dina värden. Markera och kopiera.</p>
+                <p class="m-0 mt-1 text-liten text-blyerts-2">Dina värden ligger i adressen. Markera den och kopiera, så får den du skickar till samma svar.</p>
               </div>
             </>
           )
@@ -460,53 +462,54 @@ const huvudbild = varumarke ?? illustration;
     </div>
 
     <section>
-      <Pennstreck id="hur-mycket-trall">Hur mycket trall behöver jag, och hur många plintar altanen behöver</Pennstreck>
+      <Pennstreck id="hur-mycket-trall">Hur mycket trall som går åt per kvadratmeter och hur många plintar altanen behöver</Pennstreck>
       <p class="m-0 text-brod lg:text-brod-lg">
         Räkningen börjar inte i kvadratmeter utan i brädor. En trallbräda som är 120&nbsp;mm bred tar mer än sin egen
-        bredd av altanen, eftersom det ska vara en springa mellan varje bräda. Springan följer bredden:
+        bredd av altanen, eftersom det ska vara en springa mellan varje bräda. Springan följer bredden, och
         branschorganisationen Svenskt Trä anger fem millimeter för den smala brädan på 95&nbsp;mm, sex för 120 och sju
         för 145. Måtten gäller vid monteringen, när det impregnerade virket fortfarande är blött från fabriken. Sedan
-        torkar brädan och springan växer av sig själv. Lägger du dem tätare än så har du inget kvar att ge när virket
-        sväller igen i augusti.
+        torkar brädan, och springan växer av sig själv. Lägger du brädorna tätare än så har du inget kvar att ge när
+        virket sväller igen i augusti.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Altanens mått tvärs brädorna delas alltså med bredden plus springan, och det ger antalet brädor. Varje bräda är
-        lika lång som altanen i trallens riktning, och antalet gånger längden är löpmetern. Först därefter blir det
-        handelslängder. Trall säljs i 3,6, 4,2 och 4,8&nbsp;m, och kalkylatorn prövar alla tre mot din brädlängd och
-        föreslår den som lämnar minst i högen. Ett golv på fyra meter ska ha fyra meter långa brädor ur längden på
-        4,2&nbsp;m, inte ur den längsta i hyllan. Är altanen längre än den längsta brädan måste brädorna skarvas, och
-        då räknar kalkylatorn på löpmeter med spill i stället. Skarven ska alltid ligga mitt över en regel.
+        Altanens mått tvärs brädorna delas alltså med bredden plus springan, och det ger antalet brädor. Varje bräda
+        är lika lång som altanen i trallens riktning, och antalet gånger längden är löpmetern. Först därefter blir det
+        handelslängder. Trall säljs i 3,6, 4,2 och 4,8&nbsp;m, och verktyget prövar alla tre mot din brädlängd och
+        föreslår den som lämnar minst i högen. Ett golv på fyra meter ska ha sina brädor ur längden på 4,2&nbsp;m,
+        inte ur den längsta i hyllan. Är altanen längre än den längsta brädan måste brädorna skarvas, och då räknar
+        verktyget på löpmeter med spill i stället. Skarven ska alltid ligga mitt över en regel.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Reglarna går tvärs trallen, med högst c&nbsp;600&nbsp;mm mellan sig, alltså 600&nbsp;mm mellan reglarnas mitt.
-        Det måttet hör ihop med att trallen är 28&nbsp;mm tjock. En tunnare bräda vill ha tätare reglar, annars fjädrar
-        golvet när någon går på det. Skruven följer sedan direkt ur stommen: varje ställe där en bräda korsar en regel
-        får två skruv, eftersom en bräda från 95&nbsp;mm skulle kupa sig med bara en. Vilket stål skruven ska vara i,
-        och varför fel val syns som svarta ringar kring varje huvud efter ett par somrar, står i{' '}
-        <a href="/altan/trallskruv/" class:list={[LANK_KLASS]}>trallskruv, vilken som håller i tjugo år</a>.
+        Reglarna går tvärs trallen, med högst c&nbsp;600&nbsp;mm mellan sig, alltså 600&nbsp;mm mätt från mitten av
+        den ena regeln till mitten av nästa. Det måttet hör ihop med att trallen är 28&nbsp;mm tjock. En tunnare
+        bräda behöver tätare reglar, annars fjädrar golvet när någon går på det. Skruven följer sedan direkt ur
+        stommen. Varje ställe där en bräda korsar en regel får två skruv, eftersom en bräda från 95&nbsp;mm skulle
+        kupa sig med bara en. Vilket stål skruven ska vara i, och varför fel val syns som svarta ringar kring varje
+        huvud efter ett par somrar, står i{' '}
+        <a href="/altan/trallskruv/" class:list={[LANK_KLASS]}>sidan om trallskruv som håller i tjugo år</a>.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Plintarna är det som förvånar flest. De följer inte altanens yta, de följer regeln. Reglarna vilar på bärlinor,
-        och hur långt en regel får spänna mellan två bärlinor bestäms av hur hög den är. En regel på 45&nbsp;×&nbsp;145
-        mm klarar 2,31&nbsp;m enligt Svenskt Träs tabell. En altan som är tre meter djup får därför en bärlinrad på
+        Plintarna är det som förvånar flest. De följer inte altanens yta utan regeln. Reglarna vilar på bärlinor, och
+        hur långt en regel får spänna mellan två bärlinor bestäms av hur hög den är. En regel på 45&nbsp;×&nbsp;145
+        mm klarar 2,31&nbsp;m enligt Svenskt Träs tabell, så en altan som är tre meter djup får en bärlinrad på
         mitten, och den raden är i sin tur en rad plintar i marken. Byter du till 45&nbsp;×&nbsp;195&nbsp;mm bär
         reglarna hela djupet i ett spann, och en hel rad plintar försvinner ur listan. Det är därför valet av
         regeldimension är dyrare eller billigare än det ser ut i prislistan.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Inom varje rad står plintarna tätare än de flesta tror. Avståndet är inte ett fast mått utan följer bärlinans
-        dimension och hur långt reglarna spänner: en bärlina på 45&nbsp;×&nbsp;145&nbsp;mm bär 1,64&nbsp;m mellan
+        Inom varje rad står plintarna tätare än de flesta tror. Avståndet är inget fast mått utan följer bärlinans
+        dimension och hur långt reglarna spänner. En bärlina på 45&nbsp;×&nbsp;145&nbsp;mm bär 1,64&nbsp;m mellan
         plintarna när reglarna går högst 2,4&nbsp;m, och bara 1,25&nbsp;m när de går 3,6&nbsp;m. Ju längre reglarna
-        spänner, desto mer last kommer ner i bärlinan, och desto tätare måste den stödjas. Talen står i Lathundens
-        tabell över bärlinor, och tabellen sätter plintavståndet lägre än de 2,5&nbsp;m verktyget räknade med fram till
-        den 19 september 2026. Hela tabellen står i{' '}
+        spänner, desto mer last kommer ner i bärlinan, och desto tätare måste den stödjas. Talen kommer ur Lathunden,
+        Svenskt Träs hjälpreda för byggare, och hela tabellen står på{' '}
         <a href="/altan/reglar-avstand-och-dimensioner/" class={LANK_KLASS}>
           sidan om avstånd mellan reglar och plintar
         </a>
         .
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Det kalkylatorn inte räknar är höjden över mark, och det är den som avgör om bygget kräver lov. Reglerna står i{' '}
+        Det verktyget inte räknar på är höjden över mark, och det är den som avgör om bygget kräver lov. Reglerna står
+        i{' '}
         <a href="/altan/bygglov-altan/" class={LANK_KLASS}>
           guiden om bygglov för altan
         </a>
@@ -519,13 +522,13 @@ const huvudbild = varumarke ?? illustration;
     </section>
 
     <section>
-      <Pennstreck id="sa-raknar-vi">Så räknar vi</Pennstreck>
+      <Pennstreck id="sa-raknar-vi">Så räknar jag</Pennstreck>
       {
         varumarke && illustration && (
           <Illustration
             namn="rakna/altan"
-            alt="Altan uppifrån med nio trallbrädor, fem reglar tvärs under dem och tolv plintar, en måttbygel märkt c 600 och en springa på 5 millimeter."
-            bildtext="Det verktyget räknar på: altanens mått, regelavståndet och springan mellan brädorna."
+            alt="Altan uppifrån med trallbrädor, reglar tvärs under dem och plintar, en måttbygel märkt c 600 och en springa på 5 mm"
+            bildtext="Det verktyget räknar på är altanens mått, regelavståndet och springan mellan brädorna. Skissen har nio brädor, fem reglar och tolv plintar."
           />
         )
       }
@@ -547,7 +550,7 @@ const huvudbild = varumarke ?? illustration;
         </li>
         <li class="mb-2">
           Regelns längd jämförs med den spännvidd dimensionen klarar. Räcker den inte får altanen en bärlinrad till,
-          tills spännvidden ligger under taket.
+          tills spännvidden ligger under gränsen.
         </li>
         <li class="mb-2">
           Plintavståndet slås upp i Svenskt Träs bärlinetabell på bärlinans dimension, som antas vara regelns, och på
@@ -569,8 +572,8 @@ const huvudbild = varumarke ?? illustration;
           <caption class="sr-only">Antaganden och källor i trallkalkylatorn</caption>
           <thead>
             <tr class="border-b border-linje text-left">
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Storhet</th>
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Vi räknar med</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Vad</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Verktyget räknar med</th>
               <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Källa eller antagande</th>
             </tr>
           </thead>
@@ -600,17 +603,17 @@ const huvudbild = varumarke ?? illustration;
       </Tabellyta>
 
       <p class="m-0 mt-6 text-brod lg:text-brod-lg">
-        Spännvidderna och plintavstånden är sedan den 19 september 2026 avlästa i Svenskt Träs egen tabell, inte
-        räknade ur trappan mellan dimensionerna. Två rader vilar fortfarande på oss: att bärlinan har samma dimension
-        som regeln, och hur vi tillämpar förhållandet mellan c-måttet och plintavståndet. Båda ligger åt det hållet som
-        ger fler plintar. Tabellen gäller C24 och har ingen snözon som ingångsvärde; bygger du i fjälltrakterna eller i
-        Norrlands inland ska du köra ditt eget fall genom Svenskt Träs dimensioneringsprogram. Räknar du på en altan
-        som ska bära ett spabad eller en tung vedeldad badtunna ska en konstruktör titta på bjälklaget. TräGuiden säger
-        själva att bärförmågan ska dimensioneras, och det gäller alltid när lasten är något annat än folk som sitter
-        och äter.
+        Spännvidderna och plintavstånden är avlästa i Svenskt Träs egen tabell, inte räknade fram ur trappan mellan
+        dimensionerna. Två rader vilar på mig: att bärlinan har samma dimension som regeln, och hur jag tillämpar
+        förhållandet mellan c-måttet och plintavståndet. Båda ligger åt det håll som ger fler plintar. Tabellen gäller
+        C24 och har ingen snözon som ingångsvärde, så bygger du i fjälltrakterna eller i Norrlands inland ska du köra
+        ditt eget fall genom Svenskt Träs dimensioneringsprogram. Ska altanen bära ett spabad eller en tung vedeldad
+        badtunna ska en konstruktör titta på bjälklaget. TräGuiden säger själva att bärförmågan ska dimensioneras,
+        och det gäller alltid när lasten är något annat än folk som sitter och äter.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Metoden bakom våra siffror står på <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar vi</a>.
+        Vilka källor jag litar på och varför står på sidan{' '}
+        <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar jag</a>.
       </p>
     </section>
 
@@ -618,8 +621,13 @@ const huvudbild = varumarke ?? illustration;
       <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
       <ul class="m-0 p-0 list-none">
         <li class="border-t border-linje">
+          <a href="/altan/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
+            Allt om altanen, från plintarna i marken till bygglovet
+          </a>
+        </li>
+        <li class="border-t border-linje">
           <a href="/altan/reglar-avstand-och-dimensioner/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Avstånd mellan reglar och plintar, tabellen du letar efter
+            Tabellen över avstånd mellan reglar och plintar
           </a>
         </li>
         <li class="border-t border-linje">
@@ -629,7 +637,7 @@ const huvudbild = varumarke ?? illustration;
         </li>
         <li class="border-t border-linje">
           <a href="/rakna/bygglov-altan/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Behöver din altan bygglov? Fyll i måtten och få svar
+            Fyll i altanens mått och se om den behöver bygglov
           </a>
         </li>
       </ul>

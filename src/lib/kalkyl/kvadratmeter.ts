@@ -290,22 +290,22 @@ export const GRANSER = {
  */
 
 const GOR_INTE_EXAKT_YTAN =
-  'Köp inte exakt den yta du räknat fram. Talet är rummets mått, inte ditt kap, och varje hörn och varje kapad rad äter av högen. Spillpåslaget i svaret är det minsta du ska lägga på, inte det mesta.';
+  'Köp inte exakt den yta du räknat fram. Talet är rummets mått, inte ditt kap, och varje hörn och varje kapad rad äter av högen. Spillpåslaget i svaret är det minsta du ska lägga på.';
 
 const GOR_INTE_UTAN_LAGNINGSRESERV =
-  'Lämna inte butiken utan några brädor över. En bricka som spricker om tre år går inte att laga med en bräda ur en annan tillverkningssats, för nyansen och ytbehandlingen har hunnit ändras. Lägg undan det som blir kvar på vinden, i stället för att räkna hem exakt.';
+  'Lämna inte butiken utan några brädor över. Spricker en bricka om tre år går den inte att byta mot en bräda ur en annan tillverkningssats, för nyansen och ytbehandlingen har hunnit ändras. Lägg det som blir kvar på vinden i stället för att räkna hem exakt.';
 
 const GOR_INTE_UTAN_PLATTRESERV =
-  'Lämna inte butiken utan några plattor över. En platta som knäcks när en gryta faller går inte att ersätta med samma sort om fem år, för serien har bytts ut eller färgsatsen har glidit. Lägg undan en kartong i stället för att räkna hem exakt.';
+  'Lämna inte butiken utan några plattor över. Knäcks en platta när en gryta faller går den inte att ersätta med samma sort om fem år, för då är serien utbytt eller färgsatsen har glidit. Lägg undan en kartong i stället för att räkna hem exakt.';
 
 const GOR_INTE_BLANDA_PARTIER =
-  'Blanda inte två färgpartier på samma vägg. Burkar med olika satsnummer kan skilja sig i nyans, och skillnaden syns först när den andra burken möter den första mitt på väggen i dagsljus. Köp allt du behöver på en gång, och rör ihop burkarna i en hink innan du börjar om ytan är stor.';
+  'Blanda inte två färgpartier på samma vägg. Burkar med olika satsnummer kan skilja sig i nyans, och skillnaden syns först när den andra burken möter den första mitt på väggen i dagsljus. Köp allt du behöver på en gång, och är ytan stor rör du ihop burkarna i en hink innan du börjar.';
 
 const GOR_INTE_EN_STRYKNING =
-  'Nöj dig inte med en strykning på en vägg som byter kulör. Täckfärgen är gjord för att ligga i två skikt, och tillverkarnas åtgångstal gäller per strykning. En enda omgång ger en yta som ser klar ut i lampljuset och randig i motljus.';
+  'Nöj dig inte med en strykning på en vägg som byter kulör. Täckfärgen är gjord för att ligga i två skikt, och tillverkarnas tal för hur långt den räcker gäller per strykning. En enda omgång ser klar ut i lampljus och randig i motljus.';
 
 const GOR_INTE_UTAN_AVDRAG =
-  'Räkna inte bort dörren och fönstret i huvudet efteråt. Rummet här har varken dörr eller fönster ifyllt, så väggytan är hela omkretsen gånger höjden. Har rummet en dörr fyller du i den, annars köper du färg till en yta som inte finns.';
+  'Räkna inte bort dörren och fönstret i huvudet efteråt. Du har varken dörr eller fönster ifyllt, så väggytan här är hela omkretsen gånger höjden. Har rummet en dörr fyller du i den, annars köper du färg till en yta som inte finns.';
 
 /** Decimalkomma accepteras: '2,5' blir 2.5. Tomt eller skräp ger NaN. */
 function tillTal(v: string | null): number {
@@ -487,37 +487,37 @@ export function raknaKvadratmeter(i: KvadratmeterIndata): KvadratmeterResultat {
   const komma = (n: number) => String(n).replace('.', ',');
 
   if (!inom(i.langdM, GRANSER.langdM)) {
-    fel.langdM = `Ange rummets längd mellan ${komma(GRANSER.langdM[0])} och ${GRANSER.langdM[1]} meter`;
+    fel.langdM = `Skriv rummets längd som ett tal mellan ${komma(GRANSER.langdM[0])} och ${GRANSER.langdM[1]} meter`;
   }
   if (!inom(i.breddM, GRANSER.breddM)) {
-    fel.breddM = `Ange rummets bredd mellan ${komma(GRANSER.breddM[0])} och ${GRANSER.breddM[1]} meter`;
+    fel.breddM = `Skriv rummets bredd som ett tal mellan ${komma(GRANSER.breddM[0])} och ${GRANSER.breddM[1]} meter`;
   }
   if (!inom(i.takhojdM, GRANSER.takhojdM)) {
-    fel.takhojdM = `Ange takhöjden mellan ${komma(GRANSER.takhojdM[0])} och ${GRANSER.takhojdM[1]} meter`;
+    fel.takhojdM = `Skriv takhöjden som ett tal mellan ${komma(GRANSER.takhojdM[0])} och ${GRANSER.takhojdM[1]} meter`;
   }
   if (!inom(i.dorrar, GRANSER.dorrar) || !Number.isInteger(i.dorrar)) {
-    fel.dorrar = `Ange antalet dörrar som ett helt tal mellan ${GRANSER.dorrar[0]} och ${GRANSER.dorrar[1]}`;
+    fel.dorrar = `Skriv antalet dörrar som ett helt tal mellan ${GRANSER.dorrar[0]} och ${GRANSER.dorrar[1]}`;
   }
   if (!inom(i.fonster, GRANSER.fonster) || !Number.isInteger(i.fonster)) {
-    fel.fonster = `Ange antalet fönster som ett helt tal mellan ${GRANSER.fonster[0]} och ${GRANSER.fonster[1]}`;
+    fel.fonster = `Skriv antalet fönster som ett helt tal mellan ${GRANSER.fonster[0]} och ${GRANSER.fonster[1]}`;
   }
   if (!inom(i.dorrBreddM, GRANSER.dorrBreddM)) {
-    fel.dorrBreddM = `Ange dörrens bredd mellan ${komma(GRANSER.dorrBreddM[0])} och ${GRANSER.dorrBreddM[1]} meter`;
+    fel.dorrBreddM = `Skriv dörrens bredd som ett tal mellan ${komma(GRANSER.dorrBreddM[0])} och ${GRANSER.dorrBreddM[1]} meter`;
   }
   if (!inom(i.dorrHojdM, GRANSER.dorrHojdM)) {
-    fel.dorrHojdM = `Ange dörrens höjd mellan ${GRANSER.dorrHojdM[0]} och ${GRANSER.dorrHojdM[1]} meter`;
+    fel.dorrHojdM = `Skriv dörrens höjd som ett tal mellan ${GRANSER.dorrHojdM[0]} och ${GRANSER.dorrHojdM[1]} meter`;
   }
   if (!inom(i.fonsterBreddM, GRANSER.fonsterBreddM)) {
-    fel.fonsterBreddM = `Ange fönstrets bredd mellan ${komma(GRANSER.fonsterBreddM[0])} och ${GRANSER.fonsterBreddM[1]} meter`;
+    fel.fonsterBreddM = `Skriv fönstrets bredd som ett tal mellan ${komma(GRANSER.fonsterBreddM[0])} och ${GRANSER.fonsterBreddM[1]} meter`;
   }
   if (!inom(i.fonsterHojdM, GRANSER.fonsterHojdM)) {
-    fel.fonsterHojdM = `Ange fönstrets höjd mellan ${komma(GRANSER.fonsterHojdM[0])} och ${GRANSER.fonsterHojdM[1]} meter`;
+    fel.fonsterHojdM = `Skriv fönstrets höjd som ett tal mellan ${komma(GRANSER.fonsterHojdM[0])} och ${GRANSER.fonsterHojdM[1]} meter`;
   }
   if (!inom(i.strykningar, GRANSER.strykningar) || !Number.isInteger(i.strykningar)) {
-    fel.strykningar = `Ange antalet strykningar som ett helt tal mellan ${GRANSER.strykningar[0]} och ${GRANSER.strykningar[1]}`;
+    fel.strykningar = `Skriv antalet strykningar som ett helt tal mellan ${GRANSER.strykningar[0]} och ${GRANSER.strykningar[1]}`;
   }
   if (i.paketKvm !== null && !inom(i.paketKvm, GRANSER.paketKvm)) {
-    fel.paketKvm = `Ange kvadratmeter per paket mellan ${komma(GRANSER.paketKvm[0])} och ${GRANSER.paketKvm[1]}, eller lämna fältet tomt`;
+    fel.paketKvm = `Skriv kvadratmeter per paket som ett tal mellan ${komma(GRANSER.paketKvm[0])} och ${GRANSER.paketKvm[1]}, eller lämna fältet tomt`;
   }
   if (Object.keys(fel).length > 0) return { status: 'ogiltig', fel };
 
@@ -539,8 +539,8 @@ export function raknaKvadratmeter(i: KvadratmeterIndata): KvadratmeterResultat {
     return {
       status: 'ogiltig',
       fel: {
-        dorrar: 'Dörrarna och fönstren tar upp hela väggytan. Kontrollera antalet och måtten',
-        fonster: 'Dörrarna och fönstren tar upp hela väggytan. Kontrollera antalet och måtten',
+        dorrar: 'Dörrarna och fönstren tar upp hela väggytan, så något är fel. Kontrollera antalet och måtten',
+        fonster: 'Dörrarna och fönstren tar upp hela väggytan, så något är fel. Kontrollera antalet och måtten',
       },
     };
   }

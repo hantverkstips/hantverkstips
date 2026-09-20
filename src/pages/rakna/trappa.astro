@@ -131,7 +131,7 @@ const SLAG_RAM: Record<Slag, string> = {
 const SLUG = 'trappa';
 const VERKTYGSNAMN = 'Trappräknare';
 const BESKRIVNING =
-  'Fyll i våningshöjden, så räknar verktyget fram antal steg, steghöjd, stegdjup, lutning och hur lång trappan blir på golvet. Varje mått står med sin källa, och verktyget säger när ett mått inte håller.';
+  'Skriv in våningshöjden, så får du antal steg, steghöjd och stegdjup ur trappformeln. Verktyget säger också ifrån när ett mått inte håller.';
 const titel = 'Räkna steghöjd och stegdjup till trappan';
 
 const illustration = verktygsillustration(SLUG);
@@ -162,14 +162,14 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Bästa summan',
     varde: `${TRAPPFORMEL_BAST_MIN_MM} till ${TRAPPFORMEL_BAST_MAX_MM} mm`,
     grund: 'Källa',
-    stod: 'Trappföretaget Stepsta anger det spannet som utmärkt komfort inom branschens vidare spann',
+    stod: 'Trappföretaget Stepsta kallar det spannet utmärkt komfort, inom branschens vidare spann',
     url: STEPSTA,
   },
   {
-    storhet: 'Summan vi siktar på',
+    storhet: 'Summan verktyget siktar på',
     varde: `${TRAPPFORMEL_MAL_MM} mm`,
     grund: 'Antagande',
-    stod: 'Vårt val inom båda spannen, och samma tal som tabellerna i vår guide om att bygga trappa är räknade med',
+    stod: 'Mitt val inom båda spannen, och samma tal som tabellerna i guiden om att bygga trappa är räknade med',
     url: GUIDE,
   },
   {
@@ -197,7 +197,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Standarden Boverket pekar på',
     varde: 'Inte läst',
     grund: 'Antagande',
-    stod: 'Boverkets vägledning hänvisar vidare till standarder. Den som skrevs för ändamålet är SIS/TS 59:2025 om trappor, ramper, räcken och balkonger, utgiven i maj 2025 för att ersätta de allmänna råd som försvann. Den ligger bakom betalvägg och vi har inte läst den, så verktyget mäter inte mot den',
+    stod: 'Boverkets vägledning hänvisar vidare till standarder. Den som skrevs för ändamålet är SIS/TS 59:2025 om trappor, ramper, räcken och balkonger, utgiven i maj 2025 för att ersätta de allmänna råd som försvann. Den ligger bakom betalvägg och jag har inte läst den, så verktyget mäter inte mot den',
   },
   {
     storhet: 'Öppning mellan plansteg',
@@ -210,7 +210,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Fri höjd i trappan',
     varde: `Minst ${meter(FRI_HOJD_MM)} m`,
     grund: 'Källa',
-    stod: `${BFS} 2 kap. 25 §, som också gäller dörrar och andra kommunikationsutrymmen`,
+    stod: `${BFS} 2 kap. 25 §, som också gäller dörrar och andra utrymmen man rör sig genom`,
     url: BFS_URL_SIDA,
   },
   {
@@ -228,30 +228,30 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     url: BBR_URL,
   },
   {
-    storhet: 'Att vi mäter mot de gamla råden',
-    varde: 'Vårt val',
+    storhet: 'Att jag mäter mot de gamla råden',
+    varde: 'Mitt val',
     grund: 'Antagande',
-    stod: `Föreskriften har inga stegmått, och utan något att mäta mot kan verktyget inte säga något alls om stegdjupet. Vi mäter därför mot de allmänna råd som gällde till den ${GAMLA_RADEN_TILL} och säger i varje svar att de är råd och inte krav. Alternativet vore att inte pröva stegdjupet alls, och det hjälper ingen som bygger en trappa`,
+    stod: `Föreskriften har inga stegmått, och utan något att mäta mot kan verktyget inte säga något alls om stegdjupet. Därför mäter det mot de allmänna råd som gällde till den ${GAMLA_RADEN_TILL}, och säger i varje svar att de är råd och inte krav. Alternativet vore att inte pröva stegdjupet alls, och det hjälper ingen som bygger en trappa`,
   },
   {
     storhet: 'Stegdjup ute',
     varde: `Minst ${STEGDJUP_MIN_UTE_MM} mm`,
     grund: 'Källa',
-    stod: 'Borttaget allmänt råd, BBR 8:91, om trappor i gångvägar på tomten. Samma råd satte också en undre gräns på tre steg för en trappa på tomten',
+    stod: 'Borttaget allmänt råd, BBR 8:91, om trappor i gångvägar på tomten. Samma råd sa också att en trappa på tomten bör ha fler än två steg',
     url: BBR_URL,
   },
   {
     storhet: 'Vilplanets djup',
     varde: `${millimeter(TRAPPLAN_DJUP_MM)} mm`,
     grund: 'Källa',
-    stod: 'Borttaget allmänt råd, BBR 8:232, om trapplan inom en enskild bostadslägenhet. Inget nyare mått finns',
+    stod: 'Borttaget allmänt råd, BBR 8:232, om trapplan inom en bostadslägenhet. Inget nyare mått finns',
     url: BBR_URL,
   },
   {
     storhet: 'Var vilplanet läggs',
     varde: 'På mitten',
     grund: 'Antagande',
-    stod: 'Ingen källa säger var ett vilplan ska ligga. Vi lägger det så nära mitten som möjligt, med det längre loppet nederst',
+    stod: 'Ingen källa säger var ett vilplan ska ligga. Verktyget lägger det så nära mitten som möjligt, med det längre loppet nederst',
   },
   {
     storhet: 'Ledstångens höjd',
@@ -267,10 +267,10 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     stod: 'Djupet är ett mått du kapar efter, och en trappa som blir en aning kortare får plats där en som blir en aning längre inte gör det. Steghöjden avrundas aldrig',
   },
   {
-    storhet: 'Gränserna på fälten',
+    storhet: 'Fältens gränser',
     varde: '250 mm till 6 m',
     grund: 'Antagande',
-    stod: 'Fältens rimlighetskontroll mot skrivfel, inte regler. Verktyget söker bland högst fyrtio stigningar',
+    stod: 'Ett stopp för skrivfel, inga regler. Verktyget letar bland högst fyrtio steg',
   },
   {
     storhet: 'När råden försvann',
@@ -285,15 +285,15 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
 const FRAGOR = [
   {
     fraga: 'Vilken steghöjd ska en trappa ha?',
-    svar: 'Mellan 140 och 200 millimeter enligt branschorganisationen Svenskt Trä, och alla steg i samma trappa ska vara lika höga. Det exakta talet får du inte välja fritt: våningshöjden delas i ett helt antal steg, och steghöjden är kvoten. En vanlig våningshöjd landar på runt 170 millimeter. Efter tre steg går du på minnet, så ett steg som är en centimeter fel är det som fäller dig.',
+    svar: `Mellan ${STEGHOJD_MIN_MM} och ${STEGHOJD_MAX_MM} millimeter enligt branschorganisationen Svenskt Trä, och alla steg i samma trappa ska vara lika höga. Det exakta talet får du inte välja fritt. Våningshöjden delas i ett helt antal steg, och steghöjden är det som blir kvar när du delar. En vanlig våningshöjd landar på runt 170 millimeter. Efter tre steg går du på minnet, så ett steg som är en centimeter fel är det som fäller dig.`,
   },
   {
     fraga: 'Hur räknar du ut stegdjupet?',
-    svar: 'Med trappformeln. Två gånger steghöjden plus stegdjupet ska bli mellan 600 och 650 millimeter, så stegdjupet är summan minus två steghöjder. Att höjden väger dubbelt mot djupet beror på att steget framåt krymper när du lyfter foten högre. Med normal lutning landar plansteget kring 300 millimeter.',
+    svar: `Med trappformeln. Två gånger steghöjden plus stegdjupet ska bli mellan ${TRAPPFORMEL_MIN_MM} och ${TRAPPFORMEL_MAX_MM} millimeter, så stegdjupet är summan minus två steghöjder. Att höjden räknas dubbelt mot djupet beror på att steget framåt krymper när du lyfter foten högre. Med normal lutning landar plansteget kring 300 millimeter.`,
   },
   {
     fraga: 'Vad kräver Boverket av en trappa?',
-    svar: `Inga stegmått alls. Sedan ${NYA_REGLER_FRAN} ligger trappor i ${BFS}, och där står bara att trappan ska vara utformad så att personer kan förflytta sig säkert, eftersom det behövs en bedömning av det enskilda fallet. Det som står i siffror är säkerheten runt trappan: fri höjd på två meter, öppningar mellan plansteg på högst hundra millimeter och ledstänger. Stegdjupet på 250 millimeter som står överallt när du söker är ett gammalt allmänt råd som inte längre gäller.`,
+    svar: `Inga stegmått alls. Sedan ${NYA_REGLER_FRAN} ligger trappor i ${BFS}, och där står bara att trappan ska vara utformad så att personer kan förflytta sig säkert, eftersom varje trappa ska bedömas för sig. Det som står i siffror är säkerheten runt trappan: fri höjd på två meter, öppningar mellan plansteg på högst hundra millimeter och ledstänger. Stegdjupet på 250 millimeter som du hittar överallt är ett gammalt allmänt råd som inte gäller längre.`,
   },
 ];
 ---
@@ -325,12 +325,13 @@ const FRAGOR = [
     <section class="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-8">
       <div class="lg:col-span-7">
         <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">
-          Räkna ut trappans steghöjd, stegdjup och längd på golvet
+          Räkna ut hur många steg trappan får, och om steghöjden och stegdjupet håller
         </h1>
         <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
-          En trappa är ett enda mått delat i lika stora bitar, och måttet är våningshöjden från färdigt golv till
-          färdigt golv. Fyll i den, så får du antalet steg, steghöjden, stegdjupet ur trappformeln, lutningen och hur
-          lång trappan blir på golvet. Håller något mått inte står det i svaret, med källan bakom måttet.
+          En trappa är egentligen ett enda mått delat i lika stora bitar. Måttet är våningshöjden, från färdigt golv
+          till färdigt golv. Skriv in den, så får du antalet steg, steghöjden, stegdjupet enligt trappformeln,
+          lutningen och hur lång trappan blir på golvet. Håller ett mått inte står det i svaret, tillsammans med vem
+          som satt måttet.
         </p>
       </div>
 
@@ -353,12 +354,14 @@ const FRAGOR = [
 
     <Faktaruta variant="kortsvar">
       <p class="m-0 leading-6">
-        Stegdjupet följer av steghöjden genom <Markering>trappformeln</Markering>.
+        Stegdjupet följer av steghöjden genom <Markering>trappformeln</Markering>, där två gånger steghöjden plus
+        stegdjupet ska bli {TRAPPFORMEL_MIN_MM} till {TRAPPFORMEL_MAX_MM} mm.
       </p>
-      <p class="m-0 leading-6">Två gånger steghöjden plus stegdjupet ska bli 600 till 650 mm.</p>
-      <p class="m-0 leading-6">Steghöjden ligger mellan 140 och 200 mm.</p>
-      <p class="m-0 leading-6">Alla steg i samma trappa ska vara exakt lika höga.</p>
-      <p class="m-0 leading-6">Boverket anger inga stegmått, måtten kommer från branschen.</p>
+      <p class="m-0 leading-6">
+        Steghöjden ska ligga mellan {STEGHOJD_MIN_MM} och {STEGHOJD_MAX_MM} mm, och alla steg i samma trappa ska vara
+        exakt lika höga.
+      </p>
+      <p class="m-0 leading-6">De måtten kommer från branschen, för Boverket anger inga stegmått alls.</p>
     </Faktaruta>
 
     <div class="linjerat mt-8 lg:grid lg:grid-cols-2 lg:gap-8">
@@ -371,7 +374,7 @@ const FRAGOR = [
           visat.status === 'ok' && (
             <>
               {resultat.status === 'ogiltig' && (
-                <p class="m-0 mb-2 text-liten text-varning">Visar standardvärden tills indatan är rättad.</p>
+                <p class="m-0 mb-2 text-liten text-varning">Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.</p>
               )}
               {/* Spalten bär svaret: beskedet, talet och länkarna. Måtten med
                   källa och "Gör inte det här" står som egna H2 under verktyget. */}
@@ -388,37 +391,37 @@ const FRAGOR = [
                 <span class="text-ingress lg:text-ingress-lg">mm på {visat.antalSteg} steg</span>
               </p>
               <p class="m-0 mt-2 text-liten text-blyerts-2">
-                Exakt {endecimal(visat.steghojdMm)}&nbsp;mm. Stegen ska summera till våningshöjden, så måttet får inte
-                rundas av.
+                Exakt {endecimal(visat.steghojdMm)}&nbsp;mm. Stegen ska bli våningshöjden tillsammans, så runda inte
+                av när du märker ut.
               </p>
 
               <ul class="m-0 mt-4 p-0 list-none text-brod tabular-nums">
                 <li class="border-t border-linje py-2">
-                  Stegdjup {millimeter(visat.stegdjupMm)}&nbsp;mm, och {visat.antalPlansteg} plansteg att bygga
-                  {visat.lopp && ' plus vilplanet'}
+                  Stegdjupet blir {millimeter(visat.stegdjupMm)}&nbsp;mm, och du bygger {visat.antalPlansteg} plansteg
+                  {visat.lopp && ' plus vilplanet'}.
                 </li>
                 <li class="border-t border-linje py-2">
-                  Trappan tar {endecimal(visat.langdIPlanMm / 1000)}&nbsp;m på golvet
+                  Trappan tar {endecimal(visat.langdIPlanMm / 1000)}&nbsp;m på golvet.
                 </li>
-                <li class="border-t border-linje py-2">Lutning {endecimal(visat.lutningGrader)} grader</li>
+                <li class="border-t border-linje py-2">Lutningen blir {endecimal(visat.lutningGrader)} grader.</li>
                 <li class="border-t border-linje py-2">
-                  Trappformeln landar på {endecimal(visat.formelSummaMm)}&nbsp;mm
+                  Trappformeln landar på {endecimal(visat.formelSummaMm)}&nbsp;mm.
                 </li>
                 {visat.lopp && (
                   <li class="border-t border-linje py-2">
-                    Vilplanet delar trappan i {visat.lopp.ett} steg nedanför och {visat.lopp.tva} ovanför
+                    Vilplanet delar trappan i {visat.lopp.ett} steg nedanför och {visat.lopp.tva} ovanför.
                   </li>
                 )}
               </ul>
 
               <p class="m-0 mt-4 text-liten text-blyerts-2">
-                Varje mått med sin källa, och vad du inte ska göra,{' '}
+                Varje mått med den som satt det, och det du inte ska göra,{' '}
                 <a href="#darfor-blev-svaret-sa" class={LANK_KLASS}>står under verktyget</a>.
               </p>
 
               <p class="m-0 mt-4">
                 <a href="#sa-raknar-vi" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
-                  Så räknar vi
+                  Så räknar jag
                 </a>
               </p>
 
@@ -429,7 +432,7 @@ const FRAGOR = [
                   Dela svaret
                 </label>
                 <input id="dela" type="text" readonly value={delaLank} class:list={[FALT_KLASS, 'border-blyerts-2']} />
-                <p class="m-0 mt-1 text-liten text-blyerts-2">Adressen innehåller dina värden. Markera och kopiera.</p>
+                <p class="m-0 mt-1 text-liten text-blyerts-2">Dina värden ligger i adressen. Markera den och kopiera, så får den du skickar till samma svar.</p>
               </div>
             </>
           )
@@ -485,77 +488,76 @@ const FRAGOR = [
     }
 
     <section>
-      <Pennstreck id="trappformeln">Vad räknaren mäter mot, och varför det inte är Boverkets mått</Pennstreck>
+      <Pennstreck id="trappformeln">Steghöjd och stegdjup mäts mot branschens tal, för Boverket har inga</Pennstreck>
       <p class="m-0 text-brod lg:text-brod-lg">
         Myndigheten har inga stegmått. Sedan {NYA_REGLER_FRAN} ligger trappor i {BFS}, och hela kravet på hur en
-        trappa ska se ut ryms i en mening: den ska vara utformad så att personer kan förflytta sig säkert. Ingen
-        steghöjd, inget stegdjup, ingen lutning, inga allmänna råd. Boverket motiverar det med att varje trappa
-        kräver sin egen riskbedömning och hänvisar vidare till standarder. Den som skrevs för ändamålet ligger bakom
-        betalvägg och vi har inte läst den, så vi kan inte mäta mot den heller.
+        trappa ska vara ryms i en mening: den ska vara utformad så att personer kan förflytta sig säkert. Ingen
+        steghöjd, inget stegdjup, ingen lutning. Boverket motiverar det med att varje trappa behöver sin egen
+        riskbedömning, och hänvisar vidare till standarder. Den standard som skrevs för ändamålet ligger bakom
+        betalvägg och jag har inte läst den, så jag kan inte mäta mot den heller.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Den här räknaren mäter därför mot två andra saker, och säger i varje svar vilket som är vilket. Det ena är
-        branschens tal, alltså trappformeln och spannen för steghöjd och lutning, som kommer från Svenskt Trä och som
-        ingen myndighet har beslutat om. Det andra är två allmänna råd om stegdjup ur de gamla byggreglerna, som
-        gällde till {GAMLA_RADEN_TILL} och inte längre går att hänvisa till. Alternativet vore att inte pröva
-        stegdjupet alls, och det hjälper ingen som står med ett måttband i handen. Varje rad i antagandetabellen
-        nedan säger var talet kommer ifrån, och hela bygget, alltså hålet i bjälklaget, vangstyckena och fundamentet
-        under en utetrappa, står i{' '}
+        Verktyget mäter i stället mot två andra saker och säger i varje svar vilken som är vilken. Den ena är
+        branschens tal, alltså trappformeln, två gånger steghöjden plus stegdjupet, och spannen för steghöjd och
+        lutning. De kommer från Svenskt Trä, och ingen myndighet har beslutat om dem. Den andra är två allmänna råd om
+        stegdjup ur de gamla byggreglerna. De gällde till {GAMLA_RADEN_TILL} och går inte längre att hänvisa till,
+        men utan dem hade verktyget inte kunnat säga något alls om stegdjupet, och det hjälper ingen som står med
+        måttbandet i handen.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Hela bygget, alltså hålet i bjälklaget, vangstyckena och fundamentet under en utetrappa, står i{' '}
         <a href={GUIDE} class={LANK_KLASS}>
           guiden om att bygga trappa
         </a>
-        , som räknar med samma tal som den här sidan.
+        . Den räknar med samma tal som den här sidan.
       </p>
     </section>
 
     <section>
-      <Pennstreck id="sa-raknar-vi">Så räknar vi</Pennstreck>
+      <Pennstreck id="sa-raknar-vi">Så räknar jag</Pennstreck>
       {
         varumarke && illustration && (
           <Illustration
             namn="rakna/trappa"
-            alt="Skiss av en trappa i genomskärning upp mot ett bjälklag i snitt, med marken antydd under golvet. På det näst översta steget visar två måttbyglar steghöjden 169 mm och stegdjupet 292 mm. En måttpil längs hela trappans höjd är märkt mät våningshöjden, och över trappan står formeln två gånger steghöjd plus stegdjup lika med 630 mm, och nyckeltalet steghöjd 169 mm är gulmarkerat."
-            bildtext="Det enda du mäter själv är våningshöjden. Steghöjden och stegdjupet följer ur den och ur trappformeln."
+            alt="Trappa i genomskärning med steghöjden och stegdjupet måttsatta på ett steg och trappformeln utskriven ovanför"
+            bildtext="Det enda du mäter själv är våningshöjden, här 2 700 mm. Steget får 169 mm i höjd och 292 mm i djup, och två gånger höjden plus djupet blir 630 mm."
           />
         )
       }
       <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg">
         <li class="mb-2">
-          Våningshöjden delas i ett helt antal lika höga steg. Antalet söks i det intervall där steghöjden håller sig
-          mellan {STEGHOJD_MIN_MM} och {STEGHOJD_MAX_MM} millimeter.
+          Våningshöjden delas i ett helt antal lika höga steg. Verktyget letar bland de antal där steghöjden håller
+          sig mellan {STEGHOJD_MIN_MM} och {STEGHOJD_MAX_MM} millimeter.
         </li>
         <li class="mb-2">
-          Antalet steg väljs efter vad som styr trappan. Har du bett om ett stegdjup väljs det antal som ger ett djup
-          närmast önskemålet. Har du en längd i plan väljs det antal som får trappformeln närmast{' '}
+          Vilket antal det blir beror på vad som styr trappan. Har du bett om ett stegdjup väljs det antal som ger
+          ett djup närmast ditt önskemål. Har du en längd på golvet väljs det antal som får trappformeln närmast{' '}
           {TRAPPFORMEL_MAL_MM} millimeter.
         </li>
         <li class="mb-2">
-          Steghöjden är våningshöjden delad med antalet steg, och den avrundas aldrig. Stegen ska summera till exakt
-          våningshöjden, annars hamnar felet i det nedersta eller översta steget.
+          Steghöjden är våningshöjden delad med antalet steg, och den avrundas aldrig. Stegen ska bli exakt
+          våningshöjden tillsammans, annars hamnar felet i det nedersta eller det översta steget.
         </li>
         <li class="mb-2">
-          Stegdjupet kommer ur trappformeln eller ur längden delad på planstegen, och avrundas nedåt till hel
-          millimeter. Nedåt, eftersom det är måttet du kapar efter och en trappa som blir en aning kortare får plats
-          där en som blir en aning längre inte gör det.
+          Stegdjupet kommer ur trappformeln, eller ur längden delad på planstegen, och avrundas nedåt till hel
+          millimeter. Nedåt, för det är måttet du kapar efter, och en trappa som blir en aning kortare får plats där
+          en som blir en aning längre inte gör det.
         </li>
         <li class="mb-2">
-          Längden i plan är stegdjupet gånger de plansteg som bär längden. En rak trappa har ett plansteg mindre än
-          antalet steg, eftersom det sista steget landar på golvet ovanför och alltså inte byggs. Ett vilplan tar ett stegs plats och{' '}
-          {millimeter(TRAPPLAN_DJUP_MM)} millimeter i längdled.
+          Längden på golvet är stegdjupet gånger de plansteg som bär längden. En rak trappa har ett plansteg mindre
+          än antalet steg, för det sista steget landar på golvet ovanför och byggs alltså inte. Ett vilplan tar ett
+          stegs plats och {millimeter(TRAPPLAN_DJUP_MM)} millimeter i längdled.
         </li>
         <li>
-          Måtten prövas sist mot steghöjdens spann, stegdjupets undre kant, trappformelns spann, lutningens spann och
-          antalet steg ute. Varje avvikelse står i svaret med sin källa.
+          Sist prövas måtten mot steghöjdens spann, stegdjupets undre gräns, trappformelns spann, lutningens spann
+          och antalet steg ute. Varje avvikelse står i svaret med den som satt måttet.
         </li>
       </ol>
 
       <p class="m-0 mt-6 text-brod lg:text-brod-lg">
         Verktyget räknar aldrig fram ett steg som bryter mot ett mått utan att säga det. Det är själva skälet till
-        att sidan finns. Vi läste igenom träfflistan på trappa steghöjd i september 2026. Den enda svenska
-        trappräknaren där är en artikel från 2012 med en app uppdaterad 2020, och varken den eller någon av
-        artiklarna omkring nämner Boverket. Att gränsen för ute är {STEGDJUP_MIN_UTE_MM} millimeter och inte{' '}
-        {STEGDJUP_MIN_INNE_MM} är också värt att veta innan du bygger, eftersom det är skillnaden på en trappa som
-        får plats och en som inte gör det.
+        att sidan finns. Att gränsen ute är {STEGDJUP_MIN_UTE_MM} millimeter och inne {STEGDJUP_MIN_INNE_MM} är också
+        värt att veta innan du bygger, för det är skillnaden mellan en trappa som får plats och en som inte gör det.
       </p>
 
       <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad svaret vilar på</h3>
@@ -564,8 +566,8 @@ const FRAGOR = [
           <caption class="sr-only">Mått, paragrafer och antaganden i trappräknaren</caption>
           <thead>
             <tr class="border-b border-linje text-left">
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Storhet</th>
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Vi räknar med</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Vad</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Verktyget räknar med</th>
               <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Källa eller antagande</th>
             </tr>
           </thead>
@@ -594,10 +596,9 @@ const FRAGOR = [
           <tfoot>
             <tr>
               <td colspan="3" class="p-2 text-liten text-blyerts-2">
-                Boverkets föreskrift är hämtad som PDF och läst i sin helhet 20 september 2026, och paragrafnumren är
-                kontrollerade mot den. Raderna märkta Antagande är våra egna val, inte regler. De borttagna allmänna
-                råden är märkta Källa eftersom de står ordagrant i de gamla byggreglerna, men de är råd och gäller
-                inte längre.
+                Paragrafnumren är kontrollerade mot Boverkets föreskrift i fulltext. Raderna märkta Antagande är mina
+                egna val, inte regler. De borttagna allmänna råden är märkta Källa eftersom de står ordagrant i de
+                gamla byggreglerna, men de är råd och gäller inte längre.
               </td>
             </tr>
           </tfoot>
@@ -605,15 +606,15 @@ const FRAGOR = [
       </Tabellyta>
 
       <p class="m-0 mt-6 text-brod lg:text-brod-lg">
-        Tre saker räknar verktyget inte. Det första är hålet i bjälklaget, som avgör om en innetrappa alls får plats
-        och som följer av den fria höjden. Det andra är räcket och ledstången, där föreskriften vill ha ledstång på
-        båda sidor och nöjer sig med en när den andra sidan inte behöver någon. Det tredje är att ett hål i ett mellanbjälklag är
-        ett ingrepp i husets bärande delar och kräver anmälan och startbesked. Alla tre står i{' '}
-        <a href={GUIDE} class={LANK_KLASS}>guiden</a>.
+        Tre saker räknar verktyget inte på. Det första är hålet i bjälklaget, som avgör om en innetrappa alls får
+        plats och som följer av den fria höjden. Det andra är räcket och ledstången. Föreskriften vill ha ledstång på
+        båda sidor, men nöjer sig med en när den andra sidan inte behöver någon. Det tredje är att ett hål i ett
+        mellanbjälklag är ett ingrepp i husets bärande delar, och det kräver anmälan och startbesked. Alla tre står i{' '}
+        <a href={GUIDE} class={LANK_KLASS}>guiden om att bygga trappa</a>.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Metoden bakom våra siffror står på{' '}
-        <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar vi</a>.
+        Hur jag väljer källor och kontrollerar talen står på sidan{' '}
+        <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar jag</a>.
       </p>
     </section>
 
@@ -622,17 +623,22 @@ const FRAGOR = [
       <ul class="m-0 p-0 list-none">
         <li class="border-t border-linje">
           <a href={GUIDE} class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Bygga trappa, måtten och formeln för inne och ute
+            Bygga trappa, hela bygget från hålet i bjälklaget till sista steget
+          </a>
+        </li>
+        <li class="border-t border-linje">
+          <a href="/golv/renovera-trappa/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
+            Renovera trappan du redan har, tre vägar med timmar och kronor
           </a>
         </li>
         <li class="border-t border-linje">
           <a href="/rakna/kvadratmeter/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Räkna ut kvadratmeter och materialåtgång
+            Räkna ut kvadratmeter och hur mycket material som går åt
           </a>
         </li>
         <li class="border-t border-linje">
           <a href="/rakna/rotavdrag/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Rotavdrag {ROT_ARET}, räkna ut avdraget och vad du betalar
+            Räkna ut rotavdraget {ROT_ARET} på snickarens faktura
           </a>
         </li>
       </ul>

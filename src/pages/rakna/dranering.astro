@@ -183,7 +183,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Djupets påslag',
     varde: `${Math.round(DJUP_PASLAG_PER_M * 100)}${HART}% per meter`,
     grund: 'Källa',
-    stod: 'Byggsajten BraByggare, 25 till 50 procent per halvmeter. Vi tar den nedre kanten. Att kurvan är rak är vårt eget antagande',
+    stod: 'Byggsajten BraByggare, 25 till 50 procent per halvmeter. Jag tar den nedre kanten. Att kurvan är rak är mitt eget antagande',
     url: BRABYGGARE,
   },
   {
@@ -204,7 +204,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Berg i schakten',
     varde: '50 % på arbetet',
     grund: 'Antagande',
-    stod: 'BraByggares svåraste klass ligger cirka 1,7 gånger över standardklassen. Vi räknar lägre och lägger sprängningens fasta kostnader utanför',
+    stod: 'BraByggares svåraste klass ligger cirka 1,7 gånger över standardklassen. Jag räknar lägre och lägger sprängningens fasta kostnader utanför',
     url: BRABYGGARE,
   },
   {
@@ -225,7 +225,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Material per löpmeter',
     varde: '300 till 900 kr',
     grund: 'Antagande',
-    stod: 'Summan är vår, posterna nedan är hyllpriser hämtade 18 september 2026',
+    stod: 'Summan är min, posterna nedan är hyllpriser hämtade 18 september 2026',
   },
   {
     storhet: 'Dräneringsslang 90 mm',
@@ -273,7 +273,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Återställning, gräs',
     varde: `${ATERSTALLNING.gras.lagKrPerM} till ${ATERSTALLNING.gras.hogKrPerM}${HART}kr per meter`,
     grund: 'Källa',
-    stod: 'Upplands Gräsmattor, rullgräs 36 till 51 kr per kvm inklusive moms utan läggning. Matjord och arbete är vårt påslag',
+    stod: 'Upplands Gräsmattor, rullgräs 36 till 51 kr per kvm inklusive moms utan läggning. Matjord och arbete är mitt påslag',
     url: RULLGRAS,
   },
   {
@@ -287,7 +287,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Återställning, rabatt',
     varde: `${ATERSTALLNING.rabatt.lagKrPerM} till ${ATERSTALLNING.rabatt.hogKrPerM}${HART}kr per meter`,
     grund: 'Antagande',
-    stod: 'Ingen källa vi hittat prissätter en rabatt. Vi lägger den mellan gräsmattan och en hårdgjord yta',
+    stod: 'Ingen källa jag hittat prissätter en rabatt. Jag lägger den mellan gräsmattan och en hårdgjord yta',
   },
   {
     storhet: 'Återställning, altan',
@@ -303,17 +303,17 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     url: SKATTEVERKET_LISTA,
   },
   {
-    storhet: 'Rotavdragets tak',
+    storhet: 'Rotavdragets gräns',
     varde: `${kr(ROT_TAK_KR)}${HART}kr per person`,
     grund: 'Källa',
-    stod: 'Skatteverket, taket per person och år. Nivån var tillfälligt högre under 2025 och är tillbaka på trettio procent',
+    stod: 'Skatteverket, högsta avdrag per person och år. Nivån var tillfälligt högre under 2025 och är tillbaka på trettio procent',
     url: SKATTEVERKET,
   },
   {
-    storhet: 'Rotgrundande del av arbetet',
+    storhet: 'Del av arbetet som ger rotavdrag',
     varde: 'Tre femtedelar',
     grund: 'Antagande',
-    stod: 'Skatteverket undantar maskinell utrustning, alltså grävmaskinen. Hur mycket av notan det är får du räkna själv, och tre femtedelar är vår uppskattning',
+    stod: 'Skatteverket undantar maskinell utrustning, alltså grävmaskinen. Hur stor del av notan den är får du räkna själv, och tre femtedelar är min uppskattning',
     url: SKATTEVERKET,
   },
   {
@@ -327,7 +327,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Gräns för gammal dränering',
     varde: `${TROLIGT_SLUT_AR}${HART}år`,
     grund: 'Källa',
-    stod: 'Husgrunder, en dränering äldre än 25 till 30 år bör utvärderas. Att gränsen går vid just 30 är vårt val',
+    stod: 'Husgrunder, en dränering äldre än 25 till 30 år bör utvärderas. Att gränsen går vid just 30 är mitt val',
     url: HUSGRUNDER,
   },
   {
@@ -355,21 +355,21 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Vatten från taket',
     varde: `${kr(REGN_LITER)} liter`,
     grund: 'Källa',
-    stod: `Anticimex, ${REGN_MM} mm regn på ett tak på ${TAK_KVM} kvm. Motiverar stuprör och markfall före grävningen`,
+    stod: `Anticimex, ${REGN_MM} mm regn på ett tak på ${TAK_KVM} kvm. Det är därför stuprör och markfall kommer före grävningen`,
     url: ANTICIMEX,
   },
   {
     storhet: 'Markfukt skyddas utifrån',
     varde: 'Alltid på utsidan',
     grund: 'Källa',
-    stod: 'Boverket, fukttransporten från marken är främst kapillär och väggen ska skyddas på utsidan',
+    stod: 'Boverket, fukten från marken sugs främst upp genom porerna och väggen ska skyddas på utsidan',
     url: BOVERKET,
   },
   {
     storhet: 'Tejptestet',
     varde: 'Minst två dygn',
     grund: 'Källa',
-    stod: 'Tidningen Gör Det Själv. Vår egen guide om fukt i källaren beskriver hela testet',
+    stod: 'Tidningen Gör Det Själv. Guiden om fukt i källaren beskriver hela testet',
     url: GDS,
   },
 ];
@@ -386,7 +386,7 @@ const FRAGOR = [
   },
   {
     fraga: 'Räcker en avfuktare i stället för dränering?',
-    svar: 'Bara om vattnet kommer ur luften. Tejpa en bit plastfolie tätt mot källarväggen och vänta två dygn. Blir plasten våt på rumssidan är det kondens, och då gör en avfuktare jobbet för ungefär sex tusen kronor. Blir den våt på väggsidan kommer vattnet genom betongen, och då hjälper ingen maskin. Avfuktaren ökar tvärtom avdunstningen ur väggen, som suger efter mer vatten ur marken.',
+    svar: 'Bara om vattnet kommer ur luften. Tejpa en bit plastfolie tätt mot källarväggen och vänta två dygn. Blir plasten våt på rumssidan är det kondens, och då gör en avfuktare jobbet för ungefär sex tusen kronor. Blir den våt på väggsidan kommer vattnet genom betongen, och då hjälper ingen maskin. Avfuktaren får tvärtom mer vatten att dunsta ur väggen, som suger efter mer ur marken.',
   },
 ];
 
@@ -437,10 +437,10 @@ const huvudbild = varumarke ?? illustration;
           Vad kostar dränering? Räkna per löpmeter, och se om du behöver gräva
         </h1>
         <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
-          En omdränering kostar som en begagnad bil, och många som söker på priset behöver aldrig gräva. Fyll i husets
-          två mått, hur djupt schakten går och vad som ligger ovanpå, så får du arbetet per löpmeter och en summa för
-          hela grunden. Sedan svarar verktyget på det prislistorna hoppar över: ska du gräva, eller räcker det med en
-          avfuktare?
+          En omdränering kostar som en begagnad bil, och en hel del av dem som söker på priset behöver aldrig gräva.
+          Fyll i husets två mått, hur djupt schakten går och vad som ligger ovanpå, så får du arbetet per löpmeter och
+          en summa för hela grunden. Sedan får du svar på det prislistorna hoppar över, alltså om du ska gräva alls
+          eller om en avfuktare räcker.
         </p>
       </div>
 
@@ -464,11 +464,14 @@ const huvudbild = varumarke ?? illustration;
     {
       visat.status === 'ok' && (
         <Faktaruta variant="kortsvar">
-          <p class="m-0 leading-6">Räkna med <Markering>3 000 kr per löpmeter</Markering> husgrund i arbete.</p>
-          <p class="m-0 leading-6">Är tomten svår blir summan den dubbla.</p>
-          <p class="m-0 leading-6">Ett vanligt hus har 40 löpmeter runt grunden.</p>
-          <p class="m-0 leading-6">Tejpa plast på källarväggen innan du beställer något.</p>
-          <p class="m-0 leading-6">Plasten säger om du ska gräva eller köpa en avfuktare.</p>
+          <p class="m-0 leading-6">
+            Räkna med <Markering>3 000 kr per löpmeter</Markering> husgrund i arbete, och det dubbla om tomten är svår.
+          </p>
+          <p class="m-0 leading-6">Ett vanligt hus har 40 löpmeter runt grunden, så arbetet börjar på 120 000 kr.</p>
+          <p class="m-0 leading-6">
+            Tejpa en bit plast på källarväggen innan du beställer något, för det är plasten som säger om du ska gräva
+            eller köpa en avfuktare.
+          </p>
         </Faktaruta>
       )
     }
@@ -483,7 +486,7 @@ const huvudbild = varumarke ?? illustration;
           visat.status === 'ok' && (
             <>
               {resultat.status === 'ogiltig' && (
-                <p class="m-0 mb-2 text-liten text-varning">Visar standardvärden tills indatan är rättad.</p>
+                <p class="m-0 mb-2 text-liten text-varning">Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.</p>
               )}
               {/* Beskedet står först: spalten bär svaret, och svaret är om du
                   behöver gräva alls. Motiveringen står under verktyget. */}
@@ -491,7 +494,7 @@ const huvudbild = varumarke ?? illustration;
               <p class="m-0 mt-1 text-brod">{visat.beskedRad}</p>
 
               <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
-                Arbete, {formateraTal(visat.omkretsM, Number.isInteger(visat.omkretsM) ? 0 : 1)} löpmeter runt huset
+                Arbetet, {formateraTal(visat.omkretsM, Number.isInteger(visat.omkretsM) ? 0 : 1)} löpmeter runt huset
               </p>
               {/* Det stora talet är arbetets undre kant, med resten av svaret på
                   samma baslinje där enheten står på de andra kalkylatorerna. */}
@@ -504,7 +507,7 @@ const huvudbild = varumarke ?? illustration;
                 </span>
               </p>
               <p class="m-0 mt-2 text-liten text-blyerts-2">
-                {kr(visat.arbeteLagKrPerM)} till {kr(visat.arbeteHogKrPerM)}&nbsp;kr per löpmeter. Räknat på{' '}
+                Det är {kr(visat.arbeteLagKrPerM)} till {kr(visat.arbeteHogKrPerM)}&nbsp;kr per löpmeter, räknat på{' '}
                 {meterText(visatIndata.schaktDjupM)}&nbsp;m schaktdjup och {TEJP_TEXT[visatIndata.tejptest]}.
               </p>
 
@@ -547,31 +550,32 @@ const huvudbild = varumarke ?? illustration;
 
               <ul class="m-0 mt-4 p-0 list-none text-brod tabular-nums">
                 <li class="border-t border-linje py-2">
-                  Rotavdrag {kr(visat.rotavdragKr)}&nbsp;kr på den undre kanten, räknat utan maskinhyran
+                  Rotavdraget blir {kr(visat.rotavdragKr)}&nbsp;kr på den undre kanten, räknat utan maskinhyran.
                 </li>
                 <li class="border-t border-linje py-2">
-                  Kvar att betala {kr(visat.efterRotLagKr)} till {kr(visat.efterRotHogKr)}&nbsp;kr, om du inte använt
-                  rotavdraget till något annat i år
+                  Du får kvar {kr(visat.efterRotLagKr)} till {kr(visat.efterRotHogKr)}&nbsp;kr att betala, om du inte
+                  använt rotavdraget till något annat i år.
                 </li>
                 <li class="border-t border-linje py-2">
-                  En avfuktare kostar {kr(AVFUKTARE_KR)}&nbsp;kr, grävningen {visat.faktorMotAvfuktare} gånger mer
+                  En avfuktare kostar {kr(AVFUKTARE_KR)}&nbsp;kr, och grävningen kostar {visat.faktorMotAvfuktare}{' '}
+                  gånger mer.
                 </li>
                 <li class="border-t border-linje py-2">
-                  En fuktutredning kostar {kr(FUKTUTREDNING_KR)}&nbsp;kr, grävningen {visat.faktorMotUtredning} gånger
-                  mer
+                  En fuktutredning kostar {kr(FUKTUTREDNING_KR)}&nbsp;kr, och grävningen kostar{' '}
+                  {visat.faktorMotUtredning} gånger mer.
                 </li>
               </ul>
 
               {/* Reglerna med källa och "Gör inte det här" står som egna H2
                   under verktyget. Spalten pekar dit med en rad. */}
               <p class="m-0 mt-4 text-liten text-blyerts-2">
-                Varför just det beskedet, och vad du inte ska göra,{' '}
+                Varför just det beskedet, och det du inte ska göra,{' '}
                 <a href="#darfor-blev-svaret-sa" class={LANK_KLASS}>står under verktyget</a>.
               </p>
 
               <p class="m-0 mt-4">
                 <a href="#sa-raknar-vi" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
-                  Så räknar vi
+                  Så räknar jag
                 </a>
               </p>
 
@@ -582,7 +586,7 @@ const huvudbild = varumarke ?? illustration;
                   Dela svaret
                 </label>
                 <input id="dela" type="text" readonly value={delaLank} class:list={[FALT_KLASS, 'border-blyerts-2']} />
-                <p class="m-0 mt-1 text-liten text-blyerts-2">Adressen innehåller dina värden. Markera och kopiera.</p>
+                <p class="m-0 mt-1 text-liten text-blyerts-2">Dina värden ligger i adressen. Markera den och kopiera, så får den du skickar till samma svar.</p>
               </div>
             </>
           )
@@ -630,101 +634,103 @@ const huvudbild = varumarke ?? illustration;
     }
 
     <section>
-      <Pennstreck id="dranering-kostnad">Dränering, kostnad per löpmeter och om du behöver gräva alls</Pennstreck>
+      <Pennstreck id="dranering-kostnad">Vad en dränering kostar per löpmeter och hur du vet om du behöver den</Pennstreck>
       <p class="m-0 text-brod lg:text-brod-lg">
         Villaägarna sätter arbetet till cirka 3 000&nbsp;kr per löpmeter husgrund och skriver att det kan gå upp till
         det dubbla. Löpmetern är hela varvet runt huset, så ett hus på 12 gånger 8&nbsp;meter har 40 löpmeter och
         landar på 120 000&nbsp;kr när tomten är lätt. Så långt är svaret detsamma i vilken prislista som helst. Det du
-        inte hittar där är frågan om grävningen behövs.
+        inte hittar där är svaret på om grävningen behövs.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
         Gör det billiga först. Stuprören ska leda bort vattnet, marken ska luta från huset, och dagvattenbrunnen ska
         vara rensad. Besiktningsföretaget Anticimex sätter siffror på varför. Ett tak på 150&nbsp;kvm är en stor
-        tratt. Ett regn på 20&nbsp;mm ger 3 000 liter vatten som ska ta vägen någonstans, och rinner det ner längs
+        tratt, och ett regn på 20&nbsp;mm ger 3 000 liter vatten som ska ta vägen någonstans. Rinner det ner längs
         grundmuren spelar det ingen roll hur ny dräneringen är.
       </p>
       <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Hur länge håller en dränering?</h3>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
         Villaägarnas rådgivare är ovanligt raka här. En gammal dränering kan fungera i femtio år, särskilt om källaren
-        bara används som källare, och de tycker att det finns roligare saker att lägga pengarna på än att gräva i
-        förebyggande syfte. Branschen själv säger kortare. Trettio till femtio år är det vanligaste talet, och
+        bara används som källare, och de tycker att det finns roligare saker att lägga pengarna på än att gräva för
+        säkerhets skull. Branschen själv säger kortare. Trettio till femtio år är det vanligaste talet, och
         försäkringsbolaget GarBo anger tjugo år som teknisk livslängd.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Vi sätter gränsen vid trettio år, men bara tillsammans med markfukt på plasten. En dränering från sjuttiotalet
+        Jag sätter gränsen vid trettio år, men bara tillsammans med markfukt på plasten. En dränering från sjuttiotalet
         i ett hus utan fuktproblem ska ligga kvar i marken. Villkoret i Villaägarnas mening är värt att läsa en gång
-        till: femtio år gäller en källare som används som källare. Ska du inreda den till sovrum är kraven andra, och
-        då hör dräneringen till ombyggnaden.
+        till, för femtio år gäller en källare som används som källare. Ska du inreda den till sovrum är kraven andra,
+        och då hör dräneringen till ombyggnaden.
       </p>
       <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad som gör priset dubbelt så högt</h3>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
         Villaägarna namnger tre saker bakom fördubblingen: grävdjup, bergsprängning och markförhållanden. Ingen av dem
-        får en siffra. Talen kommer därför från byggsajten BraByggares prislista, den enda svenska källa vi hittat som
-        har en djuptrappa. Varje extra halvmeter lägger på 25 till 50 procent, och en trång tomt med under tre meter
-        mellan hus och gräns ger 10 till 25 procent i merarbete. Vilket djup entreprenören egentligen menar, och mot
-        vilken punkt det mäts, går vi igenom i{' '}
-        <a href="/grund/dranera-hus/" class:list={[LANK_KLASS]}>dränera huset</a>, tillsammans med resten av det som
-        ska stå i offerten.
+        får en siffra. Talen kommer därför från byggsajten BraByggares prislista, som är den enda svenska källa jag
+        hittat med en trappa för djupet. Varje extra halvmeter lägger på 25 till 50 procent, och en trång tomt med
+        under tre meter mellan hus och gräns ger 10 till 25 procent i merarbete. Vilket djup entreprenören egentligen
+        menar, och mot vilken punkt det mäts, går jag igenom i{' '}
+        <a href="/grund/dranera-hus/" class:list={[LANK_KLASS]}>guiden om att dränera huset</a>, tillsammans med resten
+        av det som ska stå i offerten.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Vi räknar med den nedre kanten på djupet och den övre på den trånga tomten, för den som kryssar i den rutan
-        har ett verkligt problem och inte ett gränsfall. Berget är vårt eget tal. Sprängningens fasta kostnader ligger
-        utanför meterpriset, eftersom de inte blir billigare för att huset är litet. Be entreprenören prissätta
-        etablering och täckning för sig, så ser du vad själva metern kostar.
+        Verktyget räknar med den nedre kanten på djupet och den övre på den trånga tomten, för den som kryssar i den
+        rutan har ett verkligt problem och inte ett gränsfall. Berget är mitt eget tal. Sprängningens fasta kostnader
+        ligger utanför meterpriset, eftersom de inte blir billigare för att huset är litet. Be entreprenören
+        prissätta etablering och täckning för sig, så ser du vad själva metern kostar.
       </p>
       <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Rotavdraget, och fällan i det</h3>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
         Att dränera husgrunder står i Skatteverkets lista över arbete som ger rätt till rotavdrag, alltså 30 procent av
-        arbetskostnaden och högst 50 000&nbsp;kr per person och år. Två rader längre ner i samma lista står det som
-        ingen annan svensk kostnadssida skriver ut: avdrag ges inte för maskinell utrustning, uttryckligen grävmaskiner
-        och borraggregat. En dränering är till stor del grävmaskin och lass med massor. Avdraget träffar alltså en
-        mindre del av notan än du tror om du räknar 30 procent på hela arbetsposten.
+        arbetskostnaden och högst 50 000&nbsp;kr per person och år. Två rader längre ner i samma lista står det som är
+        lätt att missa: avdrag ges inte för maskinell utrustning, och Skatteverket nämner grävmaskiner och borraggregat
+        med namn. En dränering är till stor del grävmaskin och lass med massor. Avdraget träffar alltså en mindre del
+        av notan än du tror, om du räknar 30 procent på hela arbetsposten.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Vi räknar med att tre femtedelar av arbetet är avdragsgillt, och det talet är vårt. Be om en faktura där
-        maskinhyran står på egen rad, så vet du i stället för att gissa. Äger ni huset tillsammans har ni ett tak var,
-        och då går det att dra dubbelt så mycket.
+        Verktyget räknar med att tre femtedelar av arbetet ger avdrag, och det talet är mitt. Be om en faktura där
+        maskinhyran står på egen rad, så vet du i stället för att gissa. Äger ni huset tillsammans har ni en gräns var,
+        och då går det att dra av dubbelt så mycket. Hela regelverket, med gränserna och betalningsdatumet, räknar du
+        på i{' '}
+        <a href="/rakna/rotavdrag/" class={LANK_KLASS}>rotavdragsräknaren</a>.
       </p>
-      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Avfuktare eller dränering</h3>
+      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Avfuktare i stället för att gräva</h3>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Skillnaden mellan rätt och fel diagnos är minst en faktor tjugo. Tejpa en bit plastfolie på 50 gånger
-        50&nbsp;cm tätt mot källarväggen där den ser våtast ut och vänta minst två dygn.
+        Skillnaden mellan rätt och fel diagnos är minst en faktor tjugo, så här är testet som avgör. Tejpa en bit
+        plastfolie på 50 gånger 50&nbsp;cm tätt mot källarväggen där den ser våtast ut och vänta minst två dygn.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
         Sitter dropparna på plastens rumssida bär luften mer vatten än den kalla väggen tål. Det är kondens, och då är
-        en avfuktare rätt maskin. Sitter de på väggsidan kommer vattnet genom betongen i stället. Myndigheten Boverket
-        beskriver den transporten som främst kapillär, ibland som vattenånga rakt genom materialet, och är tydlig med
-        att skyddet mot markfukt hör hemma på utsidan av väggen.
+        en avfuktare rätt maskin. Sitter de på väggsidan kommer vattnet genom betongen i stället. Boverket beskriver
+        det som att vattnet sugs upp genom porerna, ibland vandrar det som ånga rakt genom materialet, och de är
+        tydliga med att skyddet mot markfukt hör hemma på utsidan av väggen.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        En avfuktare mot markfukt är samma tankefel i elektrisk form. Luften i rummet torkar, avdunstningen ur väggen
-        ökar, och väggen suger efter mer vatten ur marken. Hela testet står i{' '}
+        En avfuktare mot markfukt är samma tankefel i elektrisk form. Luften i rummet torkar, mer vatten dunstar ur
+        väggen, och väggen suger efter mer ur marken. Hela testet står i{' '}
         <a href="/fukt/fukt-i-kallaren/" class={LANK_KLASS}>
           guiden om fukt i källaren
         </a>
         , och vilken maskin kondensen kräver räknar du ut i{' '}
         <a href="/rakna/avfuktare/" class={LANK_KLASS}>
-          avfuktarkalkylatorn
+          avfuktarräknaren
         </a>
         .
       </p>
     </section>
 
     <section>
-      <Pennstreck id="sa-raknar-vi">Så räknar vi</Pennstreck>
+      <Pennstreck id="sa-raknar-vi">Så räknar jag</Pennstreck>
       {
         varumarke && illustration && (
           <Illustration
             namn="rakna/dranering"
-            alt="Genomskärning av grundmuren med schakten längs väggen, dräneringsröret i botten och markfukten som trycker in genom väggen."
-            bildtext="Det verktyget räknar på: djupet, varvet runt huset och var vattnet kommer in."
+            alt="Grundmur i genomskärning med schakten längs väggen, dräneringsröret i botten och markfukt som trycker in genom väggen"
+            bildtext="Det verktyget räknar på är djupet ner till röret, varvet runt huset och var vattnet kommer in."
           />
         )
       }
       <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg">
         <li class="mb-2">
-          Löpmetern är husets omkrets, alltså två gånger längden plus bredden. Du mäter två sidor, verktyget räknar
-          varvet.
+          Löpmetern är husets omkrets, alltså två gånger längden plus bredden. Du mäter två sidor, och verktyget
+          räknar varvet.
         </li>
         <li class="mb-2">
           Arbetet är Villaägarnas {kr(ARBETE_KR_PER_LOPMETER)} kr per löpmeter i undre kanten och det dubbla i den
@@ -732,8 +738,8 @@ const huvudbild = varumarke ?? illustration;
         </li>
         <li class="mb-2">
           Schaktdjupet flyttar hela spannet. Varje meter över eller under de {meterText(SCHAKTDJUP_REFERENS_M)} meter
-          vi räknar som normala ändrar arbetet med {Math.round(DJUP_PASLAG_PER_M * 100)} procent. Ändringen håller sig
-          inom fasta gränser, så att en riktigt djup schakt inte får priset att skena.
+          som räknas som normalt djup ändrar arbetet med {Math.round(DJUP_PASLAG_PER_M * 100)} procent. Ändringen
+          håller sig inom fasta gränser, så att en riktigt djup schakt inte får priset att skena.
         </li>
         <li class="mb-2">
           Åtkomsten flyttar spannet en gång till, med ett påslag för trång tomt och ett större för berg. Sprängningens
@@ -752,8 +758,8 @@ const huvudbild = varumarke ?? illustration;
           bred, så kronor per meter är också kronor per kvadratmeter.
         </li>
         <li class="mb-2">
-          Rotavdraget dras från arbetet, men bara från den del som inte är maskinhyra, och det stannar vid taket per
-          person och år.
+          Rotavdraget dras från arbetet, men bara från den del som inte är maskinhyra, och det stannar vid gränsen
+          per person och år.
         </li>
         <li>
           Beskedet kommer sist. Markfukt på plasten och en dränering över trettio år ger dränera om. Kondens ger mät
@@ -767,8 +773,8 @@ const huvudbild = varumarke ?? illustration;
           <caption class="sr-only">Priser, gränser och antaganden i dräneringskalkylatorn</caption>
           <thead>
             <tr class="border-b border-linje text-left">
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Storhet</th>
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Vi räknar med</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Vad</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Verktyget räknar med</th>
               <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Källa eller antagande</th>
             </tr>
           </thead>
@@ -797,8 +803,8 @@ const huvudbild = varumarke ?? illustration;
           <tfoot>
             <tr>
               <td colspan="3" class="p-2 text-liten text-blyerts-2">
-                Priserna är hämtade 18 september 2026. Avfuktaren och fuktkontrollen lästes 16 september 2026. Ett
-                materialpris är färskvara och läses om varje halvår. Raderna märkta Antagande är våra egna tal.
+                Ett materialpris är färskvara, så datumet står på raden och priset läses om varje halvår. Raderna
+                märkta Antagande är mina egna tal.
               </td>
             </tr>
           </tfoot>
@@ -806,28 +812,27 @@ const huvudbild = varumarke ?? illustration;
       </Tabellyta>
 
       <p class="m-0 mt-6 text-brod lg:text-brod-lg">
-        Raderna märkta Antagande är våra egna tal, inte hämtade någonstans ifrån. Två av dem styr svaret mer än de
+        Raderna märkta Antagande är mina egna tal, inte hämtade någonstans ifrån. Två av dem styr svaret mer än de
         andra. Det ena är gränsen vid trettio år, vald ur Husgrunders spann på 25 till 30. Det andra är att tre
-        femtedelar av arbetet är rotgrundande. Båda ligger åt det försiktiga hållet: verktyget säger hellre mät en
-        gång till än gräv i onödan, och lovar hellre ett för litet rotavdrag än ett för stort.
+        femtedelar av arbetet ger rotavdrag. Båda ligger åt det försiktiga hållet. Verktyget säger hellre mät en gång
+        till än gräv i onödan, och det lovar hellre ett för litet rotavdrag än ett för stort.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Gör gärna en rimlighetskontroll mot marknaden. För grunden du fyllt i landar vår totalsumma på{' '}
+        Jämför gärna med offerten du får. För grunden du fyllt i landar hela jobbet på{' '}
         {visat.status === 'ok' ? `${kr(visat.summaLagKrPerM)} till ${kr(visat.summaHogKrPerM)}` : '3 400 till 7 200'}
-        &nbsp;kr per löpmeter. Byggkedjornas egna guider anger 2 500 till 7 500&nbsp;kr per meter inklusive material
-        och arbete, alltså samma härad. Skillnaden är att de inte säger var talen kommer ifrån, och att ingen av dem
-        frågar om du behöver gräva.
+        &nbsp;kr per löpmeter med material och återställning inräknade. Ligger offerten långt utanför det spannet ska
+        entreprenören kunna säga varför, rad för rad.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Två saker kan verktyget inte se. Det första är vad som ligger i marken: gamla ledningar, fyllning av
-        byggavfall, eller en grundmur som visar sig vara otät när den blottas. Det andra är krypgrunden. Har huset
+        Två saker kan verktyget inte se. Det första är vad som ligger i marken, alltså gamla ledningar, fyllning av
+        byggavfall eller en grundmur som visar sig vara otät när den blottas. Det andra är krypgrunden. Har huset
         krypgrund under en del av bottenvåningen är det en annan byggnadsdel med egna regler, och den räknas inte
-        här. Metoden bakom våra siffror står på{' '}
-        <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar vi</a>.
+        här. Hur jag jobbar med tal och källor står på sidan{' '}
+        <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar jag</a>.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Talen är storleksordningar att jämföra åtgärder med, inte en offert. Vad ett markarbete kostar avgörs av vad
-        som ligger i marken, och det syns först när schakten är öppen.
+        Talen här är storleksordningar att jämföra åtgärder med, och ingen offert. Vad ett markarbete kostar avgörs av
+        vad som ligger i marken, och det syns först när schakten är öppen.
       </p>
     </section>
 
@@ -836,12 +841,12 @@ const huvudbild = varumarke ?? illustration;
       <ul class="m-0 p-0 list-none">
         <li class="border-t border-linje">
           <a href="/grund/dranera-hus/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Dränera huset, så går det till och hur långt du kommer själv
+            Så dränerar du huset, steg för steg, och hur långt du kommer själv
           </a>
         </li>
         <li class="border-t border-linje">
           <a href="/fukt/fukt-i-kallaren/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Fukt i källaren, hitta orsaken innan du köper något
+            Hitta orsaken till fukten i källaren innan du köper något
           </a>
         </li>
         <li class="border-t border-linje">

@@ -58,7 +58,7 @@ const jamforelser = (await publicerade('jamforelser'))
 const allaRelaterade = [...relaterade, ...jamforelser];
 
 const forfattare = await getEntry('forfattare', d.forfattare);
-const forfattareNamn = forfattare?.data.namn ?? 'Redaktionen';
+const forfattareNamn = forfattare?.data.namn ?? 'Christian Karlsson';
 
 const valSlugs = d.val.map((v) => v.produkt);
 const etiketter: Record<string, string> = Object.fromEntries(d.val.map((v) => [v.produkt, v.etikett]));

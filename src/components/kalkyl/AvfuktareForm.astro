@@ -41,7 +41,7 @@ const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
 <form method="get" action="/rakna/avfuktare/">
   <div class:list={[kompakt && 'sm:grid sm:grid-cols-2 sm:gap-4']}>
     <div class="mb-4">
-      <label for={id('yta')} class={ETIKETT_KLASS}>Yta</label>
+      <label for={id('yta')} class={ETIKETT_KLASS}>Golvyta</label>
       <div class="flex items-center gap-2">
         <input
           id={id('yta')}
@@ -77,14 +77,14 @@ const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
             {fel.takhojdM}
           </p>
         ) : (
-          !kompakt && <p class={HJALP_KLASS}>Krypgrund räknas också, ner till 0,5 m.</p>
+          !kompakt && <p class={HJALP_KLASS}>En krypgrund går också bra att räkna på, ner till 0,5 meter.</p>
         )
       }
     </div>
   </div>
 
   <fieldset class="m-0 mb-4 p-0 border-0">
-    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Fuktnivå</legend>
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Hur fuktigt är det i dag?</legend>
     <div class={radioKlass}>
       {
         FUKTNIVAER.map((f) => (
@@ -98,7 +98,7 @@ const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
   </fieldset>
 
   <fieldset class="m-0 mb-6 p-0 border-0">
-    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Temperatur i utrymmet</legend>
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Hur varmt är det i utrymmet?</legend>
     <div class={radioKlass}>
       {
         TEMPERATURVAL.map((t) => (

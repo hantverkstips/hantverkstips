@@ -149,7 +149,7 @@ const TEMPERATURLAGEN: Temperaturlage[] = [
 
 /** Under 5 grader räknar vi inte. Texten är produktexpertens, underlagets avsnitt 4. */
 const UNDER_FEM_GRADER =
-  'Under 5 grader tappar även sorptionsmaskiner fart och kondensmaskiner står stilla. Läs guiden om krypgrund innan du köper.';
+  'Under 5 grader tappar även en sorptionsmaskin farten, och en kondensmaskin står stilla. Läs guiden om krypgrunden innan du köper något.';
 
 export const STANDARD: AvfuktareIndata = {
   ytaKvm: 40,
@@ -162,9 +162,9 @@ export const STANDARD: AvfuktareIndata = {
 export const GRANSER = { ytaKvm: [5, 300], takhojdM: [0.5, 4] } as const;
 
 export const FUKTNIVAER: { varde: Fuktniva; etikett: string }[] = [
-  { varde: 'medel', etikett: '60 till 70 procent, lite unket' },
-  { varde: 'hog', etikett: '70 till 80 procent, fuktfläckar och lukt' },
-  { varde: 'mycket_hog', etikett: 'över 80 procent, synligt mögel' },
+  { varde: 'medel', etikett: '60 till 70 procent, det luktar lite unket' },
+  { varde: 'hog', etikett: '70 till 80 procent, det finns fuktfläckar och det luktar' },
+  { varde: 'mycket_hog', etikett: 'över 80 procent, det syns mögel' },
 ];
 
 export const TEMPERATURVAL: { varde: Temperaturval; etikett: string }[] = TEMPERATURLAGEN.map((t) => ({
@@ -242,15 +242,15 @@ export function raknaAvfuktare(i: AvfuktareIndata): AvfuktareResultat {
   if (Number.isFinite(i.ytaKvm) && i.ytaKvm > ytaMax) {
     return {
       status: 'utanfor',
-      text: 'Över 300 kvm rekommenderar vi två maskiner eller en fast installation. Läs guiden om krypgrund.',
+      text: 'Över 300 kvm skulle jag sätta in två maskiner eller en fast installation. Läs guiden om krypgrunden först.',
     };
   }
 
   if (!Number.isFinite(i.ytaKvm) || i.ytaKvm < ytaMin) {
-    fel.ytaKvm = `Ange yta mellan ${ytaMin} och ${ytaMax} kvm`;
+    fel.ytaKvm = `Skriv en golvyta mellan ${ytaMin} och ${ytaMax} kvm`;
   }
   if (!Number.isFinite(i.takhojdM) || i.takhojdM < takMin || i.takhojdM > takMax) {
-    fel.takhojdM = `Ange takhöjd mellan ${String(takMin).replace('.', ',')} och ${takMax} m`;
+    fel.takhojdM = `Skriv en takhöjd mellan ${String(takMin).replace('.', ',')} och ${takMax} meter`;
   }
   if (Object.keys(fel).length > 0) return { status: 'ogiltig', fel };
 

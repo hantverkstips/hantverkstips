@@ -111,76 +111,83 @@ const kortSpalter =
       ? 'lg:grid-cols-2'
       : 'lg:max-w-lasbredd';
 
-const typtext =
+/** Beskedet överst i spalten: vilken maskin du ska köpa, och varför just den typen. */
+const beskedRubrik =
+  visat.status === 'ok'
+    ? `Köp en ${visat.typ === 'kondens' ? 'kondensavfuktare' : 'sorptionsavfuktare'} som är märkt minst ${visat.marktKapacitetLiter} liter per dygn.`
+    : '';
+const beskedRad =
   visat.status === 'ok' && visat.typ === 'kondens'
-    ? 'Leta efter en kondensavfuktare. Den tar mest vatten per krona så länge utrymmet håller sig över 15 grader.'
-    : 'Leta efter en sorptionsavfuktare. En kondensmaskin tappar fart under 15 grader och lägger till slut mer tid på att avfrosta än på att avfukta.';
+    ? 'En kondensavfuktare tar mest vatten för pengarna så länge utrymmet håller sig över 15 grader.'
+    : 'En kondensavfuktare tappar farten under 15 grader och lägger till slut mer tid på att avfrosta sig själv än på att avfukta. Sorptionsmaskinen bryr sig inte om kylan.';
+
+const titel = 'Räkna ut hur stor avfuktare du behöver';
 
 /** Antagandena i tabellen under "Så räknar vi". Samma tal som konstanterna i kalkylen. */
 const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande'; stod: string; url?: string }[] = [
   {
-    storhet: 'Mättnadsånghalt, 9,38 g/m³ vid 10 °C och 12,80 vid 15 °C',
+    storhet: 'Hur mycket vatten luften rymmer, 9,38 g/m³ vid 10 °C och 12,80 vid 15 °C',
     varde: 'Magnus-formeln',
     grund: 'Källa',
     stod: 'Lawrence 2005, BAMS 86(2)',
     url: 'https://journals.ametsoc.org/view/journals/bams/86/2/bams-86-2-225.xml',
   },
   {
-    storhet: 'Målnivå i utrymmet',
+    storhet: 'Nivån maskinen ska hålla i utrymmet',
     varde: '55 % RF',
     grund: 'Källa',
-    stod: 'BBR 6:52 via Boverket sätter 75 % som kritiskt fukttillstånd',
+    stod: 'BBR 6:52 via Boverket sätter 75 % som kritiskt fukttillstånd, och 55 ger marginal ner till det',
     url: 'https://www.boverket.se/sv/byggande/forebygg-fel-brister-skador/risker/risker-fuktskador/fuktrisker-for-grund/krypgrund/risk-med-fukt-fran-uteluft-i-krypgrund/',
   },
   {
-    storhet: 'Uteluftens ånghalt i augusti',
+    storhet: 'Vattnet i uteluften i augusti',
     varde: '10,0 g/m³',
     grund: 'Källa',
     stod: 'SMHI, 70 till 80 % RF i juli i inlandet',
     url: 'https://www.smhi.se/kunskapsbanken/meteorologi/luftfuktighet/olika-matt-pa-luftfuktighet',
   },
   {
-    storhet: 'Luftomsättning',
+    storhet: 'Hur ofta luften byts',
     varde: '0,5 oms/h',
     grund: 'Antagande',
-    stod: 'FoHMFS 2014:18 ger 0,35 l/s per m² i bostad. Att källare och krypgrund ventileras lika mycket är vår gissning',
+    stod: 'FoHMFS 2014:18 ger 0,35 l/s per m² i bostad. Att en källare eller krypgrund ventileras lika mycket är min gissning',
     url: 'https://www.folkhalsomyndigheten.se/contentassets/641784832543443ea4eebe9b300c244e/fohmfs-2014-18.pdf',
   },
   {
-    storhet: 'Fukt upp ur marken vid synligt mögel',
+    storhet: 'Fukt upp ur marken när det syns mögel',
     varde: '100 g per m² och dygn',
     grund: 'Källa',
     stod: 'Kurnitski 2001 mätte 86 till 137 g per m² och dygn från bar mark',
     url: 'https://www.sciencedirect.com/science/article/abs/pii/S0360132300000135',
   },
   {
-    storhet: 'Fukt upp ur marken vid medel och hög fukt',
+    storhet: 'Fukt upp ur marken vid medel och hög fuktnivå',
     varde: '10 och 40 g per m² och dygn',
     grund: 'Antagande',
-    stod: 'Vår gissning för en tät respektive kapillärt fuktig betongplatta. Kalkylatorns svagaste led',
+    stod: 'Min gissning för en tät respektive kapillärt fuktig betongplatta. Det är räkningens svagaste led',
   },
   {
-    storhet: 'Dimensionerande temperatur',
+    storhet: 'Temperaturen jag räknar på',
     varde: '15 °C uppvärmt, 10 °C ouppvärmt',
     grund: 'Antagande',
-    stod: 'Vårt val, satt så att det stämmer med en svensk källare i augusti',
+    stod: 'Mitt val, satt så att det stämmer med en svensk källare i augusti',
   },
   {
-    storhet: 'Marginal på summan',
+    storhet: 'Marginalen på summan',
     varde: '1,3',
     grund: 'Antagande',
-    stod: 'Vårt val. LFS och Luftmiljöbutiken säger hellre för stor än för liten, utan siffra',
+    stod: 'Mitt val. LFS och Luftmiljöbutiken säger hellre för stor än för liten, utan att sätta en siffra',
     url: 'https://www.lfs-web.se/avfuktare-valj-ratt-for-bast-ekonomi-och-sakrast-avfuktning/',
   },
   {
-    storhet: 'Kondensmaskin vid 15 °C, andel av märkt kapacitet',
+    storhet: 'Kondensmaskin vid 15 °C, andel av det märkta talet',
     varde: '0,30 (0,25 till 0,35)',
     grund: 'Antagande',
-    stod: 'Interpolerat mellan Meacos mätpunkter vid 20 och 10 °C, ingen egen mätpunkt vid 15',
+    stod: 'Interpolerat mellan Meacos mätpunkter vid 20 och 10 °C, ingen har mätt vid 15',
     url: 'https://blog.meaco.com/my-dehumidifier-is-bigger-than-your-dehumidifier-no-its-not/',
   },
   {
-    storhet: 'Sorptionsmaskin vid 10 °C, andel av märkt kapacitet',
+    storhet: 'Sorptionsmaskin vid 10 °C, andel av det märkta talet',
     varde: '0,80 (0,75 till 1,0)',
     grund: 'Källa',
     stod: 'Corroventa CTR STD-TT ger 0,76 och Meaco DD8L 0,99 vid 10 °C',
@@ -194,15 +201,15 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
 const FRAGOR = [
   {
     fraga: 'Hur stor avfuktare behöver jag?',
-    svar: 'Maskinen köps för det vatten som kommer in varje dygn, inte för luften som redan står i rummet. Kalkylatorn räknar på augusti, den blötaste månaden, och lägger på en marginal så att maskinen klarar dygnet på ungefär 18 timmar. Fyll i ytan, takhöjden och hur fuktigt det är i dag, så får du ett tal i liter per dygn att leta efter i butiken.',
+    svar: 'Köp maskinen för det vatten som kommer in varje dygn, inte för luften som redan står i rummet. Jag räknar på augusti, som är den blötaste månaden, och lägger på en marginal så att maskinen klarar dygnets vatten på ungefär 18 timmar. Fyll i golvytan, takhöjden och hur fuktigt det är i dag, så får du ett tal i liter per dygn att leta efter i butiken. Och tveka mellan två storlekar ska du ta den större. En för liten maskin går dygnet runt och kommer ändå aldrig ner till 55 procent.',
   },
   {
     fraga: 'Varför stämmer inte kapaciteten på förpackningen?',
-    svar: 'Tillverkarna mäter kondensmaskiner vid 30 grader och 80 procent luftfuktighet, och så varmt och blött blir det aldrig i en svensk källare. Samma maskin ger därför bara ungefär en tredjedel av det märkta talet i ett svalt utrymme. En sorptionsmaskin, som torkar luften med ett fuktsugande hjul i stället för kyla, tappar betydligt mindre. Kalkylatorn räknar om åt dig och visar den märkta kapaciteten du ska köpa efter.',
+    svar: 'Tillverkarna mäter kondensmaskiner vid 30 grader och 80 procent luftfuktighet, och så varmt och blött blir det aldrig i en svensk källare. I ett svalt utrymme ger samma maskin därför bara ungefär en tredjedel av talet på lådan. En sorptionsmaskin torkar luften med ett fuktsugande hjul i stället för med kyla, och den tappar betydligt mindre. Verktyget räknar om åt dig och visar det märkta tal du ska leta efter.',
   },
   {
     fraga: 'Kondens eller sorption, vilken ska jag välja?',
-    svar: 'Temperaturen avgör. En kondensavfuktare arbetar med kyla och tappar kraft när det blir svalt, så den hör hemma i en uppvärmd källare. En sorptionsmaskin håller sin kapacitet ner mot nollan och är det som gäller i krypgrund, ouppvärmt garage och sommarstuga. Kostar du på dig en för stor maskin i stället för en för liten har du sällan ångrat dig.',
+    svar: 'Temperaturen i utrymmet avgör. En kondensavfuktare arbetar med kyla och tappar kraft när det blir svalt, så den hör hemma i en uppvärmd källare. En sorptionsavfuktare håller sin kapacitet ner mot nollan, och det är den som gäller i krypgrunden, det ouppvärmda garaget och sommarstugan.',
     lank: { text: 'Läs jämförelsen mellan sorption och kondens.', href: '/fukt/sorptionsavfuktare/' },
   },
 ];
@@ -211,7 +218,7 @@ const FRAGOR = [
 const SLUG = 'avfuktare';
 const VERKTYGSNAMN = 'Avfuktarkalkylator';
 const BESKRIVNING =
-  'Räkna ut hur många liter per dygn din avfuktare behöver klara utifrån yta, takhöjd och fuktnivå, och se maskinerna som klarar det.';
+  'Räkna ut hur många liter per dygn din avfuktare måste klara i just ditt utrymme, och se vilka maskiner som klarar det när källaren är sval.';
 const illustration = verktygsillustration(SLUG);
 /**
  * Varumärkesbilden i sidhuvudet, sedan 2026-09-19 (docs/DESIGN.md avsnitt 7).
@@ -223,7 +230,7 @@ const huvudbild = varumarke ?? illustration;
 ---
 
 <Bas
-  title="Avfuktarkalkylator: hur stor avfuktare behöver du?"
+  title={titel}
   description={BESKRIVNING}
   reklam={true}
   butikNamn={butik?.namn}
@@ -253,8 +260,9 @@ const huvudbild = varumarke ?? illustration;
       <div class="lg:col-span-7">
         <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">Hur stor avfuktare behöver du?</h1>
         <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
-          Fyll i ytan, takhöjden och hur fuktigt det är i dag, så får du hur många liter per dygn maskinen behöver
-          klara. Resultatet är en marginal, inte ett exakt svar.
+          Fyll i golvytan, takhöjden och hur fuktigt det är i dag, så får du veta hur många liter per dygn maskinen
+          måste klara. Talet du får är det som ska stå på lådan, omräknat från en svensk källare i augusti. Ta det
+          som ett minsta krav med marginal, för lådans siffra och verkligheten är två olika saker.
         </p>
       </div>
 
@@ -295,9 +303,16 @@ const huvudbild = varumarke ?? illustration;
             visat.status === 'ok' && (
               <>
                 {resultat.status === 'ogiltig' && (
-                  <p class="m-0 mb-2 text-liten text-varning">Visar standardvärden tills indatan är rättad.</p>
+                  <p class="m-0 mb-2 text-liten text-varning">
+                    Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.
+                  </p>
                 )}
-                <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">Minst</p>
+                {/* Beskedet står först: vilken maskin du ska köpa. Räkningen
+                    bakom står under verktyget. */}
+                <p class="m-0 font-sans text-h3 lg:text-h3-lg font-bold text-blyerts">{beskedRubrik}</p>
+                <p class="m-0 mt-1 text-brod">{beskedRad}</p>
+
+                <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">Minst</p>
                 {/* Enheten står på samma rad som talet, på talets baslinje
                     (DESIGN.md avsnitt 5.8). Radbryter på smal skärm. */}
                 <p class="m-0 mt-1 flex flex-wrap items-baseline gap-x-2">
@@ -307,21 +322,19 @@ const huvudbild = varumarke ?? illustration;
                   <span class="text-ingress lg:text-ingress-lg">liter per dygn</span>
                 </p>
                 <p class="m-0 mt-2 text-liten text-blyerts-2">
-                  märkt kapacitet, uppgiven vid {visat.kapacitetVillkor}, motsvarar cirka{' '}
-                  {visat.literPerDygnVerklig} liter i din källare vid {visat.temperaturC} grader
+                  Det är talet på lådan, som tillverkaren mätt vid {visat.kapacitetVillkor}. I ditt utrymme vid{' '}
+                  {visat.temperaturC} grader motsvarar det ungefär {visat.literPerDygnVerklig} liter om dygnet.
                 </p>
                 <p class="m-0 mt-1 text-liten text-blyerts-2">
-                  {formateraTal(visat.volymM3, 1)} m³, {fuktnivaEtikett(visatIndata.fuktniva)}
+                  Räknat på {formateraTal(visat.volymM3, 1)} m³ och {fuktnivaEtikett(visatIndata.fuktniva)}.
                 </p>
-                <p class="m-0 mt-4 text-brod">{typtext}</p>
-                <p class="m-0 mt-2 text-brod">
-                  Omräkningen mellan lådans siffra och verkligheten är det osäkraste i kalkylen, så läs talet som{' '}
-                  {visat.marktIntervall[0]} till {visat.marktIntervall[1]} liter. Köp hellre en för stor maskin än en för
-                  liten. En för liten går dygnet runt och håller ändå inte 55 procent.
+                <p class="m-0 mt-4 text-brod">
+                  Omräkningen från lådans siffra till din källare är det osäkraste i hela räkningen, så läs talet
+                  som {visat.marktIntervall[0]} till {visat.marktIntervall[1]} liter.
                 </p>
                 <p class="m-0 mt-2">
                   <a href="#sa-raknar-vi" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
-                    Så räknar vi
+                    Så räknar jag
                   </a>
                 </p>
 
@@ -340,7 +353,7 @@ const huvudbild = varumarke ?? illustration;
                     class:list={[FALT_KLASS, 'border-blyerts-2']}
                   />
                   <p class="m-0 mt-1 text-liten text-blyerts-2">
-                    Adressen innehåller dina värden. Markera och kopiera.
+                    Dina värden ligger i adressen. Markera den och kopiera, så får den du skickar till samma svar.
                   </p>
                 </div>
               </>
@@ -366,63 +379,73 @@ const huvudbild = varumarke ?? illustration;
         ) : (
           <Faktaruta>
             <p class="m-0 leading-6">
-              Vi har inte granskat någon avfuktare i den storleken. <a href="/luftavfuktare/">Se alla vi granskat.</a>
+              Jag har inte granskat någon avfuktare i den storleken än.{' '}
+              <a href="/luftavfuktare/">Här är alla jag granskat.</a>
             </p>
           </Faktaruta>
         )
       }
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Korten visar de billigaste maskinerna av rätt typ som klarar talet ovanför. Nästa fråga brukar vara vad en
+        sådan maskin drar i el när den går större delen av dygnet, och det räknar du ut med{' '}
+        <a href="/rakna/elkostnad/" class={LANK_KLASS}>elkostnadsräknaren</a>.
+      </p>
       <p class="m-0 mt-4">
         <a href="/luftavfuktare/" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
-          Alla avfuktare vi granskat
+          Alla avfuktare jag granskat
         </a>
       </p>
     </section>
 
     <section>
-      <Pennstreck id="sa-raknar-vi">Så räknar vi</Pennstreck>
+      <Pennstreck id="sa-raknar-vi">Så räknar jag om märkt kapacitet till verklig</Pennstreck>
       {
         varumarke && illustration && (
           <Illustration
             namn="rakna/avfuktare"
-            alt="Källare i genomskärning med 2,2 meters takhöjd, droppar på väggen och en avfuktare på golvet som drar till sig den fuktiga luften."
-            bildtext="Det verktyget räknar på: rummets volym, fukten i luften och maskinens liter."
+            alt="Källare i genomskärning med måttsatt takhöjd, droppar på väggen och en avfuktare på golvet."
+            bildtext="Skissen visar det verktyget räknar på: rummets volym med 2,2 meter i tak, fukten som kommer in genom väggen och in med luften, och maskinen på golvet som ska ta bort den."
           />
         )
       }
       <p class="m-0 text-brod lg:text-brod-lg">
-        Luften i rummet är inte problemet. En källare på 96 m³ vid 15 grader och 75 procent luftfuktighet bär 0,9 liter
-        vatten, och att ta ner den till 55 procent kostar ett kvarts glas. Maskinen köps för det som kommer in varje
-        dygn, och vi räknar på augusti, den värsta månaden.
+        Det första att förstå är att luften som redan står i rummet inte är problemet. En källare på 96 m³ vid 15
+        grader och 75 procent luftfuktighet bär 0,9 liter vatten, och att ta ner den till 55 procent kostar
+        maskinen ett kvarts glas. Det som avgör storleken är vattnet som kommer in varje dygn, genom väggen och med
+        uteluften. Så jag räknar på augusti, som är den värsta månaden, och så här går det till.
       </p>
       <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg">
         <li class="mb-2">
-          Yta gånger takhöjd ger volymen. 40 kvm med 2,4 meter i tak blir 96 m³.
+          Golvytan gånger takhöjden ger volymen. 40 kvm med 2,4 meter i tak blir 96 m³.
         </li>
         <li class="mb-2">
-          Temperaturen du valt sätter den dimensionerande temperaturen, 15 grader för uppvärmt och 10 för ouppvärmt.
-          Magnus-formeln ger hur mycket vatten luften rymmer vid den temperaturen, och 55 procent av det är målet.
+          Temperaturen du valde sätter vilken temperatur jag räknar på, 15 grader för ett uppvärmt utrymme och 10
+          för ett ouppvärmt. Magnus-formeln säger hur mycket vatten luften rymmer vid den temperaturen, och målet är
+          att ligga på 55 procent av det.
         </li>
         <li class="mb-2">
-          Vi tar först ut det vatten som redan står i luften, skillnaden mellan din fuktnivå och 55 procent. Det är ett
-          par deciliter, en engångspost.
+          Först tar jag ut det vatten som redan står i luften, alltså skillnaden mellan din fuktnivå och 55
+          procent. Det är ett par deciliter och görs en gång.
         </li>
         <li class="mb-2">
-          Sedan uteluften. Ett halvt luftbyte i timmen bär in fuktig augustiluft på 10 g per m³, och ju kallare
-          utrymmet är desto mer av den fukten blir över. Därför blir ett kallt utrymme fuktigare av att vädras.
+          Sedan uteluften. Ett halvt luftbyte i timmen bär in augustiluft med 10 gram vatten per kubikmeter, och ju
+          kallare utrymmet är, desto mer av det vattnet blir över när luften kylts. Det är därför ett kallt utrymme
+          blir fuktigare av att du vädrar det på sommaren.
         </li>
         <li class="mb-2">
-          Sedan marken. Varje kvadratmeter golv avger 10, 40 eller 100 gram per dygn beroende på vilken fuktnivå du
-          valde.
+          Sedan marken. Varje kvadratmeter golv släpper upp 10, 40 eller 100 gram per dygn beroende på vilken
+          fuktnivå du valde.
         </li>
         <li class="mb-2">
-          De tre posterna läggs ihop och multipliceras med 1,3, så att maskinen klarar dygnet på ungefär 18 timmar och
-          hygrostaten hinner stänga av.
+          De tre posterna lägger jag ihop och multiplicerar med 1,3, så att maskinen klarar dygnets vatten på
+          ungefär 18 timmar och hygrostaten hinner stänga av den emellanåt.
         </li>
         <li>
-          Till sist räknas talet om till den kapacitet som står på lådan. Tillverkarna mäter vid 30 grader och 80
-          procent luftfuktighet, förhållanden som inte finns i en svensk källare, så en kondensmaskin ger ungefär 30
-          procent av sin märkta kapacitet vid 15 grader. En sorptionsmaskin mäts vid 20 grader och 60 procent och ger
-          ungefär 80 procent av den siffran vid 10 grader.
+          Till sist räknar jag om talet till det som står på lådan. Tillverkarna mäter en kondensmaskin vid 30
+          grader och 80 procent luftfuktighet, och så är det aldrig i en svensk källare. Vid 15 grader ger en
+          kondensmaskin ungefär 30 procent av sin märkta kapacitet. En sorptionsmaskin mäts vid 20 grader och 60
+          procent, och den ger ungefär 80 procent av sin siffra vid 10 grader. Så när du väljer mellan sorption
+          och kondens är det temperaturen i utrymmet du ska titta på.
         </li>
       </ol>
 
@@ -432,8 +455,8 @@ const huvudbild = varumarke ?? illustration;
           <caption class="sr-only">Antaganden och källor i avfuktarkalkylatorn</caption>
           <thead>
             <tr class="border-b border-linje text-left">
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Storhet</th>
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Vi räknar med</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Vad</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Jag räknar med</th>
               <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Källa eller antagande</th>
             </tr>
           </thead>
@@ -463,10 +486,12 @@ const huvudbild = varumarke ?? illustration;
       </Tabellyta>
 
       <p class="m-0 mt-6 text-brod lg:text-brod-lg">
-        Vi verifierar formeln med egna mätningar under hösten.
+        Två av raderna är gissningar jag gärna vill byta mot mätningar: hur mycket fukt som kommer upp ur marken,
+        och hur mycket en kondensmaskin tappar vid 15 grader. I höst ställer jag en avfuktare i en riktig källare
+        och räknar liter i tanken, och då får formeln stå till svars.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Metoden bakom våra siffror står på{' '}
+        Vad som är läst ur datablad och vad som är mätt står på sidan{' '}
         <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar vi</a>.
       </p>
     </section>
@@ -476,17 +501,17 @@ const huvudbild = varumarke ?? illustration;
       <ul class="m-0 p-0 list-none">
         <li class="border-t border-linje">
           <a href="/luftavfuktare/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Alla luftavfuktare vi granskat
+            Alla luftavfuktare jag granskat, med tal ur databladen
           </a>
         </li>
         <li class="border-t border-linje">
           <a href="/fukt/avfuktare-kallare/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Rätt avfuktare till källaren
+            Så väljer du avfuktare till källaren
           </a>
         </li>
         <li class="border-t border-linje">
           <a href="/fukt/sorptionsavfuktare/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Sorption eller kondens, temperaturen avgör
+            Därför tappar kondensavfuktaren farten när det blir kallt
           </a>
         </li>
       </ul>

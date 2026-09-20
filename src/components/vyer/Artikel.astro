@@ -79,7 +79,7 @@ const visaProdukterna = (typ === 'kopguide' || typ === 'kunskap') && produkter.l
 const butik = reklam ? await hamtaButik() : null;
 
 const forfattare = await getEntry('forfattare', d.forfattare);
-const forfattareNamn = forfattare?.data.namn ?? 'Redaktionen';
+const forfattareNamn = forfattare?.data.namn ?? 'Christian Karlsson';
 
 const kunskapskomponenter = {
   h2: Pennstreck,
@@ -110,7 +110,7 @@ const hub = await hubPublicerad(d.pelare);
 const brodsmulor = await brodsmulorForArtikel(entry);
 
 const relaterat = [
-  ...(kategori ? [{ namn: `Alla ${kategori.data.namn.toLowerCase()} vi granskat`, href: kategoriUrl(kategori.id) }] : []),
+  ...(kategori ? [{ namn: `Alla ${kategori.data.namn.toLowerCase()} jag granskat`, href: kategoriUrl(kategori.id) }] : []),
   ...(pelare && hub ? [{ namn: pelare.namn, href: pelareUrl(d.pelare) }] : []),
   ...andra.map((e) => ({ namn: e.data.title, href: artikelUrl(e) })),
 ];

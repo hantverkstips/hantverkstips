@@ -219,17 +219,17 @@ export const ATKOMSTER: { varde: Atkomst; etikett: string; hjalp: string }[] = [
   {
     varde: 'fri',
     etikett: 'Fri tomt, grävmaskinen kommer runt hela huset',
-    hjalp: 'Jord eller morän, plats att lägga upp massorna bredvid schakten.',
+    hjalp: 'Marken är jord eller morän, och massorna får plats bredvid schakten.',
   },
   {
     varde: 'trang',
     etikett: 'Trångt, en eller flera sidor måste grävas för hand',
-    hjalp: 'Radhus, tomtgräns tätt inpå, eller massor som måste köras bort direkt.',
+    hjalp: 'Radhus, tomtgräns tätt inpå, eller massor som måste köras bort med en gång.',
   },
   {
     varde: 'berg',
     etikett: 'Berg eller sten i schakten',
-    hjalp: 'Hydraulhammare eller sprängning innan röret kan läggas.',
+    hjalp: 'Det behövs hydraulhammare eller sprängning innan röret kan läggas.',
   },
 ];
 
@@ -368,19 +368,19 @@ export const TEJPTESTER: { varde: Tejptest; etikett: string; hjalp: string }[] =
   {
     varde: 'markfukt',
     etikett: 'Fukt på plastens insida, mot väggen',
-    hjalp: 'Vattnet kommer genom betongen. Det är markfukt.',
+    hjalp: 'Då kommer vattnet genom betongen. Det är markfukt.',
   },
   {
     varde: 'kondens',
     etikett: 'Fukt på plastens utsida, mot rummet',
-    hjalp: 'Vattnet kommer ur luften i källaren. Det är kondens.',
+    hjalp: 'Då kommer vattnet ur luften i källaren. Det är kondens.',
   },
   {
     varde: 'torrt',
     etikett: 'Torrt på båda sidor',
-    hjalp: 'Plasten satt troligen på fel vägg. Flytta den och gör om testet.',
+    hjalp: 'Då satt plasten troligen på fel vägg. Flytta den och gör om testet.',
   },
-  { varde: 'inte-gjort', etikett: 'Jag har inte gjort testet', hjalp: 'Det kostar en bit plast och två dygn.' },
+  { varde: 'inte-gjort', etikett: 'Jag har inte gjort testet', hjalp: 'Det kostar dig en bit plast och två dygn.' },
 ];
 
 export const BESKED_RUBRIK: Record<Besked, string> = {
@@ -420,19 +420,19 @@ export const GRANSER = {
  */
 
 const GOR_INTE_GRAV_FORE_TESTET =
-  'Gräv inte innan tejptestet har svarat. En bit plastfolie mot källarväggen i två dygn skiljer markfukt från kondens, och de två kräver helt olika saker av dig. Testet kostar en rulle tejp. Grävningen kostar som ett badrum.';
+  'Gräv inte innan tejptestet har svarat. En bit plastfolie mot källarväggen i två dygn skiljer markfukt från kondens, och de två kräver helt olika saker av dig. Testet kostar en rulle tejp, och grävningen kostar som ett badrum.';
 
 const GOR_INTE_AVFUKTARE_MOT_MARKFUKT =
-  'Köp inte en avfuktare mot markfukt. Maskinen torkar luften i rummet, avdunstningen ur väggen ökar, och väggen suger efter mer vatten ur marken. Betongen är lika våt, och du betalar för det dygnet runt.';
+  'Köp inte en avfuktare mot markfukt. Maskinen torkar luften i rummet, mer vatten dunstar ur väggen, och väggen suger efter mer ur marken. Betongen är lika våt som förut, och du betalar för det dygnet runt.';
 
 const GOR_INTE_OFFERT_UTAN_MATVARDEN =
-  'Ta inte en offert på en åtgärd innan du har en fuktutredning med mätvärden. Du vill se luftfuktighet och temperatur i materialet, var i huset mätningen gjordes och vilken slutsats de drar av just de talen. Ett papper utan en enda siffra är ett säljbesök.';
+  'Ta inte in en offert på en åtgärd innan du har en fuktutredning med mätvärden. Du vill se luftfuktighet och temperatur i materialet, var i huset de mätte och vilken slutsats de drar av just de talen. Ett papper utan en enda siffra är ett säljbesök.';
 
 const GOR_INTE_FOREBYGGANDE =
-  'Gräv inte förebyggande när källaren bara används som källare. Villaägarnas rådgivare säger rakt ut att det finns roligare saker att lägga pengarna på, och en grävning som inte behövdes kostar mer än allt annat på den här sidan tillsammans.';
+  'Gräv inte för säkerhets skull när källaren bara används som källare. Villaägarnas rådgivare säger rakt ut att det finns roligare saker att lägga pengarna på, och en grävning som inte behövdes kostar mer än allt annat på den här sidan tillsammans.';
 
 const GOR_INTE_PLAST_MOT_VAGGEN =
-  'Sätt inte en plastmatta direkt mot väggen som enda skydd utifrån. Den kalla marken gör att fukten stannar i väggen i stället för att vandra ut, varnar Villaägarna. Skyddet ska stoppa vattnet och samtidigt släppa ut det som redan sitter i betongen.';
+  'Sätt inte en plastmatta direkt mot väggen som enda skydd utifrån. Villaägarna varnar för det, eftersom den kalla marken gör att fukten stannar i väggen i stället för att vandra ut. Skyddet ska stoppa vattnet och samtidigt släppa ut det som redan sitter i betongen.';
 
 /** Decimalkomma accepteras: '2,5' blir 2.5. Tomt eller skräp ger NaN. */
 function tillTal(v: string | null): number {
@@ -540,16 +540,16 @@ export function raknaDranering(i: DraneringIndata): DraneringResultat {
     Number.isFinite(varde) && varde >= granser[0] && varde <= granser[1];
 
   if (!inom(i.husLangdM, GRANSER.husLangdM)) {
-    fel.husLangdM = `Ange husets längd mellan ${GRANSER.husLangdM[0]} och ${GRANSER.husLangdM[1]} meter`;
+    fel.husLangdM = `Skriv husets längd mellan ${GRANSER.husLangdM[0]} och ${GRANSER.husLangdM[1]} meter`;
   }
   if (!inom(i.husBreddM, GRANSER.husBreddM)) {
-    fel.husBreddM = `Ange husets bredd mellan ${GRANSER.husBreddM[0]} och ${GRANSER.husBreddM[1]} meter`;
+    fel.husBreddM = `Skriv husets bredd mellan ${GRANSER.husBreddM[0]} och ${GRANSER.husBreddM[1]} meter`;
   }
   if (!inom(i.schaktDjupM, GRANSER.schaktDjupM)) {
-    fel.schaktDjupM = `Ange schaktdjupet mellan ${String(GRANSER.schaktDjupM[0]).replace('.', ',')} och ${GRANSER.schaktDjupM[1]} meter`;
+    fel.schaktDjupM = `Skriv schaktdjupet mellan ${String(GRANSER.schaktDjupM[0]).replace('.', ',')} och ${GRANSER.schaktDjupM[1]} meter`;
   }
   if (!inom(i.alderAr, GRANSER.alderAr) || !Number.isInteger(i.alderAr)) {
-    fel.alderAr = `Ange dräneringens ålder som ett helt antal år mellan ${GRANSER.alderAr[0]} och ${GRANSER.alderAr[1]}`;
+    fel.alderAr = `Skriv dräneringens ålder som ett helt antal år mellan ${GRANSER.alderAr[0]} och ${GRANSER.alderAr[1]}`;
   }
   if (Object.keys(fel).length > 0) return { status: 'ogiltig', fel };
 
@@ -615,25 +615,25 @@ export function raknaDranering(i: DraneringIndata): DraneringResultat {
   if (i.tejptest === 'markfukt') {
     regler.push({
       utfall: 'grav',
-      text: 'Plasten är våt på väggsidan. Vattnet kommer alltså genom betongen, och det är markfukt. Skyddet mot den sitter på utsidan av väggen. Allt du gör inifrån flyttar problemet i stället för att lösa det.',
+      text: 'Plasten är våt på väggsidan. Vattnet kommer alltså genom betongen, och det är markfukt. Skyddet mot den sitter på utsidan av väggen, så allt du gör inifrån flyttar problemet i stället för att lösa det.',
       kalla: 'Boverket, fuktinträngning från mark till källarvägg. Tejptestet beskrivs av tidningen Gör Det Själv',
     });
   } else if (i.tejptest === 'kondens') {
     regler.push({
       utfall: 'mat',
-      text: `Plasten är våt på rumssidan. Vattnet kommer alltså ur luften, och det är kondens. Det är det enda av de tre fallen där en maskin hjälper. En avfuktare kostar ${kronor(AVFUKTARE_KR)} kr, grävningen ${faktorMotAvfuktare} gånger mer.`,
+      text: `Plasten är våt på rumssidan. Vattnet kommer alltså ur luften, och det är kondens. Det är det enda av de tre fallen där en maskin hjälper. En avfuktare kostar ${kronor(AVFUKTARE_KR)} kr, och grävningen kostar ${faktorMotAvfuktare} gånger mer.`,
       kalla: 'Tejptestet beskrivs av tidningen Gör Det Själv. Avfuktarens pris är läst hos Proffsmagasinet',
     });
   } else if (i.tejptest === 'torrt') {
     regler.push({
       utfall: 'billigt',
-      text: 'Torrt på båda sidor betyder oftast fel vägg, inte friskt hus. Flytta plasten till den lägsta punkten på en vägg som ligger mot mark, helst i ett hörn, och gör om testet.',
+      text: 'Torrt på båda sidor betyder oftast att plasten satt på fel vägg, och sällan att huset är friskt. Flytta plasten till den lägsta punkten på en vägg som ligger mot mark, helst i ett hörn, och gör om testet.',
       kalla: 'Tidningen Gör Det Själv, bekämpa fukt i källaren',
     });
   } else {
     regler.push({
       utfall: 'billigt',
-      text: 'Vattnet i en källare kommer från ett av tre ställen: markfukt genom väggen, kondens ur luften, eller ett läckage som kommer med regnet. Tejptestet säger vilket av dem du har, och det kostar en bit plast och två dygn.',
+      text: 'Vattnet i en källare kommer från ett av tre ställen: markfukt genom väggen, kondens ur luften, eller ett läckage som kommer med regnet. Tejptestet säger vilket av dem du har, och det kostar dig en bit plast och två dygn.',
       kalla: 'Tidningen Gör Det Själv, bekämpa fukt i källaren',
     });
   }
@@ -643,7 +643,7 @@ export function raknaDranering(i: DraneringIndata): DraneringResultat {
     regler.push({
       utfall: i.tejptest === 'markfukt' ? 'grav' : 'ok',
       text: `Dräneringen är ${i.alderAr} år gammal. Villaägarna säger att en dränering kan hålla i femtio år, så åldern ensam är inget skäl att gräva. Tillsammans med markfukt på plasten är den det.`,
-      kalla: 'Villaägarna, måste du dränera huset. Gränsen på 30 år är vår',
+      kalla: 'Villaägarna, måste du dränera huset. Gränsen på 30 år är min',
     });
   } else {
     regler.push({
@@ -656,14 +656,14 @@ export function raknaDranering(i: DraneringIndata): DraneringResultat {
   // 8c. Det billiga, som alltid ska göras först.
   regler.push({
     utfall: 'billigt',
-    text: `Stuprören ska leda bort vattnet, marken ska luta från huset och dagvattenbrunnen ska vara rensad. Ett tak på ${TAK_KVM} kvm lämnar ifrån sig ${kronor(REGN_LITER)} liter vid ett rejält regn.`,
+    text: `Stuprören ska leda bort vattnet, marken ska luta från huset och dagvattenbrunnen ska vara rensad. Ett tak på ${TAK_KVM} kvm lämnar ifrån sig ${kronor(REGN_LITER)} liter vid ett rejält regn, och det ska inte ner längs grundmuren.`,
     kalla: 'Skadedjurs- och besiktningsföretaget Anticimex, fukt i källare och grund',
   });
 
   // 8d. Fuktutredningen, som är det enda som gör en offert läsbar.
   regler.push({
     utfall: 'mat',
-    text: `En fuktutredning med mätvärden kostar ${kronor(FUKTUTREDNING_KR)} kr, grävningen ${faktorMotUtredning} gånger mer. Be om utredningen först, inte om en offert på en åtgärd.`,
+    text: `En fuktutredning med mätvärden kostar ${kronor(FUKTUTREDNING_KR)} kr, och grävningen kostar ${faktorMotUtredning} gånger mer. Be om utredningen först och om offerten på åtgärden sedan.`,
     kalla: 'Saneringsföretaget Ocab, listpris på fuktkontroll av källarutrymme',
   });
 
@@ -674,7 +674,7 @@ export function raknaDranering(i: DraneringIndata): DraneringResultat {
         ? 'Berg eller sten i schakten betyder sprängning eller hydraulhammare innan röret kan läggas'
         : i.atkomst === 'trang'
           ? 'En trång tomt betyder handgrävning på de sidor maskinen inte når'
-          : `Schakten går ner till ${meter(i.schaktDjupM)}, inte till de ${meter(SCHAKTDJUP_REFERENS_M)} vi räknar som normalt djup`;
+          : `Schakten går ner till ${meter(i.schaktDjupM)} och inte till de ${meter(SCHAKTDJUP_REFERENS_M)} som räknas som normalt djup`;
     // Djup och åtkomst kan ta ut varandra. Då blir "i stället för" en jämförelse
     // mellan två lika tal, och raden säger i stället att talet står kvar.
     const prisdel =
@@ -692,7 +692,7 @@ export function raknaDranering(i: DraneringIndata): DraneringResultat {
   if (i.atkomst === 'berg') {
     regler.push({
       utfall: 'ok',
-      text: `Sprängning har fasta kostnader som inte ryms i ett meterpris. Borriggen kostar runt ${kronor(SPRANGNING_ETABLERING_KR)} kr att etablera, täckningen av husen omkring runt ${kronor(SPRANGNING_TACKNING_KR)} kr. Be om dem som egna rader i offerten.`,
+      text: `Sprängning har fasta kostnader som inte ryms i ett meterpris. Borriggen kostar runt ${kronor(SPRANGNING_ETABLERING_KR)} kr att få på plats, och täckningen av husen omkring kostar runt ${kronor(SPRANGNING_TACKNING_KR)} kr. Be om dem som egna rader i offerten.`,
       kalla: 'Tjänsteförmedlaren HelpHero, kunskapsbank om bergsprängning',
     });
   }
@@ -701,15 +701,15 @@ export function raknaDranering(i: DraneringIndata): DraneringResultat {
   regler.push({
     utfall: 'ok',
     text: `Dränering ger rotavdrag, men inte på maskinhyran, och grävmaskinen är en stor del av notan. Här blir avdraget ${kronor(rot.avdragKr)} kr, räknat på tre femtedelar av arbetet. Be om en faktura där maskinen står på egen rad.`,
-    kalla: 'Skatteverket, så fungerar rotavdraget, och listan över arbete som ger rätt till avdrag. Femtedelarna är vårt antagande',
+    kalla: 'Skatteverket, så fungerar rotavdraget, och listan över arbete som ger rätt till avdrag. Femtedelarna är mitt antagande',
   });
 
   const beskedRad =
     besked === 'dranera'
-      ? `Markfukt på plasten och en dränering som passerat trettio år. Räkna med ${kronor(summaLagKr)} till ${kronor(summaHogKr)} kr för hela grunden. Ta in offerter först när du har en fuktutredning med mätvärden.`
+      ? `Plasten visar markfukt och dräneringen har passerat trettio år, så räkna med ${kronor(summaLagKr)} till ${kronor(summaHogKr)} kr för hela grunden. Skaffa en fuktutredning med mätvärden innan du tar in offerter.`
       : besked === 'mat-forst'
-        ? `Vattnet kommer ur luften, inte ur marken. En avfuktare kostar knappt sex tusen kronor, den här grävningen börjar på ${kronor(summaLagKr)} kr. Mät över en vinter innan du river upp tomten.`
-        : `Stuprör, markfall och en rensad dagvattenbrunn kostar dig en helg. Grävningen börjar på ${kronor(summaLagKr)} kr. Gör det billiga först, mät sedan, gräv sist.`;
+        ? `Vattnet kommer ur luften och inte ur marken. En avfuktare kostar knappt sex tusen kronor, och den här grävningen börjar på ${kronor(summaLagKr)} kr. Mät över en vinter innan du river upp tomten.`
+        : `Rensa dagvattenbrunnen, se över stuprören och markfallet, och gör tejptestet. Det kostar dig en helg, medan grävningen börjar på ${kronor(summaLagKr)} kr.`;
 
   const gorInteDetHar = [
     GOR_INTE_GRAV_FORE_TESTET,

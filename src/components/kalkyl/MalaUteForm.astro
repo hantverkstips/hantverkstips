@@ -54,7 +54,7 @@ const vaderfalt = [
     enhet: '°C',
     varde: varden.temp,
     fel: fel.luftTempC,
-    hjalp: 'Temperaturen just nu utomhus i skuggan. Minusgrader skrivs med minustecken.',
+    hjalp: 'Läs av temperaturen just nu utomhus i skuggan. Minusgrader skriver du med minustecken.',
   },
   {
     namn: 'rf',
@@ -62,7 +62,7 @@ const vaderfalt = [
     enhet: '%',
     varde: varden.rf,
     fel: fel.rfProcent,
-    hjalp: 'Relativ luftfuktighet, det tal väderappen eller en hygrometer utomhus visar.',
+    hjalp: 'Skriv den relativa luftfuktigheten, alltså det tal väderappen eller en hygrometer utomhus visar.',
   },
   {
     namn: 'natt',
@@ -70,7 +70,7 @@ const vaderfalt = [
     enhet: '°C',
     varde: varden.natt,
     fel: fel.nattMinC,
-    hjalp: 'Prognosens lägsta i natt. Den infaller oftast strax före soluppgången.',
+    hjalp: 'Ta prognosens lägsta i natt. Den infaller oftast strax före soluppgången.',
   },
 ] as const;
 
@@ -153,14 +153,14 @@ const klockfalt = [
     {
       !kompakt && (
         <p class={HJALP_KLASS}>
-          Solnedgången står i väderappen. Skriv hel timme: 20 för klockan åtta på kvällen.
+          Solnedgången står i väderappen. Skriv hela timmar, alltså 20 för klockan åtta på kvällen.
         </p>
       )
     }
   </fieldset>
 
   <fieldset class="m-0 mb-4 p-0 border-0">
-    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Färgtyp</legend>
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Vad målar du med?</legend>
     <div class={radioKlass}>
       {
         FARGTYPER.map((f) => (
@@ -174,7 +174,7 @@ const klockfalt = [
     {
       !kompakt && (
         <p class={HJALP_KLASS}>
-          Står på burken. Torktiden och den lägsta temperaturen kommer ur ett datablad för varje typ, och källan
+          Det står på burken. Torktiden och den lägsta temperaturen kommer ur ett datablad för varje typ, och källan
           står i svaret.
         </p>
       )
@@ -182,7 +182,7 @@ const klockfalt = [
   </fieldset>
 
   <fieldset class="m-0 mb-4 p-0 border-0">
-    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Ytan du målar ligger</legend>
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Var ligger ytan du målar?</legend>
     <div class={radioKlass}>
       {
         YTOR.map((y) => (
@@ -208,7 +208,7 @@ const klockfalt = [
       <input type="checkbox" name="regn" value="ja" checked={indata.regn} />
       Regn väntas inom 24 timmar
     </label>
-    {!kompakt && <p class={HJALP_KLASS}>Enligt prognosen, oavsett hur lite. Ett dygn är tillverkarnas eget mått.</p>}
+    {!kompakt && <p class={HJALP_KLASS}>Kryssa i om prognosen säger regn, oavsett hur lite. Ett dygn är tillverkarnas eget mått.</p>}
   </div>
 
   <button type="submit" class={KNAPP_KLASS}>{knappText}</button>

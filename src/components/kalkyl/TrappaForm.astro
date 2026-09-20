@@ -55,13 +55,13 @@ const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
 const styrFalt = {
   stegdjup: {
     namn: 'djup',
-    etikett: 'Önskat stegdjup',
+    etikett: 'Stegdjupet du vill ha',
     varde: varden.djup,
     fel: fel.onskatStegdjupMm,
   },
   langd: {
     namn: 'langd',
-    etikett: 'Längd du har i plan',
+    etikett: 'Längden du har på golvet',
     varde: varden.langd,
     fel: fel.tillgangligLangdMm,
   },
@@ -70,7 +70,7 @@ const styrFalt = {
 
 <form method="get" action="/rakna/trappa/">
   <div class="mb-4">
-    <label for={id('hojd')} class={ETIKETT_KLASS}>Våningshöjd, golv till golv</label>
+    <label for={id('hojd')} class={ETIKETT_KLASS}>Våningshöjd från golv till golv</label>
     <div class="flex items-center gap-2">
       <input
         id={id('hojd')}
@@ -91,8 +91,8 @@ const styrFalt = {
       ) : (
         !kompakt && (
           <p class={HJALP_KLASS}>
-            Från färdigt golv till färdigt golv. Ska ett nytt golv läggas efteråt, uppe eller nere, räkna in dess
-            tjocklek redan nu.
+            Mät från färdigt golv till färdigt golv. Ska det läggas nytt golv efteråt, uppe eller nere, räkna in
+            tjockleken redan nu.
           </p>
         )
       )
@@ -142,7 +142,7 @@ const styrFalt = {
     {
       !kompakt && (
         <p class={HJALP_KLASS}>
-          Båda fälten står kvar hela tiden. Det är radioknappen som avgör vilket av dem räknaren läser.
+          Båda fälten står framme hela tiden. Knappen du kryssar i avgör vilket av dem som läses.
         </p>
       )
     }

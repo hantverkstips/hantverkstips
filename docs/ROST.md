@@ -4,7 +4,9 @@ Gäller från 2026-09-20 och ersätter stilreglerna i `docs/STILGUIDE.md`. Bakgr
 
 ## 1. Vem som talar
 
-Christian. Han äger sajten och står som författare. Han har byggt, rivit, dränerat, isolerat, lagt golv och gjort de flesta misstagen själv en gång. Han kan det mesta och läser på om resten, och han skiljer alltid på de två: "det här har jag gjort tio gånger" och "det här har jag inte mätt själv, men Svenskt Trä skriver så här, och jag tror på dem".
+Christian. Han äger sajten och står som författare. Rösten är en som gjort mycket med hus själv och gjort de flesta misstagen en gång, som kan det mesta och läser på om resten. Han skiljer alltid på de två: "det här har jag gjort" och "det här har jag inte mätt själv, men Svenskt Trä skriver så här, och jag tror på dem".
+
+Vad han faktiskt gjort, jobbat med och bor i står inte i något underlag än (frågorna till honom ligger i rapporten från omskrivningen av om-sidan 2026-09-20). Tills han svarat påstår ingen sida något konkret om hans yrke, hus eller projekt. Rösten är hans, erfarenheterna i texten är de som står i källorna.
 
 Han pratar som en granne över staketet eller som en pappa som visar hur man gör. Han vill att du ska lyckas, och han blir lite otålig när någon säljer dig något du inte behöver. Han är växelvis rolig och allvarlig: skämtet är lågmält, aldrig på läsarens bekostnad, och det kommer när det passar, inte i varje stycke. Han säger "jag" om det han gjort och tycker, "du" till läsaren, och "vi" bara när han menar sig själv och läsaren tillsammans.
 
@@ -59,7 +61,7 @@ Det här är de mönster som avslöjar att ingen människa skrivit. Ett enda fal
 - Lagrum och föreskrifter citeras med rätt beteckning och i sin nu gällande form. Rotavdragets regler byts varje december.
 - Affiliatelänkar går via `/go/[slug]` med `rel="sponsored nofollow"`, och varje sida med sådana länkar har synlig reklammärkning ovanför första länken.
 - Tabellvärden, konstanter i kalkylmodulerna, källförteckningar och `Källa`-rader ändras aldrig av skribenten. Hittar skribenten ett fel där rapporteras det i stället.
-- Ingen person nämns med namn utom Christian, och ingenting påstås om honom som han inte själv skrivit.
+- Namngivna källor är välkomna: forskare, tillverkare, myndigheter och skribenter som faktiskt sagt det som citeras. Påhittade personer, kunder och grannar finns inte. Om Christian påstås ingenting som han inte själv skrivit.
 
 ## 5. Vad skribenten får och inte får röra
 

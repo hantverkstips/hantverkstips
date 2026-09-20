@@ -179,10 +179,10 @@ export const GUIDE = '/fukt/fukt-i-kallaren/';
  * Ankarna till guidens avsnitt. Rubrikerna genererar id själva i bygget, och
  * ändras en rubrik i fukt-i-kallaren.mdx måste raden nedan ändras med den.
  */
-export const GUIDE_TEJPTEST = `${GUIDE}#tejptestet-två-dygn-och-en-bit-plast`;
-export const GUIDE_MARKFUKT = `${GUIDE}#markfukt-vattnet-kommer-genom-väggen`;
-export const GUIDE_KONDENS = `${GUIDE}#kondens-du-vädrar-in-vattnet-själv`;
-export const GUIDE_LACKAGE = `${GUIDE}#läckage-vattnet-kommer-efter-regn`;
+export const GUIDE_TEJPTEST = `${GUIDE}#tejptestet-svarar-på-två-dygn`;
+export const GUIDE_MARKFUKT = `${GUIDE}#markfukt-i-källaren-kommer-genom-väggen`;
+export const GUIDE_KONDENS = `${GUIDE}#kondens-i-källaren-vädrar-du-in-själv`;
+export const GUIDE_LACKAGE = `${GUIDE}#läckage-kommer-med-regnet`;
 
 /**
  * Symptomtabellen, rad för rad som den står i /fukt/fukt-i-kallaren/. Tabellen
@@ -194,31 +194,31 @@ export const SYMPTOM: SymptomRad[] = [
     varde: 'salt',
     etikett: 'Vita ränder eller kristaller på betongen',
     trolig: 'Markfukt',
-    nastaSteg: 'Tejptestet',
+    nastaSteg: 'Gör tejptestet',
     pekarPa: 'markfukt',
     kalla: 'Villaägarna, saltutfällningar är ett tecken på att vägg och källargolv är fuktiga',
   },
   {
     varde: 'flagnar',
-    etikett: 'Färg eller puts som bubblar och släpper i sjok, nedersta halvmetern',
+    etikett: 'Färg eller puts som bubblar och släpper i sjok på den nedersta halvmetern',
     trolig: 'Markfukt',
-    nastaSteg: 'Tejptestet',
+    nastaSteg: 'Gör tejptestet',
     pekarPa: 'markfukt',
     kalla: 'Vår guide om fukt i källaren: markfukt bakom ett ytskikt som är för tätt',
   },
   {
     varde: 'imma',
-    etikett: 'Imma på kallvattenrör och fukt på hela väggen, juli till september',
+    etikett: 'Imma på kallvattenrören och en vägg som är fuktig överallt, juli till september',
     trolig: 'Kondens',
-    nastaSteg: 'Tejptestet, sedan hygrometer',
+    nastaSteg: 'Gör tejptestet, häng sedan upp en hygrometer',
     pekarPa: 'kondens',
     kalla: 'Vår guide om fukt i källaren, symptomtabellen',
   },
   {
     varde: 'horn',
-    etikett: 'Mörk fläck i ett hörn bakom en hylla, torr vägg i övrigt',
+    etikett: 'En mörk fläck i hörnet bakom en hylla, torr vägg i övrigt',
     trolig: 'Kondens',
-    nastaSteg: 'Flytta hyllan, mät om efter två veckor',
+    nastaSteg: 'Flytta hyllan och mät igen om två veckor',
     pekarPa: 'kondens',
     kalla: 'Vår guide om fukt i källaren: en kall punkt där luften står still',
   },
@@ -232,9 +232,9 @@ export const SYMPTOM: SymptomRad[] = [
   },
   {
     varde: 'lukt',
-    etikett: 'Tvätt som inte torkar, unken lukt som kommer och går',
+    etikett: 'Tvätt som aldrig torkar, unken lukt som kommer och går',
     trolig: 'Hög luftfuktighet',
-    nastaSteg: 'Hygrometer i en vecka',
+    nastaSteg: 'Häng en hygrometer där nere i en vecka',
     pekarPa: 'fuktig-luft',
     kalla: 'Folkhälsomyndigheten räknar mikrobiell lukt som en indikation på fuktskada',
   },
@@ -244,22 +244,22 @@ export const TEJPTESTER: { varde: Tejptest; etikett: string; hjalp: string }[] =
   {
     varde: 'markfukt',
     etikett: 'Fukt på plastens insida, mot väggen',
-    hjalp: 'Vattnet kommer genom betongen. Det är markfukt.',
+    hjalp: 'Då kommer vattnet genom betongen. Det är markfukt.',
   },
   {
     varde: 'kondens',
     etikett: 'Fukt på plastens utsida, mot rummet',
-    hjalp: 'Vattnet kommer ur luften i källaren. Det är kondens.',
+    hjalp: 'Då kommer vattnet ur luften i källaren. Det är kondens.',
   },
   {
     varde: 'torrt',
     etikett: 'Torrt på båda sidor',
-    hjalp: 'Plasten satt troligen på fel vägg. Flytta den och gör om testet.',
+    hjalp: 'Då satt plasten troligen på fel vägg. Flytta den och gör om testet.',
   },
   {
     varde: 'inte-gjort',
     etikett: 'Jag har inte gjort testet',
-    hjalp: 'Det kostar en bit plastfolie och två dygn.',
+    hjalp: 'Det kostar dig en bit plastfolie och två dygn.',
   },
 ];
 
@@ -267,24 +267,24 @@ export const ARSTIDER: { varde: Arstid; etikett: string; hjalp: string }[] = [
   {
     varde: 'sommar',
     etikett: 'Sommar, juli till september',
-    hjalp: 'Den varma luften du vädrar in möter en kall vägg.',
+    hjalp: 'Den varma luften du vädrar in möter en kall vägg, och då fäller den ut vatten.',
   },
   {
     varde: 'vinter',
     etikett: 'Resten av året, oktober till juni',
-    hjalp: 'Uteluften bär mindre vatten, så fukten kommer inifrån eller ur marken.',
+    hjalp: 'Uteluften bär mindre vatten, så fukten kommer inifrån huset eller ur marken.',
   },
 ];
 
 export const ANVANDNINGAR: { varde: Anvandning; etikett: string; hjalp: string }[] = [
   {
     varde: 'kallare',
-    etikett: 'Bara källare: förråd, tvättstuga, pannrum',
+    etikett: 'Bara källare, alltså förråd, tvättstuga eller pannrum',
     hjalp: 'Kraven är lägre, och en gammal dränering får leva vidare längre.',
   },
   {
     varde: 'bebodd',
-    etikett: 'Inredd och bebodd: sovrum, gillestuga, kontor',
+    etikett: 'Inredd och bebodd, alltså sovrum, gillestuga eller kontor',
     hjalp: 'Då gäller kraven på ett bostadsrum, och fukten blir en hälsofråga.',
   },
 ];
@@ -293,7 +293,7 @@ export const BESKED_RUBRIK: Record<Diagnos, string> = {
   markfukt: 'Markfukt',
   kondens: 'Kondens',
   lackage: 'Läckage',
-  'hog-luftfuktighet': 'Fuktig luft, orsaken oklar',
+  'hog-luftfuktighet': 'Fuktig luft utan känd orsak',
   oklart: 'Vet inte än',
 };
 
@@ -326,16 +326,16 @@ export const GRANSER = {
  */
 
 const GOR_INTE_AVFUKTARE_MOT_MARKFUKT =
-  'Köp inte en avfuktare mot markfukt. Maskinen torkar luften i rummet, avdunstningen ur väggen ökar, och väggen suger efter mer vatten ur marken. Betongen är lika våt som förut, och du betalar för det dygnet runt.';
+  'Köp inte en avfuktare mot markfukt. Maskinen torkar luften i rummet, mer vatten dunstar ur väggen, och väggen suger efter mer ur marken. Betongen är lika våt som förut, och du betalar för det dygnet runt.';
 
 const GOR_INTE_LITA_PA_TORR_PLAST =
-  'Lita inte på torr plast. Torrt på båda sidor betyder oftast att du tejpade på fel vägg, inte att källaren är frisk. Flytta plasten till den lägsta punkten på en vägg som ligger mot mark, helst i ett hörn, och gör om testet.';
+  'Lita inte på torr plast. Torrt på båda sidor betyder oftast att du tejpade på fel vägg, och sällan att källaren är frisk. Flytta plasten till den lägsta punkten på en vägg som ligger mot mark, helst i ett hörn, och gör om testet.';
 
 const GOR_INTE_OFFERT_UTAN_MATVARDEN =
-  'Ring inte efter en offert på en åtgärd innan du har en fuktutredning med mätvärden. Du vill se luftfuktighet och temperatur i materialet, var i huset mätningen gjordes och vilken slutsats de drar av just de talen. Ett papper utan en enda siffra är ett säljbesök.';
+  'Ring inte efter en offert på en åtgärd innan du har en fuktutredning med mätvärden. Du vill se luftfuktighet och temperatur i materialet, var i huset de mätte och vilken slutsats de drar av just de talen. Ett papper utan en enda siffra är ett säljbesök.';
 
 const GOR_INTE_TAT_MATTA =
-  'Sätt inte en tät plastmatta mot källarväggens utsida som enda fuktskydd. Villaägarna avråder från det: den kalla marken gör att fukten fastnar i väggen i stället för att vandra ut. Skyddet ska stoppa vattnet utifrån och samtidigt släppa ut det som redan sitter i betongen.';
+  'Sätt inte en tät plastmatta mot källarväggens utsida som enda fuktskydd. Villaägarna avråder från det, för den kalla marken gör att fukten fastnar i väggen i stället för att vandra ut. Skyddet ska stoppa vattnet utifrån och samtidigt släppa ut det som redan sitter i betongen.';
 
 /** Decimalkomma accepteras: '72,5' blir 72.5. Tomt fält ger null, skräp ger NaN. */
 function tillTal(v: string | null): number {
@@ -410,7 +410,7 @@ export function bedomKallare(i: KallareIndata): KallareResultat {
     const rf = i.luftfuktighet;
     const inom = Number.isFinite(rf) && rf >= GRANSER.luftfuktighet[0] && rf <= GRANSER.luftfuktighet[1];
     if (!inom) {
-      fel.luftfuktighet = `Ange luftfuktigheten mellan ${GRANSER.luftfuktighet[0]} och ${GRANSER.luftfuktighet[1]} procent, eller lämna fältet tomt`;
+      fel.luftfuktighet = `Skriv luftfuktigheten mellan ${GRANSER.luftfuktighet[0]} och ${GRANSER.luftfuktighet[1]} procent, eller lämna fältet tomt`;
     }
   }
   if (Object.keys(fel).length > 0) return { status: 'ogiltig', fel };
@@ -462,14 +462,14 @@ export function bedomKallare(i: KallareIndata): KallareResultat {
   // Steg 1. Titta. En rad per kryss, med guidens egen tolkning på raden.
   const titta: Regel[] = valda.map((s) => ({
     steg: 'titta',
-    text: `${s.etikett}. Det pekar mot ${s.trolig.toLowerCase()}. Härnäst: ${s.nastaSteg.toLowerCase()}.`,
+    text: `${s.etikett}. Det pekar mot ${s.trolig.toLowerCase()}, och nästa steg enligt tabellen är: ${s.nastaSteg.toLowerCase()}.`,
     kalla: s.kalla,
   }));
   if (valda.length === 0) {
     titta.push({
       steg: 'titta',
-      text: 'Du har inte kryssat i något. Gå ner med en ficklampa och en torr trasa, torka där väggen ser mörkast ut, känn på golvet längs ytterväggarna och dra ut det som står tätt mot dem. Tio minuter stryker oftast två orsaker direkt.',
-      kalla: 'Vår guide om fukt i källaren, avsnittet Titta först',
+      text: 'Du har inte kryssat i något än. Gå ner med en ficklampa och en torr trasa, torka där väggen ser mörkast ut, känn på golvet längs ytterväggarna och dra ut det som står tätt mot dem. Tio minuter där nere stryker oftast två av orsakerna direkt.',
+      kalla: 'Guiden om fukt i källaren, avsnittet Titta först',
     });
   }
 
@@ -478,26 +478,26 @@ export function bedomKallare(i: KallareIndata): KallareResultat {
   if (i.tejptest === 'markfukt') {
     tejpa.push({
       steg: 'tejpa',
-      text: 'Plasten är våt på insidan, mot väggen. Vattnet kommer genom betongen, och det är markfukt. Boverket är tydligt: skyddet mot den hör hemma på utsidan av väggen.',
+      text: 'Plasten är våt på insidan, mot väggen. Vattnet kommer genom betongen, och det är markfukt. Boverket är tydligt med att skyddet mot den hör hemma på utsidan av väggen.',
       kalla: 'Tejptestet beskrivs av tidningen Gör Det Själv. Boverket, fuktinträngning från mark till källarvägg',
     });
   } else if (i.tejptest === 'kondens') {
     tejpa.push({
       steg: 'tejpa',
-      text: 'Plasten är våt på utsidan, mot rummet. Luften bär mer vatten än den kalla väggen tål, och det är kondens. Det enda av de tre fallen där en maskin är rätt svar.',
+      text: 'Plasten är våt på utsidan, mot rummet. Luften bär mer vatten än den kalla väggen tål, och det är kondens. Det här är det enda av de tre fallen där en maskin är rätt svar.',
       kalla: 'Tejptestet beskrivs av tidningen Gör Det Själv',
     });
   } else if (i.tejptest === 'torrt') {
     tejpa.push({
       steg: 'tejpa',
-      text: 'Torr plast på båda sidor betyder inte att du är frisk. Det betyder att du tejpade på fel vägg, och att testet ska göras om på rätt ställe.',
-      kalla: 'Vår guide om fukt i källaren, tejptestets tredje utfall',
+      text: 'Torr plast på båda sidor betyder inte att du är frisk. Det betyder att du tejpade på fel vägg, så gör om testet på den lägsta punkten av en vägg som ligger mot mark.',
+      kalla: 'Guiden om fukt i källaren, tejptestets tredje utfall',
     });
   } else {
     tejpa.push({
       steg: 'tejpa',
-      text: `Tejptestet är ogjort, och det är den enda mätning som skiljer markfukt från kondens. Tejpa en bit plastfolie på 50 gånger 50 cm tätt mot den våtaste väggen och vänta minst ${TEJPTEST_DYGN} dygn.`,
-      kalla: 'Tidningen Gör Det Själv säger två veckor, en målerifirma ett till två dygn. Vår gräns ligger däremellan',
+      text: `Du har inte gjort tejptestet än, och det är den enda mätning som skiljer markfukt från kondens. Tejpa en bit plastfolie på 50 gånger 50 cm tätt mot den våtaste väggen och vänta minst ${TEJPTEST_DYGN} dygn.`,
+      kalla: 'Tidningen Gör Det Själv säger två veckor, en målerifirma ett till två dygn. Min gräns ligger däremellan',
     });
   }
   if (tejpatUt) {
@@ -513,46 +513,46 @@ export function bedomKallare(i: KallareIndata): KallareResultat {
   if (i.luftfuktighet === null) {
     mat.push({
       steg: 'mat',
-      text: `Hygrometern är inte avläst. Lägg en i källaren och låt den ligga i ${HYGROMETER_DYGN} dygn, så hinner mätningen täcka ett väderomslag.`,
-      kalla: 'Vår guide om fukt i källaren, avsnittet om kondens',
+      text: `Du har inte läst av någon hygrometer. Lägg en i källaren och låt den ligga i ${HYGROMETER_DYGN} dygn, så hinner mätningen täcka ett väderomslag.`,
+      kalla: 'Guiden om fukt i källaren, avsnittet om kondens',
     });
   } else if (overKritiskRf) {
     mat.push({
       steg: 'mat',
-      text: `Hygrometern visar ${String(i.luftfuktighet).replace('.', ',')} procent relativ luftfuktighet, alltså över Boverkets gräns på ${KRITISK_RF} procent. Så högt bör luften inte ligga under längre tid.`,
+      text: `Hygrometern visar ${String(i.luftfuktighet).replace('.', ',')} procent relativ luftfuktighet, alltså över Boverkets gräns på ${KRITISK_RF} procent. Så högt bör luften inte ligga någon längre tid.`,
       kalla: 'Boverket, högsta tillåtna fukttillstånd (BBR 6:52). Villaägarna säger samma sak i praktisk form',
     });
   } else {
     mat.push({
       steg: 'mat',
-      text: `Hygrometern visar ${String(i.luftfuktighet).replace('.', ',')} procent relativ luftfuktighet, alltså under Boverkets gräns på ${KRITISK_RF} procent. Talet gäller bara där givaren ligger, och bakom en skiva mot ytterväggen är luften fuktigare.`,
+      text: `Hygrometern visar ${String(i.luftfuktighet).replace('.', ',')} procent relativ luftfuktighet, alltså under Boverkets gräns på ${KRITISK_RF} procent. Talet gäller bara där givaren ligger, och bakom en skiva mot ytterväggen är luften fuktigare än så.`,
       kalla: 'Boverket, högsta tillåtna fukttillstånd (BBR 6:52)',
     });
   }
   if (diagnos === 'kondens' && i.arstid === 'sommar') {
     mat.push({
       steg: 'mat',
-      text: 'Kondens i en uppvärmd källare är ett sommarproblem, så du tittar i rätt tid på året. Vädra inte en varm eftermiddag i augusti, och låt inte källarfönstret stå på glänt. Vädra tidigt på morgonen i stället.',
-      kalla: 'Vår guide om fukt i källaren, avsnittet om kondens',
+      text: 'Kondens i en uppvärmd källare är ett sommarproblem, så du tittar i rätt tid på året. Vädra inte en varm eftermiddag i augusti, och låt inte källarfönstret stå på glänt. Vädra tidigt på morgonen i stället, när uteluften är som svalast.',
+      kalla: 'Guiden om fukt i källaren, avsnittet om kondens',
     });
   }
   if (diagnos === 'kondens' && i.arstid === 'vinter') {
     mat.push({
       steg: 'mat',
-      text: 'Kondens är annars ett sommarproblem, för uteluften är torr på vintern. Leta efter vattnet inne i stället. En full maskin tvätt som torkar inomhus är flera liter rakt ut i rummet.',
-      kalla: 'Vår guide om fukt i källaren, rutan om det som gör kondensen värre',
+      text: 'Kondens är annars ett sommarproblem, för uteluften är torr på vintern. Leta efter vattnet inne i huset i stället. En full maskin tvätt som torkar inomhus är flera liter rakt ut i rummet.',
+      kalla: 'Guiden om fukt i källaren, rutan om det som gör kondensen värre',
     });
   }
   if (i.anvandning === 'bebodd') {
     mat.push({
       steg: 'mat',
-      text: `Källaren är inredd och bebodd, och då ändras två saker. Villaägarnas ${KAN_HALLA_AR} år för en dränering gäller uttryckligen en källare som används som källare. Och fukt i ett rum du vistas i är en möjlig olägenhet för hälsan.`,
+      text: `Källaren är inredd och bebodd, och då ändras två saker. Villaägarnas ${KAN_HALLA_AR} år för en dränering gäller uttryckligen en källare som används som källare. Och fukt i ett rum du vistas i kan vara en olägenhet för hälsan.`,
       kalla: 'Villaägarna, måste du dränera huset. Folkhälsomyndigheten, tillsynsvägledning om fukt och mikroorganismer',
     });
   } else {
     mat.push({
       steg: 'mat',
-      text: `Källaren används som källare, och det är villkoret Villaägarna sätter när de skriver att en gammal dränering kan fungera i ${KAN_HALLA_AR} år. Gräv inte i förebyggande syfte.`,
+      text: `Källaren används som källare, och det är villkoret Villaägarna sätter när de skriver att en gammal dränering kan fungera i ${KAN_HALLA_AR} år. Gräv inte för säkerhets skull.`,
       kalla: 'Villaägarna, måste du dränera huset',
     });
   }
@@ -562,19 +562,19 @@ export function bedomKallare(i: KallareIndata): KallareResultat {
   if (diagnos === 'lackage') {
     atgarda.push({
       steg: 'atgarda',
-      text: 'Följ vattnet uppåt och utåt. Notera om det kommer när det regnar eller när någon duschar: en läckande vattenledning ser likadan ut men bryr sig inte om vädret.',
-      kalla: 'Vår guide om fukt i källaren, avsnittet om läckage',
+      text: 'Följ vattnet uppåt och utåt. Lägg märke till om det kommer när det regnar eller när någon duschar, för en läckande vattenledning ser likadan ut men bryr sig inte om vädret.',
+      kalla: 'Guiden om fukt i källaren, avsnittet om läckage',
     });
     atgarda.push({
       steg: 'atgarda',
       text: 'Ett läckage väntar inte till helgen. Vatten vid varje regn blöter upp virket i syll och bjälklag, och det märks först när golvet ovanför känns mjukt. Fotografera innan du torkar upp.',
-      kalla: 'Vår guide om fukt i källaren, varningen om läckage',
+      kalla: 'Guiden om fukt i källaren, varningen om läckage',
     });
   }
   if (diagnos === 'markfukt') {
     atgarda.push({
       steg: 'atgarda',
-      text: 'Skyddet mot markfukt sitter på utsidan av väggen. Hela utsidan, fyllningen intill inräknad, ska stoppa både kapillärsugningen och ångan in i väggen, och leda ytvattnet ner till dräneringsledningarna.',
+      text: 'Skyddet mot markfukt sitter på utsidan av väggen. Hela utsidan, fyllningen intill inräknad, ska stoppa både vattnet som sugs upp och ångan som vandrar in i väggen, och leda ytvattnet ner till dräneringsrören.',
       kalla: 'Boverket, risker med fuktinträngning från mark till källarvägg',
     });
     atgarda.push({
@@ -584,40 +584,40 @@ export function bedomKallare(i: KallareIndata): KallareResultat {
     });
     atgarda.push({
       steg: 'atgarda',
-      text: `Sedan är frågan om dräneringen är slut. Arbetet kostar runt ${kronor(DRANERING_KR_PER_LOPMETER)} kr per löpmeter husgrund enligt Villaägarna, och kan bli det dubbla. En villagrund på ${VILLAGRUND_LOPMETER} löpmeter landar då på ${kronor(DRANERING_KR_PER_LOPMETER * VILLAGRUND_LOPMETER)} kr.`,
-      kalla: 'Villaägarna, måste du dränera huset. Multiplikationen är vår',
+      text: `Sedan är frågan om dräneringen är slut. Arbetet kostar runt ${kronor(DRANERING_KR_PER_LOPMETER)} kr per löpmeter husgrund enligt Villaägarna, och det kan bli det dubbla. En villagrund på ${VILLAGRUND_LOPMETER} löpmeter landar då på ${kronor(DRANERING_KR_PER_LOPMETER * VILLAGRUND_LOPMETER)} kr.`,
+      kalla: 'Villaägarna, måste du dränera huset. Multiplikationen är min',
     });
   }
   if (diagnos === 'kondens') {
     atgarda.push({
       steg: 'atgarda',
       text: `Det här är fallet där en maskin gör jobbet. En kondensavfuktare till en källare på 40 kvm kostar ${kronor(AVFUKTARE_KR)} kr. Ställ hygrostaten, alltså givaren som startar och stoppar maskinen, på ${HYGROSTAT_RF} procent.`,
-      kalla: `Proffsmagasinet för priset, läst 16 september 2026. Börvärdet på ${HYGROSTAT_RF} procent är vårt`,
+      kalla: `Proffsmagasinet för priset, läst 16 september 2026. Börvärdet på ${HYGROSTAT_RF} procent är mitt`,
     });
     atgarda.push({
       steg: 'atgarda',
-      text: 'Håller källaren över 10 grader året om räcker en kondensavfuktare. Går den under 10 grader en längre period på vintern avfrostar kylslingan i stället för att fälla ut vatten, och då är det sorption som gäller, alltså en maskin med ett fuktsugande hjul.',
-      kalla: 'Vår guide om fukt i källaren, och vår sida om sorptionsavfuktare',
+      text: 'Håller källaren över 10 grader året om räcker en kondensavfuktare. Går den under 10 grader en längre period på vintern avfrostar kylslingan i stället för att fälla ut vatten, och då ska du ha en sorptionsavfuktare, alltså en maskin med ett fuktsugande hjul.',
+      kalla: 'Guiden om fukt i källaren, och sidan om sorptionsavfuktare',
     });
   }
   if (diagnos === 'hog-luftfuktighet') {
     atgarda.push({
       steg: 'atgarda',
-      text: 'Luften är fuktig, men inget du fyllt i säger varifrån vattnet kommer. Tejptestet är nästa steg. Flytta under tiden tvätten som torkar inne, och dra ut hyllorna en handsbredd från ytterväggen.',
-      kalla: 'Vår guide om fukt i källaren, symptomtabellen och rutan om det som gör kondensen värre',
+      text: 'Luften är fuktig, men inget du fyllt i säger varifrån vattnet kommer. Gör tejptestet härnäst. Flytta under tiden tvätten som torkar inne, och dra ut hyllorna en handsbredd från ytterväggen.',
+      kalla: 'Guiden om fukt i källaren, symptomtabellen och rutan om det som gör kondensen värre',
     });
   }
   if (diagnos === 'oklart') {
     atgarda.push({
       steg: 'atgarda',
       text: `Köp ingen maskin och beställ ingen grävning innan plasten har svarat. Tejptestet är det som skiljer markfukt från kondens, och det kostar en bit plastfolie och ${TEJPTEST_DYGN} dygn.`,
-      kalla: 'Vår guide om fukt i källaren',
+      kalla: 'Guiden om fukt i källaren',
     });
   }
   if (visaUtredning) {
     atgarda.push({
       steg: 'atgarda',
-      text: `Kommer du inte längre själv, be om en fuktutredning med mätvärden, inte om en offert på en åtgärd. Saneringsföretaget Ocab tar ${kronor(FUKTUTREDNING_KR)} kr inklusive moms för en fuktkontroll av ett källarutrymme.`,
+      text: `Kommer du inte längre själv, be om en fuktutredning med mätvärden och inte om en offert på en åtgärd. Saneringsföretaget Ocab tar ${kronor(FUKTUTREDNING_KR)} kr inklusive moms för en fuktkontroll av ett källarutrymme.`,
       kalla: 'Ocabs eget listpris, hämtat 18 september 2026',
     });
   }
@@ -626,34 +626,34 @@ export function bedomKallare(i: KallareIndata): KallareResultat {
 
   const beskedRad: string =
     diagnos === 'lackage'
-      ? 'Vatten som kommer med regnet, på ett ställe. Det är den orsak som är bråttom, och den enda tejptestet aldrig ser.'
+      ? 'Vattnet kommer med regnet, på ett ställe. Det är den orsak som är bråttom, och den enda tejptestet aldrig ser.'
       : diagnos === 'markfukt'
         ? 'Vattnet kommer genom betongen. Skyddet mot det sitter på utsidan av väggen, så ingen maskin i rummet hjälper.'
         : diagnos === 'kondens'
           ? 'Vattnet kommer ur luften du vädrar in. Det är det enda av de tre fallen där en avfuktare gör jobbet.'
           : diagnos === 'hog-luftfuktighet'
-            ? 'Luften bär mycket vatten, men inget du fyllt i säger varifrån det kommer. Tejptestet är nästa steg.'
+            ? 'Luften bär mycket vatten, men inget du fyllt i säger varifrån det kommer. Tejptestet får avgöra det.'
             : 'Inget du fyllt i pekar ut markfukt, kondens eller läckage än. Tejpa en bit plast på källarväggen och läs av om två dygn.';
 
   const nastaStegText: string =
     diagnos === 'lackage'
-      ? 'Följ vattnet uppåt och utåt i dag. Hittar du inte vägen på en eftermiddag, sluta leta och ring.'
+      ? 'Följ vattnet uppåt och utåt i dag. Hittar du inte vägen på en eftermiddag, sluta leta och ring någon.'
       : diagnos === 'markfukt'
-        ? 'Gör det billiga utvändigt först, räkna sedan på vad en omdränering kostar för just din grund.'
+        ? 'Gör det billiga utvändigt först. Räkna sedan på vad en omdränering kostar för just din grund.'
         : diagnos === 'kondens'
           ? 'Räkna ut hur stor avfuktare källaren behöver innan du köper en.'
           : diagnos === 'hog-luftfuktighet'
-            ? 'Gör tejptestet. Det är det som skiljer markfukt från kondens, och hygrometern gör inte det.'
+            ? 'Gör tejptestet. Det skiljer markfukt från kondens, och det gör inte hygrometern.'
             : 'Gör tejptestet. Två dygn och en bit plastfolie skiljer markfukt från kondens.';
 
   const nastaStegLank =
     diagnos === 'lackage'
-      ? { text: 'Läckage, vattnet kommer efter regn', href: GUIDE_LACKAGE }
+      ? { text: 'Så hittar du ett läckage som kommer efter regn', href: GUIDE_LACKAGE }
       : diagnos === 'markfukt' && tejpatUt
-        ? { text: 'Markfukt, vattnet kommer genom väggen', href: GUIDE_MARKFUKT }
+        ? { text: 'Så gör du åt markfukt som kommer genom väggen', href: GUIDE_MARKFUKT }
         : diagnos === 'kondens' && tejpatUt
-          ? { text: 'Kondens, du vädrar in vattnet själv', href: GUIDE_KONDENS }
-          : { text: 'Tejptestet, två dygn och en bit plast', href: GUIDE_TEJPTEST };
+          ? { text: 'Så gör du åt kondensen du vädrar in själv', href: GUIDE_KONDENS }
+          : { text: 'Så gör du tejptestet, två dygn och en bit plast', href: GUIDE_TEJPTEST };
 
   const gorInteDetHar = [
     GOR_INTE_AVFUKTARE_MOT_MARKFUKT,

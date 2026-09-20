@@ -278,12 +278,12 @@ export const PLACERINGAR: { varde: Placering; etikett: string; hjalp: string }[]
   {
     varde: 'inne',
     etikett: 'Inne i huset',
-    hjalp: 'Trappan är en del av byggnaden. Det gamla rådet om stegdjup var 250 mm.',
+    hjalp: 'Trappan är en del av byggnaden. Det gamla rådet om stegdjup var minst 250 mm.',
   },
   {
     varde: 'ute',
     etikett: 'Ute på tomten',
-    hjalp: 'En gångväg på tomten. Det gamla rådet var 300 mm, alltså en flackare trappa.',
+    hjalp: 'Trappan ligger i en gångväg på tomten. Det gamla rådet var minst 300 mm, alltså en flackare trappa.',
   },
 ];
 
@@ -291,12 +291,12 @@ export const UTFORANDEN: { varde: Utforande; etikett: string; hjalp: string }[] 
   {
     varde: 'rak',
     etikett: 'Rak, ett lopp hela vägen',
-    hjalp: 'Alla steg i en följd. Den tar mest golv och är enklast att bygga.',
+    hjalp: 'Alla steg kommer i en följd. Den tar mest golv och är enklast att bygga.',
   },
   {
     varde: 'vilplan',
     etikett: 'Med vilplan på mitten',
-    hjalp: `Ett plan bryter trappan. Vilplanet tar ${TRAPPLAN_DJUP_MM} mm i längdled i stället för ett steg.`,
+    hjalp: `Ett plan bryter trappan på mitten. Det tar ${TRAPPLAN_DJUP_MM} mm på golvet i stället för ett steg.`,
   },
 ];
 
@@ -304,12 +304,12 @@ export const STYRVAL: { varde: Styrs; etikett: string; hjalp: string }[] = [
   {
     varde: 'stegdjup',
     etikett: 'Jag vill ha ett visst stegdjup',
-    hjalp: 'Verktyget väljer antal steg och räknar fram djupet ur trappformeln.',
+    hjalp: 'Verktyget väljer antalet steg och räknar fram djupet ur trappformeln.',
   },
   {
     varde: 'langd',
-    etikett: 'Jag har en viss längd i plan',
-    hjalp: 'Verktyget delar längden på stegen och säger om måtten håller.',
+    etikett: 'Jag har bara en viss längd på golvet',
+    hjalp: 'Verktyget delar längden på stegen och säger till om måtten inte håller.',
   },
 ];
 
@@ -326,16 +326,16 @@ export const STYRVAL: { varde: Styrs; etikett: string; hjalp: string }[] = [
  * verktyget emot guiden /golv/bygga-trappa/, som har det rätt.
  */
 const GOR_INTE_OLIKA_HOGA_STEG =
-  'Bygg inte in ett steg som avviker i höjd, allra minst det nedersta eller det översta. Efter tre steg går du på minnet och slutar titta ner, och då är det avvikande steget det som fäller dig. Går det inte att undvika kräver Boverket att steget markeras tydligt, utom i småhus och bostadslägenheter, som är undantagna. Undantaget gör inte steget mindre farligt.';
+  'Bygg inte in ett steg som avviker i höjd, och allra minst det nedersta eller det översta. Efter tre steg går du på minnet och slutar titta ner, och då är det avvikande steget det som fäller dig. Går det inte att undvika kräver Boverket att steget markeras tydligt, utom i småhus och bostadslägenheter, som är undantagna. Undantaget gör inte steget mindre farligt, det betyder bara att ingen kräver en markering av dig.';
 
 const GOR_INTE_GLOMMA_GOLVET =
-  'Mät inte våningshöjden på ett golv som inte är färdigt. Ska en klinker, en spånskiva eller ett parkettgolv läggas efteråt, uppe eller nere, ska tjockleken räknas in redan nu. Glömmer du den blir det översta steget lägre än de andra, och det är just det steg du inte ser när du bär något.';
+  'Mät inte våningshöjden på ett golv som inte är färdigt. Ska det komma klinker, en spånskiva eller parkett efteråt, uppe eller nere, räkna in tjockleken redan nu. Glömmer du den blir det översta steget lägre än de andra, och det är just det steg du inte ser när du bär något.';
 
 const GOR_INTE_BRANT_FOR_ATT_SPARA_GOLV =
-  'Gör inte trappan brantare för att spara golv. Lutningen har ett tak på trettio grader hos Svenskt Trä, och över det blir trappan besvärlig med tvättkorg och omöjlig med en soffa. Vill du ha trappan kortare är vilplanet rätt verktyg, inte en högre steghöjd.';
+  'Gör inte trappan brantare för att spara golv. Svenskt Trä sätter gränsen vid trettio grader, och över den blir trappan besvärlig med en tvättkorg och omöjlig med en soffa. Vill du ha trappan kortare på golvet är det ett vilplan du ska ha, inte högre steg.';
 
 const GOR_INTE_MATA_RUNT_FRI_HOJD =
-  'Räkna inte bort den fria höjden i bjälklaget. Kravet är två meter rakt upp från varje stegyta, hela vägen, och det är hålet i golvet ovanför som sätter gränsen för hur trappan kan läggas. Ritar du trappan först och hålet sedan får du bygga om ett av dem.';
+  'Räkna inte bort den fria höjden i bjälklaget. Kravet är två meter rakt upp från varje stegyta, hela vägen, och det är hålet i golvet ovanför som avgör hur trappan kan läggas. Ritar du trappan först och hålet sedan får du bygga om ett av dem.';
 
 /** Decimalkomma accepteras: '2 700,5' blir 2700.5. Tomt fält ger NaN. */
 function tillTal(v: string | null): number {
@@ -443,13 +443,13 @@ export function raknaTrappa(i: TrappaIndata): TrappaResultat {
   const fel: Partial<Record<keyof TrappaIndata, string>> = {};
 
   if (!inom(i.vaningshojdMm, GRANSER.vaningshojdMm)) {
-    fel.vaningshojdMm = `Ange våningshöjden i millimeter, mellan ${millimeter(GRANSER.vaningshojdMm[0])} och ${millimeter(GRANSER.vaningshojdMm[1])}`;
+    fel.vaningshojdMm = `Skriv våningshöjden i millimeter, mellan ${millimeter(GRANSER.vaningshojdMm[0])} och ${millimeter(GRANSER.vaningshojdMm[1])}`;
   }
   if (i.styrs === 'stegdjup' && !inom(i.onskatStegdjupMm, GRANSER.onskatStegdjupMm)) {
-    fel.onskatStegdjupMm = `Ange stegdjupet i millimeter, mellan ${GRANSER.onskatStegdjupMm[0]} och ${GRANSER.onskatStegdjupMm[1]}`;
+    fel.onskatStegdjupMm = `Skriv stegdjupet i millimeter, mellan ${GRANSER.onskatStegdjupMm[0]} och ${GRANSER.onskatStegdjupMm[1]}`;
   }
   if (i.styrs === 'langd' && !inom(i.tillgangligLangdMm, GRANSER.tillgangligLangdMm)) {
-    fel.tillgangligLangdMm = `Ange längden i millimeter, mellan ${millimeter(GRANSER.tillgangligLangdMm[0])} och ${millimeter(GRANSER.tillgangligLangdMm[1])}`;
+    fel.tillgangligLangdMm = `Skriv längden i millimeter, mellan ${millimeter(GRANSER.tillgangligLangdMm[0])} och ${millimeter(GRANSER.tillgangligLangdMm[1])}`;
   }
   if (Object.keys(fel).length > 0) return { status: 'ogiltig', fel };
 
@@ -517,7 +517,7 @@ export function raknaTrappa(i: TrappaIndata): TrappaResultat {
     return {
       status: 'ogiltig',
       fel: {
-        tillgangligLangdMm: `Längden räcker inte till en trappa med vilplan. Vilplanet tar ${millimeter(TRAPPLAN_DJUP_MM)} mm av den innan första steget är lagt`,
+        tillgangligLangdMm: `Längden räcker inte till en trappa med vilplan. Vilplanet tar ${millimeter(TRAPPLAN_DJUP_MM)} mm av den innan det första steget ens är lagt`,
       },
     };
   }
@@ -556,7 +556,7 @@ export function raknaTrappa(i: TrappaIndata): TrappaResultat {
   const avvikelser: Avvikelse[] = [];
   if (steghojdMm < STEGHOJD_MIN_MM || steghojdMm > STEGHOJD_MAX_MM) {
     avvikelser.push({
-      text: `Steghöjden blir ${endecimal(steghojdMm)} mm, och den ligger utanför spannet ${STEGHOJD_MIN_MM} till ${STEGHOJD_MAX_MM} mm.`,
+      text: `Steghöjden blir ${endecimal(steghojdMm)} mm, och det ligger utanför spannet ${STEGHOJD_MIN_MM} till ${STEGHOJD_MAX_MM} mm.`,
       kalla: 'Svenskt Trä, byggbeskrivningen Trappor',
     });
   }
@@ -581,7 +581,7 @@ export function raknaTrappa(i: TrappaIndata): TrappaResultat {
   }
   if (i.placering === 'ute' && antalSteg < MINST_ANTAL_STEG_UTE) {
     avvikelser.push({
-      text: `Trappan får ${antalSteg} steg, och ute bör en trappa ha fler än två.`,
+      text: `Trappan får ${antalSteg} steg, och ute bör en trappa ha fler än två så att ingen snubblar på den.`,
       kalla: 'Borttaget allmänt råd i de gamla byggreglerna, BBR 8:91',
     });
   }
@@ -591,18 +591,18 @@ export function raknaTrappa(i: TrappaIndata): TrappaResultat {
   const beskedRubrik = uppfyller ? 'Måtten håller' : 'Måtten håller inte';
   const beskedRad = uppfyller
     ? iBastaSpannet
-      ? 'Trappformeln landar i det spann trappbranschen kallar bäst, och inget mått avviker.'
-      : 'Trappformeln landar inom branschens spann, och inget mått avviker.'
+      ? 'Trappformeln landar i det spann trappbranschen kallar bäst, så bygg efter de här måtten.'
+      : 'Trappformeln landar inom Svenskt Träs spann, så måtten går att bygga efter.'
     : avvikelser.length === 1
-      ? `${avvikelser[0]!.text} Hela raden med källan står under verktyget.`
-      : `${avvikelser.length} mått avviker. Alla står under verktyget, med källan bakom varje.`;
+      ? `${avvikelser[0]!.text} Ändra våningshöjden, längden eller stegdjupet och räkna igen.`
+      : `${avvikelser.length} mått avviker, så ändra något och räkna igen. Alla står under verktyget, med den som satt måttet.`;
 
   const regler: Regel[] = [];
 
   regler.push({
     slag: 'matt',
-    text: `Våningshöjden på ${millimeter(vh)} mm delas i ${antalSteg} lika höga steg, alltså ${endecimal(steghojdMm)} mm var. Steghöjden går inte att runda av: stegen ska summera till exakt våningshöjden, och en avrundning hamnar i det nedersta eller översta steget.`,
-    kalla: 'Vår räkning, och guiden om att bygga trappa',
+    text: `Våningshöjden på ${millimeter(vh)} mm delas i ${antalSteg} lika höga steg, alltså ${endecimal(steghojdMm)} mm var. Steghöjden går inte att runda av. Stegen ska bli exakt våningshöjden tillsammans, och rundar du av hamnar felet i det nedersta eller det översta steget.`,
+    kalla: 'Min räkning, och guiden om att bygga trappa',
     url: GUIDE,
   });
 
@@ -610,36 +610,36 @@ export function raknaTrappa(i: TrappaIndata): TrappaResultat {
     slag: 'formel',
     text:
       i.styrs === 'stegdjup'
-        ? `Stegdjupet kommer ur trappformeln, alltså ${millimeter(TRAPPFORMEL_MAL_MM)} mm minus två steghöjder, och landar på ${millimeter(stegdjupMm)} mm. Du bad om ${millimeter(i.onskatStegdjupMm)} mm, och antalet steg valdes så att formeln hamnar så nära det som ett helt antal steg tillåter.`
-        : `Längden du har, ${millimeter(i.tillgangligLangdMm)} mm, delas på de ${barande} plansteg som bär den, och ger ${millimeter(stegdjupMm)} mm i djup. Antalet steg valdes så att trappformeln hamnar så nära ${millimeter(TRAPPFORMEL_MAL_MM)} mm som möjligt.`,
-    kalla: 'Svenskt Trä, byggbeskrivningen Trappor. Målsumman är vår',
+        ? `Stegdjupet kommer ur trappformeln, alltså ${millimeter(TRAPPFORMEL_MAL_MM)} mm minus två steghöjder, och landar på ${millimeter(stegdjupMm)} mm. Du bad om ${millimeter(i.onskatStegdjupMm)} mm, och antalet steg valdes så att djupet hamnar så nära det som ett helt antal steg tillåter.`
+        : `Längden du har, ${millimeter(i.tillgangligLangdMm)} mm, delas på de ${barande} plansteg som bär den, och det ger ${millimeter(stegdjupMm)} mm i djup. Antalet steg valdes så att trappformeln hamnar så nära ${millimeter(TRAPPFORMEL_MAL_MM)} mm som möjligt.`,
+    kalla: 'Svenskt Trä, byggbeskrivningen Trappor. Målsumman är min',
     url: 'https://www.byggbeskrivningar.se/utvandigt/trappor/',
   });
 
   regler.push({
     slag: 'formel',
-    text: `Två gånger steghöjden plus stegdjupet blir ${endecimal(formelSummaMm)} mm. Spannet är ${TRAPPFORMEL_MIN_MM} till ${TRAPPFORMEL_MAX_MM} mm, och trappbranschen kallar ${TRAPPFORMEL_BAST_MIN_MM} till ${TRAPPFORMEL_BAST_MAX_MM} mm bäst. ${iBastaSpannet ? 'Din trappa ligger i det bästa spannet.' : 'Din trappa ligger utanför det bästa spannet.'}`,
+    text: `Två gånger steghöjden plus stegdjupet blir ${endecimal(formelSummaMm)} mm. Spannet är ${TRAPPFORMEL_MIN_MM} till ${TRAPPFORMEL_MAX_MM} mm, och trappbranschen kallar ${TRAPPFORMEL_BAST_MIN_MM} till ${TRAPPFORMEL_BAST_MAX_MM} mm bäst. ${iBastaSpannet ? 'Din trappa ligger i det bästa spannet.' : 'Din trappa ligger utanför det bästa spannet, men inom det som duger.'}`,
     kalla: 'Svenskt Trä för spannet, trappföretaget Stepsta för det bästa',
     url: 'https://stepsta.se/trappformel-berakna-en-bekvam-trappa',
   });
 
   regler.push({
     slag: 'boverket',
-    text: `Boverket anger inga stegmått. Sedan ${NYA_REGLER_FRAN} ligger trappor i ${BFS}, och där står bara att trappan ska vara utformad så att personer kan förflytta sig säkert. Måtten ovan är alltså branschens, inte myndighetens, och det är hela skälet till att trappformeln behövs.`,
+    text: `Boverket anger inga stegmått. Sedan ${NYA_REGLER_FRAN} ligger trappor i ${BFS}, och där står bara att trappan ska vara utformad så att personer kan förflytta sig säkert. Måtten ovan kommer alltså från branschen och inte från myndigheten, och det är hela skälet till att trappformeln behövs.`,
     kalla: `${BFS_NAMN}, 2 kap. 5 §`,
     url: BFS_URL,
   });
 
   regler.push({
     slag: 'boverket',
-    text: `Stegdjupet på minst ${millimeter(minDjup)} mm kommer inte ur föreskriften utan ur de gamla byggreglernas allmänna råd, och det mäts i gånglinjen, alltså där foten faktiskt går. Rådet gick att åberopa till ${GAMLA_RADEN_TILL} och är borta sedan dess. Måttet duger fortfarande som riktvärde, men det väger inte längre i en diskussion med någon.`,
+    text: `Stegdjupet på minst ${millimeter(minDjup)} mm kommer inte ur föreskriften utan ur de gamla byggreglernas allmänna råd, och det mäts i gånglinjen, alltså där foten faktiskt går. Rådet gick att hänvisa till fram till ${GAMLA_RADEN_TILL} och är borta sedan dess. Måttet duger fortfarande som riktvärde, men du kan inte längre vinna en diskussion med det.`,
     kalla: `Boverkets byggregler, BBR ${i.placering === 'ute' ? '8:91' : '8:232'}, och övergångsbestämmelserna till BFS 2024:14`,
     url: 'https://www.boverket.se/contentassets/2b709d86893740bab472714cb1ffb4c0/boverkets-byggregler-avsnitt-8-bfs-2011-6-tom-2014-3.pdf',
   });
 
   regler.push({
     slag: 'boverket',
-    text: `Det som står i siffror i dag är säkerheten runt trappan. Fri höjd minst ${meter(FRI_HOJD_MM)} m över stegytan hela vägen upp, öppning mellan plansteg högst ${OPPNING_PLANSTEG_MAX_MM} mm, och där yngre barn kan vistas högst ${RACKE_TILL_STEGNOS_MAX_MM} mm mellan räckets underkant och stegnosen.`,
+    text: `Det som står i siffror i dag är säkerheten runt trappan. Fri höjd ska vara minst ${meter(FRI_HOJD_MM)} m över stegytan hela vägen upp, öppningen mellan planstegen får vara högst ${OPPNING_PLANSTEG_MAX_MM} mm, och där yngre barn kan vistas får det vara högst ${RACKE_TILL_STEGNOS_MAX_MM} mm mellan räckets underkant och stegnosen.`,
     kalla: `${BFS_NAMN}, 2 kap. 6, 11 och 25 §§`,
     url: BFS_URL,
   });
@@ -648,12 +648,12 @@ export function raknaTrappa(i: TrappaIndata): TrappaResultat {
     slag: 'utforande',
     text:
       i.utforande === 'vilplan'
-        ? `Vilplanet tar ${millimeter(TRAPPLAN_DJUP_MM)} mm i längdled i stället för ett plansteg, och delar trappan i ${lopp!.ett} steg nedanför och ${lopp!.tva} ovanför. Trappan blir ${endecimal(langdIPlanMm / 1000)} m på golvet.`
-        : `Trappan är rak och blir ${endecimal(langdIPlanMm / 1000)} m på golvet, räknat på ${barande} plansteg. Det sista steget landar på golvet ovanför och byggs alltså inte. Är längden ett problem är vilplanet rätt grepp, inte en brantare trappa.`,
+        ? `Vilplanet tar ${millimeter(TRAPPLAN_DJUP_MM)} mm på golvet i stället för ett plansteg, och delar trappan i ${lopp!.ett} steg nedanför och ${lopp!.tva} ovanför. Trappan blir ${endecimal(langdIPlanMm / 1000)} m på golvet.`
+        : `Trappan är rak och blir ${endecimal(langdIPlanMm / 1000)} m på golvet, räknat på ${barande} plansteg. Det sista steget landar på golvet ovanför och byggs alltså inte. Blir längden ett problem är det ett vilplan du ska ha, inte en brantare trappa.`,
     kalla:
       i.utforande === 'vilplan'
         ? 'Trapplanets djup ur det gamla allmänna rådet i BBR 8:232, om trapplan inom en bostadslägenhet'
-        : 'Vår räkning',
+        : 'Min räkning',
     url: i.utforande === 'vilplan' ? GUIDE : undefined,
   });
 
@@ -661,9 +661,9 @@ export function raknaTrappa(i: TrappaIndata): TrappaResultat {
     slag: 'utforande',
     text:
       i.placering === 'ute'
-        ? `Trappan står ute, och då tillkommer två saker räkningen inte ser. Planstegen ska luta svagt utåt, cirka ${FALL_UTE}, annars står vattnet kvar och blir is. Och trappan ska stå på plintar ner till fast botten eller på dränerad mark.`
-        : `Trappan står inne, och då är öppningen i bjälklaget nästa mått. Den fria höjden på ${meter(FRI_HOJD_MM)} m avgör hur långt hålet måste vara, och det är hålet som bestämmer om trappan får plats, inte trappan.`,
-    kalla: 'Svenskt Trä, byggbeskrivningen Trappor, och vår guide om att bygga trappa',
+        ? `Trappan står ute, och då tillkommer två saker räkningen inte ser. Planstegen ska luta svagt utåt, cirka ${FALL_UTE}, annars står vattnet kvar och blir till is. Trappan ska dessutom stå på plintar ner till fast botten eller på dränerad mark.`
+        : `Trappan står inne, och då är öppningen i bjälklaget nästa mått att ta. Den fria höjden på ${meter(FRI_HOJD_MM)} m avgör hur långt hålet måste vara, och det är hålet som bestämmer om trappan får plats.`,
+    kalla: 'Svenskt Trä, byggbeskrivningen Trappor, och guiden om att bygga trappa',
     url: GUIDE,
   });
 

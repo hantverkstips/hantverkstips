@@ -320,7 +320,7 @@ test('gränserna stoppar skrivfel i varje fält', () => {
 
   const halvAgare = raknaRotavdrag({ ...STANDARD, antalAgare: 1.5 });
   assert.equal(halvAgare.status, 'ogiltig');
-  assert.match(halvAgare.fel.antalAgare, /hela år/);
+  assert.match(halvAgare.fel.antalAgare, /helt tal/);
 
   const nollAgare = raknaRotavdrag({ ...STANDARD, antalAgare: 0 });
   assert.equal(nollAgare.status, 'ogiltig');
@@ -357,12 +357,12 @@ test('kronor sätter mellanslag som tusentalsavgränsare', () => {
 
 test('beskedet säger vilket av de fyra taken som band svaret', () => {
   assert.match(rakna({ arbetskostnadKr: 100000 }).beskedRubrik, new RegExp(`${ROT_PROCENT} procent`));
-  assert.equal(rakna({ arbetskostnadKr: 300000 }).beskedRubrik, 'Rot-taket slog i');
+  assert.equal(rakna({ arbetskostnadKr: 300000 }).beskedRubrik, 'Gränsen per person stoppar en del av avdraget');
   assert.equal(
     rakna({ arbetskostnadKr: 300000, utnyttjatRutKr: 60000 }).beskedRubrik,
-    'Det gemensamma taket slog i',
+    'Rutavdraget har redan tagit sin del',
   );
-  assert.equal(rakna({ arbetskostnadKr: 100000, skattKr: 5000 }).beskedRubrik, 'Skatten sätter gränsen');
+  assert.equal(rakna({ arbetskostnadKr: 100000, skattKr: 5000 }).beskedRubrik, 'Skatten räcker inte till hela avdraget');
   for (const fall of [{}, { arbetskostnadKr: 300000 }, { arbetskostnadKr: 100000, skattKr: 5000 }]) {
     assert.ok(rakna(fall).beskedRad.length < 120, 'beskedet i spalten ska vara en rad');
   }

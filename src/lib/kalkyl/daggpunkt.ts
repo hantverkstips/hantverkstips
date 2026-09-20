@@ -113,12 +113,12 @@ export const STANDARD: DaggpunktIndata = {
 export const GRANSER = { luftTempC: [0, 40], rfProcent: [5, 100], ytTempC: [-20, 40] } as const;
 
 export const ARSTIDER: { varde: Arstid; etikett: string }[] = [
-  { varde: 'vinter', etikett: 'Vinter, oktober till mars' },
-  { varde: 'sommar', etikett: 'Sommar, april till september' },
+  { varde: 'vinter', etikett: 'Vinterhalvåret, oktober till mars' },
+  { varde: 'sommar', etikett: 'Sommarhalvåret, april till september' },
 ];
 
 export const RUMSVAL: { varde: Rum; etikett: string }[] = [
-  { varde: 'bostad', etikett: 'Uppvärmt rum i bostaden' },
+  { varde: 'bostad', etikett: 'Ett uppvärmt rum i bostaden' },
   { varde: 'kallare', etikett: 'Källare eller krypgrund' },
   { varde: 'garage', etikett: 'Garage, förråd eller uthus' },
 ];
@@ -129,31 +129,31 @@ export const RUMSVAL: { varde: Rum; etikett: string }[] = [
  * Mät med en IR-termometer om du vill ha ditt eget tal.
  */
 export const TYPISKA_YTOR: { yta: string; spann: string }[] = [
-  { yta: 'Yttervägg i ett äldre hus', spann: '12 till 15 grader' },
-  { yta: 'Fönsterglas i januari', spann: '5 till 10 grader' },
-  { yta: 'Källarvägg', spann: '8 till 12 grader' },
+  { yta: 'Ytterväggen i ett äldre hus', spann: '12 till 15 grader' },
+  { yta: 'Fönsterglaset i januari', spann: '5 till 10 grader' },
+  { yta: 'Källarväggen', spann: '8 till 12 grader' },
 ];
 
 /** Åtgärderna i klartext. Sidan skriver ut dem i den ordning resultatet ger. */
 export const ATGARDSTEXT: Record<Atgard, string> = {
   vadra:
-    'Vädra kort och med genomdrag, ett par gånger om dagen. Vinterluft bär nästan inget vatten, och när den värmts inne är den torrare än luften den bytte ut.',
+    'Vädra kort och med genomdrag, ett par gånger om dagen. Vinterluft bär nästan inget vatten, så när den har värmts upp inne är den torrare än luften du släppte ut.',
   sank_fuktproduktion:
-    'Sänk fuktproduktionen. Lock på grytorna, frånluften igång under duschen och en stund efteråt, och tvätten torkad någon annanstans än i sovrummet.',
+    'Skapa mindre fukt inne. Lägg lock på grytorna, låt fläkten gå under duschen och en stund efteråt, och torka tvätten någon annanstans än i sovrummet.',
   varm_eller_isolera_ytan:
-    'Värm ytan eller isolera den. En vägg som ligger närmare rummets temperatur ligger längre från daggpunkten, och en luftspalt bakom garderoben mot ytterväggen kostar ingenting.',
+    'Gör ytan varmare, med värme eller isolering. Ju närmare rummets temperatur väggen ligger, desto längre är den från daggpunkten. Att dra ut garderoben några centimeter från ytterväggen kostar ingenting och hjälper.',
   avfuktare:
-    'Sätt in en avfuktare. I ett kallt utrymme på sommaren är det den enda åtgärden som tar bort vatten ur luften, eftersom uteluften bär mer vatten än luften inne.',
+    'Sätt in en avfuktare. I ett kallt utrymme på sommaren är det det enda som faktiskt tar bort vatten ur luften, eftersom uteluften bär mer vatten än luften inne.',
 };
 
 const GOR_INTE_VINTER_BOSTAD =
-  'Köp ingen avfuktare till ett sovrum som immar i januari. Uteluften är torr den här årstiden, så ett fönster på vid gavel i fem minuter gör samma jobb gratis, och maskinen rör inte orsaken.';
+  'Köp ingen avfuktare till ett sovrum som immar i januari. Uteluften är torr den här tiden på året, så ett fönster på vid gavel i fem minuter gör samma jobb gratis. Maskinen rör inte orsaken.';
 
 const GOR_INTE_SOMMAR_KALLT =
-  'Vädra inte en fuktig sommardag. Uteluft på 20 grader bär mer vatten än den kalla luften inne, och det vattnet fäller ut på väggen så fort det kommer in.';
+  'Vädra inte en fuktig sommardag. Uteluft på 20 grader bär mer vatten än den kalla luften därinne, och det vattnet fälls ut på väggen så fort det kommer in.';
 
 const GOR_INTE_VINTER_KALLT =
-  'Ställ inte en kondensavfuktare i ett kallt utrymme på vintern. Den lägger mer tid på att avfrosta än på att avfukta, och en sorptionsavfuktare är rätt maskin där.';
+  'Ställ inte en kondensavfuktare i ett kallt utrymme på vintern. Den lägger mer tid på att avfrosta sig själv än på att avfukta. Där är en sorptionsavfuktare rätt maskin.';
 
 /**
  * Mättnadsångtryck i hPa vid temperaturen, Magnus-formeln.
@@ -237,13 +237,13 @@ export function raknaDaggpunkt(i: DaggpunktIndata): DaggpunktResultat {
   const [ytMin, ytMax] = GRANSER.ytTempC;
 
   if (!Number.isFinite(i.luftTempC) || i.luftTempC < tempMin || i.luftTempC > tempMax) {
-    fel.luftTempC = `Ange lufttemperatur mellan ${tempMin} och ${tempMax} grader`;
+    fel.luftTempC = `Skriv en lufttemperatur mellan ${tempMin} och ${tempMax} grader`;
   }
   if (!Number.isFinite(i.rfProcent) || i.rfProcent < rfMin || i.rfProcent > rfMax) {
-    fel.rfProcent = `Ange luftfuktighet mellan ${rfMin} och ${rfMax} procent`;
+    fel.rfProcent = `Skriv en luftfuktighet mellan ${rfMin} och ${rfMax} procent`;
   }
   if (!Number.isFinite(i.ytTempC) || i.ytTempC < ytMin || i.ytTempC > ytMax) {
-    fel.ytTempC = `Ange yttemperatur mellan ${grader(ytMin)} och ${ytMax} grader`;
+    fel.ytTempC = `Skriv en yttemperatur mellan ${grader(ytMin)} och ${ytMax} grader`;
   }
   if (Object.keys(fel).length > 0) return { status: 'ogiltig', fel };
 

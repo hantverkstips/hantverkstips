@@ -27,7 +27,9 @@ import Bas from '../../layouts/Bas.astro';
 import {
   ANSOKAN_SENAST,
   ARET,
+  EXEMPEL_ARBETE_KR,
   EXEMPEL_AVDRAG_KR,
+  EXEMPEL_BETALA_KR,
   GEMENSAMT_TAK_KR,
   HOJNINGEN_FRAN,
   HOJNINGEN_TILL,
@@ -119,7 +121,7 @@ const SLAG_ETIKETT: Record<Slag, string> = {
   arbete: 'Arbetet',
   procent: 'Procentsatsen',
   datum: 'Datumet',
-  tak: 'Taket',
+  tak: 'Gränsen',
   skatt: 'Skatten',
 };
 
@@ -134,7 +136,7 @@ const SLAG_RAM: Record<Slag, string> = {
 /** Slug, namn och beskrivning på ett ställe: brödsmulan, og:image och WebApplication läser samma. */
 const SLUG = 'rotavdrag';
 const VERKTYGSNAMN = `Rotavdrag ${ARET}`;
-const BESKRIVNING = `Fyll i arbetskostnaden på fakturan, så räknar verktyget ut rotavdraget, vad du betalar och hur mycket av taket som är kvar. Varje regel står med sin källa hos Skatteverket.`;
+const BESKRIVNING = `Fyll i vad arbetet kostar på fakturan, så ser du hur stort rotavdraget ${ARET} blir, vad du betalar efteråt och hur mycket av årets avdrag du har kvar.`;
 const titel = `Rotavdrag ${ARET}, räkna ut avdraget och vad du betalar`;
 
 const illustration = verktygsillustration(SLUG);
@@ -156,56 +158,56 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     url: SKATTEVERKET_ROTAVDRAGET,
   },
   {
-    storhet: 'Den tillfälliga nivån',
+    storhet: 'Den tillfälligt höjda nivån',
     varde: `${ROT_PROCENT_HOJT} %`,
     grund: 'Källa',
     stod: `Skatteverket: höjningen gällde färdiga arbeten där kunden betalade fakturan mellan ${HOJNINGEN_FRAN} och ${HOJNINGEN_TILL}`,
     url: SKATTEVERKET_HOJNINGEN,
   },
   {
-    storhet: 'Vad som daterar avdraget',
-    varde: 'Betalningen',
+    storhet: 'Dagen som daterar avdraget',
+    varde: 'Betalningsdagen',
     grund: 'Källa',
-    stod: `Skatteverket, under rubriken om att din betalning styr vilket år avdraget hamnar på: det är datumet du betalar som styr, inte fakturadatumet. Arbetet ska dessutom vara utfört och företagets ansökan inne senast den ${ANSOKAN_SENAST}`,
+    stod: `Skatteverket skriver att din betalning styr vilket år avdraget hamnar på, inte fakturans datum. Arbetet ska vara klart, och företagets begäran om utbetalning ska vara inne senast den ${ANSOKAN_SENAST}`,
     url: SKATTEVERKET_ROTAVDRAGET,
   },
   {
     storhet: 'Momsen i räkneexemplen',
-    varde: `${kronor(SKV_EXEMPEL_AVDRAG_KR)} kr, inte ${kronor(EXEMPEL_AVDRAG_KR)} kr`,
+    varde: `${kronor(SKV_EXEMPEL_AVDRAG_KR)} kr hos Skatteverket, ${kronor(EXEMPEL_AVDRAG_KR)} kr i mitt exempel`,
     grund: 'Källa',
-    stod: `Skatteverkets eget exempel ligger på företagssidan och utgår från ${kronor(SKV_EXEMPEL_ARBETE_EXKL_MOMS_KR)} kr exklusive moms, alltså ${kronor(SKV_EXEMPEL_ARBETE_INKL_MOMS_KR)} kr med moms. Vårt fält frågar efter arbetskostnaden med moms, så skriv in det större talet`,
+    stod: `Skatteverkets eget exempel står på företagssidan och utgår från ${kronor(SKV_EXEMPEL_ARBETE_EXKL_MOMS_KR)} kr utan moms, alltså ${kronor(SKV_EXEMPEL_ARBETE_INKL_MOMS_KR)} kr med moms. Fältet här vill ha beloppet med moms, så skriv in det större talet`,
     url: SKATTEVERKET_FORETAG,
   },
   {
     storhet: 'Nybyggt hus',
     varde: `${NYBYGGT_SPARRAR_AR} år`,
     grund: 'Källa',
-    stod: 'Skatteverket: ombyggnad och tillbyggnad ger inget avdrag de första fem åren efter det år huset byggdes färdigt. Reparation och underhåll ger det oavsett husets ålder',
+    stod: 'Skatteverket: ombyggnad och tillbyggnad ger inget avdrag de första fem åren efter det år huset stod färdigt. Reparation och underhåll ger avdrag oavsett husets ålder',
     url: SKATTEVERKET_ROTAVDRAGET,
   },
   {
-    storhet: 'Tak per person och år',
+    storhet: 'Gräns per person och år',
     varde: `${kronor(ROT_TAK_KR)} kr`,
     grund: 'Källa',
     stod: 'Skatteverket: av de 75 000 kronorna får högst 50 000 kronor vara rotavdrag',
     url: SKATTEVERKET_ROTAVDRAGET,
   },
   {
-    storhet: 'Gemensamt tak, rot och rut',
+    storhet: 'Gemensam gräns för rot och rut',
     varde: `${kronor(GEMENSAMT_TAK_KR)} kr`,
     grund: 'Källa',
-    stod: 'Skatteverket: rot och rut räknas ihop och är högst 75 000 kronor per person och år',
+    stod: 'Skatteverket: rot och rut räknas ihop och får tillsammans vara högst 75 000 kronor per person och år',
     url: SKATTEVERKET_ROT_OCH_RUT,
   },
   {
     storhet: 'Flera ägare',
-    varde: 'Ett tak var',
+    varde: 'En gräns var',
     grund: 'Källa',
-    stod: 'Skatteverket: äger flera personer fastigheten kan de dela på avdraget, men aldrig över procentsatsen på den totala arbetskostnaden',
+    stod: 'Skatteverket: äger flera personer fastigheten kan de dela på avdraget, men aldrig så att det blir mer än procentsatsen på hela arbetskostnaden',
     url: SKATTEVERKET_ROTAVDRAGET,
   },
   {
-    storhet: 'Skatten som tak',
+    storhet: 'Skatten som gräns',
     varde: 'Årets skatt',
     grund: 'Källa',
     stod: 'Skatteverket: avdraget räknas av mot kommunal och statlig inkomstskatt, statlig fastighetsskatt och kommunal fastighetsavgift',
@@ -215,12 +217,12 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Material och resor',
     varde: 'Inget avdrag',
     grund: 'Källa',
-    stod: 'Skatteverket: det är endast arbetskostnaden som ger rätt till rotavdrag',
+    stod: 'Skatteverket: det är bara arbetskostnaden som ger rätt till rotavdrag',
     url: SKATTEVERKET_ROTAVDRAGET,
   },
   {
     storhet: 'Maskinell utrustning',
-    varde: 'Undantagen',
+    varde: 'Inget avdrag',
     grund: 'Källa',
     stod: 'Skatteverket, ger arbetet rätt till rotavdrag: att betala för maskinell utrustning, till exempel grävmaskiner eller borraggregat, ger inget avdrag',
     url: SKATTEVERKET_GER_RATT,
@@ -229,39 +231,39 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Krav på dig',
     varde: 'Äga och bo',
     grund: 'Källa',
-    stod: 'Skatteverket: du ska äga bostaden under den period arbetet utförs, bo i den eller låta en förälder göra det, och betala elektroniskt',
+    stod: 'Skatteverket: du ska äga bostaden medan arbetet görs, bo i den eller låta en förälder göra det, och betala med kort eller överföring',
     url: SKATTEVERKET_ROTAVDRAGET,
   },
   {
-    storhet: 'Vad skattefältet är',
+    storhet: 'Skattefältet',
     varde: 'En förenkling',
     grund: 'Antagande',
-    stod: 'Skatteverkets gräns är den slutliga skatten efter jobbskatteavdrag, allmän pensionsavgift och underskott av kapital. Vi frågar efter den preliminära skatten, som är det tal du faktiskt har i handen, och svaret blir därför något generöst. Är du nära gränsen, räkna i Skatteverkets e-tjänst',
+    stod: 'Skatteverkets gräns är den slutliga skatten efter jobbskatteavdrag, allmän pensionsavgift och underskott av kapital. Fältet frågar efter den preliminära skatten, för det är det tal du faktiskt har, och svaret blir därför något generöst. Ligger du nära gränsen, räkna i Skatteverkets e-tjänst',
     url: SKATTEVERKET_RAKNA,
   },
   {
-    storhet: 'Standardvärdet på antal ägare',
+    storhet: 'Antal ägare från början',
     varde: 'En ägare',
     grund: 'Antagande',
-    stod: 'Vårt val, och det försiktiga. Två ägare dubblar taket, och ett verktyg som antar två skulle visa ett avdrag den ensamstående läsaren aldrig får',
+    stod: 'Mitt val, och det försiktiga. Två ägare får dra av dubbelt så mycket, och ett verktyg som antar två skulle visa ett avdrag den som äger ensam aldrig får',
   },
   {
-    storhet: 'Det utnyttjade beloppet',
-    varde: 'För alla ägare',
+    storhet: 'Det ni redan använt',
+    varde: 'Summan för alla ägare',
     grund: 'Antagande',
-    stod: 'Fälten frågar efter summan för dem som delar, eftersom taket i verktyget också räknas för dem tillsammans',
+    stod: 'Fälten frågar efter summan för dem som delar, eftersom gränsen i verktyget också räknas för dem tillsammans',
   },
   {
-    storhet: 'Gränserna på fälten',
-    varde: 'Fem miljoner, fyra ägare',
+    storhet: 'Fältens gränser',
+    varde: 'Fem miljoner kr, fyra ägare',
     grund: 'Antagande',
-    stod: 'Fältens rimlighetskontroll mot skrivfel, inte regler. Skatteverket sätter ingen gräns för antalet ägare',
+    stod: 'Ett stopp för skrivfel, inga regler. Skatteverket sätter ingen gräns för hur många som får äga',
   },
   {
     storhet: 'Din egen uträkning',
     varde: 'Skatteverkets e-tjänst',
     grund: 'Källa',
-    stod: 'Skatteverket har en egen räknare, och den är den som gäller när ditt fall är ovanligt',
+    stod: 'Skatteverket har en egen räknare, och det är den som gäller när ditt fall är ovanligt',
     url: SKATTEVERKET_RAKNA,
   },
 ];
@@ -270,15 +272,19 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
 const FRAGOR = [
   {
     fraga: `Hur mycket är rotavdraget ${ARET}?`,
-    svar: `30 procent av arbetskostnaden, och högst 50 000 kronor per person och år. Rot och rut räknas ihop och ryms tillsammans i 75 000 kronor per person och år, så har du städat eller flyttat med rutavdrag i år är det mindre kvar. Avdraget kan heller aldrig bli större än den skatt du betalar in under året. Material, resor och maskinhyra ligger utanför och ger ingenting, och är huset yngre än fem år ger ombyggnad inget avdrag alls.`,
+    svar: `Hantverkaren drar av ${ROT_PROCENT} procent av arbetskostnaden på fakturan, och du får högst ${kronor(ROT_TAK_KR)} kronor i rotavdrag per person och år. Rot och rut räknas ihop och får tillsammans inte gå över ${kronor(GEMENSAMT_TAK_KR)} kronor per person och år, så har ni haft städhjälp eller en flyttfirma med rutavdrag i år är det mindre kvar. Avdraget kan heller aldrig bli större än skatten du betalar in under året. Material, resor och maskinhyra ger ingenting, och är huset yngre än ${NYBYGGT_SPARRAR_AR} år ger ombyggnad inget avdrag alls.`,
   },
   {
-    fraga: 'Varför får jag inte 50 procent?',
-    svar: `Den högre nivån var tillfällig. 50 procent gällde färdiga arbeten där fakturan betalades mellan ${HOJNINGEN_FRAN} och ${HOJNINGEN_TILL}, och det är betalningen som avgör. En faktura som skrevs i december och betalades i januari får alltså den lägre satsen, oavsett vad som står som fakturadatum. Det är den enda regeln i hela rotavdraget som är värd att planera efter.`,
+    fraga: `Varför får jag inte ${ROT_PROCENT_HOJT} procent?`,
+    svar: `Den nivån var tillfällig. ${ROT_PROCENT_HOJT} procent gällde färdiga arbeten där fakturan betalades mellan ${HOJNINGEN_FRAN} och ${HOJNINGEN_TILL}, och det är betalningen som räknas. En faktura som skrevs i december och betalades i januari får alltså den lägre procentsatsen, vad det än står för datum på pappret. Betalar du i dag gäller ${ROT_PROCENT} procent.`,
   },
   {
     fraga: 'Räknas material med i rotavdraget?',
-    svar: 'Nej. Det är bara arbetskostnaden som ger avdrag, och det är därför fakturan ska ha arbete och material på olika rader. Maskinell utrustning är dessutom undantagen med namns nämnande, alltså grävmaskiner, borraggregat och liknande. På ett markjobb kan maskinen vara en stor del av det som ser ut som arbete, och den som räknar procentsatsen på hela arbetsposten räknar för högt.',
+    svar: 'Nej. Bara arbetet ger avdrag, och det är därför fakturan ska ha arbete och material på olika rader. Maskiner är dessutom undantagna med namn hos Skatteverket, alltså grävmaskiner, borraggregat och liknande. På ett markjobb kan maskinen vara en stor del av det som ser ut som arbete, och räknar du procentsatsen på hela den posten räknar du för högt.',
+  },
+  {
+    fraga: 'Kan vi dela på rotavdraget när vi äger huset ihop?',
+    svar: `Ja, och det är oftast så ett större jobb ryms på ett år. Varje ägare har en egen gräns på ${kronor(ROT_TAK_KR)} kronor, så två ägare får tillsammans dra av ${kronor(ROT_TAK_KR * 2)} kronor. Villkoret är att båda äger bostaden medan arbetet görs och att båda är med och betalar. Hur många ni än är kan avdraget aldrig bli mer än ${ROT_PROCENT} procent av hela arbetskostnaden.`,
   },
 ];
 ---
@@ -310,12 +316,13 @@ const FRAGOR = [
     <section class="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-8">
       <div class="lg:col-span-7">
         <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">
-          Rotavdrag {ARET}, vad du drar av och vad du faktiskt betalar
+          Rotavdrag {ARET}, så mycket drar hantverkaren av och så mycket betalar du
         </h1>
         <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
-          Avdraget är {ROT_PROCENT} procent av arbetskostnaden, inte av fakturan. Tre saker kan sedan kapa det: taket
-          per person, det gemensamma taket för rot och rut, och skatten du faktiskt betalar in under året. Fyll i
-          fakturan så ser du vilket av dem som gäller dig, och vad som blir kvar att betala.
+          Hantverkaren drar av {ROT_PROCENT} procent av det arbetet kostar, och bara av det. Sedan finns tre gränser
+          som kan göra avdraget mindre: {kronor(ROT_TAK_KR)} kronor per person och år, den gemensamma gränsen för rot
+          och rut, och skatten du själv betalar in under året. Fyll i fakturan, så ser du hur mycket du får tillbaka,
+          vilken gräns som gäller dig och vad du får kvar att betala.
         </p>
       </div>
 
@@ -337,11 +344,15 @@ const FRAGOR = [
     </section>
 
     <Faktaruta variant="kortsvar">
-      <p class="m-0 leading-6">Avdraget är <Markering>{ROT_PROCENT} procent av arbetskostnaden</Markering>.</p>
-      <p class="m-0 leading-6">Material, resor och maskinhyra ger ingenting.</p>
-      <p class="m-0 leading-6">Taket är {kronor(ROT_TAK_KR)} kr per person och år.</p>
-      <p class="m-0 leading-6">Rot och rut ryms tillsammans i {kronor(GEMENSAMT_TAK_KR)} kr.</p>
-      <p class="m-0 leading-6">Dagen du betalar avgör vilken procentsats som gäller.</p>
+      <p class="m-0 leading-6">
+        Hantverkaren drar av <Markering>{ROT_PROCENT} procent av arbetskostnaden</Markering> direkt på fakturan.
+      </p>
+      <p class="m-0 leading-6">Material, resor och maskinhyra ger inget avdrag alls.</p>
+      <p class="m-0 leading-6">
+        Du får högst {kronor(ROT_TAK_KR)} kr per person och år, och rot och rut får tillsammans inte gå över{' '}
+        {kronor(GEMENSAMT_TAK_KR)} kr.
+      </p>
+      <p class="m-0 leading-6">Det är dagen du betalar som avgör vilken procentsats du får.</p>
     </Faktaruta>
 
     <div class="linjerat mt-8 lg:grid lg:grid-cols-2 lg:gap-8">
@@ -354,7 +365,7 @@ const FRAGOR = [
           visat.status === 'ok' && (
             <>
               {resultat.status === 'ogiltig' && (
-                <p class="m-0 mb-2 text-liten text-varning">Visar standardvärden tills indatan är rättad.</p>
+                <p class="m-0 mb-2 text-liten text-varning">Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.</p>
               )}
               {/* Spalten bär svaret: beskedet, talet och länkarna. Reglerna med
                   källa och "Gör inte det här" står som egna H2 under verktyget. */}
@@ -368,7 +379,7 @@ const FRAGOR = [
                 <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
                   <Markering>{kronor(visat.avdragKr)}</Markering>
                 </span>
-                <span class="text-ingress lg:text-ingress-lg">kr av arbetskostnaden</span>
+                <span class="text-ingress lg:text-ingress-lg">kr dras av på fakturan</span>
               </p>
               <p class="m-0 mt-2 text-liten text-blyerts-2">
                 Räknat på {kronor(visatIndata.arbetskostnadKr)}&nbsp;kr i arbete och{' '}
@@ -377,31 +388,31 @@ const FRAGOR = [
 
               <ul class="m-0 mt-4 p-0 list-none text-brod tabular-nums">
                 <li class="border-t border-linje py-2">
-                  Att betala efter avdraget {kronor(visat.attBetalaKr)}&nbsp;kr av {kronor(visat.fakturaKr)}&nbsp;kr
+                  Du betalar {kronor(visat.attBetalaKr)}&nbsp;kr av fakturans {kronor(visat.fakturaKr)}&nbsp;kr.
                 </li>
                 {visat.utanAvdragKr > 0 && (
                   <li class="border-t border-linje py-2">
-                    Utan avdrag på fakturan {kronor(visat.utanAvdragKr)}&nbsp;kr, alltså{' '}
-                    {visat.andelUtanAvdragProcent} procent av den
+                    Utanför avdraget ligger {kronor(visat.utanAvdragKr)}&nbsp;kr, alltså{' '}
+                    {visat.andelUtanAvdragProcent} procent av fakturan.
                   </li>
                 )}
                 <li class="border-t border-linje py-2">
-                  Kvar av rot-taket {kronor(visat.kvarRotTakKr)}&nbsp;kr i år, av {kronor(visat.rotTakTotaltKr)}
-                  &nbsp;kr
+                  Av årets rotavdrag på {kronor(visat.rotTakTotaltKr)}&nbsp;kr har ni {kronor(visat.kvarRotTakKr)}
+                  &nbsp;kr kvar.
                 </li>
                 <li class="border-t border-linje py-2">
-                  Kvar av det gemensamma taket {kronor(visat.kvarGemensamtKr)}&nbsp;kr, som rot och rut delar på
+                  Av den gemensamma gränsen för rot och rut har ni {kronor(visat.kvarGemensamtKr)}&nbsp;kr kvar.
                 </li>
               </ul>
 
               <p class="m-0 mt-4 text-liten text-blyerts-2">
-                Varje regel med sin källa, och vad du inte ska göra,{' '}
+                Reglerna bakom svaret, med källa, och det du inte ska göra{' '}
                 <a href="#darfor-blev-svaret-sa" class={LANK_KLASS}>står under verktyget</a>.
               </p>
 
               <p class="m-0 mt-4">
                 <a href="#sa-raknar-vi" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
-                  Så räknar vi
+                  Så räknar jag
                 </a>
               </p>
 
@@ -412,7 +423,7 @@ const FRAGOR = [
                   Dela svaret
                 </label>
                 <input id="dela" type="text" readonly value={delaLank} class:list={[FALT_KLASS, 'border-blyerts-2']} />
-                <p class="m-0 mt-1 text-liten text-blyerts-2">Adressen innehåller dina värden. Markera och kopiera.</p>
+                <p class="m-0 mt-1 text-liten text-blyerts-2">Dina värden ligger i adressen. Markera den och kopiera, så får den du skickar till samma svar.</p>
               </div>
             </>
           )
@@ -426,7 +437,7 @@ const FRAGOR = [
           <section>
             <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
             <p class="m-0 mb-4 text-brod lg:text-brod-lg">
-              Varje rad är en regel hos Skatteverket, och länken går till den sida regeln står på.
+              Varje rad här är en regel hos Skatteverket, och länken går till sidan där regeln står.
             </p>
             <ul class="m-0 p-0 list-none text-brod lg:text-brod-lg">
               {visat.regler.map((regel) => (
@@ -456,120 +467,125 @@ const FRAGOR = [
     }
 
     <section>
-      <Pennstreck id="tre-tak">Rotavdraget har tre tak, och de flesta känner bara till ett</Pennstreck>
+      <Pennstreck id="tre-tak">Tre gränser kan göra rotavdraget mindre än du räknat med</Pennstreck>
       <p class="m-0 text-brod lg:text-brod-lg">
-        Procentsatsen är den enkla delen. Företaget drar av {ROT_PROCENT} procent av arbetskostnaden direkt på
-        fakturan, du betalar resten, och företaget begär pengarna av Skatteverket. Det är det som kallas
-        fakturamodellen, och det är därför avdraget syns på notan och inte först i deklarationen.
+        Själva procentsatsen är den lätta biten. Hantverkaren drar av {ROT_PROCENT} procent av arbetskostnaden på
+        fakturan, du betalar resten, och företaget hämtar mellanskillnaden hos Skatteverket. Det kallas
+        fakturamodellen, och det är därför du ser avdraget på notan och inte först i deklarationen.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Ett exempel med mina egna tal: kostar arbetet {kronor(EXEMPEL_ARBETE_KR)}&nbsp;kr med moms drar hantverkaren
+        av {kronor(EXEMPEL_AVDRAG_KR)}&nbsp;kr, och du betalar {kronor(EXEMPEL_BETALA_KR)}&nbsp;kr. Så långt är det
+        bara en procentsats. Det är de tre gränserna som gör att svaret ibland blir ett annat.
       </p>
 
-      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Taket per person, och taket ni delar</h3>
+      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Så mycket får varje ägare dra av på ett år</h3>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Rotavdraget är högst {kronor(ROT_TAK_KR)}&nbsp;kr per person och år. Rot och rut räknas sedan ihop i ett
-        gemensamt tak på {kronor(GEMENSAMT_TAK_KR)}&nbsp;kr per person och år, och det är den raden som slarvas bort
-        oftast. Den sida som i dag rankar högst på "renovera kök kostnad" anger rot-taket till just{' '}
-        {kronor(GEMENSAMT_TAK_KR)}&nbsp;kr. För {ARET} är det fel: den summan är rot plus rut tillsammans. Under 2024
-        fanns ett tillfälligt eget rottak på {kronor(GEMENSAMT_TAK_KR)}&nbsp;kr, och det är förmodligen därifrån
-        talet lever kvar.
+        Rotavdraget är högst {kronor(ROT_TAK_KR)}&nbsp;kr per person och år. Sedan räknas rot och rut ihop, och
+        tillsammans får de inte gå över {kronor(GEMENSAMT_TAK_KR)}&nbsp;kr per person och år. Den andra gränsen är den
+        som oftast blir fel. En av de stora sidorna om vad ett kök kostar att renovera anger{' '}
+        {kronor(GEMENSAMT_TAK_KR)}&nbsp;kr som gränsen för rot, och för {ARET} stämmer det inte, för den summan är rot
+        och rut tillsammans. Under 2024 fanns en tillfällig egen gräns för rot på just det beloppet, och jag gissar
+        att det är därifrån talet lever kvar.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Skillnaden märks först när du använt båda. Har hushållet tagit ut rutavdrag för flytt och städning i år är
-        det mindre kvar till hantverkaren, fast rot-taket ser orört ut. Det är därför verktyget frågar efter de två
-        beloppen var för sig: det utnyttjade rotavdraget äter av båda taken, medan rutavdraget bara äter av det
-        gemensamma.
+        Skillnaden märks först när ni använt båda. Har ni haft städhjälp eller en flyttfirma med rutavdrag i år är
+        det mindre kvar till hantverkaren, fast rotavdraget ser orört ut. Därför frågar verktyget efter de två
+        beloppen var för sig. Det ni redan använt i rot räknas av från båda gränserna, medan rut bara räknas av från
+        den gemensamma.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Äger ni bostaden tillsammans har ni ett tak var. Två ägare bär alltså {kronor(ROT_TAK_KR * 2)}&nbsp;kr i rot,
-        och det är den skillnaden som avgör om ett större jobb ryms på ett år eller får delas på två. Villkoret är
-        att båda äger bostaden när arbetet utförs och att båda betalar.
+        Äger ni bostaden tillsammans har ni en gräns var. Två ägare får alltså dra av {kronor(ROT_TAK_KR * 2)}
+        &nbsp;kr i rot på ett år, och den skillnaden avgör ofta om ett större jobb ryms på ett år eller får delas på
+        två. Villkoret är att båda äger bostaden medan arbetet görs och att båda är med och betalar.
       </p>
 
-      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Skatten är det tredje taket</h3>
+      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Betalar du lite skatt blir avdraget litet</h3>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Rotavdraget är en skattereduktion, alltså en avräkning mot skatt du redan betalat in. Finns ingen skatt finns
-        inget avdrag. Reduktionen räknas av mot kommunal och statlig inkomstskatt, statlig fastighetsskatt och
-        kommunal fastighetsavgift, men inte mot allmän pensionsavgift, begravningsavgift eller kyrkoavgift.
+        Rotavdraget är en skattereduktion. Det betyder att pengarna räknas av mot den skatt du betalar in under
+        året, och finns det ingen skatt finns det inget att räkna av mot. Det som räknas är kommunal och statlig
+        inkomstskatt, statlig fastighetsskatt och kommunal fastighetsavgift. Allmän pensionsavgift, begravningsavgift
+        och kyrkoavgift räknas inte.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Skatteverket säger själva att det är omöjligt att ange exakt vilken inkomst som krävs för att nå upp till
-        hela beloppet, eftersom inkomstslag, kommunalskatt och eventuellt underskott av kapital spelar in. Därför är
-        skattefältet i verktyget frivilligt, och därför står det i svaret när fältet är tomt att den gränsen inte är
-        vägd. Är du pensionär, studerande eller föräldraledig är det ofta den här raden och inte taket som sätter
-        gränsen.
+        Skatteverket skriver själva att de inte kan säga exakt vilken inkomst som krävs för att få ut hela beloppet,
+        eftersom det beror på vilken sorts inkomst du har, vad kommunalskatten är där du bor och om du har underskott
+        av kapital. Därför är skattefältet i verktyget frivilligt, och därför står det i svaret att den gränsen inte
+        är vägd när du lämnar fältet tomt. Är du pensionär, studerar eller är föräldraledig är det ofta skatten som
+        stoppar först, inte gränsen per person.
       </p>
 
       <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">
-        Datumet som avgör, och som ingen skriver ut
+        Dagen du betalar avgör vilken procentsats du får
       </h3>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Under en period var avdraget {ROT_PROCENT_HOJT} procent. Höjningen var tillfällig och gällde färdiga arbeten
-        där kunden betalade fakturan mellan {HOJNINGEN_FRAN} och {HOJNINGEN_TILL}. Det är betalningen som daterar
-        avdraget, inte fakturans datum. Arbetet ska dessutom vara utfört, och företagets ansökan om utbetalning ska
-        vara inne senast den {ANSOKAN_SENAST}.
+        Under några månader var avdraget {ROT_PROCENT_HOJT} procent. Höjningen var tillfällig och gällde färdiga
+        arbeten där kunden betalade fakturan mellan {HOJNINGEN_FRAN} och {HOJNINGEN_TILL}. Lägg märke till ordet
+        betalade. Det är dagen pengarna går iväg som daterar avdraget, inte dagen fakturan skrevs. Arbetet ska
+        dessutom vara klart, och företaget ska ha skickat in sin begäran om utbetalning senast den {ANSOKAN_SENAST}.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Samma regel gäller varje årsskifte, även när procentsatsen inte ändras. Betalar du i januari hamnar avdraget
-        på det nya årets tak, och betalar du i december på det gamla. Har du ett stort jobb och ett tak som redan är
-        nästan fullt är det alltså värt att fråga hantverkaren när fakturan förfaller, innan arbetet börjar. Det är
-        den enda planeringen i hela rotavdraget som faktiskt ger pengar.
+        Samma regel gäller vid varje årsskifte, även när procentsatsen står still. Betalar du i januari hamnar
+        avdraget på det nya årets gräns, betalar du i december på det gamla. Har du ett stort jobb på gång och nästan
+        ingenting kvar av årets rotavdrag, fråga hantverkaren när fakturan förfaller innan ni sätter igång. Det är
+        den enda planering i hela rotavdraget som faktiskt ger pengar.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Vill du se Skatteverkets egen uträkning finns den i{' '}
+        Skatteverkets egen räknare finns i{' '}
         <a href={SKATTEVERKET_RAKNA} rel="nofollow" class={LANK_KLASS}>
           deras e-tjänst för rot och rut
         </a>
-        . Den är den som gäller när ditt fall är ovanligt, och den här sidan är gjord för att du ska förstå svaret
-        innan du hamnar där.
+        . Är ditt fall ovanligt är det den som gäller, och då är det bra att förstå svaret här först.
       </p>
     </section>
 
     <section>
-      <Pennstreck id="sa-raknar-vi">Så räknar vi</Pennstreck>
+      <Pennstreck id="sa-raknar-vi">Så räknar jag</Pennstreck>
       {
         varumarke && illustration && (
           <Illustration
             namn="rakna/rotavdrag"
-            alt="Skiss av en faktura som ligger som en egen papperslapp, med brevhuvud och tre rader under varandra: arbete, material och maskinhyra. Beloppen är antydda som våglinjer och en summalinje går under dem. De två raderna material och maskinhyra är inringade med anteckningen räknas inte, medan arbetsraden bär det gulmarkerade talet 30 procent och anteckningen bara arbetet ger avdrag."
-            bildtext="Avdraget räknas på arbetsraden och ingen annan. Material och maskinhyra ligger utanför, och det är därför de ska stå för sig på fakturan."
+            alt="Skiss av en faktura med raderna arbete, material och maskinhyra, där bara arbetsraden är markerad som grund för avdraget"
+            bildtext="Arbetsraden bär anteckningen 30 procent och ger avdraget. Material och maskinhyra är inringade med anteckningen räknas inte, och det är därför de ska stå på egna rader på fakturan."
           />
         )
       }
       <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg">
         <li class="mb-2">
-          Avdraget räknas rakt av: {ROT_PROCENT} procent av arbetskostnaden, avrundat till hel krona. Materialet rörs
-          aldrig.
+          Verktyget tar {ROT_PROCENT} procent av arbetskostnaden och avrundar till hel krona. Materialet rörs inte.
         </li>
         <li class="mb-2">
-          Rot-taket är {kronor(ROT_TAK_KR)} kr gånger antalet ägare, minus det rotavdrag som redan är utnyttjat i år.
+          Sedan räknar det ut hur mycket rotavdrag ni har kvar i år: {kronor(ROT_TAK_KR)} kr gånger antalet ägare,
+          minus det ni redan använt i rot.
         </li>
         <li class="mb-2">
-          Det gemensamma taket är {kronor(GEMENSAMT_TAK_KR)} kr gånger antalet ägare, minus utnyttjat rot och
-          utnyttjat rut. Rutavdraget äter alltså bara av det här taket.
+          Samma sak med den gemensamma gränsen: {kronor(GEMENSAMT_TAK_KR)} kr gånger antalet ägare, minus det ni
+          använt i både rot och rut. Rutavdraget räknas alltså bara av här.
         </li>
         <li class="mb-2">
-          Skatten du fyllt i, minus det som redan är utnyttjat. Lämnar du fältet tomt vägs skatten inte alls, och
-          svaret skriver ut att den inte är vägd.
+          Har du fyllt i skatten dras det ni redan använt bort från den också. Har du lämnat fältet tomt hoppar
+          verktyget över steget och säger det i svaret.
         </li>
         <li class="mb-2">
-          Avdraget blir det minsta av de fyra, och beskedet säger vilket av dem som band svaret.
+          Avdraget blir det minsta av de fyra talen, och beskedet säger vilket av dem som satte stopp.
         </li>
         <li>Att betala är arbete plus material minus avdraget.</li>
       </ol>
 
       <p class="m-0 mt-6 text-brod lg:text-brod-lg">
-        Alla tal om procentsats, tak och datum kommer från Skatteverket, och varje rad i tabellen länkar till den
-        sida den står på. Det som är vårt är standardvärdet på antalet ägare, gränserna på fälten och förenklingen i
-        skattefältet, och de raderna står märkta Antagande.
+        Alla tal om procentsats, gränser och datum kommer från Skatteverket, och varje rad i tabellen länkar till
+        sidan där talet står. Det som är mitt eget är att verktyget börjar med en ägare, gränserna på fälten och
+        förenklingen i skattefältet. De raderna är märkta Antagande.
       </p>
 
       <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad svaret vilar på</h3>
       <Tabellyta kolumner={3} class="mt-4">
         <table class="w-full border-collapse text-liten tabular-nums">
-          <caption class="sr-only">Regler, tak och antaganden i rotavdragskalkylatorn</caption>
+          <caption class="sr-only">Regler, gränser och antaganden i rotavdragskalkylatorn</caption>
           <thead>
             <tr class="border-b border-linje text-left">
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Storhet</th>
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Vi räknar med</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Vad</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Verktyget räknar med</th>
               <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Källa eller antagande</th>
             </tr>
           </thead>
@@ -598,9 +614,8 @@ const FRAGOR = [
           <tfoot>
             <tr>
               <td colspan="3" class="p-2 text-liten text-blyerts-2">
-                Alla rader lästa hos Skatteverket 20 september 2026. Procentsats och takbelopp är årsberoende och
-                läses om varje december; sidan bär årtalet i rubriken av det skälet. Raderna märkta Antagande är våra
-                egna val, inte regler.
+                Procentsatsen och gränserna kan bytas varje år, och därför står årtalet i sidans rubrik. Raderna
+                märkta Antagande är mina egna val, inte Skatteverkets regler.
               </td>
             </tr>
           </tfoot>
@@ -608,14 +623,14 @@ const FRAGOR = [
       </Tabellyta>
 
       <p class="m-0 mt-6 text-brod lg:text-brod-lg">
-        Två saker ser verktyget inte. Det första är hur din faktura är uppdelad: står maskinhyran inne i arbetsposten
-        räknar verktyget på ett underlag som är för stort, och det är därför fakturan ska ha maskinen på egen rad.
-        Det andra är din verkliga slutskatt, som avgörs först i deklarationen. Svaret här är en uträkning, inte ett
-        besked från Skatteverket.
+        Två saker ser verktyget inte. Det ena är hur fakturan är uppdelad. Står maskinhyran inne i arbetsposten
+        räknar verktyget på ett belopp som är för stort, och det är därför maskinen ska stå på en egen rad. Det
+        andra är din slutskatt, som avgörs först i deklarationen. Svaret här är en uträkning och inget besked från
+        Skatteverket.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Metoden bakom våra siffror står på{' '}
-        <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar vi</a>.
+        Hur jag jobbar med tal och källor står på sidan{' '}
+        <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar jag</a>.
       </p>
     </section>
 
@@ -624,17 +639,17 @@ const FRAGOR = [
       <ul class="m-0 p-0 list-none">
         <li class="border-t border-linje">
           <a href="/rakna/dranering/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Vad kostar det att dränera om huset, med maskinhyran räknad för sig
+            Räkna på vad en dränering kostar, med maskinhyran på egen rad
           </a>
         </li>
         <li class="border-t border-linje">
           <a href="/grund/dranera-hus/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Dränera om huset, hela jobbet från schakt till återställning
+            Så dränerar du om huset, från schakt till återställd tomt
           </a>
         </li>
         <li class="border-t border-linje">
           <a href="/golv/renovera-trappa/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Renovera trappa, tre vägar med timmar och kronor
+            Renovera trappan, tre vägar med timmar och kronor
           </a>
         </li>
         <li class="border-t border-linje">
@@ -649,7 +664,7 @@ const FRAGOR = [
         </li>
         <li class="border-t border-linje">
           <a href="/rakna/kvadratmeter/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Räkna ut kvadratmeter och materialåtgång
+            Räkna ut kvadratmeter och hur mycket material som går åt
           </a>
         </li>
       </ul>

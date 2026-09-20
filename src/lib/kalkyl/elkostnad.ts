@@ -90,19 +90,19 @@ export const GRANSER = {
 
 /** De två färdiga perioderna i formuläret. Allt annat skrivs i fältet bredvid. */
 export const PERIODER: { dagar: number; etikett: string }[] = [
-  { dagar: 30, etikett: '30 dagar, en månad' },
-  { dagar: DAGAR_PER_AR, etikett: '365 dagar, ett år' },
+  { dagar: 30, etikett: 'En månad, 30 dagar' },
+  { dagar: DAGAR_PER_AR, etikett: 'Ett år, 365 dagar' },
 ];
 
 /** Hjälptexten under gångtiden. Vår erfarenhet, inte uppmätt drifttid. */
 export const GANGTIDER: { timmar: number; vad: string }[] = [
-  { timmar: 8, vad: 'hygrostatstyrd avfuktare, cirka 8 timmar' },
-  { timmar: 5, vad: 'värmefläkt på termostat, 4 till 6 timmar' },
-  { timmar: 24, vad: 'en maskin som aldrig stängs av, 24 timmar' },
+  { timmar: 8, vad: 'en avfuktare som stängs av av sin fuktgivare går cirka 8 timmar' },
+  { timmar: 5, vad: 'en värmefläkt på termostat går 4 till 6 timmar' },
+  { timmar: 24, vad: 'en maskin som aldrig stängs av går 24 timmar' },
 ];
 
 const GOR_INTE_DYGNET_RUNT =
-  'Låt inte avfuktaren gå dygnet runt utan hygrostat, alltså givaren som stoppar maskinen när luften nått rätt fuktighet. En maskin som aldrig slår av kostar tre gånger så mycket som en hygrostatstyrd och torkar källaren torrare än den behöver vara. Sitter givaren i maskinen räcker det att ställa den på 55 procent luftfuktighet.';
+  'Låt inte avfuktaren gå dygnet runt utan hygrostat. Hygrostaten är givaren som stoppar maskinen när luften nått rätt fuktighet, och en maskin som aldrig slår av kostar tre gånger så mycket som en som styrs av den. Dessutom torkar den källaren torrare än den behöver vara. Sitter givaren i maskinen räcker det att ställa den på 55 procent luftfuktighet.';
 
 /** Decimalkomma accepteras: '7,4' blir 7.4. Tomt eller skräp ger NaN. */
 function tillTal(v: string | null): number {
@@ -193,22 +193,22 @@ export function raknaElkostnad(i: ElkostnadIndata): ElkostnadResultat {
   const [literMin, literMax] = GRANSER.literPerDygn;
 
   if (!Number.isFinite(i.effektW) || i.effektW < effektMin || i.effektW > effektMax) {
-    fel.effektW = `Ange effekt mellan ${effektMin} och ${effektMax} watt`;
+    fel.effektW = `Skriv en effekt mellan ${effektMin} och ${effektMax} watt`;
   }
   if (!Number.isFinite(i.timmarPerDygn) || i.timmarPerDygn < timmarMin || i.timmarPerDygn > timmarMax) {
-    fel.timmarPerDygn = `Ange gångtid mellan ${String(timmarMin).replace('.', ',')} och ${timmarMax} timmar per dygn`;
+    fel.timmarPerDygn = `Skriv en gångtid mellan ${String(timmarMin).replace('.', ',')} och ${timmarMax} timmar per dygn`;
   }
   if (!Number.isFinite(i.dagar) || i.dagar < dagarMin || i.dagar > dagarMax) {
-    fel.dagar = `Ange antal dagar mellan ${dagarMin} och ${dagarMax}`;
+    fel.dagar = `Skriv ett antal dagar mellan ${dagarMin} och ${dagarMax}`;
   }
   if (!Number.isFinite(i.elprisKrPerKwh) || i.elprisKrPerKwh < prisMin || i.elprisKrPerKwh > prisMax) {
-    fel.elprisKrPerKwh = `Ange elpris mellan ${String(prisMin).replace('.', ',')} och ${prisMax} kr per kWh`;
+    fel.elprisKrPerKwh = `Skriv ett elpris mellan ${String(prisMin).replace('.', ',')} och ${prisMax} kr per kWh`;
   }
   if (
     i.literPerDygn !== null &&
     (!Number.isFinite(i.literPerDygn) || i.literPerDygn < literMin || i.literPerDygn > literMax)
   ) {
-    fel.literPerDygn = `Ange liter per dygn mellan ${String(literMin).replace('.', ',')} och ${literMax}, eller lämna fältet tomt`;
+    fel.literPerDygn = `Skriv liter per dygn mellan ${String(literMin).replace('.', ',')} och ${literMax}, eller lämna fältet tomt`;
   }
   if (Object.keys(fel).length > 0) return { status: 'ogiltig', fel };
 

@@ -408,15 +408,15 @@ export function lastPerPunkt(i: GipspluggIndata): number {
 function lastText(i: GipspluggIndata, barande: number): string {
   const punktOrd = (n: number) => (n === 1 ? '1 punkt' : `${n} punkter`);
   if (i.sak === 'tv-svangarm') {
-    return `Armen gör vikten till en hävarm. Vi räknar med att den övre skruvraden får bära hela vikten gånger ${String(SVANGARM_FAKTOR).replace('.', ',')}, fördelad på ${punktOrd(barande)}. Det är vår regel, ingen tillverkares.`;
+    return `Armen gör vikten till en hävarm. Jag räknar med att den övre skruvraden får bära hela vikten gånger ${String(SVANGARM_FAKTOR).replace('.', ',')}, fördelad på ${punktOrd(barande)}. Det är min regel, ingen tillverkares.`;
   }
   if (i.sak === 'skap') {
-    return `Ett skåp belastas ojämnt varje gång någon öppnar luckan. Vi lägger därför hela vikten på de övre fästena, alltså ${punktOrd(barande)} av ${i.punkter}.`;
+    return `Ett skåp belastas ojämnt varje gång någon öppnar luckan. Därför lägger jag hela vikten på de övre fästena, alltså ${punktOrd(barande)} av ${i.punkter}.`;
   }
   if (i.sak === 'hylla') {
-    return `En hylla vill vrida sig ut från väggen, så de övre fästena bär nästan allt. Vi lägger hela vikten på ${punktOrd(barande)} av ${i.punkter}.`;
+    return `En hylla vill vrida sig ut från väggen, så de övre fästena bär nästan allt. Jag lägger hela vikten på ${punktOrd(barande)} av ${i.punkter}.`;
   }
-  return `Vikten delas jämnt på ${punktOrd(barande)}.`;
+  return `Vikten delar jag jämnt på ${punktOrd(barande)}.`;
 }
 
 /** Kapaciteten i den valda skivan, med takets gräns pålagd. */
@@ -461,7 +461,7 @@ function utelamnadeText(sak: Sak, skiva: Skiva): string | null {
   const delar: string[] = [];
   if (sak === 'tak') {
     delar.push(
-      `Krokar, klisterremsor och den självborrande gipspluggen står inte i tabellen. Gipstillverkaren Norgips skriver att stift och X-krok inte fungerar i tak, och vi räknar bara med infästningar som viker ut sig bakom skivan. I tak gäller dessutom högst ${kg(TAK_MAX_KG)} per fästpunkt, oavsett vad förpackningen säger.`,
+      `Krokar, klisterremsor och den självborrande gipspluggen står inte i tabellen. Gipstillverkaren Norgips skriver att stift och X-krok inte fungerar i tak, och jag räknar bara med infästningar som viker ut sig bakom skivan. I tak gäller dessutom högst ${kg(TAK_MAX_KG)} per fästpunkt, oavsett vad förpackningen säger.`,
     );
   } else if (sak !== 'tavla') {
     delar.push(
@@ -470,7 +470,7 @@ function utelamnadeText(sak: Sak, skiva: Skiva): string | null {
   }
   if (skiva === 'tunn') {
     delar.push(
-      'Hålrumsplugg, gipsankare, molly och clips saknas också. Källorna anger inga värden för den tunna skivan, och en siffra vi gissat fram är ingen siffra.',
+      'Hålrumsplugg, gipsankare, molly och clips saknas också. Källorna anger inga värden för den tunna skivan, och en siffra jag gissat fram är ingen siffra.',
     );
   } else if (skiva === 'tva-lag' && sak !== 'tak') {
     delar.push(
@@ -486,10 +486,10 @@ const GOR_INTE_SVANGARM =
 const GOR_INTE_XKROK_TAK =
   'Slå inte upp en X-krok eller ett stift i taket. Norgips skriver rakt ut att de inte fungerar där, eftersom lasten drar rakt ut ur skivan i stället för nedåt längs den. I tak gäller en infästning som viker ut sig bakom gipset.';
 
-const GOR_INTE_TATT = `Sätt inte två infästningar närmare varandra än ${MIN_AVSTAND_MM}${HART}mm. De delar då på samma bit gips och bryter loss den tillsammans. Ska varje infästning bära sin maxlast vill Norgips ha minst ${MAXLAST_AVSTAND_MM}${HART}mm mellan dem.`;
+const GOR_INTE_TATT = `Sätt inte två infästningar närmare varandra än ${MIN_AVSTAND_MM}${HART}mm. Då delar de på samma bit gips och bryter loss den tillsammans. Ska varje infästning bära sin maxlast vill Norgips ha minst ${MAXLAST_AVSTAND_MM}${HART}mm mellan dem.`;
 
 const GOR_INTE_EN_PUNKT =
-  'Häng inte något tungt i en enda punkt. Två infästningar med avstånd emellan delar lasten på två bitar gips, och saken slutar dessutom att stå snett två veckor senare.';
+  'Häng inte något tungt i en enda punkt. Två infästningar med avstånd emellan delar lasten på två bitar gips, och saken slipper dessutom hänga snett två veckor senare.';
 
 const GOR_INTE_TOMVIKT =
   'Räkna inte på skåpets tomvikt. Ett överskåp med porslin i landar snabbt på det dubbla, och det är den fyllda vikten som hänger i infästningen.';
@@ -500,10 +500,10 @@ export function raknaGipsplugg(i: GipspluggIndata): GipspluggResultat {
   const [punktMin, punktMax] = GRANSER.punkter;
 
   if (!Number.isFinite(i.viktKg) || i.viktKg < viktMin || i.viktKg > viktMax) {
-    fel.viktKg = `Ange vikten mellan ${String(viktMin).replace('.', ',')} och ${viktMax} kilo`;
+    fel.viktKg = `Skriv vikten som ett tal mellan ${String(viktMin).replace('.', ',')} och ${viktMax} kilo`;
   }
   if (!Number.isFinite(i.punkter) || !Number.isInteger(i.punkter) || i.punkter < punktMin || i.punkter > punktMax) {
-    fel.punkter = `Ange antalet infästningspunkter som ett helt tal mellan ${punktMin} och ${punktMax}`;
+    fel.punkter = `Skriv antalet infästningspunkter som ett helt tal mellan ${punktMin} och ${punktMax}`;
   }
   if (Object.keys(fel).length > 0) return { status: 'ogiltig', fel };
 
@@ -519,7 +519,7 @@ export function raknaGipsplugg(i: GipspluggIndata): GipspluggResultat {
   } else if (i.sak === 'skap') {
     kraverRegelSkal = 'Lasten skiftar varje gång någon öppnar luckan, och då gäller regel eller kortling oavsett vikt.';
   } else if (i.viktKg > GRANS_REGEL_KG) {
-    kraverRegelSkal = `Saken väger mer än ${kg(GRANS_REGEL_KG)}, och där går vår gräns för vad som får hänga i skivan.`;
+    kraverRegelSkal = `Saken väger mer än ${kg(GRANS_REGEL_KG)}, och där går min gräns för vad som får hänga i skivan.`;
   }
   /* I tak gäller Norgips tak på 20 kg per fästpunkt, men lasten per punkt är
      aldrig större än hela vikten, och vikten över 20 kg fångas redan ovan. Taket
@@ -531,10 +531,10 @@ export function raknaGipsplugg(i: GipspluggIndata): GipspluggResultat {
   if (kraverRegel) {
     if (i.regel === 'nej') {
       svar = 'kortling';
-      svarText = `${kraverRegelSkal} Du har ingen regel bakom, så såga upp gipset mellan två reglar och skruva in en kortling, alltså en kort träbit eller en bit 12 mm plywood. Sätt tillbaka gipsbiten och spackla.`;
+      svarText = `${kraverRegelSkal} Du har ingen regel bakom, så såga upp gipset mellan två reglar och skruva in en kortling. Det är en kort träbit eller en bit 12 mm plywood. Sätt tillbaka gipsbiten och spackla.`;
     } else if (i.regel === 'ja') {
       svar = 'regel';
-      svarText = `${kraverRegelSkal} Du har en regel bakom, så skruva i den med träskruv. Gipsskruven som ibland ligger i fästets påse håller en skiva mot en regel och ingenting annat.`;
+      svarText = `${kraverRegelSkal} Du har en regel bakom, så skruva i den med träskruv. Gipsskruven som ibland ligger i fästets påse håller en skiva mot en regel, och ingenting annat.`;
     } else {
       svar = 'regel';
       svarText = `${kraverRegelSkal} Leta rätt på regeln först, med knackning, magnet eller regelsökare. Hittar du ingen där saken ska sitta öppnar du väggen och sätter en kortling.`;
@@ -545,14 +545,14 @@ export function raknaGipsplugg(i: GipspluggIndata): GipspluggResultat {
   } else if (i.regel === 'ja') {
     svar = 'regel';
     svarText =
-      'Det finns en regel bakom, och den bästa pluggen i en gipsvägg är ingen plugg. En träskruv i regeln bär mer än varje rad i tabellen under, och den kostar ingenting extra. Pluggarna i tabellen är alternativet om du bommar regeln.';
+      'Det finns en regel bakom, och den bästa pluggen i en gipsvägg är ingen plugg. En träskruv i regeln bär mer än varje rad i tabellen här under, och den kostar ingenting extra. Pluggarna i tabellen är reserven om du bommar regeln.';
   } else if (ingenKlarar) {
     svar = 'kortling';
     svarText = `Ingen infästning i ${SKIVA_TEXT[i.skiva]} är märkt för ${kg(last)} per punkt. Fördela lasten på fler punkter, eller såga upp gipset och sätt en kortling mellan två reglar.`;
   } else {
     svar = 'plugg';
     const forsta = infastningar.find((r) => r.klarar);
-    svarText = `Lasten per punkt är ${kg(last)}, och den enklaste infästningen som är märkt för det i ${SKIVA_TEXT[i.skiva]} är ${forsta ? forsta.namn.toLowerCase() : 'raden överst i tabellen'}. Sitter det en regel bakom är den ändå bättre.`;
+    svarText = `Lasten per punkt är ${kg(last)}, och den enklaste infästningen som är märkt för det i ${SKIVA_TEXT[i.skiva]} är ${forsta ? forsta.namn.toLowerCase() : 'raden överst i tabellen'}. Sitter det en regel bakom är den ändå bättre än varje plugg.`;
   }
 
   const gorInteDetHar: string[] = [];

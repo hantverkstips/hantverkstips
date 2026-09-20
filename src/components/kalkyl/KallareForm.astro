@@ -68,15 +68,15 @@ const valda = new Set(indata.symptom);
     {
       !kompakt && (
         <p class={HJALP_KLASS}>
-          Kryssa i allt som stämmer. Vad varje rad betyder står i svaret, inte här, så att du kryssar efter vad du ser
-          och inte efter vad du hoppas. Har du inte varit nere ännu, ta med en ficklampa och en torr trasa.
+          Kryssa i allt som stämmer. Vad varje rad betyder får du i svaret, så att du kryssar efter vad du ser och inte
+          efter vad du hoppas. Har du inte varit nere än, ta med en ficklampa och en torr trasa.
         </p>
       )
     }
   </fieldset>
 
   <fieldset class="m-0 mb-4 p-0 border-0">
-    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Vad tejptestet visade</legend>
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Vad visade plasten på väggen?</legend>
     <div class={radioKlass}>
       {
         TEJPTESTER.map((t) => (
@@ -93,7 +93,7 @@ const valda = new Set(indata.symptom);
     {
       !kompakt && (
         <p class={HJALP_KLASS}>
-          En bit plastfolie tejpad tätt mot källarväggen i minst två dygn. Hela testet står i{' '}
+          Tejptestet är en bit plastfolie som får sitta tätt mot källarväggen i minst två dygn. Hur du gör det står i{' '}
           <a
             href="/fukt/fukt-i-kallaren/"
             class="text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
@@ -107,7 +107,7 @@ const valda = new Set(indata.symptom);
   </fieldset>
 
   <div class="mb-4">
-    <label for={id('rf')} class={ETIKETT_KLASS}>Hygrometern visar</label>
+    <label for={id('rf')} class={ETIKETT_KLASS}>Vad visar hygrometern?</label>
     <div class="flex items-center gap-2">
       <input
         id={id('rf')}
@@ -128,8 +128,8 @@ const valda = new Set(indata.symptom);
         </p>
       ) : (
         <p id={id('rf-hjalp')} class={HJALP_KLASS}>
-          Relativ luftfuktighet, alltså hur mycket vatten luften bär jämfört med vad den klarar vid sin temperatur.
-          Lämna fältet tomt om du inte mätt. Boverkets gräns går vid {KRITISK_RF} procent.
+          Talet är relativ luftfuktighet, alltså hur mycket vatten luften bär jämfört med vad den klarar vid sin
+          temperatur. Lämna fältet tomt om du inte har mätt. Boverkets gräns går vid {KRITISK_RF} procent.
         </p>
       )
     }

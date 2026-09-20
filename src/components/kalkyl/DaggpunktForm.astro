@@ -50,7 +50,7 @@ const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
 const talfalt = [
   {
     namn: 'temp',
-    etikett: 'Lufttemperatur inne',
+    etikett: 'Temperaturen inne',
     enhet: '°C',
     varde: varden.temp,
     fel: fel.luftTempC,
@@ -58,11 +58,11 @@ const talfalt = [
   },
   {
     namn: 'rf',
-    etikett: 'Relativ luftfuktighet',
+    etikett: 'Luftfuktigheten inne',
     enhet: '%',
     varde: varden.rf,
     fel: fel.rfProcent,
-    hjalp: 'Talet hygrometern visar mitt i rummet.',
+    hjalp: 'Det tal hygrometern visar mitt i rummet.',
   },
 ] as const;
 ---
@@ -100,7 +100,7 @@ const talfalt = [
   </div>
 
   <div class="mb-4">
-    <label for={id('ytatemp')} class={ETIKETT_KLASS}>Kallaste ytans temperatur</label>
+    <label for={id('ytatemp')} class={ETIKETT_KLASS}>Den kallaste ytans temperatur</label>
     <div class="flex items-center gap-2">
       <input
         id={id('ytatemp')}
@@ -115,7 +115,7 @@ const talfalt = [
     </div>
     {fel.ytTempC && <p id={id('ytatemp-fel')} class={FEL_KLASS}>{fel.ytTempC}</p>}
     <div id={id('ytatemp-hjalp')} class={HJALP_KLASS}>
-      <p class="m-0">Vet du inte, gissa efter den här listan.</p>
+      <p class="m-0">Har du inte mätt, gissa med hjälp av listan.</p>
       <ul class="m-0 mt-1 list-none p-0">
         {
           TYPISKA_YTOR.map((t) => (
@@ -128,8 +128,8 @@ const talfalt = [
       {
         !kompakt && (
           <p class="m-0 mt-1">
-            Talen är vår erfarenhet från äldre hus, inte en publicerad tabell. Mät med en IR-termometer om du vill ha
-            ditt eget värde.
+            Talen är min erfarenhet från äldre hus, ingen publicerad tabell. Vill du ha ditt eget värde mäter du
+            väggen med en IR-termometer.
           </p>
         )
       }

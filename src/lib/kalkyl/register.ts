@@ -32,14 +32,14 @@ export const KALKYLATORER: Kalkylator[] = [
   {
     slug: 'daggpunkt',
     namn: 'Blir väggen våt? Räkna ut daggpunkten',
-    rad: 'Temperatur, luftfuktighet och kallaste ytan ger kondensrisken.',
+    rad: 'Skriv in temperaturen, luftfuktigheten och hur kall väggen är, så ser du om det blir kondens eller mögel.',
     sasong: [11, 2],
     pelare: ['fukt'],
   },
   {
     slug: 'avfuktare',
     namn: 'Hur stor avfuktare behöver du?',
-    rad: 'Yta, takhöjd och fuktnivå ger liter per dygn, och maskinerna som klarar det.',
+    rad: 'Fyll i ytan, takhöjden och hur fuktigt det är, så får du liter per dygn och de maskiner som klarar det.',
     sasong: [8, 11],
     kategori: 'luftavfuktare',
     pelare: ['fukt'],
@@ -47,56 +47,56 @@ export const KALKYLATORER: Kalkylator[] = [
   {
     slug: 'elkostnad',
     namn: 'Vad kostar maskinen i el?',
-    rad: 'Effekt, gångtid och elpris ger kilowattimmar och kronor.',
+    rad: 'Fyll i effekten, hur länge maskinen går och ditt elpris, så ser du kilowattimmarna och kronorna per månad och år.',
     sasong: [10, 3],
     pelare: ['el', 'fukt'],
   },
   {
     slug: 'innervagg',
     namn: 'Räkna reglar, gips och skruv till väggen',
-    rad: 'Längd, höjd och regelavstånd ger virke, skivor, skruv och ull.',
+    rad: 'Fyll i väggens längd, höjd och regelavstånd, så får du en inköpslista med virke, skivor, skruv och ull.',
     sasong: [1, 12],
     pelare: ['inomhus'],
   },
   {
     slug: 'gipsplugg',
     namn: 'Vad håller i gipsväggen?',
-    rad: 'Vikt, skivtjocklek och antal punkter ger plugg, regel eller kortling.',
+    rad: 'Fyll i vad saken väger och hur tjock skivan är, så får du veta om en plugg räcker eller om den ska i regeln eller en kortling.',
     sasong: [1, 12],
     pelare: ['inomhus'],
   },
   {
     slug: 'gipsskruv',
     namn: 'Vilken gipsskruv ska du ha?',
-    rad: 'Skivtjocklek, antal lag och regel ger längd, gänga och spets.',
+    rad: 'Välj skiva, antal lag och regel, så får du en skruvlängd som går att köpa, med rätt gänga och spets.',
     sasong: [1, 12],
     pelare: ['inomhus'],
   },
   {
     slug: 'kvadratmeter',
-    namn: 'Räkna ut kvadratmeter och åtgång',
-    rad: 'Mått, dörrar och fönster ger kvadratmeter, färg, tapetrullar och spill.',
+    namn: 'Räkna ut kvadratmeter och vad som går åt',
+    rad: 'Skriv in rummets mått, så får du kvadratmeter med dörren och fönstret avdragna, och hur mycket färg, tapet eller golv du ska köpa.',
     sasong: [1, 12],
     pelare: ['golv', 'inomhus', 'kok'],
   },
   {
     slug: 'bygglov-altan',
     namn: 'Behöver altanen bygglov?',
-    rad: 'Höjd, avstånd och detaljplan ger svaret med lagrum.',
+    rad: 'Fyll i hur högt golvet ligger och hur nära huset altanen står, så får du ett ja eller nej med paragrafen bakom.',
     sasong: [2, 6],
     pelare: ['altan'],
   },
   {
     slug: 'altan',
     namn: 'Räkna trall, reglar och plintar',
-    rad: 'Yta, riktning och regeldimension ger trall, reglar, plintar och skruv.',
+    rad: 'Skriv in altanens mått, så får du en inköpslista med trall, reglar, plintar och skruv att ta med till bygghandeln.',
     sasong: [3, 6],
     pelare: ['altan'],
   },
   {
     slug: 'dranering',
     namn: 'Vad kostar det att dränera om huset?',
-    rad: 'Mått, djup och tejptest ger pris per löpmeter och om du behöver gräva.',
+    rad: 'Fyll i husets mått och hur djupt schakten går, så får du priset per löpmeter och besked om du behöver gräva alls.',
     /* Dräneringsjobb upphandlas på våren och utförs innan tjälen kommer, så
        frågan ställs från snösmältningen till oktober. */
     sasong: [3, 10],
@@ -104,8 +104,8 @@ export const KALKYLATORER: Kalkylator[] = [
   },
   {
     slug: 'kallare',
-    namn: 'Vad är det för fukt i källaren?',
-    rad: 'Vad du ser, tejptestet och hygrometern ger diagnosen och nästa steg.',
+    namn: 'Gå igenom källaren själv och hitta fukten',
+    rad: 'Kryssa i vad du ser och vad plasten på väggen visade, så får du veta om det är markfukt, kondens eller läckage.',
     /* "fukt i källaren" toppar i september (880 sökningar) och bottnar i
        december till januari (170), enligt docs/SOKORDSANALYS.md. Kondensen i en
        uppvärmd källare är dessutom ett sommarproblem, juli till september enligt
@@ -116,7 +116,7 @@ export const KALKYLATORER: Kalkylator[] = [
   {
     slug: 'rotavdrag',
     namn: 'Hur mycket blir rotavdraget?',
-    rad: 'Arbetskostnad, ägare och tak ger avdraget och vad du betalar.',
+    rad: 'Fyll i vad hantverkaren tar för själva jobbet, så ser du hur mycket som dras av och vad du betalar sedan.',
     /* Frågan ställs hela året, men toppen är december: det är dagen du betalar
        fakturan som avgör vilket års tak avdraget hamnar på, så den som vill nå
        upp till taket betalar före nyår. Se ARET i src/lib/kalkyl/rotavdrag.ts. */
@@ -131,7 +131,7 @@ export const KALKYLATORER: Kalkylator[] = [
   {
     slug: 'trappa',
     namn: 'Räkna steghöjd och stegdjup till trappan',
-    rad: 'Våningshöjden ger antal steg, steghöjd, stegdjup och lutning.',
+    rad: 'Skriv in våningshöjden, så får du antal steg, steghöjd, stegdjup och lutning, och besked om måtten håller.',
     /* Innetrappan byggs när det är kallt ute och utetrappan innan hösten, och
        "bygga trappa" toppar i september enligt docs/SOKORDSANALYS.md. */
     sasong: [8, 10],
@@ -140,7 +140,7 @@ export const KALKYLATORER: Kalkylator[] = [
   {
     slug: 'mala-ute',
     namn: 'Kan du måla ute i dag?',
-    rad: 'Temperatur, luftfuktighet, natt och klockslag ger om färgen hinner torka före daggen.',
+    rad: 'Skriv in dagens väder och nattens prognos, så får du veta om färgen hinner torka före daggen och när du senast ska sluta.',
     sasong: [4, 10],
     pelare: ['fasad', 'altan'],
   },

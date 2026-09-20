@@ -78,7 +78,7 @@ const artikel = ({ image }: SchemaContext) =>
     // en altanguide har ingen kategori förrän kap- och gersågar finns.
     kategori: z.string().optional(),
     produkter: z.array(produktRef).default([]),
-    forfattare: z.string().default('redaktionen'),
+    forfattare: z.string().default('christian'),
     // Sidans korta svar. Mallen renderar det som Faktaruta variant kortsvar direkt
     // efter metaraden, före bilden. Skrivs i frontmatter, aldrig i brödtexten,
     // så att mallen styr placeringen och strukturen blir densamma på varje sida.
@@ -244,7 +244,7 @@ const kategorier = defineCollection({
     // Sökväg till köpguiden och slug på kalkylatorn, för blocket "Så väljer du".
     kopguide: z.string().optional(),
     kalkylator: z.string().optional(),
-    forfattare: z.string().default('redaktionen'),
+    forfattare: z.string().default('christian'),
     uppdaterad: z.coerce.date().optional(),
     // Håller sidan ur Googles index utan att avpublicera den. Används medan
     // kategorin bara har platshållartext: den får inte rankas på "bäst i test"

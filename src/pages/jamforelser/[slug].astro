@@ -61,7 +61,7 @@ const brodsmulor = [
 ];
 
 const forfattare = await getEntry('forfattare', d.forfattare);
-const forfattareNamn = forfattare?.data.namn ?? 'Redaktionen';
+const forfattareNamn = forfattare?.data.namn ?? 'Christian Karlsson';
 
 const rubriker = [
   ...headings.filter((h) => h.depth === 2).map((h) => ({ slug: h.slug, text: h.text })),

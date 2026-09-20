@@ -17,9 +17,9 @@ interface Props {
 
 const { forfattare, publicerad, uppdaterad } = Astro.props;
 
-const post = (await getEntry('forfattare', forfattare)) ?? (await getEntry('forfattare', 'redaktionen'));
+const post = (await getEntry('forfattare', forfattare)) ?? (await getEntry('forfattare', 'christian'));
 
-const namn = post?.data.namn ?? 'Redaktionen';
+const namn = post?.data.namn ?? 'Christian Karlsson';
 const initialer = namn
   .split(/\s+/)
   .slice(0, 2)

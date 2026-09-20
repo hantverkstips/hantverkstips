@@ -72,15 +72,15 @@ const egetAntal = fardigPeriod ? '' : varden.dagar;
 const talfalt = [
   {
     namn: 'effekt',
-    etikett: 'Effekt',
+    etikett: 'Maskinens effekt',
     enhet: 'W',
     varde: varden.effekt,
     fel: fel.effektW,
-    hjalp: 'Talet på typskylten eller i databladet, alltså märkeffekten.',
+    hjalp: 'Märkeffekten. Den står på typskylten på baksidan eller i databladet.',
   },
   {
     namn: 'timmar',
-    etikett: 'Gångtid per dygn',
+    etikett: 'Så många timmar per dygn går den',
     enhet: 'timmar',
     varde: varden.timmar,
     fel: fel.timmarPerDygn,
@@ -128,7 +128,7 @@ const talfalt = [
           )}
           {f.namn === 'timmar' && !f.fel && !kompakt && (
             <div id={id('timmar-hjalp')} class={HJALP_KLASS}>
-              <p class="m-0">Vet du inte, gissa efter den här listan.</p>
+              <p class="m-0">Vet du inte, ta ett tal ur listan.</p>
               <ul class="m-0 mt-1 list-none p-0">
                 {GANGTIDER.map((g) => (
                   <li>{g.vad}</li>
@@ -142,7 +142,7 @@ const talfalt = [
   </div>
 
   <fieldset class="m-0 mb-4 p-0 border-0">
-    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Period</legend>
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Hur länge räknar du på</legend>
     <div class={radioKlass}>
       {
         PERIODER.map((p) => (
@@ -195,8 +195,8 @@ const talfalt = [
       ) : (
         !kompakt && (
           <p id={id('elpris-hjalp')} class={HJALP_KLASS}>
-            Standardvärdet är SCB:s genomsnitt för hushåll, med nätavgift, energiskatt och moms inräknade. Står ditt
-            eget pris på fakturan, skriv in det i stället.
+            Talet som står här är SCB:s genomsnitt för hushåll, med nätavgift, energiskatt och moms inräknade. Har
+            du fakturan till hands, skriv in ditt eget pris i stället.
           </p>
         )
       )
@@ -227,17 +227,17 @@ const talfalt = [
         !kompakt && (
           <div id={id('liter-hjalp')} class={HJALP_KLASS}>
             <p class="m-0">
-              Fyller du i det får du också vad varje liter vatten kostar, vilket är det enda måttet som går att jämföra
-              mellan en kondens- och en sorptionsavfuktare.
+              Fyller du i det får du också vad varje liter vatten kostar. Det är det enda tal som går att jämföra
+              rakt av mellan en kondensavfuktare och en sorptionsavfuktare.
             </p>
             {/* Fältet förifylls aldrig ur databasen. Märkt kapacitet är mätt i
                 ett klimat som inte finns i en svensk källare, och ett literpris
                 räknat på den siffran ser tre gånger bättre ut än verkligheten. */}
             <p class="m-0 mt-1">
-              Märkt kapacitet gäller vid 30 grader och 80 procent luftfuktighet. I en källare på 15 grader ger en
-              kondensavfuktare ungefär en tredjedel, se{' '}
+              Skriv inte talet från lådan. Det gäller vid 30 grader och 80 procent luftfuktighet, och i en källare
+              på 15 grader ger en kondensavfuktare ungefär en tredjedel av det. Hur du hittar ett rimligt tal står i{' '}
               <a href="/fukt/avfuktare-kallare/" class={LANK_KLASS}>
-                köpguiden
+                guiden om avfuktare till källaren
               </a>
               .
             </p>

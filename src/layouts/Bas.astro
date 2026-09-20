@@ -124,7 +124,7 @@ interface Menypost {
 const FASTA: Menypost[] = [
   { namn: 'Guider', href: '/guider/', ikon: null },
   { namn: 'Räkna själv', href: '/rakna/', ikon: 'kalkylator' },
-  { namn: 'Om oss', href: '/om/', ikon: null },
+  { namn: 'Om mig', href: '/om/', ikon: null },
   { namn: 'Kontakt', href: '/om/kontakt/', ikon: null },
 ];
 const AMNESRAD: Menypost[] = publiceradeHubbar.map((p) => ({ namn: p.kort, href: pelareUrl(p.slug), ikon: p.ikon }));
@@ -137,10 +137,10 @@ const MOBIL_GRUPPER = PELAREGRUPPER.map((g) => ({
 })).filter((g) => g.poster.length > 0);
 
 const OM_SAJTEN = [
-  { namn: 'Om oss', href: '/om/' },
+  { namn: 'Om mig', href: '/om/' },
   { namn: 'Så testar vi', href: '/om/sa-testar-vi/' },
   { namn: 'Så tjänar vi pengar', href: '/om/sa-tjanar-vi-pengar/' },
-  { namn: 'Författare', href: '/forfattare/redaktionen/' },
+  { namn: 'Författare', href: '/forfattare/christian/' },
   { namn: 'Kontakt', href: '/om/kontakt/' },
   { namn: 'Integritet', href: '/om/integritet/' },
 ];

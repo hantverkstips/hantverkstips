@@ -191,7 +191,7 @@ export const LANGDER: Record<RegelFamilj, Record<string, Langdrad>> = {
     '12.5-1': {
       langdMm: 41,
       alternativMm: 35,
-      anm: 'Tumregeln stannar på 35 mm, och den längden finns i hyllan. Vi skriver ändå 41 mm, som guiden gör, och i tak tar du aldrig något kortare.',
+      anm: 'Tumregeln stannar på 35 mm, och den längden finns i hyllan. Jag skriver ändå 41 mm, som i guiden, och i tak tar du aldrig något kortare.',
       iTabellen: true,
     },
     '12.5-2': { langdMm: 45, alternativMm: 51, anm: null, iTabellen: true },
@@ -206,7 +206,7 @@ export const LANGDER: Record<RegelFamilj, Record<string, Langdrad>> = {
     '15-1': {
       langdMm: 30,
       alternativMm: 25,
-      anm: 'Minsta längd är 25 mm, och en skruv på 25 mm ligger alltså precis på gränsen. Vi skriver 30 mm, för marginalen.',
+      anm: 'Minsta längd är 25 mm, så en skruv på 25 mm ligger precis på gränsen. Jag skriver 30 mm för marginalens skull.',
       iTabellen: true,
     },
     '15-2': { langdMm: 41, ...TOM, iTabellen: true },
@@ -248,27 +248,27 @@ export function ytbehandlingFor(miljo: Miljo, regel: Regel): Ytbehandling {
     return {
       kort: 'Korrosionsklass C4 eller rostfri A2',
       klass: 'C4',
-      text: 'Utegips sitter i väder, och där rostar en fosfaterad skruv. Essve GU Corrseal är gjord för utegips och ligger i korrosivitetsklass C4. Rostfri A2 motsvarar C4 enligt byggvaruhuset Beijer.',
+      text: 'Utegips sitter i väder och vind, och där rostar en fosfaterad skruv. Essve GU Corrseal är gjord för utegips och ligger i korrosivitetsklass C4. Rostfri A2 motsvarar C4 enligt byggvaruhuset Beijer.',
     };
   }
   if (miljo === 'vatrum') {
     return {
       kort: 'Korrosionsklass C4 eller rostfri A2',
       klass: 'C4',
-      text: 'Bakom ett färdigt tätskikt, alltså den vattentäta duken eller massan under kaklet, räcker en fosfaterad skruv enligt Norgips och Essve. Vi skriver ändå C4 eller rostfri A2 i våtrum, eftersom skivan står fuktig tills tätskiktet är på plats. Det är vår hållning, inte ett krav i någon källa.',
+      text: 'Bakom ett färdigt tätskikt räcker en fosfaterad skruv enligt Norgips och Essve. Tätskiktet är den vattentäta duken eller massan under kaklet. Jag skriver ändå C4 eller rostfri A2 i våtrum, eftersom skivan står fuktig tills tätskiktet är på plats. Det är min hållning, inte ett krav i någon källa.',
     };
   }
   if (regel === 'tra') {
     return {
       kort: 'Elförzinkad eller fosfaterad',
       klass: 'C1',
-      text: 'Båda ligger i korrosivitetsklass C1 enligt Essve, alltså torra inomhusmiljöer, och det är vad ett uppvärmt rum är.',
+      text: 'Båda ytbehandlingarna ligger i korrosivitetsklass C1 enligt Essve, och den klassen är torra inomhusmiljöer. Ett uppvärmt rum är precis det.',
     };
   }
   return {
     kort: 'Fosfaterad',
     klass: 'C1',
-    text: 'Fosfaterad skruv mot stål, enligt tidningen Gör Det Själv. Den ligger i korrosivitetsklass C1 enligt Essve, alltså torra inomhusmiljöer.',
+    text: 'Fosfaterad skruv mot stål, enligt tidningen Gör Det Själv. Den ligger i korrosivitetsklass C1 enligt Essve, och den klassen är torra inomhusmiljöer.',
   };
 }
 
@@ -332,13 +332,13 @@ export function spetsFor(regel: Regel): Spets {
   return regel === 'stal-tunn' ? 'nal' : 'borr';
 }
 
-const GOR_INTE_GROV_I_STAL = `Sätt inte en grovgängad träskruv i en stålregel. Det är det vanligaste felet på ett bygge: skruven snurrar utan att ta, och den som håller i dragaren tror att batteriet är slut. I stål gäller fin gänga, enligt tidningen Gör Det Själv.`;
+const GOR_INTE_GROV_I_STAL = `Sätt inte en grovgängad träskruv i en stålregel. Det är det vanligaste felet jag ser på ett bygge. Skruven snurrar utan att ta, och den som håller i dragaren tror att batteriet är slut. I stål gäller fin gänga, enligt tidningen Gör Det Själv.`;
 
 const GOR_INTE_NAL_I_TJOCK_PLAT = `Tryck inte på med en nålspets i plåt över ${mm(PLAT_GRANS_MM)}. Nålen tar inte hål hur hårt du än pressar, och spetsen blir rund. Gyproc anger högst ${mm(PLAT_GRANS_MM)} godstjocklek för sin skruv mot stålprofiler, och över det ska skruven ha borrspets.`;
 
-const GOR_INTE_KORT_I_TAK = `Ta inte den kortaste längden på raden när du skruvar i tak. Branschorganisationen Svenskt Trä anger 30 mm mot trä för ett lag, och en skruv på 30 mm går bara 17,5 mm ner i regeln, alltså under Norgips 20 mm. I en vägg håller det. I ett tak hänger skivan i skruvarna, och där tar vi aldrig något kortare än raden säger.`;
+const GOR_INTE_KORT_I_TAK = `Ta inte den kortaste längden på raden när du skruvar i tak. Branschorganisationen Svenskt Trä anger 30 mm mot trä för ett lag, och en skruv på 30 mm går bara 17,5 mm ner i regeln, vilket är under Norgips 20 mm. I en vägg håller det. I ett tak hänger skivan i skruvarna, och där tar jag aldrig något kortare än raden säger.`;
 
-const GOR_INTE_FOSFATERAD_UTE = `Skruva inte utegips med fosfaterad skruv. Den ligger i korrosivitetsklass C1 enligt Essve, alltså torra inomhusmiljöer, och rostar där den sitter. Utomhus gäller C4 eller rostfri A2.`;
+const GOR_INTE_FOSFATERAD_UTE = `Skruva inte utegips med fosfaterad skruv. Den ligger i korrosivitetsklass C1 enligt Essve, klassen för torra inomhusmiljöer, och den rostar där den sitter. Utomhus gäller C4 eller rostfri A2.`;
 
 export type GipsskruvResultat =
   | {
@@ -387,11 +387,11 @@ export type GipsskruvResultat =
 
 export function raknaGipsskruv(i: GipsskruvIndata): GipsskruvResultat {
   const fel: Partial<Record<keyof GipsskruvIndata, string>> = {};
-  if (!SKIVA_VAL.some((v) => v.varde === i.skiva)) fel.skiva = 'Välj 9,5, 12,5 eller 15 mm skiva';
+  if (!SKIVA_VAL.some((v) => v.varde === i.skiva)) fel.skiva = 'Välj en skiva på 9,5, 12,5 eller 15 mm';
   if (!LAG_VAL.some((v) => v.varde === i.lag)) fel.lag = 'Välj ett eller två lag';
   if (!REGEL_VAL.some((v) => v.varde === i.regel)) fel.regel = 'Välj träregel eller stålregel';
   if (!MILJO_VAL.some((v) => v.varde === i.miljo)) fel.miljo = 'Välj torrt rum, våtrum eller utomhus';
-  if (typeof i.fogtatning !== 'boolean') fel.fogtatning = 'Svara ja eller nej på fogtätning';
+  if (typeof i.fogtatning !== 'boolean') fel.fogtatning = 'Svara ja eller nej på frågan om fogtätning';
   if (Object.keys(fel).length > 0) return { status: 'ogiltig', fel };
 
   const tjocklek = SKIVA_MM[i.skiva] * i.lag;
@@ -413,15 +413,15 @@ export function raknaGipsskruv(i: GipsskruvIndata): GipsskruvResultat {
 
   const gangaSkal =
     ganga === 'grov'
-      ? 'Gängan är gjord för regeln, inte för skivan. I trä biter den grova gängan i virket.'
-      : 'Gängan är gjord för regeln, inte för skivan. I plåt greppar den fina gängan i den tunna godsbiten.';
+      ? 'Gängan väljer du efter regeln, inte efter skivan, och i trä är det den grova gängan som biter i virket.'
+      : 'Gängan väljer du efter regeln, inte efter skivan, och i plåt är det den fina gängan som greppar i det tunna godset.';
 
   const spetsSkal =
     spets === 's-eller-nal'
-      ? 'I trä går både S-spets och nålspets rakt in i virket.'
+      ? 'I trä går både S-spets och nålspets rakt in i virket, så där spelar spetsen ingen roll.'
       : spets === 'nal'
-        ? `Nålspets gäller plåt från ${mm(NALSPETS_PLAT_MM[0])} till ${mm(NALSPETS_PLAT_MM[1])} enligt Essve.`
-        : `Borrspets borrar plåt från ${mm(BORRSPETS_PLAT_MM[0])} till ${mm(BORRSPETS_PLAT_MM[1])} enligt Essve. Nålen tar inte hål i den tjockleken.`;
+        ? `Nålspetsen tar hål själv i plåt från ${mm(NALSPETS_PLAT_MM[0])} till ${mm(NALSPETS_PLAT_MM[1])} enligt Essve.`
+        : `Borrspetsen borrar sig igenom plåt från ${mm(BORRSPETS_PLAT_MM[0])} till ${mm(BORRSPETS_PLAT_MM[1])} enligt Essve. En nålspets tar inte hål i den tjockleken.`;
 
   const gorInteDetHar: string[] = [];
   if (familj === 'stal') gorInteDetHar.push(GOR_INTE_GROV_I_STAL);
@@ -443,7 +443,7 @@ export function raknaGipsskruv(i: GipsskruvIndata): GipsskruvResultat {
     iTabellen: rad.iTabellen,
     fogtatningMm: i.fogtatning ? FOGTATNING_MM : 0,
     fogtatningText: i.fogtatning
-      ? `Den torra fogtätningen lägger ${mm(FOGTATNING_MM)} till tjockleken enligt Norgips, så du tar närmaste längd över den raden annars anger. Raden utan fogtätning säger ${mm(rad.langdMm)}.`
+      ? `Den torra fogtätningen lägger ${mm(FOGTATNING_MM)} till tjockleken enligt Norgips, så jag tar närmaste längd över den som raden annars anger. Utan fogtätning hade raden sagt ${mm(rad.langdMm)}.`
       : null,
     ganga,
     gangaText: GANGA_TEXT[ganga],
@@ -452,7 +452,7 @@ export function raknaGipsskruv(i: GipsskruvIndata): GipsskruvResultat {
     spetsText: SPETS_TEXT[spets],
     spetsSkal,
     ytbehandling: ytbehandlingFor(i.miljo, i.regel),
-    skruvavstandText: `Skruvarna sitter c ${KANT_CC_MM} mm längs kanterna och c ${FALT_CC_MM} mm i fältet, alltså mätt mellan skruvarnas mitt.`,
+    skruvavstandText: `Skruvarna sätter du med c ${KANT_CC_MM} mm längs skivkanterna och c ${FALT_CC_MM} mm ute i fältet. Måttet c betyder att du mäter från mitten av en skruv till mitten av nästa.`,
     gorInteDetHar,
     visaBandadSkruv: langd === 41 && ganga === 'grov' && familj === 'tra',
   };

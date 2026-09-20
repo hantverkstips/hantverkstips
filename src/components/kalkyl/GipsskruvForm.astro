@@ -64,7 +64,8 @@ const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
       ) : (
         !kompakt && (
           <p id={id('skiva-hjalp')} class={HJALP_KLASS}>
-            Står det 13 mm på skivan är det den som kallas 12,5. Den tunna skivan säljs som 9 mm och mäter 9,5.
+            Står det 13 mm på skivan är det samma skiva som jag kallar 12,5. Den tunna skivan säljs som 9 mm och mäter
+            9,5.
           </p>
         )
       )
@@ -72,7 +73,7 @@ const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
   </fieldset>
 
   <fieldset class="m-0 mb-4 p-0 border-0">
-    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Antal lag på den sida du skruvar</legend>
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Hur många lag skiva sätter du på den här sidan</legend>
     <div class={radioKlass}>
       {
         LAG_VAL.map((v) => (
@@ -86,7 +87,7 @@ const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
   </fieldset>
 
   <fieldset class="m-0 mb-4 p-0 border-0">
-    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Regeln bakom skivan</legend>
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Vad regeln bakom skivan är gjord av</legend>
     <div class={radioKlass}>
       {
         REGEL_VAL.map((v) => (
@@ -106,15 +107,15 @@ const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
     {
       !kompakt && (
         <p id={id('regel-hjalp')} class={HJALP_KLASS}>
-          Godstjockleken är hur tjock plåten i regeln är, inte hur bred profilen är. En vanlig stomme till en innervägg
-          ligger under 0,9 mm. Bärande profiler och stommar i kontorshus ligger över.
+          Plåtens tjocklek är godset i profilen, inte hur bred den är. En vanlig stomme till en innervägg ligger under
+          0,9 mm, medan bärande profiler och stommar i kontorshus ligger över.
         </p>
       )
     }
   </fieldset>
 
   <fieldset class="m-0 mb-4 p-0 border-0">
-    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Torr fogtätning bakom skivan</legend>
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Sitter det torr fogtätning bakom skivan</legend>
     <div class={radioKlass}>
       <label class="flex min-h-11 items-center gap-2 text-brod">
         <input
@@ -141,7 +142,7 @@ const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
       !kompakt && (
         <p id={id('fog-hjalp')} class={HJALP_KLASS}>
           Torr fogtätning är remsor som tätar mot ljud och drag i stället för fogmassa. De ligger mellan regeln och
-          skivan och lägger cirka 7 mm till tjockleken.
+          skivan, och de lägger cirka 7 mm till tjockleken skruven ska igenom.
         </p>
       )
     }
@@ -168,7 +169,7 @@ const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
     {
       !kompakt && (
         <p id={id('miljo-hjalp')} class={HJALP_KLASS}>
-          Miljön styr bara ytbehandlingen, aldrig längden. Utomhus betyder utegips bakom en fasad.
+          Var väggen står styr bara ytbehandlingen, aldrig längden. Utomhus betyder utegips bakom en fasad.
         </p>
       )
     }

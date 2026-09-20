@@ -1,41 +1,41 @@
 ---
-title: Så testar vi
-description: Skillnaden mellan test och granskning, hur vi räknar i kalkylatorerna och vad som kommer att mätas. Metoden per kategori, med källa på varje siffra.
-uppdaterad: 2026-09-16
+title: Så testar jag
+description: Vad test och granskning betyder här, var talen kommer ifrån, hur kalkylatorerna räknar och vilka mätningar som står på tur. Varje tal har en källa.
+uppdaterad: 2026-09-20
 strukturdata: Article
 utkast: false
 ---
 
-I september 2026 har vi inte mätt något själva. Varje siffra på sajten kommer ur ett datablad, en myndighetskälla eller vår egen räkning, och var den kommer ifrån står vid siffran. Den här sidan säger vad det betyder för dig som läser, och vad som ändras när mätningarna börjar.
+I september 2026 har jag inte mätt något själv. Varje tal på sajten kommer ur ett datablad, från en myndighet eller ur min egen räkning, och det står vid talet vilket av de tre som gäller. Här förklarar jag vad det betyder för dig som läser, och vad som ändras när mätningarna kommer igång.
 
-## Test eller granskning
+## Vad ordet test betyder här
 
-Ett test betyder att vi har haft produkten och mätt. En granskning betyder att vi jämfört tillverkarens datablad med mätningar från namngivna tredje parter. Etiketten står överst på varje sida och i den strukturerade datan, och vi skriver aldrig "vi testade" om en granskning. I dag är allt på sajten granskning.
+Ett test betyder att jag har haft produkten hos mig och mätt på den. En granskning betyder att jag har läst tillverkarens datablad och butikernas produktsidor, lagt dem bredvid varandra, räknat om det som går att räkna om och skrivit ut vad som saknas. Maskinen har jag inte haft i handen, och jag låtsas inte annat.
 
-## Vad vi gör med ett datablad
+Etiketten står överst på varje sida och i den strukturerade datan som Google läser. Ordet "testade" skriver jag aldrig om en granskning. I dag är allt på sajten granskning, och så kommer det att stå tills den första mätningen är publicerad.
 
-Vi återger tillverkarens siffra tillsammans med villkoret den är mätt vid. En avfuktare som anges till 20 liter per dygn står med de grader och den luftfuktighet som gäller för det värdet, alltså 30 grader och 80 procent luftfuktighet, aldrig bara som "20 liter". I en svensk källare i november ger samma maskin en bråkdel av det.
+## Så hämtar jag värden från tillverkarna
 
-Saknar produktsidan villkoret skriver vi ej angivet. Saknar den siffran helt, som ljudnivån för flera av Wood's maskiner, skriver vi det också, och vi lånar inte ett värde från en systermodell.
+Tillverkarens siffra återger jag tillsammans med villkoret den är mätt vid. En avfuktare som anges till 20 liter per dygn står här med de 30 grader och 80 procent luftfuktighet som gäller för det värdet, aldrig som bara "20 liter". I en svensk källare i november ger samma maskin en bråkdel av det, och det är hela skillnaden mellan ett tal på en låda och ett tal du kan använda.
 
-När två källor säger olika saker går vi på tillverkaren och skriver ut båda värdena. Ett exempel är en maskin som Acetec anger till 48 dBA medan butiken skriver 46 dBA.
+Saknar produktsidan villkoret skriver jag "ej angivet". Saknas talet helt, som ljudnivån för flera av Wood's maskiner, står raden tom i tabellen. Ibland finns talet för en systermodell, en maskin med samma mått och samma kapacitet under ett annat namn. Då kan jag skriva ut det i löptexten som en fingervisning, men bara om jag också skriver att det är lånat och varifrån. Tabellen fyller jag inte i med det.
 
-## Så räknar vi i kalkylatorerna
+När två källor säger olika går jag på tillverkaren och skriver ut båda talen. Acetec anger 48 dBA för en av sina maskiner, och butiken skriver 46. Då står båda på sidan, och du får veta vilket jag räknar med.
 
-Avfuktarkalkylatorn räknar belastningen i augusti, den värsta månaden, i tre poster: vattnet som redan står i luften, det som kommer in med uteluften och det som avdunstar från golvet. Summan får en marginal på 1,3 och räknas sedan om till siffran på lådan. Omräkningen sker med en faktor för hur mycket maskinen tappar i kyla, och den faktorn gäller 15 grader för en kondensmaskin och 10 grader för en sorptionsmaskin, alltså en maskin som torkar luften med ett fuktsugande hjul i stället för med kyla.
+## Konstanterna i kalkylatorerna
 
-Varje konstant är märkt som källa eller antagande i tabellen under [så räknar vi](/rakna/avfuktare/#sa-raknar-vi). De svagaste leden, markfukten och faktorn vid 15 grader, står utpekade där. Resultatet är ett intervall, inte ett exakt tal.
+Avfuktarkalkylatorn räknar på augusti, den värsta månaden, och lägger ihop tre poster: vattnet som redan står i luften, det som kommer in med uteluften och det som avdunstar från golvet. Summan får en marginal på 1,3 och räknas sedan om till siffran på lådan. Omräkningen använder en faktor för hur mycket maskinen tappar i kyla. Den faktorn gäller 15 grader för en kondensmaskin och 10 grader för en sorptionsmaskin, som torkar luften med ett fuktsugande hjul i stället för med kyla.
 
-Mättnadsånghalt och daggpunkt, alltså den temperatur där luften börjar fälla ut vatten, räknas med Magnus-formeln enligt Lawrence 2005, med en osäkerhet på 0,35 grader. Elkostnader räknas ur märkeffekt gånger timmar. Elpriset är SCB:s för hushåll, 2,40 kr per kWh för juli till december 2025 inklusive nätavgift, skatt och moms, och datumet står alltid vid beloppet.
+Varje konstant är märkt som källa eller antagande i tabellen under [hur kalkylatorn räknar](/rakna/avfuktare/#sa-raknar-vi). De två svagaste leden, markfukten och faktorn vid 15 grader, står utpekade där. Det du får ut är ett intervall, för mer än så håller underlaget inte för.
 
-## Vad som kommer att mätas
+Mättnadsånghalt och daggpunkt räknas med Magnus-formeln enligt Lawrence 2005, med en osäkerhet på 0,35 grader. Daggpunkten är den temperatur där luften börjar fälla ut vatten. Elkostnader är märkeffekten gånger timmarna. Elpriset är SCB:s för hushåll, 2,40 kr per kWh för juli till december 2025 med nätavgift, skatt och moms, och perioden står alltid bredvid beloppet.
 
-Det här är planerat, i den här ordningen.
+## Det jag ska mäta, i den ordningen
 
-- Relativ fuktighet och temperatur i fyra rum i ett bostadshus, under en vecka i vinter och en i sommar. Hygrometern kontrolleras i mättad koksaltlösning, som ger 75,3 procent relativ fuktighet vid 25 grader enligt Greenspan 1977.
+- Relativ fuktighet och temperatur i fyra rum i ett bostadshus, en vecka i vinter och en i sommar. Hygrometern kontrollerar jag i mättad koksaltlösning, som ger 75,3 procent relativ fuktighet vid 25 grader enligt Greenspan 1977.
 - En avfuktare i en verklig källare i sju dygn, med liter i tanken, gångtimmar och elmätarens värde per dygn. Den mätningen avgör om marginalen 1,3 i kalkylatorn är rätt.
-- Kapacitet i kammare vid 10 och 20 grader, för de maskiner vi pekar på.
+- Kapacitet i kammare vid 10 och 20 grader, för de maskiner jag pekar på.
 - Ljudnivå på 1 och 3 meters avstånd.
 - Gipspluggar belastade till brott i 13 mm gips.
 
-Instrumentens modell skrivs ut när mätningen publiceras, och tabellen "Vi mätte" mot "Tillverkaren uppger" fylls i på varje testsida. Mätvärden som saknas i en tabell står tomma. Vi fyller inte i dem på känsla.
+Instrumentens modell skriver jag ut när mätningen publiceras, och kolumnen "Vi mätte" bredvid "Tillverkaren uppger" fylls i på varje testsida. Mätvärden som saknas i en tabell står tomma. Jag fyller inte i dem på känsla.

@@ -304,10 +304,10 @@ const GOR_INTE_MORGONDAGG =
   'Måla inte på morgondaggen. Panelen är våt tills solen och vinden torkat den, ofta fram till sen förmiddag, och färg på en fuktig yta fäster sämre och kan få blåsor. Känn med handflatan på skuggsidan innan du öppnar burken.';
 
 const GOR_INTE_VARM_PANEL =
-  'Måla inte i direkt sol på en varm panel. Färgen börjar torka i penseln innan den är utstruken, och resultatet blir ränder och dålig vidhäftning. Följ skuggan runt huset i stället.';
+  'Måla inte i direkt sol på en varm panel. Färgen börjar torka i penseln innan den är utstruken, och du får ränder och sämre vidhäftning. Följ skuggan runt huset i stället.';
 
 const GOR_INTE_LITA_PA_DAGEN =
-  'Lita inte på dagstemperaturen när natten blir kall. Tillverkarnas gräns gäller yta och luft hela dygnet, inte bara när du målar, och en oljefärg härdar långt in i natten.';
+  'Lita inte på dagstemperaturen när natten blir kall. Tillverkarnas gräns gäller yta och luft hela dygnet och inte bara medan du målar, och en oljefärg härdar långt in i natten.';
 
 const GOR_INTE_VATT_VIRKE = `Måla inte på virke med mer än ${FUKTKVOT_MAX_PROCENT} procent fuktkvot. Det är gränsen hos både Svenskt Trä och färgtillverkarna, och en panel som stått i regn eller nyss tvättats ligger över den i flera dagar. Mät med en resistansmätare på skuggsidan.`;
 
@@ -435,19 +435,19 @@ export function raknaMalaUte(i: MalaUteIndata): MalaUteResultat {
     Number.isFinite(varde) && varde >= granser[0] && varde <= granser[1];
 
   if (!inom(i.luftTempC, GRANSER.luftTempC)) {
-    fel.luftTempC = `Ange temperaturen nu mellan ${grader(GRANSER.luftTempC[0])} och ${GRANSER.luftTempC[1]} grader`;
+    fel.luftTempC = `Skriv temperaturen nu mellan ${grader(GRANSER.luftTempC[0])} och ${GRANSER.luftTempC[1]} grader`;
   }
   if (!inom(i.rfProcent, GRANSER.rfProcent)) {
-    fel.rfProcent = `Ange luftfuktigheten mellan ${GRANSER.rfProcent[0]} och ${GRANSER.rfProcent[1]} procent`;
+    fel.rfProcent = `Skriv luftfuktigheten mellan ${GRANSER.rfProcent[0]} och ${GRANSER.rfProcent[1]} procent`;
   }
   if (!inom(i.nattMinC, GRANSER.nattMinC)) {
-    fel.nattMinC = `Ange nattens lägsta temperatur mellan ${grader(GRANSER.nattMinC[0])} och ${GRANSER.nattMinC[1]} grader`;
+    fel.nattMinC = `Skriv nattens lägsta temperatur mellan ${grader(GRANSER.nattMinC[0])} och ${GRANSER.nattMinC[1]} grader`;
   }
   if (!inom(i.startTimme, GRANSER.startTimme) || !Number.isInteger(i.startTimme)) {
-    fel.startTimme = `Ange klockslaget du börjar som en hel timme mellan ${GRANSER.startTimme[0]} och ${GRANSER.startTimme[1]}`;
+    fel.startTimme = `Skriv klockslaget du börjar som en hel timme mellan ${GRANSER.startTimme[0]} och ${GRANSER.startTimme[1]}`;
   }
   if (!inom(i.solnedgangTimme, GRANSER.solnedgangTimme) || !Number.isInteger(i.solnedgangTimme)) {
-    fel.solnedgangTimme = `Ange solnedgången som en hel timme mellan ${GRANSER.solnedgangTimme[0]} och ${GRANSER.solnedgangTimme[1]}`;
+    fel.solnedgangTimme = `Skriv solnedgången som en hel timme mellan ${GRANSER.solnedgangTimme[0]} och ${GRANSER.solnedgangTimme[1]}`;
   }
   if (
     fel.startTimme === undefined &&
@@ -493,7 +493,7 @@ export function raknaMalaUte(i: MalaUteIndata): MalaUteResultat {
   if (i.luftTempC < farg.minTempC) {
     regler.push({
       utfall: 'stopp',
-      text: `Det är ${gradEnhet(i.luftTempC)} nu, och ${farg.namn.toLowerCase()} kräver minst ${gradEnhet(farg.minTempC)} på både yta och luft. Färgen torkar inte som den ska och kan bli klibbig, få blåsor och bli flammig.`,
+      text: `Det är ${gradEnhet(i.luftTempC)} nu, och ${farg.namn.toLowerCase()} kräver minst ${gradEnhet(farg.minTempC)} på både yta och luft. Färgen torkar inte som den ska, och den kan bli klibbig, få blåsor och bli flammig.`,
       kalla: `${farg.kalla}, datablad`,
     });
   } else {
@@ -508,7 +508,7 @@ export function raknaMalaUte(i: MalaUteIndata): MalaUteResultat {
   if (i.rfProcent > RF_STOPP_PROCENT) {
     regler.push({
       utfall: 'stopp',
-      text: `Luftfuktigheten är ${i.rfProcent} procent, och över ${RF_STOPP_PROCENT} procent ska du inte måla alls. Vattnet i färgen har ingenstans att ta vägen.`,
+      text: `Luftfuktigheten är ${i.rfProcent} procent, och över ${RF_STOPP_PROCENT} procent ska du inte måla alls, för vattnet i färgen har ingenstans att ta vägen.`,
       kalla: 'Nordsjö, Tinova Exterior',
     });
   } else {
@@ -545,8 +545,8 @@ export function raknaMalaUte(i: MalaUteIndata): MalaUteResultat {
     } else {
       regler.push({
         utfall: 'varning',
-        text: `Natten går ner till ${gradEnhet(i.nattMinC)}, under färgens gräns på ${gradEnhet(farg.minTempC)}. Färgen hinner bli övermålningsbar ${klockslag(overmalningsbarKl)}, före solnedgången, så vi låter dagen passera. Beckers och Alcro skriver ändå att gränsen gäller hela dygnet, så räkna med en marginal.`,
-        kalla: 'Beckers och Alcro, forumsvar om målning i kyla. Att en torr akrylat får passera är vårt antagande',
+        text: `Natten går ner till ${gradEnhet(i.nattMinC)}, under färgens gräns på ${gradEnhet(farg.minTempC)}. Färgen hinner bli övermålningsbar ${klockslag(overmalningsbarKl)}, före solnedgången, så verktyget låter dagen passera. Beckers och Alcro skriver ändå att gränsen gäller hela dygnet, så räkna med en marginal.`,
+        kalla: 'Beckers och Alcro, forumsvar om målning i kyla. Att en torr akrylat får passera är mitt antagande',
       });
     }
   } else {
@@ -592,8 +592,8 @@ export function raknaMalaUte(i: MalaUteIndata): MalaUteResultat {
   } else {
     regler.push({
       utfall: 'ok',
-      text: `Daggpunkten är ${gradEnhet(daggpunktC)}, och ytan stannar på ${gradEnhet(ytTempNattC)} i natt, alltså ${gradEnhet(marginalC)} över. Ingen dagg om luften är densamma i kväll. Sluta ändå senast ${senasteSlutText}, det är tillverkarnas "i god tid".`,
-      kalla: 'Daggpunkten enligt Magnus-formeln. Marginalen är vårt antagande',
+      text: `Daggpunkten är ${gradEnhet(daggpunktC)}, och ytan stannar på ${gradEnhet(ytTempNattC)} i natt, alltså ${gradEnhet(marginalC)} över. Det blir ingen dagg om luften är densamma i kväll. Sluta ändå senast ${senasteSlutText}, för det är vad tillverkarna menar med i god tid.`,
+      kalla: 'Daggpunkten enligt Magnus-formeln. Marginalen är mitt antagande',
     });
   }
 

@@ -24,7 +24,7 @@ specs:
   - nyckel: batteri
     etikett: Batteri
 val: []
-forfattare: redaktionen
+forfattare: christian
 uppdaterad: 2026-09-16
 # Utkast tills mätningarna är gjorda. Kategoriraden finns i supabase/seed.sql.
 utkast: true

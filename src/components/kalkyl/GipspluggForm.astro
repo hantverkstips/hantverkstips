@@ -54,7 +54,7 @@ const talfalt = [
     lage: 'decimal' as const,
     varde: varden.vikt,
     fel: fel.viktKg,
-    hjalp: 'Väg den, gissa inte. Ställ dig på badrumsvågen med saken i famnen och dra bort din egen vikt. En hylla räknas fylld, inte tom.',
+    hjalp: 'Väg den i stället för att gissa. Ställ dig på badrumsvågen med saken i famnen och dra bort din egen vikt. En hylla räknar du fylld, inte tom.',
   },
   {
     namn: 'punkter',
@@ -63,7 +63,7 @@ const talfalt = [
     lage: 'numeric' as const,
     varde: varden.punkter,
     fel: fel.punkter,
-    hjalp: 'Alla skruvar eller krokar som saken hänger i. Två konsoler med två hål var är fyra punkter.',
+    hjalp: 'Räkna alla skruvar eller krokar som saken hänger i. Två konsoler med två hål var blir fyra punkter.',
   },
 ] as const;
 ---
@@ -135,8 +135,8 @@ const talfalt = [
     {
       !kompakt && (
         <p id={id('skiva-hjalp')} class={HJALP_KLASS}>
-          Skruva loss ett eluttag, med strömmen bruten, och mät tjockleken i kanten på hålet. Ett lag är 12,5 mm, den
-          skiva vi i Sverige kallar 13. Två lag är det dubbla, och den tunna skivan mäter 9,5 mm.
+          Vet du inte, skruva loss ett eluttag med strömmen bruten och mät tjockleken i kanten på hålet. Ett lag är
+          12,5 mm, den skiva som brukar kallas 13. Två lag är det dubbla, och den tunna skivan mäter 9,5 mm.
         </p>
       )
     }
@@ -163,8 +163,8 @@ const talfalt = [
     {
       !kompakt && (
         <p id={id('regel-hjalp')} class={HJALP_KLASS}>
-          Regeln är den lodräta trä- eller stålbiten som gipsskivan är skruvad fast i. Knacka, dra en magnet längs
-          väggen eller kör en regelsökare. Vet du inte svarar verktyget för det osäkra fallet.
+          Regeln är den stående trä- eller stålbiten som gipsskivan är skruvad fast i. Knacka på väggen, dra en magnet
+          längs den eller kör en regelsökare. Vet du inte svarar jag för det osäkra fallet.
         </p>
       )
     }
