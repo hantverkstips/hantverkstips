@@ -50,6 +50,17 @@ Det här är de mönster som avslöjar att ingen människa skrivit. Ett enda fal
 - Anglicismer: "sätter golvet", "betalar priset i", "om alls", "värt att notera".
 - Påhittade anekdoter, kunder eller grannar presenterade som sanna. Christian får berätta vad han gjort, men inte hitta på.
 
+Tillagt efter andra varvet 2026-09-21, när läsarna hade läst hela sajten i den nya rösten. Det här är röstens egna tics, och de syns först över tio sidor:
+
+- "X avgör Y" och "X styr Y" som figur i vartannat avsnitt. Ett par per sida.
+- "innan du" som klister i rubriker och råd. Ett par per sida.
+- Samma inledning på varje sida: platt påstående, "alla tror fel", sedan vad sidan handlar om. Öppna olika: på svaret, på situationen, på felet, på frågan.
+- Samma avslutning: tre meningar där den sista är kort och lägger en tidsbomb i framtiden. De flesta sidor slutar mitt i ett råd.
+- Källformeln "yrkesetikett plus namn" varje gång. Presentera källan en gång per sida, sedan bara namnet, och i olika form.
+- Rubriker efter fem mallar: siffra plus substantiv, "Så ...", "Vad ...", "När ...", imperativ plus "innan du". Läs rubrikerna i följd.
+- Samma bild på flera sidor. En bild bor på en sida.
+- I verktygen: "alltså" som förklaringsmekanik, identiska slutklämmar under "Så räknar jag", "Gör inte det här" som alltid börjar med ett nekande imperativ. Gränssnittssträngar som delarutan och standardvarningen får däremot vara identiska.
+
 ## 4. Fakta och juridik, det som fortfarande är regler
 
 - Inga påståenden om produkter, material, mått eller pengar utan källa eller egen mätning. Egen mätning märks som egen. Osäkert skrivs inte.
