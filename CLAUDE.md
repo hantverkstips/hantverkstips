@@ -5,7 +5,7 @@ Affiliate-hub för hantverksverktyg. Organisk trafik via guider, tester, jämfö
 ## Läs först
 
 - [docs/PROJEKTBRIEF.md](docs/PROJEKTBRIEF.md) – vad vi bygger, för vem, varför, och vad som räknas som klart
-- [docs/STILGUIDE.md](docs/STILGUIDE.md) – hur all text skrivs. Bindande för allt publikt innehåll
+- [docs/ROST.md](docs/ROST.md) – vem som talar och hur det låter. Bindande för allt publikt innehåll sedan 2026-09-20. STILGUIDE.md är ersatt och läses inte av den som skriver
 - [docs/ARKITEKTUR.md](docs/ARKITEKTUR.md) – stack, mappstruktur, datamodell, konventioner
 - [docs/ARBETSFLODE.md](docs/ARBETSFLODE.md) – hur teamet av agenter samarbetar och validerar
 
@@ -15,7 +15,7 @@ Astro (content collections, MDX) · React-öar för interaktiva verktyg · Tailw
 
 ## Regler som gäller alla agenter
 
-1. Publikt innehåll följer STILGUIDE.md utan undantag. Text som låter maskinskriven publiceras inte.
+1. Publikt innehåll skrivs i Christians röst enligt ROST.md. Text som låter maskinskriven publiceras inte.
 2. Inga påståenden om produkter utan källa eller egen mätning. Osäkert = skriv inte.
 3. Alla affiliatelänkar går via `/go/[slug]`, aldrig direkt till butiken. Attribut `rel="sponsored nofollow"`.
 4. Varje sida med affiliatelänkar har synlig reklammärkning ovanför första länken.

@@ -32,7 +32,19 @@ Två granskningspunkter per leverans, aldrig fler. Beslutat av Christian 2026-09
 4. **Rättning.** Utföraren rättar allt i returen.
 5. **Slutgranskning.** Bygget grönt, en sista titt, commit. Kvarstår fel efter slutgranskningen var uppdraget fel skrivet; koordinatorn skriver om det i stället för att starta ett tredje varv.
 
-## Flöde för en innehållsomgång
+## Rösten sedan 2026-09-20
+
+Beslutat av Christian efter läsbarhetsutredningen (`docs/briefer/utredning-lasbarhet-2026-09-20.md`). All publik text skrivs av **hantverkaren** (`.claude/agents/hantverkaren.md`, alltid Fable) i Christians egen röst enligt `docs/ROST.md`. Skribenten och chefredaktörens stilgranskning är ersatta; STILGUIDE.md läses inte längre av den som skriver. Kvar som stöd: SEO-strategen ger en checklista per sida före skrivningen och läser den färdiga sidan mot samma lista efteråt, produktexperten när ett nytt faktum behövs, och en läsare efteråt som jämför sidan med de sidor som redan är skrivna i den nya rösten (aldrig med gamla sidor). Hantverkaren skriver från ett faktablad, inte från den gamla prosan, så att den gamla dialekten inte härmas.
+
+```
+SEO-strateg         → checklista per sida i docs/briefer/seo-checklista-[datum]/
+Hantverkaren (Fable)→ faktablad ur den gamla sidan, ny text, högläsning, npm run kontrollera
+Läsare              → jämför mot redan omskrivna sidor, retur per sida
+SEO-strateg         → läser den färdiga sidan mot checklistan
+Koordinator         → npm run build, commit, push
+```
+
+## Flöde för en innehållsomgång (till 2026-09-20)
 
 Sidor produceras i omgångar om fyra till åtta, en skribent per sida, alla parallellt. Skribenten gör hela kedjan själv.
 
@@ -82,7 +94,7 @@ Koordinatorn bockar av. Alla punkter, varje gång.
 
 ## Hur koordinatorn anropar agenter
 
-Alla agenter anropas med ett komplett uppdrag och läser själva `CLAUDE.md`, `docs/STILGUIDE.md` och de dokument uppdraget pekar på. Ett uppdrag är aldrig "skriv en artikel om X"; det innehåller sökord, typ, nivå, produkter, källor och gränsdragning mot andra sidor.
+Alla agenter anropas med ett komplett uppdrag och läser själva `CLAUDE.md`, `docs/ROST.md` och de dokument uppdraget pekar på. Ett uppdrag är aldrig "skriv en artikel om X"; det innehåller sökord, typ, nivå, produkter, källor och gränsdragning mot andra sidor.
 
 Agenter som arbetar parallellt äger var sin uppsättning filer. Ingen rör en annans fil. Bygget (`npm run build`) körs bara av koordinatorn, eftersom parallella byggen skriver över varandra.
 

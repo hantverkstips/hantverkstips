@@ -1,6 +1,8 @@
-# Stilguide för hantverkstips.se
+# Stilguide för hantverkstips.se (ersatt 2026-09-20)
 
-Bindande för all publik text. Chefredaktören granskar mot detta dokument. Text som bryter mot avsnittet "Förbjudet" publiceras inte, oavsett hur bra den är i övrigt.
+**Ersatt av `docs/ROST.md`.** Läsbarhetsutredningen 2026-09-20 (`docs/briefer/utredning-lasbarhet-2026-09-20.md`) visade att förbudslistan och exemplen nedan gav en egen maskindialekt. Faktareglerna och juridiken lever vidare i ROST.md avsnitt 4. Resten är historik och ska inte läsas av den som skriver.
+
+Var bindande för all publik text till 2026-09-20. Chefredaktören granskar mot detta dokument. Text som bryter mot avsnittet "Förbjudet" publiceras inte, oavsett hur bra den är i övrigt.
 
 ## Vem som skriver
 
