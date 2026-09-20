@@ -4,7 +4,9 @@ Skriven 2026-09-16 av SEO-strategen, uppdaterad samma dag med volym per fras. Ba
 
 Volymerna kommer från `docs/data/keyword-stats-2026-09-16.csv`, Google Ads historik för 56 fraser, Sverige, september 2024 till augusti 2026. "Volym" nedan är genomsnittliga sökningar per månad över perioden, YoY är förändringen senaste tolv månaderna mot tolv månaderna före. Fyra fraser fick ingen data (hur stor avfuktare, vilken kapsåg, vilken plugg, vilket batterisystem), vilket betyder under tio sökningar per månad eller att Google inte matchar frasen. Google slår ihop nära varianter, så "fukt i källaren" och "fuktig källare" visar samma siffror och räknas en gång. Summan för listan är 42 600 sökningar per månad. Prognosfilen från tidigare (23 400 annonsvisningar för 40 fraser) stämmer i storleksordning.
 
-Sökningarna på Google gjordes 2026-09-16 på svenska, utan personalisering.
+En andra hämtning gjordes 2026-09-20 med 177 nya fraser, ingen av dem en upprepning av de 56 första. 152 av dem fick volym, tillsammans 74 030 sökningar per månad, och 25 fick ingen data. Över båda körningarna vilar dokumentet alltså på **233 mätta fraser och 116 630 sökningar per månad**. Körning 2 står i avsnitt 7 och ändrar inte avsnitt 1 till 6; den lägger till en startlista 2 för nästa innehållsomgång.
+
+Sökningarna på Google gjordes 2026-09-16 på svenska, utan personalisering. För körning 2 gäller reservationen i avsnitt 7.
 
 ## 1. Konkurrentkarta
 
@@ -145,9 +147,224 @@ Den breddade målgruppen kräver en pelare till, inte en omritad karta, och voly
 4. Fukt i källaren (480, -46 procent) och hänga tavla (150) är små. Båda behålls, identitetssidan på plats 12 och tavlan på 13 som Christians exempel, men ingen av dem får förtur. Montera tv och hylla slås ihop i "skruva i gipsvägg" (720). "vilken plugg" och "hur stor avfuktare" saknar data helt.
 5. Krysslaser bäst i test (480, +23 procent) växer och är större än lasermätare bäst i test (390), så den går in i listan med egen kategorisida. Bygga trädäck (1 000) är en egen fras och går in från prio 2. Borrhammare eller slagborr är bara 50 och behålls som länkmagnet på plats 20 med "borrhammare bäst i test" (260) som huvudfras. Nästan allt i altan och avfuktare backar 20 till 45 procent på ett år, så prognoser för 2027 ska räkna med lägre tal än 2025.
 
+## 7. Körning 2, 2026-09-20
+
+Andra volymhämtningen, 177 fraser som inte överlappar någon av de 56 i körning 1. Frågan Christian ställde var vad sajten ska bygga härnäst. Underlaget är `docs/data/keyword-stats-2026-09-20.csv` med den läsbara kopian i `docs/data/keyword-stats-2026-09-20-sorterad.tsv`, och varför varje fras är med står i `docs/briefer/keywords-renovering-2026-09-20.md`.
+
+En reservation som gäller hela avsnittet. Sökresultaten hämtades 2026-09-20 maskinellt, och verktyget svarar från amerikansk infrastruktur. Vilka domäner som ligger på första sidan och vad sidorna innehåller är kontrollerat, i de flesta fall genom att sidan hämtades och lästes. Den exakta ordningen mellan plats ett och fem är det inte. Där en bedömning hänger på om en sida ligger etta eller trea står det i texten, och de fraserna kontrolleras om i webbläsare innan briefen skrivs. Skalan är densamma som i avsnitt 1, alltså 1 till 5.
+
+### 7.1 Data
+
+152 av 177 fraser fick volym, tillsammans 74 030 sökningar per månad. 25 fraser fick ingen data alls, alltså under tio i månaden.
+
+De tjugo största:
+
+| Fras | Volym per mån | 3 mån | YoY | Konkurrens | Toppmånad |
+|---|---|---|---|---|---|
+| rotavdrag 2026 | 18 100 | 0 % | +236 % | låg | dec |
+| kap och gersåg | 6 600 | 0 % | 0 % | hög | maj |
+| fuktmätare | 6 600 | +23 % | 0 % | hög | sep |
+| krysslaser | 3 600 | +50 % | +24 % | hög | nov |
+| lasermätare | 2 900 | +21 % | 0 % | hög | nov |
+| räkna ut kvadratmeter | 2 400 | 0 % | −34 % | låg | sep |
+| byggfläkt | 1 600 | 0 % | −18 % | hög | jan |
+| jordfelsbrytare löser ut | 1 300 | 0 % | 0 % | låg | nov |
+| renovera badrum kostnad | 1 300 | +14 % | −38 % | medel | sep |
+| slipa parkettgolv | 1 300 | +14 % | −38 % | medel | sep |
+| byta fönster kostnad | 1 000 | +48 % | −19 % | hög | sep |
+| dränera hus | 1 000 | 0 % | −45 % | medel | sep |
+| renovera fönster | 1 000 | +23 % | −33 % | medel | jul |
+| bygga trappa | 880 | 0 % | −38 % | hög | sep |
+| byta tak kostnad | 880 | +14 % | −23 % | hög | sep |
+| daggpunkt | 880 | −28 % | −28 % | låg | sep |
+| fuktmätare trä | 880 | +48 % | +30 % | hög | jul |
+| renovera trappa | 880 | +23 % | −55 % | hög | sep |
+| skruvautomat | 880 | +49 % | −12 % | hög | mar |
+| slipa golv själv | 880 | +23 % | −63 % | medel | sep |
+
+**Nischen krymper, och det är körningens tydligaste mönster.** Sjutton fraser av 152 växer på ett år. Allt annat som rör sig backar, mellan 18 och 76 procent. Växarna är rotavdrag 2026 (+236 %), sättningssprickor (+240 %), trädäck på mark (+129 %), isolera källare invändigt (+67 %), sprickor i husgrunden (+57 %), grannemedgivande (+55 %), gersåg bäst i test (+53 %), tilläggsisolera vind (+51 %), lägga plåttak själv (+50 %), kondens på fönster insida (+50 %), fuktmätare trä (+30 %), byggavfuktare (+29 %), krysslaser (+24 %) och vinkelslip bäst i test (+22 %). Körning 1 såg samma sak i altan och avfuktare och antog att det var säsong. Körning 2 visar att det gäller hela renoveringsfältet, så prognoser för 2027 ska räkna ner.
+
+**Rotavdraget är en fjärdedel av hela körningen, och uppgången är förklarad.** 18 100 i månaden med låg annonskonkurrens och toppmånad december 2025. Skatteverket höjde rotavdraget från 30 till 50 procent den 12 maj 2025, och höjningen gällde till och med 31 december samma år. Det är **betalningsdatumet för fakturan** som avgör vilken procentsats som gäller, inte fakturadatum och inte när arbetet utfördes. Från 1 januari 2026 är avdraget tillbaka på 30 procent av arbetskostnaden med ett tak på 50 000 kronor per person och år, och det gemensamma taket för rot och rut är 75 000 kronor. Uppgången på 236 procent är alltså den tillfälliga höjningen, vilket betyder två saker: volymen faller tillbaka under 2026, och frasen bär ett årtal som dör i december. En sida på den frasen är ett underhållsåtagande, inte en engångssida.
+
+**Daggpunkt är 880 och vi har redan verktyget.** Körning 1 hann aldrig mäta frasen. `/rakna/daggpunkt/` och `/fukt/luftfuktighet-inomhus/` sitter alltså på en större fras än vi trodde, och "räkna ut daggpunkt" (20) bekräftar mönstret från körning 1: det nakna ordet bär volymen, inte frågan.
+
+**Fraser som redan har en sida.** Dränera hus 1 000 och dränering av hus 1 000 är samma fras räknad två gånger av Google. Trädäck på mark 320 växer 129 procent och är den enda växaren i altanklustret. Inreda källare 320, isolera krypgrund 390 plus krypgrund isolering 480, sättningar hus 210. Helgens nio sidor träffade rätt i storleksordning, med de fyra undantag som står i 7.3.
+
+### 7.2 Konkurrentkarta
+
+#### Rotavdrag, blanketter och kostnadsfraser
+
+| Fras | Volym | Topp 5 (domäner) | Typ | Sidornas kvalitet | Vinn |
+|---|---|---|---|---|---|
+| rotavdrag 2026 | 18 100, +236 % | nordea.se, clasfixare.se, sparbankentanum.se, offerta.se, sambla.se | bank, hantverksförmedlare, bank, offertförmedlare, låneförmedlare | **Skatteverket rankar inte i topp 5.** Nordea anger procentsats och tak rätt men saknar datum, räkneexempel och räknare, och dess enda Skatteverkslänk går till rut-sidan. Ingen förklarar övergången 2025 till 2026, alltså att betalningsdatumet avgör vilken procentsats som gäller | 5 |
+| rotavdrag hur mycket | 320 | nordea.se, sparbankentanum.se, sambla.se, stabelo.se, veterankraft.se | banker och låneförmedlare | Ren räknefråga besvarad med ett statiskt intervall. Ingen räknar mot betald skatt, som är det som faktiskt sätter taket för de flesta | 5 |
+| kontrollplan mall | 320, −56 % | vasteras.se, hagfors.se, hallstahammar.se, degerfors.se, skelleftea.se | fem kommuner | **Ettan är en naken .docx-fil.** Tre av fem är PDF:er, en märkt utkast och daterad 2016. Västerås HTML-sida längre ner är bäst i fältet och den enda som nämner regeländringen 1 juli 2026. Ingen mall fungerar utanför sin egen kommun | 5 |
+| grannemedgivande | 210, +55 % | lund.se, helsingborg.se, skara.se, sandviken.se, attefallshus.se | fyra kommuner, nischsajt | Ingen kommun har en nedladdningsbar blankett, och ingen nämner lagändringen 1 december 2025 som gjorde skriftligt medgivande till lagkrav. Den enda sidan med blankett kräver din e-postadress | 4 |
+| renovera badrum kostnad | 1 300 | bad-varme.se, byggahus.se (forum), helphero.se, axelssonbyggab.se, byggstart.se | entreprenör, forum, offertförmedlare, byggfirma, offertförmedlare | Ettan är åtta prisexempel, 145 000 till 440 000 kr, alla märkta "inkl ROT" utan att procentsatsen står någonstans. Inga källor, inget år, ingen uppdelning arbete och material, alltså oräkningsbart. Forum på plats två | 4 |
+| renovera kök kostnad | 720 | clasfixare.se, ikea.com, hantverkskollen.se, byggstart.se, brabyggare.se | förmedlare, butik, tre offertförmedlare | Ettan spänner 50 000 till 300 000 kr utan kostnad per post. **Den anger rot-taket till 75 000 kr, vilket är det gemensamma rot- och rut-taket; rot är 50 000 kr.** Ingen prissätter el och vvs separat när planlösningen ändras, vilket är den vanligaste budgetöverraskningen | 4 |
+| byta tak kostnad | 880 | bygghemma.se, byggahus.se (forum), byggstart.se, takivast.se, takexperter.se | butik, forum, offertförmedlare, takfirma, offertförmedlare | Ettan är daterad 2026-02-23 och anger 1 500 till 3 500 kr per kvm. **Nämner inte rotavdrag alls** på en fras där arbetet är merparten av notan. Rivning, container och ställning saknas helt, och ingen hjälper läsaren räkna fram takarean, som är första steget | 4 |
+| byta fönster kostnad | 1 000 | klarfonster.se, bygghemma.se, byggahus.se, isofonster.se, helphero.se | tillverkare, butik, magasin, tillverkare, offertförmedlare | Starkaste ettan i hela körningen. Riktiga produktpriser, villaexempel, jämförelse mellan material och glas, **fungerande priskalkylator** och korrekt rotavdrag plus energibidraget. Saknar bara energibesparingen i kronor och återbetalningstiden | 2 |
+
+#### Golv, trappor och el
+
+| Fras | Volym | Topp 5 (domäner) | Typ | Sidornas kvalitet | Vinn |
+|---|---|---|---|---|---|
+| bygga trappa | 880 | beijerbygg.se, clasfixare.se, viivilla.se, byggmax.se, byggoteknik.se | butikskedja, lead-generering, magasin, butik, nischsajt | **Ettan är en kategorisida utan innehåll**, bara navigering och produktlänkar. Ingen formel, inga mått, inga bilder; den rankar på domän. Tvåan är en offertsida. Intentionen är delad mellan innetrappa och utetrappa och ingen löser båda | 5 |
+| trappa steghöjd | 50 | gds.se, hemfixarna.se, skarp.se, forssellstrappan.se, nyblomkollen.se | butik, lead-generering, nisch, trappfirma, nisch | Gds (2026-02-08) har trappformeln och tre räkneexempel men nämner inte Boverket. **Den enda svenska trappräknaren i fältet är en artikel från 2012 med en app uppdaterad 2020, och den nämner inte heller Boverket.** Boverkets mått finns alltså inte som räknat verktyg på svenska | 5 |
+| byta elcentral | 210 | sweclockers.com (forum), clasfixare.se, svenskaeljouren.se, dryft.se, sallen.se | forum, lead-generering, elfirma, bokningsplattform, elfirma | **Ett forum på plats ett.** Resten är prissidor med ett från-pris och ingen förklaring. Ingen listar tecknen på att centralen måste bytas, ingen delar upp priset på poster | 5 |
+| jordfelsbrytare löser ut | 1 300 | elsakerhetsverket.se, hemfixarna.se, svenskaeljouren.se, elektriker-alvik.se, jourpartner.se | myndighet, lead-generering, tre elfirmor | Elsäkerhetsverket (granskad 2026-02-03) äger plats ett och den tar vi inte. Men sidan är myndighetsinformation, inte felsökning vid köksbordet: inget flödesschema, ingen ordning på vad man testar först, inget om de vanliga bovarna. Plats två till fem är källösa och odaterade lead-sidor | 4 |
+| slipa parkettgolv | 1 300 | k-bygg.se, tarkett.se, hornbach.se, byggmax.se, byggahus.se (forum) | butik, tillverkare, två butiker, forum | Ettan är en FAQ på 800 ord som **genomgående avråder från att göra det själv**, på en fras vars hela intention är att göra det själv. Inga kornnummer, inget om slitskiktets tjocklek, inga torktider, inga hyrpriser | 4 |
+| slipa golv själv | 880 | bolist.se, byggmax.se, parkettspecialisten.se, golvmastarna.se, bygghemma.se | butik, butik, två golvfirmor, butik | Ettan har nio steg och åtta processbilder och är hederlig. Saknar datum, hyrpriser, tidsåtgång och beslutet före allt annat: tål mitt golv att slipas | 4 |
+| renovera trappa | 880 | clasfixare.se, hornbach.se, byggmax.se, bygghemma.se, trappspecialisterna.se | lead-generering, tre butiker, trappfirma | Ettan är 3 000 ord med checklista, men varvad med offertformulär och helt utan priser. Hela topp 5 säljer antingen tjänsten eller stegen; ingen skriver neutralt för den som gör jobbet själv | 4 |
+| lägga klickgolv | 720 | villaagarna.se, jemfix.se, bolist.se, proffsmagasinet.se, mydiy.se | intresseorganisation, butik, butik, butik, blogg | Ettan (2023) är en planeringsartikel om att välja golv, inte en monteringsguide, och matchar alltså inte intentionen. Ingen anger rörelsefog i mm, undergolvets tolerans eller vad som gäller över golvvärme | 4 |
+| lägga laminatgolv | 590 | tarkett.se, hornbach.se, k-bygg.se, byggmax.se, logoclic.info | tillverkare, tre butiker, tillverkare | Ettan har rätt tal (8 till 10 mm fog, 18 grader, 30 till 60 procent RF) men är produktstyrd och lägger läggningsanvisningarna i separata PDF:er. Två tillverkare med stark domän gör frasen svårare än systerfrasen | 3 |
+| räkna ut kvadratmeter | 2 400 | proffsmagasinet.se, omnicalculator.com, ekonomifokus.se, brabyggare.se, rakna-ut.se | butik, kalkylatorsajt, magasin, branschsajt, kalkylatorsajt | **Ettan är vår egen affiliatepartner.** Fungerande räknare, men bara kvadrat och rektangel, inget spillpålägg och inget delbart resultat. Hela SERP:en är kalkylatorer på starka domäner | 3 |
+
+#### Fasad, fönster, tak och energi
+
+| Fras | Volym | Topp 5 (domäner) | Typ | Sidornas kvalitet | Vinn |
+|---|---|---|---|---|---|
+| tilläggsisolera vind | 480, +51 % | rikatillsammans.se (forum), boverket.se, rockwool.com, byggahus.se, isover.se | forum, myndighet, tillverkare, forum, tillverkare | **Ingen äger frasen.** Forum på ettan, myndighet utan siffror på tvåan, två produktkataloger. Forumtråden heter "vettigt eller ej" och handlar om återbetalningstid med ett skarpt prisexempel, 39 000 kr för 40 kvm. Det är lönsamhetsfrågan, inte isoleringsfrågan | 5 |
+| fasadfärg bäst i test | 480 | hantverksproffset.se, totalbyggarna.se, trädgårdslabbet.se, trädgårdslandet.nu, alltomträdgårdar.se | fyra affiliatesajter, en entreprenörsblogg | **Det finns inget oberoende svenskt fasadfärgstest efter Folksams 2015 till 2018.** Råd & Rön har inget. Hela första sidan säger ändå "bäst i test 2026". Tvåan är den ärligaste och skriver rakt ut att de inte målat med produkterna själva | 5 |
+| sättningar hus | 210 | byggnadsvard.se, lth.se, viivilla.se, husgrunder.com, golvlyftarna.se | förening, **forskningsrapport från 1968**, magasin, två entreprenörer | Ettan är en läsarfråga i en frågespalt som svarar "kontakta kommunen". Ingen visar hur man mäter en spricka över tid, ingen nämner att sättning ofta är undantaget i villaförsäkringen | 5 |
+| sättningssprickor | 70, +240 % | gds.se, dinbyggare.se, bygg.se, stabtech.se, sustend.se | butik, två magasin, entreprenör, besiktningsföretag | Samma lucka som ovan. Frasen växer snabbast av alla i körningen och är ingången till mycket dyrare frågor | 5 |
+| måla om huset kostnad | 590 | sambla.se, colorama.se, hemfixarna.se, måleriexperter.se, helphero.se | låneförmedlare, butik, entreprenör, två lead-sidor | Ettan är en låneförmedlare. Ingen i topp 5 visar hur man kommer från sitt eget hus till ett kvadratmetertal, och ingen skiljer på förarbetets tre nivåer, som är tre gånger i pris och hela förklaringen till spridningen | 4 |
+| byta fönster själv | 260 | klarfonster.se, hemfint.se, dinbyggare.se, byggmax.se, hornbach.se | tillverkare, lead-generering, magasin, två butiker | Ettan ställer gör det själv mot proffs men **lär medvetet inte ut momentet**, den vill sälja montering. Mätmomentet, som är det enda som gör att beställningen blir fel och kostar 8 000 kr, ligger bakom en annan sida | 4 |
+| lägga plåttak själv | 210, +50 % | dinbyggare.se, plåtgrossisten.se, platslagare-enskede.se, hittataklaggare.se, renoverahuset.se | magasin, grossist, plåtslagare, lead-generering, magasin | Ettan är teknisk och har läkt, skruv och säkerhet, men inga priser, ingen materialåtgång, ingen snölastdata och bara en mening om bygglov | 4 |
+| takläckage | 140 | byggahus.se, avfuktningsteknik.se, norlinolsson.se, besttak.se, täby-taklaggare.se | forum, fyra entreprenörer varav tre lokala | Nästan bara lokala takfirmor som rankar på ortsnamn. Ingen förklarar hur man spårar en fläck i innertaket till källan på yttertaket, och ingen nämner gränsen mellan plötslig skada och långsam läcka som avgör försäkringsfrågan | 4 |
+| beräkna u värde | 110 | isover.se, recticelinsulation.com, gds.se, rockwool.com, dimensionera.se | två tillverkare, butik, tillverkare, proffsverktyg | Tillverkarnas räknare är byggda för den som projekterar en vägg, kringgärdade och delvis bakom program. Ingen har det enkla i mitten: skikt för skikt med lambdavärden i en synlig lista | 4 |
+| renovera fönster | 1 000 | bolist.se, leifarvidsson.se, hornbach.se, byggfabriken.se, sundabyggvaror.se | butik, fönsterfirma, tre butiker | Ettan har tolv steg med bild per steg och är kompetent. Saknar kostnad, tidsåtgång, **bly i all färg före 1978**, torktiderna för linoljefärg som är den verkliga flaskhalsen, och gränsen där renovering inte längre lönar sig. Byggnadsvårdsbutikerna längre ner är det svåra i fältet, inte ettan | 3 |
+| tvätta fasad | 720 | gds.se, beckers.se, bygghemma.se, byggmax.se, nordsjo.se | butik, tillverkare, två butiker, tillverkare | Ettan (2026-08-05) säger "tvätta när fasaden är torr" utan att säga hur torrt eller hur länge, vilket är hela poängen med att tvätta före målning. Inget om algmedel och dagvatten, inget om eternit, inga källor | 3 |
+| u värde | 590 | klarfonster.se, mockfjards.se, elitfonster.se, svenskafonster.se, vibostugan.se | två fönsterfirmor, två tillverkare, butik | Ingen Wikipedia i toppen; frasen ägs av fönsterbranschen. Ettan (2026-09-08) har definition, tabell och två räknare. Saknar formeln, uppdelningen Uw, Ug och Uf, och all koppling till vägg och tak | 3 |
+
+#### Produktorden
+
+| Fras | Volym | Butik mot innehåll i topp 10 | Ettan | Vinn |
+|---|---|---|---|---|
+| krysslaser | 3 600, +24 % | 4 mot 6 | En guide, inte ett sortiment: "krysslaser eller rotationslaser". Jämför inga modeller, har inga priser och inga mätningar av linjenoggrannhet | 4 |
+| fuktkvotsmätare | 210 | 7 mot 3, men svaga nischbutiker och ett forum | En enskild produktsida hos Clas Ohlson. Ingen definition, ingen mätstandard, inget om elektrodavstånd eller träslagskorrigering | 5 |
+| skruvautomat | 880 | 7 mot 3 | **En enskild produktsida** för en Makita-modell. Inget om bandad mot lös skruv, inga längdintervall, ingen jämförelse mellan fabrikat | 4 |
+| gersåg bäst i test | 170, +53 % | 0 mot 10 | Proffsmagasinet, fyra sågar 4 401 till 10 828 kr, byggd på Trustpilot-citat. Inga mätningar, ingen jämförelsetabell, inga nackdelar | 4 |
+| fuktmätare trä | 880, +30 % | 7 mot 3 | PriceRunners prislista med elva produkter. Ingen text om fuktkvot, inga gränsvärden, inget om stift mot kula | 4 |
+| fuktmätare | 6 600 | 6 mot 4 | Biltemas kategorisida. Redaktionellt innehåll får plats fem och nedåt, och det starkaste är 1 200 ord utan egna mätningar | 3 |
+| lasermätare | 2 900 | 6 mot 3 | Bauhaus kategorisida. Butikerna tar de tre första platserna, innehåll får tre av tio | 3 |
+| kap och gersåg | 6 600 | 7 mot 3 | Julas kategorisida, och **Proffsmagasinet äger innehållsplatsen**. Högsta volymen och hårdaste butikslåsningen i listan | 2 |
+| hygrometer bäst i test | 210 | 0 mot 10 | Etablerad affiliatesajt med 6 500 ord, fem produkter, jämförelsetabell och FAQ. Mättad av sajter med exakt vår vinkel | 2 |
+| byggfläkt | 1 600 | **10 mot 0** | Biltemas kategorisida. Inte en enda guide, inget test, ingen redaktionell sida på hela första sidan. Google läser frasen som ren transaktion | 1 |
+
+**Svaret på frågan om butikerna tar alla tio platserna: nej, utom på byggfläkt.** Redaktionellt innehåll får konsekvent två till tre platser i topp 10 på de nakna produktorden, men nästan aldrig plats ett till tre. Utan domänauktoritet är ett realistiskt mål plats fyra till åtta på det nakna ordet och plats ett till tre på "X bäst i test". Undantaget är krysslaser, där ettan redan är en guide och en riktig modelljämförelse med mätdata kan ta topp tre på det nakna ordet.
+
+**Körningens viktigaste enskilda observation: ingen etta i någon av de trettio SERP:ar vi läst redovisar en egen mätning, och nästan ingen anger källa på sina konstanter eller ett publiceringsdatum.** Kravet på källa per konstant är alltså inte bara en intern regel, det är den faktiska skillnaden mot hela fältet. Två faktafel går att utnyttja direkt: ettan på "renovera kök kostnad" anger rot-taket till 75 000 kr när rot är 50 000 kr, och ettan på "byta tak kostnad" nämner inte rotavdrag alls.
+
+### 7.3 Avstämning mot befintliga sidor
+
+Fyra frågor från Christian. Tre sidor behöver ändring, alla fyra behåller sin URL, och ingen H1 skrivs om.
+
+**Källarbesiktningen på `/rakna/kallare/` kannibaliserar guiden. Rätta titeln.** "fuktig källare vad göra" och "besiktiga källare själv" har båda noll data. Google slår ihop "fuktig källare" med "fukt i källaren" (480), som är `/fukt/fukt-i-kallaren/`:s fras. Verktygets `titel` lyder i dag "Fuktig källare, vad ska du göra? Besiktiga själv" och dess H1 börjar "Fuktig källare?". Båda leder alltså med guidens fras, och avsnitt 6 i `INNEHALLSARKITEKTUR.md` säger att två sidor aldrig får dela de tre första orden i title.
+
+Verktyget ska inte sikta på någon fras alls. Precedensen finns i startlistan, där `/rakna/avfuktare/` står som länktillgång och inte som trafikkälla, och de fraser som fanns att välja på är alla under tio i månaden. Ändringen är att `titel` börjar med verktygets eget namn, "Besiktiga källaren själv", och att "Fuktig källare" stryks ur H1:ns inledning. Guiden behåller frasen ensam.
+
+**Sprickorsidan valde rätt kluster. Byt ledordet i seoTitle, inte H1.** Sprickklustret är 290 i månaden och växer överallt: sprickor i husgrunden 70 (+57 %), sättningssprickor 70 (+240 %), spricka i grunden 50 (+29 %), spricka i källarvägg 50, spricka i betongplatta 50. "sättningar hus" är visserligen 210, men faller 35 procent och har ett annat huvudord, så Google slår inte ihop dem. Sidan siktade alltså på det mindre men växande klustret, vilket var rätt.
+
+Ändringen är liten. seoTitle slutar i dag på "krympspricka eller sättning" och ska sluta på **sättningsspricka**, så att frasen som växer 240 procent finns ordagrant. H1 rörs inte. "sättningar hus" är en bredare intention, alltså frågan om huset sjunker, och får en egen H2 nu. SERP:en för den frasen har en frågespalt på plats ett och en forskningsrapport från 1968 på plats två, så den är värd en egen sida i grundklustret så snart Search Console visar att sprickorsidan rankar på den utan att kunna svara.
+
+**Dräneringsverktyget ska inte ha båda fraserna i H1.** Kostnadsklustret är 1 040: dränering kostnad 590, vad kostar dränering 320, dränering kostnad per meter 50, dränering villa kostnad 50, dränering pris per meter 30. Verktyget äger hela det klustret, guiden `/grund/dranera-hus/` äger "dränera hus" (1 000). Det finns alltså ingen konflikt dem emellan, bara ett ledord som är 270 sökningar för litet.
+
+Stilguiden säger att H1 är sidans löfte och att title-taggen får vara mer sökordsdriven så länge den är läsbar. Därför ändras `titel` från "Vad kostar dränering? Räkna per löpmeter" till att leda med **"Dränering, kostnad per meter"**, medan H1 behåller läsarens fråga. Båda fraserna finns då på sidan, den större i title och den mer läsbara i H1, och de delar inte längre sina tre första ord.
+
+**Källarväggssidan är rätt riktad. Jaga inte "isolera vägg inifrån".** Den frasen (170) är en annan intention: en yttervägg eller ett kallt rum i vilket hus som helst, inte en grundmur under mark. Hela sidans resonemang, att invändig isolering gör muren kallare och flyttar daggpunkten in i betongen, gäller bara källarväggen. Blandar vi in den bredare frasen tappar sidan sin intention, och den hör hemma i El när isoleringsklustret byggs.
+
+Inom källarklustret ska ledordet däremot bytas. "isolera källare invändigt" är 50 och växer 67 procent, "isolera källarvägg invändigt" är 30 och faller 50 procent, och Google slår ihop dem. seoTitle ska alltså leda med **"Isolera källare invändigt"** och behålla "eller utvändigt" i svansen. H1 och URL rörs inte.
+
+### 7.4 Verktyg
+
+| Verktygsplanens rad | Verktyg | Fraser och volym | Vinn | Besked |
+|---|---|---|---|---|
+| 15 | ROT-avdrag | rotavdrag 2026 18 100, rotavdrag hur mycket 320, rotavdrag renovering 30, rotavdrag beräkna 10. **18 460** | 5 | **Byggs först.** Skatteverket rankar inte, banker och låneförmedlare äger frasen med odaterad text och ingen räknare, och frasen är per definition en räkneuppgift. Talen är verifierade hos Skatteverket: 30 procent och 50 000 kr från 1 januari 2026, 75 000 kr gemensamt tak med rut, och betalningsdatumet avgör vilken procentsats som gäller. Sidan döps om varje december |
+| 9 | Isolering och U-värde | u värde 590, beräkna u värde 110, tilläggsisolera vind 480, isolera vind kostnad 90, tilläggsisolera hus 40. **1 310** | 4 | **Byggs, men inte som tillverkarna byggt sin.** En räknare som stannar vid W/m²K svarar på fel fråga och förlorar mot en forumtråd med ett verkligt pris. Den ska gå hela vägen till sparade kWh, kronor per år och återbetalningstid. En motor, två ingångar: `/rakna/u-varde/` och vindsberäkningen i `/el/tillaggsisolera-vind/` |
+| 13 | Trappa, steg och stigning | bygga trappa 880, renovera trappa 880, trappa steghöjd 50, bygga innertrappa 10 | 5 | **Byggs.** Den enda svenska trappräknaren i fältet är en artikel från 2012 och den nämner inte Boverket. Verktygsfrasen är 50 och bär ingen trafik själv, men artikeln den bor i är 880 och har en tom kategorisida som etta |
+| 11 | Takvinkel och snölast | takvinkel 210, beräkna takvinkel 110, snölast tak 30, beräkna takarea 10. **360** | ej läst | **Byggs när Tak får sin första artikel.** Låg konkurrens genomgående. Takarean ur byggnadsmått och taklutning är dessutom det steg som ingen sida på "byta tak kostnad" hjälper läsaren med, så räknaren behövs av två sidor |
+| 12 | Kapoptimering | kaplista 20, kapa lister vinkel 10. **30** | — | **Läggs ner.** Trettio sökningar i månaden, och Kalkylverket har redan en |
+| 14 | Betong till plint och platta | beräkna betong 90, betong till plint 40, hur mycket betong till plint 0, betong per kubikmeter 0. **130** | — | **Läggs ner.** Verktygsplanens egen bedömning var "finns hos alla", och altanräknaren täcker plintarna redan |
+| ny | Vädra eller avfukta | avfuktare eller vädra 0, vädra källare 0, vädra källare sommar 0 | — | **Läggs ner som egen sida.** Tre fraser, noll sökningar. Iakttagelsen är riktig, sommarvädring gör en kall källare blötare, men den blir ett utfall i `/rakna/kallare/` och en H2 i `/fukt/fukt-i-kallaren/` i stället för en adress som ingen söker på |
+| ny | Kontrollplan | kontrollplan mall 320, kontrollplan altan 10 | 5 | **Byggs.** Svagaste SERP:en i hela körningen: en naken .docx på plats ett och en PDF märkt utkast från 2016 i topp 5. Byggs som generator, inte kalkylator: välj åtgärd, få kontrollpunkter med kontrollmetod och lagrum, som PDF och delbar adress. Regeländringen 1 juli 2026 är den enda aktuella luckan och bara en kommun har sett den |
+| ny | Grannemedgivande | grannemedgivande 210, grannemedgivande mall 210 | 4 | **Byggs.** Växer 55 procent, fyra kommuner i topp 5 och ingen av dem har en blankett eller nämner lagändringen 1 december 2025. Hänger ihop med `/rakna/bygglov-altan/`, som redan frågar efter avståndet till tomtgränsen |
+
+Tre nya verktygsidéer föll ut ur SERP-läsningen och läggs till verktygsplanen utan plats i den här omgången: en takbyteskalkylator som börjar i byggnadsmåtten, en badrums- och kökskalkylator som delar arbete och material så att rotavdraget alls går att räkna, och en fasadytekalkylator till "måla om huset kostnad". Alla tre lider av samma lucka hos konkurrenterna, att sidorna kräver att läsaren redan vet sin kvadratmeteryta.
+
+### 7.5 Produktkategorier
+
+Prioriterad lista till affiliateansvarig. Det övergripande beskedet är att **det nakna produktordet är fem till nio gånger större än "bäst i test", precis som körning 1 förutspådde, och att fuktmätare är en kategori vi inte har alls trots att fyra publicerade sidor uppmanar läsaren att skaffa en.**
+
+| # | Kategori | Fraser och volym | Vinn | Prisläge | Vad som krävs |
+|---|---|---|---|---|---|
+| 1 | **Krysslaser** | krysslaser 3 600 (+24 %), krysslaser bäst i test 480, krysslaser test 70. **4 150** | 4 | 500 till 6 000 kr, tyngdpunkt 1 500 till 4 000 | Linjeavvikelse på 5 och 10 m och synlighet grön mot röd i dagsljus. Bästa kombinationen i listan av volym, tillväxt, prisläge och svag SERP, och den enda stora produktfrasen där ettan redan är en guide. Kategorisidan finns redan i repot |
+| 2 | **Skruvautomat** | skruvautomat 880, skruvautomat bäst i test 20. **900** | 4 | 2 600 till 5 000 kr | Ingen mätning krävs för att ranka, men skruv per minut och missmatningar på hundra skruv skulle äga frasen. Billigast att starta: maskinen står redan som produktkort i `/rakna/gipsskruv/` och `/rakna/innervagg/`, och trallskruvsidan pekar dit |
+| 3 | **Fuktmätare och fuktkvotsmätare** | fuktmätare 6 600, fuktmätare trä 880 (+30 %), fuktkvotsmätare 210. **7 690** | 3 till 5 | 150 till 2 500 kr konsument, 3 000 till 10 000 proffs | Egen mätning är avgörande och ovanligt enkel: samma bräda mätt med fem instrument mot torrviktsmetoden. Styr mot proffssegmentet för att komma över ordervärdesgränsen. Största editoriella luckan på sajten |
+| 4 | **Kap- och gersåg** | kap och gersåg 6 600, kap och gersåg bäst i test 720, gersåg bäst i test 170 (+53 %). **7 490** | 2 på det nakna ordet, 4 på "gersåg bäst i test" | 1 500 till 11 000 kr. **Högst ordervärde i hela listan** | Sågarna i handen, och ingången är "gersåg bäst i test", inte det nakna ordet. Där är topp 10 helt redaktionell och ettan bygger på kundomdömen; på det nakna ordet äger Proffsmagasinet innehållsplatsen |
+| 5 | **Lasermätare** | lasermätare 2 900, avståndsmätare laser 720, lasermätare bäst i test 390. **4 010** | 3 | 400 till 6 000 kr, median runt 1 500 | Mätavvikelse mot måttband på 5, 10 och 30 m samt räckvidd i solljus. Väntar på instrumenten enligt gällande beslut, vilket SERP:en bekräftar: utan mätdata finns ingen väg förbi butikerna |
+| — | **Byggfläkt** | byggfläkt 1 600, byggavfuktare 90 | **1** | 300 till 1 500 kr | **Stryks.** Tio av tio platser i topp 10 är butikssortiment, inte en enda guide eller test. Google läser frasen som ren transaktion, och priserna ligger under briefens gräns |
+| — | **Hygrometer som egen kategori** | hygrometer bäst i test 210, hygrometer inomhus 140 | **2** | 100 till 1 000 kr | **Stryks som kategori.** Topp 10 är helt mättad av etablerade affiliatesajter med exakt vår vinkel, och ettan är redan 6 500 ord. Ordervärdet bär ingen kategori. Hygrometern blir ett avsnitt i fuktklustret i stället |
+
+En sak till för affiliateansvarig: **på "räkna ut kvadratmeter" (2 400) är ettan Proffsmagasinet, alltså vår egen affiliatepartner.** Vår kalkylator på `/rakna/kvadratmeter/` konkurrerar därmed direkt med den butik vi länkar till. Det är inte ett skäl att sluta, men det ska vara ett medvetet beslut och inte en överraskning.
+
+### 7.6 Startlista 2
+
+Volym gånger vinnbarhet, med vinnbarheten viktad på volym över de fraser i pelaren som faktiskt lästes.
+
+| Pelare | Kluster per mån | Vinnbarhet | Poäng | Produkt | Läge |
+|---|---|---|---|---|---|
+| Golv och trappor | 6 140 | 4,1 | 25 200 | nej, golvslipen hyrs | tom |
+| Fasad, fönster och dörrar | 4 820 | 3,2 | 15 400 | svagt | en sida |
+| El, värme och energi | 3 090 | 4,0 | 12 400 | nej | tom |
+| Kök och badrum | 2 780 | 4,0 | 11 100 | svagt | en sida |
+| Tak och vind | 1 790 | 4,0 | 7 200 | nej | tom |
+
+Rotavdraget står utanför tabellen eftersom det inte tillhör någon pelare, men talet är värt att se bredvid: 18 460 gånger vinnbarhet 5 är 92 300, alltså mer än de fem pelarna tillsammans. Det är den enskilt största möjligheten i båda körningarna och byggs oavsett vilken pelare som kommer härnäst.
+
+**Golv och trappor blir nästa pelare.** Den är störst, den har den högsta vinnbarheten efter El, och trappklustret inuti den är den bästa enskilda öppningen i körningen: ettan på "bygga trappa" är en tom kategorisida, den enda svenska trappräknaren är från 2012 och nämner inte Boverket. Att pelaren saknar affiliatevärde är ett verkligt minus, men briefen säger att merparten av sidorna ska handla om problem och projekt och att produktsidorna får sin trovärdighet från kunskapsinnehållet runt omkring. Golv är precis det innehållet.
+
+| # | Fras (URL) | Volym | Nivå | Typ | Pelare | Vinn | Säsong | Affiliate | Motiv |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | rotavdrag 2026 (`/rakna/rotavdrag/`) | 18 460 | enkel | kalkylator | ingen | 5 | topp dec, botten jun | nej | Största frasen i båda körningarna. Skatteverket rankar inte, banker och låneförmedlare gör det utan datum och utan räknare. Äger även rotavdrag hur mycket (320). Talen verifierade hos Skatteverket, och sidan döps om varje december |
+| 2 | bygga trappa (`/golv/bygga-trappa/`) | 890 | mellan | projektguide | Golv | 5 | topp sep | liten | Ettan är en kategorisida utan innehåll, tvåan en offertsida. Skiljer innetrappa från utetrappa, vilket ingen i toppen gör |
+| 3 | trappa steghöjd (`/rakna/trappa/`) | 50 | mellan | kalkylator | ingen | 5 | som 2 | nej | Verktygsplanens rad 13. Bär ingen trafik själv men äger frasen, och Boverkets mått finns inte som räknat verktyg på svenska. Bor i 2 |
+| 4 | slipa parkettgolv (`/golv/slipa-parkettgolv/`) | 2 270 | mellan | projektguide | Golv | 4 | topp sep | liten | Största frasen i pelaren. Äger även slipa golv själv (880) och renovera golv (90). Ettan avråder från att göra det själv på en fras vars hela intention är att göra det själv. Kärnan är beslutet före allt annat: tål golvets slitskikt en slipning |
+| 5 | lägga klickgolv (`/golv/lagga-klickgolv/`) | 1 540 | enkel | projektguide | Golv | 4 | topp sep till okt | liten | Äger även lägga laminatgolv (590), lägga golv själv (140) och laminat eller parkett (90). Ettan är en planeringsartikel från 2023 och matchar inte intentionen. Måtten med källa är hela sidan: rörelsefog, undergolvets tolerans, akklimatisering, golvvärme |
+| 6 | renovera trappa (`/golv/renovera-trappa/`) | 880 | mellan | projektguide | Golv | 4 | topp sep | liten | Hela topp 5 säljer tjänsten eller stegen och ingen anger ett pris. Tre vägar med timmar och kronor: måla om, klä med prefab, byta hela |
+| 7 | golv i källare (`/golv/golv-i-kallare/`) | 460 | mellan | problemguide | Golv | ej läst | topp sep | nej | Femte sidan, alltså den som ger Golv sin hub. Äger även golv på betongplatta (70). Bron till `/grund/inreda-kallare/` och `/fukt/fukt-i-kallaren/`: fuktkravet avgör golvvalet, inte tvärtom. SERP:en är inte läst och frasen kontrolleras innan briefen skrivs |
+| 8 | tilläggsisolera vind (`/el/tillaggsisolera-vind/`) | 610 | mellan | projektguide | El | 5 | topp feb | nej | Näst snabbaste växaren i körningen, +51 procent på ett år och +84 på tre månader. Forum på ettan, myndighet utan siffror på tvåan. Måste vara indexerad i januari för februaritoppen. Bär U-värdesmotorn och är därmed första halvan av verktygsplanens rad 9 |
+
+Sidorna 2 och 4 till 7 ger Golv fem sidor och därmed en hub, som går in i menyn enligt regeln i avsnitt 6 i arkitekturen. Sida 8 är den enda som ligger utanför, och den ligger där av säsongsskäl: den behöver vara ute före februari och kan inte vänta på att El fyller sina fem.
+
+**Direkt efter:** `/el/u-varde/` med `/rakna/u-varde/` (700, vinnbarhet 3 och 4, samma motor som 8), `/el/jordfelsbrytare-loser-ut/` (1 300, vinnbarhet 4, den bästa ingången till elpelaren), `/el/byta-elcentral/` (210, vinnbarhet 5, ett forum på plats ett), `/rakna/kontrollplan/` och `/rakna/grannemedgivande/`, samt `/golv/` som hub. Då har El fem sidor och sin egen hub.
+
+**Sedan Fasad**, som bara behöver fyra sidor för att nå hubgränsen och som har två skäl att inte vänta längre. `/rakna/mala-ute/` är byggd men hemlös, ingen artikel bäddar in formuläret, och "fasadfärg bäst i test" (480, vinnbarhet 5) är en position ingen annan tar, eftersom det inte finns något oberoende svenskt fasadfärgstest efter Folksams 2015 till 2018 och hela första sidan ändå säger "bäst i test 2026". Ordningen blir måla om huset (930), tvätta fasad (720), renovera fönster (1 000) och fasadfärg. **Byta fönster kostnad (1 000) skjuts till fas 2:** ettan har redan kalkylator, riktiga produktpriser och korrekt rotavdrag, hela topp 5 är tillverkare och e-handel, och vinnbarheten är 2. Tas frasen ändå ska vinkeln vara återbetalningstid via U-värde och energibidrag, inte inköpspris.
+
+**Kök och bad och Tak väntar.** Båda har vinnbarhet 4 på sina kostnadsfraser och båda är fullt byggbara, men de kräver var sin ny kalkylator för att slå offertförmedlarna, och ingen av dem har en sida som redan väntar på ett hem.
+
+### 7.7 Vad körning 2 ändrade
+
+1. **Rotavdraget är den största enskilda möjligheten sajten har haft, och det var inte på kartan.** 18 100 i månaden, vinnbarhet 5, och myndigheten som borde äga frasen rankar inte alls. Verktygsplanens rad 15 gick från "finns hos alla" till första prioritet. Uppgången är den tillfälliga höjningen till 50 procent mellan 12 maj och 31 december 2025, så volymen faller tillbaka under 2026 och sidan måste underhållas varje år.
+2. **Nischen krymper.** Sjutton fraser av 152 växer. Körning 1 såg det i altan och avfuktare och trodde det var säsong; körning 2 visar att det gäller hela renoveringsfältet.
+3. **Golv blir nästa pelare, inte Fasad eller Tak.** Störst volym av de tomma, högst vinnbarhet efter El, och ett trappkluster där ettan är en tom kategorisida och den enda räknaren är från 2012. Att pelaren inte bär affiliate är ett pris vi betalar medvetet.
+4. **Två produktkategorier stryks innan de beställts.** Byggfläkt har tio av tio butiksplatser i topp 10 och ligger under prisgränsen; hygrometer som egen kategori är mättad av affiliatesajter med vår egen vinkel och kostar 100 till 1 000 kr. I stället flyttar krysslaser upp till förstahandsval och fuktmätare kommer in som en kategori vi inte hade.
+5. **Tre verktyg läggs ner och tre nya kommer in.** Kapoptimering (30), betong (130) och vädra eller avfukta (noll) faller. Kontrollplan (320, vinnbarhet 5), grannemedgivande (210, växer) och rotavdraget kommer in. U-värdesräknaren byggs, men som lönsamhetsverktyg med återbetalningstid, inte som den W/m²K-räknare tillverkarna redan har.
+6. **Tre av fyra granskade sidor behöver en rättad titel, ingen en ny URL.** Källarverktyget slutar leda med guidens fras, sprickorsidan byter sista ordet i seoTitle till den fras som växer 240 procent, dräneringsverktygets title leder med det ord som är 270 sökningar större. Källarväggssidan var rätt riktad hela tiden.
+
+
 ## Källor
 
 Sökresultat och sidor lästa 2026-09-16. Volymer från `docs/data/keyword-stats-2026-09-16.csv` (Google Ads, Sverige, sep 2024 till aug 2026).
+
+För avsnitt 7: sökresultat och sidor lästa 2026-09-20, volymer från `docs/data/keyword-stats-2026-09-20.csv` (Google Ads, Sverige, sep 2025 till aug 2026). Rotavdragets tal är verifierade hos Skatteverket.
+
+- [Skatteverket, rot och rut för företag (30 procent, tak 50 000 kr, gemensamt tak 75 000 kr)](https://www.skatteverket.se/foretag/skatterochavdrag/rotochrut.4.2ef18e6a125660db8b080002674.html), [Så fungerar rotavdraget](https://www.skatteverket.se/privat/fastigheterochbostad/rotarbeteochrutarbete/safungerarrotavdraget.4.5947400c11f47f7f9dd80004014.html), [Rotavdraget höjs till 50 procent, 12 maj till 31 december 2025, betalningsdatum avgör](https://www.skatteverket.se/omoss/pressochmedia/nyheter/2025/nyheter/rotavdragethojstill50procent.5.6e1dd38d196873bc1e11af.html), [Belopp och procent inkomstår 2026](https://www.skatteverket.se/foretag/skatterochavdrag/beloppochprocent/2026.106.1522bf3f19aea8075ba3294.html)
+- Rotavdrag och kostnadsfraser: nordea.se, clasfixare.se, sambla.se, offerta.se, byggstart.se, helphero.se, bad-varme.se, bygghemma.se, klarfonster.se
+- Kontrollplan och grannemedgivande: vasteras.se, hagfors.se, hallstahammar.se, degerfors.se, skelleftea.se, lund.se, helsingborg.se, skara.se, sandviken.se, bygglovstjanst.se
+- Golv, trappor och el: k-bygg.se, tarkett.se, bolist.se, byggmax.se, hornbach.se, villaagarna.se, beijerbygg.se, byggoteknik.se, gds.se, elsakerhetsverket.se, sweclockers.com, hemfixarna.se, proffsmagasinet.se, omnicalculator.com
+- Fasad, fönster, tak och energi: rikatillsammans.se, boverket.se, rockwool.com, isover.se, byggnadsvard.se, dinbyggare.se, beckers.se, nordsjo.se, totalbyggarna.se, plåtgrossisten.se, helsingborg.se, mockfjards.se, elitfonster.se
+- Produktord: biltema.se, jula.se, clasohlson.com, bauhaus.se, pricerunner.se, duab.se, ahlsell.se, testexperterna.se, testkompassen.se, verktygsmästaren.se
 
 - [Anticimex, fukt i källare och grund](https://www.anticimex.se/fuktskador/grund-kallare/), [Anticimex, krypgrundsavfuktning](https://www.anticimex.se/krypgrundsavfuktning/)
 - [Gör Det Själv, fukt i källare](https://gds.se/hus/inomhusklimat/fukt-i-kallare), [test av avståndsmätare](https://gds.se/verktyg/matinstrument/test-av-avstandsmatare), [isolera krypgrund](https://gds.se/spara-energi/isolering/isolera-golv/laat-kylan-bli-kvar-i-krypgrunden), [gipspluggar](https://gds.se/vagg/gipsvagg/varianter-av-gipspluggar), [gipsskruv](https://gds.se/material/spik-och-skruv/gipsskruv-sa-har-valjer-du-ratt-gipsskruv), [slipa bänkskiva](https://gds.se/kok/koksbord/bordsskivor/bankskivor-sa-slipar-du-koksbanken)
