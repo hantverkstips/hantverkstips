@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Två skisser av samma takfot, den vänstra märkt rätt och den högra märkt fel. I båda syns yttertaket snett uppåt, takfotens undersida, den skrafferade ytterväggen och vindsbjälklaget med ångspärr och isolering. I den vänstra håller en vindavledare isoleringen nere, så att en luftspalt går från takfoten upp över ullen. En pil visar uteluften på väg in, och en måttbygel tvärs spalten är märkt 50 mm. I den högra saknas vindavledaren, isoleringen ligger an mot taket ända ut i takfoten, spalten är borta, och en ring i penna märker stället.">
+  <!-- Anteckningsboken. Blyerts 2 px för yttertak, takfotsbräda, takfotens undersida, yttervägg,
+       innertak, isoleringens kanter och vindavledaren, blyerts-2 för ångspärr, isolerskraffering,
+       uteluftspilen (en förutsättning, inte problemet) och pekaren, snickarpenna för den öppna
+       ringen kring den igentäppta spalten, som är det enda som pekar.
+       Ett mått: luftspalten vid takfoten. Måttbygeln ligger vinkelrätt mot taket och spänner
+       12,5 enheter, alltså 50 mm i samma skala som huvudbilden (4 mm per enhet), och i den skalan
+       är isoleringens fulla tjocklek 100 enheter, alltså 400 mm. Vindavledarens andra mått,
+       150 mm över färdig isoleringsnivå, ryms inte i utsnittet och står i texten i stället.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Tumstock bakom nyckeltalet, bara bakom talet -->
+  <rect x="236" y="159" width="60" height="23" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 266 170)"/>
+
+  <!-- Skiljelinje mellan de två panelerna -->
+  <path d="M306,52 V336" stroke="#625a50" stroke-width="1" stroke-opacity="0.3" fill="none"/>
+
+  <!-- Vänster panel, rätt -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M56,258 Q174,189 292,120"/>
+    <path d="M56,258 Q52,265 55,272"/>
+    <path d="M55,272 Q84,277 112,280"/>
+    <path d="M112,300 Q111,311 112,322"/>
+    <path d="M138,300 Q139,311 138,322"/>
+    <path d="M106,292 Q199,294 292,292"/>
+    <path d="M106,300 Q199,302 292,300"/>
+    <path d="M96,249 Q164,209 232,169"/>
+    <path d="M112,252 Q172,216 232,180 Q262,179 292,180"/>
+    <path d="M112,252 Q111,266 112,280"/>
+    <path d="M112,280 Q202,282 292,280"/>
+  </g>
+  <g fill="none" stroke="#625a50" stroke-width="3.5" stroke-linecap="round">
+    <path d="M102,286 Q197,284 292,286"/>
+  </g>
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M115,302 l8,8 M115,312 l8,8 M127,302 l8,8 M127,312 l8,8"/>
+    <path d="M126,258 l8,8 M126,270 l8,8"/>
+    <path d="M152,238 l8,8 M152,258 l8,8 M152,270 l8,8"/>
+    <path d="M178,224 l8,8 M178,246 l8,8 M178,266 l8,8"/>
+    <path d="M204,210 l8,8 M204,232 l8,8 M204,254 l8,8 M204,268 l8,8"/>
+    <path d="M230,196 l8,8 M230,218 l8,8 M230,240 l8,8 M230,262 l8,8"/>
+    <path d="M256,196 l8,8 M256,218 l8,8 M256,240 l8,8 M256,262 l8,8"/>
+    <path d="M278,196 l8,8 M278,218 l8,8 M278,240 l8,8 M278,262 l8,8"/>
+  </g>
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M34,286 Q50,282 62,272 Q78,252 96,240 Q136,218 176,194"/>
+    <path d="M168,187 L177,194 L170,202"/>
+    <path d="M200,174 Q204,179 206,185"/>
+    <path d="M194,178 L206,170"/>
+    <path d="M200,189 L212,181"/>
+    <path d="M238,172 Q225,177 213,181"/>
+  </g>
+
+  <!-- Höger panel, fel. Samma takfot, ingen vindavledare, ullen utdragen mot takfoten -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M324,258 Q442,189 560,120"/>
+    <path d="M324,258 Q320,265 323,272"/>
+    <path d="M323,272 Q352,277 380,280"/>
+    <path d="M380,300 Q379,311 380,322"/>
+    <path d="M406,300 Q407,311 406,322"/>
+    <path d="M374,292 Q467,294 560,292"/>
+    <path d="M374,300 Q467,302 560,300"/>
+    <path d="M352,250 Q410,216 466,180 Q513,179 560,180"/>
+    <path d="M352,250 Q351,264 352,278"/>
+    <path d="M352,278 Q456,282 560,280"/>
+  </g>
+  <g fill="none" stroke="#625a50" stroke-width="3.5" stroke-linecap="round">
+    <path d="M370,286 Q465,284 560,286"/>
+  </g>
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M383,302 l8,8 M383,312 l8,8 M395,302 l8,8 M395,312 l8,8"/>
+    <path d="M364,258 l8,8 M364,270 l8,8"/>
+    <path d="M390,232 l8,8 M390,254 l8,8 M390,270 l8,8"/>
+    <path d="M416,214 l8,8 M416,236 l8,8 M416,258 l8,8 M416,270 l8,8"/>
+    <path d="M442,200 l8,8 M442,222 l8,8 M442,244 l8,8 M442,266 l8,8"/>
+    <path d="M472,196 l8,8 M472,218 l8,8 M472,240 l8,8 M472,262 l8,8"/>
+    <path d="M502,196 l8,8 M502,218 l8,8 M502,240 l8,8 M502,262 l8,8"/>
+    <path d="M532,196 l8,8 M532,218 l8,8 M532,240 l8,8 M532,262 l8,8"/>
+  </g>
+
+  <!-- Snickarpenna: den öppna ringen kring den igentäppta spalten vid takfoten -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M400,236 Q396,214 368,212 Q336,210 332,246 Q329,282 364,286 Q388,288 398,274"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="146" y="68">rätt</text>
+    <text x="424" y="68">fel</text>
+    <text x="240" y="178" fill="#625a50">50 mm</text>
+    <text x="44" y="344" fill="#625a50">vindavledare</text>
+    <text x="330" y="344" fill="#ad3519">spalten igenbyggd</text>
+  </g>
+</svg>

@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="En rak rätskiva ligger över ett ojämnt undergolv och vilar på två höga punkter. Mitt emellan dem finns en svacka under rätskivan. En lodrät måttbygel i svackan är märkt högst 3 millimeter, med talet i gul markering. Undergolvet är skrafferat och löper ut ur bildens underkant. En röd pil pekar på svackan, med anteckningen att den spacklas först.">
+  <!-- Anteckningsboken. Blyertsskiss på linjerat papper. Undergolvet skrafferat i
+       blyerts-2 och utan underkant. Rätskivan i blyerts, svackan måttsatt i blyerts-2
+       och utpekad av snickarpennan.
+       Skala: bilden har ett enda mått, den lodräta bygeln, som spänner 24 enheter
+       och är märkt 3 mm. Rätskivans längd är avsiktligt inte måttsatt, eftersom en
+       rätskiva på 2 m och en svacka på 3 mm inte ryms i samma skala. Längden står
+       i stället i bildtexten.
+       Handskrift i Caveat 500, konverteras till banor med npm run illustrationer.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50,
+       penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2, tunn: skraffering i undergolvet, som löper ut ur underkanten -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M80,224 l9,9 M102,224 l9,9 M124,224 l9,9 M146,224 l9,9 M168,224 l9,9 M190,224 l9,9 M212,224 l9,9 M234,224 l9,9 M256,224 l9,9 M278,224 l9,9 M300,224 l9,9 M322,224 l9,9 M344,224 l9,9 M366,224 l9,9 M388,224 l9,9 M410,224 l9,9 M432,224 l9,9 M454,224 l9,9 M476,224 l9,9 M498,224 l9,9 M520,224 l9,9 M542,224 l9,9"/>
+    <path d="M80,258 l9,9 M102,258 l9,9 M124,258 l9,9 M146,258 l9,9 M168,258 l9,9 M190,258 l9,9 M212,258 l9,9 M234,258 l9,9 M256,258 l9,9 M278,258 l9,9 M300,258 l9,9 M322,258 l9,9 M344,258 l9,9 M366,258 l9,9 M388,258 l9,9 M410,258 l9,9 M432,258 l9,9 M454,258 l9,9 M476,258 l9,9 M498,258 l9,9 M520,258 l9,9 M542,258 l9,9"/>
+    <path d="M80,292 l9,9 M102,292 l9,9 M124,292 l9,9 M146,292 l9,9 M168,292 l9,9 M190,292 l9,9 M212,292 l9,9 M234,292 l9,9 M256,292 l9,9 M278,292 l9,9 M300,292 l9,9 M322,292 l9,9 M344,292 l9,9 M366,292 l9,9 M388,292 l9,9 M410,292 l9,9 M432,292 l9,9 M454,292 l9,9 M476,292 l9,9 M498,292 l9,9 M520,292 l9,9 M542,292 l9,9"/>
+    <path d="M80,326 l9,9 M102,326 l9,9 M124,326 l9,9 M146,326 l9,9 M168,326 l9,9 M190,326 l9,9 M212,326 l9,9 M234,326 l9,9 M256,326 l9,9 M278,326 l9,9 M300,326 l9,9 M322,326 l9,9 M344,326 l9,9 M366,326 l9,9 M388,326 l9,9 M410,326 l9,9 M432,326 l9,9 M454,326 l9,9 M476,326 l9,9 M498,326 l9,9 M520,326 l9,9 M542,326 l9,9"/>
+  </g>
+
+  <!-- Blyerts: undergolvets ovansida med svackan, och sidorna. Ingen underkant -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M70,188 Q90,186 110,186 C170,186 220,190 250,200 C275,208 290,210 305,210 C325,210 345,202 370,196 C410,186 462,185 505,186 Q534,187 560,189"/>
+    <path d="M70,188 Q68,274 70,360"/>
+    <path d="M560,189 Q562,274 560,360"/>
+  </g>
+
+  <!-- Blyerts: rätskivan, som vilar på undergolvets två höga punkter -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M100,170 Q308,168 515,170"/>
+    <path d="M100,186 Q308,185 515,186"/>
+    <path d="M100,170 Q98,178 100,186"/>
+    <path d="M515,170 Q517,178 515,186"/>
+  </g>
+
+  <!-- Blyerts-2: måttbygeln ner i svackan, 24 enheter = 3 mm -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M305,186 V210"/>
+    <path d="M299,192 L305,186 L311,192"/>
+    <path d="M299,204 L305,210 L311,204"/>
+  </g>
+
+  <!-- Blyerts-2, tunn: pekare från texten ner till rätskivan -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M150,106 Q144,138 150,168"/>
+  </g>
+
+  <!-- Snickarpenna: pilen till svackan -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M440,268 Q386,252 338,220"/>
+    <path d="M346,213 L336,220 L344,228"/>
+  </g>
+
+  <!-- Papperslappar bakom handskriften -->
+  <rect x="92" y="78" width="112" height="28" fill="#f5efe3"/>
+  <rect x="268" y="124" width="126" height="28" fill="#f5efe3"/>
+  <rect x="326" y="280" width="240" height="28" fill="#f5efe3"/>
+
+  <!-- Överstrykning med tumstocksgul bakom nyckeltalet -->
+  <rect x="332" y="124" width="56" height="28" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 360 138)"/>
+
+  <!-- Handskrivna anteckningar (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="96" y="100" fill="#625a50">rätskivan</text>
+    <text x="272" y="146" fill="#625a50">högst</text>
+    <text x="336" y="146">3 mm</text>
+    <text x="330" y="302" fill="#ad3519">svackan spacklas först</text>
+  </g>
+</svg>

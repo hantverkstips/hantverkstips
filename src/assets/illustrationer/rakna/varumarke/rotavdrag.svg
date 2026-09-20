@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="En hög faktura med riven överkant står bredvid ett hus med sadeltak, skorsten, fönster och dörr. Fakturans rader ligger som vågräta linjer, och en av raderna mitt på fakturan är en bred gul markering tvärs över hela bredden. Fakturan och huset står på samma marklinje, och marken under dem är skrafferad.">
+  <!-- Varumärkesillustration för /rakna/rotavdrag/, riktning 1. Samma hand som symbolen,
+       startsidans hero (hus-tumstock.svg), dranering.svg och kallare.svg: konturer i blyerts
+       2 px med runda ändar, en enda fylld gul yta, ingen linjering, transparent bakgrund, ett
+       rött pennstreck som signatur.
+       Motivet är "räkningen för jobbet på huset, och raden som räknas". Fakturan står till
+       vänster med riven överkant, som en räkning eller ett kvitto, och raderna är vågräta
+       linjer utan siffror. En av raderna är i stället en bred gul markering tvärs hela
+       fakturan, och det är bildens enda gula yta. Huset till höger säger att räkningen gäller
+       ett hem, vilket är hela villkoret för rotavdrag. Fakturan är bildens näst största form
+       efter huset och går att känna igen ensam vid 343 px.
+       Två varianter ritades 2026-09-20 innan den här valdes. Den andra visade en remsa som
+       rivits bort ur fakturan och låg på marken framför: fakturan lästes då som två papper och
+       den gula remsan som en blixt eller ett band, inte som papper, och motivet gick inte att
+       förstå på en sekund. Den markerade raden gör i stället samma sak som skissernas gula
+       överstrykning bakom nyckeltalet, alltså sajtens eget grepp, och läses direkt som "det är
+       den här raden det handlar om".
+       Tumstocken finns inte med som form. Skälet är samma som för elkostnad.svg: det gula
+       behövs till en annan sak i bilden, och en måttstock hade varit en andra gul yta utan
+       ärende, eftersom ett rotavdrag inte mäts med tumstock.
+       Marklinjen ligger på y=286 och är samma nivå över hela bilden, och skrafferingen går
+       under både fakturan och huset, så att båda står på marken. Skrafferingen är den enda i
+       bilden, med skissernas värden men glesare: 10 px streck, 45 grader, blyerts-2 1,4 px,
+       26 px mellan strecken. Skorstenen bryter takfallet där den går fram, så att den syns
+       ligga framför och inte bredvid.
+       Ingen text-nod och inga läsbara tal: npm run illustrationer rör inte filen och den har ingen
+       källa under illustrationer-kallor. Skala 600 × 360, samma 5:3 som räknarnas skisser.
+       Motivet är ritat i sin egen skala (fakturan x=20-248 och y=10-286, huset x=346-588 med
+       takets nock i y=38, marklinjen y=286) och läggs ut med
+       transform="translate(18.23 10.95) scale(0.9392)" i yttre g:et. Uppmätt på den renderade
+       bilden, med linjebredderna inräknade, blir det 558 px brett (93,0 procent) och 321 px
+       högt (89,2 procent), kvot 1,738, med 21 px marginal i sidled och 19 px i höjdled.
+       Tunnaste linje är 1,4 i motivets skala, knappt 1 px vid 343 px bredd.
+       Tokens: tumstock #e8b830, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519. -->
+
+  <g transform="translate(18.23 10.95) scale(0.9392)">
+
+    <!-- Marken. Den enda skrafferingen i bilden, och den går under både fakturan och huset -->
+    <g fill="none" stroke="#625a50" stroke-width="1.4" stroke-linecap="round">
+      <path d="M8,294 l10,10 M34,294 l10,10 M60,294 l10,10 M86,294 l10,10 M112,294 l10,10 M138,294 l10,10 M164,294 l10,10 M190,294 l10,10 M216,294 l10,10 M242,294 l10,10 M268,294 l10,10 M294,294 l10,10 M320,294 l10,10 M346,294 l10,10 M372,294 l10,10 M398,294 l10,10 M424,294 l10,10 M450,294 l10,10 M476,294 l10,10 M502,294 l10,10 M528,294 l10,10 M554,294 l10,10 M580,294 l10,10"/>
+      <path d="M21,318 l10,10 M47,318 l10,10 M73,318 l10,10 M99,318 l10,10 M125,318 l10,10 M151,318 l10,10 M177,318 l10,10 M203,318 l10,10 M229,318 l10,10 M255,318 l10,10 M281,318 l10,10 M307,318 l10,10 M333,318 l10,10 M359,318 l10,10 M385,318 l10,10 M411,318 l10,10 M437,318 l10,10 M463,318 l10,10 M489,318 l10,10 M515,318 l10,10 M541,318 l10,10 M567,318 l10,10"/>
+    </g>
+
+    <!-- Marklinjen och huset. Skorstenen bryter takfallet där den går fram -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4,286 Q300,283 596,286"/>
+      <path d="M346,126 Q406.5,82 467,38 Q489.5,54.4 512,71"/>
+      <path d="M538,90 Q563,108 588,126"/>
+      <path d="M514,71 Q512,48 514,26 Q525,28 536,26 Q534,54 536,90"/>
+      <path d="M352,286 Q349.6,206 352,126"/>
+      <path d="M582,286 Q584.4,206 582,126"/>
+      <path d="M378,148 Q400,150 422,148 Q420,170 422,192 Q400,190 378,192 Q380,170 378,148 Z"/>
+      <path d="M508,286 Q506,244 508,202 Q528,204 548,202 Q546,244 548,286"/>
+    </g>
+    <g fill="none" stroke="#2a2521" stroke-width="1.75" stroke-linecap="round">
+      <path d="M400,148 Q398,170 400,192"/>
+      <path d="M378,170 Q400,171.6 422,170"/>
+    </g>
+
+    <!-- Fakturan: riven överkant, raderna som linjer utan siffror -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20,22 L39,10 L58,22 L77,10 L96,22 L115,10 L134,22 L153,10 L172,22 L191,10 L210,22 L229,10 L248,22"/>
+      <path d="M20,22 Q18,154 20,286"/>
+      <path d="M248,22 Q250,154 248,286"/>
+      <path d="M20,286 Q134,288 248,286"/>
+      <path d="M38,100 Q134,98.5 230,100"/>
+    </g>
+    <g fill="none" stroke="#2a2521" stroke-width="1.75" stroke-linecap="round">
+      <path d="M38,54 Q98,52.5 158,54"/>
+      <path d="M38,76 Q83,74.5 128,76"/>
+      <path d="M38,134 Q134,132.5 230,134"/>
+      <path d="M38,218 Q134,216.5 230,218"/>
+      <path d="M38,246 Q134,244.5 230,246"/>
+      <path d="M158,272 Q194,270.5 230,272"/>
+    </g>
+
+    <!-- Den markerade raden, bildens enda gula yta -->
+    <path d="M30,158 Q134,156 238,158 Q240,177 238,196 Q134,198 30,196 Q28,177 30,158 Z" fill="#e8b830" stroke="#2a2521" stroke-width="2" stroke-linejoin="round"/>
+
+    <!-- Snickarpennans signatur under motivet -->
+    <path d="M180,344 Q255,349 330,342 Q405,339 480,344" fill="none" stroke="#ad3519" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+</svg>

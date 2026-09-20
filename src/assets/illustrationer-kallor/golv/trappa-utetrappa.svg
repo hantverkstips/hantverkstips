@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Utetrappa i genomskärning mot en husvägg. Tre plansteg går ner från tröskeln till marken, alla tre planstegen lutar synligt utåt, och en röd pil följer vattnet längs det nedersta steget och vidare ner som en droppe över kanten. Trappans nedre ände vilar på en gjuten plint som går ner genom marken och är avbruten i bild, med anteckningen intill plinten att den går ner till frostfritt djup. En måttbygel visar stegdjupet 300 mm och nyckeltalet fall 1 på 50 är gulmarkerat.">
+  <!-- Anteckningsboken. Blyerts 2 px för husvägg, trappans profil, plint och
+       marklinje. Blyerts-2 för markskraffering, måttbygel och etiketter. Snickarpennan för
+       vattnet: pilen längs steget och droppen vid kanten, som hör ihop till en sak.
+       Tumstock bakom nyckeltalet fall 1:50.
+       Skala: 80 px är ett stegdjup på 300 mm och 40 px en steghöjd på 150 mm. Fallet på
+       stegen är överdrivet för att synas. Plinten är avbruten nedtill med brottmarkering,
+       eftersom frostfritt djup inte ryms i bildens skala, och den saknar därför måttbygel.
+       Marklinje y=290. Handskrift i Caveat 500, 24 px, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2: markskraffering, bruten där plinten går ner -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M96,293 l-8,10 M118,293 l-8,10 M140,293 l-8,10 M162,293 l-8,10 M184,293 l-8,10 M206,293 l-8,10 M228,293 l-8,10 M250,293 l-8,10 M272,293 l-8,10 M294,293 l-8,10 M382,293 l-8,10 M404,293 l-8,10 M426,293 l-8,10 M448,293 l-8,10 M470,293 l-8,10 M492,293 l-8,10 M514,293 l-8,10 M536,293 l-8,10 M140,323 l-8,10"/>
+    <path d="M118,323 l-8,10 M162,323 l-8,10 M206,323 l-8,10 M250,323 l-8,10 M294,323 l-8,10"/>
+  </g>
+
+  <!-- Blyerts-2: husväggen i genomskärning, skrafferad -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M62,64 l-10,10 M62,86 l-10,10 M62,108 l-10,10 M62,130 l-10,10 M62,152 l-10,10 M62,174 l-10,10 M62,196 l-10,10 M62,218 l-10,10 M62,240 l-10,10 M62,262 l-10,10"/>
+  </g>
+
+  <!-- Blyerts: husväggen vid tröskeln -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M48,46 Q47,170 48,292"/>
+    <path d="M64,46 Q65,170 64,292"/>
+    <path d="M46,46 Q55,44 66,46"/>
+  </g>
+
+  <!-- Blyerts: marklinjen, som möter plinten på båda sidor -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round">
+    <path d="M64,290 Q190,288 316,290"/>
+    <path d="M356,290 Q456,289 556,290"/>
+  </g>
+
+  <!-- Blyerts: trappans profil, tröskel, tre plansteg med fall utåt, och undersidan -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M64,130 H110"/>
+    <path d="M110,130 V170"/>
+    <path d="M110,170 Q150,176 190,182"/>
+    <path d="M190,182 V210"/>
+    <path d="M190,210 Q230,216 270,222"/>
+    <path d="M270,222 V250"/>
+    <path d="M270,250 Q310,256 350,262"/>
+    <path d="M350,262 V272"/>
+    <path d="M66,210 Q202,242 338,274"/>
+  </g>
+
+  <!-- Blyerts: plinten, avbruten nedtill med brottmarkering -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M318,272 Q317,304 318,332"/>
+    <path d="M354,272 Q355,304 354,332"/>
+    <path d="M316,272 Q336,270 356,272"/>
+    <path d="M318,332 l9,8 l9,-8 l9,8 l9,-8"/>
+    <path d="M318,348 Q317,352 318,356"/>
+    <path d="M354,348 Q355,352 354,356"/>
+  </g>
+
+  <!-- Blyerts-2: hjälplinjer och måttbygel för stegdjupet, från nos till nos -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M190,208 V192"/>
+    <path d="M270,220 V192"/>
+  </g>
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M190,196 H270 M190,191 v10 M270,191 v10"/>
+  </g>
+
+  <!-- Blyerts-2: pekare från etiketten till plinten -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M386,322 Q372,318 358,310"/>
+  </g>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="203" y="66" width="50" height="26" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 228 79)"/>
+
+  <!-- Snickarpenna: anteckningens pekare, vattnet längs steget och droppen över kanten -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M266,96 Q290,172 304,244"/>
+    <path d="M292,250 Q322,257 344,264"/>
+    <path d="M344,264 l-10,-3 M344,264 l-8,6"/>
+    <path d="M366,274 Q372,284 369,291 Q364,297 360,291 Q357,283 366,274 Z" fill="#ad3519" stroke="none"/>
+  </g>
+
+  <!-- Papperslapp bakom etiketten över markskrafferingen -->
+  <rect x="386" y="302" width="172" height="52" fill="#f5efe3"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="150" y="86" fill="#ad3519">fall 1:50 ut från huset</text>
+    <text x="282" y="190" fill="#625a50">stegdjup 300 mm</text>
+    <text x="392" y="324">plint, ner till</text>
+    <text x="392" y="348">frostfritt djup</text>
+  </g>
+</svg>

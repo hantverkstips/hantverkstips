@@ -114,6 +114,30 @@ export const KALKYLATORER: Kalkylator[] = [
     pelare: ['fukt', 'grund'],
   },
   {
+    slug: 'rotavdrag',
+    namn: 'Hur mycket blir rotavdraget?',
+    rad: 'Arbetskostnad, ägare och tak ger avdraget och vad du betalar.',
+    /* Frågan ställs hela året, men toppen är december: det är dagen du betalar
+       fakturan som avgör vilket års tak avdraget hamnar på, så den som vill nå
+       upp till taket betalar före nyår. Se ARET i src/lib/kalkyl/rotavdrag.ts. */
+    sasong: [11, 1],
+    /* Fyra pelare, inte åtta. Christians beslut 2026-09-20: rot gäller förvisso
+       arbete i varje pelare där man anlitar någon, men ett verktyg som står i
+       åtta hubbars grupp Räkna står ingenstans. De fyra är de där notan oftast
+       är stor nog att taket biter: grunden, golvet, köket och badrummet, och
+       el och energi. */
+    pelare: ['grund', 'golv', 'kok', 'el'],
+  },
+  {
+    slug: 'trappa',
+    namn: 'Räkna steghöjd och stegdjup till trappan',
+    rad: 'Våningshöjden ger antal steg, steghöjd, stegdjup och lutning.',
+    /* Innetrappan byggs när det är kallt ute och utetrappan innan hösten, och
+       "bygga trappa" toppar i september enligt docs/SOKORDSANALYS.md. */
+    sasong: [8, 10],
+    pelare: ['golv'],
+  },
+  {
     slug: 'mala-ute',
     namn: 'Kan du måla ute i dag?',
     rad: 'Temperatur, luftfuktighet, natt och klockslag ger om färgen hinner torka före daggen.',

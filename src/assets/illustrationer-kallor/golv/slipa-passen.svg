@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Ett rum sett uppifrån. Golvbrädorna ligger i längdriktningen som tunna vågräta linjer. Två kraftigare linjer korsar rummet på diagonalen och visar grovslipningens två pass. En röd pil går längs brädorna nedtill och visar det sista passet, och under rummet står korn 120 i gul markering. Ett skrafferat band innanför väggarna visar var kantslipen tar över.">
+  <!-- Anteckningsboken. Blyertsskiss på linjerat papper. Rummet och brädfogarna
+       i blyerts, de två grovpassen och kantslipens band i blyerts-2, det sista
+       passet i snickarpenna. Nyckeltalet korn 120 har gul markering.
+       Handskrift i Caveat 500, konverteras till banor med npm run illustrationer.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50,
+       penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2, tunn: skraffering i bandet längs väggarna, kantslipens del -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M86,64 l9,9 M108,64 l9,9 M130,64 l9,9 M152,64 l9,9 M174,64 l9,9 M196,64 l9,9 M218,64 l9,9 M240,64 l9,9 M262,64 l9,9 M284,64 l9,9 M306,64 l9,9 M328,64 l9,9 M350,64 l9,9 M372,64 l9,9 M394,64 l9,9 M416,64 l9,9 M86,254 l9,9 M108,254 l9,9 M130,254 l9,9 M152,254 l9,9 M174,254 l9,9 M196,254 l9,9 M218,254 l9,9 M240,254 l9,9 M262,254 l9,9 M284,254 l9,9 M306,254 l9,9 M328,254 l9,9 M350,254 l9,9 M372,254 l9,9 M394,254 l9,9 M416,254 l9,9 M87,88 l9,9 M411,88 l9,9 M87,110 l9,9 M411,110 l9,9 M87,132 l9,9 M411,132 l9,9 M87,154 l9,9 M411,154 l9,9 M87,176 l9,9 M411,176 l9,9 M87,198 l9,9 M411,198 l9,9 M87,220 l9,9 M411,220 l9,9"/>
+  </g>
+
+  <!-- Blyerts: rummets väggar och den inre gränsen för golvslipen -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M80,56 Q255,54 430,56 Q432,164 430,272 Q255,274 80,272 Q78,164 80,55"/>
+  </g>
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.55">
+    <path d="M106,82 Q255,80 404,82 Q406,164 404,246 Q255,248 106,246 Q104,164 106,81"/>
+  </g>
+
+  <!-- Blyerts-2, tunn: brädfogarna, alltså golvets längdriktning -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M106,106 Q255,107.5 404,106 M106,130 Q255,131.5 404,130 M106,154 Q255,155.5 404,154 M106,178 Q255,179.5 404,178 M106,202 Q255,203.5 404,202 M106,226 Q255,227.5 404,226"/>
+  </g>
+
+  <!-- Blyerts: de två grovpassen på diagonalen. Full linjevikt, så att maskinens
+       väg skiljer sig från brädfogarna, som ligger tunna i blyerts-2. Inga
+       pilspetsar, eftersom maskinen går fram och tillbaka i båda riktningarna -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M118,92 Q256,154 392,216"/>
+    <path d="M392,92 Q256,154 118,216"/>
+  </g>
+
+  <!-- Snickarpenna: sista passet, längs brädorna -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M118,238 Q256,235 386,238"/>
+    <path d="M375,231 L388,238 L375,245"/>
+  </g>
+
+  <!-- Blyerts-2, tunn: pekare från kantslipens etikett in i bandet -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M448,162 Q436,158 418,160"/>
+  </g>
+
+  <!-- Överstrykning med tumstocksgul bakom nyckeltalet -->
+  <rect x="302" y="288" width="84" height="26" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 344 301)"/>
+
+  <!-- Handskrivna anteckningar (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="86" y="46" fill="#625a50">två grovpass på diagonalen</text>
+    <text x="452" y="168" fill="#625a50">kantslipen</text>
+    <text x="60" y="307" fill="#ad3519">sista passet längs brädorna, korn 120</text>
+  </g>
+</svg>

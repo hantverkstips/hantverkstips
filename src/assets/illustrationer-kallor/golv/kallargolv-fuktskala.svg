@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Fyra liggande staplar på linjerat papper, en per golvtyp, mot en utskriven skala för relativ fuktighet i betongen. Skalan är märkt 80, 85, 90 och 100 procent, och alla staplar börjar vid 80. Klinker går hela vägen till 100 procent. Klickgolv slutar vid 90. Limmat trä är heldraget till 85 och fortsätter streckat till 90. Limmad vinyl slutar vid 85. Talet 100 procent har gul markering, och en röd pil pekar dit med anteckningen gammal platta mot jord.">
+  <!-- Anteckningsboken. Blyertsskiss på linjerat papper. Fyra golvtyper som
+       liggande staplar mot en gemensam fuktskala, så att läsaren ser hur långt
+       varje golv når innan tillverkarens eller branschens tak tar slut.
+       Skalan är linjär, 22,5 enheter per procentenhet: 80 % på x 90, 85 % på
+       x 202, 90 % på x 315 och 100 % på x 540. Staplarnas vänsterkant ligger på
+       80 %, och det talet är utskrivet så att längderna går att läsa.
+       Raderna motsvarar artikelns tabell en mot en. Limmat trä är heldraget
+       till 85 och streckat vidare till 90, eftersom källan anger ett spann.
+       Nyckeltalet 100 % har gul markering: det är nivån en gammal källarplatta
+       gjuten mot jord hamnar på, och den enda stapel som når dit är klinker.
+       Radavståndet är 56 enheter och stapelhöjden 18, så att handskriften har
+       luft både till sin egen stapel och till stapeln ovanför.
+       Handskrift i Caveat 500, 24 px, konverteras till banor med npm run illustrationer.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50,
+       penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2, tunn: lodräta ledlinjer från staplarnas ändar ner till skalan -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-dasharray="4 5" stroke-linecap="round">
+    <path d="M540,98 Q541,194 540,289"/>
+    <path d="M315,212 Q314,250 315,289"/>
+    <path d="M202,266 Q203,278 202,289"/>
+    <path d="M90,266 Q91,278 90,289"/>
+  </g>
+
+  <!-- Blyerts: staplarna. Raka linjer ritas som svaga kurvor, hörnen skjuter över -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- klinker, hela vägen till 100 % -->
+    <path d="M88,78 Q314,76 542,78"/>
+    <path d="M88,96 Q314,98 542,96"/>
+    <path d="M90,76 Q88,87 90,98"/>
+    <path d="M540,76 Q542,87 540,98"/>
+    <!-- klickgolv, till 90 % -->
+    <path d="M88,134 Q202,132 317,134"/>
+    <path d="M88,152 Q202,154 317,152"/>
+    <path d="M90,132 Q88,143 90,154"/>
+    <path d="M315,132 Q317,143 315,154"/>
+    <!-- limmat trä, heldragen del fram till 85 % -->
+    <path d="M88,190 Q145,188 204,190"/>
+    <path d="M88,208 Q145,210 204,208"/>
+    <path d="M90,188 Q88,199 90,210"/>
+    <!-- limmad vinyl, till 85 % -->
+    <path d="M88,246 Q145,244 204,246"/>
+    <path d="M88,264 Q145,266 204,264"/>
+    <path d="M90,244 Q88,255 90,266"/>
+    <path d="M202,244 Q204,255 202,266"/>
+  </g>
+
+  <!-- Blyerts-2, streckad: trägolvets spann 85 till 90, med streckad ände -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-dasharray="6 5" stroke-linecap="round">
+    <path d="M202,190 Q258,189 315,190"/>
+    <path d="M202,208 Q258,209 315,208"/>
+    <path d="M315,190 Q317,199 315,208"/>
+  </g>
+
+  <!-- Blyerts-2, tunn: materialens textur inne i staplarna -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <!-- klinker: plattdelningar -->
+    <path d="M165,79 Q164,87 165,95 M240,79 Q239,87 240,95 M315,79 Q314,87 315,95 M390,79 Q389,87 390,95 M465,79 Q464,87 465,95"/>
+    <!-- klickgolv: en genomgående plankfog -->
+    <path d="M96,143 Q205,145 309,143"/>
+    <!-- limmat trä: ådring -->
+    <path d="M110,196 Q140,200 170,196 M110,202 Q140,198 170,202"/>
+    <!-- limmad vinyl: en våd -->
+    <path d="M96,255 Q125,250 154,255 Q183,260 196,255"/>
+  </g>
+
+  <!-- Blyerts-2: skalan med sina fyra delstreck -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M74,296 Q310,294 556,296"/>
+    <path d="M90,289 Q91,296 90,303"/>
+    <path d="M202,289 Q203,296 202,303"/>
+    <path d="M315,289 Q314,296 315,303"/>
+    <path d="M540,289 Q541,296 540,303"/>
+  </g>
+
+  <!-- Nyckeltalet: gul markering bakom 100 procent, roterad -->
+  <rect x="510" y="307" width="61" height="24" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.6 540 319)"/>
+
+  <!-- Snickarpennan: en pil mot skalans högra ände -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M462,282 Q502,279 536,284"/>
+    <path d="M527,278 L537,284 L527,290"/>
+  </g>
+
+  <text x="94" y="66" font-family="Caveat" font-weight="500" font-size="24" fill="#2a2521">klinker</text>
+  <text x="94" y="122" font-family="Caveat" font-weight="500" font-size="24" fill="#2a2521">klickgolv</text>
+  <text x="94" y="178" font-family="Caveat" font-weight="500" font-size="24" fill="#2a2521">limmat trä</text>
+  <text x="94" y="234" font-family="Caveat" font-weight="500" font-size="24" fill="#2a2521">limmad vinyl</text>
+  <text x="452" y="272" font-family="Caveat" font-weight="500" font-size="24" fill="#ad3519" text-anchor="end">gammal platta mot jord</text>
+  <text x="90" y="327" font-family="Caveat" font-weight="500" font-size="24" fill="#625a50" text-anchor="middle">80 %</text>
+  <text x="202" y="327" font-family="Caveat" font-weight="500" font-size="24" fill="#625a50" text-anchor="middle">85 %</text>
+  <text x="315" y="327" font-family="Caveat" font-weight="500" font-size="24" fill="#625a50" text-anchor="middle">90 %</text>
+  <text x="540" y="327" font-family="Caveat" font-weight="500" font-size="24" fill="#625a50" text-anchor="middle">100 %</text>
+  <text x="310" y="352" font-family="Caveat" font-weight="500" font-size="24" fill="#2a2521" text-anchor="middle">relativ fuktighet i betongen</text>
+</svg>

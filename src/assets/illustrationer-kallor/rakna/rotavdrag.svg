@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Skiss på linjerat papper av en faktura med tre rader: arbete, material och maskinhyra. Beloppen står till höger på varje rad som oläsliga våglinjer. En tunn pekpinne går från raden arbete ut till det gulmarkerade nyckeltalet 30 procent utanför fakturan. De två nedre raderna, material och maskinhyra, är inringade med en röd ring som inte sluter, och i ringens öppning står anteckningen räknas inte. Överst står bara arbetet ger avdrag.">
+  <!-- Anteckningsboken, verktygsskiss för /rakna/rotavdrag/. Skissen visar det räknaren räknar på:
+       fakturan, och vilken rad på den som avdraget tas ur.
+       Blyerts 2 px för fakturans kant och 1,75 px för linjen under fakturahuvudet. Blyerts-2 för
+       brevhuvudets linjer och rutan (1,5 px), för beloppen som oläsliga våglinjer (1,75 px), för
+       summalinjen och för pekpinnen ut till nyckeltalet (1,25 px). Snickarpenna 2,5 px för den
+       enda sak som pekar: den öppna ringen runt raderna material och maskinhyra, med
+       anteckningen räknas inte i ringens öppning.
+       Briefen föreslog ett rött streck över maskinhyran. Ringen valdes i stället, av två skäl:
+       regeln är att varken material eller maskinhyra ger avdrag, och ett streck över bara den
+       ena raden hade lämnat material oförklarat; och ringen är pennans egen form i DESIGN.md
+       avsnitt 7 ("en öppen kurva som inte sluter"), samma grepp som i rakna/kallare.svg, där
+       ringen och anteckningen tillsammans räknas som en sak.
+       Nyckeltalet är 30 %, alltså den andel av arbetskostnaden avdraget utgör, och pekpinnen
+       går från raden arbete så att talet läses som trettio procent av just den raden. Taket på
+       50 000 kr per person står inte i bilden: det är ett andra tal, och en illustration har ett
+       nyckeltal. Taket hör hemma i räknarens resultat och i brödtexten.
+       Beloppen är ritade som våglinjer och inte som siffror. Skälet är att inga belopp behövs
+       för att förstå bilden, och att tre extra tal hade tävlat med nyckeltalet.
+       Geometri: fakturan x=58-322, y=66-314. Brevhuvud överst med linje under vid y=118, tre
+       rader med grundlinjerna 143,5, 191,5 och 239,5, summalinje vid y=276. Ringen går utanför
+       fakturans kant i både vänster- och högerkant, som en ring dragen för hand gör.
+       Handskrift i Caveat 500, 24 px, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Överstrykning med tumstocksgul bakom nyckeltalet -->
+  <rect x="384" y="121" width="62" height="28" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 415 135)"/>
+
+  <!-- Fakturan som en egen papperslapp, så att linjeringen inte lyser igenom raderna -->
+  <path d="M58,66 Q190,64 322,66 Q324,190 322,314 Q190,316 58,314 Q56,190 58,66 Z" fill="#f5efe3"/>
+
+  <!-- Blyerts-2: brevhuvudets linjer och ruta, beloppen som oläsliga våglinjer, summalinjen -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M74,86 Q120,84.5 166,86"/>
+    <path d="M74,102 Q106,100.5 138,102"/>
+    <path d="M258,78 Q282,76 306,78 Q308,91 306,104 Q282,106 258,104 Q256,91 258,78 Z"/>
+  </g>
+  <g fill="none" stroke="#625a50" stroke-width="1.75" stroke-linecap="round">
+    <path d="M242,137 q4,-5 8,0 t8,0 t8,0 t8,0 t8,0 t8,0 t8,0 t8,0"/>
+    <path d="M250,185 q4,-5 8,0 t8,0 t8,0 t8,0 t8,0 t8,0 t8,0"/>
+    <path d="M258,233 q4,-5 8,0 t8,0 t8,0 t8,0 t8,0 t8,0"/>
+  </g>
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M74,276 Q190,274.5 306,276"/>
+    <path d="M242,292 q4,-5 8,0 t8,0 t8,0 t8,0 t8,0 t8,0 t8,0 t8,0"/>
+    <path d="M330,138 Q356,136 382,141"/>
+  </g>
+
+  <!-- Blyerts: fakturans kant och linjen under fakturahuvudet -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M58,66 Q190,64 322,66 Q324,190 322,314 Q190,316 58,314 Q56,190 58,66 Z"/>
+  </g>
+  <path d="M74,118 Q190,116.5 306,118" fill="none" stroke="#2a2521" stroke-width="1.75" stroke-linecap="round"/>
+
+  <!-- Snickarpenna: den öppna ringen runt de två rader som inte ger avdrag -->
+  <path d="M344,182 C336,164 258,156 178,159 C92,162 52,174 53,200 C54,228 56,246 88,256 C142,270 284,268 343,247" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="52" y="47.5" fill="#625a50">bara arbetet ger avdrag</text>
+    <text x="74" y="143.5">arbete</text>
+    <text x="74" y="191.5">material</text>
+    <text x="74" y="239.5">maskinhyra</text>
+    <text x="390" y="143.5">30 %</text>
+    <text x="352" y="215.5" fill="#ad3519">räknas inte</text>
+  </g>
+</svg>

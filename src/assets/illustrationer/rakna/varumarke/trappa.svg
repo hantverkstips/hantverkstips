@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="En trappa i sidovy som går upp från golvet till vänster i sex steg och möter bjälklaget till höger. Undersidan löper snett under stegen. På det nedersta steget står en tumstock rakt upp som höjdmått, vikt i två segment med en synlig led, och når upp till bjälklagets underkant.">
+  <!-- Varumärkesillustration för /rakna/trappa/, riktning 1. Samma hand som symbolen,
+       startsidans hero (hus-tumstock.svg), dranering.svg och kallare.svg: konturer i blyerts
+       2 px med runda ändar, tumstocken som den enda fyllda färgen, ingen linjering, ingen
+       skraffering, transparent bakgrund, ett rött pennstreck som signatur.
+       Motivet är trappan i sidovy och ska förstås på en sekund: en stegad profil mellan två
+       golv är det en sjuåring ritar när hen ritar en trappa. Trappan är bildens största form.
+       Sex steg, inte sexton: färre och större steg läses som en trappa på 343 px, sexton blir
+       en sågtand. Lutningen är 35 grader och inte räknarens 30 (steghöjd 169 mm och stegdjup
+       292 mm i standardfallet, se src/lib/kalkyl/trappa.ts). Skälet är utsnittet: en trappa på
+       30 grader som stiger 294 px tar 508 px i sidled, och då blir bjälklaget till höger en
+       stump på 40 px. Bilden bär inga mått och inga tal, så vinkeln är inte information här.
+       Verktygsskissen rakna/trappa.svg är däremot ritad i räknarens 30 grader, eftersom den
+       har måttbyglarna.
+       Här är tumstocken rätt som accent (briefen 2026-09-20): den står rakt upp på det nedersta
+       steget och når bjälklagets underkant, alltså ett höjdmått taget inifrån trappan, och den
+       är det enda gula i bilden. Den är ritad i två segment med en led, som symbolen, med niten
+       fylld i blyerts och beslagsringen i blyerts-2: ett enda rakt segment lästes som en
+       termometer. Segmenten lutar 1,5 och 15 grader och har runda ändar, så att måttet skiljer
+       sig i form från trappans räta vinklar (erfarenheten från altanbilderna: ett mått måste
+       skilja sig i form från det bärverk det står bland). Den är fylld och ligger framför
+       stegets linje, som är kapad där tumstocken går fram.
+       Ingen mark i bilden, bara två golv i samma nivå över hela bredden, så frågan om entydig
+       markyta uppstår inte.
+       Ingen text-nod och inga läsbara tal: npm run illustrationer rör inte filen och den har ingen
+       källa under illustrationer-kallor. Skala 600 × 360, samma 5:3 som räknarnas skisser.
+       Motivet är ritat i sin egen skala (golv y=300, trappan x=50-470 med 70 px steg i sidled
+       och 49 px i höjdled, bjälklag y=6 till 34) och läggs ut med
+       transform="translate(18.15 15.70) scale(0.9392)" i yttre g:et. Uppmätt på den renderade
+       bilden, med linjebredderna inräknade, blir det 558 px brett (93,0 procent) och 321 px
+       högt (89,2 procent), kvot 1,738, med 21 px marginal i sidled och 19 respektive 20 px i
+       höjdled. Tunnaste linje är 1,4 i motivets skala, knappt 1 px vid 343 px bredd.
+       Tokens: tumstock #e8b830, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519. -->
+
+  <g transform="translate(18.15 15.70) scale(0.9392)">
+
+    <!-- Det nedre golvet, trappans stegprofil, undersidan och bjälklaget -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4,300 Q300,297 596,300"/>
+      <path d="M50,300 Q49,275 50,251 Q66,250.5 76,251"/>
+      <path d="M95,251 Q108,251.5 120,251 Q121,226 120,202 Q155,200.5 190,202 Q189,177 190,153 Q225,151.5 260,153 Q259,128 260,104 Q295,102.5 330,104 Q331,79 330,55 Q365,53.5 400,55 Q399,30 400,6 Q435,4.5 470,6"/>
+      <path d="M90,300 Q280,167 470,34"/>
+      <path d="M470,6 Q533,4.5 596,6"/>
+      <path d="M470,34 Q533,32.5 596,34"/>
+    </g>
+
+    <!-- Tumstocken som höjdmått, stående på det nedersta steget upp till bjälklagets underkant.
+         Två segment med en led, så att den läses som tumstock och inte som en stav -->
+    <g transform="translate(85 251) rotate(-91.5)">
+      <rect x="0" y="-9" width="120" height="18" rx="9" fill="#e8b830" stroke="#2a2521" stroke-width="2"/>
+      <path d="M22,9 V2 M44,9 V5 M66,9 V5 M88,9 V5 M110,9 V2" fill="none" stroke="#2a2521" stroke-width="1.4" stroke-linecap="round"/>
+    </g>
+    <g transform="translate(81.86 131.04) rotate(-75)">
+      <rect x="0" y="-9" width="100" height="18" rx="9" fill="#e8b830" stroke="#2a2521" stroke-width="2"/>
+      <path d="M22,9 V2 M44,9 V5 M66,9 V5 M88,9 V5" fill="none" stroke="#2a2521" stroke-width="1.4" stroke-linecap="round"/>
+    </g>
+    <circle cx="81.86" cy="131.04" r="9" fill="none" stroke="#625a50" stroke-width="1.4"/>
+    <circle cx="81.86" cy="131.04" r="4.5" fill="#2a2521"/>
+
+    <!-- Snickarpennans signatur under motivet -->
+    <path d="M175,341 Q250,346 325,339 Q400,336 475,341" fill="none" stroke="#ad3519" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+</svg>

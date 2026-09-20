@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Ett trappsteg i snitt, sett från sidan. Det gamla planstegets ovansida är urgröpt i mitten. Ovanpå ligger ett nytt renoveringssteg på 12 mm vars trappnos skjuter fram och ner över den gamla framkanten, och mellan dem fem limsträngar. Måttbygeln över det nya steget är märkt 294 mm djupt, och tjockleken 12 mm är gulmarkerad. En röd ring runt gropen i mitten är märkt urgröpt, limmet fyller. Det gamla sättsteget går upp bakom steget och ner under framkanten.">
+  <!-- Anteckningsboken. Snitt genom ett plansteg med renoveringssteget limmat ovanpå.
+       Skalan är 1,25 enheter per millimeter och hålls genom hela snittet:
+         nytt steg, djup   294 mm = 367,5 enheter, x 175 till 542 (Duri 1000x294x8)
+         nytt steg, tjock   12 mm =  15   enheter, y 148 till 163 (Lundbergs Classic)
+         trappnos           15 mm =  18,75 enheter, nosens underkant y 166,8 (Duri)
+         nosens utsprång     6,4 mm = 8   enheter, x 175 mot gamla framkanten 183
+         gammalt steg       40 mm =  50   enheter, y 163 till 213
+         urgröpning          8 mm =  10   enheter, djupast y 173 mitt på steget
+         sättsteg           22 mm =  27,5 enheter, x 542-569,5 och x 183-210,5
+       Därför syns det att det nya steget är tunt mot det gamla, vilket är avsnittets
+       poäng, och att gropen i mitten är djupare än limfogen.
+       Skalan går att kontrollera på en enda rad: djupbygeln är d="M175,118 Q358,119
+       542,118", alltså 542 minus 175 = 367 enheter för 294 mm, vilket ger 1,2483
+       enheter per mm. Mätt mot den skalan blir nya steget 12,02 mm, trappnosen
+       15,06 mm, gamla steget 40,05 mm, urgröpningen 8,01 mm och sättstegen 22,03 mm.
+       Mät alltid mot bygelns egna x-värden, inte mot motivets synliga ytterkanter:
+       nosen skjuter fram till x 175 medan gamla stegets framkant ligger på x 183,
+       och den som mäter från fel kant får ut en skala som är tolv procent fel.
+       Blyerts 2 px för steg, nos och sättsteg. Blyerts-2 för ådring, limsträngar,
+       måttbygel och pekare. Snickarpenna bara för ringen runt gropen och dess
+       anteckning, som hör ihop till en sak. Tumstock bakom nyckeltalet 12 mm.
+       Handskrift i Caveat 500, 24 px, konverteras av npm run illustrationer.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50,
+       penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Tumstock bakom nyckeltalet 12 mm. Etiketten står intill sin egen måttbygel
+       vid x 156-164, inte nere i hörnet, så att nyckeltalet och det det mäter syns
+       i samma blick på en mobilskärm i 343 px. -->
+  <rect x="42" y="158" width="62" height="26" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 73 171)"/>
+
+  <!-- Blyerts: nytt renoveringssteg med trappnos -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M175,148 Q358,150 542,148"/>
+    <path d="M175,148 Q171.5,157 175,166.8"/>
+    <path d="M175,166.8 Q179,165.4 183,163"/>
+    <path d="M183,163 Q362.5,164.5 542,163"/>
+    <path d="M542,148 Q543,155.5 542,163"/>
+  </g>
+
+  <!-- Blyerts: gammalt plansteg, urgröpt ovansida -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M183,163 Q362.5,183 542,163"/>
+    <path d="M183,167 Q181.5,190 183,213"/>
+    <path d="M183,213 Q362.5,214.5 542,213"/>
+    <path d="M542,163 Q543,188 542,213"/>
+  </g>
+
+  <!-- Blyerts: gamla sättsteget, upp bakom steget och ner under framkanten -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M542,163 Q541,98 542,32"/>
+    <path d="M569.5,163 Q570.5,98 569.5,32"/>
+    <path d="M542,163 Q556,164.5 569.5,163"/>
+    <path d="M183,213 Q182,282 183,352"/>
+    <path d="M210.5,213 Q211.5,282 210.5,352"/>
+  </g>
+
+  <!-- Blyerts-2: ådring i det gamla steget och i sättstegen -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M200,186 Q362.5,190 528,186"/>
+    <path d="M200,198 Q362.5,194 528,198"/>
+    <path d="M212,207 Q362.5,210 518,207"/>
+    <path d="M550,46 Q548,104 550,154"/>
+    <path d="M562,46 Q564,104 562,154"/>
+    <path d="M191,226 Q189,286 191,344"/>
+    <path d="M203,226 Q205,286 203,344"/>
+  </g>
+
+  <!-- Blyerts-2: limsträngar mellan det nya stegets undersida och gropen -->
+  <g fill="none" stroke="#625a50" stroke-width="3" stroke-linecap="round">
+    <path d="M226,163 V167.2"/>
+    <path d="M291,163 V171.4"/>
+    <path d="M362.5,163 V173"/>
+    <path d="M434,163 V171.4"/>
+    <path d="M499,163 V167.2"/>
+  </g>
+
+  <!-- Blyerts-2: måttbygel över det nya stegets djup och pekare till etiketterna -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M175,118 Q358,119 542,118"/>
+    <path d="M175,112 v12"/>
+    <path d="M542,112 v12"/>
+    <path d="M160,148 Q159,155.5 160,163"/>
+    <path d="M156,148 h8"/>
+    <path d="M156,163 h8"/>
+    <path d="M106,170 Q130,166 152,159"/>
+    <path d="M270,310 Q292,258 310,202"/>
+  </g>
+
+  <!-- Snickarpenna: ringen runt gropen och dess pekare -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round">
+    <path d="M300,172 Q300,154 362,153 Q424,154 424,172 Q424,188 364,189 Q330,189 314,183"/>
+    <path d="M334,248 Q356,220 372,192"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="358" y="104" fill="#625a50" text-anchor="middle">294 mm djupt</text>
+    <text x="330" y="258" fill="#ad3519">urgröpt, limmet fyller</text>
+    <text x="48" y="150">nytt steg</text>
+    <text x="48" y="176" fill="#625a50">12 mm</text>
+    <text x="250" y="320">gamla steget sitter kvar</text>
+  </g>
+</svg>

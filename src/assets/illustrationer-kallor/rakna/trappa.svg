@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Skiss av en trappa i sidovy på linjerat papper. Trappan går upp från golvet till vänster i sex steg och möter bjälklaget till höger, som är ritat i genomskärning och skrafferat. Undersidan löper snett under stegen. En röd måttpil står till vänster mellan golvet och våningens överkant, märkt mät våningshöjden. På ett av de övre stegen sitter två måttbyglar: en stående för steghöjden, märkt med det gulmarkerade nyckeltalet 169 mm, och en liggande för stegdjupet, märkt 292 mm. Överst står formeln 2 gånger steghöjd plus stegdjup är lika med 630 mm.">
+  <!-- Anteckningsboken, verktygsskiss för /rakna/trappa/. Skissen visar det räknaren räknar på:
+       våningshöjden in, steghöjd och stegdjup ut, och trappformeln som binder ihop dem.
+       Blyerts 2 px för golvet, trappans stegprofil, undersidan och bjälklaget. Blyerts-2 1,25 px
+       för skrafferingen under golvet och i bjälklaget och för måttens förlängningslinjer, 1,5 px
+       för de två måttbyglarna. Snickarpenna 2,5 px för den enda sak som pekar: måttpilen för
+       våningshöjden, alltså det enda läsaren själv ska mäta, med anteckningen i samma färg.
+       Tumstock bakom nyckeltalet 169 mm, som är steghöjden räknaren svarar med.
+       Talen är räknarens standardfall, avstämda mot src/lib/kalkyl/trappa.ts 2026-09-20:
+       våningshöjd 2 700 mm och önskat stegdjup 300 mm ger sexton steg, 169 mm höga och 292 mm
+       djupa, en trappa på 4,4 m i plan och 30 graders lutning. Målsumman i formeln är
+       TRAPPFORMEL_MAL_MM, alltså 630 mm, inom Svenskt Träs spann 600–650. Samma tal som
+       räkneexemplet i /golv/bygga-trappa/, så att skissen inte kan glida ifrån räknaren.
+       Lutningen i skissen är ritad som räknarens svar: 36 px i höjdled på 62 px i sidled,
+       alltså 30,1 grader.
+       Trappan är ritad med sex steg och inte sexton, av samma skäl som altanskissen inte är
+       skalenlig i djupled: med sexton steg blir varje steg 13 px högt och måttbyglarna går inte
+       att läsa på 343 px. Därför står inget antal och ingen våningshöjd i siffror i bilden;
+       måttpilen säger bara vilket mått som ska matas in.
+       Geometri: golv y=300, bjälklagets överkant y=84 och underkant y=114. Trappan börjar i
+       x=132 och slutar i x=504, sex steg med 62 px i sidled och 36 px i höjdled. Undersidan går
+       från x=184 vid golvet upp till bjälklagets underkant, parallell med stegnosarna. Måtten
+       sitter på det näst översta steget, där papperet ovanför trappan är tomt.
+       Handskrift i Caveat 500, 24 px, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Överstrykning med tumstocksgul bakom nyckeltalet -->
+  <rect x="276" y="119" width="80" height="28" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 316 133)"/>
+
+  <!-- Blyerts-2: marken under golvet, en rad korta snedstreck -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M56,310 l10,10 M78,310 l10,10 M100,310 l10,10 M122,310 l10,10 M144,310 l10,10 M166,310 l10,10 M188,310 l10,10 M210,310 l10,10 M232,310 l10,10 M254,310 l10,10 M276,310 l10,10 M298,310 l10,10 M320,310 l10,10 M342,310 l10,10 M364,310 l10,10 M386,310 l10,10 M408,310 l10,10 M430,310 l10,10 M452,310 l10,10 M474,310 l10,10 M496,310 l10,10 M518,310 l10,10 M540,310 l10,10 M562,310 l10,10"/>
+  </g>
+
+  <!-- Blyerts-2: bjälklagets snitt, skrafferat -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M512,93 l10,10 M534,93 l10,10 M556,93 l10,10 M578,93 l10,10"/>
+  </g>
+
+  <!-- Blyerts: golvet, trappans stegprofil, undersidan och bjälklaget -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M48,300 Q320,297.5 592,300"/>
+    <path d="M132,300 Q131,282 132,264 Q163,262.5 194,264 Q195,246 194,228 Q225,226.5 256,228 Q255,210 256,192 Q287,190.5 318,192 Q319,174 318,156 Q349,154.5 380,156 Q379,138 380,120 Q411,118.5 442,120 Q443,102 442,84 Q473,82.5 504,84"/>
+    <path d="M184,300 Q344,207 504,114"/>
+    <path d="M504,84 Q548,82.5 592,84"/>
+    <path d="M504,114 Q548,112.5 592,114"/>
+  </g>
+
+  <!-- Blyerts-2: måttbyglarna på det näst översta steget, med förlängningslinjer ut från steget -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M380,116 V100 M442,116 V100"/>
+    <path d="M378,120 H360 M378,156 H360"/>
+  </g>
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M380,102 v8 M442,102 v8 M380,106 Q411,104.5 442,106"/>
+    <path d="M359,120 h14 M359,156 h14 M366,120 Q364,138 366,156"/>
+  </g>
+
+  <!-- Snickarpenna: måttpilen för våningshöjden, det enda läsaren själv mäter -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M86,88 Q88,194 86,296"/>
+    <path d="M79,95 L86,84 L93,95"/>
+    <path d="M79,289 L86,300 L93,289"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="52" y="47.5" fill="#625a50">2 × steghöjd + stegdjup = 630 mm</text>
+    <text x="100" y="167.5" fill="#ad3519">mät våningshöjden</text>
+    <text x="282" y="143.5">169 mm</text>
+    <text x="356" y="95.5" fill="#625a50">292 mm</text>
+  </g>
+</svg>

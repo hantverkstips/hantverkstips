@@ -1,0 +1,190 @@
+---
+/**
+ * Formuläret till rotavdragskalkylatorn. Ett ställe: sidan /rakna/rotavdrag/
+ * renderar det i fullt format, och <Kalkylator namn="rotavdrag" /> i en artikel
+ * renderar samma fält i kompakt format med action till verktygssidan.
+ *
+ * Ingen klient-JavaScript. Formuläret skickas som GET, och verktygssidan räknar.
+ *
+ * Alla props är valfria, eftersom det inbäddade formuläret inte har någon
+ * uträkning att visa värden ur; då står standardvärdena i fälten.
+ *
+ * Fälten står i fakturans ordning: arbetet först, eftersom det är det enda som
+ * ger avdrag, materialet sedan, och först därefter de tre frågorna om taken.
+ */
+import { AGARVAL, GEMENSAMT_TAK_KR, kronor, ROT_TAK_KR, STANDARD, type RotavdragIndata } from '../../lib/kalkyl/rotavdrag.ts';
+import { ETIKETT_KLASS, FALT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, ramKlass } from '../../lib/kalkyl/stil';
+
+interface Props {
+  /** Valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
+  indata?: RotavdragIndata;
+  /** Talen som de skrevs i adressen, så att ett felskrivet värde går att rätta. */
+  varden?: { arbete: string; material: string; rot: string; rut: string; skatt: string };
+  fel?: Partial<Record<keyof RotavdragIndata, string>>;
+  /** Inbäddad i en artikel: tätare fält, inga hjälprader. */
+  kompakt?: boolean;
+  /** Prefix på id-attributen, så att två formulär på samma sida inte krockar. */
+  idPrefix?: string;
+  knappText?: string;
+}
+
+const tal = (n: number) => (n === 0 ? '' : String(n).replace('.', ','));
+
+const {
+  indata = STANDARD,
+  varden = {
+    arbete: tal(STANDARD.arbetskostnadKr),
+    material: tal(STANDARD.materialkostnadKr),
+    rot: tal(STANDARD.utnyttjatRotKr),
+    rut: tal(STANDARD.utnyttjatRutKr),
+    skatt: STANDARD.skattKr === null ? '' : tal(STANDARD.skattKr),
+  },
+  fel = {},
+  kompakt = false,
+  idPrefix = '',
+  knappText = 'Räkna ut',
+} = Astro.props;
+
+const id = (namn: string) => `${idPrefix}${namn}`;
+
+/** De två posterna på fakturan. Arbetet först: det är det enda som ger avdrag. */
+const faktura = [
+  {
+    namn: 'arbete',
+    etikett: 'Arbetskostnad på fakturan',
+    varde: varden.arbete,
+    fel: fel.arbetskostnadKr,
+    hjalp: 'Inklusive moms, och bara arbetet. Står maskinhyran på samma rad, be om en faktura där den står för sig.',
+  },
+  {
+    namn: 'material',
+    etikett: 'Material och annat på fakturan',
+    varde: varden.material,
+    fel: fel.materialkostnadKr,
+    hjalp: 'Frivilligt. Fyller du i det ser du hur stor del av notan som inte ger något avdrag alls. Maskinhyra och resekostnader hör hemma här.',
+  },
+] as const;
+
+/** De tre frågorna om taken. De ändrar inte avdraget förrän ett tak slår i. */
+const taken = [
+  {
+    namn: 'rot',
+    etikett: 'Rotavdrag du redan använt i år',
+    varde: varden.rot,
+    fel: fel.utnyttjatRotKr,
+    hjalp: `Summan för alla ägare tillsammans. Den äter både av rot-taket och av det gemensamma taket på ${kronor(GEMENSAMT_TAK_KR)} kr.`,
+    platshallare: '0',
+  },
+  {
+    namn: 'rut',
+    etikett: 'Rutavdrag du redan använt i år',
+    varde: varden.rut,
+    fel: fel.utnyttjatRutKr,
+    hjalp: 'Städning, flytt, trädgård och liknande. Den äter bara av det gemensamma taket, inte av rot-taket.',
+    platshallare: '0',
+  },
+  {
+    namn: 'skatt',
+    etikett: 'Din preliminära skatt i år',
+    varde: varden.skatt,
+    fel: fel.skattKr,
+    hjalp: 'Frivilligt. Avdraget kan aldrig bli större än skatten du betalar, och för den som tjänar lite är det den gränsen som gäller.',
+    platshallare: 'Vet inte',
+  },
+] as const;
+---
+
+<form method="get" action="/rakna/rotavdrag/">
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Vad står på fakturan?</legend>
+    {
+      faktura.map((f) => (
+        <div class="mb-3">
+          <label for={id(f.namn)} class="block mb-1 text-liten text-blyerts-2">
+            {f.etikett}
+          </label>
+          <div class="flex items-center gap-2">
+            <input
+              id={id(f.namn)}
+              name={f.namn}
+              type="text"
+              inputmode="decimal"
+              value={f.varde}
+              aria-describedby={f.fel ? id(`${f.namn}-fel`) : undefined}
+              class:list={[FALT_KLASS, ramKlass(Boolean(f.fel))]}
+            />
+            <span class="text-brod text-blyerts-2">kr</span>
+          </div>
+          {f.fel ? (
+            <p id={id(`${f.namn}-fel`)} class={FEL_KLASS}>
+              {f.fel}
+            </p>
+          ) : (
+            !kompakt && <p class={HJALP_KLASS}>{f.hjalp}</p>
+          )}
+        </div>
+      ))
+    }
+  </fieldset>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Så många äger bostaden</legend>
+    <div class="flex flex-wrap gap-x-4">
+      {
+        AGARVAL.map((a) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input type="radio" name="agare" value={a.varde} checked={indata.antalAgare === a.varde} />
+            {a.etikett}
+          </label>
+        ))
+      }
+    </div>
+    {
+      fel.antalAgare ? (
+        <p class={FEL_KLASS}>{fel.antalAgare}</p>
+      ) : (
+        !kompakt && (
+          <p class={HJALP_KLASS}>
+            Räkna bara dem som står på bostaden och betalar för arbetet. Varje ägare har ett eget tak på{' '}
+            {kronor(ROT_TAK_KR)} kr, så två ägare bär dubbelt så mycket.
+          </p>
+        )
+      )
+    }
+  </fieldset>
+
+  <fieldset class="m-0 mb-6 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Vad är redan utnyttjat i år?</legend>
+    {
+      taken.map((f) => (
+        <div class="mb-3">
+          <label for={id(f.namn)} class="block mb-1 text-liten text-blyerts-2">
+            {f.etikett}
+          </label>
+          <div class="flex items-center gap-2">
+            <input
+              id={id(f.namn)}
+              name={f.namn}
+              type="text"
+              inputmode="decimal"
+              value={f.varde}
+              placeholder={f.platshallare}
+              aria-describedby={f.fel ? id(`${f.namn}-fel`) : undefined}
+              class:list={[FALT_KLASS, ramKlass(Boolean(f.fel))]}
+            />
+            <span class="text-brod text-blyerts-2">kr</span>
+          </div>
+          {f.fel ? (
+            <p id={id(`${f.namn}-fel`)} class={FEL_KLASS}>
+              {f.fel}
+            </p>
+          ) : (
+            !kompakt && <p class={HJALP_KLASS}>{f.hjalp}</p>
+          )}
+        </div>
+      ))
+    }
+  </fieldset>
+
+  <button type="submit" class={KNAPP_KLASS}>{knappText}</button>
+</form>

@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Golvet sett uppifrån, mellan två väggar. Fyra rader brädor där kortändarnas skarvar ligger förskjutna från rad till rad. En vågrät måttbygel mellan två skarvar är märkt förskjutning minst 500 millimeter, med talet i gul markering. Den understa raden är mycket smalare än de andra och har en lodrät bygel märkt sista raden minst 40 millimeter. En röd penna har ringat in den understa raden, med anteckningen att första raden annars kapas.">
+  <!-- Anteckningsboken. Blyertsskiss på linjerat papper. Golvet uppifrån, väggarna
+       skrafferade i blyerts-2, brädraderna och skarvarna i blyerts, den smala sista
+       raden inringad med snickarpennan och försedd med pennans anteckning.
+       Skala: båda byglarna ligger i samma skala, 0,4 enheter per millimeter. Den
+       vågräta spänner 200 enheter och är märkt 500 mm, den lodräta 16 enheter och är
+       märkt 40 mm. Brädraderna är ritade 76 enheter breda, alltså 190 mm, vilket är
+       en vanlig bredd. Rörelsefogen mot vägg är för liten för att ritas i den här
+       skalan och är därför varken utsatt eller måttsatt här; den har en egen bild.
+       Varje etikett står intill det mått den gäller: förskjutningen i rad två strax
+       under sin bygel, sista radens mått i rad tre rakt ovanför sin bygel.
+       Nyckeltalet 500 mm har gul markering bakom talet.
+       Handskrift i Caveat 500, konverteras till banor med npm run illustrationer.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50,
+       penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2, tunn: skraffering i de två väggarna -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M70,36 l9,9 M92,36 l9,9 M114,36 l9,9 M136,36 l9,9 M158,36 l9,9 M180,36 l9,9 M202,36 l9,9 M224,36 l9,9 M246,36 l9,9 M268,36 l9,9 M290,36 l9,9 M312,36 l9,9 M334,36 l9,9 M356,36 l9,9 M378,36 l9,9 M400,36 l9,9 M422,36 l9,9 M444,36 l9,9 M466,36 l9,9 M488,36 l9,9 M510,36 l9,9 M532,36 l9,9"/>
+    <path d="M70,306 l9,9 M92,306 l9,9 M114,306 l9,9 M136,306 l9,9 M158,306 l9,9 M180,306 l9,9 M202,306 l9,9 M224,306 l9,9 M246,306 l9,9 M268,306 l9,9 M290,306 l9,9 M312,306 l9,9 M334,306 l9,9 M356,306 l9,9 M378,306 l9,9 M400,306 l9,9 M422,306 l9,9 M444,306 l9,9 M466,306 l9,9 M488,306 l9,9 M510,306 l9,9 M532,306 l9,9"/>
+  </g>
+
+  <!-- Blyerts: väggarnas kanter -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M64,34 Q306,32 552,34"/>
+    <path d="M64,50 Q306,48 552,50"/>
+    <path d="M64,304 Q306,302 552,304"/>
+    <path d="M64,320 Q306,318 552,320"/>
+  </g>
+
+  <!-- Blyerts: brädradernas långsidor -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M68,55 Q308,53 548,55"/>
+    <path d="M68,131 Q308,129 548,131"/>
+    <path d="M68,207 Q308,205 548,207"/>
+    <path d="M68,283 Q308,281 548,283"/>
+    <path d="M68,299 Q308,297 548,299"/>
+    <path d="M68,55 Q66,177 68,299"/>
+    <path d="M548,55 Q550,177 548,299"/>
+  </g>
+
+  <!-- Blyerts: kortändarnas skarvar, en per rad, förskjutna -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M400,55 Q398,93 400,131"/>
+    <path d="M200,131 Q202,169 200,207"/>
+    <path d="M400,207 Q398,245 400,283"/>
+    <path d="M180,283 Q182,291 180,299"/>
+  </g>
+
+  <!-- Blyerts-2, tunn: måttlinje ner från den översta skarven -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M400,133 V144"/>
+  </g>
+
+  <!-- Blyerts-2: vågrät bygel mellan skarvarna, 200 enheter = 500 mm -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M200,150 H400"/>
+    <path d="M206,144 L200,150 L206,156"/>
+    <path d="M394,144 L400,150 L394,156"/>
+  </g>
+
+  <!-- Blyerts-2: lodrät bygel över sista raden, 16 enheter = 40 mm -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M120,283 V299"/>
+    <path d="M114,289 L120,283 L126,289"/>
+    <path d="M114,293 L120,299 L126,293"/>
+  </g>
+
+  <!-- Snickarpenna: ringen runt den smala sista raden -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M500,304 C464,314 394,314 360,304 C342,299 344,284 362,278 C398,270 464,272 496,280"/>
+  </g>
+
+  <!-- Papperslappar bakom handskriften -->
+  <rect x="66" y="6" width="92" height="28" fill="#f5efe3"/>
+  <rect x="210" y="170" width="272" height="28" fill="#f5efe3"/>
+  <rect x="86" y="248" width="256" height="28" fill="#f5efe3"/>
+  <rect x="296" y="322" width="256" height="28" fill="#f5efe3"/>
+
+  <!-- Överstrykning med tumstocksgul bakom nyckeltalet -->
+  <rect x="400" y="170" width="78" height="28" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 439 184)"/>
+
+  <!-- Handskrivna anteckningar (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="70" y="28" fill="#625a50">väggen</text>
+    <text x="214" y="192" fill="#625a50">förskjutning minst</text>
+    <text x="404" y="192">500 mm</text>
+    <text x="90" y="270" fill="#625a50">sista raden minst 40 mm</text>
+    <text x="300" y="344" fill="#ad3519">annars kapas första raden</text>
+  </g>
+</svg>

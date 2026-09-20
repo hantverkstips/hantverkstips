@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Snitt genom ett vindsbjälklag. Underst innertaket, ovanpå det ångspärren, sedan den gamla ullen mellan bjälkarna och överst ett obrutet lager ny lösull. En måttbygel till höger spänner över båda isolerlagren och är märkt 400 mm totalt. Över bjälklaget ligger vindsutrymmet, och på underlagstakets insida sitter rimfrost ritad i penna, med anteckningen kallare vind, rimfrost i taket.">
+  <!-- Anteckningsboken. Blyerts 2 px för underlagstak, isolerlagrens kanter, bjälkar och innertak,
+       blyerts-2 för ångspärr, isolerskraffering, måttbygel och pekare, snickarpenna för rimfrosten
+       och anteckningen om kylan, som hör ihop till en sak. Tumstock bakom nyckeltalet 400 mm.
+       Skala i höjdled: 1 enhet är 4 mm, och lagren är ritade som artikelns räkneexempel. Gammal ull
+       25 enheter (100 mm), ny lösull 75 enheter (300 mm), måttbygeln 100 enheter (400 mm). Inget mått i sidled, eftersom bjälkarna ritas
+       tätare än de sitter.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Tumstock bakom nyckeltalet, bara bakom talet -->
+  <rect x="406" y="151" width="73" height="26" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 445 164)"/>
+
+  <!-- Papperslapp bakom etiketten inne i lösullen, så att skrafferingen inte stör -->
+  <rect x="144" y="199" width="180" height="28" fill="#f5efe3"/>
+
+  <!-- Blyerts: underlagstakets insida, isolerlagrens kanter, bjälkar, innertak -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M56,70 Q300,58 544,46"/>
+    <path d="M120,182 Q295,180 470,182"/>
+    <path d="M120,257 Q295,259 470,257"/>
+    <path d="M120,282 Q295,284 470,282"/>
+    <path d="M120,182 Q119,232 120,282"/>
+    <path d="M470,182 Q471,232 470,282"/>
+    <path d="M166,282 Q165,270 166,257 M224,282 Q223,270 224,257 M282,282 Q281,270 282,257 M340,282 Q339,270 340,257 M398,282 Q397,270 398,257"/>
+    <path d="M118,292 Q295,294 472,292"/>
+    <path d="M118,300 Q295,302 472,300"/>
+  </g>
+
+  <!-- Blyerts-2: ångspärren över innertaket, alltså på bjälklagets varma sida -->
+  <g fill="none" stroke="#625a50" stroke-width="3.5" stroke-linecap="round">
+    <path d="M114,286 Q295,284 476,286"/>
+  </g>
+
+  <!-- Blyerts-2: skraffering i den nya lösullen och i den gamla ullen -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M128,188 l10,10 M152,188 l10,10 M176,188 l10,10 M200,188 l10,10 M224,188 l10,10 M330,188 l10,10 M354,188 l10,10 M378,188 l10,10 M402,188 l10,10 M426,188 l10,10 M450,188 l10,10"/>
+    <path d="M128,210 l10,10 M330,210 l10,10 M354,210 l10,10 M378,210 l10,10 M402,210 l10,10 M426,210 l10,10 M450,210 l10,10"/>
+    <path d="M128,230 l10,10 M152,230 l10,10 M176,230 l10,10 M200,230 l10,10 M224,230 l10,10 M248,230 l10,10 M272,230 l10,10 M296,230 l10,10 M320,230 l10,10 M344,230 l10,10 M368,230 l10,10 M392,230 l10,10 M416,230 l10,10 M440,230 l10,10"/>
+    <path d="M128,245 l10,10 M164,245 l10,10 M200,245 l10,10 M236,245 l10,10 M272,245 l10,10 M308,245 l10,10 M344,245 l10,10 M380,245 l10,10 M416,245 l10,10 M446,245 l10,10"/>
+    <path d="M132,261 l8,8 M186,261 l8,8 M242,261 l8,8 M300,261 l8,8 M358,261 l8,8 M416,261 l8,8 M448,261 l8,8"/>
+    <path d="M132,271 l8,8 M186,271 l8,8 M242,271 l8,8 M300,271 l8,8 M358,271 l8,8 M416,271 l8,8 M448,271 l8,8"/>
+  </g>
+
+  <!-- Blyerts-2: måttbygeln över båda isolerlagren, och två pekare -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M492,182 Q491,232 492,282"/>
+    <path d="M486,182 h12"/>
+    <path d="M486,282 h12"/>
+    <path d="M496,296 Q487,291 478,287"/>
+    <path d="M112,318 Q126,292 148,266"/>
+  </g>
+
+  <!-- Snickarpenna: rimfrost på underlagstakets insida -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round">
+    <path d="M76,70 l-2,9 M112,69 l-2,9 M148,67 l-2,9 M184,66 l-2,9 M220,64 l-2,9 M256,63 l-2,9 M292,61 l-2,9 M328,60 l-2,9 M364,58 l-2,9 M400,57 l-2,9 M436,55 l-2,9 M472,54 l-2,9 M508,52 l-2,9"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="58" y="116" fill="#ad3519">kallare vind,</text>
+    <text x="58" y="144" fill="#ad3519">rimfrost i taket</text>
+    <text x="150" y="220">ny lösull ovanpå</text>
+    <text x="128" y="324">gammal ull mellan bjälkarna</text>
+    <text x="410" y="172" fill="#625a50">400 mm totalt</text>
+    <text x="500" y="302" fill="#625a50">ångspärr</text>
+  </g>
+</svg>

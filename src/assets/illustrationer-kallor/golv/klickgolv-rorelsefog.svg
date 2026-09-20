@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Snitt vid en vägg. Till vänster väggen, sedan en öppen rörelsefog, och till höger golvet i tre skikt: golvbrädan överst, en tunn underlagsmatta under den och en folie mot undergolvet, som är skrafferat och löper ut ur bilden. En måttbygel över fogen är märkt rörelsefog minst 10 millimeter, med talet i gul markering. En röd penna har ringat in fogen.">
+  <!-- Anteckningsboken. Blyertsskiss på linjerat papper. Undergolvet skrafferat i
+       blyerts-2 och utan underkant, så att det läses som undergolv och inte som ett
+       fjärde skikt. Golvets skikt i blyerts, fogen inringad med snickarpennan.
+       Skala: måttbygeln över fogen spänner 45 enheter och är märkt 10 mm, alltså
+       4,5 enheter per millimeter. Golvbrädan är ritad 63 enheter (14 mm) och
+       underlagsmattan 13 enheter (knappt 3 mm) i samma skala. Väggen och undergolvet
+       löper ut ur bilden och gör därför inget anspråk på ett mått.
+       Nyckeltalet 10 mm har gul markering bakom talet, inte bakom raden.
+       Handskrift i Caveat 500, konverteras till banor med npm run illustrationer.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50,
+       penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2, tunn: skraffering i undergolvet, som löper ut ur bildens kanter -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M80,238 l9,9 M102,238 l9,9 M124,238 l9,9 M146,238 l9,9 M168,238 l9,9 M190,238 l9,9 M212,238 l9,9 M234,238 l9,9 M256,238 l9,9 M278,238 l9,9 M300,238 l9,9 M322,238 l9,9 M344,238 l9,9 M366,238 l9,9 M388,238 l9,9 M410,238 l9,9 M432,238 l9,9 M454,238 l9,9 M476,238 l9,9 M498,238 l9,9 M520,238 l9,9 M542,238 l9,9 M564,238 l9,9"/>
+    <path d="M80,272 l9,9 M102,272 l9,9 M124,272 l9,9 M146,272 l9,9 M168,272 l9,9 M190,272 l9,9 M212,272 l9,9 M234,272 l9,9 M256,272 l9,9 M278,272 l9,9 M300,272 l9,9 M322,272 l9,9 M344,272 l9,9 M366,272 l9,9 M388,272 l9,9 M410,272 l9,9 M432,272 l9,9 M454,272 l9,9 M476,272 l9,9 M498,272 l9,9 M520,272 l9,9 M542,272 l9,9 M564,272 l9,9"/>
+    <path d="M80,306 l9,9 M102,306 l9,9 M124,306 l9,9 M146,306 l9,9 M168,306 l9,9 M190,306 l9,9 M212,306 l9,9 M234,306 l9,9 M256,306 l9,9 M278,306 l9,9 M300,306 l9,9 M322,306 l9,9 M344,306 l9,9 M366,306 l9,9 M388,306 l9,9 M410,306 l9,9 M432,306 l9,9 M454,306 l9,9 M476,306 l9,9 M498,306 l9,9 M520,306 l9,9 M542,306 l9,9 M564,306 l9,9"/>
+    <path d="M80,340 l9,9 M102,340 l9,9 M124,340 l9,9 M146,340 l9,9 M168,340 l9,9 M190,340 l9,9 M212,340 l9,9 M234,340 l9,9 M256,340 l9,9 M278,340 l9,9 M300,340 l9,9 M322,340 l9,9 M344,340 l9,9 M366,340 l9,9 M388,340 l9,9 M410,340 l9,9 M432,340 l9,9 M454,340 l9,9 M476,340 l9,9 M498,340 l9,9 M520,340 l9,9 M542,340 l9,9 M564,340 l9,9"/>
+  </g>
+
+  <!-- Blyerts: undergolvets ovansida, och vänsterkanten. Ingen underkant, med flit -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M122,229 Q360,226 600,229"/>
+    <path d="M70,227 Q68,294 70,360"/>
+    <path d="M70,229 Q96,231 122,229"/>
+  </g>
+
+  <!-- Blyerts: väggen, som löper ut ur överkanten -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M70,0 Q68,114 70,229"/>
+    <path d="M122,0 Q124,114 122,229"/>
+  </g>
+
+  <!-- Blyerts: folien mot undergolvet, som går längre ut i fogen än mattan -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M145,226 Q372,224 600,226"/>
+  </g>
+
+  <!-- Blyerts: underlagsmattan över folien -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M160,209 Q380,207 600,209"/>
+    <path d="M160,209 Q158,214 160,218"/>
+    <path d="M160,218 Q380,216 600,218"/>
+  </g>
+
+  <!-- Blyerts: golvbrädan, med klickfogen mellan två brädor -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M167,146 Q383,144 600,146"/>
+    <path d="M167,146 Q165,178 167,209"/>
+    <path d="M420,146 Q418,158 420,170 L427,176 L413,182 L420,188 Q422,199 420,209"/>
+  </g>
+
+  <!-- Blyerts-2, tunn: måttlinjer upp från fogens två kanter -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M122,144 V112"/>
+    <path d="M167,144 V112"/>
+  </g>
+
+  <!-- Blyerts-2: måttbygeln över rörelsefogen, 45 enheter = 10 mm -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M122,118 H167"/>
+    <path d="M128,112 L122,118 L128,124"/>
+    <path d="M161,112 L167,118 L161,124"/>
+  </g>
+
+  <!-- Blyerts-2, tunn: pekare från texten upp till de två tunna skikten -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M404,266 Q400,246 404,227"/>
+  </g>
+
+  <!-- Snickarpenna: ringen runt rörelsefogen, öppen som när man ringar in för hand -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M186,240 C154,256 110,240 108,202 C106,168 136,148 178,152"/>
+  </g>
+
+  <!-- Papperslappar bakom handskriften -->
+  <rect x="198" y="104" width="230" height="28" fill="#f5efe3"/>
+  <rect x="296" y="264" width="256" height="28" fill="#f5efe3"/>
+  <rect x="106" y="318" width="130" height="28" fill="#f5efe3"/>
+
+  <!-- Överstrykning med tumstocksgul bakom nyckeltalet -->
+  <rect x="346" y="104" width="66" height="28" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 379 118)"/>
+
+  <!-- Handskrivna anteckningar (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="204" y="126" fill="#625a50">rörelsefog minst</text>
+    <text x="350" y="126">10 mm</text>
+    <text x="300" y="286" fill="#625a50">underlagsmatta och folie</text>
+    <text x="110" y="340" fill="#625a50">undergolvet</text>
+  </g>
+</svg>

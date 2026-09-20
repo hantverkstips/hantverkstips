@@ -1,0 +1,192 @@
+---
+/**
+ * Formuläret till trappräknaren. Ett ställe: sidan /rakna/trappa/ renderar det
+ * i fullt format, och <Kalkylator namn="trappa" /> i guiden /golv/bygga-trappa/
+ * renderar samma fält i kompakt format med action till verktygssidan.
+ *
+ * Ingen klient-JavaScript. Formuläret skickas som GET, och verktygssidan räknar.
+ *
+ * Båda talfälten, alltså stegdjupet och längden, står alltid framme. Ett
+ * formulär som växlar fält efter vald radioknapp kräver skript, och sidan får
+ * inte ha något. I stället står de under var sin radioknapp, med en rad som
+ * säger vilket av dem som läses.
+ */
+import {
+  PLACERINGAR,
+  STANDARD,
+  STYRVAL,
+  UTFORANDEN,
+  type TrappaIndata,
+} from '../../lib/kalkyl/trappa.ts';
+import { ETIKETT_KLASS, FALT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, ramKlass } from '../../lib/kalkyl/stil';
+
+interface Props {
+  /** Valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
+  indata?: TrappaIndata;
+  /** Talen som de skrevs i adressen, så att ett felskrivet värde går att rätta. */
+  varden?: { hojd: string; djup: string; langd: string };
+  fel?: Partial<Record<keyof TrappaIndata, string>>;
+  /** Inbäddad i en artikel: tätare fält, inga hjälprader. */
+  kompakt?: boolean;
+  /** Prefix på id-attributen, så att två formulär på samma sida inte krockar. */
+  idPrefix?: string;
+  knappText?: string;
+}
+
+const komma = (n: number) => String(n).replace('.', ',');
+
+const {
+  indata = STANDARD,
+  varden = {
+    hojd: komma(STANDARD.vaningshojdMm),
+    djup: komma(STANDARD.onskatStegdjupMm),
+    langd: komma(STANDARD.tillgangligLangdMm),
+  },
+  fel = {},
+  kompakt = false,
+  idPrefix = '',
+  knappText = 'Räkna ut',
+} = Astro.props;
+
+const id = (namn: string) => `${idPrefix}${namn}`;
+const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
+
+/** Talfältet under respektive radioknapp i "Vad styr trappan?". */
+const styrFalt = {
+  stegdjup: {
+    namn: 'djup',
+    etikett: 'Önskat stegdjup',
+    varde: varden.djup,
+    fel: fel.onskatStegdjupMm,
+  },
+  langd: {
+    namn: 'langd',
+    etikett: 'Längd du har i plan',
+    varde: varden.langd,
+    fel: fel.tillgangligLangdMm,
+  },
+} as const;
+---
+
+<form method="get" action="/rakna/trappa/">
+  <div class="mb-4">
+    <label for={id('hojd')} class={ETIKETT_KLASS}>Våningshöjd, golv till golv</label>
+    <div class="flex items-center gap-2">
+      <input
+        id={id('hojd')}
+        name="hojd"
+        type="text"
+        inputmode="decimal"
+        value={varden.hojd}
+        aria-describedby={fel.vaningshojdMm ? id('hojd-fel') : undefined}
+        class:list={[FALT_KLASS, ramKlass(Boolean(fel.vaningshojdMm))]}
+      />
+      <span class="text-brod text-blyerts-2">mm</span>
+    </div>
+    {
+      fel.vaningshojdMm ? (
+        <p id={id('hojd-fel')} class={FEL_KLASS}>
+          {fel.vaningshojdMm}
+        </p>
+      ) : (
+        !kompakt && (
+          <p class={HJALP_KLASS}>
+            Från färdigt golv till färdigt golv. Ska ett nytt golv läggas efteråt, uppe eller nere, räkna in dess
+            tjocklek redan nu.
+          </p>
+        )
+      )
+    }
+  </div>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Vad styr trappan?</legend>
+    {
+      STYRVAL.map((s) => {
+        const f = styrFalt[s.varde];
+        return (
+          <div class="mb-3">
+            <label class="flex min-h-11 items-start gap-2 py-1 text-brod">
+              <input type="radio" name="styrs" value={s.varde} checked={indata.styrs === s.varde} class="mt-1.5" />
+              <span>
+                {s.etikett}
+                {!kompakt && <span class="block text-liten text-blyerts-2">{s.hjalp}</span>}
+              </span>
+            </label>
+            <div class="ml-6">
+              <label for={id(f.namn)} class="block mb-1 text-liten text-blyerts-2">
+                {f.etikett}
+              </label>
+              <div class="flex items-center gap-2">
+                <input
+                  id={id(f.namn)}
+                  name={f.namn}
+                  type="text"
+                  inputmode="decimal"
+                  value={f.varde}
+                  aria-describedby={f.fel ? id(`${f.namn}-fel`) : undefined}
+                  class:list={[FALT_KLASS, ramKlass(Boolean(f.fel))]}
+                />
+                <span class="text-brod text-blyerts-2">mm</span>
+              </div>
+              {f.fel && (
+                <p id={id(`${f.namn}-fel`)} class={FEL_KLASS}>
+                  {f.fel}
+                </p>
+              )}
+            </div>
+          </div>
+        );
+      })
+    }
+    {
+      !kompakt && (
+        <p class={HJALP_KLASS}>
+          Båda fälten står kvar hela tiden. Det är radioknappen som avgör vilket av dem räknaren läser.
+        </p>
+      )
+    }
+  </fieldset>
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Var står trappan?</legend>
+    <div class={radioKlass}>
+      {
+        PLACERINGAR.map((p) => (
+          <label class="flex min-h-11 items-start gap-2 py-1 text-brod">
+            <input type="radio" name="plats" value={p.varde} checked={indata.placering === p.varde} class="mt-1.5" />
+            <span>
+              {p.etikett}
+              {!kompakt && <span class="block text-liten text-blyerts-2">{p.hjalp}</span>}
+            </span>
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <fieldset class="m-0 mb-6 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Rak eller med vilplan?</legend>
+    <div class={radioKlass}>
+      {
+        UTFORANDEN.map((u) => (
+          <label class="flex min-h-11 items-start gap-2 py-1 text-brod">
+            <input
+              type="radio"
+              name="utforande"
+              value={u.varde}
+              checked={indata.utforande === u.varde}
+              class="mt-1.5"
+            />
+            <span>
+              {u.etikett}
+              {!kompakt && <span class="block text-liten text-blyerts-2">{u.hjalp}</span>}
+            </span>
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <button type="submit" class={KNAPP_KLASS}>{knappText}</button>
+</form>

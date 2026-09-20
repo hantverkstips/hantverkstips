@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Trappan i genomskärning. Från det övre planet till vänster går fem steg ner till golvet till höger, och under stegens innerhörn ligger vangstycket som en snedställd balk ner mot golvet. Fyra etiketter pekar ut vangstycket, plansteget, sättsteget och stegnosen. En måttbygel visar steghöjden 169 mm mellan två stegs ovansidor, med talet gulmarkerat, och en bygel över det översta steget visar stegdjupet 292 mm. En anteckning i rött säger att alla steg ska vara lika höga.">
+  <!-- Anteckningsboken. Blyerts 2 px för trappans profil, det övre planets bjälklag,
+       vangstycket och golvlinjen. Blyerts-2 för måttbyglar, hjälplinjer och etiketter.
+       Snickarpennan för anteckningen om lika höga steg, bildens enda pekande sak.
+       Tumstock bakom nyckeltalet 169 mm.
+       Skala: 60 enheter är ett stegdjup på 292 mm och 35 enheter en steghöjd på 169 mm,
+       alltså 4,87 mm per enhet och samma trappa som räkneexemplet i texten. Bjälklaget är
+       ritat 62 enheter tjockt, alltså de 300 mm hålberäkningen i texten förutsätter.
+       Vangstyckets övre kant går genom stegens innerhörn och löper ner i golvlinjen y=330.
+       Handskrift i Caveat 500, 24 px, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts: det övre planets bjälklag, 62 enheter tjockt, och hålets kant -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M52,155 Q92,153 130,155"/>
+    <path d="M52,217 Q92,215 130,217"/>
+    <path d="M130,155 V217"/>
+  </g>
+
+  <!-- Blyerts: trappans profil ner till golvet -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M130,190 Q160,192 190,190"/>
+    <path d="M190,190 V225"/>
+    <path d="M190,225 Q220,227 250,225"/>
+    <path d="M250,225 V260"/>
+    <path d="M250,260 Q280,262 310,260"/>
+    <path d="M310,260 V295"/>
+    <path d="M310,295 Q340,297 370,295"/>
+    <path d="M370,295 V330"/>
+  </g>
+
+  <!-- Blyerts: golvlinjen till höger om trappan -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round">
+    <path d="M299,330 Q430,328 560,330"/>
+  </g>
+
+  <!-- Blyerts: vangstycket, den snedställda balken under stegens innerhörn -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M176,217 Q272,274 369,330"/>
+    <path d="M176,258 Q238,294 299,330"/>
+    <path d="M176,217 V258"/>
+  </g>
+
+  <!-- Blyerts-2: hjälplinjer och måttbygel för steghöjden, mellan två stegs ovansidor -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M190,190 H300"/>
+    <path d="M250,225 H300"/>
+  </g>
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M296,190 V225 M291,190 h10 M291,225 h10"/>
+  </g>
+
+  <!-- Blyerts-2: hjälplinjer och måttbygel för stegdjupet på det översta steget -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M130,188 V128"/>
+    <path d="M190,188 V128"/>
+  </g>
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M130,134 H190 M130,129 v10 M190,129 v10"/>
+  </g>
+
+  <!-- Blyerts-2: korta pekare från etiketterna -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M426,254 Q370,250 302,258"/>
+    <path d="M426,292 Q404,294 374,296"/>
+    <path d="M426,316 Q390,300 312,284"/>
+    <path d="M196,288 Q212,284 228,278"/>
+  </g>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="401" y="194" width="66" height="26" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 434 207)"/>
+
+  <!-- Snickarpenna: anteckningen om lika höga steg pekar på steghöjdsbygeln -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M430,110 Q398,150 308,200"/>
+    <path d="M308,200 l13,-3 M308,200 l7,10"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="380" y="96" fill="#ad3519">alla steg lika höga</text>
+    <text x="204" y="140" fill="#625a50">stegdjup 292 mm</text>
+    <text x="308" y="214" fill="#625a50">steghöjd 169 mm</text>
+    <text x="430" y="254">plansteg</text>
+    <text x="430" y="292">stegnos</text>
+    <text x="430" y="322">sättsteg</text>
+    <text x="96" y="296">vangstycke</text>
+  </g>
+</svg>
