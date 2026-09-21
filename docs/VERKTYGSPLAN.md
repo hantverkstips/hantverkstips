@@ -35,6 +35,7 @@ Prioritet efter sökbehov, hur unikt verktyget är, och om det pekar på dyra pr
 | 15 | ROT-avdrag, byggd | Hela huset | Arbetskostnad, ägare och utnyttjat tak ger avdraget, vad du betalar och vad som är kvar | Störst sökvolym av alla våra verktyg; ingen i topp fem daterar sina tal eller räknar mot betald skatt | Ingen |
 | 16 | Måla ute i dag, byggd | Fasad, Altan | Temperatur, luftfuktighet, nattens lägsta och klockslag ger om färgen hinner torka före daggen | Ingen svensk sida har den | Ingen |
 | 17 | Självbesiktning av källaren, byggd | Fukt, Grund | Vad du ser, tejptestet och hygrometern ger markfukt, kondens, läckage eller vet inte än | Ingen konkurrent har ett verktyg alls, de listar orsaker parallellt | Avfuktare |
+| 18 | Fasadyta för målning | Fasad | Husets längd, bredd, höjd till takfot och takvinkel ger fasadytan med gavelspetsar, minus fönster och dörrar, och färgåtgången | Ingen i topp fem på "måla om huset kostnad" visar hur man kommer från sitt hus till ett kvadratmetertal; kvadratmeterräknaren är byggd för rum och tar inte gavelspetsar | Färg |
 
 ## Vad som är byggt
 
