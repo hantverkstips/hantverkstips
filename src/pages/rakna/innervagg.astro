@@ -9,7 +9,9 @@
  * ingenting själv, den visar bara resultatet och redovisar källorna.
  *
  * Räkningen pekar ut två produktegenskaper, antalet skruv och skruvlängden, och
- * därför visas två produktkort efter resultatet. Sidan har då reklamband.
+ * därför visas produktkort efter resultatet, aldrig före. Sidan har då
+ * reklamband. Skruvkortet visas bara när svaret är den bandade längd vi har
+ * pris på, se visaBandadSkruv nedan.
  */
 export const prerender = false;
 
@@ -134,6 +136,15 @@ const packRad =
   visat.status === 'ok' && tal
     ? `Din vägg behöver ${tal.packOrd} band om 1 000 skruv. Ett band räcker till ungefär ${tal.packRacker} löpmeter vägg.`
     : 'Ett band om 1 000 skruv räcker till ungefär 29 löpmeter vägg.';
+
+/**
+ * Bandet i databasen är 3,9 × 41 mm, alltså skruven för ett lag gips på
+ * träregel. Med två lag blir svaret 45 eller 51 mm, och då visas inte kortet:
+ * en kalkylator får aldrig peka på en produkt som inte klarar det uträknade
+ * värdet (docs/AFFILIATE.md avsnitt 1). Samma villkor som visaBandadSkruv i
+ * /rakna/gipsskruv/. Skruvautomaten tar 25 till 55 mm och klarar båda fallen.
+ */
+const visaBandadSkruv = visatIndata.lag === 1;
 
 const titel = 'Räkna reglar och gips till innerväggen';
 
@@ -470,11 +481,18 @@ const huvudbild = varumarke ?? illustration;
     <section>
       <Pennstreck id="skruven-och-maskinen">Skruven och maskinen som räkningen pekar på</Pennstreck>
       <p class="m-0 mb-4 text-brod lg:text-brod-lg">
-        Skruvlängden följer antalet skivlag, och antalet skruv avgör om det lönar sig att mata dem ur ett band i
-        stället för att plocka en i taget.
+        {
+          visaBandadSkruv
+            ? 'Skruvlängden följer antalet skivlag, och antalet skruv avgör om det lönar sig att mata dem ur ett band i stället för att plocka en i taget.'
+            : 'Två lag gips vill ha 45 eller 51 mm, och bandet jag har pris på är 41 mm. Den skruven köper du därför lös eller i ett band i rätt längd. Maskinen matar hela spannet.'
+        }
       </p>
       <div class="grid gap-4 lg:grid-cols-2">
-        <Produktkort produkt="essve-fzb-39x41" variant="kompakt" modul="kalkylator" forVem={packRad} />
+        {
+          visaBandadSkruv && (
+            <Produktkort produkt="essve-fzb-39x41" variant="kompakt" modul="kalkylator" forVem={packRad} />
+          )
+        }
         <Produktkort
           produkt="makita-dfr550zx1"
           variant="kompakt"

@@ -4,7 +4,7 @@ Ur `src/pages/rakna/innervagg.astro`, `InnervaggForm.astro`, `src/lib/kalkyl/inn
 
 ## Metadata och namn
 
-- SLUG innervagg, VERKTYGSNAMN "Regelkalkylator". Sidan har reklam={true}, butikNamn och två produktkort (essve-fzb-39x41 med forVem=packRad, makita-dfr550zx1 med forVem "Från ungefär 300 skruv lönar sig en automat."). Checklistan säger att bara avfuktare och gipsskruv har reklamband, men den här sidan har det också. Rörs inte.
+- SLUG innervagg, VERKTYGSNAMN "Regelkalkylator". Sidan har reklam={true}, butikNamn och produktkort (essve-fzb-39x41 med forVem=packRad, bara vid ett lag gips, och makita-dfr550zx1 alltid, med forVem "Från ungefär 300 skruv lönar sig en automat."). Granskad av affiliateansvarig 2026-09-21 och godkänd: tre räknare har reklamband, avfuktare, gipsskruv och innervägg, och det är exakt de tre som visar produktkort. Rörs inte.
 - Title i dag 57 tecken. Krav: under 44 eller högst 52, reglar + innervägg/vägg, inte tre första orden lika "Bygga innervägg med".
 - Description 138. Behåll innervägg och materialåtgång. "med källa bakom varje tal" får gå.
 - H1 nästan samma som title; H1 ska vara löftet.

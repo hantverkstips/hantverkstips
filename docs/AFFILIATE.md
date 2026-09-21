@@ -36,7 +36,9 @@ Här får sajten se ut som en tidning med testresultat, och här ligger intäkte
 
 ### Kalkylatorer
 
-Resultatet följs av två till tre produkter som klarar det uträknade värdet, sorterade på pris. Det är den mest kvalificerade klicksituationen på sajten: läsaren har själv matat in sin källare och ser en maskin som passar. Kalkylatorn ska aldrig rekommendera en produkt som inte klarar värdet med marginal, hellre visa "vi har inte testat någon i den storleken".
+Resultatet följs av två till tre produkter som klarar det uträknade värdet, sorterade på pris. Det är den mest kvalificerade klicksituationen på sajten: läsaren har själv matat in sin källare och ser en maskin som passar. Kalkylatorn ska aldrig rekommendera en produkt som inte klarar värdet med marginal, hellre visa "vi har inte testat någon i den storleken". Korten ligger alltid efter svaret, aldrig mellan formuläret och beskedet.
+
+Undantaget från regeln om ordervärde över 1 500 kr: en förbrukningsvara får ett eget kort när räkningens utdata *är* den varan, alltså när verktyget räknar fram antal och dimension och kortet svarar på just de talen. Bandad gipsskruv på /rakna/innervagg/ och /rakna/gipsskruv/ är det enda fallet i september 2026. Villkoret är att kortet försvinner när svaret inte längre passar produkten: visas 45 eller 51 mm i resultatet får inget 41-millimeterskort stå kvar. En förbrukningsvara som texten bara nämner i förbifarten får inget kort.
 
 ### Förväntad klickfrekvens
 
@@ -122,9 +124,11 @@ Förebilder. Wirecutter lägger reklamtexten ovanför rubriken, "We independentl
 
 Konsumentverkets linje är att märkningen ska förstås "direkt, redan vid en flyktig kontakt" och att ordet "reklam" är det som rekommenderas. IAB Sverige, Sveriges Tidskrifter och TU publicerade i september 2025 en gemensam rekommendation för affiliatelänkar i redaktionell miljö: länken ska tydligt märkas som kommersiell, i direkt anslutning till länken ska avsändaren framgå, och annonsören får inte påverka urval eller placering. Adtractions egna riktlinjer föreslår "Inlägget är reklam för x och innehåller annonslänkar" överst. **Verifierad** (källa 21, 22, 23, 24).
 
-Formuleringen i bandet under sidhuvudet, fastställd:
+Formuleringen i bandet under sidhuvudet, fastställd, omskriven till "jag" 2026-09-21 när hela sajten gick över till Christians röst (docs/ROST.md: "jag" om det han gjort och tycker, "vi" bara om honom och läsaren tillsammans). Sakinnehållet är oförändrat, och att avsändaren är en namngiven person stärker snarare kravet på att avsändaren ska framgå:
 
-> Reklam. Sidan innehåller annonslänkar till Proffsmagasinet. Handlar du via dem får vi provision, priset för dig är detsamma. Så tjänar vi pengar.
+> Reklam. Sidan innehåller annonslänkar till Proffsmagasinet. Handlar du via dem får jag provision, priset för dig är detsamma. Så tjänar jag pengar.
+
+Länkens adress är fortsatt `/om/sa-tjanar-vi-pengar/`, eftersom en publicerad URL inte byts för en formulering.
 
 Under varje köpknapp: "Annonslänk · pris 12 sep". DESIGN.md skriver "Reklamlänk", ändras till "Annonslänk" så att vi följer branschrekommendationen och nätverkets egna riktlinjer ordagrant. Bandet använder "Reklam" eftersom det är Konsumentverkets ord. Inga "i samarbete med", inga hashtaggar, ingen märkning som bara ligger i sidfoten.
 
