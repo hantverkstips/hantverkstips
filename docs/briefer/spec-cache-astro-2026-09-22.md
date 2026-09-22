@@ -184,6 +184,23 @@ Inget annat. Inte `package.json`, inte adapterversionen, inte `src/components/ui
 - Typsnitten ligger i `public/fonts/` utan hash och får samma `max-age=0` som allt statiskt i `public/`. De byts nästan aldrig, men utan hash i namnet kan de inte bli `immutable` utan att ett byte fastnar i besökarnas cache i ett år. Om det ska ändras är det en egen spec med hashade filnamn, inte en rad till i `vercel.json`.
 - När `@astrojs/vercel` med PR 18008 släpps: uppgradera, bygg, och kontrollera att `config.json` har regeln före handtaget. `vercel.json` behålls ändå.
 
+## 11. Utfall
+
+Genomfört i commit `c8d61c0` (2026-09-22). Granskat av UX och bygge samma dag mot avsnitt 7 till 9, med egna `curl -sI` mot produktion 15:57 UTC:
+
+| Kontroll | Svar | Förväntat |
+|---|---|---|
+| `/_astro/Bas.UqYemeRC.css` | `public, max-age=31536000, immutable`, `X-Vercel-Cache: HIT` | ja |
+| `/_astro/gipsskruv-sektion.KCM--y3W.svg` | `public, max-age=31536000, immutable`, `HIT` | ja |
+| `/inomhus/dreva-fonster/` | 301, `Location: /fasad/dreva-fonster/`, `X-Vercel-Id: arn1::...` (en region, ingen funktion; före: `arn1::iad1::...`) | ja |
+| `/inomhus/slipa-bankskiva/` | 301, `Location: /kok/slipa-bankskiva/`, `arn1::...` | ja |
+| `/inomhus/gipsskruv/` och `/fasad/dreva-fonster/` | 200, `public, max-age=0, must-revalidate`, oförändrat | ja |
+| `/rakna/rotavdrag/` | 200, `Cache-Control: public`, `HIT` | ja, se nedan |
+
+Räknarraden i avsnitt 7 var oprecist skriven: Vercel förbrukar `s-maxage` och `stale-while-revalidate` vid kanten och skickar bara `public` vidare till klienten, och så var det före ändringen också. Kontrollen gällde att `source` inte matchar för brett, och det gör den inte.
+
+Filer ändrade: exakt de fem i avsnitt 9 plus den här specen. Simuleringen i steg 2 gav samma ordning som avsnitt 3. `astro check` och `kontrollera` gröna (utvecklaren), bygget grönt (koordinatorn). Godkänd av UX och bygge.
+
 ## Källor
 
 - Vercel, Build Output Configuration: `https://vercel.com/docs/build-output-api/configuration` (läst 2026-09-22, sidan daterad 2026-07-27)
