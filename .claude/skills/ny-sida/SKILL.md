@@ -31,11 +31,15 @@ Läser sidan som en husägare som landat från Google, utan tillgång till docs,
 
 Läser den färdiga sidan mot sin egen checklista, punkt för punkt, och lägger returen i samma fil som läsarens. Bara det som spelar roll för sökningen; stil är läsarens sak. "Inget att ändra" där det stämmer.
 
-## Steg 6. Rättning och godkännande (hantverkaren)
+## Steg 6. Rättning och godkännande (hantverkaren, sedan läsaren igen)
 
 Rättar varje punkt i returen, eller skriver varför en punkt inte ska rättas. Läser om sidan högt. Godkänner med en rad: "Godkänd av hantverkaren" plus vad som ändrats. Sidan är inte klar förrän den raden finns, och den skrivs av hantverkaren, inte av arbetaren.
 
+Gav läsaren under 4 i steg 4 läser läsaren om sidan efter rättningen. Under 4 igen är ny retur, aldrig publicering. Koordinatorn publicerar inte en sida som inte har ett betyg på minst 4 från läsaren på den version som publiceras. Det var den grind som saknades 2026-09-22 när om-sidan gick ut med en tvåa.
+
 Har sidan produkter eller reklam går den till affiliateagenten för punkt 1 till 7 i skillen affiliate innan steg 7.
+
+**Sidor om Christian** (om-sidan, författarsidan, kontakt, allt som påstår något om honom) publiceras inte utan att han läst dem. Där räcker ingen agent som grind; texten går till honom i chatten, och hans egna formuleringar används ordagrant när han gett dem.
 
 ## Steg 7. Bygge, commit, push, live (koordinatorn)
 
