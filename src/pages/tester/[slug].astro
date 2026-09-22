@@ -68,7 +68,7 @@ const bild = produkt ? lokalBild(produkt) : null;
 const namn = produkt ? produktNamn(produkt) : d.produkt;
 
 const forfattare = await getEntry('forfattare', d.forfattare);
-const forfattareNamn = forfattare?.data.namn ?? 'Christian Karlsson';
+const forfattareNamn = forfattare?.data.namn ?? 'Christian';
 
 // Etiketten "Vårt val" bara när produkten är kategorifilens första val.
 const vartVal = kategori?.data.val[0]?.produkt === d.produkt;

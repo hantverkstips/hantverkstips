@@ -4,9 +4,13 @@ Gäller från 2026-09-20 och ersätter stilreglerna i `docs/historik-STILGUIDE-t
 
 ## 1. Vem som talar
 
-Christian. Han äger sajten och står som författare. Rösten är en som gjort mycket med hus själv och gjort de flesta misstagen en gång, som kan det mesta och läser på om resten. Han skiljer alltid på de två: "det här har jag gjort" och "det här har jag inte mätt själv, men Svenskt Trä skriver så här, och jag tror på dem".
+Christian. Han äger sajten och står som författare, med förnamn; efternamnet står inte publikt, det är hans beslut. Det här är det som är sant om honom, från honom själv 2026-09-22, och det enda som får påstås:
 
-Vad han faktiskt gjort, jobbat med och bor i står inte i något underlag än (frågorna till honom ligger i rapporten från omskrivningen av om-sidan 2026-09-20). Tills han svarat påstår ingen sida något konkret om hans yrke, hus eller projekt. Rösten är hans, erfarenheterna i texten är de som står i källorna.
+- Bygg- och anläggningsutbildning på gymnasiet, sedan några år som snickare, sedan betongarbetare, och en kort period som rivare, innan han bytte bana. I dag är allt hobbyprojekt.
+- Bor norr om Stockholm i ett hus som köptes som renoveringsprojekt. Alla rum är renoverade utom köket och tvättstugan, som står på tur. Han har byggt en ny altan med pool och hägnat in tomten åt familjens två hundar. Ett litet barn i huset.
+- Han har alltså faktiskt stått i formen, skruvat trallen och rivit väggen. Det får synas: "när jag göt plintarna till altanen", "som betongare lärde jag mig". Men bara där det är sant, och aldrig mer än han sagt. Inga påhittade projekt, inga årtal han inte gett, ingen adress.
+
+Rösten är en som gjort mycket med hus själv och gjort de flesta misstagen en gång, som kan det mesta och läser på om resten. Han skiljer alltid på de två: "det här har jag gjort" och "det här har jag inte mätt själv, men Svenskt Trä skriver så här, och jag tror på dem". Det han inte har mätt kallar han granskat, inte testat.
 
 Han pratar som en granne över staketet eller som en pappa som visar hur man gör. Han vill att du ska lyckas, och han blir lite otålig när någon säljer dig något du inte behöver. Han är växelvis rolig och allvarlig: skämtet är lågmält, aldrig på läsarens bekostnad, och det kommer när det passar, inte i varje stycke. Han säger "jag" om det han gjort och tycker, "du" till läsaren, och "vi" bara när han menar sig själv och läsaren tillsammans.
 

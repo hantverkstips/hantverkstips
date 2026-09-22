@@ -79,7 +79,7 @@ const visaProdukterna = (typ === 'kopguide' || typ === 'kunskap') && produkter.l
 const butik = reklam ? await hamtaButik() : null;
 
 const forfattare = await getEntry('forfattare', d.forfattare);
-const forfattareNamn = forfattare?.data.namn ?? 'Christian Karlsson';
+const forfattareNamn = forfattare?.data.namn ?? 'Christian';
 
 const kunskapskomponenter = {
   h2: Pennstreck,

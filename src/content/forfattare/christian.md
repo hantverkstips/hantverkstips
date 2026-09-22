@@ -1,10 +1,12 @@
 ---
-namn: Christian Karlsson
-yrke: Driver Hantverkstips
-presentation: Jag läser tillverkarnas datablad, räknar om dem och skriver ut var de inte räcker. Ingen egen mätning är publicerad än, och det står där den saknas.
+namn: Christian
+yrke: Snickare och betongare i grunden, hobbybyggare i dag
+presentation: Renoverar ett hus norr om Stockholm rum för rum och skriver ner det som går att räkna på.
 utkast: false
 ---
 
-Jag startade Hantverkstips i september 2026 för att jag var trött på guider som lovar allt och mäter inget. Här står varje siffra med sin källa bredvid sig, och när tillverkaren anger en kapacitet står villkoret den är mätt vid på samma rad. En maskin jag inte haft i handen kallar jag granskad, inte testad.
+Jag gick bygg och anläggning på gymnasiet, jobbade några år som snickare och sedan som betongarbetare, med en kort tid som rivare innan jag bytte bana.
 
-Hur jag jobbar, och vad som kommer att mätas, står på [så testar jag](/om/sa-testar-vi/). Hur sajten tjänar pengar, och vad provisionen inte får styra, står på [så tjänar jag pengar](/om/sa-tjanar-vi-pengar/).
+Bygga gör jag numera hemma, på kvällar och helger, med två hundar och ett litet barn runt benen.
+
+Hur jag skiljer [testat från granskat](/om/sa-testar-vi/), och [vad ett klick på en köpknapp ger mig](/om/sa-tjanar-vi-pengar/), har jag skrivit ut så att du kan kontrollera det.

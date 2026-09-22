@@ -41,7 +41,7 @@ Byggs i `src/lib/strukturdata.ts` och renderas av `<StrukturData>`. `Article` p�
 Det AI-svar bygger på är samma sak som Google belönar, bara tydligare:
 
 - **Ett citerbart svar högst upp.** Kort svar i tre till fem meningar med talet och villkoret, i klartext utan att förutsätta resten av sidan. Det är stycket en modell lyfter.
-- **Entiteten är tydlig.** Sajten heter Hantverkstips, personen heter Christian Karlsson, författarsidan finns, `Organization` och `Person` stämmer med om-sidorna. Samma namn överallt.
+- **Entiteten är tydlig.** Sajten heter Hantverkstips, personen heter Christian (efternamnet står inte publikt, hans eget beslut 2026-09-22), författarsidan finns, `Organization` och `Person` stämmer med om-sidorna. Samma namn överallt.
 - **Tal med källa och datum.** "Skatteverket, 2026" i texten, inte bara i en fotnot. Källförteckningen i frontmatter (`kallor`) är en av de starkaste signalerna vi har.
 - **Rubriker som är frågor någon ställer** där det passar naturligt, och Faq med riktiga frågor och egna svar, aldrig dubbletter av brödtexten.
 - **Tabeller med rubrikrad och enhet**, de plockas rakt av.

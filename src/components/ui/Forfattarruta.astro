@@ -19,7 +19,7 @@ const { forfattare, publicerad, uppdaterad } = Astro.props;
 
 const post = (await getEntry('forfattare', forfattare)) ?? (await getEntry('forfattare', 'christian'));
 
-const namn = post?.data.namn ?? 'Christian Karlsson';
+const namn = post?.data.namn ?? 'Christian';
 const initialer = namn
   .split(/\s+/)
   .slice(0, 2)
