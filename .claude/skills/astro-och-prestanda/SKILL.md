@@ -30,7 +30,7 @@ Get-ChildItem dist\client -Recurse -Filter *.html | ForEach-Object { $h = Get-Co
 Get-ChildItem dist\client -Recurse -Filter *.html | Select-Object @{n='sida';e={$_.FullName.Replace((Get-Location).Path + '\dist\client','')}}, @{n='kB';e={[math]::Round($_.Length/1kb,1)}} | Sort-Object kB -Descending | Select-Object -First 20
 ```
 
-Räknarna finns inte i `dist/client`; de kontrolleras med `npm run preview` och `curl`. Det som i dag bryter budgeten är inlinade skisser: en `<Illustration>` lägger 17 till 38 kB i HTML:en. Åtgärden är att servera skisser som `<img>` när de inte behöver `currentColor`, se avsnitt 4.
+Räknarna finns inte i `dist/client`; de kontrolleras med `npm run preview` och `curl`. Skisserna serveras sedan 2026-09-22 som `<img>` (avsnitt 4) och väger inget i HTML:en. Det som fortfarande ligger över budgeten är 13 långa sidor: skalet (sidhuvud, sidfot, head) är 18 kB per sida, inte de 6 budgeten räknar av, och därtill 4 000 till 5 000 ord text, Tailwind-klasser på 18 till 30 kB och FAQ på 5 till 10 kB. Kategorisidan `/luftavfuktare/` bär 55 kB klassattribut i sin tabell. Mätningen och kandidaterna står i `docs/briefer/spec-skisser-som-img-2026-09-22.md` avsnitt 10; en egen spec ska ta dem.
 
 ## 3. Rendering och cache
 
@@ -42,8 +42,8 @@ Räknarna finns inte i `dist/client`; de kontrolleras med `npm run preview` och 
 ## 4. Bilder och SVG
 
 - Foton och packshots genom Astros `<Image>` med `width` och `height`, alltid. 4:3 för produkter, 3:2 för situationer, 1:1 för författare. Inga hotlinkade bilder.
-- Skisser är SVG. Publicerade filer får inte innehålla `<text>`; `npm run illustrationer` konverterar Caveat till banor från källan i `illustrationer-kallor/`. Gräns 40 kB per fil. Idn suffixas per sida så två skisser inte delar `<pattern>`.
-- `<Illustration>` inlinear i dag SVG:n för att `currentColor` och tokens ska fungera. Tumregeln framåt: inline bara när filen använder `currentColor` eller en token; annars `<img src>` med `width`, `height` och `loading="lazy"`, så att den cachas och laddas efter texten. Varumärkesbilderna i räknarnas sidhuvud är redan `<img>` med `fetchpriority="high"` eftersom de är LCP.
+- Skisser är SVG. Publicerade filer får inte innehålla `<text>`; `npm run illustrationer` konverterar Caveat till banor från källan i `illustrationer-kallor/`. Gräns 40 kB per fil. Färgerna skrivs som tokenvärdena i hex, aldrig som `currentColor` eller `var(--color-...)`, så att filen är en färdig bild.
+- `<Illustration>` väljer läge på filens innehåll, aldrig med en prop (`src/lib/illustration.ts`, spec i `docs/briefer/spec-skisser-som-img-2026-09-22.md`). En fil i fasta färger importeras som tillgång (`import.meta.glob` utan `?raw`, `ImageMetadata`) och renderas som `<img>` från `/_astro/` med hash och `immutable`-cache, `alt`, `width`, `height`, `loading="lazy"` och `decoding="async"`; inget id-suffix behövs, filen är sitt eget dokument. Bara en fil som använder `currentColor` eller en token inlineas, med `role="img"`, `aria-label` och suffixade idn så två skisser inte delar `<pattern>`. Ingen publicerad skiss gör det i dag. Varumärkesbilderna i räknarnas sidhuvud är `<img>` med `fetchpriority="high"` eftersom de är LCP.
 - Delningsbilder genereras i bygget ur skissen och registret. Rita aldrig för hand.
 - Favicon är symbolen; `favicon.ico` finns för äldre klienter, `apple-touch-icon.png` för iOS.
 

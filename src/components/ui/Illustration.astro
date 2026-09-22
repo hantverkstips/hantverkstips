@@ -1,18 +1,22 @@
 ---
 /**
  * Egen illustration inne i en artikel. Läser SVG-filen från
- * src/assets/illustrationer/[pelare]/[namn].svg och inlinear den i HTML:en,
- * så att den följer tokens (currentColor och var(--color-...)) och inte kostar
- * en extra förfrågan. Huvudbilden på en sida går fortfarande via frontmatter
- * `bild` och <Image>; den här är för skisser i löptexten.
+ * src/assets/illustrationer/[pelare]/[namn].svg.
+ *
+ * En skiss som är ritad i färdiga färger serveras som <img> från /_astro/, så
+ * att den cachas ett år och laddas efter texten i stället för att ligga i
+ * HTML:en. Bara en fil som behöver sidans färger (currentColor eller en token)
+ * inlineas; läget väljs på filens innehåll, inte med en prop. Huvudbilden på en
+ * sida går fortfarande via frontmatter `bild` och <Image>; den här är för
+ * skisser i löptexten.
  *
  * I MDX: <Illustration namn="fukt/daggpunkt" alt="Daggpunkten vid 20 grader och 60 procent." />
  *
  * Reglerna för skisserna står i docs/DESIGN.md avsnitt 7. Okänt namn ger byggfel.
- * Filens id-attribut får ett suffix så att två illustrationer på samma sida
- * inte delar <pattern id="linjerat">. Bredd och höjd tas från viewBox och
- * skrivs som attribut, så att sidan inte hoppar (CLS) medan SVG:n tolkas.
+ * Bredd och höjd tas från viewBox och skrivs som attribut, så att sidan inte
+ * hoppar (CLS) medan bilden hämtas.
  */
+import { inlineMarkup, lasViewBox, valjLage } from '../../lib/illustration';
 import { slugify } from '../../lib/innehall';
 
 interface Props {
@@ -29,8 +33,14 @@ const { namn, alt, bildtext, class: klass } = Astro.props;
 
 // Eager import.meta.glob gör att alla illustrationer läses vid bygget och att
 // Vite kan felsöka en saknad fil. Nyckeln är sökvägen relativt den här filen.
+// Råfilen avgör läget; tillgångsversionen ger src, width och height med hash i
+// filnamnet, som src/lib/verktygsbild.ts redan gör för räknarnas bilder.
 const filer = import.meta.glob<string>('../../assets/illustrationer/**/*.svg', {
   query: '?raw',
+  import: 'default',
+  eager: true,
+});
+const bilder = import.meta.glob<ImageMetadata>('../../assets/illustrationer/**/*.svg', {
   import: 'default',
   eager: true,
 });
@@ -54,7 +64,7 @@ if (!alt) throw new Error(`[Illustration] "${namn}" saknar alt. Skriv vad bilden
 
 if (ra.length > MAX_BYTE) {
   console.warn(
-    `[Illustration] ${namn}.svg är ${Math.round(ra.length / 1024)} kB. Budgeten för en innehållssida är 60 kB HTML; förenkla skissen.`,
+    `[Illustration] ${namn}.svg är ${Math.round(ra.length / 1024)} kB. Gränsen för en skiss är 40 kB (DESIGN.md avsnitt 7); förenkla den.`,
   );
 }
 if (/<text[\s>]/.test(ra)) {
@@ -63,31 +73,42 @@ if (/<text[\s>]/.test(ra)) {
   );
 }
 
-// Rotelementets attribut. viewBox ger måtten; width och height i filen ignoreras.
-const rot = ra.match(/<svg\b([^>]*)>/);
-if (!rot) throw new Error(`[Illustration] ${namn}.svg saknar ett <svg>-element`);
-const attribut = rot[1] ?? '';
-const viewBox = attribut.match(/viewBox="([^"]+)"/)?.[1];
-if (!viewBox) throw new Error(`[Illustration] ${namn}.svg saknar viewBox`);
-const [, , vbBredd, vbHojd] = viewBox.trim().split(/[\s,]+/).map(Number);
-if (!vbBredd || !vbHojd) throw new Error(`[Illustration] ${namn}.svg har en viewBox som inte går att läsa: "${viewBox}"`);
+/** Felen från src/lib/illustration.ts får filnamnet på sig här. */
+function medFilnamn<T>(arbete: () => T): T {
+  try {
+    return arbete();
+  } catch (fel) {
+    throw new Error(`[Illustration] ${namn}.svg ${fel instanceof Error ? fel.message : String(fel)}`);
+  }
+}
 
-// Behåll xmlns och viewBox, släng resten av rotens attribut och sätt våra egna.
-const suffix = slugify(namn);
-const inre = ra
-  .replace(/^[\s\S]*?<svg\b[^>]*>/, '')
-  .replace(/<\/svg>\s*$/, '')
-  .replace(/<\?xml[^>]*\?>/g, '')
-  .replace(/<!--[\s\S]*?-->/g, '')
-  .replace(/\bid="([^"]+)"/g, (_, id: string) => `id="${id}-${suffix}"`)
-  .replace(/url\(#([^)]+)\)/g, (_, id: string) => `url(#${id}-${suffix})`)
-  .replace(/\bhref="#([^"]+)"/g, (_, id: string) => `href="#${id}-${suffix}"`);
+// viewBox ger måtten; width och height i filen ignoreras i inline-läget och
+// kontrolleras mot viewBox i img-läget.
+const matt = medFilnamn(() => lasViewBox(ra));
 
-const svg =
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" width="${vbBredd}" height="${vbHojd}" ` +
-  `role="img" aria-label="${alt.replace(/"/g, '&quot;')}" class="block w-full h-auto rounded-sm border border-linje">` +
-  inre +
-  '</svg>';
+let bild: ImageMetadata | undefined;
+let svg = '';
+
+if (valjLage(ra) === 'inline') {
+  svg = medFilnamn(() => inlineMarkup(ra, alt, slugify(namn)));
+} else {
+  bild = bilder[nyckel];
+  if (!bild) {
+    throw new Error(
+      `[Illustration] ${namn}.svg gick inte att importera som bild. Filen finns som råtext men saknas i tillgångsglobben.`,
+    );
+  }
+  if (bild.src.startsWith('data:')) {
+    throw new Error(
+      `[Illustration] ${namn}.svg blev en data-URI i stället för en fil under /_astro/. Skissen ska ligga som egen fil för att kunna cachas.`,
+    );
+  }
+  if (bild.width !== matt.bredd || bild.height !== matt.hojd) {
+    throw new Error(
+      `[Illustration] ${namn}.svg har width och height ${bild.width} × ${bild.height} men en viewBox på ${matt.bredd} × ${matt.hojd}. Då reserverar sidan fel yta och hoppar; rätta rotelementet i källan och kör npm run illustrationer.`,
+    );
+  }
+}
 ---
 
 {/*
@@ -98,6 +119,20 @@ const svg =
   Se docs/DESIGN.md avsnitt 7 och designgranskningen 2026-09-16 punkt 12.
 */}
 <figure class:list={['m-0 my-8 max-w-[600px]', klass]}>
-  <Fragment set:html={svg} />
+  {
+    bild ? (
+      <img
+        src={bild.src}
+        alt={alt}
+        width={bild.width}
+        height={bild.height}
+        loading="lazy"
+        decoding="async"
+        class="block w-full h-auto rounded-sm border border-linje"
+      />
+    ) : (
+      <Fragment set:html={svg} />
+    )
+  }
   {bildtext && <figcaption class="mt-2 text-liten text-blyerts-2">{bildtext}</figcaption>}
 </figure>

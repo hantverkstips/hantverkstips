@@ -46,7 +46,7 @@ C:\Hantverkstips\
 │   ├── content.config.ts      # scheman för samlingarna och loadern som ger id från filnamnet
 │   ├── env.d.ts               # App.Locals: sidtyp och köpknappens löpnummer
 │   ├── components/
-│   │   ├── ui/                # Astro-komponenter, ingen klient-JS. Illustration.astro inlinear skisser
+│   │   ├── ui/                # Astro-komponenter, ingen klient-JS. Illustration.astro serverar skisser som <img>, inline bara vid tokens
 │   │   ├── vyer/              # sidmallar som rutterna monterar (Artikel, Kategorisida, PelarHub, Guidegalleri)
 │   │   └── islands/           # React-komponenter som hydreras. Bara /admin i fas 1
 │   ├── layouts/
@@ -168,7 +168,7 @@ Utkast filtreras inte, de byggs inte alls. Konfigurationen körs utanför Astros
 **Illustrationer.** Egna skisser (regler i `docs/DESIGN.md` avsnitt 7) ligger i `src/assets/illustrationer/[pelare]/[namn].svg`, en mapp per pelare, filnamn enligt slug-reglerna. Förebilden är `fukt/kallare.svg`. Två sätt att använda dem:
 
 1. **Huvudbild.** `bild: ../../../assets/illustrationer/fukt/kallare.svg` och `bildtext` i frontmatter. Mallen renderar den efter "Kort svar" som `<img>` med width och height från filen (SVG skalas inte av bildtjänsten), och den blir sidans `image` i `Article`-markupen.
-2. **Inline i löptexten.** `<Illustration namn="fukt/daggpunkt" alt="Daggpunkten vid 20 grader och 60 procent." bildtext="..." />` i MDX, utan import. Komponenten `src/components/ui/Illustration.astro` läser SVG-filen vid bygget (`import.meta.glob` med `?raw`), inlinear den i HTML:en så att `currentColor` och tokens fungerar, sätter `width` och `height` från `viewBox` mot CLS, `role="img"` och `aria-label` från `alt`, och ger filens id-attribut ett suffix så att två skisser på samma sida inte delar `<pattern id>`. Okänt namn eller saknad `alt` ger byggfel. Filer över 40 kB och filer med `<text>` kvar ger varning i byggloggen. Tillåten i guider, kunskap och hubbar (listan nedan).
+2. **Skiss i löptexten.** `<Illustration namn="fukt/daggpunkt" alt="Daggpunkten vid 20 grader och 60 procent." bildtext="..." />` i MDX, utan import. Komponenten `src/components/ui/Illustration.astro` läser SVG-filen vid bygget och väljer läge på filens innehåll (beslutat 2026-09-22, `docs/briefer/spec-skisser-som-img-2026-09-22.md`): en fil med fasta färger, vilket alla publicerade skisser är, importeras som tillgång (`import.meta.glob` utan `?raw`, `ImageMetadata`) och renderas som `<img>` med `src` under `/_astro/` (hashad, `immutable`-cache från Vercel), `alt` från propen, `width` och `height` från filen mot CLS, `loading="lazy"` och `decoding="async"`. En fil som använder `currentColor` eller `var(--color-...)` inlineas i stället som förut, med `role="img"`, `aria-label` från `alt` och suffixade id-attribut så att två skisser på samma sida inte delar `<pattern id>`; i img-läget behövs inget suffix, filen är sitt eget dokument. Strängslogiken ligger i `src/lib/illustration.ts` och testas i `scripts/test-illustration.mjs`. Okänt namn, saknad `alt`, fil utan `viewBox`, mått som inte stämmer med `viewBox` och en `src` som är data-URI ger byggfel. Filer över 40 kB och filer med `<text>` kvar ger varning i byggloggen. Tillåten i guider, kunskap och hubbar (listan nedan).
 
 **Handskrift till banor.** `src/assets/illustrationer/` innehåller bara publicerbara filer: all `<text>` är konverterad till `<path>`, så att ingen webbfont behövs för att en skiss ska se rätt ut (`docs/DESIGN.md` avsnitt 2 och 7). Flödet:
 
