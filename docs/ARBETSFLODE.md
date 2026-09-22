@@ -4,7 +4,7 @@ Hur teamet arbetar sedan 2026-09-22. Christian är beställare och sista instans
 
 ## Principen
 
-Tre nivåer. Christian delegerar till koordinatorn. Koordinatorn delegerar till fyra agenter på Fable som var och en äger ett område och ansvarar för kvaliteten i det. De delegerar det tunga till arbetare på Opus, med instruktioner så exakta att resultatet inte kan bli fel, och godkänner det innan det räknas som klart. En underagent kan inte starta agenter själv, så kedjan går genom koordinatorn: Fable-agenten skriver uppdraget och kraven, koordinatorn startar arbetaren, och resultatet går tillbaka till samma Fable-agent för ja eller retur.
+Tre nivåer. Christian delegerar till koordinatorn. Koordinatorn delegerar till fyra agenter som var och en äger ett område och ansvarar för kvaliteten i det. De delegerar det tunga till arbetare, med instruktioner så exakta att resultatet inte kan bli fel, och godkänner det innan det räknas som klart. Alla agenter kör Opus 5.5, Christians beslut 2026-09-22; ingen annan modell används i kedjan. En underagent kan inte starta agenter själv, så kedjan går genom koordinatorn: agenten skriver uppdraget och kraven, koordinatorn startar arbetaren, och resultatet går tillbaka till samma agent för ja eller retur.
 
 Kunskapen bor i skills, inte i agenterna. En agent är kort och säger vem den är, vad den gör själv, vad den delegerar och hur den svarar. Skillen säger hur saken görs.
 
@@ -12,15 +12,16 @@ Kunskapen bor i skills, inte i agenterna. En agent är kort och säger vem den �
 
 | Agent | Modell | Äger | Delegerar till |
 |---|---|---|---|
-| `hantverkaren` | Fable | All publik text, i Christians röst. Skriver själv. | `underlag` (faktablad, sökanalys), `lasare` (läsning) |
-| `seo-geo` | Fable | Sökordsanalys, kluster, en fras per sida, checklistan per sida, metadata, strukturerad data, intern länkning, GEO | `underlag` (SERP-läsning, volymer), arbetare för mekaniska kontroller |
-| `ux-bygge` | Fable | Designsystem, sidmallar, räknarnas gränssnitt och formler, illustrationer, prestanda, teknisk kvalitet | `utvecklare` (kod, SVG), arbetare för mätningar |
-| `affiliate` | Fable | Reklammärkning, länkar, produktplacering, produktval mot meriter, Adtraction och Proffsmagasinet, intäkt per sida | `underlag` (produktfakta), `utvecklare` (feed, import) |
-| `utvecklare` | Opus | Bygger från spec: komponenter, sidor, formelmoduler, tester, skript, SVG | |
-| `lasare` | Opus | Läser färdiga sidor som en husägare, utan regler, och rapporterar meningar och mönster | |
-| `underlag` | Opus | Hämtar fakta med källa: faktablad, sökanalys, datablad, produktfakta, räknarunderlag | |
+| `hantverkaren` | Opus 5.5 | All publik text, i Christians röst. Skriver själv. | `underlag` (faktablad, sökanalys), `lasare` (läsning) |
+| `seo-geo` | Opus 5.5 | Sökordsanalys, kluster, en fras per sida, checklistan per sida, metadata, strukturerad data, intern länkning, GEO | `underlag` (SERP-läsning, volymer), arbetare för mekaniska kontroller |
+| `ux-bygge` | Opus 5.5 | Designsystem, sidmallar, räknarnas gränssnitt och formler, illustrationer, prestanda, teknisk kvalitet | `utvecklare` (kod, SVG), arbetare för mätningar |
+| `affiliate` | Opus 5.5 | Reklammärkning, länkar, produktplacering, produktval mot meriter, Adtraction och Proffsmagasinet, intäkt per sida | `underlag` (produktfakta), `utvecklare` (feed, import) |
+| `utvecklare` | Opus 5.5 | Bygger från spec: komponenter, sidor, formelmoduler, tester, skript, SVG | |
+| `lasare` | Opus 5.5 | Läser färdiga sidor som en husägare, utan regler, och rapporterar meningar och mönster | |
+| `underlag` | Opus 5.5 | Hämtar fakta med källa: faktablad, sökanalys, datablad, produktfakta, räknarunderlag | |
+| `korrektur` | Opus 5.5 | Läser färdig text enbart för svensk grammatik, meningsbyggnad och idiom, och rapporterar fel med rättad lydelse | |
 
-Fable där omdöme om röst, avvägning och kvalitet krävs. Opus där uppgiften är avgränsad och går att kontrollera med tester, checklistor eller läsning. Aldrig "inherit".
+Alla på Opus 5.5. Skillnaden mellan agent och arbetare är ansvaret, inte modellen: agenten specar och godkänner, arbetaren gör. Aldrig "inherit".
 
 ## Skillsen
 
@@ -37,7 +38,7 @@ Dokumenten i `docs/` är källan för detaljer; skillsen är den korta sanningen
 
 ## Kedjorna
 
-**Ny eller omskriven sida** (`ny-sida`): seo-geo skriver checklistan, underlag skriver faktabladet, hantverkaren skriver texten, lasare läser, seo-geo kontrollerar mot checklistan, hantverkaren rättar och godkänner, affiliate godkänner om sidan har produkter, koordinatorn bygger, committar, pushar och kollar live.
+**Ny eller omskriven sida** (`ny-sida`): seo-geo skriver checklistan, underlag skriver faktabladet, hantverkaren skriver texten, lasare läser, korrektur läser för grammatik, seo-geo kontrollerar mot checklistan, hantverkaren rättar, lasare läser om vid betyg under 4, hantverkaren godkänner, affiliate godkänner om sidan har produkter, koordinatorn bygger, committar, pushar och kollar live.
 
 **Ny räknare** (`nytt-verktyg`): underlag hämtar formler och konstanter, ux-bygge godkänner underlaget och skriver specen, utvecklare bygger i sex steg med testet först, hantverkaren skriver all text, ux-bygge granskar mot spec och budget, lasare läser, seo-geo och affiliate godkänner sina delar, koordinatorn bygger och publicerar.
 
@@ -54,7 +55,7 @@ Dokumenten i `docs/` är källan för detaljer; skillsen är den korta sanningen
 - Varje agent får ett komplett uppdrag: vad, varifrån, i vilket format, vilka filer som får röras, vilka kontroller som ska köras. Ett uppdrag är aldrig "skriv en artikel om X".
 - Agenter som arbetar parallellt äger var sin uppsättning filer. Ingen rör en annans fil; synpunkter går i rapporten.
 - Bara koordinatorn kör `npm run build`; parallella byggen skriver över varandra.
-- Ett resultat är klart när den Fable-agent som äger området har skrivit "Godkänd av ..." och koordinatorn har byggt grönt.
+- Ett resultat är klart när den agent som äger området har skrivit "Godkänd av ..." och koordinatorn har byggt grönt.
 - Rapporter är korta: filer, resultat av kontroller, det som var osäkert, det nästa agent ska titta på. Inga sammanfattningar av innehållet; det läses.
 - Christian vill inte få frågor om val; teamet beslutar och rapporterar. Rena uppgifter (nycklar, adresser, fakta om honom) meddelas som åtgärdspunkter.
 - Commit på svenska i imperativ, små och ofta, push så att Christian kan se live. Live-koll efter varje push.

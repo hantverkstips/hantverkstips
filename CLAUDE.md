@@ -7,7 +7,7 @@ Affiliate-hub för hantverksverktyg. Organisk trafik via guider, tester, jämfö
 - [docs/PROJEKTBRIEF.md](docs/PROJEKTBRIEF.md) – vad vi bygger, för vem, varför, och vad som räknas som klart
 - [docs/ROST.md](docs/ROST.md) – vem som talar och hur det låter. Bindande för allt publikt innehåll sedan 2026-09-20. den gamla stilguiden ligger som docs/historik-STILGUIDE-till-2026-09-20.md och läses inte
 - [docs/ARKITEKTUR.md](docs/ARKITEKTUR.md) – stack, mappstruktur, datamodell, konventioner
-- [docs/ARBETSFLODE.md](docs/ARBETSFLODE.md) – teamet: fyra agenter på Fable som äger var sitt område, tre arbetare på Opus, sex skills som bär kunskapen
+- [docs/ARBETSFLODE.md](docs/ARBETSFLODE.md) – teamet: fyra agenter som äger var sitt område, fyra arbetare, alla på Opus 5.5, sex skills som bär kunskapen
 
 Kunskapen bor i skills under `.claude/skills/`: `stil-och-design`, `seo-och-geo`, `affiliate`, `astro-och-prestanda`, `ny-sida`, `nytt-verktyg`. Läs den skill som gäller uppgiften innan du börjar; dokumenten i docs/ är detaljerna bakom.
 

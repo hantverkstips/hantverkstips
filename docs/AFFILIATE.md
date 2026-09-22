@@ -10,7 +10,7 @@ Beslut: `/go/` och databasen byggs ändå nätverksoberoende. Tabellen `butiker`
 
 ## 1. Hur en kunskapshub tjänar pengar utan att se ut som en butik
 
-Principen är att produkten kommer efter resonemanget, och att varje produktmodul svarar på en fråga läsaren just fått. En köpknapp som dyker upp innan läsaren vet vad hon behöver är brus. Samma knapp efter meningen "du behöver minst 12 liter per dygn" är service.
+Principen är att produkten kommer efter resonemanget, och att varje produktmodul svarar på en fråga läsaren just fått. Provisionssatsen är densamma oavsett maskin, så en dyrare maskin ger mer pengar; just därför görs urvalet på databladen innan länken läggs på, och när två maskiner är lika bra står den billigare först, på produktsidor och i jämförelser lika väl som i räknarna (fastställt 2026-09-22, samma lydelse som på /om/sa-tjanar-vi-pengar/). En köpknapp som dyker upp innan läsaren vet vad hon behöver är brus. Samma knapp efter meningen "du behöver minst 12 liter per dygn" är service.
 
 ### Projektguide ("bygg altan")
 

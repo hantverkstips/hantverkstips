@@ -160,7 +160,7 @@ const tester = defineCollection({
         omdome: z.string(),
         kopOm: z.string(),
         kopInteOm: z.string(),
-        // Tabellen "Vi mätte" mot den uppgivna siffran. Kolumnen vi är tom på granskningar.
+        // Tabellen "Jag mätte" mot den uppgivna siffran. Kolumnen vi är tom på granskningar.
         // kalla styr den andra värdekolumnens rubrik ("Tillverkaren uppger",
         // "Butiken uppger", "Tredje part mätte"); utan fältet står "Tillverkaren
         // uppger" som förut. markera ger sidans viktigaste värde gul markering:

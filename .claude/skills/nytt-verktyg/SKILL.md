@@ -10,7 +10,7 @@ En räknare är en egen delbar sida med egen sökfras, resultatet i adressen, en
 ## Innan något byggs
 
 - Frasen och volymen står i `docs/SOKORDSANALYS.md`, och SEO och GEO-agenten har sagt att verktyget svarar bättre än en text.
-- Underlaget finns i `docs/briefer/underlag-kalkyl-[slug]-[datum].md`: varje formel, gräns och konstant med källa och datum, räkneexempel att testa mot, och vad som är eget antagande. Underlagsarbetaren (Opus) hämtar, UX och bygge-agenten (Fable) godkänner underlaget innan steg 1. Utan tal med källa byggs inget.
+- Underlaget finns i `docs/briefer/underlag-kalkyl-[slug]-[datum].md`: varje formel, gräns och konstant med källa och datum, räkneexempel att testa mot, och vad som är eget antagande. Underlagsarbetaren hämtar, UX och bygge-agenten godkänner underlaget innan steg 1. Utan tal med källa byggs inget.
 - UX och bygge-agenten skriver specen: fält, standardvärden, gränser, utfall, beskedens innebörd, vilka produkter som visas om några, och vilka artiklar som bäddar in eller länkar.
 
 ## De sex stegen (utvecklaren, Opus, från specen)
@@ -22,7 +22,7 @@ En räknare är en egen delbar sida med egen sökfras, resultatet i adressen, en
 5. **Registret.** En rad i `src/lib/kalkyl/register.ts`: `slug`, `namn` (rubriken på kortet och ankartext i artiklarna, bär frasen), `rad` (en mening med verb som säger vad verktyget gör, som till en granne), `sasong`, `pelare` eller `kategori`.
 6. **Inbäddningen.** Slugen i `MED_FORMULAR` i `src/components/ui/Kalkylator.astro`, `<Kalkylator namn="[slug]" />` i artikeln där läsaren just fått veta vad talet betyder, `<Verktygskort kalkylator="[slug]" />` (ett per sida) i syskonsidor. Ett verktyg utan artikel som bäddar in det är föräldralöst och publiceras inte utan beslut.
 
-## Texten (hantverkaren, Fable)
+## Texten (hantverkaren)
 
 Allt en användare läser skrivs av hantverkaren efter att stegen är byggda: `VERKTYGSNAMN`, `BESKRIVNING`, `titel`, H1, ingress, kortsvaret, beskeden och råden i formelmodulens strängar, formulärets etiketter och hjälptexter, "Därför blev svaret så", "Gör inte det här", "Så räknar jag", antagandetabellens texter, alt och bildtext, Faq, namn och rad i registret. Regler utöver ROST.md:
 

@@ -9,7 +9,7 @@ En sida räknas som klar när den är bättre än ettan på minst tre konkreta p
 
 Sidor planeras i kluster, aldrig en och en. Innan kedjan startar ska sidan stå i en startlista i `docs/SOKORDSANALYS.md` med fras, volym och vinnbarhet, och pelaren ska ha en hubfil.
 
-## Steg 1. Checklista (SEO och GEO-agenten, Fable)
+## Steg 1. Checklista (SEO och GEO-agenten)
 
 Skriver checklistan per sida enligt skillen seo-och-geo avsnitt 6 till `docs/briefer/seo-checklista-[datum]/[grupp].md`. Får delegera SERP-läsningen och teckenräkningen till en Opus-arbetare, men skriver kraven själv. Klart när varje sida har alla tolv punkter och listan "bättre än ettan" har minst tre punkter.
 
@@ -17,7 +17,7 @@ Skriver checklistan per sida enligt skillen seo-och-geo avsnitt 6 till `docs/bri
 
 Ett faktablad per sida i `docs/briefer/faktablad/[samling]-[slug].md`: varje tal med källa, adress och hämtningsdatum, varje tabell, varje intern länk, produkter med slug, och för en ny sida sökanalysen av de fem som rankar. Egen räkning märkt som egen. Ingen prosa från en gammal sida följer med; faktabladet är det enda hantverkaren skriver från. Klart när inget tal saknar källa.
 
-## Steg 3. Texten (hantverkaren, Fable, skriver själv)
+## Steg 3. Texten (hantverkaren, skriver själv)
 
 Läser `docs/ROST.md`, checklistan och faktabladet. Skriver hela sidan: frontmatter, kort svar i blockstil, brödtext, alt och bildtext, Faq. Bäddar in räknare där läsaren just förstått talet. Läser sidan högt och mot två sidor som redan är skrivna i rösten. Kör `npm run kontrollera`. Klart när ROST.md avsnitt 3 till 5 håller och kontrollen är grön.
 
@@ -26,6 +26,10 @@ Regler för filen: bara de fält skillen stil-och-design och `docs/ARKITEKTUR.md
 ## Steg 4. Läsning (Opus-arbetaren läsare)
 
 Läser sidan som en husägare som landat från Google, utan tillgång till docs, tillsammans med tre till fem sidor som redan är skrivna i rösten. Citerar varje mening som inte går att förstå vid första läsningen, varje mönster som återkommer mellan sidorna, varje tankstreck, och betygsätter 1 till 5. Skriver till `docs/briefer/retur-[slug]-[datum].md`. Klart när rapporten är skriven. Läsaren ändrar aldrig i sidan.
+
+## Steg 4b. Korrektur (Opus-arbetaren korrektur)
+
+Läser sidan enbart för svensk grammatik, meningsbyggnad och idiom, och lämnar en tabell med rad, felaktig lydelse och rättad lydelse. Noll fel är kravet för publicering; hantverkaren rättar varje rad eller motiverar varför inte. Det här steget finns för att en text kan klara läsaren på röst och ändå vara felaktig svenska, som om-sidan 2026-09-22.
 
 ## Steg 5. Kontroll mot checklistan (SEO och GEO-agenten)
 
@@ -39,7 +43,7 @@ Gav läsaren under 4 i steg 4 läser läsaren om sidan efter rättningen. Under 
 
 Har sidan produkter eller reklam går den till affiliateagenten för punkt 1 till 7 i skillen affiliate innan steg 7.
 
-**Sidor om Christian** (om-sidan, författarsidan, kontakt, allt som påstår något om honom) publiceras inte utan att han läst dem. Där räcker ingen agent som grind; texten går till honom i chatten, och hans egna formuleringar används ordagrant när han gett dem.
+****Sidor om Christian** (om-sidan, författarsidan, kontakt, allt som påstår något om honom) publiceras inte utan att han läst dem. Där räcker ingen agent som grind; texten går till honom i chatten. Fakta om honom kommer från honom, formuleringarna från hantverkaren: hans meddelanden är instruktioner, inte förlagor.
 
 ## Steg 7. Bygge, commit, push, live (koordinatorn)
 

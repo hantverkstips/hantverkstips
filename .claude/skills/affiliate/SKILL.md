@@ -37,7 +37,7 @@ Lagerstatus visas bara när den är negativ. Ordinarie pris får stå i `blyerts
 
 Produktfokus är ordervärde från cirka 1 500 kr: luftavfuktare, kap- och gersågar, sänksågar, skruvdragare, lasermätare och krysslaser, byggfläktar, kompressorer, borrhammare, fuktmätare som ingång till fuktklustret. Inte virke, inte handverktyg, inte skydd, inte VVS-installation.
 
-Produkten väljs på meriter ur datablad och oberoende källor, aldrig på provision. Provisionen är densamma oavsett maskin inom programmet, och den som väljer produkt gör det innan länken läggs på. Är två maskiner lika bra får den billigare stå först. Valet dokumenteras i `docs/briefer/underlag-*.md` med källa per påstående; specs i databasen fylls därifrån, inte ur feeden.
+Produkten väljs på meriter ur datablad och oberoende källor, aldrig på provision. Provisionssatsen är densamma oavsett maskin, så en dyrare maskin ger mer pengar; just därför görs urvalet på databladen innan länken läggs på. Är två maskiner lika bra står den billigare först, på produktsidor och i jämförelser lika väl som i räknarna. Valet dokumenteras i `docs/briefer/underlag-*.md` med källa per påstående; specs i databasen fylls därifrån, inte ur feeden.
 
 Prioritet per kategori efter sökvolym från körning 2: fuktmätare och hygrometer, kap- och gersåg, krysslaser, lasermätare, byggfläkt, skruvautomat. Nakna produktord slår "bäst i test".
 

@@ -16,22 +16,11 @@ Han pratar som en granne över staketet eller som en pappa som visar hur man gö
 
 Han förklarar varför före hur. Han säger svaret först och motiverar sedan. Han tar ställning: "gör så här, inte så där, och här är varför". När två källor säger olika säger han det, och säger vilken han går på. När han inte vet säger han att han inte vet.
 
-## 1b. Så låter Christian, i hans egna ord
+## 1b. Svenskan
 
-Det här är meningar han själv skrivit, 2026-09-17 till 22. De väger tyngre än varje beskrivning ovan. Läs dem högt innan du skriver, och skriv så.
+Beskrivningen ovan gäller, men före allt annat ska texten vara korrekt svenska: hela meningar med subjekt och predikat, normal ordföljd, rätt kongruens och rätt prepositioner, kommatecken där svenskan har dem. Vardagligt betyder inte talspråk. Christians egna meddelanden i chatten är instruktioner, inte förlagor för hur sidorna ska låta; de är korta och skrivna i stunden, och sidorna är resultatet av uppgiften han gett, skrivna med omsorg.
 
-- "Jag fattar inte, vet du inte ens hur rot fungerar? Det är bara avdragsbart på arbetskostnaden för människorna som utför tjänsten."
-- "Angående bilden så är ju stilen bra, färger osv. Men jag fattar inte riktigt motivet och allt måste inte innehålla den där gula måttstocken."
-- "Hur fungerar det ens, behöver man ha mätt med hygrometer och gjort tejptest för detta?"
-- "Väldigt bra, har vi några fler verktyg vi kan skapa? Det behöver ju inte vara kalkylatorer heller bara."
-- "Det är dock kritiskt att nästa verktyg håller samma stil, samma standard på text, illustration, källor."
-- "Jag bor norr om Stockholm i ett hus vi köpt som renoveringsprojekt. Här har vi renoverat alla rum förutom kök och tvättstuga, byggt en ny altan med pool samt hägnat in tomten åt våra två hundar."
-- "Jag har ingen gedigen utbildning utan startade från min bygg- och anläggningsutbildning från gymnasiet, följt av några år som snickare, följt av betongare och slutligen även rivare under en kort period innan jag sadlade om till annat. Nu gör jag uteslutande hobbyprojekt."
-- "Om jag begär indexering av kategorisidorna, tror du alla undersidor kommer följa med då?"
-
-Det man hör: korta raka frågor, "ju" och "väl" som i tal, "fattar", "sadlade om", saker sagda en gång utan omtag, aldrig en formulering som låter som en annons. Han sammanfattar inte sig själv och recenserar inte sin egen ton. När han förklarar något gör han det med ett exempel, inte med en princip.
-
-Det som därför är fel även om det klarar allt annat: "för dig som inte vill köpa fel", "resonemanget först, produkten sist", "det märks i hur jag skriver". Det är copy, och copy skriver han inte.
+Det som avslöjar slarv och alltid är retur: fragment som stycke, satser utan verb, uttryck som är ihoptryckta så att man måste gissa vad orden syftar på ("inte vill köpa fel"), anglicismer, ord som saknas ("rättar hellre än låter det stå"), och meningar som låter som en annons eller en slogan. En mening ska gå att läsa högt en gång och förstås.
 
 ## 2. Hur det låter
 

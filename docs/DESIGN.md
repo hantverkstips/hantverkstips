@@ -524,7 +524,7 @@ URL `/tester/woods-mrd20/`. En produkt, ett omdöme, egna siffror. Etiketten "Te
 │   Etikett (om "Vårt val")          │
 │   En mening omdöme                 │
 │   Tabell med 3 till 5 värden       │
-│     (Vi mätte / Tillverkaren       │
+│     (Jag mätte / Tillverkaren       │
 │      uppger), bästa markerat       │
 │   Köp om / Köp inte om             │
 │   Pris + Köpknapp                  │
@@ -553,7 +553,7 @@ URL `/tester/woods-mrd20/`. En produkt, ett omdöme, egna siffror. Etiketten "Te
 └────────────────────────────────────┘
 ```
 
-**Omdömesblock.** Ett kort med ram. Mobil: bild överst (4:3, hela kortets bredd), sedan text. Desktop: bild till vänster (40 procent), text till höger. Omdömestabellen har två värdekolumner, "Vi mätte" och "Tillverkaren uppger", så att läsaren ser skillnaden; på en granskning heter kolumnerna "Tredje part mätte" (med källa i tabellfoten) och "Tillverkaren uppger". Det viktigaste uppmätta värdet får gul markering. "Köp om" och "Köp inte om" är två korta stycken med rubrik i etikett-stil, inte listor. Köpknappen är den första på sidan och den sista ligger efter "Så testade vi", ingen däremellan.
+**Omdömesblock.** Ett kort med ram. Mobil: bild överst (4:3, hela kortets bredd), sedan text. Desktop: bild till vänster (40 procent), text till höger. Omdömestabellen har två värdekolumner, "Jag mätte" och "Tillverkaren uppger", så att läsaren ser skillnaden; på en granskning heter kolumnerna "Tredje part mätte" (med källa i tabellfoten) och "Tillverkaren uppger". Det viktigaste uppmätta värdet får gul markering. "Köp om" och "Köp inte om" är två korta stycken med rubrik i etikett-stil, inte listor. Köpknappen är den första på sidan och den sista ligger efter "Så testade vi", ingen däremellan.
 
 Ingen poängskala, inga stjärnor. Omdömet är en mening och två stycken. Stjärnor är det första en läsare slutar lita på.
 

@@ -51,6 +51,25 @@ function markeraKortaCeller(nod) {
  * samma `.prosa` med egna klasser.
  * Ett hast-plugin i Sätteri (Astros markdown-processor), inte rehype.
  */
+/**
+ * Svenska citattecken. Smart punctuation i satteri gör om raka citattecken till
+ * engelska “…”, men svenska skriver ”…” på båda sidor. Därför är quotes
+ * avstängt i features och de raka tecknen byts här i varje textnod, utom i
+ * kod. Ellipser och streck lämnas till satteri (streck är ändå förbjudna i
+ * publik text, se docs/ROST.md). Tillagt 2026-09-22.
+ */
+const svenskaCitat = {
+  name: "hantverkstips:svenska-citat",
+  /** @type {(node: any, ctx: any) => void} */
+  text(node, ctx) {
+    if (typeof node.value !== "string" || !node.value.includes("\"")) return;
+    for (let f = ctx.parent(node); f; f = ctx.parent(f)) {
+      if (f.type === "element" && (f.tagName === "code" || f.tagName === "pre")) return;
+    }
+    ctx.replaceNode(node, { type: "text", value: node.value.replace(/"/g, "”") });
+  },
+};
+
 const tabellBehallare = {
   name: 'hantverkstips:tabell-behallare',
   element: {
@@ -139,7 +158,10 @@ export default defineConfig({
   // MDX ärver markdown-inställningarna (extendMarkdownConfig är på som standard),
   // så pluginet gäller både .md och .mdx.
   markdown: {
-    processor: satteri({ hastPlugins: [tabellBehallare] }),
+    processor: satteri({
+      hastPlugins: [tabellBehallare, svenskaCitat],
+      features: { smartPunctuation: { quotes: false } },
+    }),
   },
   vite: {
     plugins: [tailwindcss()],

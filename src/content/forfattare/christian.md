@@ -1,11 +1,11 @@
 ---
 namn: Christian
 yrke: Snickare och betongare i grunden, hobbybyggare i dag
-presentation: Renoverar ett hus norr om Stockholm rum för rum och skriver ner det som går att räkna på.
+presentation: Renoverar ett hus norr om Stockholm, rum för rum, och skriver ner det som går att räkna på.
 utkast: false
 ---
 
-Jag gick bygg och anläggning på gymnasiet, jobbade några år som snickare och sedan som betongarbetare, med en kort tid som rivare innan jag bytte bana.
+Jag gick bygg- och anläggningsprogrammet på gymnasiet, jobbade några år som snickare, sedan som betongarbetare och en kort tid som rivare innan jag bytte bana.
 
 Bygga gör jag numera hemma, på kvällar och helger, med två hundar och ett litet barn runt benen.
 
