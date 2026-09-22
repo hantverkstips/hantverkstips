@@ -1,0 +1,15 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "headers": [
+    {
+      "source": "/_astro/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
+  ],
+  "redirects": [
+    { "source": "/inomhus/dreva-fonster/", "destination": "/fasad/dreva-fonster/", "statusCode": 301 },
+    { "source": "/inomhus/slipa-bankskiva/", "destination": "/kok/slipa-bankskiva/", "statusCode": 301 }
+  ]
+}

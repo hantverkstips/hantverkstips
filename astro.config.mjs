@@ -126,9 +126,10 @@ export default defineConfig({
   // Canonical måste peka på adressen som svarar 200. Samma värde som SAJT i
   // src/lib/strukturdata.ts. Se docs/ARKITEKTUR.md.
   site: 'https://www.hantverkstips.se',
-  // Flyttade artiklar omdirigeras med serverrutter i src/pages/inomhus/, inte med
-  // redirects här: adaptern skriver regeln utan avslutande snedstreck och den
-  // matchar då aldrig med trailingSlash 'always' (2026-09-17).
+  // Flyttade artiklar omdirigeras med 301 i vercel.json, inte med redirects här:
+  // adaptern skriver regeln utan avslutande snedstreck och den matchar då aldrig
+  // med trailingSlash 'always' (2026-09-17). Se
+  // docs/briefer/spec-cache-astro-2026-09-22.md.
   trailingSlash: 'always',
   integrations: [mdx(), sitemap({ filter: iSitemap })],
   // Två innehållsfiler med samma id (filnamn) eller två sidor på samma adress
