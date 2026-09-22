@@ -1,105 +1,64 @@
 # Arbetsflöde
 
-Hur teamet av agenter arbetar. Christian är beställare och sista instans. Huvudsessionen (Claude i terminalen) är koordinator: tar emot uppdrag, väljer agenter, driver arbetet till klart.
+Hur teamet arbetar sedan 2026-09-22. Christian är beställare och sista instans. Huvudsessionen (Claude i terminalen) är koordinator: tar emot uppdrag, kör kedjorna i skillsen, startar agenterna, bygger, committar, pushar och verifierar live. Det som gällde före 2026-09-22 (skribent, chefredaktör, seniorer och utförare) står i git-historiken och gäller inte.
 
-## Två nivåer
+## Principen
 
-**Seniorer** (körs på huvudmodellen): kravställer, granskar, säger nej. De skriver briefer och gör bedömningar, men producerar sällan slutmaterial själva.
+Tre nivåer. Christian delegerar till koordinatorn. Koordinatorn delegerar till fyra agenter på Fable som var och en äger ett område och ansvarar för kvaliteten i det. De delegerar det tunga till arbetare på Opus, med instruktioner så exakta att resultatet inte kan bli fel, och godkänner det innan det räknas som klart. En underagent kan inte starta agenter själv, så kedjan går genom koordinatorn: Fable-agenten skriver uppdraget och kraven, koordinatorn startar arbetaren, och resultatet går tillbaka till samma Fable-agent för ja eller retur.
 
-**Utförare**: bygger komponenter och kör analyser (utvecklaren, på Opus) eller skriver sidor (skribenten, på huvudmodellen sedan 2026-09-16, eftersom rösten är sajtens viktigaste tillgång). Arbetar alltid från ett komplett uppdrag. Levererar aldrig direkt till publicering.
+Kunskapen bor i skills, inte i agenterna. En agent är kort och säger vem den är, vad den gör själv, vad den delegerar och hur den svarar. Skillen säger hur saken görs.
 
-| Roll | Nivå | Fil |
-|---|---|---|
-| SEO-strateg | Senior | `.claude/agents/seo-strateg.md` |
-| Teknisk ansvarig | Senior | `.claude/agents/teknisk-ansvarig.md` |
-| Produktexpert | Senior | `.claude/agents/produktexpert.md` |
-| UX- och designansvarig | Senior | `.claude/agents/designansvarig.md` |
-| Affiliateansvarig | Senior | `.claude/agents/affiliateansvarig.md` |
-| Chefredaktör | Senior | `.claude/agents/chefredaktor.md` |
-| Analytiker | Senior | `.claude/agents/analytiker.md` |
-| Skribent | Utförare | `.claude/agents/skribent.md` |
-| Utvecklare | Utförare | `.claude/agents/utvecklare.md` |
+## Agenterna
 
-Verktygsutveckling (kalkylatorer, feed) leds av teknisk ansvarig med utvecklaren som utförare.
+| Agent | Modell | Äger | Delegerar till |
+|---|---|---|---|
+| `hantverkaren` | Fable | All publik text, i Christians röst. Skriver själv. | `underlag` (faktablad, sökanalys), `lasare` (läsning) |
+| `seo-geo` | Fable | Sökordsanalys, kluster, en fras per sida, checklistan per sida, metadata, strukturerad data, intern länkning, GEO | `underlag` (SERP-läsning, volymer), arbetare för mekaniska kontroller |
+| `ux-bygge` | Fable | Designsystem, sidmallar, räknarnas gränssnitt och formler, illustrationer, prestanda, teknisk kvalitet | `utvecklare` (kod, SVG), arbetare för mätningar |
+| `affiliate` | Fable | Reklammärkning, länkar, produktplacering, produktval mot meriter, Adtraction och Proffsmagasinet, intäkt per sida | `underlag` (produktfakta), `utvecklare` (feed, import) |
+| `utvecklare` | Opus | Bygger från spec: komponenter, sidor, formelmoduler, tester, skript, SVG | |
+| `lasare` | Opus | Läser färdiga sidor som en husägare, utan regler, och rapporterar meningar och mönster | |
+| `underlag` | Opus | Hämtar fakta med källa: faktablad, sökanalys, datablad, produktfakta, räknarunderlag | |
 
-## Grundloopen
+Fable där omdöme om röst, avvägning och kvalitet krävs. Opus där uppgiften är avgränsad och går att kontrollera med tester, checklistor eller läsning. Aldrig "inherit".
 
-Två granskningspunkter per leverans, aldrig fler. Beslutat av Christian 2026-09-16 efter att första omgången tog timmar för små saker.
+## Skillsen
 
-1. **Uppdrag.** Koordinatorn ger utföraren hela uppdraget från start, med alla krav (STILGUIDE, SEO-regler, design, källor, vad som är förbjudet). Inga mellanled, inga separata underlagsagenter.
-2. **Utförande.** Utföraren levererar komplett arbete i ett svep och kontrollerar det själv innan rapport.
-3. **En granskning.** Koordinatorn, eller en granskare med alla hattar, granskar allt på en gång och samlar alla anmärkningar i en enda retur med konkreta ändringskrav. "Stryk stycke tre, det är fyllnad" slår "gör texten stramare".
-4. **Rättning.** Utföraren rättar allt i returen.
-5. **Slutgranskning.** Bygget grönt, en sista titt, commit. Kvarstår fel efter slutgranskningen var uppdraget fel skrivet; koordinatorn skriver om det i stället för att starta ett tredje varv.
+| Skill | Vad den bär |
+|---|---|
+| `stil-och-design` | Rösten (pekar på ROST.md), designsystemet, sidmallarna, illustrationsreglerna, hur text och bild bedöms |
+| `seo-och-geo` | Grundreglerna, metadata, strukturerad data, intern länkning, GEO, checklistmallen per sida |
+| `affiliate` | Juridiken, var produkter får stå, produktval, recensionsriktlinjerna, nätverket, mätning, granskningspunkterna |
+| `astro-och-prestanda` | Konventioner, prestandabudget och hur den mäts, rendering och cache, bilder och SVG, teknisk SEO i kod, kontroller före leverans |
+| `ny-sida` | Kedjan för en ny eller omskriven sida, steg för steg, med vad som stoppar |
+| `nytt-verktyg` | Kedjan för en räknare, de sex stegen, textreglerna, bildreglerna, godkännandet |
 
-## Rösten sedan 2026-09-20
+Dokumenten i `docs/` är källan för detaljer; skillsen är den korta sanningen som agenterna faktiskt läser. Ändras en regel ändras skillen och dokumentet i samma commit.
 
-Beslutat av Christian efter läsbarhetsutredningen (`docs/briefer/utredning-lasbarhet-2026-09-20.md`). All publik text skrivs av **hantverkaren** (`.claude/agents/hantverkaren.md`, alltid Fable) i Christians egen röst enligt `docs/ROST.md`. Skribenten och chefredaktörens stilgranskning är ersatta; STILGUIDE.md läses inte längre av den som skriver. Kvar som stöd: SEO-strategen ger en checklista per sida före skrivningen och läser den färdiga sidan mot samma lista efteråt, produktexperten när ett nytt faktum behövs, och en läsare efteråt som jämför sidan med de sidor som redan är skrivna i den nya rösten (aldrig med gamla sidor). Hantverkaren skriver från ett faktablad, inte från den gamla prosan, så att den gamla dialekten inte härmas.
+## Kedjorna
 
-```
-SEO-strateg         → checklista per sida i docs/briefer/seo-checklista-[datum]/
-Hantverkaren (Fable)→ faktablad ur den gamla sidan, ny text, högläsning, npm run kontrollera
-Läsare              → jämför mot redan omskrivna sidor, retur per sida
-SEO-strateg         → läser den färdiga sidan mot checklistan
-Koordinator         → npm run build, commit, push
-```
+**Ny eller omskriven sida** (`ny-sida`): seo-geo skriver checklistan, underlag skriver faktabladet, hantverkaren skriver texten, lasare läser, seo-geo kontrollerar mot checklistan, hantverkaren rättar och godkänner, affiliate godkänner om sidan har produkter, koordinatorn bygger, committar, pushar och kollar live.
 
-## Flöde för en innehållsomgång (till 2026-09-20)
+**Ny räknare** (`nytt-verktyg`): underlag hämtar formler och konstanter, ux-bygge godkänner underlaget och skriver specen, utvecklare bygger i sex steg med testet först, hantverkaren skriver all text, ux-bygge granskar mot spec och budget, lasare läser, seo-geo och affiliate godkänner sina delar, koordinatorn bygger och publicerar.
 
-Sidor produceras i omgångar om fyra till åtta, en skribent per sida, alla parallellt. Skribenten gör hela kedjan själv.
+**Kodändring**: ux-bygge specar, utvecklare bygger, ux-bygge godkänner mot spec, budget och 375 px, koordinatorn bygger och publicerar.
 
-```
-Koordinator         → uppdrag per sida: sökord, typ, pelare, nivå, produkter i databasen, källor att
-                      utgå från, vilka andra sidor i omgången som skrivs samtidigt (för länkar och
-                      gränsdragning)
-Skribent (huvudmod.)→ sökanalys av ettan (WebSearch, WebFetch), listan "bättre än ettan" (minst tre
-                      punkter), faktaunderlag med källa per påstående, texten, illustrationerna som
-                      SVG-källor, npm run illustrationer, npm run kontrollera. Allt i ett svep.
-                      Rör bara sina egna filer och föreslår inlänkar från hubbar i rapporten.
-Granskare           → EN agent med alla fyra hattar (redaktion, SEO, affiliate, design) läser alla
-                      sidor i omgången samtidigt och skriver en retur per sida i docs/briefer/
-Skribenter          → rättar sin sida
-Koordinator         → lägger in inlänkar från hubbar, npm run build, skärmdumpar, commit, push
-```
+**Efterläsning över flera sidor** (efter varje omgång): lasare läser alla nya sidor i följd mot sidor som redan är i rösten, hantverkaren rättar mönstren. Det är steget som hittade dialekten 2026-09-20 och det görs alltid.
 
-Underlaget (sökanalys och fakta) sparas som `docs/briefer/underlag-[slug]-[datum].md` så att nästa uppdatering av sidan kan utgå från det.
+## Det mekaniska görs av skript
 
-## Flöde för ett nytt verktyg (kalkylator)
+`npm run kontrollera` (ingår i bygget) stoppar på tankstreck, förbjudna fraser, kortsvar som inte är i blockstil, tom alt, döda länkar, länkar till utkast, dubbla slugs och fel undermapp, och varnar för titel över 60, beskrivning utanför 120 till 155, alt och bildtext över 125, föräldralösa sidor, och räkneorden "alltså", "avgör" och "innan du" över gränsen per sida. Ingen agent räknar tecken. Räknarnas tester (`scripts/test-kalkyl-*.mjs`) låser tal och synliga strängar. Budgeten mäts med kommandona i skillen astro-och-prestanda.
 
-```
-Produktexpert       → vilken beräkning, vilka indata, vilka formler, källor för formlerna
-SEO-strateg         → sökfras, hur verktyget länkas från guider
-Designansvarig      → skiss av gränssnittet, tillstånd (tomt, ifyllt, fel)
-Teknisk ansvarig    → teknisk spec: komponent, props, data från Supabase eller statiskt
-Utvecklare          → implementation
-Teknisk ansvarig    → kodgranskning, prestandabudget
-Designansvarig      → visuell granskning mot skissen
-Chefredaktör        → texten i och runt verktyget
-Koordinator         → commit
-```
+## Regler för alla
 
-## Checklista före commit
-
-Koordinatorn bockar av. Alla punkter, varje gång.
-
-- [ ] Text godkänd av chefredaktör (stil och fakta)
-- [ ] Bättre än ettan: varje punkt i briefens lista finns i sidan (chefredaktör + SEO-strateg)
-- [ ] Beställda illustrationer och verktyg finns på plats
-- [ ] Struktur och metadata godkänd av SEO-strateg
-- [ ] Länkar och märkning godkänd av affiliateansvarig
-- [ ] `npm run build` grönt
-- [ ] Prestandabudget hålls (teknisk ansvarig)
-- [ ] Nya komponenter visuellt godkända (designansvarig)
-- [ ] Commit-meddelande på svenska, imperativ
-
-## Hur koordinatorn anropar agenter
-
-Alla agenter anropas med ett komplett uppdrag och läser själva `CLAUDE.md`, `docs/ROST.md` och de dokument uppdraget pekar på. Ett uppdrag är aldrig "skriv en artikel om X"; det innehåller sökord, typ, nivå, produkter, källor och gränsdragning mot andra sidor.
-
-Agenter som arbetar parallellt äger var sin uppsättning filer. Ingen rör en annans fil. Bygget (`npm run build`) körs bara av koordinatorn, eftersom parallella byggen skriver över varandra.
-
-Christian vill inte få frågor om val; teamet beslutar och rapporterar. Rena uppgifter (nycklar, adresser) meddelas som åtgärdspunkter.
+- Varje agent får ett komplett uppdrag: vad, varifrån, i vilket format, vilka filer som får röras, vilka kontroller som ska köras. Ett uppdrag är aldrig "skriv en artikel om X".
+- Agenter som arbetar parallellt äger var sin uppsättning filer. Ingen rör en annans fil; synpunkter går i rapporten.
+- Bara koordinatorn kör `npm run build`; parallella byggen skriver över varandra.
+- Ett resultat är klart när den Fable-agent som äger området har skrivit "Godkänd av ..." och koordinatorn har byggt grönt.
+- Rapporter är korta: filer, resultat av kontroller, det som var osäkert, det nästa agent ska titta på. Inga sammanfattningar av innehållet; det läses.
+- Christian vill inte få frågor om val; teamet beslutar och rapporterar. Rena uppgifter (nycklar, adresser, fakta om honom) meddelas som åtgärdspunkter.
+- Commit på svenska i imperativ, små och ofta, push så att Christian kan se live. Live-koll efter varje push.
 
 ## Eskalering
 
-Oenighet mellan seniorer (SEO vill ha en rubrik, redaktören en annan) avgörs av koordinatorn, med lutning åt redaktören i textfrågor och SEO i strukturfrågor. Om det påverkar strategi (ny kategori, ändrad målgrupp) går det till Christian.
+Oenighet mellan agenter avgörs av koordinatorn: hantverkaren vinner i textfrågor, seo-geo i struktur, ux-bygge i prestanda och teknik, affiliate i juridik. Påverkar det strategi (ny pelare, ändrad målgrupp, ny butik) går det till Christian.

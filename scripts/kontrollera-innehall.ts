@@ -15,6 +15,9 @@
  *   - intern länk (frontmatter eller brödtext) till en adress som inte finns,
  *     utan avslutande snedstreck, eller direkt till /go/
  *   - bild i frontmatter som pekar på en fil som saknas
+ *   - tankstreck (– eller —) i publik text, en fras ur listan i docs/ROST.md
+ *     avsnitt 3, kortSvar som inte är i blockstil (|), och <Illustration> utan alt
+ *     (tillagt 2026-09-22: det mekaniska i rösten räknas här, inte av en agent)
  *
  * Varnar (bygget går vidare) vid:
  *   - publicerad artikel, test eller jämförelse utan inlänk från en annan
@@ -24,6 +27,9 @@
  *     har fler sidor.
  *   - publicerad sida vars seoTitle (eller title när seoTitle saknas) är över
  *     60 tecken, eller vars description ligger utanför 120 till 155 tecken
+ *   - alt på <Illustration> eller bildtext utan bildAlt över 125 tecken, och
+ *     räkneorden "alltså", "avgör"/"styr" och "innan du" över gränsen per sida
+ *   - räknarnas BESKRIVNING utanför spannet och alt över 125 i src/pages/rakna/
  *
  * Varningarna om titel och beskrivning gäller sökresultatet, inte schemat.
  *
@@ -306,6 +312,116 @@ for (const f of filer) {
         `description är ${beskrivning.length} tecken, ${riktning} spannet ${MIN_DESCRIPTION} till ${MAX_DESCRIPTION}`,
       );
     }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Texten som den ser ut för läsaren. Tillagt 2026-09-22 efter
+// läsbarhetsutredningen: det mekaniska i docs/ROST.md avsnitt 3 ska räknas av
+// ett skript, inte av en agent. Fel stoppar bygget, räkneorden varnar.
+
+/** Fraser ur ROST.md avsnitt 3 som avslöjar maskintext. Ett fall är fel. */
+const FORBJUDNA_FRASER: RegExp[] = [
+  /\blåt oss\b/i,
+  /\bdyk(a)? ner i\b/i,
+  /\butforska\b/i,
+  /\bnyckeln till\b/i,
+  /\bsömlös/i,
+  /\brobust/i,
+  /\boptimal/i,
+  /\bperfekt för\b/i,
+  /\bidealisk för\b/i,
+  /\bdet är viktigt att (notera|nämna)\b/i,
+  /\bdet är värt att nämna\b/i,
+  /\bkom ihåg att\b/i,
+  /\bhåll i minnet\b/i,
+  /\bsammanfattningsvis\b/i,
+  /\bavslutande tankar\b/i,
+  /\bi slutändan\b/i,
+  /\bnär allt kommer omkring\b/i,
+  /\bspelförändrare\b/i,
+  /\binte bara \S+ utan (också|även)\b/i,
+  /\bvare sig det gäller\b/i,
+  /\bi den här guiden går vi igenom\b/i,
+  /\blycka till med\b/i,
+];
+/** Tankstreck som pausmarkör. Bindestreck och minus i tal är tillåtna. */
+const TANKSTRECK = /[–—]/;
+/** Alt-text och bildtext som blir alt: längre än så här klipps av skärmläsare och sökmotorer. */
+const MAX_ALT = 125;
+/** Räkneord: över gränsen per sida låter det som en mall. Varning, inte fel. */
+const RAKNEORD: { namn: string; monster: RegExp; max: number }[] = [
+  { namn: '"alltså"', monster: /\balltså\b/gi, max: 6 },
+  { namn: '"avgör" eller "styr"', monster: /\b(avgör|styr)\b/gi, max: 5 },
+  { namn: '"innan du"', monster: /\binnan du\b/gi, max: 5 },
+];
+
+/** Den publika texten i en fil: brödtexten utan kodkommentarer, plus de fält som syns. */
+function publikText(f: Fil): string {
+  const falt = ['title', 'seoTitle', 'description', 'ingress', 'kortSvar', 'bildtext', 'omdome', 'kopOm', 'kopInteOm']
+    .map((k) => strang(f.data[k]) ?? '')
+    .join('\n');
+  const body = f.body.replace(/\{\/\*[\s\S]*?\*\/\}/g, '').replace(/<!--[\s\S]*?-->/g, '');
+  return `${falt}\n${body}`;
+}
+
+for (const f of filer) {
+  if (f.utkast || !f.url) continue;
+  const text = publikText(f);
+
+  if (TANKSTRECK.test(text)) {
+    const rad = text.split('\n').findIndex((r) => TANKSTRECK.test(r)) + 1;
+    felet(f.sokvag, `innehåller ett tankstreck (– eller —). Komma, punkt eller ny mening. Se docs/ROST.md avsnitt 3 (första träffen på textrad ${rad})`);
+  }
+  for (const fras of FORBJUDNA_FRASER) {
+    const m = text.match(fras);
+    if (m) felet(f.sokvag, `innehåller "${m[0]}", en fras ur listan i docs/ROST.md avsnitt 3`);
+  }
+
+  // Kortsvaret ska ha stycken: blockstil | bevarar radbrytningarna, >- viker ihop dem.
+  const raKortsvar = readFileSync(join(ROT, f.sokvag), 'utf8').match(/^kortSvar:\s*(>-?|\|-?)?/m);
+  if (raKortsvar && raKortsvar[1] !== undefined && raKortsvar[1].startsWith('>')) {
+    felet(f.sokvag, 'kortSvar skrivs i blockstil med | så att styckena når pappret; >- viker ihop radbrytningarna');
+  }
+
+  const bildAlt = strang(f.data.bildAlt);
+  const bildtext = strang(f.data.bildtext);
+  if (bildAlt === undefined && bildtext !== undefined && bildtext.length > MAX_ALT) {
+    varna(f.sokvag, `bildtext är ${bildtext.length} tecken och blir huvudbildens alt. Sätt bildAlt (högst ${MAX_ALT} tecken) eller korta bildtexten`);
+  }
+  for (const m of f.body.matchAll(/<Illustration\b[^>]*\balt="([^"]*)"/g)) {
+    const alt = m[1] ?? '';
+    if (alt.length > MAX_ALT) varna(f.sokvag, `<Illustration> har alt på ${alt.length} tecken, högst ${MAX_ALT}. Detaljerna går i bildtext`);
+    if (alt.length === 0) felet(f.sokvag, '<Illustration> har tom alt. Skriv vad bilden visar');
+  }
+
+  for (const r of RAKNEORD) {
+    const antal = (text.match(r.monster) ?? []).length;
+    if (antal > r.max) varna(f.sokvag, `${r.namn} ${antal} gånger, över ${r.max}. Läs docs/ROST.md avsnitt 3 om röstens tics`);
+  }
+}
+
+// Räknarnas sidor: beskrivning och alt, det som syns i sökresultat och för skärmläsare.
+const RAKNA = join(ROT, 'src', 'pages', 'rakna');
+if (existsSync(RAKNA)) {
+  for (const namn of readdirSync(RAKNA)) {
+    if (!namn.endsWith('.astro') || namn === 'index.astro') continue;
+    const sokvag = `src/pages/rakna/${namn}`;
+    const kod = readFileSync(join(RAKNA, namn), 'utf8');
+    const beskrivning = kod.match(/const BESKRIVNING\s*=\s*`([^`]*)`/)?.[1] ?? kod.match(/const BESKRIVNING\s*=\s*'([^']*)'/)?.[1];
+    if (beskrivning !== undefined) {
+      const ren = beskrivning.replace(/\$\{[^}]*\}/g, '2026');
+      if (ren.length < MIN_DESCRIPTION || ren.length > MAX_DESCRIPTION) {
+        varna(sokvag, `BESKRIVNING är ${ren.length} tecken, utanför spannet ${MIN_DESCRIPTION} till ${MAX_DESCRIPTION}`);
+      }
+    }
+    for (const m of kod.matchAll(/<Illustration\b[^>]*\balt="([^"]*)"/g)) {
+      const alt = m[1] ?? '';
+      if (alt.length > MAX_ALT) varna(sokvag, `<Illustration> har alt på ${alt.length} tecken, högst ${MAX_ALT}`);
+    }
+    // Synlig text i mallen: allt mellan > och < som inte är kod. Tankstreck är fel även här.
+    const mall = kod.replace(/^[\s\S]*?\n---\n[\s\S]*?\n---\n/, '').replace(/\{\/\*[\s\S]*?\*\/\}/g, '');
+    if (TANKSTRECK.test(mall)) felet(sokvag, 'mallen innehåller ett tankstreck (– eller —) i synlig text');
   }
 }
 

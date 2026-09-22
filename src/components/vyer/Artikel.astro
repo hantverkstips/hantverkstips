@@ -185,7 +185,7 @@ const strukturdata = artikelData({
             {arSvg ? (
               <img
                 src={bild.src}
-                alt={d.bildtext ?? ''}
+                alt={d.bildAlt ?? d.bildtext ?? ''}
                 width={bild.width}
                 height={bild.height}
                 fetchpriority="high"
@@ -195,7 +195,7 @@ const strukturdata = artikelData({
             ) : (
               <Image
                 src={bild}
-                alt={d.bildtext ?? ''}
+                alt={d.bildAlt ?? d.bildtext ?? ''}
                 widths={[375, 704]}
                 sizes="(min-width: 1024px) 704px, 100vw"
                 loading="eager"

@@ -5,9 +5,11 @@ Affiliate-hub för hantverksverktyg. Organisk trafik via guider, tester, jämfö
 ## Läs först
 
 - [docs/PROJEKTBRIEF.md](docs/PROJEKTBRIEF.md) – vad vi bygger, för vem, varför, och vad som räknas som klart
-- [docs/ROST.md](docs/ROST.md) – vem som talar och hur det låter. Bindande för allt publikt innehåll sedan 2026-09-20. STILGUIDE.md är ersatt och läses inte av den som skriver
+- [docs/ROST.md](docs/ROST.md) – vem som talar och hur det låter. Bindande för allt publikt innehåll sedan 2026-09-20. den gamla stilguiden ligger som docs/historik-STILGUIDE-till-2026-09-20.md och läses inte
 - [docs/ARKITEKTUR.md](docs/ARKITEKTUR.md) – stack, mappstruktur, datamodell, konventioner
-- [docs/ARBETSFLODE.md](docs/ARBETSFLODE.md) – hur teamet av agenter samarbetar och validerar
+- [docs/ARBETSFLODE.md](docs/ARBETSFLODE.md) – teamet: fyra agenter på Fable som äger var sitt område, tre arbetare på Opus, sex skills som bär kunskapen
+
+Kunskapen bor i skills under `.claude/skills/`: `stil-och-design`, `seo-och-geo`, `affiliate`, `astro-och-prestanda`, `ny-sida`, `nytt-verktyg`. Läs den skill som gäller uppgiften innan du börjar; dokumenten i docs/ är detaljerna bakom.
 
 ## Stack
 
@@ -22,8 +24,9 @@ Astro (content collections, MDX) · React-öar för interaktiva verktyg · Tailw
 5. Inget JavaScript till klienten utan att en React-ö faktiskt behövs. Statisk HTML är standard.
 6. Kör `npm run build` innan något räknas som klart. Bygget ska vara grönt.
 7. Commit ofta, små commits, på svenska, i imperativ: "Lägg till guide om avfuktare i källare".
-8. Varje sida ska vara bättre än den som rankar högst på frasen just nu. Briefen innehåller SEO-strategens analys av ettan och en lista över vad vår sida har som ettan saknar. Saknas en punkt i den färdiga sidan publiceras den inte.
+8. Varje sida ska vara bättre än den som rankar högst på frasen just nu. SEO-checklistan innehåller analysen av ettan och en lista över vad vår sida har som ettan saknar. Saknas en punkt i den färdiga sidan publiceras den inte.
 9. Sidor planeras i kluster, aldrig en och en. Illustrationer görs när de hjälper läsaren. Verktyg byggs som egna delbara sidor under /rakna/ med egen sökfras, förhandsvisningsbild och resultat i länken.
+10. Det mekaniska räknas av `npm run kontrollera`, inte av agenter: längder, tankstreck, förbjudna fraser, alt, länkar, räkneord. Rösten bedöms med örat av läsaren och hantverkaren.
 
 ## Kommandon
 

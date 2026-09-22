@@ -86,6 +86,9 @@ const artikel = ({ image }: SchemaContext) =>
     // Eget foto eller egen illustration. Aldrig leverantörsbild. Ligger under "Kort svar".
     bild: image().optional(),
     bildtext: z.string().optional(),
+    // Alt-text för huvudbilden, högst 125 tecken. Utelämnad används bildtext,
+    // som då bör hållas kort. Tillagt 2026-09-22 så att bildtexten får vara lång.
+    bildAlt: z.string().max(125).optional(),
     // Källförteckning, visas sist på sidan.
     kallor: z.array(z.object({ titel: z.string(), url: z.string().url().optional() })).default([]),
     // Utkast visas i npm run dev, utesluts i npm run build. Se src/lib/innehall.ts.

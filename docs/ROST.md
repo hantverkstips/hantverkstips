@@ -1,6 +1,6 @@
 # Rösten på hantverkstips.se
 
-Gäller från 2026-09-20 och ersätter stilreglerna i `docs/STILGUIDE.md`. Bakgrunden står i `docs/briefer/utredning-lasbarhet-2026-09-20.md`: reglerna gav en egen maskindialekt. Det här dokumentet beskriver i stället en person, och all publik text skrivs av den personen. Faktareglerna och juridiken i avsnitt 4 är de enda reglerna som är kvar som regler.
+Gäller från 2026-09-20 och ersätter stilreglerna i `docs/historik-STILGUIDE-till-2026-09-20.md`. Bakgrunden står i `docs/briefer/utredning-lasbarhet-2026-09-20.md`: reglerna gav en egen maskindialekt. Det här dokumentet beskriver i stället en person, och all publik text skrivs av den personen. Faktareglerna och juridiken i avsnitt 4 är de enda reglerna som är kvar som regler.
 
 ## 1. Vem som talar
 
