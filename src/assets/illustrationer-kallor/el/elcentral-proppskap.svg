@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Två centraler sitter bredvid varandra, sedda rakt framifrån och lika stora. Till vänster sitter ett proppskåp med åtta propphuvar i två rader och ingen jordfelsbrytare. Till höger sitter en elcentral med en jordfelsbrytare och tolv automatsäkringar i två rader. En röd ring markerar jordfelsbrytaren i den nya centralen.">
+  <!-- Anteckningsboken. Blyerts 2 px för båda centralerna, propphuvarna med skyddsglaset,
+       jordfelsbrytaren och automatsäkringarna. Snickarpenna 2,5 px för ringen runt
+       jordfelsbrytaren i den nya centralen, som är den enda saken som pekar. Inget nyckeltal
+       och ingen tumstock: bildens jobb är att läsaren känner igen sin central.
+       Ingen skala. Inga märken, inga kablar, ingen pil mellan centralerna.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts: proppskåpet med propphuvarna, elcentralen med jordfelsbrytaren och automatsäkringarna -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M60,64q115.4-3.5 230.8,0M288,61.2q-3.1,102.4 0,204.8M290,262q-115,3.4-230,0M64,264.4q3.1-102.2 0-204.4M122.8,134.8 A20,20 0 0,1 84.7,122.8 A20.5,20.5 0 1,1 122.5,137.5M96.5,130.7 A8,8 0 0,1 111.3,124.6 A8.5,8.5 0 1,1 95.2,128.3M153,148 A20,20 0 0,1 149.2,108.2 A20.5,20.5 0 1,1 150.5,148.7M146.5,122.1 A8,8 0 0,1 157.9,133.4 A8.5,8.5 0 1,1 148.3,120M182,136.8 A20,20 0 0,1 217.1,117.7 A20.5,20.5 0 1,1 180.3,134.7M203.3,120.7 A8,8 0 0,1 197.4,135.6 A8.5,8.5 0 1,1 205.9,121.5M232.9,114.9 A20,20 0 0,1 264.2,139.8 A20.5,20.5 0 1,1 234.1,112.5M256,128.1 A8,8 0 0,1 240,128.6 A8.5,8.5 0 1,1 256.3,130.9M110.2,181 A20,20 0 0,1 99.5,219.5 A20.5,20.5 0 1,1 112.8,181.2M107,207.4 A8,8 0 0,1 100.4,192.9 A8.5,8.5 0 1,1 104.6,208.8M171.9,198.3 A20,20 0 0,1 132.3,203.5 A20.5,20.5 0 1,1 172.8,200.8M146.3,205.7 A8,8 0 0,1 157.1,193.9 A8.5,8.5 0 1,1 144.2,204M209.4,217.7 A20,20 0 0,1 189.1,183.2 A20.5,20.5 0 1,1 207.4,219.4M192.6,197 A8,8 0 0,1 207.7,202.3 A8.5,8.5 0 1,1 193.2,194.4M235.4,215.5 A20,20 0 0,1 259.2,183.4 A20.5,20.5 0 1,1 233,214.4M247.9,192 A8,8 0 0,1 248.8,208 A8.5,8.5 0 1,1 250.6,191.6M312,64q117.4-3.5 234.8,0M544,61.2q-3.1,102.4 0,204.8M546,262q-117,3.5-234,0M316,264.4q3.1-102.2 0-204.4M329,96q50.6-1.5 101.1,0M428,93.9q-1,34.5 0,69.1M429.5,160q-50.2,1.5-100.5,0M332,161.8q1-34.4 0-68.8M344,106q9.7-0.6 19.4,0M362,104.6q-0.7,24.7 0,49.4M363,152q-9.5,0.6-19,0M346,153.2q0.7-24.6 0-49.2M347.5,110q6.3-0.6 12.6,0M359,109q-0.6,10.3 0,20.5M359.8,128q-6.1,0.6-12.2,0M349,128.9q0.6-10.2 0-20.4M396,104q11.7-0.6 23.4,0M418,102.6q-0.6,11.7 0,23.4M419,124q-11.5,0.6-23,0M398,125.2q0.6-11.6 0-23.2M429,96q53-0.8 106,0M535,160q-53-0.8-106,0M436,93q1.1,35 0,70M460,93q-1.1,35 0,70M484,93q1.1,35 0,70M508,93q-1.1,35 0,70M532,93q1,35 0,70M443,106q4.9,0.6 9.7,0M452,105.3q0.7,22.9 0,45.7M452.5,150q-4.7-0.6-9.5,0M444,150.6q-0.7-22.8 0-45.6M444,110q4,0.6 8,0M444,126q4-0.6 8,0M467,106q4.9,0.6 9.7,0M476,105.3q0.7,22.9 0,45.7M476.5,150q-4.7-0.6-9.5,0M468,150.6q-0.7-22.8 0-45.6M468,110q4,0.6 8,0M468,126q4-0.6 8,0M491,106q4.9,0.6 9.7,0M500,105.3q0.7,22.9 0,45.7M500.5,150q-4.7-0.6-9.5,0M492,150.6q-0.7-22.8 0-45.6M492,110q4,0.6 8,0M492,126q4-0.6 8,0M515,106q4.9,0.6 9.7,0M524,105.3q0.7,22.9 0,45.7M524.5,150q-4.7-0.6-9.5,0M516,150.6q-0.7-22.8 0-45.6M516,110q4,0.6 8,0M516,126q4-0.6 8,0M329,184q99,1.6 198,0M527,248q-99,1.6-198,0M332,181q-1.1,35 0,70M356,181q1.1,35 0,70M380,181q-1.1,35 0,70M404,181q1.1,35 0,70M428,181q-1.1,35 0,70M452,181q1.1,35 0,70M476,181q-1.1,35 0,70M500,181q1.1,35 0,70M524,181q-1,35 0,70M339,194q4.9-0.6 9.7,0M348,193.3q-0.7,22.8 0,45.7M348.5,238q-4.7,0.6-9.5,0M340,238.6q0.7-22.8 0-45.6M340,198q4-0.6 8,0M340,214q4,0.6 8,0M363,194q4.9-0.6 9.7,0M372,193.3q-0.7,22.8 0,45.7M372.5,238q-4.7,0.6-9.5,0M364,238.6q0.7-22.8 0-45.6M364,198q4-0.6 8,0M364,214q4,0.6 8,0M387,194q4.9-0.6 9.7,0M396,193.3q-0.7,22.8 0,45.7M396.5,238q-4.7,0.6-9.5,0M388,238.6q0.7-22.8 0-45.6M388,198q4-0.6 8,0M388,214q4,0.6 8,0M411,194q4.9-0.6 9.7,0M420,193.3q-0.7,22.8 0,45.7M420.5,238q-4.7,0.6-9.5,0M412,238.6q0.7-22.8 0-45.6M412,198q4-0.6 8,0M412,214q4,0.6 8,0M435,194q4.9-0.6 9.7,0M444,193.3q-0.7,22.8 0,45.7M444.5,238q-4.7,0.6-9.5,0M436,238.6q0.7-22.8 0-45.6M436,198q4-0.6 8,0M436,214q4,0.6 8,0M459,194q4.9-0.6 9.7,0M468,193.3q-0.7,22.8 0,45.7M468.5,238q-4.7,0.6-9.5,0M460,238.6q0.7-22.8 0-45.6M460,198q4-0.6 8,0M460,214q4,0.6 8,0M483,194q4.9-0.6 9.7,0M492,193.3q-0.7,22.8 0,45.7M492.5,238q-4.7,0.6-9.5,0M484,238.6q0.7-22.8 0-45.6M484,198q4-0.6 8,0M484,214q4,0.6 8,0M507,194q4.9-0.6 9.7,0M516,193.3q-0.7,22.8 0,45.7M516.5,238q-4.7,0.6-9.5,0M508,238.6q0.7-22.8 0-45.6M508,198q4-0.6 8,0M508,214q4,0.6 8,0"/>
+  </g>
+
+  <!-- Snickarpenna: ringen runt jordfelsbrytaren och strecket till anteckningen -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M426.9,102.1 A58,44 0 0,1 341.9,161.2 A60,46 0 0,1 408.6,86.5M384,84q3.1-15.2 8-30"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="332" y="46" fill="#ad3519">jordfelsbrytare</text>
+    <text x="133" y="298">proppskåp</text>
+    <text x="81" y="330">utan jordfelsbrytare</text>
+    <text x="370" y="298">elcentral med</text>
+    <text x="356" y="330">automatsäkringar</text>
+  </g>
+</svg>

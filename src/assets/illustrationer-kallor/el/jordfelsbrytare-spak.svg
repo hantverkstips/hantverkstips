@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="En elcentral sedd rakt framifrån har en rad moduler bakom frontplåten. Från vänster sitter huvudbrytaren, jordfelsbrytaren och sju automatsäkringar. Huvudbrytaren och alla automatsäkringar har spaken uppe. Jordfelsbrytaren har löst ut och har spaken nere. En röd pil visar att spaken ska föras upp, och en röd ring runt spaken har anteckningen ”för upp spaken”. Testknappen är märkt T, och på jordfelsbrytaren står 30 mA.">
+  <!-- Anteckningsboken. Blyerts 2 px för frontplåten, modulerna, spakhusen och spakarna,
+       blyerts-2 1,5 px för ledlinjerna från etiketterna, snickarpenna 2,5 px för pilen och ringen
+       vid jordfelsbrytarens spak, som är den enda saken som pekar. Tumstock bakom nyckeltalet 30 mA.
+       Ingen skala: modulerna är ritade så att de går att känna igen, inte efter mått.
+       Ingen DIN-skena, ingen kapsling, inga kablar, inga märken.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Tumstock bakom nyckeltalet, bara bakom talet -->
+  <rect x="239.5" y="193.5" width="58.5" height="26" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 268.8 206.5)"/>
+
+  <!-- Blyerts: frontplåten, huvudbrytaren, jordfelsbrytaren med testknappen, sju automatsäkringar -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M68,96q241.4-7.2 482.8,0M548,93.2q-2.6,86.4 0,172.8M550,262q-241,7.2-482,0M72,264.4q2.6-86.2 0-172.4M93,132q34.6-1 69.1,0M160,129.9q-1.5,50.5 0,101.1M161.5,228q-34.2,1-68.5,0M96,229.8q1.5-50.4 0-100.8M116,144q11.7-0.6 23.4,0M138,142.6q-1.2,39.7 0,79.4M139,220q-11.5,0.6-23,0M118,221.2q1.2-39.6 0-79.2M119,148q8.7-0.6 17.4,0M135,146.6q-0.6,14.7 0,29.4M136,174q-8.5,0.6-17,0M121,175.2q0.6-14.6 0-29.2M124,157q4-0.6 8,0M124,164q4,0.6 8,0M169,132q66.6-2 133.1,0M300,129.9q-1.5,50.5 0,101.1M301.5,228q-66.2,2-132.5,0M172,229.8q1.5-50.4 0-100.8M194,144q11.7-0.6 23.4,0M216,142.6q-1.2,39.7 0,79.4M217,220q-11.5,0.6-23,0M196,221.2q1.2-39.6 0-79.2M197,190q8.7-0.6 17.4,0M213,188.6q-0.6,14.7 0,29.4M214,216q-8.5,0.6-17,0M199,217.2q0.6-14.6 0-29.2M202,199q4-0.6 8,0M202,206q4,0.6 8,0M260,140q15.7-0.6 31.4,0M290,138.6q-0.6,15.7 0,31.4M291,168q-15.5,0.6-31,0M262,169.2q0.6-15.6 0-31.2M309,132q115-1.8 230,0M539,228q-115-1.8-230,0M312,129q1.2,51 0,102M344,129q-1.2,51 0,102M376,129q1.2,51 0,102M408,129q-1.2,51 0,102M440,129q1.2,51 0,102M472,129q-1.2,51 0,102M504,129q1.2,51 0,102M536,129q-1.2,51 0,102M320,150q7.7-0.6 15.4,0M334,148.6q-0.9,29.7 0,59.4M335,206q-7.5,0.6-15,0M322,207.2q0.9-29.6 0-59.2M323,154q4.9-0.6 9.7,0M332,153.3q-0.6,10.8 0,21.7M332.5,174q-4.7,0.6-9.5,0M324,174.6q0.6-10.8 0-21.6M352,150q7.7-0.6 15.4,0M366,148.6q-0.9,29.7 0,59.4M367,206q-7.5,0.6-15,0M354,207.2q0.9-29.6 0-59.2M355,154q4.9-0.6 9.7,0M364,153.3q-0.6,10.8 0,21.7M364.5,174q-4.7,0.6-9.5,0M356,174.6q0.6-10.8 0-21.6M384,150q7.7-0.6 15.4,0M398,148.6q-0.9,29.7 0,59.4M399,206q-7.5,0.6-15,0M386,207.2q0.9-29.6 0-59.2M387,154q4.9-0.6 9.7,0M396,153.3q-0.6,10.8 0,21.7M396.5,174q-4.7,0.6-9.5,0M388,174.6q0.6-10.8 0-21.6M416,150q7.7-0.6 15.4,0M430,148.6q-0.9,29.7 0,59.4M431,206q-7.5,0.6-15,0M418,207.2q0.9-29.6 0-59.2M419,154q4.9-0.6 9.7,0M428,153.3q-0.6,10.8 0,21.7M428.5,174q-4.7,0.6-9.5,0M420,174.6q0.6-10.8 0-21.6M448,150q7.7-0.6 15.4,0M462,148.6q-0.9,29.7 0,59.4M463,206q-7.5,0.6-15,0M450,207.2q0.9-29.6 0-59.2M451,154q4.9-0.6 9.7,0M460,153.3q-0.6,10.8 0,21.7M460.5,174q-4.7,0.6-9.5,0M452,174.6q0.6-10.8 0-21.6M480,150q7.7-0.6 15.4,0M494,148.6q-0.9,29.7 0,59.4M495,206q-7.5,0.6-15,0M482,207.2q0.9-29.6 0-59.2M483,154q4.9-0.6 9.7,0M492,153.3q-0.6,10.8 0,21.7M492.5,174q-4.7,0.6-9.5,0M484,174.6q0.6-10.8 0-21.6M512,150q7.7-0.6 15.4,0M526,148.6q-0.9,29.7 0,59.4M527,206q-7.5,0.6-15,0M514,207.2q0.9-29.6 0-59.2M515,154q4.9-0.6 9.7,0M524,153.3q-0.6,10.8 0,21.7M524.5,174q-4.7,0.6-9.5,0M516,174.6q0.6-10.8 0-21.6"/>
+  </g>
+
+  <!-- Blyerts-2: ledlinjer från etiketterna -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M322,80q-14.6,30.5-31,60M240,280q0.7-24 0-48M440,280q-0.7-24 0-48M120,314q5.2-40.9 8-82"/>
+  </g>
+
+  <!-- Snickarpenna: spaken som ska upp, pilen, ringen och strecket till anteckningen -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M206,186q-1-17 0-34M200.3,160.2 L206,152 L211.7,160.2M228.3,149.9 A30,48 0 0,1 188.8,221.3 A32,50 0 0,1 218.4,134.7M212,134q-1.5-25.2-6-50"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="150" y="74" fill="#ad3519">för upp spaken</text>
+    <text x="318" y="74" fill="#625a50">testknapp</text>
+    <text x="196" y="300">jordfelsbrytaren</text>
+    <text x="372" y="300">automatsäkringar,</text>
+    <text x="396" y="330">en per grupp</text>
+    <text x="60" y="334" fill="#625a50">huvudbrytare</text>
+    <text x="271" y="162">T</text>
+    <text x="240" y="214">30 mA</text>
+  </g>
+</svg>

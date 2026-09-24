@@ -39,6 +39,8 @@ Läser den färdiga sidan mot sin egen checklista, punkt för punkt, och lägger
 
 Rättar varje punkt i returen, eller skriver varför en punkt inte ska rättas. Läser om sidan högt. Godkänner med en rad: "Godkänd av hantverkaren" plus vad som ändrats. Sidan är inte klar förrän den raden finns, och den skrivs av hantverkaren, inte av arbetaren.
 
+Rättningsvarven är kirurgiska. Hantverkaren rättar exakt de rader returerna pekar på, med den lydelse korrekturen föreslår, och rör ingen annan mening. Varje omskrivning utöver det skapar nya fel, och elsidorna 2026-09-24 behövde fem korrekturvarv av det skälet. Behöver ett helt avsnitt skrivas om säger returen det uttryckligen, och då läser korrekturen om hela avsnittet.
+
 Gav läsaren under 4 i steg 4 läser läsaren om sidan efter rättningen. Under 4 igen är ny retur, aldrig publicering. Koordinatorn publicerar inte en sida som inte har ett betyg på minst 4 från läsaren på den version som publiceras. Det var den grind som saknades 2026-09-22 när om-sidan gick ut med en tvåa.
 
 Har sidan produkter eller reklam går den till affiliateagenten för punkt 1 till 7 i skillen affiliate innan steg 7.
