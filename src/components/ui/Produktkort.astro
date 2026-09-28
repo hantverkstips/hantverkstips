@@ -119,8 +119,10 @@ const bildHojd = variant === 'kompakt' ? 72 : 300;
         </div>
 
         <div class="min-w-0 flex-1">
-          {etikett && <p class="m-0 mb-1 text-etikett lg:text-etikett-lg uppercase text-penna">{etikett}</p>}
-          <h3 class="m-0 font-sans text-h3 lg:text-h3-lg text-blyerts">{namn}</h3>
+          {/* Märkesraden, rubriken och nyckelvärdena får sin stil av .produktkort i
+              global.css (spec-skal-budget-2026-09-28 avsnitt 15.2). */}
+          {etikett && <p>{etikett}</p>}
+          <h3>{namn}</h3>
           {forVem && <p class="m-0 mt-1 text-brod text-blyerts-2">{forVem}</p>}
 
           {/* Nyckelvärdena: etiketten tar bara den bredd den behöver, värdet
@@ -133,7 +135,7 @@ const bildHojd = variant === 'kompakt' ? 72 : 300;
               (granskningen 2026-09-16 punkt 5.5). Marginalen under värdet
               skiljer paren åt när de är staplade. */}
           {specs.length > 0 && (
-            <dl class="m-0 mt-3 grid grid-cols-1 sm:grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-1 text-liten">
+            <dl>
               {specs.map((s) => (
                 <div>
                   <dt>{s.etikett}</dt>

@@ -59,7 +59,13 @@ const visa = verktyg.length > 0 || material.length > 0;
       {verktygsrader.length > 0 && (
         <>
           <h3 class="mt-8 mb-2 font-sans text-h3 lg:text-h3-lg">Verktyg</h3>
-          <ul class="m-0 p-0 list-none">
+          {/*
+            Namnet och varför-raden får sina klasser från listan, inte på varje
+            rad (spec-skal-budget-2026-09-28 avsnitt 15.3). Selektorn går via
+            radens första div, så att prisstycket bredvid knappen inte träffas.
+            m-0 behövs inte: preflight nollar marginalen på p.
+          */}
+          <ul class="m-0 p-0 list-none [&_li>div:first-child>p]:text-brod [&_li>div:first-child>p:first-child]:font-bold [&_li>div:first-child>p:first-child]:lg:text-brod-lg [&_li>div:first-child>p:first-child]:text-blyerts [&_li>div:first-child>p+p]:mt-1 [&_li>div:first-child>p+p]:text-blyerts-2">
             {verktygsrader.map((r, i) => (
               <li
                 class:list={[
@@ -68,8 +74,8 @@ const visa = verktyg.length > 0 || material.length > 0;
                 ]}
               >
                 <div class="lg:w-2/3">
-                  <p class="m-0 font-bold text-brod lg:text-brod-lg text-blyerts">{r.namn}</p>
-                  <p class="m-0 mt-1 text-brod text-blyerts-2">{r.varfor}</p>
+                  <p>{r.namn}</p>
+                  <p>{r.varfor}</p>
                 </div>
                 {r.produkt && (
                   /* Mobil: priset till vänster, knappen fyller resten av raden.
@@ -103,11 +109,11 @@ const visa = verktyg.length > 0 || material.length > 0;
       {material.length > 0 && (
         <>
           <h3 class="mt-8 mb-2 font-sans text-h3 lg:text-h3-lg">Material</h3>
-          <ul class="m-0 p-0 list-none">
+          <ul class="m-0 p-0 list-none [&_p]:text-brod [&_p:first-child]:font-bold [&_p:first-child]:lg:text-brod-lg [&_p:first-child]:text-blyerts [&_p+p]:mt-1 [&_p+p]:text-blyerts-2">
             {material.map((m, i) => (
               <li class:list={['py-4', i > 0 && 'border-t border-linje']}>
-                <p class="m-0 font-bold text-brod lg:text-brod-lg text-blyerts">{m.namn}</p>
-                <p class="m-0 mt-1 text-brod text-blyerts-2">{m.varfor}</p>
+                <p>{m.namn}</p>
+                <p>{m.varfor}</p>
               </li>
             ))}
           </ul>

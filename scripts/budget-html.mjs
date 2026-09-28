@@ -48,27 +48,17 @@ const EXTRA = ['/rakna/grannemedgivande/?grans=2&jarnvag=1'];
 
 /**
  * Sidor som får ligga över gränsen tills ett namngivet arbete är byggt. Taket är
- * sidans storlek när undantaget skrevs plus 1 024 byte: sidan får ligga över
- * 66 kB men inte växa. Undantaget tas bort i samma ändring som gör sidan lätt
- * nog; skriptet varnar när det går. Spec: spec-skal-budget-2026-09-28 avsnitt 14.4.
+ * sidans storlek plus 1 024 byte: sidan får ligga över 66 kB men inte växa.
+ * Den som gör en sida lättare sänker dess tak i samma ändring, och undantaget
+ * tas bort i den ändring som gör sidan lätt nog; skriptet varnar när det går.
+ * Spec: spec-skal-budget-2026-09-28 avsnitt 14.4 och 15.1.
  *
  * @type {Map<string, { tak: number; skal: string }>}
  */
 const UNDANTAG = new Map([
   [
     '/luftavfuktare/',
-    { tak: 80_712, skal: 'kategorisidans tabell och uppställning, egen spec (spec-skal-budget-2026-09-28 avsnitt 13.1, punkt 5.3)' },
-  ],
-  [
-    '/fukt/avfuktare-kallare/',
-    { tak: 74_177, skal: 'produktkorten och brödtabellerna (spec-skal-budget-2026-09-28 avsnitt 14.2 och 14.3)' },
-  ],
-  [
-    '/fasad/mala-om-huset/',
-    {
-      tak: 69_639,
-      skal: 'formulärens klasser (avsnitt 14.1) är byggda, men sidan växte med texten i commit 60dc219 och ligger 83 byte över; UX och bygge beslutar',
-    },
+    { tak: 70_155, skal: 'kategorisidans tabell och uppställning, egen spec (spec-skal-budget-2026-09-28 avsnitt 13.1, punkt 5.3)' },
   ],
 ]);
 
