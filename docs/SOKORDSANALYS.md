@@ -6,6 +6,8 @@ Volymerna kommer från `docs/data/keyword-stats-2026-09-16.csv`, Google Ads hist
 
 En andra hämtning gjordes 2026-09-20 med 177 nya fraser, ingen av dem en upprepning av de 56 första. 152 av dem fick volym, tillsammans 74 030 sökningar per månad, och 25 fick ingen data. Över båda körningarna vilar dokumentet alltså på **233 mätta fraser och 116 630 sökningar per månad**. Körning 2 står i avsnitt 7 och ändrar inte avsnitt 1 till 6; den lägger till en startlista 2 för nästa innehållsomgång.
 
+En tredje hämtning gjordes 2026-09-28 med 236 fraser för kök, badrum och tak. 222 fick volym, tillsammans 100 410 sökningar per månad. Över tre körningar vilar dokumentet på **455 mätta fraser och 217 040 sökningar per månad**. Körning 3 står i avsnitt 8 och lägger till en startlista 3.
+
 Sökningarna på Google gjordes 2026-09-16 på svenska, utan personalisering. För körning 2 gäller reservationen i avsnitt 7.
 
 ## 1. Konkurrentkarta
@@ -352,6 +354,245 @@ Sidorna 2 och 4 till 7 ger Golv fem sidor och därmed en hub, som går in i meny
 5. **Tre verktyg läggs ner och tre nya kommer in.** Kapoptimering (30), betong (130) och vädra eller avfukta (noll) faller. Kontrollplan (320, vinnbarhet 5), grannemedgivande (210, växer) och rotavdraget kommer in. U-värdesräknaren byggs, men som lönsamhetsverktyg med återbetalningstid, inte som den W/m²K-räknare tillverkarna redan har.
 6. **Tre av fyra granskade sidor behöver en rättad titel, ingen en ny URL.** Källarverktyget slutar leda med guidens fras, sprickorsidan byter sista ordet i seoTitle till den fras som växer 240 procent, dräneringsverktygets title leder med det ord som är 270 sökningar större. Källarväggssidan var rätt riktad hela tiden.
 
+## 8. Körning 3, 2026-09-28
+
+Tredje volymhämtningen, 236 fraser för kök, badrum och tak, framtagna ur Googles autocomplete (hl=sv, gl=se) med ortsnamn, butiker, korsord och fordon bortplockade. Frågan är vilka av de två tomma pelarna Kök och badrum och Tak som ska startas, och i vilken form. Underlaget är `docs/keyword-stats-2026-09-28.csv` (period september 2025 till augusti 2026), fraslistan och metoden står i `docs/briefer/sokord-att-hamta-2026-09-28.md`.
+
+Samma reservation som i avsnitt 7: sökresultaten hämtades maskinellt och verktyget svarar från amerikansk infrastruktur. Vilka domäner som ligger på första sidan och vad sidorna innehåller är kontrollerat genom att sidorna lästes; den exakta ordningen mellan plats ett och fem är det inte. Annonskonkurrensen i exporten (Competition) säger ingenting om den organiska konkurrensen och används inte; vinnbarheten 1 till 5 är vår egen bedömning efter läsningen, på samma skala som i avsnitt 1.
+
+### 8.1 Data
+
+235 av 236 fraser kom tillbaka ("byta kakelfog badrum" saknas i exporten, Google har slagit ihop den med "byta kakelfog"). 222 fick volym, tillsammans **100 410 sökningar per månad**, och 13 fick ingen data alls. Det är den största körningen hittills, större än körning 1 och 2 tillsammans (116 630 över 233 fraser), på bara tre ämnen.
+
+| Kluster | Fraser | Med volym | Summa per mån | Största fras |
+|---|---|---|---|---|
+| Tak | 105 | 101 | 40 730 | plåttak 6 600 |
+| Badrum | 67 | 61 | 39 880 | våtrumsmatta 6 600 |
+| Kök | 64 | 60 | 19 800 | stänkskydd kök 5 400 |
+
+Summorna räknar dubbletter två gånger där Google slagit ihop fraser. Den största är "kakla badrum" och "kakla badrumsgolv", som har exakt samma månadsserie (2 900) och alltså är samma sökning; badrum är i praktiken 36 980. Tre fraser mättes redan i körning 2 och står där med samma tal: renovera badrum kostnad 1 300, renovera kök kostnad 720, byta tak kostnad 880.
+
+**En sida per avsikt.** Grupperat så som Google slår ihop och så som läsaren frågar blir 236 fraser ett trettiotal sidor. Volymen är huvudfras plus varianterna sidan äger.
+
+| Kluster | Avsikt (huvudfras) | Varianter som samma sida äger | Summa |
+|---|---|---|---|
+| Tak | plåttak | plåttak kostnad 320, lägga plåttak själv 210, lägga takplåt 70, måla takplåt 70, takpapp under plåttak 90 | 7 360 |
+| Tak | takstolar | takstolar pris 590, takstolar beräkning 590, takstolar pulpettak 140, takstolar cc mått 30 | 4 250 |
+| Tak | takfot | takfotsplåt 1 300, takfotsplåt montering 210, takfotsventilation 210 | 4 120 |
+| Tak | snörasskydd | snörasskydd plåttak 880, tegeltak 260, betongpannor 170 | 3 710 |
+| Tak | takstege | takstege plåttak 880, takstege tegeltak 480 | 2 960 |
+| Tak | byta tak kostnad | takbyte 480, takbyte kostnad 320, byta tak 590, byta tak själv 170, lägga tak 320, lägga tak själv 90, takbyte kostnad per kvm 20, takbyte kvm pris 20, takbyte med solceller 20 | 2 910 |
+| Tak | hängrännor | takavvattning 880, hängrännor och stuprör 320, hängrännor plast 110, byta hängrännor 90 och sex mindre, takavvattning dimensionering 40 | 2 880 |
+| Tak | papptak | lägga takpapp 590, papptak livslängd 260, papptak pris 110, lägga takpapp själv 110 och sex mindre | 2 660 |
+| Tak | vindskivor | vindskivor plåt 320, vindskivor trä 40 | 2 260 |
+| Tak | betongpannor eller tegel | betongpannor 1 000, livslängd 320, pris m2 170, tegeltak 480, tegeltak livslängd 90 och fyra mindre | 2 210 |
+| Tak | tvätta tak | tvätta tak själv 320, tvätta takpannor 260, med högtryckstvätt 140, mossa på taket 70, mossa på taket medel 90 och två mindre | 1 520 |
+| Tak | shingeltak | shingeltak montering 90, livslängd 70, lägga takshingel 40 | 1 500 |
+| Tak | isolera tak | isolera tak inifrån 320, utan luftspalt 140, luftspalt 110, utifrån 110, garage 40 | 1 040 |
+| Tak | måla takpannor | måla takpannor själv 170, pris 90, plus byta takpannor 90 och fem mindre | 900 |
+| Tak | takläckage | läckande tak 70, takläckage försäkring 40 och tre mindre | 280 |
+| Badrum | våtrumsmatta | renovera badrum våtrumsmatta 210 | 6 810 |
+| Badrum | måla kakel | måla kakel badrum 1 000, måla kakel kök 880, måla kakel i dusch 140, måla kakelfogar 90 | 4 510 |
+| Badrum | renovera badrum | renovera badrum själv 480, renovera badrum billigt 390 | 3 770 |
+| Badrum | renovera badrum kostnad | renovera badrum pris 1 600, badrumsrenovering kostnad 720 | 3 620 |
+| Badrum | våtrumsfärg | | 3 600 |
+| Badrum | kakla badrum | kakla badrumsgolv (samma sökning), kakla badrum pris 210, själv 90 och två mindre | 3 250 |
+| Badrum | våtrumsskiva | | 2 400 |
+| Badrum | våtrumstapet | | 2 400 |
+| Badrum | tätskikt badrum | tätskikt badrum regler 210, källare 90, pris 50, golv 20 | 2 270 |
+| Badrum | golvvärme badrum | golvvärme badrum el 480, vattenburen 140 och fyra mindre | 1 050 |
+| Badrum | fogar badrum | fogmassa badrum 170, byta kakelfog 20, fogar badrum rengöra 20, fog badrum torktid 10 | 700 |
+| Badrum | mögel i fogar | mögel i fogarna i duschen 170, mögel i fogar badrum 70, svartmögel i fogar 40 | 330 |
+| Badrum | våtrumsspackel | | 1 000 |
+| Badrum | byta toalettstol | byta toalettstol själv 170, pris 90, byta toalettsits 170 | 910 |
+| Badrum | byta golvbrunn | byta golvbrunn badrum 90, kostnad 90, källare 50, själv 20 | 510 |
+| Badrum | montera duschvägg | utan att borra 70, själv 20 | 350 |
+| Badrum | byta handfat | byta handfat själv 90, kostnad 40 | 200 |
+| Kök | stänkskydd kök | stänkskydd kök glas 260 | 5 660 |
+| Kök | måla köksluckor | måla köksluckor själv 1 300, pris 590, färg 110, med linoljefärg 30, med roller 10 | 4 940 |
+| Kök | byta köksluckor | befintlig stomme 390, pris 390, befintlig stomme pris 210, renovera köksluckor 390, renovera kök behålla stommar 110, byta köksluckor och bänkskiva 50, köksrenovering på befintliga stommar 50 | 2 590 |
+| Kök | renovera kök kostnad | renovera kök 1 000, köksrenovering pris 210, renovera kök billigt 140, renovera kök själv 70 | 2 140 |
+| Kök | byta bänkskiva | byta bänkskiva kök 390, montera bänkskiva 90 och sju mindre | 730 |
+| Kök | olja bänkskiva | olja bänkskiva ek 90, mörkare 30, torktid 10 | 720 |
+| Kök | ikea kök montering | ikea kök montering pris 70 | 660 |
+| Kök | kakla kök | kakla kök själv 140, pris 50 och tre mindre, plus byta kakel kök 210 | 780 |
+| Kök | byta blandare kök | byta packning blandare kök 90, själv 40 och två mindre | 260 |
+| Kök | montera köksfläkt | under skåp 30 | 200 |
+
+**Växare och fallare.** 38 fraser växer på ett år, 48 står still och 136 backar, alltså samma krympande nisch som körning 2 såg. Men växarna är fler och större än i körning 2, och de samlas i tre spår:
+
+- **Måla kakel** är den enda stora avsikten som växer som helhet: måla kakel badrum 1 000 (+48 %), måla kakel kök 880 (+14 %), måla kakelfogar 90 (+80 %). Grundfrasen "måla kakel" (2 400) backar 33 procent, så rörelsen går från det allmänna till rummet.
+- **Snörasskydd** växer i de materialspecifika varianterna: snörasskydd plåttak 880 (+122 %) och snörasskydd betongpannor 170 (+52 %, +256 % tre månader). Grundfrasen står på −19 procent men har +81 procent på tre månader, alltså en höst som börjat tidigt.
+- **Kostnad och byte på befintligt**: takbyte kostnad 320 (+50 %), byta köksluckor befintlig stomme pris 210 (+88 %), byta toalettstol pris 90 (+27 %), byta bänkskiva kök kostnad 50 (+200 %). Folk renoverar delar i stället för helheter.
+
+Övriga växare med volym: hängrännor och stuprör 320 (+51 %), takfotsventilation 210 (+24 %), lägga plåttak själv 210 (+50 %, samma som i körning 2), byta toalettsits 170 (+336 %, trolig engångseffekt, toppade juli och augusti 2026), lägga takpapp själv 110 (+24 %), mögel i fogar badrum 70 (+57 %).
+
+Fallarna att veta om innan något byggs: mögel i fogarna i duschen 170 (−77 %), isolera tak inifrån 320 (−64 %), plåttak kostnad 320 (−56 %), byta toalettstol själv 170 (−57 %), byta golvbrunn 260 (−47 %), kakla badrum pris 210 (−47 %), lägga tak 320 (−46 %), fogmassa badrum 170 (−46 %). Renovera badrum (−34 %), renovera badrum kostnad (−38 %) och måla köksluckor (−33 %) backar också, men från höga nivåer.
+
+**Säsong.** Badrum och kök har ingen sommartopp; de toppar september till oktober och januari till mars och bottnar juni till juli (renovera badrum 5 400 i september mot 1 900 i juni, våtrumsmatta 8 100 mot 4 400). Det är vinterprojekt, och de sammanfaller med rotavdragets decembertopp. Tak har två ben. Materialfraserna och utvändiga jobb toppar mars till september (plåttak 8 100 mot 2 900 i december, takfotsplåt 2 900 i juli och augusti mot 390 i februari, lägga takpapp 1 000 i juli mot 140 i januari, tvätta tak 1 000 i mars och september). Snörasskydd toppar september till oktober och i januari, alltså inför och under snön. Takstolar och takfot är jämna över året.
+
+### 8.2 Konkurrentkarta
+
+Tjugonio avsikter lästes, alla med minst 590 i månaden plus de mindre som bär ett verktyg eller en avgränsning. Ettan och tvåan lästes på varje fras, oftast alla fem. Sidor som inte gick att hämta (byggahus.se, bygg.se, se.weber och eon.se gav 403, Hornbachs projektsidor gav bara menyer) står som olästa och räknas inte.
+
+#### Tak
+
+| Fras | Volym | Topp 5 (domäner) | Typ | Sidornas kvalitet | Vinn |
+|---|---|---|---|---|---|
+| snörasskydd | 3 710 | taskrunner.se, varmdo-platslageri.se, taklaggare-roslagen.se, platslagare-enskede.se, platslagare-skane.se | tjänsteplattform, fyra plåtslagare varav tre ur ett mallnät | **Ingen i topp 5 citerar gällande regel.** Varmdö skriver "BBR kräver" utan paragraf och "enligt dimensioneringstabell" utan tabell. Regeln är BFS 2024:9 2 kap. 24 §, skydd vid entréer där det finns särskild risk. Ingen anger konsolavstånd, ingen säger om skyddet ska gå längs hela takfoten eller bara vid entrén, inga priser. Enda räknaren är tillverkarens (NOMO) och gäller bara deras produkt | 5 |
+| plåttak | 7 360 | för kostnadsfrasen: byggahus.se, bygghemma.se, takexperter.se, byggstart.se, vitalybygg.se; för huvudfrasen takfirmor | forum, butik, två offertförmedlare, takfirma | Takexperter har en tabell för 180 kvm med arbete och material var för sig och rot 30 procent, men inget datum, ingen författare och inget rot-tak. **Kvadratmeterpriset spretar mellan 800 och 3 500 kr i topp 5 och ingen förklarar varför** (takpanneplåt mot bandtäckning). Flera sidor säger fortfarande att byte från pannor till plåt kräver bygglov, vilket inte gäller en- och tvåbostadshus sedan 1 december 2025 | 3 |
+| takstolar | 4 250 | lundqvisttravaru.se, dittbygg.se, livsstilsnytt.se, tenico.se, byggstart.se | tillverkare, magasin, magasin, tillverkare, offertförmedlare | Dittbygg har 3 500 ord och kostnadstabell per post (material, ritning, kran, arbete), men ingen författare och inget datum. Livsstilsnytt (2026-05-28) har formlerna men hänvisar till EKS 11, som inte gäller efter 1 juli 2026, och säger inte att leverantören dimensionerar. Tre tillverkare har geometriräknare, så "takstolar beräkning" är redan besvarad av dem som säljer | 3 |
+| takfot | 4 120 | myresjohus.se, fiskarhedenvillan.se, nordiskavillor.se, huscompagniet.se, byggahus.se | fyra husleverantörer, ordlista | **"takfot" är en definitionsfråga vid husköp**, inte renovering. Takfotsplåt (1 300) ägs av datablad och monteringsanvisningar i PDF. Dinbyggare har priser från 2015. Takfotsventilation har en sida som påstår att ventilationen ökar fukten på kallvinden med "forskning" utan källa | 4 |
+| byta tak kostnad | 2 910 | leadhive.se, takexperter.se, svenskabyggruppen.se, takpriser.se, takivast.se | lead-sajt, offertförmedlare, byggfirma, prissajt, takfirma | Takexperter har tre materialtabeller för 150 kvm med rot 30 procent men utan taket 50 000 kr. **Ingen i topp 5 räknar takarean ur bottenytan och lutningen**, som är första steget; Leadhive varnar bara för att offertens yta ska vara takyta. Två räknare längre ner kräver att läsaren redan vet takytan, och den ena kräver kontaktuppgifter. Körning 2 sa samma sak | 4 |
+| hängrännor | 2 880 | hornbach.se, byggahus.se, dinbyggare.se (två), brabyggare.se | butik, forum, magasin, offertförmedlare | BraByggare (2026-08-25) har pris och rot rätt. Dinbyggare (2015, uppdaterad 2023) har dimensionerna men inte vilken takyta varje dimension klarar. **Dimensioneringstabellen finns bara i Plannjas PDF från 2010 och RA Hus**, och den enda räknaren är Lindabs, som slutar i en orderlista | 4 |
+| papptak | 2 660 | gds.se, bygghemma.se, byggstart.se, takmontage.se, decatak.se | magasin, butik, offertförmedlare, två takfirmor | Livslängden anges som 15 till 30, cirka 30, 20 till 50 och upp till 50 år, alla utan källa. Ingen skiljer ettlags från tvålags eller underlagspapp från ytpapp. Gds är en odaterad navsida | 4 |
+| vindskivor | 2 260 | gds.se (två), hornbach.se, bolist.se, falurodfarg.com | magasin, butik, butik, tillverkare | **Starkaste ettan i takfältet.** Gds (2026-08-21, namngiven författare) har 15 steg med bilder, video och pris för materialet. Saknar skruvdimension, plåtens överlapp och jämförelsen trä mot plåt i pris per meter | 3 |
+| betongpannor eller tegel | 2 210 | benders.se (två), bygghemma.se, holgers.se, beijerbygg.se; "eller tegelpannor" helt i mallnätet | tillverkare, tre butiker | Huvudfrasen är köpintention och tillverkaren äger den. Livslängden (40 till 60, 100 år) står utan primärkälla, och Benders ger två olika tal på två sidor. Jämförelsefrasen ägs av mallgjorda takläggarsidor utan källor | 3, men 5 på jämförelsen |
+| tvätta tak | 1 520 | offerta.se, granngarden.se, bostadstvatt.se, brabyggare.se, kataktvatt.se | offertförmedlare, butik, två tvättfirmor, offertförmedlare | **Ingen säger om medlet är ett godkänt biocid hos Kemikalieinspektionen**, ingen anger tryck i bar eller om högtryck skadar betongpannans yta. Bostadstvätt varnar för eternit men har inget datum och inga källor | 4 |
+| shingeltak | 1 500 | offerta.se, helphero.se, byggstart.se, hittataklaggare.se, goteborgtaklaggare.se | tre offertförmedlare, två lead-sajter | Hela topp 5 säljer offerter. Ingen anger tillverkarens lutningsgräns eller vikt, och Byggstart nämner inte rotavdraget | 4 |
+
+**Takets mönster är ett mallnät.** Sajter som `taklaggare-[ort].se`, `platslagare-[ort].se` och `[ort]-taklaggare.se`, med samma mall, "Fri offert", inget organisationsnummer och inga källor, tar platser på nästan varje långsvansfras. Kostnadsfraserna ägs av Byggstart och Takexperter. Det är en svag SERP i hela pelaren, men den är full, och vi slår den bara med det de inte har: källa och datum på varje tal, rätt regel och en räknare som börjar i husets mått.
+
+#### Badrum
+
+| Fras | Volym | Topp 5 (domäner) | Typ | Sidornas kvalitet | Vinn |
+|---|---|---|---|---|---|
+| tätskikt badrum | 2 270 | se.weber (oläst), bkr.se, bygghemma.se, byggfirma-norrkoping.se, vatrumstockholm.se; Clas Fixare och gds högt | tillverkare, branschorgan, butik, två våtrumsfirmor | **Ingen i topp 5 citerar gällande regler**: BFS 2024:8 7 kap. 7 §, BBV 26:1, GVK Säkra Våtrum 2026 eller Säker Vatten 2026:1, alla nya från 1 januari 2026 eller 1 juli 2025. Sonochfar (2026-04-07) citerar BBR 6:5331 som gällande trots att övergångstiden gick ut 30 juni 2026 och räknar med rot 50 procent | 5 |
+| måla kakel | 4 510 | clasfixare.se, bygg.se (oläst), hornbach.se, stuvbutiken.com, proffsmagasinet.se | firma, magasin, butik, butik, butik | Ettan är en kort amatörguide utan zoner, torktider, datum eller författare. **Proffsmagasinet, vår partner, föreslår klarlack på målat kakel i duschen**, vilket går emot MVK:s krav på klass VT i våtzon 1. Ingen säger att MVK kräver att kaklet tas bort före ett målat våtrumssystem. "måla kakel kök" har samma topp 5, så Google ser ingen egen köksavsikt | 4 |
+| renovera badrum kostnad | 3 620 | byggstart.se, mbbyggsyd.se, totalbyggarna.se, sonochfar.se, hantverkarpriser.se | offertförmedlare, tre firmor, offertförmedlare | Byggstart delar arbete och material men **nämner inte rotavdraget alls**. Bara Totalbyggarna har 30 procent, 50 000 kr och 75 000 kr med rut, och dess procentandelar för arbete och material går inte ihop. Ingen räknare, bara offertformulär. Körning 2 läste ettan då (bad-varme.se) och den hade ingen procentsats | 4 |
+| våtrumsfärg | 3 600 | k-bygg.se, jotun.com, gebenna.com (två), gds.se | butik, tillverkare, butik, magasin | **Ettan är en butikskategori på en informativ fråga.** Topp 5 blandar ihop färgen med ett målat tätskiktssystem, ingen förklarar klass VA mot VT, och ingen säger att golv ligger utanför MVK. Jotun skriver att systemet går i duschzonen, Gebenna att färgen inte ska vara ensam lösning där; båda utan källa | 4 |
+| våtrumsmatta | 6 810 | tarkett.se (tre sidor), stuvbutiken.com, golvpoolen.se | tillverkare, butiker | Tarkett äger tre av fem. Ettan saknar pris, livslängd, datum och GVK, och säger bara "professionell golvläggare". Tvåan är en tom kategorisida | 3 |
+| renovera badrum | 3 770 | finja.se, clasfixare.se, bad-varme.se, hornbach.se, bygghemma.se | tillverkare, två firmor, två butiker | Ingen samlad gräns för vad du får göra själv och vad som kräver behörig, med källa per arbete. Den tabellen finns inte hos någon | 3 |
+| våtrumstapet | 2 400 | bygg.se (oläst), viivilla.se, comfort.se, stuvbutiken.com, bygghemma.se | magasin, magasin, tre butiker | Badrumsportalen längre ner säger att en överlappad skarv i duschen tätas med fogmassa, vilket strider mot GVK. Ingen nämner att BBV kräver att tapeten rivs innan nytt tätskikt | 4 |
+| våtrumsskiva | 2 400 | hornbach.se, bauhaus.se, bygghemma.se, byggahus.se, boandren.se | butiker | **Delad intention.** Butikerna säljer dekorpaneler i stället för kakel, GVK (plats 6) menar byggskivan under tätskiktet och skriver att den "inte är tätskikt". Ingen i topp 5 skiljer dem | 3 |
+| fogar badrum, mögel i fogar | 1 030 | villaagarna.se, gds.se (två), kakelspecialisten.se; för mögel totalbyggarna.se (två), bygghemma.se, efecta.se | intresseorganisation, magasin, butik, firma | Totalbyggarna påstår att ättika dödar 82 procent av mögelarterna utan källa. Ingen skiljer mögel på fogen från fukt bakom fogen, som är det enda som spelar roll | 4 |
+| byta toalettstol | 910 | clasfixare.se (två), vvsochbad.se, byggahus.se, hemfixarna.se | firma, butik, forum, firma | Clas Fixare säger att man får byta själv men nämner varken Säker Vattens 60 mm skruvdjup eller tätning mot tätskiktet (2026:1, 4.7.2). Ingen har måttabell för sitsens hålavstånd | 4 |
+| golvvärme badrum | 1 050 | hornbach.se, bauhaus.se, eon.se, vvsochbad.se | butiker, elbolag | Butiker först. Ingen anger effekt i W per kvm eller driftkostnad med källa | 3 |
+
+#### Kök
+
+| Fras | Volym | Topp 5 (domäner) | Typ | Sidornas kvalitet | Vinn |
+|---|---|---|---|---|---|
+| byta köksluckor | 2 590 | clasfixare.se, vedum.se, facebook.com (grupp), ikea.com, nordanro.se; för "befintlig stomme" luckor.se, pickyliving.se m.fl. | firma, två köksfirmor, forum, butik | **Hela topp 5 på alla fem varianterna är säljare eller förmedlare.** Ingen har gångjärn eller stommärken i tabell, ingen visar hur man mäter, ingen jämför byta, måla och lackera i kronor för samma kök | 5 |
+| måla köksluckor | 4 940 | alcro.se, hornbach.se, nordsjo.se, bygghemma.se, dinbyggare.se | tillverkare, butik, tillverkare, butik, magasin | Ettan (Alcro) har åtta steg utan datum, kornstorlek, härdningstid i dagar eller pris, och ingenting om laminat eller folie. Bara Bolist anger korn. Prisfrasen ägs av en offertförmedlare (Leadhive, 2026-08-06) med 350 kr per lucka på plats och 600 för sprutlackering, utan rotprocent | 4 |
+| stänkskydd kök | 5 660 | marbodal.se, bauhaus.se, ikea.com, k-bygg.se, byggahus.se | köksfirma, två butiker, butik, magasin | **Inspiration och produkt, inte montering.** Ettan har material men inga mått, priser eller datum. Ingen i topp 5 tar upp montering eller har källa för glasets värmetålighet bakom hällen | 3 |
+| renovera kök kostnad | 2 140 | offerta.se, clasfixare.se, ikea.com, byggstart.se, brabyggare.se | offertförmedlare, firma, butik, två förmedlare | Offerta (2026-09-25) är ny etta och har rot rätt med Skatteverket som källa, men ingen tabell och ingen räknare. **Clas Fixare har fortfarande 75 000 kr som rot-tak.** Husexperter längre ner delar arbete och material och har en rot-räknare, men utan procent och tak. Ingen räknar rot för två ägare | 4 |
+| olja bänkskiva | 720 | gds.se, byggahus.se, colorama.se, lovelyhome.se, gebenna.com | magasin, forum, butik, butiksblogg, tillverkare | Gds (2026-08-05) har korn och antal lager men ingenting om ek eller om självantändande trasor. **Samma sidor rankar på "slipa bänkskiva"**, delvis samma adresser, så Google läser det som nära en avsikt | 4 |
+| byta bänkskiva | 730 | hornbach.se, dinbyggare.se, electroluxhome.se, bygghemma.se, byggahus.se | butik, magasin (2015), tillverkare, butik, forum | Bygghemma (2026-02-23) har verktyg och mått men inga priser, och ingen nämner överfräs för hörnfogen | 4 |
+| ikea kök montering | 660 | ikea.com på plats ett till fem | butik | Frasen ägs av varumärket | 1 |
+
+**Köket är säljarnas.** Köksfirmor, luckfabrikanter och offertförmedlare fyller varje fras, och ingen skriver för den som gör jobbet själv. Det är samma lucka som golvpelaren hade i körning 2.
+
+**Körningens viktigaste observation: regelverket byttes 2025 till 2026 och SERP:en har inte hängt med.** BFS 2024:8 och 2024:9 ersatte BBR 1 juli 2025 med övergång till 30 juni 2026, BBV 26:1, GVK Säkra Våtrum 2026 och Säker Vatten 2026:1 gäller från 1 januari 2026, rotavdraget gick tillbaka till 30 procent samma dag, och bygglovsplikten för ändrat taktäckningsmaterial på en- och tvåbostadshus togs bort 1 december 2025 (PBL 9 kap. 15 § i lydelsen enligt lag 2025:974). Ingen etta i någon av de tjugonio SERP:arna citerar den gällande versionen. Flera citerar den gamla. Det är en fördel som bara varar tills konkurrenterna uppdaterar, alltså under vintern.
+
+### 8.3 Badrummets avgränsning
+
+Branschreglerna förbjuder inte en privatperson att arbeta i sitt eget badrum. BBV 26:1 § 1 säger att försäkringsbolagen "normalt" accepterar kakel- och klinkerarbete som ägaren gör själv, om det följer branschreglerna och tätskiktsleverantörens anvisning, men att Byggkeramikrådet avråder och att kvalitetsdokument inte kan utfärdas. GVK skriver att det inte finns någon lagstiftning som förbjuder det. Försäkringsbolagen kräver att våtrummet är byggt enligt de regler som gällde (Folksam, If, Trygg-Hansa), och Konsumenternas beskriver förhöjd självrisk som det vanliga utfallet när de inte följts. Elinstallation i bad och dusch får bara ett registrerat elinstallationsföretag göra (Elsäkerhetsverket, granskad 2026-02-03).
+
+Det betyder att sajten ärligt kan förklara vad som gäller i varje fråga, men inte lära ut tätskiktet, eftersom läsaren som följer en guide blir utan kvalitetsdokument och står sämre vid en vattenskada. Gränsen går mellan "så här gör du" och "så här ligger det till".
+
+| Ämne | Går att skriva som gör det själv | Villkor och källa |
+|---|---|---|
+| Byta silikonfog | ja | Skär inte in i tätskiktet (gds 2026-09-15, Villaägarna 2025-11-28) |
+| Mögel i fogar | ja | Säg när mögel är tecken på fukt bakom fogen och då är en fråga för fackman. Kemikaliesäkerheten behöver myndighetskälla, Giftinformationscentralen, som inte är hämtad |
+| Måla kakel i kök och torra rum | ja | Ingen branschregel berör det |
+| Måla kakel i våtzon 2 | ja, med villkor | Kosmetik, inget MVK-system. Tätskiktet bakom ska vara intakt (vår slutsats ur BBV och GVK, märks som det) |
+| Måla kakel i dusch, våtzon 1 | **nej** | MVK kräver klass VT i våtzon 1 och att kaklet tas bort före ett målat system. Sidan säger nej och varför |
+| Våtrumsfärg på väggar | ja, som kunskap om klasserna | VT i våtzon 1, VA eller VT i våtzon 2, golv ingår inte i MVK. Utförandet av ett VT-system i duschen skrivs inte som guide |
+| Byta golvstående toalettstol | ja, med villkor | 60 mm skruvdjup i betong eller regel och tätning mot tätskiktet (Säker Vatten 2026:1, 4.7 och 4.7.2) |
+| Vägghängd toalett med inbyggd cistern | **nej** | Läckageindikering och fixtur i vägg (Säker Vatten 4.2.3 och 4.7.1) |
+| Byta toalettsits | ja | |
+| Byta handfat och utanpåliggande blandare | ja, med villkor | Ingen myndighetstext förbjuder; If rekommenderar fackman. Källan för "får göra själv" är bara firmor, så sidan skriver villkoret, inte ett löfte |
+| Montera duschvägg | ja, med villkor | Skruv bara i massiv konstruktion eller regel, hålen tätade, lim när tillverkaren tillåter (GVK infästning, Säker Vatten 4.7.3) |
+| Byta golvbrunn | **nej** | Tätskiktet rivs och läggs om, brunnen i våg ±2 mm (Säker Vatten 4.4.5). Brunnar före 1990 ska bytas vid renovering, vilket är en bra kunskapsrad |
+| Lägga tätskikt, kakla dusch och golv, lägga våtrumsmatta | **nej som guide** | Lagligt men utan kvalitetsdokument och med försäkringsrisk. Skrivs som kunskap: vad reglerna kräver, vad det kostar, hur man läser en offert och ett kvalitetsdokument |
+| Golvvärme el | **nej** | Registrerat elinstallationsföretag, även inkopplingen (Elsäkerhetsverket). Kunskap om el mot vattenburen och driftkostnad går bra |
+
+"kakla badrum" (3 250) och "golvbrunn" (510) blir därmed inga sidor i den här omgången. "tätskikt badrum" och "våtrumsmatta" blir kunskapssidor om regler, kostnad och val, vilket också är vad SERP:en saknar.
+
+### 8.4 Pelarfrågan
+
+| Pelare | Läsbara och skrivbara avsikter per mån | Vinnbarhet, viktad | Poäng | Produkt | Läge |
+|---|---|---|---|---|---|
+| Tak | 38 340 | 3,5 | 135 000 | svagt | tom |
+| Badrum | 32 370 | 3,6 | 118 000 | inget | ingen pelare |
+| Kök | 17 440 | 3,7 | 65 000 | färgspruta, slip, såg | tre sidor |
+
+Tak räknar inte isolera tak (1 040), som hör till El enligt arkitekturens beslut att isolering bor där. Badrum räknar inte kakla badrum och golvbrunn (8.3). Kök räknar inte måla kakel kök, som Google slår ihop med måla kakel.
+
+**Tak står för sig, och startas nu.** Pelaren finns i registret, klustret är störst av de tre, och ett av dess ben (snörasskydd) toppar september till januari. Resten av pelaren toppar mars till september, så den ska vara indexerad i februari, samma planering som altan.
+
+**Badrum blir egen pelare, `/badrum/`.** Tre skäl. Badrum är dubbelt så stort som kök i sökningar, och det är det enda klustret där sajtens regelkoll är själva produkten. Sidorna behöver samma avgränsning om och om igen (8.3), och en hub som samlar dem blir den enda svenska sidan där gränsen står per arbete med källa. Och adressen styr: `/kok/tatskikt-badrum/` säger fel sak till läsaren och till Google, och en slug är permanent, så valet måste göras innan första badrumssidan publiceras. Kostnaden är att två hubbar i stället för en ska nå fem sidor. Startlistan nedan är byggd så att båda gör det.
+
+Kök behåller sluggen `kok` och får namnet "Kök". Har Christian hellre en pelare kvar, fungerar startlistan ändå: då hamnar alla elva kök- och badrumssidor under `kok` och huben publiceras efter sida fyra i stället för efter sida sex.
+
+### 8.5 Verktyg
+
+| Verktyg | Fraser och volym | Vinn | Besked |
+|---|---|---|---|
+| Takbyte, takarea och kostnad | byta tak kostnad 880, takbyte 480, takbyte kostnad 320, per kvm 20, kvm pris 20, plus verktygsplanens rad 11: takvinkel 210, beräkna takvinkel 110, snölast tak 30, beräkna takarea 10. **2 080** | 4 | **Byggs, som första takverktyg.** Ingen i topp 5 räknar takarean ur bottenyta, takutsprång och lutning, alla räknare längre ner kräver att läsaren redan vet den. Samma räknemotor är verktygsplanens rad 11, så rad 11 och takbytet blir en formelmodul med takbytet som första adress. Kostnaden per material (bandtäckt plåt, takpanneplåt, betong, tegel, papp, shingel) med källa och datum per kvadratmeterpris, och rot med 30 procent och 50 000 kr per ägare. Äger kostnadsfraserna; guiden om att byta tak äger "byta tak" när den skrivs |
+| Renovera badrum och kök, kostnad | renovera badrum kostnad 1 300, renovera badrum pris 1 600, badrumsrenovering kostnad 720; renovera kök kostnad 720, köksrenovering pris 210. **4 550** | 4 | **Byggs, en formelmodul och två adresser**, `/rakna/badrum-kostnad/` och `/rakna/kok-kostnad/`, eftersom de två frågorna har olika poster och olika topp 5. Ingen i topp 5 på någon av dem delar arbete och material så att rotavdraget går att räkna, och ingen räknar rot för två ägare. Svårigheten är priserna per post, som måste ha källa och datum på varje rad; underlaget beställs först och räknaren byggs inte på gissade tal |
+| Takavvattning, dimensionering | takavvattning dimensionering 40, hängrännor dimensioner 10 | 4 | **Byggs, men som stöd till hängrännesidan**, inte som trafikkälla. Takarea ger rännans och stuprörets dimension och antal stuprör ur Plannjas tabell (2010) och RA Hus, redovisade som äldre källor, med fallet i mm per meter. Enda alternativet är Lindabs verktyg som slutar i en orderlista. Delar takarean med takbytesräknaren |
+| Takstolar, beräkning | takstolar beräkning 590, takstolar cc mått 30 | 3 | **Byggs inte.** Tre tillverkare har redan geometriräknare, och dimensioneringen görs av leverantören enligt gällande föreskrift. Geometrin (nockhöjd, takfallslängd, antal vid c/c 1 200) ryms i takbytesräknarens motor, och takstolssidan länkar dit. Frasen ägs av artikeln, som ska säga rakt ut vem som räknar vad |
+| Snörasskydd | snörasskydd 2 400 och varianter | 5 för texten | **Byggs inte nu.** Ingen generell tabell över konsolavstånd per snözon och lutning har hittats, bara tillverkarens egen räknare för egen produkt. Blir en tabell i artikeln om underlaget hittar c/c-värden hos Lindab, Plannja eller Benders; blir en räknare först när tabellen finns för tre fabrikat |
+
+Två idéer föll ut ur läsningen och läggs i verktygsplanen utan plats: byta, måla eller lackera köksluckor jämfört i kronor för samma antal luckor, och driftkostnad för elgolvvärme i badrummet, som `/rakna/elkostnad/` troligen redan kan svara på med rätt förval.
+
+### 8.6 Affiliate
+
+Kontrollerat mot AFFILIATE.md avsnitt 3. Proffsmagasinet säljer verktyg, inte takmaterial, VVS till lekmän eller virke, och takstegar står uttryckligen bland det vi inte gör.
+
+| Fras | Produkt som svarar på läsarens fråga | Över 1 500 kr | Besked |
+|---|---|---|---|
+| måla köksluckor, byta köksluckor | färgspruta, excenterslip | troligen, prisläget kontrolleras av affiliateansvarig | Bästa produktkopplingen i körningen. Roller mot spruta är en riktig fråga i topp 5 |
+| olja och slipa bänkskiva | excenterslip | ja i proffssegmentet | Finns redan på `/kok/slipa-bankskiva/` om kortet står där |
+| byta bänkskiva | cirkelsåg med styrskena, sänksåg, överfräs | ja | Sänksåg är kategori 3 i AFFILIATE.md. Ingen i topp 5 nämner överfräs |
+| måla kakel | excenterslip | ja i proffssegmentet | Proffsmagasinet rankar själv tvåa med råd som går emot MVK, samma partnerkonflikt som på "räkna ut kvadratmeter" |
+| kakla kök | krysslaser | ja | Kopplar till kategorin vi redan har. Kakla kök skrivs i en senare omgång |
+| plåttak, papptak, vindskivor | skruvdragare, plåtsax, spikpistol | skruvdragare och spikpistol ja | Svagt; materialet är det dyra och det säljs inte |
+| tvätta tak | högtryckstvätt | ja | **Inget kort** förrän sidan vet om högtryck skadar pannan; annars säljer vi det sidan avråder från |
+| snörasskydd, takstege | snörasskydd, stege | nej, och takstegar görs inte | Inga kort |
+| badrummet | | | Inga kort. Badrumsklustret bär inte affiliate och ska inte göra det |
+
+Beskedet: kök är den enda av de tre pelarna som bär produkter, och den gör det på sidor där verktyget avgör resultatet. Tak och badrum är trafik och förtroende, precis som golv i körning 2.
+
+### 8.7 Startlista 3
+
+Ordningen följer säsongen och hubregeln: först det som toppar nu (snörasskydd och badrum, september till mars), sedan köket så att dess hub kommer upp, sist takets vårben, som ska vara indexerat i februari. Varje pelare når fem sidor inom listan. Volymen är avsiktens, alltså huvudfras plus de varianter sidan äger.
+
+| # | Fras (URL) | Volym | Nivå | Typ | Pelare | Vinn | Säsong | Affiliate | Motiv |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | snörasskydd (`/tak/snorasskydd/`) | 3 710 | enkel | kunskap med köpråd | Tak | 5 | topp sep till okt och jan | nej | Säsongen pågår och växer (+81 % tre månader, plåttak +122 % på ett år). Ingen i topp 5 citerar BFS 2024:9 2 kap. 24 §, mallnätet tar resten. Säger vad regeln kräver, vid entrén eller längs hela takfoten, och per taktyp |
+| 2 | tätskikt badrum (`/badrum/tatskikt-badrum/`) | 2 270 | mellan | kunskap | Badrum | 5 | topp sep och jan till mar | nej | Sidan som bär hela pelarens avgränsning. Ingen i topp 5 citerar BFS 2024:8, BBV 26:1, GVK 2026 eller Säker Vatten 2026:1, en citerar BBR som gällande. Tabellen i 8.3 är kärnan. Andra sidor i pelaren länkar hit i stället för att upprepa |
+| 3 | måla kakel (`/badrum/mala-kakel/`) | 4 510 | enkel | projektguide | Badrum | 4 | topp sep till okt | excenterslip | Växer i rummen (badrum +48 %, kök +14 %). Besked per zon: kök, våtzon 2, dusch nej, golv nej, med MVK som källa. Äger även måla kakel kök, som en H2 |
+| 4 | renovera badrum kostnad (`/rakna/badrum-kostnad/`) | 3 620 | enkel | kalkylator | Badrum | 4 | topp sep och dec | nej | Arbete och material per post med rot, som ingen i topp 5 gör. Byggstart nämner inte rot alls. Underlaget för priser beställs först |
+| 5 | våtrumsfärg (`/badrum/vatrumsfarg/`) | 3 600 | mellan | kunskap | Badrum | 4 | jämn, botten jun | nej | Ettan är en butikskategori. VA mot VT, zonkarta, golv utanför MVK, och varför färg på kakel inte är ett våtrumssystem |
+| 6 | fogar badrum (`/badrum/fogar-badrum/`) | 1 030 | enkel | projektguide med problemdel | Badrum | 4 | jämn | nej | Femte badrumssidan, alltså den som ger Badrum sin hub. Äger även mögel i fogar med varianter. Skilj mögel på fogen från fukt bakom den; skär inte i tätskiktet |
+| 7 | måla köksluckor (`/kok/mala-koksluckor/`) | 4 940 | enkel | projektguide | Kök | 4 | topp sep till okt och jan | färgspruta, excenterslip | Största skrivbara köksfrasen. Beslut efter luckmaterial, kornföljd och härdningstid ur datablad, roller mot spruta. Ettan saknar allt det och datum |
+| 8 | byta köksluckor (`/kok/byta-koksluckor/`) | 2 590 | mellan | guide | Kök | 5 | topp sep | nej | Hela topp 5 säljer luckor. Stommärken och gångjärn i tabell, mätsteg, byta mot måla mot lackera i kronor. Äger befintlig stomme och renovera köksluckor |
+| 9 | renovera kök kostnad (`/rakna/kok-kostnad/`) | 2 140 | enkel | kalkylator | Kök | 4 | topp sep | nej | Samma formelmodul som 4. Clas Fixare har fortfarande fel rot-tak. Kök har då sex sidor med `/kok/slipa-bankskiva/`, `/rakna/rotavdrag/` och `/rakna/kvadratmeter/`, och får sin hub |
+| 10 | byta tak kostnad (`/rakna/takbyte/`) | 2 080 | enkel | kalkylator | Tak | 4 | topp sep och mar till maj | nej | Takarean ur husets mått, som ingen gör, sedan pris per material med källa och rot. Är också verktygsplanens rad 11 |
+| 11 | plåttak (`/tak/plattak/`) | 7 360 | mellan | kunskap och projektguide | Tak | 3 | topp mar till sep | skruvdragare, svagt | Största frasen i körningen. Förklarar spannet 800 till 3 500 kr per kvm, bygglovet efter 1 december 2025, och vad man kan lägga själv enligt tillverkarens anvisning. Räknaren bäddas in |
+| 12 | hängrännor (`/tak/hangrannor/`) | 2 880 | enkel | guide | Tak | 4 | topp apr till aug | nej | Äger takavvattning. Dimension efter takarea, fall och stuprör, som ingen i topp 5 har i läsbar form |
+| 13 | takavvattning dimensionering (`/rakna/takavvattning/`) | 50 | mellan | kalkylator | Tak | 4 | som 12 | nej | Stöd till 12, inbäddad där. Plannja och RA Hus som redovisade äldre källor |
+| 14 | takstolar (`/tak/takstolar/`) | 4 250 | mellan | kunskap | Tak | 3 | jämn | nej | Femte taksidan. Vem som dimensionerar, vad fabriken behöver för mått, pris per styck med källa och datum. Rättar EKS 11 mot gällande föreskrift. Äger takstolar beräkning och länkar till räknaren |
+
+Tak får sex sidor (1, 10 till 14), Badrum fem (2 till 6), Kök sex med de tre som finns (7 till 9). Alla tre hubbarna kan publiceras.
+
+**Direkt efter:** `/badrum/byta-toalettstol/` (910, vinnbarhet 4, äger toalettsits), `/badrum/vatrumsmatta/` (6 810, vinnbarhet 3, kunskap om kostnad och val mot Tarketts tre sidor), `/tak/papptak/` (2 660, 4), `/tak/takfot/` (4 120, 4, med ett renoveringsspår som ingen har), `/tak/tvatta-tak/` (1 520, 4, till mars), `/kok/stankskydd/` (5 660, 3) och `/kok/byta-bankskiva/` (730, 4, sänksåg och överfräs).
+
+**Väntar:** vindskivor (gds är stark och färsk), betongpannor (tillverkaren äger), shingeltak, renovera badrum och våtrumsskiva (delad intention). **Görs inte:** kakla badrum och golvbrunn (8.3), ikea kök montering (IKEA på plats ett till fem), takstege (under gränsen och utanför sortimentet), golvvärme badrum som gör det själv.
+
+**En befintlig sida ändras.** "olja bänkskiva" (720) är tre gånger så stor som "slipa bänkskiva" (210), och Google visar delvis samma sidor på båda. `/kok/slipa-bankskiva/` ska äga båda: seoTitle leder med olja, H1 och URL rörs inte, och sidan får det som gds saknar, alltså ek, självantändande trasor och torktid ur datablad.
+
+### 8.8 Vad körning 3 ändrade
+
+1. **Tre ämnen är lika stora som två hela körningar.** 100 410 i månaden, och tak och badrum är vart och ett större än hela golvpelaren i körning 2. Kök och bad och Tak, som 7.6 lät vänta, går före.
+2. **Regelbytet 2025 till 2026 är den gemensamma luckan.** Ingen etta citerar BFS 2024:8 eller 2024:9, BBV 26:1, GVK 2026, Säker Vatten 2026:1, dagens rotavdrag eller bygglovsändringen 1 december 2025. Sidor som gör det från start har ett försprång som krymper när konkurrenterna uppdaterar.
+3. **Badrum föreslås bli egen pelare**, och en tredjedel av badrumsfraserna skrivs som kunskap i stället för guide, eftersom tätskikt, kakel i dusch, golvbrunn och elgolvvärme inte går att lära ut ärligt.
+4. **Två kostnadsräknare och en takräknare går före texterna de bor i.** Takarean ur husets mått är den lucka både körning 2 och 3 hittade, och den löser också verktygsplanens rad 11. Takstolar och snörasskydd får ingen räknare nu.
+5. **Kök är den enda av de tre som bär affiliate**, och bara på luckor, bänkskivor och kakel. Tak och badrum byggs för trafik och förtroende.
+6. **Nischen fortsätter krympa, men delarna växer.** 136 av 222 fraser backar. Det som växer är att renovera en del i stället för helheten: måla kakel, byta luckor på befintlig stomme, kostnaden för ett takbyte.
 
 ## Källor
 
@@ -387,3 +628,12 @@ För avsnitt 7: sökresultat och sidor lästa 2026-09-20, volymer från `docs/da
 - [Bolist, dreva fönster](https://bolist.se/gor-det-sjalv/ut/fonster-och-dorrar/dreva/), [Bygghemma, dreva fönster](https://www.bygghemma.se/reportage-och-guider/dreva-fonster-och-dorrar-7-enkla-steg/), [Isover, dreva fönster](https://www.isover.se/supporten-tipsar/dreva-fonster), [Byggahus, dreva runt fönster](https://www.byggahus.se/forum/threads/dreva-runt-fonster.567992/)
 - [Råd & Rön, montera tv](https://www.radron.se/vardagskunskap/montera-platt-tv-pa-vaggen-4-smarta-tips/), [Swedroid, montera tv på gipsvägg](https://swedroid.se/forum/threads/montera-tv-pa-gipsvaegg.188689/), [Komplett, montera tv](https://www.komplett.se/article/95126/saa-monterar-du-din-tv-paa-vaggen-paa-ett-tryggt-satt)
 - [Luftavfuktarguide.se](https://luftavfuktarguide.se/), [Luftavfuktaren.se](https://luftavfuktaren.se/), [Bäst-i-test.se, avfuktare](https://www.bast-i-test.se/tester_pa_basta/avfuktare-inomhus.html)
+
+För avsnitt 8: sökresultat och sidor lästa 2026-09-28, volymer från `docs/keyword-stats-2026-09-28.csv` (Google Ads, Sverige, sep 2025 till aug 2026). Regeltexterna lästes i original där inget annat står.
+
+- Regler: [BFS 2024:8, Boverkets byggregler](https://rinfo.boverket.se/BFS2024-8/pdf/BFS2024-8.pdf) (7 kap. 7 och 9 §§), [BFS 2024:9](https://lagen.nu/bfs/2024:9) (2 kap. 24 §, snörasskydd), [plan- och bygglagen 9 kap. 15 § i lydelse enligt lag 2025:974](https://lagen.nu/2010:900) (bygglov för ändrat taktäckningsmaterial, ska stämmas av mot Boverket innan briefen), [Säker Vatten, Branschregler Säker Vatteninstallation 2026:1](https://www.sakervatten.se/wp-content/uploads/2025/10/branschregler-saker-vatteninstallation-2026-web-v2-lagupplost.pdf) (1.1, 1.3, 4.2.3, 4.3, 4.4.5, 4.7), [Byggkeramikrådet, BBV 26:1](https://admin.bkr.se/app/uploads/2026/05/BKR_BBV_2026_webb.pdf) (§ 1, 2.3, 3.2, 4), [GVK, våtzoner i Säkra Våtrum 2026](https://www.gvk.se/nyheter/2025/fortydligande-av-vatzoner-i-uppdaterade-branschregler-sakra-vatrum-2026/), [GVK, infästning i våtrum](https://www.gvk.se/branschregler/infastning-i-vatrum/), [MVK, frågor och svar](https://vatrumsmalning.se/faq-tolkningar-fragor-och-svar) (golv), [Elsäkerhetsverket, installation av golvvärme](https://www.elsakerhetsverket.se/privatpersoner/din-elanlaggning/bygga-och-renovera/installation-av-golvvarme), [Elsäkerhetsverket, detta får du göra själv](https://www.elsakerhetsverket.se/privatpersoner/detta-far-du-gora-sjalv), [Skatteverket, så fungerar rotavdraget](https://www.skatteverket.se/privat/fastigheterochbostad/rotarbeteochrutarbete/safungerarrotavdraget.4.5947400c11f47f7f9dd80004014.html)
+- Försäkring: folksam.se (vattenskada), if.se (vattenskada, uppdaterad 2026-08-31; renovera badrum, 2024-10-15), trygghansa.se (vattenskada, 2024-06-12), lansforsakringar.se (tätskikt), konsumenternas.se (villaförsäkringar, vattenskador)
+- Takavvattning: [Plannja, dimensionering av takavvattning (2010)](https://s3-eu-west-1.amazonaws.com/inriver-documents/se-plannja-dimensionering-takavvattning.pdf), husbyggaren.se (RA Hus), rainlineselectiontool.lindab.com
+- Tak: takexperter.se, byggstart.se, bygghemma.se, beckmansbygg.se, leadhive.se, vertextak.se, dittbygg.se, livsstilsnytt.se, takstolsfabriken.se, gbkab.se, lundqvisttravaru.se, traguiden.se, taskrunner.se, varmdo-platslageri.se, snorasskydd.se, myresjohus.se, dinbyggare.se, trygghetsvakten.se, gds.se, benders.se, bostadstvatt.se, takhem.se, offerta.se, brabyggare.se
+- Badrum: tarkett.se, stuvbutiken.com, jotun.com, gebenna.com, k-bygg.se, gds.se, helphero.se, viivilla.se, totalbyggarna.se, byggstart.se, badrumsexperter, sonochfar.se, clasfixare.se, proffsmagasinet.se, villaagarna.se, bkr.se, badrumsportalen, finja.se, vvsochbad.se, hornbach.se, bauhaus.se
+- Kök: marbodal.se, k-bygg.se, viivilla.se, alcro.se, nordsjo.se, bolist.se, leadhive.se, clasfixare.se, pickyliving.se, totalbyggarna.se, offerta.se, husexperter.se, hantverkskollen.se, ikea.com, gds.se, anza, bygghemma.se, kitchens.se
