@@ -179,7 +179,7 @@ Krav: löftet om valet. Delar inte de tre första orden med title.
 0. **Kortsvaret**: vad ett plåttak kostar per kvadratmeter lagt, med spannet och skälet till spannet (takpanneplåt mot bandtäckning), livslängden med källa, och att byte från pannor till plåt på en- och tvåbostadshus inte kräver bygglov sedan 1 december 2025 om huset inte är särskilt värdefullt eller har skyddsbestämmelser.
 1. **Takpanneplåt, trapetsplåt och bandtäckning.** Tabell med rubrikrad: typ, pris per kvm lagt, pris för material, livslängd, minsta lutning, kan läggas själv. Källorna står på en rad under tabellen. **Bär plåttak.**
 2. **Vad det kostar.** Varför priserna i fältet ligger mellan 800 och 3 500 kr per kvm. Rivning, läkt, underlag, plåtdetaljer, container och ställning som poster. Rotavdraget på arbetet. `<Kalkylator namn="takbyte" />` bäddas in direkt efter att läsaren förstått att takytan och materialet styr priset. **Bär plåttak kostnad.**
-3. **Bygglov och byte från pannor till plåt.** PBL 9 kap. 15 § efter lag 2025:974, undantagen i 34 till 37 §§ (särskilt värdefulla byggnader, skyddsbestämmelser). Sidan säger att äldre sidor har fel. **Bär byta takpannor till plåt.**
+3. **Bygglov och byte från pannor till plåt.** PBL 9 kap. 15 § i lydelsen enligt lag 2025:974, 9 kap. 37 § (särskilt värdefulla byggnader) och vad detaljplanen eller områdesbestämmelserna säger. 34 och 35 §§ gäller inte fasadändring och 36 § bara solceller, så de nämns inte. Boverket nämner uttryckligen "byta från tegeltak till plåttak". Att byta till samma material är underhåll. (Rättat 2026-09-29 efter faktabladet `docs/briefer/faktablad/kunskap-plattak.md`.) Sidan säger att äldre sidor har fel. **Bär byta takpannor till plåt.**
 4. **Underlaget, läkt och takpapp.** Ströläkt, bärläkt och underlagspapp enligt tillverkarens anvisning. **Bär takpapp under plåttak.**
 5. **Lägga plåttak själv.** Vilken plåttyp som går att lägga själv, i vilken ordning, skruv per kvadratmeter, fotplåt, nockplåt och genomföringar. Här hänvisar sidan till tillverkarens anvisning i stället för att ge ett eget recept. **Bär lägga plåttak själv.**
 6. **Snörasskydd och taksäkerhet på plåt**, kort, med länk till snörasskyddssidan.
@@ -351,6 +351,18 @@ Det ettan har som vi måste ha:
 - **Lindabs verktyg** nämns inte i publik text.
 - Inga ortsnamn och inga lokala firmor.
 
+### Beslut efter faktabladet, 2026-09-29
+
+Faktabladen är `docs/briefer/faktablad/guider-hangrannor.md` och `rakna-takavvattning.md`.
+
+1. **Stupröret och dräneringssidan förenas med en princip: vattnet ska bort från grunden.** Det finns två godkända vägar. Den ena är en ledning, till kommunens dagvattenledning där ABVA tillåter det eller till en egen ledning. Den andra är en utkastare med en ränndal som leder vattnet minst 2 meter ut, och minst 3 meter om huset har källare (Ystads kommun, uppdaterad 2026-04-21; Umeå kommun, 2025-07-11). Det som är fel är en utkastare som släpper vattnet vid sockeln, och det är vad `/grund/dranera-hus/` varnar för. Sidorna säger alltså samma sak, men dräneringssidan säger det för snävt.
+   - **`/grund/dranera-hus/` justeras** (rad 103, H2 "Två saker ska vara gjorda innan grävmaskinen kommer"). Meningen ska säga att stupröret ska sluta i en ledning eller i en utkastare med ränndal som för vattnet minst 2 till 3 meter ut, och aldrig vid sockeln. Källan är en av kommunerna, som också läggs i `kallor`. Hantverkaren formulerar, och rättningen är kirurgisk: en mening, ingen annan ändring. Anticimex exempel med 3 000 liter står kvar.
+   - **Lutningen på ränndalen** anges med källan. Ystad skriver 2 till 3 cm per meter och Umeå ungefär 5 cm per meter. Hängrännesidan anger båda, tillskrivna kommunerna, och säger att kommunens egna råd gäller. Dräneringssidans 1:20 för marken (Rockwool, Paroc) rörs inte, eftersom den gäller marken och inte ränndalen.
+   - **Om takvattnet får kopplas till dagvattenledningen** står det i kommunens ABVA, som inte är läst för någon kommun. Sidan säger att läsaren frågar sin VA-huvudman och lovar inget åt något håll.
+   - Inlänken från `/grund/dranera-hus/` sätts i samma mening som justeras, med ett ankare om hängrännor och stuprör.
+2. **Plastpriser:** hängränna i plast får stå i texten med Bauhaus som enda källa och datum. Stuprör i plast har inget pris och får inget i texten, bara att det finns.
+3. **Dimensionstabellen** följer räknaren (raknare.md): RA Hus 21 via Teknikhandboken och Plannja för rännan, RA Hus för stupröret. Lindabs lägre gräns, 125-ränna redan från 50 kvm, nämns under tabellen.
+
 ---
 
 ## /tak/takstolar/
@@ -387,13 +399,13 @@ Krav: löftet. Delar inte de tre första orden med title.
 ### 6. H2-struktur
 
 0. **Kortsvaret**: fabrikstillverkade takstolar dimensioneras av leverantören mot snö- och vindlast enligt gällande föreskrifter, pris per styck för ett vanligt hus med källa och datum, vanligt centrumavstånd, och vad läsaren själv räknar (lutning, nockhöjd, takfallslängd, antal).
-1. **Vem som räknar.** Leverantörens konstruktionsberäkning, CE-märkning och vilken föreskrift som gäller efter att EKS upphörde 1 juli 2026. **Bär takstolar beräkning.**
+1. **Vem som räknar.** Leverantörens konstruktionsberäkning, CE-märkning och föreskriften BFS 2024:6. Möjligheten att använda de äldre reglerna i stället upphörde 1 juli 2026. **Bär takstolar beräkning.**
 2. **Vad fabriken behöver veta.** Checklista med spännvidd, lutning, takutsprång, takmaterial och därmed vikt, snözon, bjälklag eller öppet till nock.
 3. **Hur många och på vilket avstånd.** Centrumavstånd, antal = längd delat med avstånd plus ett, och räknaren för geometrin. **Bär takstolar cc mått.**
 4. **Vad de kostar.** Pris per styck efter spännvidd, konstruktionsritning, frakt och kran, och montering som poster, med källa och datum. **Bär takstolar pris.**
 5. **Pulpettak.** Lutning och konstruktionshöjd enligt TräGuiden. **Bär takstolar pulpettak.**
 
-Faq: bygga takstolar själv, bygglov eller anmälan, lösvirke mot fabrikstakstolar.
+Faq: bygga takstolar själv, bygglov eller anmälan, lösvirke mot fabrikstakstolar. Anmälan besvaras med PBF 6 kap. 1 § 2, en ändring som "påverkas väsentligt" i den bärande konstruktionen. PBF 6 kap. 5 § gäller inte längre och får inte citeras.
 
 ### 7. Längd
 
@@ -434,7 +446,7 @@ Det ettan har som vi måste ha:
 
 1. **Ett rakt svar på vem som dimensionerar och mot vilken föreskrift efter 1 juli 2026.** Livsstilsnytt hänvisar till EKS 11, som inte längre gäller, och ingen säger tydligt att leverantören ansvarar.
 2. **Checklistan över vad fabriken behöver** för att räkna och ge pris.
-3. **Pris per styck med källa och datum**, från minst två tillverkare.
+3. **Pris per styck med källa**, från två tillverkare. Beslut 2026-09-29: Takstolsfabrikens och Folkhus spann 1 000 till 3 000 kr räcker. Det står som ett spann, tillskrivet båda, med hämtningsdatum och med "moms anges inte", och sidan säger att priset för en viss spännvidd kommer i leverantörens offert. Kravet räknas som uppfyllt med de villkoren.
 4. **Geometrin i räknaren**, med antal vid valt centrumavstånd.
 5. **Skiss** med måtten utsatta.
 
@@ -443,7 +455,7 @@ Det ettan har som vi måste ha:
 - **Vilken föreskrift som ersatte EKS för bärförmåga, och därmed snö- och vindlast, från 1 juli 2026**, med beteckning, datum och Boverkets adress.
 - Pris per takstol per spännvidd från minst två tillverkare, med datum (takstolsfabriken.se, gbkab.se, lundqvisttravaru.se).
 - Vanligt centrumavstånd och när ett tätare avstånd används, ur tillverkarens anvisning.
-- TräGuidens lutning och konstruktionshöjd för pulpettak. Takstolsfabrikens motstridiga "1/5 av spännvidden" kontrolleras på sidan och stryks om det inte står där.
+- TräGuidens lutning och konstruktionshöjd för pulpettak (1/15 av spännvidden). **Takstolsfabriken är struken** som källa för pulpettaket (beslut 2026-09-29).
 - Om lösvirkestakstolar byggda på plats kräver egen konstruktionsberäkning, och i så fall enligt vilken regel.
 
 ### 12. Fällor

@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Hus med sadeltak där snörasskyddet går längs hela takfoten, förbi entrédörren åt båda hållen.">
+  <!-- Anteckningsboken. Blyerts 2 px för huset, taket, dörren, fönstret, marken och konsolerna, blyerts-2 för
+       skraffering, snöns överkant, måttbygeln och ledare, snickarpenna för snörasskyddet i hela takfotens längd
+       (enda pennsaken). Tumstock bakom måttet högst c 1 200 mm. Inte skalenlig: huset ritas utan mått.
+       Parallellprojektion, djupvektor (100, -60). Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2: markens skraffering under y 330 -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M48,336 l10,10 M70,336 l10,10 M92,336 l10,10 M114,336 l10,10 M136,336 l10,10 M158,336 l10,10 M180,336 l10,10 M202,336 l10,10 M224,336 l10,10 M246,336 l10,10 M268,336 l10,10 M290,336 l10,10 M312,336 l10,10 M334,336 l10,10 M356,336 l10,10 M378,336 l10,10 M400,336 l10,10 M422,336 l10,10 M444,336 l10,10 M466,336 l10,10 M488,336 l10,10 M510,336 l10,10 M532,336 l10,10 M554,336 l10,10 M576,336 l10,10"/>
+    <path d="M59,358 l10,10 M81,358 l10,10 M103,358 l10,10 M125,358 l10,10 M147,358 l10,10 M169,358 l10,10 M191,358 l10,10 M213,358 l10,10 M235,358 l10,10 M257,358 l10,10 M279,358 l10,10 M301,358 l10,10 M323,358 l10,10 M345,358 l10,10 M367,358 l10,10 M389,358 l10,10 M411,358 l10,10 M433,358 l10,10 M455,358 l10,10 M477,358 l10,10 M499,358 l10,10 M521,358 l10,10 M543,358 l10,10 M565,358 l10,10"/>
+  </g>
+
+  <!-- Blyerts: långsidan, gaveln, taket, dörren med trappsteg, fönstret, marken, konsolerna -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M70,198 Q69,264 70,332 M68,200 Q235,201 402,200 M400,198 Q401,264 400,332"/>
+    <path d="M398,331 Q450,302 502,269 M500,272 Q501,206 500,138 M455,105 Q477,124 502,141"/>
+    <path d="M53,190 Q235,191 417,190 M55,192 Q78,139 106,88 M415,192 Q438,139 466,88 M103,90 Q285,89 467,90 M465,90 Q490,109 517,131"/>
+    <path d="M130,322 Q129,283 130,242 M128,244 Q151,243 174,244 M172,242 Q173,283 172,322 M120,322 Q151,321 182,322 M122,320 Q121,325 122,331 M180,320 Q181,325 180,331"/>
+    <path d="M298,232 Q330,231 362,232 M360,230 Q361,257 360,284 M362,282 Q330,283 298,282 M300,284 Q299,257 300,230"/>
+    <path d="M44,330 Q317,331 590,330"/>
+    <path d="M62,190 L70,175 M105,190 L113,175 M148,190 L156,175 M191,190 L199,175 M234,190 L242,175 M277,190 L285,175 M320,190 L328,175 M363,190 L371,175 M406,190 L414,175"/>
+  </g>
+
+  <!-- Blyerts-2 1,5: snöns överkant i hela takets längd, måttbygeln mellan konsol 6 och 7 -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M75,150 q10,-4 20,0 t20,0 t20,0 t20,0 t20,0 t20,0 t20,0 t20,0 t20,0 t20,0 t20,0 t20,0 t20,0 t20,0 t20,0 t20,0 t20,0 t20,0"/>
+    <path d="M285,172 V158 M328,172 V158 M285,164 Q306,163 328,164 M281,168 l8,-8 M324,168 l8,-8"/>
+  </g>
+
+  <!-- Papperslapp och tumstock bakom måttet på snön -->
+  <rect x="228" y="130" width="157" height="28" fill="#f5efe3"/>
+  <rect x="230" y="132" width="153" height="24" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 306 144)"/>
+
+  <!-- Blyerts-2: ledare -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M88,210 L86,193"/>
+    <path d="M206,211 L196,184"/>
+  </g>
+
+  <!-- Snickarpenna: snörasskyddet, två rör längs hela takfoten, förbi dörren åt båda hållen -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M59,181 Q239,180 420,181"/>
+    <path d="M61,177 Q241,176 422,177"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#625a50">
+    <text x="76" y="228">takfot</text>
+    <text x="180" y="298">entré</text>
+    <text x="204" y="230">konsol</text>
+    <text x="233" y="150" fill="#2a2521">högst c 1 200 mm</text>
+    <text x="150" y="62" fill="#ad3519">snörasskydd hela vägen</text>
+  </g>
+</svg>

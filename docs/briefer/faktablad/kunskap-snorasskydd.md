@@ -213,7 +213,7 @@ BMI: "Tabell 1 - Maximalt avstånd mellan snörasskydd i meter på sluttande tak
 
 **Källorna säger olika, inget medelvärde:**
 - Upp till 27° ligger BMI nära Lindabs och Benders **pulpettak**-tabell (egen jämförelse: Lindab pulpet 6° zon 1,0 = 60,1; BMI 60).
-- Från 33° och brantare ger BMI **kortare** avstånd än Lindab och Benders. Exempel 45°, zon 1,5: BMI 8,3 m, Lindab sadeltak 15,2 m, Benders 15 m.
+- Från 38° och brantare ger BMI **kortare** avstånd än Lindab och Benders. Exempel 45°, zon 1,5: BMI 8,3 m, Lindab sadeltak 15,2 m, Benders 15 m.
 - Vilken som väger tyngst: tillverkarens egen tabell gäller för tillverkarens eget system. Skyddet monteras efter den anvisning som hör till produkten. På sidan: visa en tabell, ange fabrikat och säg att andra fabrikat har andra tal.
 - Varför de skiljer i branta tak: ingen källa förklarar det. **Saknas.**
 
