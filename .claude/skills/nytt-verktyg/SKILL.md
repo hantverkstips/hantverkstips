@@ -29,7 +29,7 @@ Allt en användare läser skrivs av hantverkaren efter att stegen är byggda: `V
 - Resultatspalten bär beskedet som en mening med verb som säger vad läsaren ska göra, det stora talet, en pekrad och länkarna. Uträkningen står under verktyget.
 - Bestämd form bara om saker som förklarats: "tejptestet" står inte i kortet förrän testet är förklarat.
 - Ord med två betydelser på en byggsajt byts ut: tak, regel, lag, rad, punkt, avdrag.
-- Standardvarningen och delatexten är gränssnitt och får vara identiska på alla verktyg: "Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det." och "Dina värden ligger i adressen. Markera den och kopiera, så får den du skickar till samma svar."
+- Standardvarningen och delatexten är gränssnitt och får vara identiska på alla verktyg: "Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det." och "Dina värden ligger i adressen. Markera den och kopiera, så får den du skickar länken till samma svar."
 - Inget internt arbete i publik text: ingen SERP-analys, inga träfflistor, inga datum då en konstant ändrades. Prisrader har däremot alltid datum.
 - Testerna låser synliga strängar; när ett besked skrivs om uppdateras påståendet i testet. Tal rörs aldrig.
 

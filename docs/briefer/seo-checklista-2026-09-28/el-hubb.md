@@ -102,3 +102,15 @@ Menyposten "Om oss" i INNEHALLSARKITEKTUR avsnitt 4 och gränsen `MAX_HUBBAR_I_M
 ## Sammanfattning
 
 Tre punkter: description skrivs om (nämner ämnena, lovar inte värme, upprepar inte ingressen), ingressen kortas och slutar upprepa description, `uppdaterad` sätts till publiceringsdagen. Title, H1, hubregeln, strukturerad data och menyn: inget att ändra. När de tre punkterna är gjorda och `npm run build` är grönt är huben godkänd av SEO och GEO.
+
+## Kontroll 2026-09-28, hantverkarens nya version
+
+`description`: `Guider om jordfelsbrytare som löser ut, byte av elcentral, U-värde och att tilläggsisolera vinden. Du ser vad du får göra själv och vad ullen sparar.` 155 tecken. `ingress`: 111 tecken. `uppdaterad: 2026-09-28`, `utkast: false`. `npm run kontrollera`: 0 fel, inga varningar för `el.mdx`.
+
+- **"byte av elcentral" i stället för "byta elcentral": godkänt.** Frasen ägs av `/el/byta-elcentral/`, inte av huben. Huben ska inte tävla om den ordagranna frasen, och Google läser böjningsformerna som samma ämne. Snippeten visar ändå läsaren att elcentralen finns i ämnet. Samma resonemang gäller "U-värde" och "tilläggsisolera vinden"; att två av fyra står i frasform och två i omskriven form är rätt nivå för en hub.
+- Description namnger fyra ämnen, lovar inte värme och upprepar inte ingressen. Krav 3 uppfyllt.
+- Ingressen är kortare än 125 tecken och upprepar inte description. Krav 4 uppfyllt.
+- `uppdaterad` är satt. Krav 5 uppfyllt.
+- 155 tecken ligger på gränsen. Läggs ett ord till blir den för lång.
+
+Godkänd av SEO och GEO.

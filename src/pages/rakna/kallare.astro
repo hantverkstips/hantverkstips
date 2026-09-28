@@ -107,7 +107,7 @@ const titel = 'Besiktiga källaren själv och hitta vattnet';
 /** Källorna bakom antagandetabellen, samlade så att raderna inte glider isär. */
 const GUIDEN = '/fukt/fukt-i-kallaren/';
 const BOVERKET_FUKTTILLSTAND =
-  'https://www.boverket.se/sv/PBL-kunskapsbanken/regler-om-byggande/boverkets-byggregler/fuktsakerhet/hogsta-tillatna-fukttillstand/';
+  'https://www.boverket.se/sv/PBL-kunskapsbanken/regler-om-byggande/hygien-halsa-och-miljo/fuktsakerhet/';
 const BOVERKET_KALLARVAGG =
   'https://www.boverket.se/sv/byggande/forebygg-fel-brister-skador/risker-byggande/risker-fuktskador/fuktrisker-for-grund/fuktrisker-med-kallare/risk-med-fuktintrangning-kallarvagg/';
 const POLYGON = 'https://www.polygongroup.com/sv-SE/Nyheter/fukttransport/';
@@ -189,10 +189,10 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     url: MALARE,
   },
   {
-    storhet: 'Kritiskt fukttillstånd',
+    storhet: 'Högsta tillåtna fukttillstånd',
     varde: `${KRITISK_RF} % relativ luftfuktighet`,
     grund: 'Källa',
-    stod: 'Boverket, BBR 6:52, när materialets eget värde inte är väl undersökt. Villaägarna säger samma sak i praktisk form',
+    stod: 'Boverkets byggregler, BFS 2024:8, 7 kap. 1 §, när materialets eget värde inte är väl undersökt. Villaägarna säger samma sak i praktisk form',
     url: BOVERKET_FUKTTILLSTAND,
   },
   {

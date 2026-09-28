@@ -103,10 +103,12 @@ export type KallareResultat =
     };
 
 /**
- * Kritiskt fukttillstånd, alltså den relativa luftfuktighet som ska användas
- * när materialets eget värde inte är väl undersökt, och den nivå luften inte
- * bör ligga över under längre tid. Boverkets byggregler, BBR 6:52.
- * https://www.boverket.se/sv/PBL-kunskapsbanken/regler-om-byggande/boverkets-byggregler/fuktsakerhet/hogsta-tillatna-fukttillstand/
+ * Högsta tillåtna fukttillstånd, den relativa fuktighet som gäller för
+ * byggnadsdelar och material när materialets eget värde inte är väl undersökt.
+ * Gränsen gäller materialen, inte rumsluften; fuktig luft som ligger länge mot
+ * kalla ytor gör att materialen når den. Boverkets föreskrifter BFS 2024:8,
+ * 7 kap. 1 § andra stycket.
+ * https://www.boverket.se/sv/PBL-kunskapsbanken/regler-om-byggande/hygien-halsa-och-miljo/fuktsakerhet/
  */
 export const KRITISK_RF = 75;
 
@@ -519,14 +521,14 @@ export function bedomKallare(i: KallareIndata): KallareResultat {
   } else if (overKritiskRf) {
     mat.push({
       steg: 'mat',
-      text: `Hygrometern visar ${String(i.luftfuktighet).replace('.', ',')} procent relativ luftfuktighet, och det är över Boverkets gräns på ${KRITISK_RF} procent. Så högt bör luften inte ligga någon längre tid.`,
-      kalla: 'Boverket, högsta tillåtna fukttillstånd (BBR 6:52). Villaägarna säger samma sak i praktisk form',
+      text: `Hygrometern visar ${String(i.luftfuktighet).replace('.', ',')} procent relativ luftfuktighet, och det är över Boverkets gräns på ${KRITISK_RF} procent. Gränsen gäller fukten i väggar och trä, men ligger så fuktig luft länge mot kalla ytor når väggarna och träet dit till slut.`,
+      kalla: 'Boverket, högsta tillåtna fukttillstånd (BFS 2024:8, 7 kap. 1 §). Villaägarna säger samma sak i praktisk form',
     });
   } else {
     mat.push({
       steg: 'mat',
       text: `Hygrometern visar ${String(i.luftfuktighet).replace('.', ',')} procent relativ luftfuktighet, och det är under Boverkets gräns på ${KRITISK_RF} procent. Talet gäller bara där givaren ligger, och bakom en skiva mot ytterväggen är luften fuktigare än så.`,
-      kalla: 'Boverket, högsta tillåtna fukttillstånd (BBR 6:52)',
+      kalla: 'Boverket, högsta tillåtna fukttillstånd (BFS 2024:8, 7 kap. 1 §)',
     });
   }
   if (diagnos === 'kondens' && i.arstid === 'sommar') {

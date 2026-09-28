@@ -6,7 +6,7 @@
  * Guiden läses från disk och parsas här i skriptet, så att en ändrad rad i
  * tabellen eller ett omskrivet tejptest bryter testet i stället för att tyst
  * glida ifrån verktyget. De tal artikeln redan publicerar är låsta: gränsen på
- * 75 procent relativ luftfuktighet (Boverket, BBR 6:52), avfuktaren på 5 948 kr
+ * 75 procent relativ luftfuktighet (Boverket, BFS 2024:8), avfuktaren på 5 948 kr
  * (Proffsmagasinet), fuktkontrollen på 5 355 kr (Ocab), dräneringens 3 000 kr
  * per löpmeter (Villaägarna) och de 3 000 liter ett regn på 20 mm ger på ett
  * tak på 150 kvm (Anticimex).
@@ -133,7 +133,7 @@ test('talen i guidens kostnadstabell är modulens konstanter', () => {
 
 test('Boverkets gräns, Villaägarnas femtio år och Anticimex tal står i guiden', () => {
   assert.equal(KRITISK_RF, 75);
-  assert.match(GUIDEN, new RegExp(`BBR 6:52[^.]*${KRITISK_RF} procent relativ luftfuktighet`));
+  assert.match(GUIDEN, new RegExp(`byggreglerna[^.]*${KRITISK_RF} procent relativ fuktighet`));
   assert.equal(KAN_HALLA_AR, 50);
   assert.match(GUIDEN, /kan fungera i femtio år/);
   assert.equal(HYGROSTAT_RF, 60);

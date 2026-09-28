@@ -57,7 +57,7 @@ const MAGNUS_C = 243.04;
 /** Omräkning från ångtryck (hPa) till ånghalt (g/m³), ur samma härledning. */
 const ANGHALT_KONSTANT = 216.68;
 
-/** Målnivå i utrymmet. Källa: BBR 6:52 via Boverket sätter 75 % RF som kritiskt fukttillstånd, 55 % ger marginal ner till det. */
+/** Målnivå i utrymmet. Källa: Boverkets föreskrifter BFS 2024:8, 7 kap. 1 §, sätter 75 % RF som högsta tillåtna fukttillstånd, 55 % ger marginal ner till det. */
 const MAL_RF = 0.55;
 
 /**

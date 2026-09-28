@@ -9,7 +9,7 @@
  * och på vilket utrymme det gäller, eftersom uteluften är torr i januari och fuktig
  * i augusti. Därför säger kalkylatorn också när en åtgärd är fel.
  *
- * Magnus-formeln och 75 procent som kritiskt fukttillstånd är samma tal som
+ * Magnus-formeln och 75 procent som högsta tillåtna fukttillstånd är samma tal som
  * kunskapsartikeln /fukt/luftfuktighet-inomhus/ redan räknar med.
  *
  * Konstanterna nedan står också i src/lib/kalkyl/avfuktare.ts. De ligger i båda
@@ -87,10 +87,10 @@ const OSAKERHET_C = 0.35;
 const ANGHALT_KONSTANT = 216.68;
 
 /**
- * Kritiskt fukttillstånd, procent relativ luftfuktighet vid ytan.
- * Källa: Boverket, BBR 6:52, högsta tillåtna fukttillstånd. 75 procent gäller när
- * materialets eget värde inte är väl undersökt.
- * https://www.boverket.se/sv/PBL-kunskapsbanken/regler-om-byggande/boverkets-byggregler/fuktsakerhet/hogsta-tillatna-fukttillstand/
+ * Högsta tillåtna fukttillstånd, procent relativ luftfuktighet vid ytan.
+ * Källa: Boverkets föreskrifter BFS 2024:8, 7 kap. 1 § andra stycket. 75 procent
+ * gäller när materialets eget värde inte är väl undersökt.
+ * https://www.boverket.se/sv/PBL-kunskapsbanken/regler-om-byggande/hygien-halsa-och-miljo/fuktsakerhet/
  */
 export const KRITISKT_FUKTTILLSTAND_RF = 75;
 

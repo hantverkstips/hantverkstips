@@ -169,9 +169,10 @@ export const INFASTNING_TEXT =
  *
  * Tabellhuvudets förutsättningar: konstruktionsvirke C24, golv av minst 22 mm
  * trall G4-2 eller bättre, EKS 11, säkerhetsklass 1, klimatklass 3, nedböjning
- * begränsad till 1/200 av spännvidden. Tabellen har ingen snözon som
- * ingångsvärde; den som bygger i en hög snözon kör sitt eget fall genom Svenskt
- * Träs dimensioneringsprogram.
+ * begränsad till 1/200 av spännvidden. EKS är upphävd sedan 1 juli 2025 och
+ * ersatt av BFS 2024:6; om tabellen håller enligt BFS 2024:6 är inte
+ * kontrollerat. Tabellen har ingen snözon som ingångsvärde; den som bygger i
+ * en hög snözon kör sitt eget fall genom Svenskt Träs dimensioneringsprogram.
  *
  * Raderna var till 2026-09-19 märkta ANTAGANDE med Altanplaneraren som stöd.
  * Lathunden bekräftar dem på centimetern, och märkningen är därför borta.
@@ -200,7 +201,8 @@ export type FriLangd = (typeof FRI_LANGD_TABELL_M)[number];
  *
  * Tabellhuvudet: bärlinor med två eller flera fack med samma plintavstånd, alla
  * bärlinor i samma dimension och hållfasthetsklass, C24, EKS 11, säkerhetsklass
- * 1, klimatklass 3, nedböjning 1/300.
+ * 1, klimatklass 3, nedböjning 1/300. EKS 11 är upphävd och ersatt av BFS 2024:6,
+ * se MAX_SPANNVIDD_M ovan.
  *
  * Tabellen ersatte 2026-09-19 den fasta konstanten 2,5 m, som var för generös:
  * 2,5 m kräver en bärlina på 45 × 220 mm och bara vid den kortaste fria längden.
