@@ -61,7 +61,7 @@ Krav: löftet till husägaren, gärna frågan om man måste ha det. Delar inte d
 2. **Vid entrén eller längs hela takfoten.** Beslutet för läsarens hus: entré, gångväg, parkering, altan under takfoten.
 3. **Plåttak.** Typ av skydd, infästning genom plåten mot läkt eller råspont, tätning, enligt tillverkarens anvisning. **Bär snörasskydd plåttak.**
 4. **Tegel- och betongpannor.** Konsoler på läkt eller i pannan, och vad som skiljer tegel från betong. **Bär snörasskydd tegeltak och betongpannor.**
-5. **Hur många konsoler och hur tätt.** Tabell med rubrikrad och enhet: snözon eller snölast, taklutning, avstånd mellan konsoler, källa per rad. Tabellen skrivs bara med tal ur tillverkarnas datablad (krav på faktabladet). Finns bara ett fabrikat står det så i tabellfoten.
+5. **Hur många konsoler och hur tätt.** Tabell med rubrikrad och enhet: snözon eller snölast, taklutning, avstånd mellan konsoler. Fabrikat, dokument och datum står på en rad under tabellen. Tabellen skrivs bara med tal ur tillverkarnas datablad (krav på faktabladet). Finns bara ett fabrikat står det så i tabellfoten.
 6. **Montera själv eller låta göra det.** Arbete på tak, fallrisken, taksäkerheten enligt BFS 2024:9 om den gäller, rotavdraget på arbetet, och pris per meter med datum.
 
 Faq: tre till fem frågor som inte upprepar avsnitten, till exempel om snörasskydd krävs på garaget, om man ska skotta taket, och om ett gammalt skydd måste bytas vid takbyte.
@@ -128,6 +128,18 @@ Det ettan har som vi måste ha:
 - Ingen SERP-analys i publik text ("ingen annan sida säger …"). Taskrunner och plåtslagarsajterna nämns inte.
 - Takstegen hör inte hit, bortsett från en mening om att man går säkert på taket.
 
+
+### Beslut efter utkastet, 2026-09-29
+
+Utkastet `src/content/kunskap/tak/snorasskydd.mdx` har cirka 1 950 ord brödtext utan tabeller och Faq, nio H2 och en H3.
+
+1. **Längden ner till högst 1 500 ord brödtext.** Tabellerna och Faq räknas inte. Nio H2 blir sju genom två sammanslagningar:
+   - **H2 6 ("högst 1,2 meter mellan konsolerna") och H2 7 ("hur många rader … snön där du bor") blir en H2** om hur tätt och hur många rader. Det är löftet i titeln ("hur tätt"), och båda svarar på samma fråga. Tabellen från H2 7 står kvar.
+   - **H2 3 ("snöglidhinder är till för hus under 4 meter") och H2 8 ("snöglidhindrets konsoler följer snölasten") blir en H2** om snöglidhinder, placerad efter avsnittet om hur tätt. Det som upprepas mellan dem stryks.
+   - Resten av minskningen tas där samma sak sägs två gånger, i första hand i H2 1 och i kostnadsavsnittet. H3:n "Ansvaret du har ändå" står kvar, eftersom den är krav 2 i Bättre än ettan. Inga tal och inga källor stryks för att nå längden. Blir sidan 1 600 ord med alla tal kvar är det godkänt.
+2. **H2 5 räcker för tegeltak och betongpannor.** "På tegeltak och betongpannor bär läkten snörasskyddet" bär båda fraserna (260 och 170) i naturlig form tillsammans med ordet snörasskyddet.
+3. **seoTitle godkänns:** "Snörasskydd, när det krävs och hur tätt", 39 tecken. Suffixet läggs på, frasen står först, och titeln delar inte de tre första orden med H1 ("Måste ditt hus ha snörasskydd?"). **Description godkänns:** 142 tecken, frasen först, och regeln, plåt och pannor samt avståndet med tillverkarna som källa. Tillverkarnamnen får stå, eftersom de är källor och inte rekommendationer.
+
 ---
 
 ## /tak/plattak/
@@ -165,7 +177,7 @@ Krav: löftet om valet. Delar inte de tre första orden med title.
 ### 6. H2-struktur
 
 0. **Kortsvaret**: vad ett plåttak kostar per kvadratmeter lagt, med spannet och skälet till spannet (takpanneplåt mot bandtäckning), livslängden med källa, och att byte från pannor till plåt på en- och tvåbostadshus inte kräver bygglov sedan 1 december 2025 om huset inte är särskilt värdefullt eller har skyddsbestämmelser.
-1. **Takpanneplåt, trapetsplåt och bandtäckning.** Tabell med rubrikrad: typ, pris per kvm lagt, pris för material, livslängd, minsta lutning, kan läggas själv, källa. **Bär plåttak.**
+1. **Takpanneplåt, trapetsplåt och bandtäckning.** Tabell med rubrikrad: typ, pris per kvm lagt, pris för material, livslängd, minsta lutning, kan läggas själv. Källorna står på en rad under tabellen. **Bär plåttak.**
 2. **Vad det kostar.** Varför priserna i fältet ligger mellan 800 och 3 500 kr per kvm. Rivning, läkt, underlag, plåtdetaljer, container och ställning som poster. Rotavdraget på arbetet. `<Kalkylator namn="takbyte" />` bäddas in direkt efter att läsaren förstått att takytan och materialet styr priset. **Bär plåttak kostnad.**
 3. **Bygglov och byte från pannor till plåt.** PBL 9 kap. 15 § efter lag 2025:974, undantagen i 34 till 37 §§ (särskilt värdefulla byggnader, skyddsbestämmelser). Sidan säger att äldre sidor har fel. **Bär byta takpannor till plåt.**
 4. **Underlaget, läkt och takpapp.** Ströläkt, bärläkt och underlagspapp enligt tillverkarens anvisning. **Bär takpapp under plåttak.**

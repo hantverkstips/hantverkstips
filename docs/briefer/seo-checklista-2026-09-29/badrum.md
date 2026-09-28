@@ -1,13 +1,13 @@
 # SEO-checklista, badrumsklustret, 2026-09-29
 
-Fyra artiklar i den nya pelaren Badrum och våtrum (`badrum`, beslut 1 i SOKORDSANALYS 8.9): tätskikt, måla kakel, våtrumsfärg och fogar. Räknaren `/rakna/badrum-kostnad/` har sin checklista i `raknare.md`. Tillsammans med `/rakna/rotavdrag/`, som får pelaren `badrum` (beslut 2), blir det sex sidor, och hubben kan publiceras. Hantverkaren läser sitt avsnitt före skrivningen, `underlag` läser punkt 11 och 12 innan faktabladet skrivs, och SEO och GEO-agenten läser den färdiga sidan mot samma avsnitt efteråt.
+Fyra artiklar i den nya pelaren Badrum och våtrum (`badrum`, beslut 1 i SOKORDSANALYS 8.9): tätskikt, våtrumsfärg, fogar och byta toalettstol. Kakelsidan flyttade till Kök 2026-09-29 (beslut 5) och står i `kok.md`, och toalettstolen tog dess plats (beslut 6). Räknaren `/rakna/badrum-kostnad/` har sin checklista i `raknare.md`. Tillsammans med `/rakna/rotavdrag/`, som får pelaren `badrum` (beslut 2), blir det sex sidor, och hubben kan publiceras. Hantverkaren läser sitt avsnitt före skrivningen, `underlag` läser punkt 11 och 12 innan faktabladet skrivs, och SEO och GEO-agenten läser den färdiga sidan mot samma avsnitt efteråt.
 
 **Ingen badrumssida får skrivas innan pelaren finns i registret.** `pelare: badrum` är ogiltigt tills `src/lib/pelare.ts`, ikonen och `src/content/pelare/badrum.mdx` är på plats (SOKORDSANALYS 8.9, beslut 1). UX och bygge specar det före första sidan.
 
 Så här läses checklistan:
 
 - **Underlag:** SERP-läsningen i SOKORDSANALYS 8.2 (Badrum), avgränsningen per ämne i 8.3, volymerna i `docs/keyword-stats-2026-09-28.csv`.
-- **Ordningen i topp 5 är osäker**, eftersom sökverktyget svarar från USA. Kontrollera ordningen för tätskikt badrum och måla kakel i google.se innan faktabladet skrivs.
+- **Ordningen i topp 5 är osäker**, eftersom sökverktyget svarar från USA. För tätskikt badrum kontrolleras den inte (beslut 2026-09-29): kraven i Bättre än ettan slår alla fem sidor oavsett vem som är etta.
 - **Title** räknas utan suffixet " · Hantverkstips". 44 tecken är kravet om frasen tillåter det.
 - **Punkt 11** innehåller **Bättre än ettan** (krav) och **Krav på faktabladet**.
 - **Sidofraser utan volym** tvingas aldrig in.
@@ -15,10 +15,11 @@ Så här läses checklistan:
 Fem saker gäller alla fyra sidor:
 
 1. **Gränsen går mellan "så här gör du" och "så här ligger det till" (8.3).** Sajten lär aldrig ut att lägga tätskikt, kakla i duschen, lägga våtrumsmatta, byta golvbrunn eller installera elgolvvärme. Sidorna förklarar vad reglerna kräver och vad som händer med försäkringen. Det som går att göra själv (fogar, målning utanför duschen) skrivs som guide med villkoren utskrivna.
-2. **De gällande reglerna med namn och datum**, på varje sida där de berörs: BFS 2024:8 (i kraft 1 juli 2025, BBR fick tillämpas till och med 30 juni 2026), BBV 26:1 och GVK Säkra Våtrum 2026 (båda från 1 januari 2026), Säker Vatten 2026:1 (från 1 januari 2026). Ingen etta i fältet citerar dem, och flera citerar BBR 6:5331 som gällande. "BBR" får bara stå med beskedet att den har upphört.
+2. **De gällande reglerna med namn och datum**, på varje sida där de berörs: BFS 2024:8 (i kraft 1 juli 2025; enligt övergångsbestämmelserna i BFS 2024:14 punkt 3 fick BBR tillämpas på arbete som påbörjades före 1 juli 2026), BBV 26:1 och GVK Säkra Våtrum 2026 (båda från 1 januari 2026), Säker Vatten 2026:1 (från 1 januari 2026). Ingen etta i fältet citerar dem, och flera citerar BBR 6:5331 som gällande. "BBR" får bara stå med beskedet att den har upphört.
 3. **Samma begrepp på alla sidor.** Våtzon 1 är väggarna vid dusch eller bad från golv till tak plus minst en meter utanför, hela ytterväggen om en del av den ligger i zonen, och hela golvet (BBV 26:1 § 3.2, GVK 2026). Våtzon 2 är övriga väggar. Klass VT och VA enligt MVK. Kvalitetsdokument. Definitionerna står fullt ut på tätskiktssidan, och de andra sidorna länkar dit i stället för att upprepa dem.
-4. **Försäkringen** förklaras med bolagens egna villkor och datum (Folksam, If uppdaterad 2026-08-31, Trygg-Hansa 2024-06-12) och Konsumenternas om förhöjd självrisk. Inga åldersavdrag i procent, eftersom ingen källa har dem.
-5. **Inga produktkort på tätskikt, våtrumsfärg och fogar.** Måla kakel kan få ett kort för excenterslip om affiliateagenten godkänner det (beslut 4 i 8.9).
+4. **Försäkringen** förklaras med bolagens egna villkor och datum (Folksam, If uppdaterad 2026-08-31, Trygg-Hansa 2024-06-12) och Konsumenternas om förhöjd självrisk. Åldersavdragen står som en tabell på tätskiktssidan, med Folksam, If och Länsförsäkringar och datum per bolag (beslut 2026-09-29). Övriga sidor länkar dit.
+5. **Inga produktkort** på någon av badrumssidorna.
+6. **MVK har egna zoner.** Måleribranschens regler för våtrum 2026 räknar taket i alla våtutrymmen och tvättstugans väggar till våtzon 2, och väggen bakom en vägghängd toalett till våtzon 1. BBV och GVK har ingen motsvarighet till detta, men de räknar hela ytterväggen och hela golvet till våtzon 1. Våtrumsfärgssidan använder MVK:s zoner och säger att de är MVK:s. Tätskiktssidan använder BBV:s och GVK:s.
 
 ---
 
@@ -57,18 +58,19 @@ Krav: löftet. Delar inte de tre första orden med title.
 ### 6. H2-struktur
 
 0. **Kortsvaret**: BFS 2024:8 7 kap. 7 § kräver ett vattentätt skikt på ytor som utsätts för vatten, och branschreglerna BBV 26:1 och GVK 2026 säger hur det görs och av vem. En privatperson får göra det, men får inget kvalitetsdokument, och försäkringen kräver att reglerna följts. Det är stycket en AI lyfter.
-1. **Vad reglerna kräver.** BFS 2024:8 7 kap. 7 och 9 §§ ordagrant, och branschreglerna med versioner och datum. Att BBR fick tillämpas till och med 30 juni 2026. **Bär tätskikt badrum regler.**
+1. **Vad reglerna kräver.** BFS 2024:8 7 kap. 7 och 9 §§ ordagrant, och branschreglerna med versioner och datum. Övergången ur BFS 2024:14 punkt 3: BBR fick tillämpas på arbete som påbörjades före 1 juli 2026, och för arbete utan krav på lov eller anmälan gäller påbörjandet. Ingen formulering med "till och med 30 juni 2026". **Bär tätskikt badrum regler.**
 2. **Våtzon 1 och våtzon 2.** Definitionerna och en zonskiss. **Bär tätskikt badrum golv.**
-3. **Får jag lägga tätskiktet själv?** BBV 26:1 § 1 citerat (försäkringsbolagen accepterar normalt, Byggkeramikrådet avråder, inget kvalitetsdokument), GVK:s besked att ingen lag förbjuder det, och försäkringsbolagens villkor.
-4. **Vad du kan göra själv i badrummet, och vad du inte kan.** Tabellen från SOKORDSANALYS 8.3 med källa per rad, i läsarens ord. Länkar till de sidor som finns.
-5. **Vad ett tätskikt kostar och vad en offert ska innehålla.** Pris per kvm med källa och datum, kvalitetsdokument, behörighet (Kurs 1 och 3), rotavdraget. `<Verktygskort kalkylator="badrum-kostnad" />` här. **Bär tätskikt badrum pris.**
-6. **Källarbadrum**, kort: vad som skiljer mot golv på mark, om branschreglerna säger något eget. **Bär tätskikt badrum källare.**
+3. **Får jag lägga tätskiktet själv?** BBV 26:1 § 1.5 citerat (försäkringsbolagen accepterar normalt, Byggkeramikrådet avråder, inget kvalitetsdokument), GVK:s besked att ingen lag förbjuder det, och försäkringsbolagens villkor.
+4. **Försäkringen och åldersavdraget.** Vad Folksam, If och Länsförsäkringar kräver, och deras tabeller för åldersavdrag på våtrum i en jämförande tabell med rubrikrad (år sedan renovering, avdrag per bolag) och datum per bolag. Det är den tabell en AI plockar, och ingen i topp 5 har den.
+5. **Vad du kan göra själv i badrummet, och vad du inte kan.** Tabellen från SOKORDSANALYS 8.3 i läsarens ord, med källorna på en rad under tabellen. Länkar till de sidor som finns.
+6. **Vad ett tätskikt kostar och vad en offert ska innehålla.** Pris per kvm med källa och datum, kvalitetsdokument, behörighet (Kurs 1 och 3), rotavdraget. `<Verktygskort kalkylator="badrum-kostnad" />` här. **Bär tätskikt badrum pris.**
+7. **Källarbadrum**, kort: vad som skiljer mot golv på mark, om branschreglerna säger något eget. **Bär tätskikt badrum källare.**
 
-Faq: hur länge ett tätskikt håller, om man kan lägga nytt tätskikt på gammalt kakel (BBV § 4: plastmattor, våtrumstapeter, lim, färg och väv ska alltid bort), hur man känner igen ett uttjänt tätskikt.
+Faq: hur länge ett tätskikt håller, om man kan lägga nytt tätskikt på gammalt kakel (BBV 26:1 § 4.1.3: plastmattor, våtrumstapeter, lim, färg och väv ska alltid bort), hur man känner igen ett uttjänt tätskikt.
 
 ### 7. Längd
 
-Mål **1 400 till 1 800 ord** plus Faq. Clas Fixare har cirka 2 000 ord men ingen regel och ingen zon. Längden motiveras av regeltexterna och tabellen i avsnitt 4.
+Mål **1 400 till 1 800 ord** plus Faq. Clas Fixare har cirka 2 000 ord men ingen regel och ingen zon. Längden motiveras av regeltexterna och tabellerna i avsnitt 4 och 5.
 
 ### 8. Bilder
 
@@ -79,7 +81,8 @@ Mål **1 400 till 1 800 ord** plus Faq. Clas Fixare har cirka 2 000 ord men inge
 **Ut**, alla är krav:
 
 - `/rakna/badrum-kostnad/` som `<Verktygskort>` i kostnadsavsnittet.
-- `/badrum/mala-kakel/` i tabellen i avsnitt 4.
+- `/kok/mala-kakel/` i tabellen i avsnitt 5, på raden om målat kakel.
+- `/badrum/byta-toalettstol/` i tabellen i avsnitt 5.
 - `/badrum/vatrumsfarg/` i tabellen och i avsnitt 2 där klass VT nämns.
 - `/badrum/fogar-badrum/` i tabellen.
 - `/rakna/rotavdrag/`, textlänk i kostnadsavsnittet.
@@ -89,7 +92,7 @@ Länkar till sidor som ännu är utkast läggs till i samma omgång som målsida
 **In**, krav:
 
 - `/inomhus/gipsskruv/`, H2:n "Våtrum, brandgips och utegips", meningen som förklarar vad ett tätskikt är. En länk, med ett ankare som säger tätskikt.
-- `/badrum/mala-kakel/`, `/badrum/vatrumsfarg/` och `/badrum/fogar-badrum/` (se deras punkt 9).
+- `/badrum/vatrumsfarg/`, `/badrum/fogar-badrum/` och `/badrum/byta-toalettstol/` (se deras punkt 9).
 
 ### 10. Strukturerad data och komponenter
 
@@ -109,128 +112,31 @@ Det ettan eller tvåan har som vi måste ha:
 
 1. **De gällande versionerna med namn och datum**: BFS 2024:8 7 kap. 7 §, BBV 26:1, GVK Säkra Våtrum 2026, Säker Vatten 2026:1. Ingen i topp 5 citerar dem.
 2. **Zonskissen** med definitionerna ur BBV 26:1 § 3.2.
-3. **Svaret om att göra det själv, med citat**: BBV 26:1 § 1 och GVK, plus vad tre försäkringsbolag skriver, med datum.
-4. **Tabellen per arbete** över vad du får och inte får göra själv, med källa per rad.
+3. **Svaret om att göra det själv, med citat**: BBV 26:1 § 1.5 och GVK, plus vad tre försäkringsbolag skriver, med datum.
+4. **Tabellen per arbete** över vad du får och inte får göra själv, med alla källor på raden under tabellen.
 5. **Pris per kvm med källa och datum** och rotavdraget rätt (30 procent, 50 000 kr per person).
+6. **Åldersavdragen från tre bolag i en tabell**, med datum.
 
 **Krav på faktabladet** (`docs/briefer/faktablad/kunskap-tatskikt-badrum.md`):
 
-- BBV 26:1 § 1, § 2.3, § 3.2 och § 4 ordagrant från PDF:en (admin.bkr.se, 2026), med sidnummer.
+- BBV 26:1 § 1.5, § 2.3, § 3.2 och § 4.1.3 ordagrant från PDF:en (admin.bkr.se, 2026), med sidnummer.
 - GVK Säkra Våtrum 2026: zondefinitionen och frågan om att göra det själv, med adress och datum. GVK-sidan om att göra själv är odaterad, vilket står i faktabladet.
-- BFS 2024:8 7 kap. 7 och 9 §§ ordagrant, och övergångsbestämmelsen (BBR till och med 30 juni 2026) ur föreskriften själv, inte ur ett utdrag.
+- BFS 2024:8 7 kap. 7 och 9 §§ ordagrant, och övergångsbestämmelsen i BFS 2024:14 punkt 3 ordagrant. Klart i faktabladet 2026-09-29.
 - Folksams, Ifs och Trygg-Hansas villkorstext om våtrum, med datum. Länsförsäkringars villkor läses i villkoret, inte bara på rådsidan.
-- Pris per kvm för tätskikt från två källor som går att läsa, med datum. Sonochfars 2 700 kr används inte ensamt, eftersom sidan räknar med rot 50 procent.
+- Pris per kvm för tätskikt med källa och datum. Offertförmedlare får användas om de namnges som förmedlare (se raknare.md). Totalbyggarna och Sonochfar räknas som en källa, eftersom de är samma firma. Sonochfars 2 700 kr används inte ensamt, eftersom sidan räknar med rot 50 procent.
+- **Åldersavdragen** hos Folksam, If och Länsförsäkringar, med tabell och datum per bolag (se punkt 12).
+- **Livslängden**: Länsförsäkringar anger 25 till 30 år på en odaterad sida, GVK omkring 25 år 2016. Båda får stå, tillskrivna och med år eller "odaterad", i Faq-svaret om hur länge ett tätskikt håller. Talet står inte i kortsvaret och inte som sajtens eget.
 - Om det finns en egen regel för badrum i källare eller på betongplatta.
 
 ### 12. Fällor
 
 - **Ingen steg-för-steg-guide för tätskikt**, inte ens som ruta. Ett "så går det till" för att läsaren ska förstå offerten är tillåtet utan mängder, tider och produkter.
 - **BBR 6:5331** får inte citeras som gällande.
+- **Säker Vattens regler** länkas utan www (sakervatten.se/wp-content/...). Adressen med www ger 404. Samma rättelse gäller källistan i SOKORDSANALYS.
+- **Åldersavdragen** skrivs av från bolagens villkor ordagrant i tabellen. Inga egna medelvärden.
 - **Rot 50 procent** gällde bara betalningar 12 maj till 31 december 2025.
 - Weber, Clas Fixare och Sonochfar nämns inte i publik text.
 - Försäkringsbolagen får nämnas med namn i brödtexten när deras villkor citeras. Det är källa, inte reklam.
-
----
-
-## /badrum/mala-kakel/
-
-### 1. Adress och sidtyp
-
-`/badrum/mala-kakel/` · `src/content/guider/badrum/mala-kakel.mdx` · samling **guider**, `typ: projektguide`, `pelare: badrum`, `niva: enkel`. Hubgrupp: Gör det själv. Möjligen ett produktkort (excenterslip), om affiliateagenten godkänner det.
-
-Läsaren vill fräscha upp kakel utan att riva. Sidan säger var det går och var det inte gör det, och hur det görs där det går. Den äger också köket, eftersom Google visar samma topp 5 för "måla kakel kök".
-
-### 2. Huvudfras och sidofraser
-
-**Huvudfras: måla kakel, 2 400 per månad**, −33 procent på ett år. Rummen växer: **måla kakel badrum** 1 000 (+48 procent) och **måla kakel kök** 880 (+14 procent). Toppen är september och oktober (3 600). Vinnbarhet 4. Avsikten med varianterna är 4 510.
-
-Sidofraser, med plats:
-
-- **måla kakel badrum** (1 000) i H1 eller kortsvaret och i H2:n om zonerna.
-- **måla kakel kök** (880) i en egen H2.
-- **måla kakel i dusch** (140) i H2:n om duschen, där svaret är nej.
-- **måla kakelfogar** (90, +80 procent) i en H2 eller H3.
-
-### 3. Title
-
-Krav: **högst 44 tecken**, börjar med **Måla kakel**. Löftet ska säga att sidan skiljer på rummen och zonerna: kök, badrum, dusch. Delar inte de tre första orden med `/fasad/mala-om-huset/` ("Måla om huset") eller `/kok/mala-koksluckor/`.
-
-### 4. Description
-
-Krav: **120 till 155 tecken.** Ska lova var det håller (kök och badrummets torra väggar), var det inte gör det (i duschen och på golvet), och slipning, grundfärg och härdning.
-
-### 5. H1
-
-Krav: löftet med rummen. Delar inte de tre första orden med title.
-
-### 6. H2-struktur
-
-0. **Kortsvaret**: målat kakel håller i köket och på badrummets väggar utanför våtzon 1 om kaklet slipas, grundas och får härda. I duschen och på golvet är det inte ett våtrumssystem, eftersom MVK kräver klass VT i våtzon 1 och att kaklet tas bort före ett målat system. Härdningstid innan vatten med källa.
-1. **Var det går och var det inte gör det.** Tabell: kök, badrum våtzon 2, badrum våtzon 1 (dusch), golv, med besked och källa per rad. Länk till tätskiktssidan för zonerna. **Bär måla kakel badrum.**
-2. **Så gör du, steg för steg.** Tvätta, slipa (korn), grunda, två strykningar, tid mellan strykningarna och härdning innan vatten, ur färgtillverkarens datablad. Produktkortet står här om det godkänns, efter att texten sagt vad slipmaskinen behöver klara.
-3. **Kakel i köket.** Stänk, värme bakom hällen, fett och rengöring, med färgtillverkarens gränser. **Bär måla kakel kök.**
-4. **Varför inte i duschen.** MVK, försäkringen, och vad alternativen är (byta kakel, våtrumsfärg på ny skiva, våtrumsmatta), med länkar. **Bär måla kakel i dusch.**
-5. **Fogarna.** Måla fogarna eller byta dem, och varför silikonfogen inte ska målas. **Bär måla kakelfogar.**
-
-Faq: hur länge det håller, om man kan måla klinker, om man kan ta bort färgen igen.
-
-### 7. Längd
-
-Mål **1 100 till 1 400 ord** plus Faq. Ettan är en kort amatörguide. Proffsmagasinet har cirka 1 200 ord. Tabellen och duschavsnittet är det som gör längden.
-
-### 8. Bilder
-
-- **Skiss** av ett badrum med zonerna och en bock eller ett kryss per yta: kakelvägg utanför duschen målad, duschvägg ej målad, golv ej målat. Alt högst 125 tecken med orden måla kakel och badrum.
-- Inga produktbilder utöver kortet.
-
-### 9. Interna länkar
-
-**Ut**, alla är krav:
-
-- `/badrum/tatskikt-badrum/` i tabellen i avsnitt 1 och i duschavsnittet.
-- `/badrum/vatrumsfarg/` i duschavsnittet: skillnaden mellan färg på kakel och ett våtrumssystem.
-- `/badrum/fogar-badrum/` i fogavsnittet.
-- `/rakna/kvadratmeter/` som `<Verktygskort kalkylator="kvadratmeter" />` där färgmängden nämns. Det är sidans enda kort utöver ett eventuellt produktkort.
-
-**In**, krav:
-
-- `/badrum/tatskikt-badrum/` och `/badrum/vatrumsfarg/`.
-- `/kok/mala-koksluckor/`, där kakel mellan skåpen nämns.
-
-### 10. Strukturerad data och komponenter
-
-`Article` med Christian som `author`, `BreadcrumbList`, `FAQPage` bara med riktig Faq. Produktkortet ger ingen `Product`-markup. `kallor` med MVK, färgtillverkarens datablad och försäkringsbolagen.
-
-### 11. Ettan och Bättre än ettan
-
-Topp 5: clasfixare.se, bygg.se (oläst, 403), hornbach.se (bara menyer), stuvbutiken.com, proffsmagasinet.se. **Ettan: clasfixare.se**, en kort guide utan zoner, torktider, datum och författare. Proffsmagasinet (odaterad, "Henrik, testchef") har tider (6 till 12 timmar mellan strykningar, minst 48 timmar innan vattenstänk) men föreslår klarlack i duschen, vilket strider mot MVK.
-
-Det ettan har som vi måste ha:
-
-- Tvätta, slipa, grunda och måla i den ordningen.
-- En enkel lista över vad som behövs.
-
-**Bättre än ettan** (krav):
-
-1. **Besked per zon och rum i en tabell**, med MVK som källa: kök ja, våtzon 2 ja med villkor, våtzon 1 nej, golv nej.
-2. **Härdningstid innan vatten och tid mellan strykningar ur datablad**, med fabrikat och datum.
-3. **Svaret om försäkringen** när kakel i duschen målas, med bolagens villkor.
-4. **Köket som eget avsnitt** med värme och fett bakom hällen.
-5. **Zonskissen.**
-
-**Krav på faktabladet** (`docs/briefer/faktablad/guider-mala-kakel.md`):
-
-- **Gällande MVK-regler.** Versionen, datum och texten om (a) klass VT i våtzon 1 och VA eller VT i våtzon 2, (b) att befintligt kakel ska tas bort före ett målat våtrumssystem och (c) att golv inte omfattas. Underlag har bara Beckers odaterade anvisning, Teknos anvisning enligt "Måleribranschens regler för våtrum 2013" och MVK:s frågesida. MVK2021.pdf hittades men gick inte att hämta. Underlag hämtar den gällande versionen från vatrumsmalning.se eller Måleriföretagen. **Finns ingen nyare text än 2013 står året i löptexten**, och SEO och GEO-agenten bedömer om duschavsnittet kan stå på den källan.
-- Datablad för två kakelfärger eller grundfärger för kakel: korn, antal strykningar, övermålningstid, härdning innan vatten.
-- Folksams, Ifs och Trygg-Hansas villkor om våtrum, samma som tätskiktssidan.
-- Om färgtillverkarna själva avråder från dusch eller golv. Det är ett andra stöd för beskedet.
-
-### 12. Fällor
-
-- **Proffsmagasinet nämns inte och länkas inte**, inte heller i `kallor` (beslut 4). Sidan säger vad som gäller, inte vem som har fel.
-- **Ingen klarlack i duschen** som tips, inte heller som "om du ändå vill".
-- Produktkortet står efter texten om slipningen, aldrig före kortsvaret, och bara om affiliateagenten har godkänt det.
-- Ingen härdningstid utan fabrikat.
 
 ---
 
@@ -240,7 +146,7 @@ Det ettan har som vi måste ha:
 
 `/badrum/vatrumsfarg/` · `src/content/kunskap/badrum/vatrumsfarg.mdx` · samling **kunskap**, `pelare: badrum`, `niva: mellan`. Hubgrupp: Välj rätt. Inget produktkort.
 
-Läsaren står i butiken eller planerar ett badrum och undrar var färgen räcker. Sidan förklarar klasserna och zonerna och säger var färg är ett tätskikt och var den bara är ytskikt. Den lär inte ut att måla ett VT-system i duschen.
+Läsaren står i butiken eller planerar ett badrum och undrar var färgen räcker. Sidan förklarar klasserna och MVK:s zoner, säger att hela badrummet, taket inräknat, kräver ett godkänt system och vad det får målas på, och hur man ser om en produkt är godkänd i dag. Den lär inte ut att måla ett system, varken i våtzon 1 eller 2. Ändrad 2026-09-29 efter faktabladet (SOKORDSANALYS 8.9, beslut 7).
 
 ### 2. Huvudfras och sidofraser
 
@@ -266,12 +172,13 @@ Krav: löftet. Delar inte de tre första orden med title.
 
 ### 6. H2-struktur
 
-0. **Kortsvaret**: våtrumsfärg är två saker. Som ytskikt på väggar utanför duschen (våtzon 2) räcker klass VA eller VT. I duschen (våtzon 1) krävs ett helt målat system i klass VT, utfört enligt MVK, och golv omfattas inte av MVK alls. BFS 2024:8 7 kap. 7 och 9 §§ är lagkravet bakom.
+0. **Kortsvaret**: våtrumsfärg är inte en burk utan ett system, alltså väv, lim eller grund och täckfärg från samma godkända system. I våtzon 1 krävs klass VT. I våtzon 2, där taket i alla våtutrymmen ingår, krävs minst VA. Systemet målas på ett underlag som är avsett för det, och kakel, våtrumstapet och väggmatta ska bort först. Golv omfattas inte av MVK. Källan är Måleribranschens regler för våtrum, som gäller från 1 januari 2026.
 1. **Klass VA och VT.** Vad klasserna betyder och vem som sätter dem (MVK, SVEFF och Måleriföretagen).
-2. **Var i badrummet.** Tabell: yta, zon, lägsta klass, källa. Tak, väggar utanför duschen, duschväggar, golv. Länk till tätskiktssidan för zondefinitionerna.
+2. **Var i badrummet.** Tabell med MVK:s egna zoner: yta, zon, lägsta klass. Källan (MVK 2026 s. 7 till 9) står på en rad under tabellen. Duschväggar och väggen bakom en vägghängd toalett (våtzon 1), övriga väggar och taket (våtzon 2), tvättstugans väggar (våtzon 2), golv (utanför MVK). Tabellfoten säger att MVK:s zoner skiljer sig från BBV:s och GVK:s och länkar till tätskiktssidan.
 3. **Varför inte på golvet.** MVK omfattar inte golv, och vad som gäller i stället.
-4. **Färg, tapet, matta eller kakel.** Kort jämförelse av ytskikten i våtzon 1 och 2, med länkar när sidorna finns. Gör sidan till en bro och ger våtrumstapet och våtrumsskiva en plats utan att äga dem.
-5. **Måla själv i våtzon 2.** Underarbetet och tiderna ur datablad. Det här är den del som är gör det själv. VT-systemet i duschen skrivs inte som guide.
+4. **Vad färgen får målas på.** Ommålningsregeln (MVK 2026 s. 19): kakel, våtrumstapet och väggmatta ska bort helt, i både VT och VA, och ommålning görs bara på ett oskadat, tidigare MVK-godkänt system. Där kakel och målat system möts på samma vägg överlappar färgen kakelns tätskikt med ungefär 30 mm. Länk till kakelsidan. **Bär målat tätskikt.**
+5. **Färg, tapet, matta eller kakel.** Kort jämförelse av ytskikten, med länkar när sidorna finns. Sidan blir en bro och ger våtrumstapet och våtrumsskiva en plats utan att äga dem.
+6. **Är produkten godkänd i dag?** MVK:s lista över godkända system med datum (2025-07-09), att system faller ur listan (flera utgick december 2024 och januari 2025), och att läsaren ska kontrollera listan och inte butikens produkttext. Vad MVK säger till den som målar själv: anlita ett auktoriserat företag, eller fråga försäkringsbolaget först och följ leverantörens anvisning till punkt och pricka. Inga produktnamn som rekommendation. **Bär våtrumssystem.**
 
 Faq: måla över gammal våtrumsfärg, måla våtrumstapet, måla i taket ovanför duschen.
 
@@ -289,12 +196,12 @@ Mål **1 000 till 1 300 ord** plus Faq. Ettan är en butikskategori. Gebenna har
 **Ut**, alla är krav:
 
 - `/badrum/tatskikt-badrum/` i kortsvaret eller avsnitt 2.
-- `/badrum/mala-kakel/` i avsnitt 4: färg på kakel är inte våtrumsfärg.
-- `/rakna/kvadratmeter/` som `<Verktygskort kalkylator="kvadratmeter" />` i avsnitt 5.
+- `/kok/mala-kakel/` i avsnittet om kakel: färg på kakel är inte ett våtrumssystem någonstans i badrummet.
+- `/rakna/kvadratmeter/` som `<Verktygskort kalkylator="kvadratmeter" />` i avsnitt 6, där mängden nämns.
 
 **In**, krav:
 
-- `/badrum/tatskikt-badrum/` och `/badrum/mala-kakel/`.
+- `/badrum/tatskikt-badrum/` och `/kok/mala-kakel/`.
 
 ### 10. Strukturerad data och komponenter
 
@@ -314,11 +221,12 @@ Det ettan har som vi måste ha:
 2. **Tabellen per yta och zon** med lägsta klass.
 3. **Beskedet att golv inte omfattas av MVK**, med källa.
 4. **BFS 2024:8 7 kap. 7 och 9 §§** som lagkravet bakom.
-5. **Skillnaden mellan våtrumsfärg och färg på kakel**, med länk till kakelsidan.
+5. **Ommålningsregeln**: kakel, tapet och väggmatta bort i båda klasserna, med sidnummer.
+6. **Hur man ser om ett system är godkänt i dag**, med MVK:s lista och datum. Ingen i topp 5 säger att system faller ur listan.
 
 **Krav på faktabladet** (`docs/briefer/faktablad/kunskap-vatrumsfarg.md`):
 
-- **Gällande MVK-regler**, samma krav som kakelsidan: version, datum, klasserna, zonerna och golvet. Faktabladet delas med kakelsidan, och underlag hämtar texten en gång.
+- **Klart 2026-09-29.** Faktabladet har MVK 2026 (gäller från 2026-01-01), zonerna, ommålningsregeln på s. 19, golvet, listan över godkända system (2025-07-09) och listan över utgångna system. Två luckor är kvar: VA-listan är inte fullständigt utläst, och ändringsförfattningarna till BFS 2024:8 är inte kontrollerade. Båda kontrolleras innan texten skrivs.
 - Anvisningen för ett VT-system från två tillverkare (Beckers, Jotun, Alcro), med datum, så att sidan kan säga vad systemet består av utan att bli en guide.
 - BFS 2024:8 7 kap. 7 och 9 §§ ordagrant.
 
@@ -326,6 +234,9 @@ Det ettan har som vi måste ha:
 
 - **Ingen guide för VT-systemet i duschen.**
 - **Jotuns mening om duschzonen** får inte stå utan villkoret att hela systemet och MVK:s utförande krävs.
+- **Inget produktnamn som godkänt** utan MVK:s lista och datum bredvid. Beckers Våtrumstäck och Alcro Tät utgick ur MVK januari 2025, men butikstexter säger fortfarande att de är godkända. Butiken nämns inte.
+- **Ingen "måla själv i våtzon 2"-guide.** Våtzon 2 kräver också ett godkänt system, så gränsen är densamma som i duschen.
+- **MVK:s zoner** står som MVK:s, inte som BBV:s.
 - Inga produktnamn i löptexten utöver källorna.
 
 ---
@@ -368,7 +279,7 @@ Krav: löftet. Delar inte de tre första orden med title.
 2. **Mögel i fogarna.** Ytmögel mot mögel bakom, vad du tvättar med, och vad du aldrig blandar. Kemikaliesäkerheten med myndighetskälla. **Bär mögel i fogar badrum och mögel i fogarna i duschen.**
 3. **Byta silikonfogen.** Skär bort, tvätta, torka, fyll, forma, torktid innan dusch, ur fogmassans datablad. Varningen att inte skära i tätskiktet med källa (gds.se 2026-09-15). **Bär fog badrum torktid.**
 4. **Vilken fogmassa.** Sanitetssilikon, mögelhämmare, färg, med datablad. **Bär fogmassa badrum.**
-5. **Byta eller fräscha upp cementfogen.** Fogskrapa, fogfärg, och var gränsen går mot en delreparation som enligt BBV 26:1 § 1 ska göras av behörig plattsättare. **Bär byta kakelfog.**
+5. **Byta eller fräscha upp cementfogen.** Fogskrapa, fogfärg, och var gränsen går mot en delreparation som enligt BBV 26:1 ska göras av behörig plattsättare (paragrafnumret tas ur PDF:en, inte ur den här checklistan). **Bär byta kakelfog.**
 6. **När det är dags att ringa någon.** Tecknen: lösa plattor, fukt i vägg utanför badrummet, mögel som kommer tillbaka på en vecka. Länk till tätskiktssidan.
 
 Faq: hur ofta fogen ska bytas, om ättika fungerar, om man kan fylla ny silikon på gammal.
@@ -386,7 +297,7 @@ Mål **1 100 till 1 400 ord** plus Faq. Totalbyggarnas mögelsida har cirka 2 00
 **Ut**, alla är krav:
 
 - `/badrum/tatskikt-badrum/` i kortsvaret eller avsnitt 6.
-- `/badrum/mala-kakel/` där fogfärg och målning av fogar nämns.
+- `/kok/mala-kakel/` där målade fogar nämns, med beskedet att det gäller köket och inte badrummet.
 - `/fukt/luftfuktighet-inomhus/`, där fukten i badrummet efter duschen förklarar möglet. Ankaret ska handla om luftfuktigheten.
 
 **In**, krav:
@@ -414,7 +325,7 @@ Det ettan har som vi måste ha:
 2. **Torktid innan duschen ur fogmassans datablad**, med fabrikat och datum.
 3. **Kemikaliesäkerheten med myndighetskälla**, inte från en firma.
 4. **Snittskissen** som visar hur djupt man får skära.
-5. **Gränsen mot delreparation** enligt BBV 26:1 § 1.
+5. **Gränsen mot delreparation** enligt BBV 26:1, med paragrafnummer ur PDF:en.
 
 **Krav på faktabladet** (`docs/briefer/faktablad/guider-fogar-badrum.md`):
 
@@ -430,3 +341,120 @@ Det ettan har som vi måste ha:
 - **Inget råd om att blanda medel.**
 - **Mögelsanering av vägg eller golv** är inte en gör det själv-guide här. Sidan säger när det är dags att ringa.
 - Totalbyggarna nämns inte i publik text.
+
+
+### Beslut efter utkastet, 2026-09-29
+
+Utkastet `src/content/guider/badrum/fogar-badrum.mdx` har cirka 1 950 ord brödtext och åtta H2.
+
+1. **Längden.** Målet höjs till **högst 1 600 ord**. Regelavsnitten motiverar mer än 1 400, men inte 1 950. Två ändringar och inga fler:
+   - H2:n "GVK vill att en fackman byter mjukfogen" (cirka 180 ord) slås ihop med "Så går ett byte av silikonfogen till" och blir dess första stycke: GVK:s råd och läsningen av § 8.3. Samma GVK-besked står redan i avsnittet om cementfog och silikon, och där stryks det.
+   - "Tecknen på att felet sitter bakom fogen" (cirka 460 ord) kortas till de tecken som har en källa. Avsnittet får inte lova mer än källorna bär, se punkt 3.
+   Inget annat avsnitt tas bort. Rengöringen och mögelavsnittet bär sidans växande fras och ska stå kvar.
+2. **Fraserna räcker.** "byta kakelfog" (20) bärs av H2:n "Kakelfogen går att byta eller färga om", och "fog badrum torktid" (10) av H3:n om torktiden. Kravet "i sina H2" gäller inte ordagrant vid den volymen.
+3. **Descriptionen godkänns som den står** (148 tecken): "Tvätta bort mögel på fogarna i badrummet utan att blanda klor med syra, se när silikonfogen är slut och hur den byts utan att kniven når tätskiktet." Att den inte lovar "fukt bakom fogen" är rätt, eftersom det saknar källa. Kravet i punkt 4 ovan ändras till den här lydelsen.
+4. **Inlänken från `/fukt/luftfuktighet-inomhus/`** sätts i stycket "Badrummet står utan riktvärde med flit …", efter meningen som slutar "det är frånluftens jobb att ta topparna". Det blir en ny mening om att fukten efter duschen är det som ger mögel på fogarna. Ankaret är **mögel på fogarna** eller **mögel på fogarna i badrummet**, och länken går till `/badrum/fogar-badrum/`. Hantverkaren formulerar meningen. Det blir den enda länken till fogsidan från luftfuktighetssidan, och den läggs till i samma commit som fogsidan publiceras. Inlänken från `/badrum/tatskikt-badrum/` läggs i dess tabell över vad du får göra själv, på raden om silikonfog.
+
+---
+
+## /badrum/byta-toalettstol/
+
+Ny i startlistan 2026-09-29 (SOKORDSANALYS 8.9, beslut 6). Den ersätter kakelsidan, som flyttade till Kök.
+
+### 1. Adress och sidtyp
+
+`/badrum/byta-toalettstol/` · `src/content/guider/badrum/byta-toalettstol.mdx` · samling **guider**, `typ: projektguide`, `pelare: badrum`, `niva: enkel`. Hubgrupp: Gör det själv. Inget produktkort (AFFILIATE.md: badrum och VVS görs inte).
+
+Läsaren har en golvstående stol som läcker, spricker eller ska bytas vid en uppfräschning, och undrar om hon får göra det själv, hur det görs och vad det kostar med rörmokare. Sidan skriver guiden för en golvstående stol och säger nej till vägghängd stol med inbyggd cistern (SOKORDSANALYS 8.3).
+
+### 2. Huvudfras och sidofraser
+
+**Huvudfras: byta toalettstol, 480 per månad**, 0 procent på ett år, +51 procent på tre månader. Vinnbarhet 4. Avsikten med varianterna är 910.
+
+Sidofraser, med plats:
+
+- **byta toalettstol själv** (170, −57 procent) i H1 eller kortsvaret.
+- **byta toalettstol pris** (90, +27 procent) i H2:n om kostnad.
+- **byta toalettsits** (170, +336 procent på ett år, topp juli och augusti 2026) i en egen H2 med måttabell. Uppgången kan vara en engångseffekt, så frasen får en H2 men inte titeln.
+
+### 3. Title
+
+Krav: **högst 44 tecken**, börjar med **Byta toalettstol**. Löftet: vad du får göra själv, eller hela bytet med vad som skruvas var. Ingen annan title börjar med "Byta toalettstol".
+
+### 4. Description
+
+Krav: **120 till 155 tecken.** Ska lova om du får byta själv och vad som gäller för infästning och tätning, bytet steg för steg, och priset med rörmokare och rotavdrag.
+
+### 5. H1
+
+Krav: löftet. Delar inte de tre första orden med title.
+
+### 6. H2-struktur
+
+0. **Kortsvaret**: en golvstående toalettstol får ägaren byta själv, men infästningen och tätningen ska följa Säker Vattens branschregler 2026:1. Skruven ska ha minst 60 mm borr- och skruvdjup i betong, massiv konstruktion eller träregel, och varje hål ska tätas mot tätskiktet (4.7 och 4.7.2). Vägghängd stol med inbyggd cistern är en rörmokares jobb, eftersom cisternen kräver läckageindikering och fixturen skruvas i väggen (4.2.3 och 4.7.1). Priset med rörmokare och rotavdrag med källa och datum.
+1. **Får jag byta toalettstolen själv?** Vad Säker Vatten reglerar och för vem (reglerna vänder sig till auktoriserade företag och säger ingenting om privatpersoner), vad försäkringsbolagen kräver, och gränsen mellan golvstående och vägghängd. **Bär byta toalettstol själv.**
+2. **Innan du köper.** Mät avståndet till avloppet, vilken sorts anslutning stolen har, och om de gamla hålen i golvet går att återanvända.
+3. **Så byter du, steg för steg.** Stäng vattnet, töm, lossa, ta bort, rengör och täta de gamla hålen, placera den nya, borra och täta, skruva, anslut vatten och avlopp, provspola och kontrollera. Varje moment som rör tätskiktet har en källa.
+4. **Byta toalettsits.** Tabell över hålavstånd och sitsformer från två tillverkare, och hur man mäter. **Bär byta toalettsits.**
+5. **Vad det kostar.** Stolen i tre prisnivåer, rörmokare med och utan rotavdrag, med källa och datum. **Bär byta toalettstol pris.**
+
+Faq: silikon eller inte runt foten, varför stolen gungar, vad man gör med den gamla stolen.
+
+### 7. Längd
+
+Mål **1 000 till 1 300 ord** plus Faq. Clas Fixares två sidor är kortare och har inga källor.
+
+### 8. Bilder
+
+- **Snittskiss** av stolens fot mot golvet: tätskikt, borrhål med tätning, skruv med 60 mm djup och anslutning till avloppet. Alt högst 125 tecken med orden byta toalettstol. Måttet står i bildtexten med Säker Vatten som källa.
+
+### 9. Interna länkar
+
+**Ut**, alla är krav:
+
+- `/badrum/tatskikt-badrum/` i avsnitt 1 och 3: vad tätskiktet är och varför hålen ska tätas.
+- `/rakna/rotavdrag/` i kostnadsavsnittet.
+- `/rakna/badrum-kostnad/` som `<Verktygskort kalkylator="badrum-kostnad" />` i kostnadsavsnittet, för den som byter mer än stolen.
+
+**In**, krav:
+
+- `/badrum/tatskikt-badrum/`, i tabellen över vad du får göra själv.
+- `/badrum/fogar-badrum/`, i Faq-frågan om silikon runt foten om den finns där, annars i avsnittet om mjukfog.
+
+### 10. Strukturerad data och komponenter
+
+`Article`, `BreadcrumbList` Hantverkstips / Badrum och våtrum / sidan, `FAQPage` bara med riktig Faq. `kallor` med Säker Vatten 2026:1, försäkringsbolagen, tillverkarnas måttblad och prisernas källor.
+
+### 11. Ettan och Bättre än ettan
+
+Topp 5 för huvudfrasen: clasfixare.se (två sidor), vvsochbad.se, byggahus.se (forum, oläst), hemfixarna.se. För sitsen: biltema.se, gds.se (2023-05-03), bygghemma.se (2026-02-23), toalettsitsar.com, ifo.se. **Ettan: clasfixare.se.** Sidan säger att man får byta själv men har inga källor och säger ingenting om 60 mm skruvdjup eller tätning mot tätskiktet. Tjänstesidan anger 2 800 kr med Säker Vatten-behörig montör och rotavdrag.
+
+Det ettan har som vi måste ha:
+
+- Beskedet att en privatperson får byta en golvstående stol.
+- Stegen i ordning.
+- Ett pris för montering med rotavdrag.
+
+**Bättre än ettan** (krav):
+
+1. **Säker Vatten 2026:1 punkt 4.7 och 4.7.2** med 60 mm skruvdjup och tätning mot tätskiktet, med källa och datum.
+2. **Gränsen mot vägghängd stol** med skälen (4.2.3 och 4.7.1).
+3. **Snittskissen** med skruv, tätning och tätskikt.
+4. **Måttabell för sitsen** med hålavstånd från två tillverkare. Ingen i topp 5 för sitsen har en.
+5. **Pris med rotavdraget rätt**, 30 procent och 50 000 kr per person.
+
+**Krav på faktabladet** (`docs/briefer/faktablad/guider-byta-toalettstol.md`):
+
+- Säker Vatten 2026:1 punkt 4.2.3, 4.7, 4.7.1, 4.7.2 och 4.7.3 ordagrant med sidnummer, ur PDF:en på sakervatten.se.
+- Vad Säker Vatten, GVK eller en myndighet säger om att en privatperson byter en toalettstol. Saknas det står det så, och sidan skriver villkoren, inte ett löfte.
+- Folksams och Ifs villkor om våtrum. Faktabladet för tätskikt kan återanvändas.
+- Monteringsanvisning för en golvstående stol från två tillverkare (Gustavsberg, Ifo): anslutning, tätning mot golv, skruv.
+- Hålavstånd och sitsformer från två tillverkare, med datum.
+- Pris för stol i tre nivåer och för montering med rörmokare från två källor, med datum.
+
+### 12. Fällor
+
+- **Ingen guide för vägghängd stol med inbyggd cistern.**
+- **Inget "ingen lag förbjuder"** utan källa. Det finns bara hos firmor.
+- **Inga produktkort.**
+- Clas Fixare nämns inte i publik text.

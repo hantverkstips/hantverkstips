@@ -1,6 +1,6 @@
 # SEO-checklista, köksklustret, 2026-09-29
 
-En justerad sida och två nya i pelaren Kök (`kok`, som byter namn från "Kök och badrum", beslut 1 och 3 i SOKORDSANALYS 8.9): olja och slipa bänkskiva, måla köksluckor och byta köksluckor. Räknaren `/rakna/kok-kostnad/` har sin checklista i `raknare.md`. Med `/rakna/rotavdrag/` och `/rakna/kvadratmeter/` har Kök fem sidor efter `/kok/byta-koksluckor/` och sex med kostnadsräknaren, så hubben kan publiceras.
+En justerad sida och tre nya i pelaren Kök (`kok`, som byter namn från "Kök och badrum", beslut 1 och 3 i SOKORDSANALYS 8.9): olja och slipa bänkskiva, måla köksluckor, måla kakel (flyttad från Badrum 2026-09-29, beslut 5) och byta köksluckor. Räknaren `/rakna/kok-kostnad/` har sin checklista i `raknare.md`. Med `/rakna/rotavdrag/` och `/rakna/kvadratmeter/` har Kök fem sidor efter `/kok/mala-kakel/`, sex efter `/kok/byta-koksluckor/` och sju med kostnadsräknaren, så hubben kan publiceras.
 
 Så här läses checklistan:
 
@@ -9,7 +9,7 @@ Så här läses checklistan:
 - **Title** räknas utan suffixet " · Hantverkstips". 44 tecken är kravet om frasen tillåter det.
 - **Punkt 11** innehåller **Bättre än ettan** (krav) och **Krav på faktabladet**.
 
-Fyra saker gäller alla tre sidor:
+Fyra saker gäller alla fyra sidor:
 
 1. **Köket är säljarnas.** Köksfirmor, luckfabrikanter och offertförmedlare fyller varje fras, och ingen skriver för den som gör jobbet själv. Sidorna skriver för den som gör det själv, med tal från tillverkarnas datablad.
 2. **Kök är den enda av de tre nya pelarna som bär produkter** (8.6): färgspruta, excenterslip, cirkelsåg och överfräs. Varje kort godkänns av affiliateagenten innan sidan publiceras, och reklambandet står ovanför första kortet.
@@ -127,7 +127,7 @@ Sidofraser, med plats:
 
 ### 3. Title
 
-Krav: **högst 44 tecken**, börjar med **Måla köksluckor**. Löftet: vad som håller, eller vilket material som går att måla. Delar inte de tre första orden med `/badrum/mala-kakel/`.
+Krav: **högst 44 tecken**, börjar med **Måla köksluckor**. Löftet: vad som håller, eller vilket material som går att måla. Delar inte de tre första orden med `/kok/mala-kakel/`.
 
 ### 4. Description
 
@@ -163,12 +163,12 @@ Mål **1 300 till 1 600 ord** plus Faq. Alcro har cirka 1 200 ord. Längden moti
 - `/kok/byta-koksluckor/` i kostnadsavsnittet: när byte är billigare.
 - `/rakna/kok-kostnad/` som `<Verktygskort kalkylator="kok-kostnad" />` i kostnadsavsnittet.
 - `/kok/slipa-bankskiva/` där bänkskivan nämns.
-- `/badrum/mala-kakel/` där kaklet mellan skåpen nämns.
+- `/kok/mala-kakel/` där kaklet mellan skåpen nämns.
 
 **In**, krav:
 
 - `/kok/byta-koksluckor/` och `/kok/slipa-bankskiva/`.
-- `/badrum/mala-kakel/`, i köksavsnittet.
+- `/kok/mala-kakel/`, där skåpen nämns.
 
 ### 10. Strukturerad data och komponenter
 
@@ -203,6 +203,117 @@ Det ettan har som vi måste ha:
 - **Ingen härdningstid utan fabrikat.**
 - **Kortet** står efter texten om verktyget, aldrig före kortsvaret.
 - Alcro nämns bara som färgtillverkare med datablad, inte som konkurrent.
+
+---
+
+## /kok/mala-kakel/
+
+Flyttad från badrumspelaren 2026-09-29 (SOKORDSANALYS 8.9, beslut 5). Faktabladet `docs/briefer/faktablad/guider-mala-kakel.md` gäller, men dess rader om pelare, slug och tabellraden för våtzon 2 ersätts av den här checklistan.
+
+### 1. Adress och sidtyp
+
+`/kok/mala-kakel/` · `src/content/guider/kok/mala-kakel.mdx` · samling **guider**, `typ: projektguide`, `pelare: kok`, `niva: enkel`. Hubgrupp: Gör det själv. Produktkortet för excenterslip är struket (punkt 12).
+
+Läsaren vill fräscha upp kakel utan att riva. Sidan är en guide för köket och torra rum, och den säger nej till badrummet med skälen. Båda svaren står på samma sida, eftersom Google visar samma topp 5 för "måla kakel", "måla kakel kök" och "måla kakel badrum", och en separat badrumssida med bara ett nej vore för tunn.
+
+### 2. Huvudfras och sidofraser
+
+**Huvudfras: måla kakel, 2 400 per månad**, −33 procent på ett år, toppmånad september och oktober (3 600). Vinnbarhet 4. Avsikten med varianterna är 4 510.
+
+Sidofraser, med plats:
+
+- **måla kakel kök** (880, +14 procent) i H1 eller kortsvaret och i stegavsnittet.
+- **måla kakel badrum** (1 000, +48 procent) i en egen H2 om badrummet, med ett nej.
+- **måla kakel i dusch** (140) i samma H2.
+- **måla kakelfogar** (90, +80 procent) i en H2 eller H3 om fogarna.
+
+### 3. Title
+
+Krav: **högst 44 tecken**, börjar med **Måla kakel**. Löftet ska säga var det går: i köket och i torra rum, men inte i badrummet. Delar inte de tre första orden med `/kok/mala-koksluckor/` ("Måla köksluckor") eller `/fasad/mala-om-huset/` ("Måla om huset").
+
+### 4. Description
+
+Krav: **120 till 155 tecken.** Ska lova hur kaklet i köket målas så att det håller (fett, mattning, grund, två strykningar), och ett rakt besked om varför badrummet inte går.
+
+### 5. H1
+
+Krav: löftet med köket. Delar inte de tre första orden med title.
+
+### 6. H2-struktur
+
+0. **Kortsvaret**: kakel i köket och i torra rum som en gästtoalett utan dusch går att måla med kakelfärg, om fett och skurmedelsrester tvättas bort, ytan mattas och två strykningar får härda. I badrummet går det inte, varken i duschen eller på väggarna utanför. Måleribranschens regler för våtrum (MVK), som gäller från 1 januari 2026, kräver att kakel tas bort före ett målat våtrumssystem i båda zonerna. Beckers, Alcro, Flügger och Caparol avråder själva från det.
+1. **Var det går och var det inte gör det.** Tabell med rubrikrad: yta, besked, villkor. Kök ja, torra rum ja, badrum våtzon 2 (väggar utanför duschen och taket) nej, våtzon 1 nej, golv nej. Källorna står på en rad under tabellen (MVK 2026 s. 7 till 9 för zonerna och s. 19 för ommålningen, tillverkarnas datablad, MVK:s FAQ om golv).
+2. **Så målar du kaklet i köket, steg för steg.** Tvätta bort fett och skurmedel, matta ytan, grunda om färgen kräver det, två strykningar. Tider ur databladen, och rengöring tidigast efter ungefär en månad (Beckers). **Bär måla kakel kök.**
+3. **Värmen bakom hällen.** Beckers Ceramic Tile klarar ungefär 60 till 70 grader enligt Beckers eget kundforum (2024-01-02). Avstånd till gasspis och öppen låga saknas hos alla tillverkare, vilket sidan säger.
+4. **Varför inte i badrummet.** MVK:s ommålningsregel (s. 19): ett underlag som inte är avsett att måla på, "t.ex. våtrumstapet, väggmatta eller kakel", ska avlägsnas helt, och det gäller både VT och VA. Taket räknas också till våtzon 2. Tillverkarna avråder. Försäkringsbolagen kräver att våtrummet följer branschreglerna. Att det påverkar ersättningen är vår slutsats och märks så, eftersom inget bolag nämner målat kakel. Alternativen står med länkar: våtrumsfärg på ny skiva, kakel och målat system på samma vägg med ungefär 30 mm överlapp mot kakelns tätskikt, våtrumsmatta, nytt kakel. **Bär måla kakel badrum och måla kakel i dusch.**
+5. **Fogarna.** I köket målas fogarna med pensel före rollern. Silikonfogen tas bort och ersätts, eftersom silikon inte går att måla över (Beckers, MVK tabell 3). **Bär måla kakelfogar.**
+
+Faq: hur länge det håller, om man kan ta bort färgen igen, om kakel i tvättstugan går. Svaret på det sista är nej, eftersom MVK räknar tvättstugans väggar till våtzon 2.
+
+### 7. Längd
+
+Mål **1 100 till 1 400 ord** plus Faq. Ettan är en kort amatörguide. Proffsmagasinet har cirka 1 200 ord. Tabellen och badrumsavsnittet bär längden.
+
+### 8. Bilder
+
+- **Skiss** av en köksvägg med stänkskyddskakel mellan bänk och överskåp, och ordningen tvätta, matta, grunda och måla. Alt högst 125 tecken med orden måla kakel och kök.
+- Ingen badrumsskiss. Badrummet är ett nej och behöver ingen bild.
+
+### 9. Interna länkar
+
+**Ut**, alla är krav:
+
+- `/kok/mala-koksluckor/`, där skåpen nämns.
+- `/rakna/kvadratmeter/` som `<Verktygskort kalkylator="kvadratmeter" />` där färgmängden nämns.
+- `/badrum/vatrumsfarg/` i badrumsavsnittet: vad som gäller i stället.
+- `/badrum/tatskikt-badrum/` i badrumsavsnittet: zonerna och försäkringen.
+
+**In**, krav:
+
+- `/kok/mala-koksluckor/`, där kaklet mellan skåpen nämns.
+- `/badrum/vatrumsfarg/`, i avsnittet om kakel.
+- `/badrum/fogar-badrum/`, där målade fogar nämns.
+
+### 10. Strukturerad data och komponenter
+
+`Article` med Christian som `author`, `BreadcrumbList` Hantverkstips / Kök / sidan, `FAQPage` bara med riktig Faq. `kallor` med MVK 2026, tillverkarnas datablad, Beckers kundforum och försäkringsbolagen. Inget produktkort och inget reklamband.
+
+### 11. Ettan och Bättre än ettan
+
+Topp 5: clasfixare.se, bygg.se (oläst), hornbach.se (bara menyer), stuvbutiken.com, proffsmagasinet.se. **Ettan: clasfixare.se**, en kort guide utan zoner, torktider, datum och författare. Flera lead-sidor som läsaren också hittar (bostadsaffarer.se, sparapengarna.se, hemkunskapen.se) påstår utan källa att målat kakel i badrummet inte påverkar tätskiktet eller försäkringen. Det är påståendet sidan svarar på, utan att nämna dem.
+
+Det ettan har som vi måste ha:
+
+- Tvätta, slipa eller matta, grunda och måla, i den ordningen.
+- En lista över vad som behövs.
+
+**Bättre än ettan** (krav):
+
+1. **Besked per yta i en tabell**, med MVK 2026 som källa: kök och torra rum ja, allt i badrummet nej, golv nej.
+2. **MVK:s ommålningsregel citerad med sidnummer och datum**, och att den gäller både VT och VA.
+3. **Fyra tillverkare som själva avråder** från kakel i våtrum, med datablad och datum.
+4. **Värmegränsen bakom hällen och rengöringen efter en månad**, med källa.
+5. **Alternativen i badrummet** med länkar, inklusive överlappet på cirka 30 mm när kakel och målat system möts på samma vägg.
+
+### 12. Fällor
+
+- **Inget "ja med villkor" för badrummet**, inte heller för väggarna utanför duschen eller för taket.
+- **Proffsmagasinet nämns inte och länkas inte**, inte heller i `kallor` (beslut 4).
+- **Produktkortet för excenterslip stryks.** Ingen färgtillverkare nämner en maskin för kakel. Tillverkarna talar om mattning och fint våtslippapper, så en excenterslip vore vårt eget resonemang som bär en köpknapp. Det uppfyller inte AFFILIATE.md avsnitt 1: "kortet motiveras av texten runt det".
+- **Försäkringskopplingen märks som vår slutsats.** Inget bolag nämner målat kakel.
+- **Folksams självrisk på 3 000 kr** finns bara som utdrag och får inte stå.
+- **Inget råd om gasspis** och avstånd till öppen låga. Källa saknas.
+
+
+### Beslut efter utkastet, 2026-09-29
+
+Utkastet `src/content/guider/kok/mala-kakel.mdx`: seoTitle "Måla kakel i köket, men aldrig i badrummet" (42 tecken), H1 "Kakelfärg på köksväggen som tål fett och disktrasa", cirka 1 580 ord brödtext utan tabeller.
+
+1. **Längden godkänns.** 1 580 ord ligger 180 över målet, och det är badrumsavsnittet och gästtoalettens undantag som bär skillnaden. Båda är krav. Målet för sidan höjs till högst 1 600 ord brödtext, och inget ska kortas.
+2. **Stil-och-design gäller.** Källan står på en rad under tabellen, aldrig som kolumn. Punkt 6.1 är rättad, och samma rättelse är gjord i alla tabeller i de fyra checklistorna. Kravet på källa per besked står kvar. Raden under tabellen ska räcka för att läsaren ser vilken källa som bär vilket besked, till exempel genom att nämna ytan vid källan.
+3. **Sidnummer:** zonerna står på s. 7 till 9 i MVK 2026, taket i våtzon 2 på s. 8 och ommålningsregeln på s. 19. Underlag läste PDF:en, och uppgifterna finns i båda faktabladen. Checklistan är rättad från "s. 8 och 19" till "s. 7 till 9 och s. 19". Ingen ny kontroll behövs.
+
+Title och H1 kontrolleras här eftersom de är nya: seoTitle börjar med "Måla kakel", ryms inom 44 tecken så att suffixet läggs på, och delar inte de tre första orden med H1, `/kok/mala-koksluckor/` eller `/fasad/mala-om-huset/`. Godkänt.
 
 ---
 
@@ -241,9 +352,9 @@ Krav: löftet med den befintliga stommen. Delar inte de tre första orden med ti
 ### 6. H2-struktur
 
 0. **Kortsvaret**: nya luckor på gamla stommar går om stommarna är hela och håller ett standardmått. Tre saker avgör: stommens bredd och höjd, gångjärnssystemet och hur luckan sitter i förhållande till stommen. Mät varje lucka, inte stommen. Priset med källa och datum, jämfört med att måla.
-1. **Passar nya luckor min stomme?** Tabell per stommärke (IKEA, Marbodal, HTH, Vedum, Ballingslöv och fler om faktabladet har dem): standardbredder, gångjärnssystem, källa. **Bär byta köksluckor befintlig stomme.**
+1. **Passar nya luckor min stomme?** Tabell per stommärke (IKEA, Marbodal, HTH, Vedum, Ballingslöv och fler om faktabladet har dem): standardbredder, gångjärnssystem, med källorna på en rad under tabellen. **Bär byta köksluckor befintlig stomme.**
 2. **Så mäter du.** Steg och en skiss med måtten. Vad beställningen behöver: bredd, höjd, borrning för gångjärn, vänster eller höger.
-3. **Byta, måla eller lackera.** Tabell i kronor för samma kök med 16 luckor: byta, måla själv, målare, sprutlackera, folie. Källa per rad. **Bär renovera köksluckor.**
+3. **Byta, måla eller lackera.** Tabell i kronor för samma kök med 16 luckor: byta, måla själv, målare, sprutlackera, folie. Källorna står på en rad under tabellen. **Bär renovera köksluckor.**
 4. **Vad det kostar.** Luckor per styck i tre prisnivåer, gångjärn, handtag och montering, med rotavdraget på monteringen. `<Kalkylator namn="kok-kostnad" />` bäddas in här. **Bär byta köksluckor pris och befintlig stomme pris.**
 5. **Montera luckorna.** Gångjärn, justering i tre led, och vad som krävs av verktyg.
 
@@ -287,7 +398,7 @@ Det ettan har som vi måste ha:
 
 1. **Tabellen per stommärke** med mått och gångjärnssystem, med källa.
 2. **Mätstegen med skiss.** Pickyliving har en mätguide som PDF, ingen i topp 5 har den på sidan.
-3. **Byta, måla och lackera i kronor för samma kök**, med källa per rad.
+3. **Byta, måla och lackera i kronor för samma kök**, med källorna under tabellen.
 4. **Räknaren inbäddad** med arbete och material för sig och rotavdraget rätt.
 5. **Rotavdraget med taket** och två ägare.
 

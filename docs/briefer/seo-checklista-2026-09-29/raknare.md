@@ -14,7 +14,7 @@ Fyra saker gäller alla fyra räknare:
 
 1. **Ingen räknare publiceras utan sin värdartikel** (`nytt-verktyg`, Vad som stoppar). Värdartikeln står i punkt 9 och ska vara publicerad eller gå ut i samma omgång.
 2. **Resultatet ligger i adressen**, och delningsbilden `public/og/rakna-[slug].png` genereras.
-3. **Inga gissade tal.** Kostnadsräknarna är bara så bra som priserna per post. Varje pris ska ha källa och datum i formelmodulen och i "Så räknar jag". Egna antaganden märks ANTAGANDE och står i antagandetabellen. Finns inte två källor för en post stoppas posten, och därmed räknaren, tills underlaget har dem.
+3. **Inga gissade tal.** Kostnadsräknarna är bara så bra som priserna per post. Varje pris ska ha källa och datum i formelmodulen och i "Så räknar jag". Egna antaganden märks ANTAGANDE och står i antagandetabellen. Källkraven ändrades 2026-09-29 efter underlaget till badrumsräknaren. Varje post ska ha minst en namngiven källa som går att läsa, med datum. Två källor är målet, inte kravet. Offertförmedlare (Byggstart, Hantverkskollen, Badrumsexperter med flera) räknas som källor, men de namnges som förmedlare med sitt datum eller "senast ändrad", och ett tal från en firma anges som firmans. Firmor med samma ägare räknas som en källa. En post som saknar källa tas inte med. Den gissas aldrig.
 4. **Rotavdraget räknas som i `/rakna/rotavdrag/`**: 30 procent av arbetet, högst 50 000 kr per person och år, 75 000 kr gemensamt med rut, och fälten antal ägare och utnyttjat i år. Konstanterna importeras från `src/lib/kalkyl/rotavdrag.ts` och skrivs inte om, så att decemberrutinen där också uppdaterar de här räknarna.
 
 ---
@@ -54,7 +54,7 @@ Krav: läsarens fråga. Delar inte de tre första orden med title.
 
 Utöver mallens fasta avsnitt:
 
-0. **Kortsvaret** (`Faktaruta variant="kortsvar"`): vad ett badrum på 4 till 5 kvm kostar i tre standarder med källa och datum, hur stor del som är arbete, och vad rotavdraget blir.
+0. **Kortsvaret** (`Faktaruta variant="kortsvar"`): vad ett badrum på 4 till 5 kvm kostar i två standarder, enkel och mellan, med källa och datum, hur stor del som är arbete, och vad rotavdraget blir.
 1. **Vad som gör priset.** Posterna: rivning, tätskikt och kakel, VVS, el, inredning, container. Vilka som är arbete och vilka som är material.
 2. **Vad du kan göra själv och vad det sparar.** Rivning, målning av tak, montering av inredning, med tabellen från tätskiktssidan som gräns. **Bär renovera badrum billigt.**
 3. **Rotavdraget för badrummet.** Två ägare, utnyttjat tak, att material inte ger avdrag.
@@ -75,7 +75,7 @@ Mål **700 till 1 000 ord** utöver formuläret. Byggstart och Totalbyggarna har
 
 - `/badrum/tatskikt-badrum/` i avsnitt 2, för gränsen.
 - `/rakna/rotavdrag/` i avsnitt 3.
-- `/badrum/mala-kakel/` i avsnitt 2, som det billigaste alternativet.
+- `/badrum/fogar-badrum/` i avsnitt 2, som det billigaste sättet att fräscha upp. Målat kakel är inget alternativ i badrummet (beslut 5 i SOKORDSANALYS 8.9).
 
 **In**, krav: tätskiktssidan (värdartikeln) och `/rakna/rotavdrag/` i "Läs vidare" eller utfallet.
 
@@ -103,7 +103,12 @@ Det ettan har som vi måste ha:
 
 **Krav på underlaget** (`docs/briefer/underlag-kalkyl-badrum-kostnad-[datum].md`):
 
-- Pris per post (rivning, tätskikt och kakel per kvm, VVS, el, inredning i tre nivåer, container) från **minst två källor som går att läsa**, med datum. Kandidater: Byggstart, Badrumsexperter (arbete 118 800 kr, material 40 500 kr, 600 kr per timme), Totalbyggarna, Villaägarna, Hantverkskollen.
+- **Beslut 2026-09-29, efter faktabladet `docs/briefer/faktablad/kunskap-tatskikt-badrum.md`:**
+  - **Poster:** rivning, tätskikt och kakel per kvm, VVS, el och inredning, alla med minst en källa. **Container** får vara med på sin enda källa och märks ANTAGANDE i resultatet. **Byggstädning** tas inte med, eftersom det saknas ett belopp i kronor. Resultatet säger att den tillkommer.
+  - **Nivåer:** två, enkel och mellan. Den tredje, dyra nivån saknar källa och tas inte med. Mer utrustade badrum får en mening om att de ligger över räknarens tak.
+  - **Golvytan:** linjär skalning är vårt antagande. Den tillåts bara inom det intervall av golvytor som källornas exempel täcker. Utanför intervallet visar räknaren inget belopp, bara beskedet att källorna inte räknar på så små eller stora rum. Intervallet står i formelmodulen.
+  - **Källorna:** offertförmedlarna räcker (se regel 3 ovan). Totalbyggarna och Sonochfar är samma firma och räknas som en. Badrumsexperters tal står med "senast ändrad 2024-04-06" och räknas inte upp till dagens prisnivå, eftersom det vore ett eget antagande till.
+  - **Hur antagandena syns:** antagandetabellen i "Så räknar jag" har en rad per antagande (skalningen, containern, andelen arbete där den saknar källa, intervallet). Under beloppet i resultatet står en kort rad: att priserna är förmedlares och firmors snitt med hämtningsdatum och att huset kan avvika. Beskedet hålls kort enligt minnet "Kort text i verktyget".
 - Andelen arbete per post, med källa, eller märkt som antagande. Totalbyggarnas procentandelar går inte ihop och används inte.
 - Konstanterna för rot från `src/lib/kalkyl/rotavdrag.ts`, inte från en ny källa.
 
@@ -200,7 +205,7 @@ Det ettan har som vi måste ha:
 
 **Krav på underlaget** (`docs/briefer/underlag-kalkyl-kok-kostnad-[datum].md`):
 
-- Pris per post (luckor per styck i tre nivåer, stommar per meter, bänkskiva per löpmeter per material, vitvaror, montering, el och VVS vid flytt) från minst två källor som går att läsa, med datum. Kandidater: Offerta, Hantverkskollen (2026-07-17, källor Skatteverket och Elsäkerhetsverket), Totalbyggarna, Husexperter, IKEA:s tjänstepriser (mätning 1 295 kr, montering 3 399 kr), kitchens.se och Totalbyggarna för bänkskivor. Källorna säger olika om laminatpriset, och spannet redovisas.
+- Pris per post (luckor per styck i tre nivåer, stommar per meter, bänkskiva per löpmeter per material, vitvaror, montering, el och VVS vid flytt), med källkraven i regel 3. Kandidater: Offerta, Hantverkskollen (2026-07-17, källor Skatteverket och Elsäkerhetsverket), Totalbyggarna, Husexperter, IKEA:s tjänstepriser (mätning 1 295 kr, montering 3 399 kr), kitchens.se och Totalbyggarna för bänkskivor. Källorna säger olika om laminatpriset, och spannet redovisas.
 - Elsäkerhetsverkets besked om vad en lekman får göra i ett kök, och Säker Vattens om blandare och diskmaskin.
 - Samma rotkonstanter som ovan.
 
@@ -296,7 +301,7 @@ Det ettan har som vi måste ha:
 
 **Krav på underlaget** (`docs/briefer/underlag-kalkyl-takbyte-[datum].md`):
 
-- Pris per kvm lagt och andelen arbete för bandtäckt plåt, takpanneplåt, betongpannor, tegelpannor, papp och shingel från minst två källor som går att läsa, med datum. Kandidater: Takexperter (tabeller för 150 kvm), Byggstart (plåt 1 700 kr, shingel 800 till 1 600 kr, papp 1 200 kr), Bygghemma (2026-02-23), Offerta (shingel), Beckmans.
+- Pris per kvm lagt och andelen arbete för bandtäckt plåt, takpanneplåt, betongpannor, tegelpannor, papp och shingel, med källkraven i regel 3. Kandidater: Takexperter (tabeller för 150 kvm), Byggstart (plåt 1 700 kr, shingel 800 till 1 600 kr, papp 1 200 kr), Bygghemma (2026-02-23), Offerta (shingel), Beckmans.
 - Geometrin för sadeltak och pulpettak med takutsprång, och om valmtak kan tas med i första versionen. Det är ett beslut för UX och bygge-agenten, som ska nämnas i underlaget.
 - Poster för ställning och container med pris.
 - Om ställning och container räknas som arbete för rot enligt Skatteverket.
