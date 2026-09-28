@@ -67,7 +67,7 @@ Skriptet är idempotent: en PNG skrivs om bara när innehållsfilen (och därmed
 ### Body, uppifrån
 
 1. `<a href="#innehall" class="hoppa">Hoppa till innehåll</a>`. Visuellt dold, synlig vid fokus (position absolute, `focus:not-sr-only`-mönstret), första fokuserbara elementet.
-2. Inlinead ikonsprite: `import ikoner from '../assets/brand/riktning-1/ikoner.svg?raw'` och `<Fragment set:html={ikoner} />`. Filen har `style="display:none"` och `<symbol id="ikon-...">`.
+2. Ingen inlinead ikonsprite sedan 2026-09-28. `Ikon.astro` importerar `ikoner.svg?url` och ritar `<use href={`${sprite}#ikon-${namn}`} />`; filen har `xmlns` och `<symbol id="ikon-...">` och serveras från `/_astro/` med hash. Ordmärket inlineas fortfarande, med kommentaren bortskalad vid bygget. Se `docs/briefer/spec-skal-budget-2026-09-28.md`.
 3. `<header>`, 56 px hög på mobil, 64 från `lg`, 1 px `linje` under. Innehåll i `max-w-sidbredd`:
    - Ordmärket som länk till `/`: `import ordmarke from '../assets/brand/riktning-1/ordmarke-inline.svg?raw'`, `set:html` inuti `<a href="/" class="ordmarke" aria-label="Hantverkstips, till startsidan">`. Filen finns (designansvarig lade till den 2026-09-15), saknar `xmlns` med avsikt och sätter färger och typsnitt via `var(--color-blyerts)`, `var(--color-penna)`, `var(--color-tumstock)` och `var(--font-serif)`, så den följer tokens automatiskt. CSS: `.ordmarke svg { height: 1.75rem; width: auto }` på mobil, `2rem` från `lg`. Ordmärket är den enda länken till startsidan i sidhuvudet.
    - Desktop (`hidden lg:flex`): `<nav aria-label="Huvudmeny">` med länkarna i rad till höger: de publicerade hubbarna i `PELARE`-ordning (högst `MAX_HUBBAR_I_MENY`, tre sedan 2026-09-16), sedan Ämnen `/amnen/`, Guider `/guider/`, Räkna själv `/rakna/` och Så testar vi `/om/sa-testar-vi/`. 15 px, `blyerts`, understrykning vid hover. Listan byggs av `publicerade('pelare')` (ändrat 2026-09-16, tidigare hårdkodad) enligt `docs/INNEHALLSARKITEKTUR.md` avsnitt 4.
@@ -1247,7 +1247,9 @@ Get-ChildItem dist\client -Recurse -Filter *.html | Select-String -Pattern '_ast
 
 # 3. HTML-storlek per sida, okomprimerat.
 Get-ChildItem dist\client -Recurse -Filter *.html | Select-Object @{n='sida';e={$_.FullName.Replace((Get-Location).Path + '\dist\client','')}}, @{n='kB';e={[math]::Round($_.Length/1kb,1)}} | Sort-Object kB -Descending
-# Förväntat: ingen innehållssida över 66 kB (60 plus sprite och ordmärke).
+# Förväntat: ingen sida över 66 kB. Sedan 2026-09-28 mäts det med
+#   node scripts/budget-html.mjs [--preview http://localhost:4321]
+# som också mäter räknarna, och avslutar med fel när en sida är över.
 
 # 4. Typsnitt: exakt tre preload-länkar på startsidan, och inga andra fontfiler.
 Select-String -Path dist\client\index.html -Pattern 'rel="preload" as="font"' | Measure-Object | Select-Object Count

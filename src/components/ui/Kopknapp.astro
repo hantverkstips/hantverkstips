@@ -88,14 +88,15 @@ const text =
  * annonslänk, bara prisdatumet.
  */
 const knappKlass = [
-  'min-h-11 items-center justify-center rounded-md px-5 py-3 font-bold no-underline text-center',
+  // Det gemensamma står i .kopknapp i global.css (spec-skal-budget-2026-09-28 steg 4).
+  'kopknapp',
   bredd === 'full' ? 'flex w-full sm:inline-flex sm:w-auto' : 'inline-flex',
   ejKopbar ? 'border-2 border-blyerts text-blyerts-2' : 'bg-penna text-papper hover:bg-blyerts hover:text-papper',
 ];
 const prisrad = datum && harPris ? `pris ${formateraDatumKort(datum)}` : '';
 ---
 
-<div class:list={['kopknapp', klass]}>
+<div class:list={[klass]}>
   {
     visaPris && harPris && (
       <p class="m-0 mb-2 font-bold tabular-nums text-brod text-blyerts">

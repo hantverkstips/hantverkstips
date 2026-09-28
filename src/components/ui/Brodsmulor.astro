@@ -19,7 +19,7 @@ const { lista } = Astro.props;
         {lista.map((b, i) => (
           <li>
             {b.href && i < lista.length - 1 ? (
-              <a href={b.href} class="text-blyerts-2 underline decoration-1 underline-offset-2 hover:decoration-2">
+              <a href={b.href} class="lank text-blyerts-2">
                 {b.namn}
               </a>
             ) : i === lista.length - 1 ? (

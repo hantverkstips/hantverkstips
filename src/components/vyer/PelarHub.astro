@@ -130,7 +130,7 @@ const strukturdata = artikelData({
       totalt > 0 && (
         <p class="m-0 mt-3 text-liten text-blyerts-2">
           {totalt === 1 ? '1 sida' : `${totalt} sidor`} ·{' '}
-          <a href={`/guider/${slug}/`} class="text-penna underline decoration-1 underline-offset-2 hover:decoration-2">
+          <a href={`/guider/${slug}/`} class="lank">
             Alla guider om {(pelare?.namn ?? kort).toLowerCase()}
           </a>
         </p>
@@ -142,7 +142,7 @@ const strukturdata = artikelData({
     synliga.length === 0 && (
       <p class="mt-8 max-w-lasbredd text-brod lg:text-brod-lg text-blyerts-2">
         Här finns inga guider än. De första kommer inom kort, och tills dess hittar du allt vi publicerat under{' '}
-        <a href="/guider/" class="text-penna underline decoration-1 underline-offset-2 hover:decoration-2">
+        <a href="/guider/" class="lank">
           alla guider och tester
         </a>
         .

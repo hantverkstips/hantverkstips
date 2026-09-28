@@ -291,9 +291,9 @@ Gäller alla publika sidor, mätt på mobil med Lighthouse:
 - Total JavaScript till klienten: 0 kB på alla publika sidor i fas 1, inklusive kalkylatorer. Under 60 kB om en ö senare motiveras
 - Inga externa skript utom Vercel Analytics
 - Typsnitt: tre filer (Zilla Slab 600, Atkinson Hyperlegible 400 och 700), self-hostade i `public/fonts/`, totalt under 64 kB, `font-display: swap`, förladdade i `<head>`
-- HTML per innehållssida under 60 kB okomprimerat, exklusive inlinead ikonsprite och ordmärke (cirka 6 kB tillsammans)
+- HTML per sida högst 66 kB (67 584 byte) okomprimerat i filen, allt inräknat: skal, ordmärke, JSON-LD och innehåll. Räknarna mäts vid standardvärden, grannemedgivandet också med två blanketter. Ikonspriten ligger sedan 2026-09-28 i en egen fil (`/_astro/`, hash, `immutable`) och ingår inte i HTML:en (`docs/briefer/spec-skal-budget-2026-09-28.md`)
 
-Kontrollen beskrivs i `docs/SPEC-SIDMALLAR.md` avsnitt 10.
+Kontrollen beskrivs i `docs/SPEC-SIDMALLAR.md` avsnitt 10 och görs med `node scripts/budget-html.mjs` efter bygget.
 
 ## Miljövariabler
 

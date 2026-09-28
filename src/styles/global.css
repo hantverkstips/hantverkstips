@@ -728,6 +728,46 @@ body {
     max-width: 100%;
     height: auto;
   }
+
+  /*
+    Länken utanför MDX: samma som Tailwinds text-penna underline decoration-1
+    underline-offset-2 hover:decoration-2, en gång här i stället för på hundratals
+    element (docs/briefer/spec-skal-budget-2026-09-28.md steg 4). LANK_KLASS i
+    src/lib/kalkyl/stil.ts pekar hit. En text-*-klass bredvid vinner, eftersom
+    verktygen ligger i ett senare lager. .prosa .lank står med för att en
+    komponent inne i brödtexten annars skulle få .prosa a:s understrykning.
+  */
+  .lank,
+  .prosa .lank {
+    color: var(--color-penna);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+  @media (hover: hover) {
+    .lank:hover,
+    .prosa .lank:hover {
+      text-decoration-thickness: 2px;
+    }
+  }
+
+  /*
+    Köpknappen, det gemensamma för båda lägena i Kopknapp.astro. Visning och
+    färger skiljer mellan lägena och står kvar som verktyg på elementet.
+  */
+  .kopknapp,
+  .prosa .kopknapp {
+    min-height: calc(var(--spacing) * 11);
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    padding-inline: calc(var(--spacing) * 5);
+    padding-block: calc(var(--spacing) * 3);
+    --tw-font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-bold);
+    text-decoration-line: none;
+    text-align: center;
+  }
 }
 
 /*

@@ -19,7 +19,7 @@ Sajten är statisk HTML från Astro med content collections, MDX och Tailwind, h
 
 ## 2. Prestandabudgeten
 
-Mätt på mobil med Lighthouse: LCP under 2,0 s, INP under 200 ms, CLS under 0,05, 0 kB JavaScript till klienten, inga externa skript utom Vercel Analytics, tre typsnittsfiler under 64 kB totalt med `font-display: swap` och preload, HTML per innehållssida under 60 kB okomprimerat exklusive sprite och ordmärke (cirka 6 kB), alltså 66 kB i filen.
+Mätt på mobil med Lighthouse: LCP under 2,0 s, INP under 200 ms, CLS under 0,05, 0 kB JavaScript till klienten, inga externa skript utom Vercel Analytics, tre typsnittsfiler under 64 kB totalt med `font-display: swap` och preload, HTML per sida högst 66 kB i filen, allt inräknat. Ikonspriten ligger sedan 2026-09-28 i en egen fil och ingår inte i HTML:en; ordmärket gör det.
 
 Så mäts den efter `npm run build` (PowerShell, från projektroten; hela listan i SPEC-SIDMALLAR.md avsnitt 10):
 
@@ -30,7 +30,15 @@ Get-ChildItem dist\client -Recurse -Filter *.html | ForEach-Object { $h = Get-Co
 Get-ChildItem dist\client -Recurse -Filter *.html | Select-Object @{n='sida';e={$_.FullName.Replace((Get-Location).Path + '\dist\client','')}}, @{n='kB';e={[math]::Round($_.Length/1kb,1)}} | Sort-Object kB -Descending | Select-Object -First 20
 ```
 
-Räknarna finns inte i `dist/client`; de kontrolleras med `npm run preview` och `curl`. Skisserna serveras sedan 2026-09-22 som `<img>` (avsnitt 4) och väger inget i HTML:en. Det som fortfarande ligger över budgeten är 13 långa sidor: skalet (sidhuvud, sidfot, head) är 18 kB per sida, inte de 6 budgeten räknar av, och därtill 4 000 till 5 000 ord text, Tailwind-klasser på 18 till 30 kB och FAQ på 5 till 10 kB. Kategorisidan `/luftavfuktare/` bär 55 kB klassattribut i sin tabell. Mätningen och kandidaterna står i `docs/briefer/spec-skisser-som-img-2026-09-22.md` avsnitt 10; en egen spec ska ta dem.
+Räknarna finns inte i `dist/client`. `node scripts/budget-html.mjs --preview http://localhost:4321` mäter både de statiska sidorna och räknarna, och avslutar med fel när en sida är över 66 kB. När alla sidor håller läggs skriptet i `npm run build`. Skisserna serveras sedan 2026-09-22 som `<img>` (avsnitt 4) och väger inget i HTML:en.
+
+Den 2026-09-28 låg 18 statiska sidor och tre räknare över budgeten. Skalet (head, sprite, sidhuvud, sidfot) vägde 24 till 25 kB per sida, och upprepade klassträngar kom därtill. `docs/briefer/spec-skal-budget-2026-09-28.md` tar dem, med de här reglerna:
+- spriten är en fil
+- ordmärket inlineas utan kommentar
+- upprepade klasser sätts en gång på föräldern (`[&_a]:…`)
+- ett utseende som finns på hundratals element blir en komponentklass i `@layer components`, som `.linjerat`, `.lank` (länkarna, `LANK_KLASS`) och `.kopknapp`
+
+Texten kortas aldrig för budgetens skull.
 
 ## 3. Rendering och cache
 

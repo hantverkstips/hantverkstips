@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+<svg xmlns="http://www.w3.org/2000/svg">
   <!-- Riktning 1, Anteckningsboken. 16 ikoner, 24 x 24, linje 1,75, runda ändar,
        lätt darr i långa linjer och små överskjut i hörnen (blyertskänsla).
        stroke = currentColor, sätts till token blyerts #2a2521 via CSS.

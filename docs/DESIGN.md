@@ -676,7 +676,7 @@ Alla komponenter ligger i `src/components/ui/` som Astro utan klient-JS, utom de
 
 ### Ikoner
 
-Spriten `src/assets/brand/riktning-1/ikoner.svg` inlineas i layouten så att `<use href="#ikon-fukt">` fungerar utan extra förfrågan. 16 ikoner, 24 px grid, linje 1,75 px i `currentColor`, runda ändar, lätt darr i långa linjer och små överskjut i hörnen. Pelarikoner (fukt, altan, tak, grund, isolering, verktyg, el) används i mobilmenyn, i startsidans ämnesrad och vid pelarhubbens H1, i 24 px (40 i ämneskortet, 32 vid H1), blyerts. Gränssnittsikoner (kalkylator, meny, stäng, sök, pil höger, extern länk, varning, info, check) används bara med text bredvid och `aria-hidden="true"`. Ikoner finns aldrig i löptext, aldrig framför H2 eller H3, aldrig i brödsmulor, aldrig som dekoration. Nya ikoner ritas i samma sprite efter reglerna i filens kommentar och godkänns av designansvarig.
+Spriten `src/assets/brand/riktning-1/ikoner.svg` serveras sedan 2026-09-28 som en egen fil med hash och årslång cache, och `<Ikon>` pekar in i den med `<use href="/_astro/ikoner.[hash].svg#ikon-fukt">`. Förut inlineades den på varje sida; det kostade 6,4 kB per sidvisning för en fil som cachas en gång (`docs/briefer/spec-skal-budget-2026-09-28.md`). Färgen ärvs fortfarande som `currentColor`. 16 ikoner, 24 px grid, linje 1,75 px i `currentColor`, runda ändar, lätt darr i långa linjer och små överskjut i hörnen. Pelarikoner (fukt, altan, tak, grund, isolering, verktyg, el) används i mobilmenyn, i startsidans ämnesrad och vid pelarhubbens H1, i 24 px (40 i ämneskortet, 32 vid H1), blyerts. Gränssnittsikoner (kalkylator, meny, stäng, sök, pil höger, extern länk, varning, info, check) används bara med text bredvid och `aria-hidden="true"`. Ikoner finns aldrig i löptext, aldrig framför H2 eller H3, aldrig i brödsmulor, aldrig som dekoration. Nya ikoner ritas i samma sprite efter reglerna i filens kommentar och godkänns av designansvarig.
 
 ### Etikett
 
@@ -1030,7 +1030,7 @@ Alla filer under `src/assets/brand/riktning-1/`. Handskrivna SVG:er utan editorm
 | `ordmarke.svg` | Symbol, "Hantverkstips" i Zilla Slab 600 med `font-family` i filen, pennstreck. Fristående, för om-sida och externt bruk | Som `<img>` där SVG:n inte kan ärva sajtens typsnitt |
 | `ordmarke-inline.svg` | Samma ordmärke utan xmlns, typsnitt via `var(--font-serif)` och färger via tokens i style-attribut | Inlineas i sidhuvud och sidfot, ärver self-hostade Zilla Slab |
 | `symbol.svg` | Tumstocken vikt till ett H, 32 px | Favicon, redaktionens författarruta, sociala förhandsbilder |
-| `ikoner.svg` | Sprite med 16 symboler i `currentColor` | Inlineas i layouten, se Ikoner i avsnitt 6 |
+| `ikoner.svg` | Sprite med symboler i `currentColor` | Egen fil i `/_astro/`, refereras av `<Ikon>`, se Ikoner i avsnitt 6 |
 | `monster.svg` | Linjerat papper, kakelbart 48 × 24 | Som `<pattern>` i illustrationer. I HTML används `.linjerat` i stället |
 
 Illustrationerna ligger inte i brand-mappen utan i `src/assets/illustrationer/[pelare]/`: `fukt/kallare.svg` (källaren i genomskärning, förebild för alla skisser, huvudbild i fuktguiderna). En ny skiss läggs i pelarens mapp och refereras från artikeln enligt `docs/ARKITEKTUR.md`. Startsidans hero är undantaget: `start/hus-tumstock.svg` hör till ingen pelare utan till sajten, viewBox 600 × 420, genomskinlig bakgrund, ritad i ordmärkets stil. Verktygens skisser ligger i `rakna/`, en per kalkylator i registret och med samma slug (avsnitt 7).

@@ -2,6 +2,12 @@
 
 UX och bygge-agenten, 2026-09-28. Koordinatorns beslut samma dag: grannemedgivandet och altanartikeln publiceras över budgeten, som `/rakna/u-varde/` gjorde. Den här specen byggs direkt efter att de tre nya räknarna (grannemedgivande, fasadyta, kontrollplan) är publicerade. **Målet: varje sida under 66 kB (67 584 byte) i filen på bygget**, också de tre nya, mätt vid standardvärden och för grannemedgivandet också med två blanketter.
 
+**Status 2026-09-28, efter commit d0c3c1c:**
+- **Godkänt att bygga nu:** steg 1 till 4 (avsnitt 2 till 5) och mätskriptet (8.1).
+- **Byggs först efter mätning:** steg 5 (avsnitt 6), och bara för de sidor mätskriptet då visar över 66 kB.
+- **Byggs inte här:** sidfotens räknarlista (avsnitt 7). Koordinatorn frågar SEO och GEO-agenten separat.
+- **Dokumenten i avsnitt 10 är rättade:** ARKITEKTUR, DESIGN, SPEC-SIDMALLAR och skillen astro-och-prestanda.
+
 Utvecklaren gissar ingenting. Står något inte här, frågar hen innan hen bygger. Arbetaren kör inte `npm run build`; koordinatorn bygger, och jag mäter på bygget.
 
 ---
@@ -192,7 +198,7 @@ Rörs inte: innehållsfilerna, formelmodulerna, testerna (utom om ett test läse
 
 ## 10. Dokumenten (jag, innan utvecklaren börjar)
 
-Beslutet att spriten inte längre inlineas avviker från fyra dokument. Jag rättar dem innan bygget börjar:
+Beslutet att spriten inte längre inlineas avviker från fyra dokument. De rättades 2026-09-28, innan bygget började:
 
 - `docs/ARKITEKTUR.md` rad 294: budgeten blir "HTML per innehållssida högst 66 kB okomprimerat i filen, mätt med `scripts/budget-html.mjs`". Undantaget för sprite och ordmärke försvinner, eftersom spriten inte längre ligger i HTML:en och ordmärket räknas in.
 - `docs/DESIGN.md` rad 679 och tabellen rad 1033: spriten serveras som fil via `<use href="[fil]#ikon-…">`.
@@ -227,3 +233,52 @@ Beslutet att spriten inte längre inlineas avviker från fyra dokument. Jag rät
 - Spriten ligger i `/_astro/` med `immutable`, och ingen HTML-sida innehåller `<symbol`.
 - Fokusring och tabbordning i sidhuvudet och sidfoten oförändrade på 375 px.
 - Därefter läggs mätskriptet i `npm run build`, och dokumenten i avsnitt 10 visar det.
+
+---
+
+## 13. Granskning av steg 1 till 4, 2026-09-28 (UX och bygge)
+
+Läst: `git diff` för `Bas.astro`, `Ikon.astro`, `ikoner.svg`, `global.css`, `stil.ts`, `Kopknapp.astro` och de 25 komponenter och sidor där länkklassen byttes, samt `scripts/budget-html.mjs`. Den genererade CSS:en i `dist/client/_astro/Bas.CYBBQPPT.css` är kontrollerad. Mätskriptet är kört på `dist/client` från bygget 19:45: 72 sidor, 4 över. Fasadfilerna i `src/content/*/fasad` är inte rörda.
+
+**Godkänt:**
+- Spriten är en fil, `/_astro/ikoner.BT0E7Zs8.svg` på 6,4 kB, som `<use href>` pekar på. Ingen HTML-sida innehåller `<symbol`. Den är över Vites gräns för inlining (4 kB), så den blir ingen data-URI.
+- Ordmärket skalas vid bygget.
+- Sidhuvudets och sidfotens varianter kompilerar rätt, `[&_a]:hover:underline` till `.x a:hover` inom `@media (hover:hover)`.
+- `.lank` och `.kopknapp` ligger i `@layer components`, så `text-*` bredvid vinner som avsett. `.prosa .lank` och `.prosa .kopknapp` behövs, eftersom `.prosa a` ligger i samma lager med högre specificitet än `.lank`. Godkänt.
+- `kopknapp` har flyttat från omslaget till länken. Ingen annan fil läser klassen på omslaget. Godkänt.
+- Ämnesradens `[&_li:not(.ml-auto)_a]:` är godkänd: den är det enklaste sättet att låta "Alla ämnen" behålla sina egna klasser.
+- 0 pixlar olika på tio sidor i 375 och 1280 px och i utskrifterna, enligt utvecklarens mätning.
+
+**Retur, två punkter i `scripts/budget-html.mjs`:**
+
+1. **Vad `--preview` pekar på.** `astro preview` fungerar inte med Vercel-adaptern. **Beslut:**
+   - `--preview` tar adressen till en **driftsatt** version, en Vercel-förhandsgranskning eller produktion. Det är den enda miljö som ger räknarnas riktiga HTML. Kommentaren överst i skriptet (rad 5 till 12) och felmeddelandet på rad 80 ska säga det.
+   - Ny flagga **`--dev http://localhost:PORT`** mäter räknarna mot `npm run dev`. Skriptet skalar då bort det dev lägger till: `<script type="module" src="/@…">` och andra `<script>` utan `ld+json`, `<style>`-block i `<head>`, och attributen `data-astro-source-file`/`data-astro-source-loc`. Utskriften märker de raderna "(dev, cirka ±1 kB)". Metoden skiljer 0,9 kB från bygget på `/altan/bygga-altan/` (min mätning 2026-09-28).
+   - I `npm run build` körs skriptet utan flagga, alltså bara på `dist/client`. Räknarna mäts av koordinatorn med `--preview` mot förhandsgranskningen före push, som en rad i live-kollen.
+2. **Vakt mot en inlinad sprite.** Blir `ikoner.svg` någon gång mindre än 4 kB inlinar Vite den som data-URI, och `<use href="data:…">` fungerar inte i alla webbläsare. Skriptet ska därför avsluta med kod 1 och skriva sidan när en HTML-sida innehåller `<use href="data:`. Två rader efter läsningen på rad 72.
+
+Sedan är steg 1 till 4 godkända, och jag behöver inte se mer än skriptets utskrift efter ändringen.
+
+### 13.1 Steg 5 för de fyra sidorna
+
+Mätt på bygget, i kB. Klasserna och texten gäller `<main>`.
+
+| Sida | kB | Över med | Klasser | Text | Det som väger |
+|---|---|---|---|---|---|
+| `/luftavfuktare/` | 88,6 | 22,6 | 41,4 | 13,7 | jämförelsetabellen 21,7 kB, varav klasser 15,3 |
+| `/fukt/avfuktare-kallare/` | 74,1 | 8,1 | 18,8 | 27,5 | sju produktkort, `kort-cell` 112 gånger, Faq 4,7 |
+| `/fasad/mala-om-huset/` | 68,1 | 1,6 | 13,4 | 28,4 | två inbäddade räknare (fasadyta och måla ute), formulär 10,3 kB |
+| `/grund/inreda-kallare/` | 66,8 | 0,8 | 9,6 | 34,3 | den längsta texten på sajten |
+
+Steg 5 byggs i den här ordningen. Mätskriptet körs efter varje punkt, och man slutar när alla fyra är under.
+
+- **5.0 `Pennstreck.astro` (ny, gäller alla sidor).** H2:ans klasser `font-serif text-h2 lg:text-h2-lg mb-3 text-blyerts` och `mt-12 lg:mt-16` flyttas in i `.pennstreck` i `global.css`, med tokens (`var(--font-serif)`, `var(--text-h2)` och `var(--text-h2--line-height)`, lg-värdena i `@media (min-width: 64rem)`, `var(--color-blyerts)`). `utanLuft` blir klassen `pennstreck-tat`, som tar bort marginalen ovanför. `klass` från anroparen ligger i utilities-lagret och vinner, som i dag. Cirka −1 kB på varje lång sida. Bör räcka ensamt för `/grund/inreda-kallare/`.
+- **5.1 `Faq.astro`.** Klasserna på `<details>`, `<summary>` och svaret flyttas till listan som varianter. −1 till −1,5 kB. Tillsammans med 5.0 tar det `/fasad/mala-om-huset/` under.
+- **5.2 `Produktkort.astro`.** Kortets upprepade klasser: bildytan, raden `m-0 mb-2 sm:mb-0 tabular-nums text-blyerts`, prisraden, `grid … text-liten`-listan och `kort-cell`. De flyttas till kortets rot som varianter. Mät på `/fukt/avfuktare-kallare/`, som behöver 8 kB. 5.0, 5.1 och 5.2 bör tillsammans ge 5 till 7 kB. Räcker det inte, rapportera siffrorna så beslutar jag. Texten kortas inte.
+- **5.3 `Jamforelsetabell.astro`.** Cellklasserna (`min-w-[150px] p-3 align-top text-blyerts` 81 gånger, `bg-papper-2`-varianten 25 gånger) och cellernas `<p>` flyttas till `<table>` som varianter. Uppskattat −10 kB på `/luftavfuktare/`, som ändå blir kvar över gränsen. Resten av den sidan tar jag i en egen spec för kategorisidans tabell och uppställning. Den stoppar inte att skriptet läggs i bygget: `/luftavfuktare/` står då som ett namngivet undantag i skriptet, med hänvisning till den specen, och undantaget tas bort när den är byggd.
+- `/amnen/` och regellistorna behövs inte längre (under gränsen efter steg 1 till 4).
+
+Samma regler som steg 1 till 4:
+- 0 pixlar olika på 375 och 1280 px, på de fyra sidorna plus startsidan och `/rakna/u-varde/`
+- ingen text ändras
+- fasadfilerna rörs inte medan de skrivs; `/fasad/mala-om-huset/` mäts, men dess MDX ändras inte

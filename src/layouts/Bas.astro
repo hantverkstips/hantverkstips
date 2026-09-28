@@ -7,7 +7,6 @@
  * slot-innehåll renderas före layoutens frontmatter.
  */
 import '../styles/global.css';
-import ikoner from '../assets/brand/riktning-1/ikoner.svg?raw';
 import ordmarke from '../assets/brand/riktning-1/ordmarke-inline.svg?raw';
 import { kategoriUrl, pelareUrl, publicerade, type Brodsmula } from '../lib/innehall';
 import { KALKYLATORER } from '../lib/kalkyl/register';
@@ -145,8 +144,14 @@ const OM_SAJTEN = [
   { namn: 'Integritet', href: '/om/integritet/' },
 ];
 
+/**
+ * Ordmärket står inline två gånger per sida, i sidhuvudet och i sidfoten.
+ * Källfilens kommentar och indrag skalas bort här i bygget, inte i filen
+ * (docs/briefer/spec-skal-budget-2026-09-28.md steg 2).
+ */
+const ordmarkeRen = ordmarke.replace(/<!--[\s\S]*?-->/g, '').replace(/>\s+</g, '><').trim();
+
 const ar = new Date().getFullYear();
-const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:decoration-2';
 ---
 
 <!doctype html>
@@ -197,20 +202,19 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
   <body class="min-h-dvh flex flex-col bg-papper text-blyerts text-brod lg:text-brod-lg">
     <a href="#innehall" class="hoppa print:hidden">Hoppa till innehåll</a>
 
-    <Fragment set:html={ikoner} />
-
     <header class="relative border-b border-linje print:hidden">
       <div class="mx-auto max-w-sidbredd px-4 sm:px-6 lg:px-8 h-14 lg:h-16 flex items-center justify-between">
         <a href="/" class="ordmarke" aria-label="Hantverkstips, till startsidan">
-          <Fragment set:html={ordmarke} />
+          <Fragment set:html={ordmarkeRen} />
         </a>
 
-        <nav aria-label="Sajtens sidor" class="huvudmeny hidden lg:flex items-center gap-6">
+        <nav
+          aria-label="Sajtens sidor"
+          class="huvudmeny hidden lg:flex items-center gap-6 [&_a]:text-blyerts [&_a]:no-underline [&_a]:hover:underline [&_a]:hover:decoration-penna"
+        >
           {
             FASTA.map((m) => (
-              <a href={m.href} class="text-blyerts no-underline hover:underline hover:decoration-penna">
-                {m.namn}
-              </a>
+              <a href={m.href}>{m.namn}</a>
             ))
           }
         </nav>
@@ -221,7 +225,7 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
             Meny
           </summary>
           <div
-            class="absolute left-0 right-0 top-full z-50 border-b border-linje bg-papper shadow-lyft px-4 sm:px-6 pb-2"
+            class="absolute left-0 right-0 top-full z-50 border-b border-linje bg-papper shadow-lyft px-4 sm:px-6 pb-2 [&_li]:border-b [&_li]:border-linje [&_a]:flex [&_a]:h-12 [&_a]:items-center [&_a]:gap-3 [&_a]:text-blyerts [&_a]:no-underline"
           >
             {
               MOBIL_GRUPPER.map((g) => (
@@ -229,8 +233,8 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
                   <p class="m-0 pt-3 text-etikett uppercase text-blyerts-2">{g.namn}</p>
                   <ul class="m-0 p-0 list-none">
                     {g.poster.map((m) => (
-                      <li class="border-b border-linje">
-                        <a href={m.href} class="flex h-12 items-center gap-3 text-blyerts no-underline">
+                      <li>
+                        <a href={m.href}>
                           {m.ikon && <Ikon namn={m.ikon} storlek={24} />}
                           {m.namn}
                         </a>
@@ -241,15 +245,15 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
               ))
             }
             <ul class="m-0 p-0 list-none">
-              <li class="border-b border-linje">
-                <a href="/amnen/" class="flex h-12 items-center gap-3 font-bold text-blyerts no-underline">
+              <li>
+                <a href="/amnen/" class="font-bold">
                   Alla ämnen
                 </a>
               </li>
               {
                 FASTA.map((m) => (
-                  <li class="border-b border-linje last:border-b-0">
-                    <a href={m.href} class="flex h-12 items-center gap-3 text-blyerts no-underline">
+                  <li class="last:border-b-0">
+                    <a href={m.href}>
                       {m.ikon && <Ikon namn={m.ikon} storlek={24} />}
                       {m.namn}
                     </a>
@@ -263,14 +267,13 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
 
       {/* Ämnesraden. Bara på desktop; mobilen har ämnena i menyn. */}
       <nav aria-label="Ämnen" class="amnesrad hidden lg:block border-t border-linje bg-papper-2">
-        <ul class="mx-auto max-w-sidbredd px-8 m-0 p-0 list-none flex items-center gap-1 overflow-x-auto">
+        <ul
+          class="mx-auto max-w-sidbredd px-8 m-0 p-0 list-none flex items-center gap-1 overflow-x-auto [&_li:not(.ml-auto)_a]:flex [&_li:not(.ml-auto)_a]:h-11 [&_li:not(.ml-auto)_a]:items-center [&_li:not(.ml-auto)_a]:gap-2 [&_li:not(.ml-auto)_a]:whitespace-nowrap [&_li:not(.ml-auto)_a]:px-3 [&_li:not(.ml-auto)_a]:text-liten [&_li:not(.ml-auto)_a]:text-blyerts [&_li:not(.ml-auto)_a]:no-underline [&_li:not(.ml-auto)_a]:hover:underline [&_li:not(.ml-auto)_a]:hover:decoration-penna"
+        >
           {
             AMNESRAD.map((m) => (
               <li>
-                <a
-                  href={m.href}
-                  class="flex h-11 items-center gap-2 whitespace-nowrap px-3 text-liten text-blyerts no-underline hover:underline hover:decoration-penna"
-                >
+                <a href={m.href}>
                   {m.ikon && <Ikon namn={m.ikon} storlek={20} />}
                   {m.namn}
                 </a>
@@ -280,7 +283,7 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
           <li class="ml-auto">
             <a
               href="/amnen/"
-              class="flex h-11 items-center whitespace-nowrap px-3 text-liten text-penna underline decoration-1 underline-offset-2 hover:decoration-2"
+              class="flex h-11 items-center whitespace-nowrap px-3 text-liten lank"
             >
               Alla ämnen
             </a>
@@ -308,9 +311,11 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
     </main>
 
     <footer class="mt-12 lg:mt-24 bg-blyerts text-papper text-liten print:hidden">
-      <div class="mx-auto max-w-sidbredd px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+      <div
+        class="mx-auto max-w-sidbredd px-4 sm:px-6 lg:px-8 py-8 lg:py-12 [&_li]:mb-2 [&_a]:text-papper [&_a]:underline [&_a]:decoration-1 [&_a]:underline-offset-2 [&_a]:hover:decoration-2"
+      >
         <div class="ordmarke" style="--color-blyerts: var(--color-papper)">
-          <Fragment set:html={ordmarke} />
+          <Fragment set:html={ordmarkeRen} />
         </div>
 
         <div class="mt-8 grid gap-8 lg:grid-cols-4">
@@ -319,18 +324,18 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
             <ul class="m-0 p-0 list-none">
               {
                 publiceradeHubbar.map((p) => (
-                  <li class="mb-2">
-                    <a href={pelareUrl(p.slug)} class={sidfotLank}>
+                  <li>
+                    <a href={pelareUrl(p.slug)}>
                       {p.namn}
                     </a>
                   </li>
                 ))
               }
-              <li class="mb-2">
-                <a href="/amnen/" class={sidfotLank}>Alla ämnen</a>
+              <li>
+                <a href="/amnen/">Alla ämnen</a>
               </li>
-              <li class="mb-2">
-                <a href="/guider/" class={sidfotLank}>Alla guider och tester</a>
+              <li>
+                <a href="/guider/">Alla guider och tester</a>
               </li>
             </ul>
           </div>
@@ -340,8 +345,8 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
             <ul class="m-0 p-0 list-none">
               {
                 kategorier.map((k) => (
-                  <li class="mb-2">
-                    <a href={kategoriUrl(k.id)} class={sidfotLank}>
+                  <li>
+                    <a href={kategoriUrl(k.id)}>
                       {k.data.namn}
                     </a>
                   </li>
@@ -355,8 +360,8 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
             <ul class="m-0 p-0 list-none">
               {
                 KALKYLATORER.map((k) => (
-                  <li class="mb-2">
-                    <a href={`/rakna/${k.slug}/`} class={sidfotLank}>
+                  <li>
+                    <a href={`/rakna/${k.slug}/`}>
                       {k.namn}
                     </a>
                   </li>
@@ -370,8 +375,8 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
             <ul class="m-0 p-0 list-none">
               {
                 OM_SAJTEN.map((o) => (
-                  <li class="mb-2">
-                    <a href={o.href} class={sidfotLank}>
+                  <li>
+                    <a href={o.href}>
                       {o.namn}
                     </a>
                   </li>

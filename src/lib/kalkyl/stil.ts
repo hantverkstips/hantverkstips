@@ -13,7 +13,7 @@ export const HJALP_KLASS = 'm-0 mt-1 text-liten text-blyerts-2';
 export const FEL_KLASS = 'm-0 mt-1 text-liten text-varning';
 export const KNAPP_KLASS =
   'inline-flex min-h-12 items-center rounded-md border-2 border-blyerts px-5 py-3 font-bold text-blyerts hover:bg-blyerts hover:text-papper';
-export const LANK_KLASS = 'text-penna underline decoration-1 underline-offset-2 hover:decoration-2';
+export const LANK_KLASS = 'lank';
 export const CELL_KLASS = 'border-b border-linje p-2 align-top text-blyerts';
 
 /** Ramen på ett fält: varning när fältet har ett fel, annars blyerts-2. */

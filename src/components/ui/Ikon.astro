@@ -1,8 +1,11 @@
 ---
 /**
- * Ikon ur spriten som layouten inlineat. Alltid dekorativ: texten bredvid bär
- * betydelsen. Färgen kommer från currentColor. Se docs/DESIGN.md avsnitt 6.
+ * Ikon ur spriten, som serveras som egen fil ur /_astro/ med hash och årslång
+ * cache (docs/briefer/spec-skal-budget-2026-09-28.md). Alltid dekorativ: texten
+ * bredvid bär betydelsen. Färgen kommer från currentColor, som ärvs genom <use>
+ * också från en extern fil. Se docs/DESIGN.md avsnitt 6.
  */
+import sprite from '../../assets/brand/riktning-1/ikoner.svg?url';
 export type IkonNamn =
   | 'fukt'
   | 'inomhus'
@@ -36,5 +39,5 @@ const { namn, storlek = 24, class: klass } = Astro.props;
 ---
 
 <svg width={storlek} height={storlek} aria-hidden="true" class:list={['shrink-0', klass]}>
-  <use href={`#ikon-${namn}`} />
+  <use href={`${sprite}#ikon-${namn}`} />
 </svg>
