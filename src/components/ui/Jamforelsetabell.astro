@@ -87,13 +87,14 @@ function kolumnKlass(slug: string): string {
         <div class="tabell-behallare border border-linje rounded-sm">
           {/*
             Cellernas klasser står en gång här som varianter, inte på varje cell
-            (spec-skal-budget-2026-09-28 avsnitt 13.1, 5.3). Hörncellen är första
+            (spec-skal-budget-2026-09-28 avsnitt 13.1, 5.3). Kolumnhuvudet och
+            produktnamnet i det likaså (spec-kategorisida-budget-2026-09-28 2.1). Hörncellen är första
             td i sin rad och undantas; alla andra td har en th före sig.
             text-blyerts på tabellen ärvs av cellerna; bästa värdet sätter
             font-bold text-ok på sin egen cell.
           */}
           <table
-            class="w-full border-collapse text-liten tabular-nums text-blyerts [&_td:not(:first-child)]:min-w-[150px] [&_td:not(:first-child)]:p-3 [&_td:not(:first-child)]:align-top [&_th[scope=row]]:sticky [&_th[scope=row]]:left-0 [&_th[scope=row]]:bg-papper-2 [&_th[scope=row]]:border-r [&_th[scope=row]]:border-linje [&_th[scope=row]]:p-3 [&_th[scope=row]]:text-left [&_th[scope=row]]:align-top [&_th[scope=row]]:font-normal [&_th[scope=row]]:text-blyerts-2"
+            class="w-full border-collapse text-liten tabular-nums text-blyerts [&_td:not(:first-child)]:min-w-[150px] [&_td:not(:first-child)]:p-3 [&_td:not(:first-child)]:align-top [&_th[scope=row]]:sticky [&_th[scope=row]]:left-0 [&_th[scope=row]]:bg-papper-2 [&_th[scope=row]]:border-r [&_th[scope=row]]:border-linje [&_th[scope=row]]:p-3 [&_th[scope=row]]:text-left [&_th[scope=row]]:align-top [&_th[scope=row]]:font-normal [&_th[scope=row]]:text-blyerts-2 [&_th[scope=col]]:min-w-[150px] [&_th[scope=col]]:p-3 [&_th[scope=col]]:text-left [&_th[scope=col]]:align-top [&_th[scope=col]>span]:mt-2 [&_th[scope=col]>span]:block [&_th[scope=col]>span]:font-sans [&_th[scope=col]>span]:text-h3 [&_th[scope=col]>span]:font-bold [&_th[scope=col]>span]:text-blyerts"
           >
             <caption class="sr-only">Jämförelse av {kategori?.data.namn ?? kategoriSlug}</caption>
           <tbody>
@@ -102,7 +103,7 @@ function kolumnKlass(slug: string): string {
             <tr class="border-b border-linje">
               <td class="sticky left-0 bg-papper-2 border-r border-linje p-3" />
               {produkter.map((p) => (
-                <th scope="col" class:list={['min-w-[150px] p-3 text-left align-top', kolumnKlass(p.slug)]}>
+                <th scope="col" class:list={[kolumnKlass(p.slug)]}>
                   {lokalBild(p) ? (
                     <div class="bg-vit border border-linje rounded-sm p-1 w-20">
                       <img
@@ -116,11 +117,11 @@ function kolumnKlass(slug: string): string {
                       />
                     </div>
                   ) : (
-                    <div class="bg-papper-2 border border-linje rounded-sm w-20 h-15 flex items-center justify-center text-center p-1">
-                      <span class="text-etikett uppercase text-blyerts-2">{p.marke ?? p.namn}</span>
+                    <div class="produktkort-bild produktkort-bild-liten">
+                      <span>{p.marke ?? p.namn}</span>
                     </div>
                   )}
-                  <span class="mt-2 block font-sans text-h3 font-bold text-blyerts">{produktNamn(p)}</span>
+                  <span>{produktNamn(p)}</span>
                 </th>
               ))}
             </tr>

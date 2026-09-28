@@ -954,6 +954,36 @@ body {
     }
   }
 
+  /* Bildytan i jämförelsetabellens kolumnhuvud: w-20 h-15 p-1 i stället för
+     kortets w-24 h-18 p-2. Märket i bildytan får sin stil här, inte på spanen:
+     text-etikett uppercase text-blyerts-2. .prosa sätter inget på span.
+     Spec: spec-kategorisida-budget-2026-09-28 avsnitt 2.1 och 2.2. */
+  .produktkort-bild-liten {
+    width: calc(var(--spacing) * 20);
+    height: calc(var(--spacing) * 15);
+    padding: var(--spacing);
+  }
+  .produktkort-bild span {
+    font-size: var(--text-etikett);
+    line-height: var(--tw-leading, var(--text-etikett--line-height));
+    letter-spacing: var(--tw-tracking, var(--text-etikett--letter-spacing));
+    font-weight: var(--tw-font-weight, var(--text-etikett--font-weight));
+    text-transform: uppercase;
+    color: var(--color-blyerts-2);
+  }
+
+  /* Annonsraden under köpknappen, "Annonslänk · pris …": m-0 mt-2
+     text-finstilt text-blyerts-2. Den är en del av reklammärkningen och ska se
+     ut som förut. .prosa sätter inget på p utöver direkta barn.
+     Spec: spec-kategorisida-budget-2026-09-28 avsnitt 2.3. */
+  .kopknapp-annons {
+    margin: 0;
+    margin-top: calc(var(--spacing) * 2);
+    font-size: var(--text-finstilt);
+    line-height: var(--tw-leading, var(--text-finstilt--line-height));
+    color: var(--color-blyerts-2);
+  }
+
   /* Priset ovanför köpknappen, i kort, tabeller och listor: m-0 mb-2 font-bold
      tabular-nums text-brod text-blyerts (Kopknapp.astro; avsnitt 15.2). */
   .kopknapp-pris {

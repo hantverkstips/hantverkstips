@@ -51,16 +51,12 @@ const EXTRA = ['/rakna/grannemedgivande/?grans=2&jarnvag=1'];
  * sidans storlek plus 1 024 byte: sidan får ligga över 66 kB men inte växa.
  * Den som gör en sida lättare sänker dess tak i samma ändring, och undantaget
  * tas bort i den ändring som gör sidan lätt nog; skriptet varnar när det går.
- * Spec: spec-skal-budget-2026-09-28 avsnitt 14.4 och 15.1.
+ * Spec: spec-skal-budget-2026-09-28 avsnitt 14.4 och 15.1. Tom sedan
+ * 2026-09-28: alla sidor ligger under 66 kB (spec-kategorisida-budget-2026-09-28).
  *
  * @type {Map<string, { tak: number; skal: string }>}
  */
-const UNDANTAG = new Map([
-  [
-    '/luftavfuktare/',
-    { tak: 70_155, skal: 'kategorisidans tabell och uppställning, egen spec (spec-skal-budget-2026-09-28 avsnitt 13.1, punkt 5.3)' },
-  ],
-]);
+const UNDANTAG = new Map();
 
 const DEV_MARKNING = ' (dev, cirka ±1 kB)';
 

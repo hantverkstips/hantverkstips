@@ -113,7 +113,7 @@ const bildHojd = variant === 'kompakt' ? 72 : 300;
           ) : (
             /* Utan bild blir rutan alltid kompakt, aldrig en tom 4:3-yta i full bredd. */
             <div class="produktkort-bild">
-              <span class="text-etikett uppercase text-blyerts-2">{produkt.marke ?? produkt.namn}</span>
+              <span>{produkt.marke ?? produkt.namn}</span>
             </div>
           )}
         </div>
