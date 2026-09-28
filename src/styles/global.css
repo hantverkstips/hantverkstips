@@ -421,7 +421,8 @@ body {
     -webkit-overflow-scrolling: touch;
   }
   /* Tonad högerkant som visar att tabellen fortsätter. Enda tillåtna gradienten,
-     se DESIGN.md avsnitt 6. Utgår från lg, där tabellen oftast får plats. */
+     se DESIGN.md avsnitt 6. När den syns avgör blocket "Ledtexten och kanten"
+     längre ned; i reserven utgår den från lg, där tabellen oftast får plats. */
   .tabell-yta {
     position: relative;
   }
@@ -439,9 +440,11 @@ body {
     );
     pointer-events: none;
   }
-  @media (min-width: 64rem) {
-    .tabell-yta::after {
-      content: none;
+  @supports not ((timeline-scope: --a) and (animation-timeline: scroll())) {
+    @media (min-width: 64rem) {
+      .tabell-yta::after {
+        content: none;
+      }
     }
   }
 
@@ -511,39 +514,82 @@ body {
     .tabell-behallare runt varje tabell, så sidledsscrollen sker i behållaren
     och sidan blir aldrig bredare än skärmen.
   */
-  /* Ledtexten över tabellen, samma ord och samma stil som jämförelsetabellens.
-     Bara på mobil: från lg får tabellen plats eller växer i stället ut åt höger.
-     Dold som utgångsläge: pluginet i astro.config.mjs lägger ledtexten över varje
-     brödtabell, men en tvåkolumnstabell får plats på 375 px och då är texten fel.
-     Den visas från tre kolumner, alltså när någon rad har en tredje cell: en
-     trekolumnstabell ryms oftast men inte alltid, och läsaren måste få veta att
-     tredje kolumnen finns. Sänkt från fyra efter granskningen 2026-09-16 punkt
-     5.2, där slipguidens diagnostabell dolde "Nästa steg" utan ett ord om det.
-     Webbläsare utan :has() får ingen ledtext alls, vilket är rätt väg att falla:
-     tabellen scrollar ändå och den tonade högerkanten visar att det finns mer. */
-  .prosa .tabell-dra {
-    display: none;
+  /* Ledtexten "Dra i sidled" över tabellen: brödtabellerna (.brodtabell-block,
+     från pluginet), Tabellyta och Jamforelsetabell (.tabell-block). */
+  .tabell-dra {
     margin: 0 0 8px;
     font-size: var(--text-liten);
     line-height: var(--text-liten--line-height);
     color: var(--color-blyerts-2);
   }
-  .prosa .brodtabell-block:has(.brodtabell tr > *:nth-child(3)) .tabell-dra {
-    display: block;
-  }
-  @media (min-width: 64rem) {
-    .prosa .brodtabell-block:has(.brodtabell tr > *:nth-child(3)) .tabell-dra {
-      display: none;
+  /* Ledtext och kant bara när tabellen scrollar: behållarens tidslinje är inaktiv
+     när inget går att scrolla, och då slår animationerna aldrig till. Ledtexten
+     döljs med visibility och höjd, eftersom Chromium inte animerar display: none.
+     Spec: docs/briefer/spec-tabellyta-overflod-2026-09-29.md. */
+  @supports (timeline-scope: --a) and (animation-timeline: scroll()) {
+    .tabell-behallare {
+      scroll-timeline: --tabell inline;
+    }
+    .tabell-block,
+    .brodtabell-block {
+      timeline-scope: --tabell;
+    }
+    .tabell-dra {
+      visibility: hidden;
+      height: 0;
+      margin: 0;
+      overflow: hidden;
+      animation: tabell-dra linear both;
+      animation-timeline: --tabell;
+    }
+    .tabell-yta::after {
+      opacity: 0;
+      animation: tabell-kant linear both;
+      animation-timeline: --tabell;
     }
   }
-  /* Den tonade högerkanten följer samma villkor som ledtexten. En tvåkolumns-
-     tabell ryms alltid i 343 px, och då tonade kanten bort sista kolumnen i
-     onödan: tabellen såg skymd ut fast det inte fanns något mer att dra fram.
-     Gäller bara brödtabeller. Jämförelsetabellen använder samma .tabell-yta men
-     scrollar alltid på mobil och behåller sin kant. :not(:has(…)) är ogiltigt i
-     webbläsare utan :has(), då faller regeln bort och kanten ritas som förut. */
-  .prosa .brodtabell-block:not(:has(.brodtabell tr > *:nth-child(3))) .tabell-yta::after {
-    content: none;
+  @keyframes tabell-dra {
+    from,
+    to {
+      visibility: visible;
+      height: auto;
+      margin: 0 0 8px;
+    }
+  }
+  @keyframes tabell-kant {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  /* Reserven, för webbläsare utan scroll-tidslinjer (Firefox i dag): reglerna
+     från före 2026-09-29, oförändrade i verkan. Ledtext och kant bara under lg;
+     brödtabeller från tre kolumner, Tabellyta när anroparen renderat ledtexten.
+     :not(:has(…)) är ogiltigt utan :has(), då ritas kanten som förut. */
+  @supports not ((timeline-scope: --a) and (animation-timeline: scroll())) {
+    .prosa .tabell-dra {
+      display: none;
+    }
+    /* Egna regler för .tabell-block: en selektorlista med :has() faller bort hel. */
+    .prosa .brodtabell-block:has(.brodtabell tr > *:nth-child(3)) .tabell-dra {
+      display: block;
+    }
+    .tabell-block > .tabell-dra {
+      display: block;
+    }
+    @media (min-width: 64rem) {
+      .prosa .brodtabell-block:has(.brodtabell tr > *:nth-child(3)) .tabell-dra {
+        display: none;
+      }
+      .tabell-block > .tabell-dra {
+        display: none;
+      }
+    }
+    .prosa .brodtabell-block:not(:has(.brodtabell tr > *:nth-child(3))) .tabell-yta::after {
+      content: none;
+    }
   }
   /* DESIGN.md avsnitt 2: tabeller får gå ut förbi läsbredden. Artikelmallen har
      innehållsförteckningen i höger spalt, så tabellen får växa ut i mellanrummet
