@@ -315,3 +315,114 @@ Vad vår sida med verktyget kan ha som ettan (och tvåan) saknar:
 - Liter omräknat till burkar i storlekar som finns i butik.
 - Besked om att omålat tegel inte ska målas, med källa.
 - Länk vidare till kostnaden (guiden) och vädret (/rakna/mala-ute/) med samma tal.
+
+---
+
+## Kontroll 2026-09-28
+
+Underlagsarbetaren, beställt enligt specens avsnitt "Före publicering" (Att verifiera 3 och 6). Båda databladen lästa ordagrant i tillverkarens egen PDF, hämtade 2026-09-28.
+
+### Källor
+
+| Dokument | Adress | Version |
+|---|---|---|
+| Beckers Mineral Silikatfärg, produktsida | https://beckers.se/produkter/mineral-silikatfarg | |
+| Beckers Mineral Silikatfärg, produktdatablad (PDF) | https://beckers.se/sites/default/files/pim/documents/Mineral_Silikatf%C3%A4rg_SV_PDS_Beckers_0.pdf | "Version 20240708" |
+| Alcro Bestå Täckfärg, produktsida | https://alcro.se/produkter/besta-tackfarg, omdirigerar till https://www.alcrostudio.se/sv-SE/product/besta-tackfarg/221002ASE14349 | |
+| Alcro Bestå Täckfärg, produktfaktablad (PDF, länkad från produktsidan som "Data Sheet") | https://dam-cdn.ppg.com/adaptivemedia/rendition?id=4db5407f1a3c9ee8e3a4838cb0fc20fe14307bb4 | "Version 100724" |
+
+### Beckers Mineral Silikatfärg, ordagrant ur databladet
+
+- Materialåtgång: "3-5 m²/l". Samma tal på produktsidan.
+- Nya ytor: "Nyputsade ytor behandlas tidigast efter 6-8 veckors härdning."
+- Tidigare målade ytor: "Måla ej på organiska underlag. Organiska färger och beläggningar avlägsnas helt med lämplig metod". Produkten är enligt ingressen "en täckfärg för tidigare silikatmålade ytor eller omålade ytor".
+- "TÄTA YTOR, GRUNDNING: Täta, fasta och hårda ytor grundas en gång med en blandning av Primex Silikatbinder och Mineral Silikatfärg i proportion 1:2."
+- "TÄTA YTOR, YTMÅLNING: Ytmålningen utförs då grundmålningen torkat minst 12 timmar med Mineral Silikatfärg, vilken kan förtunnas max 10% med Primex Silikatbinder."
+- "PORÖSA YTOR, GRUNDNING: Porösa, sugande underlag grundas med en blandning av Primex Silikatbinder och vatten i proportion 1:1."
+- "PORÖSA YTOR, MELLANSTRYKNING: … kan Mineral Silikatfärg förtunnas max 10% med Primex Silikatbinder."
+- "PORÖSA YTOR, YTMÅLNING: Ytmålningen utförs då mellanstrykningen torkat minst 12 timmar."
+- Antal strykningar på tidigare silikatmålad yta: **saknas** i databladet.
+- Primex Silikatbinders åtgång: **saknas** (inte i databladet, binderns datablad inte läst).
+- Burkstorlekar: **saknas i text**. Produktsidans tre produktbilder heter `Mineral_Silikatf%C3%A4rg_1L_HR.jpg`, `Mineral_Silikatf%C3%A4rg_3L_HR.jpg` och `Mineral_silikatf%C3%A4rg_10L_HR.jpg`, alltså 1, 3 och 10 l. Svag källa: bildernas filnamn.
+
+Vad det betyder i liter färg (egen räkning ur ordalydelsen): porös yta får **två** strykningar silikatfärg (mellan och yta); grunden är binder och vatten utan färg. Tät yta får **en** ytstrykning färg plus en grund som till två tredjedelar är färg (1:2). Räcker grundblandningen lika långt som färgen blir tät yta 1 + 2/3 = 1,67 strykningar färg; att den räcker lika långt är ANTAGANDE, databladet anger ingen åtgång för blandningen.
+
+### Alcro Bestå Täckfärg, ordagrant ur produktfaktabladet
+
+- Teknisk information: "MATERIALÅTGÅNG 6 - 8 m²/l".
+- "Rekommenderad förbrukning: SÅGADE PANELER: 6-7m²/l (våt filmtjocklek: 140-160 mym; torr filmtjocklek: 50-60 mym) HYVLADE/TIDIGARE MÅLADE PANELER: 7-8 m²/l (våt filmtjocklek: 110-140mym; torr filmtjocklek: 40-50mym)."
+- "På hyvlade paneler eller tidigare målade ytor kan det vara svårt att få tillräckligt med färg. Om lagren är tunnare än rekommenderat bör ytterligare ett lager målas för att uppnå bästa hållbarhet."
+- "Måla 2 gånger flödigt med Bestå Täckfärg. 2 strykningar ger alltid ett bättre skydd."
+- "På industrigrundad panel som är grundmålad enligt CMP rekommenderas 2 strykningar Bestå Täckfärg." "Industrigrundad panel som har utsatts för väder och vind i mer än 10 månader behöver tvättas och grundmålas för ett fullgott skydd."
+- "TIDIGARE MÅLADE YTOR: Tjocka, spruckna eller lösa färgskikt skrapas bort helt. Trärena partier och ytor i dåligt skick grundmålas med Alcros Grundfärg Trä. Gamla alkyd- och oljefärgsytor bör alltid grundmålas med Grundfärg Trä."
+- "NYMÅLNING: Alcros Grundolja Trä stryks flödigt på ändträ, skarvar och spikhuvuden. … Hela ytan, fasad samt ändträ, grundmålas med Grundfärg Trä."
+- "Grånat och poröst trä bör bytas ut eller borstas/skrapas ner till rent, friskt trä."
+- "Ytor som tidigare målats med slamfärg eller linoljefärg bör målas med samma färgtyp som använts innan."
+- "Kontrollera att underlaget är torrt före målning, maximalt 16 % fuktkvot. Måla inte när yttemperaturen är under +7°C."
+- Burkstorlekar: faktabladet anger inga. Produktsidans inbäddade produktdata (artiklarna i sidans källkod, inte synlig text) listar: "Bestå Täckfärg Trä 313 Tonad Vit" 1 l, 3 l, 10 l; "Base A" och "Base C" (brytbaser för kulör) 0,9 l, 2,7 l, 9 l.
+
+Butik som säger annat: Färghuset anger "Åtgång: 6-9 m2/L" och 9 liter för 2 499 kr (https://farghuset.com/produkter/utomhusfarg/fasadfarg-tra/besta-tackfarg-fasadfarg-120571, 2026-09-28). Tillverkarens 6–8 väger tyngst; butikens 9 används inte.
+
+### Rad för rad mot underlaget och specen
+
+| Tal | Var | Står i dag | Besked |
+|---|---|---|---|
+| Silikatfärg 3–5 m²/l, konstant 3 | underlaget avsnitt 3; spec K2 och `ATGANG.silikat` | 3 | **Stämmer.** Nedre kanten av "3-5 m²/l" (datablad version 20240708) |
+| Ny puts härdar 6–8 veckor | underlaget avsnitt 3; spec `gorInte.ny-puts` | 6–8 veckor | **Stämmer**, ordagrant "tidigast efter 6-8 veckors härdning" |
+| Silikatfärgens strykningar, porös yta | underlaget avsnitt 3 ("grund + mellan + slut") och Att verifiera 6; spec "Det som saknar källa" ("Porös puts tar en till") | porös = en strykning mer än 2 | **Ska ändras till:** porös yta = 2 strykningar silikatfärg (mellan och yta) plus en grund av Primex Silikatbinder och vatten 1:1 utan färg. Porös puts tar alltså inte en strykning färg till |
+| Silikatfärgens strykningar, tät yta | spec 2.2 puts-raden "2 (ANTAGANDE, tät yta)" och `puts-strykningar` | 2 | **Ska ändras till:** tät yta = 1 ytstrykning plus grund av Silikatbinder och Silikatfärg 1:2. Talet 2 i `STRYK_AUTO` kan stå kvar (exakt för porös, något för mycket för tät, egen räkning 1,67), men märkningen ändras från "ANTAGANDE, tät yta" till "Källa: Beckers datablad; exakt för porös yta, tät yta 1 + grund 1:2". Ingen kodändring |
+| Silikatfärg på tidigare målad puts | spec, skicken för puts | inte behandlat | **Tillägg:** "Måla ej på organiska underlag"; organisk färg ska tas bort helt. Passar skicket `byte` |
+| Burkstorlekar puts | underlaget avsnitt 6 (1, 5, 10 l ANTAGANDE); spec "Bort, ingen källa" | 1/5/10, bortvalt | **Ska ändras till** 1, 3, 10 l om burkar ska räknas, källa bara produktbildernas filnamn på beckers.se. Specens beslut att visa liter utan burkar håller också; UX-agenten väljer |
+| Bestå sågat 6–7 m²/l, konstant 6 för nytt sågat | underlaget avsnitt 3 och 4 (utdrag); spec K2 "Alcro Bestå 6–7 (utdrag)" | 6, utdrag | **Stämmer.** Märkningen "utdrag" ändras till "läst, produktfaktablad version 100724" |
+| Bestå hyvlat/tidigare målat 7–8 m²/l, konstant 7 | samma; spec K2 "Alcro Bestå 7–8 (utdrag)" | 7, utdrag | **Stämmer.** Samma märkningsändring |
+| Bestå odelat 6–8 m²/l | underlaget avsnitt 0 och 3 (Lovely Home) | 6–8 via butik | **Stämmer** med tillverkarens "MATERIALÅTGÅNG 6 - 8 m²/l"; källan kan bytas från Lovely Home till faktabladet |
+| Bestå två strykningar | underlaget avsnitt 4; spec 2.2 (2 på trä) | 2 | **Stämmer**, "Måla 2 gånger flödigt" |
+| Bestå hyvlat: ett lager till vid tunna skikt | underlaget avsnitt 3 och 4 (utdrag) | utdrag | **Stämmer**, nu läst ordagrant |
+| Grundfärg på nytt trä, hela ytan | underlaget avsnitt 4; spec 2.2 (rent: en grund) | 1 | **Stämmer**, "Hela ytan, fasad samt ändträ, grundmålas med Grundfärg Trä" |
+| Grundolja på ändträ, skarvar, spik | underlaget avsnitt 3; spec regel `grundolja` | Beckers som källa | **Stämmer**, Alcro säger samma ("ändträ, skarvar och spikhuvuden"); kan läggas till som andra källa |
+| Grundfärg vid ommålning | spec 2.2 ommalning: ingen grund | ingen | **Stämmer** för hel färg; Alcro vill ha grund på "trärena partier och ytor i dåligt skick", vilket är specens skrapat. Obs: "Gamla alkyd- och oljefärgsytor bör alltid grundmålas" när Bestå (akrylat) går på oljefärg, alltså skicket `byte` |
+| Slamfärg eller linolja under | spec `byte` | besked, ingen liter | **Stämmer**, Alcro: "bör målas med samma färgtyp som använts innan" |
+| Bestå burkar 1, 3, 10 l | underlaget avsnitt 6; spec `BURKAR_FARG` akrylat, oljealkyd, grund | 1, 3, 10 | **Ska ändras eller märkas:** 1, 3, 10 l gäller bara färdigtonad vit (313). Brytbaserna för kulör finns i 0,9, 2,7, 9 l enligt Alcros produktdata. Antingen står 1/3/10 kvar med märkningen "vit 313; kulörer bryts i 0,9/2,7/9", eller så räknar verktyget kulör med 0,9/2,7/9. Egen räkning, E2b 33,67 l: 1/3/10 ger 4 × 10 = 40 l, 0,9/2,7/9 ger 4 × 9 = 36 l. Källan byts från Lovely Home till Alcros produktsida |
+| Bestå 10 l, 2 299 kr | underlaget avsnitt 6; spec K1 | 2 299 | **Ej kontrollerat mot tillverkaren** (Alcro anger inget pris). Lovely Home 2026-09-28 (sammanfattning av sidan, inte ordagrant) visar 2 299 kr men storlekarna "3 liter" (2,7–3) och "10 liter" (9–10), alltså säljer butiken troligen brytbasen 9 l under namnet 10 l |
+
+### Kvar att verifiera
+
+- Primex Silikatbinders åtgång och burkstorlek (grunden på både tät och porös puts köps separat och ingår inte i litern).
+- Antal strykningar silikatfärg på tidigare silikatmålad puts; databladet säger inget.
+- Beckers Silikatfärgs burkstorlekar ur text i stället för bildnamn.
+
+### Sidor som inte gick att läsa
+
+- https://fixmaleri.se/products/besta-tackfarg-10-liter (butiken under ombyggnad)
+- Alcros produkt-API (https://api.ppg.com/external/enterprise/pim/…) svarar 401; artiklarna lästes i stället ur produktsidans inbäddade data
+- Alcrostudio.se visar inte åtgång eller storlekar som synlig text utan JavaScript
+
+## Priskontroll 2026-09-28
+
+Alla priser inkl. moms, lästa 2026-09-28.
+
+| Butik | Produkt | Storlek | Pris | Adress |
+|---|---|---|---|---|
+| Lovely Home | Alcro Bestå Täckfärg, valfri kulör (art. 710018176) | "10 liter" (sidan: "10 liter 9-10 liter", beroende på pastamängd för vald kulör) | 2 299 kr | https://www.lovelyhome.se/farg/alcro-besta-tackfarg |
+| Lovely Home | Alcro Bestå Täckfärg, valfri kulör (art. 710018175) | "3 liter" (sidan: "3 liter 2,7-3 liter") | 890 kr | https://www.lovelyhome.se/farg/alcro-besta-tackfarg |
+| Färghuset | Alcro BESTÅ Täckfärg Fasadfärg, förval "Tonad vit", valfri kulör möjlig | 2,7 l | 999 kr | https://farghuset.com/produkter/utomhusfarg/fasadfarg-tra/besta-tackfarg-fasadfarg-120570 |
+| Färghuset | Alcro BESTÅ Täckfärg Fasadfärg, förval "Tonad vit", valfri kulör möjlig | 9 l | 2 499 kr kampanj, ordinarie 2 699 kr | https://farghuset.com/produkter/utomhusfarg/fasadfarg-tra/besta-tackfarg-fasadfarg-120571 |
+| Proffsmagasinet | Beckers Perfekt Fasad, halvmatt faluröd | 10 l | 2 595 kr | https://www.proffsmagasinet.se/bygg-interior/farg-tapeter/utomhusfarg/fasadfarg/beckers-perfekt-fasad-fasadfarg-halvmatt-falurod-3141021 |
+| Bauhaus | Beckers Perfekt Fasad 2, utevit | 10 l | 2 495 kr | https://www.bauhaus.se/akrylatfarg-beckers-perfekt-fasad-2-utevit-10-l |
+| K-Bygg | Beckers Perfekt Fasad 200 Vit | 10 l | 2 695 kr | https://k-bygg.se/produkt/fasadfarg-beckers-perfekt-fasad-200-vit-10l/7311231808291 |
+| K-Rauta/K-Bygg | Beckers Perfekt Bas A | 9 l | **Utdrag**: 2 395 kr (K-Bygg), lägsta 30 dagar 2 499 kr (K-Rauta); sidan omdirigerar till kategorisidan, alltså ej läst och troligen utgången | https://www.k-rauta.se/produkt/fasadfarg-beckers-perfekt-bas-a-9l/7311237055286 |
+
+Slutsatser:
+
+- 2 299 kr gäller Lovely Homes storlek "10 liter". Butiken skiljer inte mellan färdigtonad vit 313 i 10 l och brytbas i 9 l; varianten heter "10 liter" oavsett kulör och fyllnaden anges som 9–10 l. För en bruten kulör är det alltså en 9-litersburk. Priset är detsamma för alla kulörer.
+- Färghuset säljer Bestå bara i 2,7 och 9 l, även med förvalet tonad vit. Deras 9 l kostar 2 499 kr (kampanj) eller 2 699 kr.
+- Proffsmagasinets 2 595 kr för Perfekt Fasad 10 l stämmer 2026-09-28. Butiken anger också "32,44 kr per m²", vilket motsvarar 2 595 / 80 m², alltså 8 m²/l (egen räkning).
+- Perfekt Fasad i 9 l gick inte att läsa hos någon butik. Bauhaus har ingen 9-liters Perfekt Fasad 2 (gissade adresser gav 404). Färgvaruhusets "Perfekt Fasad 10 L Valfri kulör" visar "0 SEK" tills en kulör har valts.
+
+Sidor som inte gick att läsa i priskontrollen:
+
+- https://www.tapetkompaniet.se/farg/utomhus/trafasad/besta-tackfarg-10l (priset laddas med JavaScript)
+- https://www.fargvaruhuset.se/farg/utomhusfarg/fasadfarg/perfekt-fasad-10-l-valfri-kulor (pris först efter kulörval)
+- https://k-bygg.se/produkt/fasadfarg-beckers-perfekt-100-vit-10l/7311237055163 och Bas A 9 l (omdirigerar till kategorisidan)
+- Colorama: hittade ingen produktsida för Bestå Täckfärg, bara Bestå Briljant och Grundfärg
+- Sökmotorns rubrik för Lovely Home, "från 275 kr till 1790 kr", är gammal och stämmer inte med sidan i dag

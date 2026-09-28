@@ -179,6 +179,8 @@ Utkast filtreras inte, de byggs inte alls. Konfigurationen körs utanför Astros
 
 `npm run illustrationer` ingår i `npm run build`, efter `kontrollera` och före `astro build`.
 
+**Utskrift** (beslut 2026-09-28, `docs/briefer/spec-kalkyl-kontrollplan-2026-09-28.md` avsnitt 7). `Bas.astro` sätter `print:hidden` på hoppa-länken, sidhuvudet, brödsmulorna och sidfoten, så att varje sida skrivs ut utan meny och sidfot. Reklambandet döljs aldrig, inte heller på papper: märkningen följer med innehållet. En sida som ska skrivas ut som dokument, i dag bara `/rakna/kontrollplan/`, lägger sina utskriftsregler (`@media print`, `@page`) i ett eget block i `src/styles/global.css`, aldrig inline eller i en komponents `<style>`, så att de inte väger i HTML:en. Resten av sidan får `print:hidden` på sina sektioner. Ingen sida får en skriv ut-knapp: `window.print()` är klient-JavaScript, och webbläsarens egen utskrift och "Spara som PDF" gör samma sak.
+
 **Strukturerad data.** Byggs med `src/lib/strukturdata.ts` och renderas av `<StrukturData>`. `Article` på guider, kunskap, jämförelser och om-sidor med `strukturdata: Article`. `Product` + `AggregateOffer` på tester. `ItemList` på kategorisidor. `Person` på författarsidor. `Organization` på `/om/` och som `publisher` överallt. `BreadcrumbList` på alla sidor med brödsmulor. `FAQPage` bara där riktiga frågor finns, beslutas av SEO-strategen.
 
 **Interna länkar.** Reglerna i `docs/INNEHALLSARKITEKTUR.md` avsnitt 6. Mallarna garanterar minimum: artikel länkar till sin hub (brödsmula) och sin kategori, kategorisidan listar alla guider, tester och jämförelser med samma `kategori`, huben länkas från sidfoten.
