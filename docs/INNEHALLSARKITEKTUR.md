@@ -202,7 +202,7 @@ En fras, en sida. Registret över vilken sida som äger vilken fras är tabeller
 
 **Produkt till kunskap.** Varje kategorisida länkar till sin pelarhub, sin köpguide och sin kalkylator i "Så väljer du", och till alla tester och jämförelser i kategorin. Varje test länkar till kategorisidan, köpguiden och minst en kunskapsartikel som förklarar det testet mäter (ljud, kapacitet vid låg temperatur).
 
-**Hub till allt.** Pelarhuben länkar till varje sida i klustret, grupperat under "Hitta felet", "Välj rätt" och "Räkna", samt till kategorisidorna som hör till pelaren. Huben är handskriven, inte en automatisk lista. En hub publiceras när den har minst fem sidor att länka till.
+**Hub till allt.** Pelarhuben länkar till varje sida i klustret, grupperat under "Hitta felet", "Välj rätt" och "Räkna", samt till kategorisidorna som hör till pelaren. Huben är handskriven, inte en automatisk lista. En hub publiceras när den har minst fem sidor att länka till, artiklar och räknare som hör till pelaren inräknade (Christians beslut 2026-09-28). Under fem står pelarfilen som utkast, och adressen omdirigeras tillfälligt (302) till /amnen/.
 
 **Kalkylatorer.** Länkas med verktygskortet, ett per sida, från varje guide där resultatet är relevant, från kategorisidans "Så väljer du", från startsidan och sidfoten. Kalkylatorn länkar tillbaka till kategorisidan, köpguiden och kunskapsartikeln om hur vi räknar. Ingen sida får ha två verktygskort.
 
