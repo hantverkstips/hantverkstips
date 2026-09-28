@@ -342,56 +342,92 @@ export const OVERSKOTT_GRANS = 0.3;
  * Knappt åtta liter blir därför en burk om tio, medan tre liter blir en burk om
  * 2,5 plus en literburk: tiolitersburken hade lämnat sju liter över.
  */
-export function bastaBurkar(liter: number): { burkar: Burk[]; totalt: number } {
-  if (!(liter > 0)) return { burkar: [], totalt: 0 };
-  const [sma, mellan, stora] = BURKAR_LITER;
-  const maxStora = Math.ceil(liter / stora);
-  const maxMellan = Math.ceil(liter / mellan);
-  /* Literburkarna får gå högre än de andra: i det smala spannet strax över en
-     burkstorlek är flera literburkar den enda kombinationen inom gränsen. */
-  const maxSma = Math.min(Math.ceil(liter / sma), 20);
+export function bastaBurkar(
+  liter: number,
+  storlekar: readonly number[] = BURKAR_LITER,
+): { burkar: Burk[]; totalt: number } {
+  if (!(liter > 0) || storlekar.length === 0) return { burkar: [], totalt: 0 };
+  /* Största först, som burkarna står i utdata. */
+  const stor = [...storlekar].sort((a, b) => b - a);
+  const n = stor.length;
+  const sma = stor[n - 1]!;
+  const max = stor.map((s) => Math.ceil(liter / s));
+  /* Den minsta storleken får gå högre än de andra: i det smala spannet strax
+     över en burkstorlek är flera av de minsta den enda kombinationen inom
+     gränsen. Högst 20 st. */
+  const maxSma = Math.min(max[n - 1]!, 20);
   const tak = liter * (1 + OVERSKOTT_GRANS);
 
-  type Kandidat = { burkar: Burk[]; totalt: number; antal: number };
+  /*
+   * Specen för fasadräknaren 2.7 (2026-09-28): uttömmande över alla storlekar
+   * utom den minsta, och för den minsta bara det minsta antal som når behovet.
+   * Fler av den minsta ger både fler burkar och mer liter och vinner aldrig,
+   * så svaret blir detsamma som med den fulla sökningen, men ett fasadbehov på
+   * tusentals liter går på millisekunder. Summan räknas i samma ordning som
+   * förut, största storleken först, så att flyttalen blir desamma.
+   */
+  type Kandidat = { antalPer: number[]; totalt: number; antal: number };
   let inomGransen: Kandidat | null = null;
   let minstTotalt: Kandidat | null = null;
+  const antalPer = new Array<number>(n).fill(0);
 
-  for (let antalStora = 0; antalStora <= maxStora; antalStora++) {
-    for (let antalMellan = 0; antalMellan <= maxMellan; antalMellan++) {
-      for (let antalSma = 0; antalSma <= maxSma; antalSma++) {
-        const totalt = antalStora * stora + antalMellan * mellan + antalSma * sma;
-        if (totalt + 1e-9 < liter) continue;
-        const antal = antalStora + antalMellan + antalSma;
-        if (antal === 0) continue;
+  const provaMinsta = (): void => {
+    let bas = 0;
+    let antalBas = 0;
+    for (let k = 0; k < n - 1; k++) {
+      bas = bas + antalPer[k]! * stor[k]!;
+      antalBas += antalPer[k]!;
+    }
+    let s = Math.max(0, Math.ceil((liter - bas) / sma));
+    while (s > 0 && bas + (s - 1) * sma + 1e-9 >= liter) s--;
+    while (bas + s * sma + 1e-9 < liter) s++;
+    /* Ingen burk alls räknas inte som ett svar; då är en av de minsta den minsta kombinationen. */
+    if (antalBas + s === 0) s = 1;
+    if (s > maxSma) return;
+    const totalt = bas + s * sma;
+    const antal = antalBas + s;
 
-        const kandidat = (): Kandidat => {
-          const burkar: Burk[] = [];
-          if (antalStora > 0) burkar.push({ literPerBurk: stora, antal: antalStora });
-          if (antalMellan > 0) burkar.push({ literPerBurk: mellan, antal: antalMellan });
-          if (antalSma > 0) burkar.push({ literPerBurk: sma, antal: antalSma });
-          return { burkar, totalt, antal };
-        };
-
-        if (totalt <= tak + 1e-9) {
-          const battre =
-            inomGransen === null ||
-            antal < inomGransen.antal ||
-            (antal === inomGransen.antal && totalt < inomGransen.totalt - 1e-9);
-          if (battre) inomGransen = kandidat();
-        }
-
-        const billigare =
-          minstTotalt === null ||
-          totalt < minstTotalt.totalt - 1e-9 ||
-          (Math.abs(totalt - minstTotalt.totalt) < 1e-9 && antal < minstTotalt.antal);
-        if (billigare) minstTotalt = kandidat();
+    if (totalt <= tak + 1e-9) {
+      const battre =
+        inomGransen === null ||
+        antal < inomGransen.antal ||
+        (antal === inomGransen.antal && totalt < inomGransen.totalt - 1e-9);
+      if (battre) {
+        antalPer[n - 1] = s;
+        inomGransen = { antalPer: [...antalPer], totalt, antal };
       }
     }
-  }
+    const billigare =
+      minstTotalt === null ||
+      totalt < minstTotalt.totalt - 1e-9 ||
+      (Math.abs(totalt - minstTotalt.totalt) < 1e-9 && antal < minstTotalt.antal);
+    if (billigare) {
+      antalPer[n - 1] = s;
+      minstTotalt = { antalPer: [...antalPer], totalt, antal };
+    }
+  };
 
-  const bast: Kandidat | null = inomGransen ?? minstTotalt;
+  const sok = (k: number): void => {
+    if (k === n - 1) {
+      provaMinsta();
+      return;
+    }
+    for (let a = 0; a <= max[k]!; a++) {
+      antalPer[k] = a;
+      sok(k + 1);
+    }
+    antalPer[k] = 0;
+  };
+  sok(0);
+
+  /* Variablerna sätts inne i provaMinsta; TypeScript ser inte det och tror att de fortfarande är null. */
+  const bast = (inomGransen ?? minstTotalt) as Kandidat | null;
   if (bast === null) return { burkar: [{ literPerBurk: sma, antal: 1 }], totalt: sma };
-  return { burkar: bast.burkar, totalt: tvaDecimaler(bast.totalt) };
+  const burkar: Burk[] = [];
+  for (let k = 0; k < n; k++) {
+    if (bast.antalPer[k]! > 0) burkar.push({ literPerBurk: stor[k]!, antal: bast.antalPer[k]! });
+  }
+  return { burkar, totalt: tvaDecimaler(bast.totalt) };
 }
 
 function arRaknar(v: string | null): v is Raknar {

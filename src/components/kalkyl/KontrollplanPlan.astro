@@ -1,0 +1,218 @@
+---
+/**
+ * Kontrollplanen, en markup för skärm och papper (specen 6). Utseendet ligger i
+ * blocket "Kontrollplanen" sist i src/styles/global.css, inte i klasser per
+ * cell: planen kan ha trettio rader, och etiketterna i stapelvyn sätts en gång
+ * som variabler på <table>.
+ *
+ * kp-utskrift syns bara på papper, kp-skarm bara på skärm. Allt som skrivs för
+ * hand (namn, fastighet, diarienummer, datum, signaturer) är tomma linjer på
+ * papperet och finns inte som fält någonstans, så adressen i sidfoten bär inga
+ * personuppgifter.
+ *
+ * All text står i TEXT i src/lib/kalkyl/kontrollplan.ts; lagrummen är data i
+ * samma modul.
+ *
+ * Planen är en handling till nämnden (specen 16.1 D2): allt utanför kp-skarm är
+ * handlingstext i tredje person. Nycklarna som läses här står som mönster i
+ * PLAN_NYCKLAR i modulen, och testet fäller vid tilltal.
+ */
+import {
+  AVFALL_LAGRUM,
+  AVFALL_RUTA_LAGRUM,
+  cssStrang,
+  KA_LAGRUM,
+  LOVGRUND,
+  medLagrum,
+  medTal,
+  punktNyckel,
+  TEXT,
+  type Atgard,
+  type KontrollplanOk,
+  type TextNyckel,
+} from '../../lib/kalkyl/kontrollplan';
+
+interface Props {
+  resultat: KontrollplanOk;
+  /** Den delbara adressen, absolut, för sidfoten på papperet. */
+  adress: string;
+}
+
+const { resultat: r, adress } = Astro.props;
+const t = (k: string): string => medTal(TEXT[k as TextNyckel]);
+
+/** Etiketterna före cellerna i stapelvyn, en gång på <table>. Nr och Kontroll har ingen. */
+const etiketter = [
+  `--kp-e-3:${cssStrang(TEXT['kolumn.krav'])}`,
+  `--kp-e-4:${cssStrang(TEXT['kolumn.hur'])}`,
+  `--kp-e-5:${cssStrang(TEXT['kolumn.vem'])}`,
+  `--kp-e-6:${cssStrang(TEXT['kolumn.verifikat'])}`,
+].join(';');
+
+/** Åtgärdsraden: text och lovgrund per vald åtgärd, komplementbostadshuset före installationerna. */
+const INSTALLATIONER: readonly Atgard[] = ['eldstad', 'ventilation', 'va'];
+const atgarder = r.indata.atgarder.map((a) => {
+  const skarmtak = a === 'altan' && r.indata.tak === 'skarmtak';
+  return {
+    atgard: a,
+    text: skarmtak ? TEXT['atgard.altan.plan-skarmtak'] : t(`atgard.${a}.plan`),
+    lovgrund: skarmtak ? LOVGRUND['altan-skarmtak'] : LOVGRUND[a],
+  };
+});
+const komplementbostadshus = r.indata.hus === 'komplementbostadshus';
+const forstaInstallation = atgarder.findIndex((a) => INSTALLATIONER.includes(a.atgard));
+const kaNamnLinje = r.ka === 'huvudregel' || r.ka === 'beror';
+
+const ADMIN_UTSKRIFT = ['fastighet', 'byggherre', 'entreprenor', 'diarienummer', 'upprattad'] as const;
+const AVFALL_DELAR = ['del1', 'del2', 'del3'] as const;
+const tommaRader = Array.from({ length: r.tommaAvfallsrader });
+---
+
+<div class="kp-plan">
+  <div class="kp-utskrift">
+    <p class="kp-titel">{TEXT['utskrift.titel']}</p>
+    <p class="kp-ansvar">{TEXT['utskrift.ansvar']}</p>
+  </div>
+
+  <p class="kp-handskrift m-0 mb-4 text-liten text-blyerts-2">{TEXT['utskrift.handskrift']}</p>
+
+  <dl class="kp-admin">
+    {
+      ADMIN_UTSKRIFT.map((f) => (
+        <div class="kp-utskrift kp-linje">
+          <dt>{t(`utskrift.falt.${f}`)}</dt>
+          <dd />
+        </div>
+      ))
+    }
+    <div class="kp-bred">
+      <dt>{TEXT['utskrift.falt.atgard']}</dt>
+      <dd>
+        {
+          atgarder.map((a, n) => (
+            <>
+              {komplementbostadshus && n === forstaInstallation && <span>{TEXT['atgard.komplementbostadshus']}</span>}
+              <span>{medLagrum(a.text, a.lovgrund)}</span>
+            </>
+          ))
+        }
+      </dd>
+    </div>
+    <div class="kp-bred">
+      <dt>{TEXT['utskrift.falt.ka']}</dt>
+      <dd>
+        <span>{medLagrum(TEXT[`utskrift.ka.${r.ka}`], KA_LAGRUM[r.ka])}</span>
+      </dd>
+    </div>
+    {
+      kaNamnLinje && (
+        <div class="kp-utskrift kp-linje kp-bred">
+          <dt>{TEXT['utskrift.falt.ka-namn']}</dt>
+          <dd />
+        </div>
+      )
+    }
+    <div class="kp-bred">
+      <dt>{TEXT['utskrift.falt.regelverk']}</dt>
+      <dd>{r.forfattningar.join('; ')}</dd>
+    </div>
+  </dl>
+
+  <table class="kp" style={etiketter}>
+    {/* Kolumnbredderna sitter på <col> (specen 16.6). Fastigheten på varje blad står i utskriftens marginal, se global.css. */}
+    <colgroup><col /><col /><col /><col /><col /><col /><col /></colgroup>
+    <thead>
+      <tr>
+        <th scope="col">{TEXT['kolumn.nr']}</th>
+        <th scope="col">{TEXT['kolumn.kontroll']}</th>
+        <th scope="col">{TEXT['kolumn.krav']}</th>
+        <th scope="col">{TEXT['kolumn.hur']}</th>
+        <th scope="col">{TEXT['kolumn.vem']}</th>
+        <th scope="col">{TEXT['kolumn.verifikat']}</th>
+        <th scope="col">{TEXT['kolumn.signatur']}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        r.punkter.map((p) => (
+          <tr>
+            <td>{p.nr}</td>
+            <td>
+              {t(punktNyckel(p.nyckel, 'vad', r.indata))}
+              <span>{t(punktNyckel(p.nyckel, 'nar', r.indata))}</span>
+            </td>
+            <td>{p.krav}</td>
+            <td>
+              {t(`punkt.${p.nyckel}.hur`)}
+              <span>{t(`punkt.${p.nyckel}.mot`)}</span>
+            </td>
+            <td>
+              {t(`vem.${p.vem}`)}
+              <span>{t(`form.${p.form}`)}</span>
+            </td>
+            <td>{t(`punkt.${p.nyckel}.verifikat`)}</td>
+            <td />
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+  <p class="kp-fot">{TEXT['kolumn.teckenforklaring']}</p>
+
+  <h3 class="kp-h3">{TEXT['utskrift.anmalningar']}</h3>
+  <ul class="kp-lista">
+    {r.anmalningar.map((a) => <li>{t(`anmalan.${a}`)}</li>)}
+    <li class="kp-utskrift kp-linje kp-listlinje">
+      <span>{TEXT['utskrift.falt.ovriga-anmalningar']}</span><span class="kp-streck" />
+    </li>
+    <li class="kp-utskrift kp-tomlinje" />
+  </ul>
+
+  <h3 class="kp-h3">{TEXT['utskrift.besok']}</h3>
+  <p class="kp-stycke">{t(`besok.${r.besok}`)}</p>
+
+  <div class="kp-intyg">
+    <p class="kp-stycke">{TEXT['utskrift.intygande']}</p>
+    <dl class="kp-utskrift kp-signaturer">
+      <div class="kp-linje"><dt>{TEXT['utskrift.datum']}</dt><dd /></div>
+      <div class="kp-linje"><dt>{TEXT['utskrift.underskrift']}</dt><dd /></div>
+      <div class="kp-linje"><dt>{TEXT['utskrift.namnfortydligande']}</dt><dd /></div>
+    </dl>
+  </div>
+
+  <div class="kp-avfall">
+    <h3 class="kp-h3">{medLagrum(TEXT['avfall.rubrik'], AVFALL_LAGRUM)}</h3>
+    <p class="kp-skarm kp-stycke text-blyerts-2">{t(`avfall.tips.${r.avfall}`)}</p>
+    <p class="kp-stycke kp-ruta">
+      <span class="kp-fyrkant" aria-hidden="true"></span>
+      <span>{medLagrum(TEXT['avfall.ruta'], AVFALL_RUTA_LAGRUM)}</span>
+    </p>
+    <p class="kp-utskrift kp-stycke">{TEXT['utskrift.avfall.instruktion']}</p>
+    <ul class="kp-skarm kp-lista">
+      {AVFALL_DELAR.map((d) => <li>{t(`avfall.${d}`)}</li>)}
+    </ul>
+    {
+      AVFALL_DELAR.map((d) => (
+        <table class="kp-utskrift kp-avfallstabell">
+          <caption>{t(`avfall.${d}`)}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{TEXT['avfall.kolumn.sak']}</th>
+              <th scope="col">{TEXT['avfall.kolumn.hur']}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tommaRader.map(() => (
+              <tr>
+                <td />
+                <td />
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ))
+    }
+  </div>
+
+  <p class="kp-utskrift kp-sidfot">{TEXT['utskrift.skapad']} {adress}</p>
+</div>

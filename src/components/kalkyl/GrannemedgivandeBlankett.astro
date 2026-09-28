@@ -1,0 +1,129 @@
+---
+/**
+ * Medgivandet att skriva ut, en per mottagare. Förtryckt med åtgärden, måtten,
+ * avståndet, detaljplanen och lagrummet; tomma rader för allt som är
+ * personuppgifter (specen beslut 1). Raderna fylls i med penna efter
+ * utskriften, så det finns inga formulärfält: en rad är en tom yta med prickad
+ * underkant, och etiketten ovanför är vanlig text som skärmläsaren läser.
+ *
+ * Utskriften styrs av blocket sist i src/styles/global.css: en sida med
+ * [data-utskrift] skriver bara ut blanketterna. Här står bara det som skiljer
+ * utskriften från skärmen (print:-varianterna): etiketten bredvid raden i
+ * stället för ovanför, två kolumner för fastighetsbeteckning och adress,
+ * underskrifterna i ett rutnät 2 × 2, och ny sida före blankett nummer två.
+ *
+ * Klasserna står en gång på <article> och når delarna genom data-attributen
+ * (data-del, data-rad, data-linje, data-kol), som tabellerna på u-värdessidan.
+ * En blankett har tretton rader och åtta delrubriker, och samma klasser på
+ * varje element vägde över 8 kB per blankett.
+ *
+ * All text ur TEXT.blankett i src/lib/kalkyl/grannemedgivande.ts. Spec:
+ * docs/briefer/spec-kalkyl-grannemedgivande-2026-09-28.md avsnitt 4.5.
+ */
+import {
+  blankettFakta,
+  TEXT,
+  type GrannemedgivandeIndata,
+  type Mottagare,
+} from '../../lib/kalkyl/grannemedgivande.ts';
+
+interface Props {
+  indata: GrannemedgivandeIndata;
+  mottagare: Mottagare;
+  /** Sant för blankett nummer två och senare: sidbrytning före i utskrift. */
+  nyttBlad?: boolean;
+}
+
+const { indata, mottagare, nyttBlad = false } = Astro.props;
+const f = blankettFakta(indata, mottagare);
+const B = TEXT.blankett;
+/** Verktygets adress utan query. */
+const adress = new URL('/rakna/grannemedgivande/', Astro.site ?? Astro.url).toString();
+
+const BLANKETT_KLASS = [
+  'rounded-sm border border-linje bg-papper-2 p-4 text-blyerts',
+  /* Delrubrik. */
+  '[&_[data-del]]:m-0 [&_[data-del]]:mt-6 [&_[data-del]]:text-etikett [&_[data-del]]:uppercase [&_[data-del]]:text-blyerts-2 print:[&_[data-del]]:mt-4',
+  /* En rad att skriva på: etiketten ovanför på skärmen, bredvid i utskrift. */
+  '[&_[data-rad]]:mt-2 print:[&_[data-rad]]:mt-0 print:[&_[data-rad]]:flex print:[&_[data-rad]]:items-end print:[&_[data-rad]]:gap-2',
+  '[&_[data-rad]>p]:m-0 [&_[data-rad]>p]:text-liten print:[&_[data-rad]>p]:shrink-0',
+  /* Den tomma raden: minst 9 mm hög i utskrift. */
+  '[&_[data-linje]]:min-h-10 [&_[data-linje]]:border-b [&_[data-linje]]:border-dotted [&_[data-linje]]:border-blyerts-2 print:[&_[data-linje]]:min-h-9 print:[&_[data-linje]]:flex-1',
+  /* Två kolumner i utskrift. */
+  'print:[&_[data-kol]]:grid print:[&_[data-kol]]:grid-cols-2 print:[&_[data-kol]]:gap-x-6',
+].join(' ');
+
+const underskrifter = [1, 2, 3, 4];
+const ritningar = [B['ritning-situationsplan'], B['ritning-fasad'], B['ritning-plan']];
+---
+
+<article data-utskrift class:list={[BLANKETT_KLASS, nyttBlad && 'mt-8 print:mt-0 print:break-before-page']}>
+  <h3 class="m-0 font-sans text-h3 lg:text-h3-lg text-blyerts">{B.rubrik}</h3>
+  <p class="m-0 mt-1 text-liten">{f.lagrum}</p>
+  <p class="m-0 mt-2 text-liten">{B.inledning(mottagare)}</p>
+
+  {/* Byggherren */}
+  <p data-del>{B['del-byggherre']}</p>
+  <div data-kol>
+    <div data-rad><p>{B['falt-fastighetsbeteckning']}</p><div data-linje aria-hidden="true"></div></div>
+    <div data-rad><p>{B['falt-adress']}</p><div data-linje aria-hidden="true"></div></div>
+  </div>
+  <div data-rad><p>{B['falt-namn']}</p><div data-linje aria-hidden="true"></div></div>
+
+  {/* Åtgärden, förtryckt */}
+  <p data-del>{B['del-atgard']}</p>
+  <p class="m-0 mt-1 text-brod font-bold print:text-liten">{TEXT.atgard[f.atgard].namn}</p>
+  <p class="m-0 text-brod print:text-liten">{f.matt}</p>
+  <p class="m-0 text-brod print:text-liten">
+    {/* Järnväg: avståndet till spåret fylls i för hand, så planen står som en hel mening (specen 12.4). */}
+    {f.gransM !== null ? <>{B.avstand(f.gransM)}, {B.plan[f.plan]}</> : B['plan-ensam'][f.plan]}
+  </p>
+  {
+    f.gransM === null && (
+      <div data-rad><p>{B['falt-avstand-spar']}</p><div data-linje aria-hidden="true" /></div>
+    )
+  }
+  <div data-rad><p>{B['falt-beskrivning']}</p><div data-linje aria-hidden="true"></div></div>
+  <div data-linje aria-hidden="true"></div>
+  <p class="m-0 mt-3 text-liten">{B['falt-ritningar']}</p>
+  <ul class="m-0 mt-1 p-0 list-none flex flex-wrap gap-x-4 gap-y-1 text-liten">
+    {
+      ritningar.map((r) => (
+        <li class="flex items-center gap-2">
+          <span class="inline-block size-3.5 border border-blyerts" aria-hidden="true" />
+          {r}
+        </li>
+      ))
+    }
+  </ul>
+  <div data-rad><p>{B['falt-daterade']}</p><div data-linje aria-hidden="true"></div></div>
+
+  {/* Grannen, efter mottagare */}
+  <p data-del>{B['del-granne'][mottagare]}</p>
+  <div data-kol>
+    {B['falt-granne'][mottagare].map((etikett) => <div data-rad><p>{etikett}</p><div data-linje aria-hidden="true" /></div>)}
+  </div>
+
+  <p class="m-0 mt-4 text-brod print:mt-3 print:text-liten">{B.medgivandemening}</p>
+  <p class="m-0 mt-1 text-brod print:text-liten">{B.omfattning}</p>
+  {/* Bara för grannfastigheten; huvudman och järnväg har inga ägare att räkna upp (specen 12.4). */}
+  {mottagare === 'grannar' && <p class="m-0 mt-1 text-liten">{B['alla-agare']}</p>}
+
+  {/* Underskrifterna, fyra block */}
+  <div data-kol>
+    {
+      underskrifter.map((n) => (
+        <div class="break-inside-avoid">
+          <p data-del>{B['del-underskrift'](n)}</p>
+          <div data-rad><p>{B['falt-ort-datum']}</p><div data-linje aria-hidden="true" /></div>
+          <div data-rad><p>{B['falt-namnteckning']}</p><div data-linje aria-hidden="true" /></div>
+          <div data-rad><p>{B['falt-namnfortydligande']}</p><div data-linje aria-hidden="true" /></div>
+        </div>
+      ))
+    }
+  </div>
+
+  <p class="m-0 mt-6 text-finstilt text-blyerts-2 print:mt-4">
+    {B.exemplar} · {B.kalla(adress)}
+  </p>
+</article>

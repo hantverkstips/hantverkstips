@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Ett hus med sadeltak och skorsten till vänster, och strax till höger om huset ett litet förråd med pulpettak. Till höger om förrådet går en streckad lodrät tomtgräns, och bortom den står grannens hus, mindre än vårt. På marken mellan förrådets vägg och tomtgränsen ligger en tumstock utfälld och mäter avståndet. Marken är skrafferad och ligger på samma nivå i hela bilden.">
+  <!-- Varumärkesillustration för /rakna/grannemedgivande/. Samma hand som symbolen, startsidans
+       hero och de andra räknarnas bilder: konturer i blyerts 2 px med runda ändar, tumstocken som den
+       enda fyllda färgen, ingen linjering, transparent bakgrund, ett rött pennstreck som signatur.
+       Huset är sajtens hus, samma som i dräneringsbilden (bredd 230, vägg 121, takfall 76,7, samma
+       33,7 graders lutning, fönster, dörr och skorsten), flyttat så att marken ligger på y=262.
+       Grannens hus är samma hus i skala 0,552 utan skorsten, alltså mindre än vårt.
+       Motivet: ett förråd med pulpettak tätt intill tomtgränsen, och tumstocken utfälld på marken från
+       förrådets vägg till gränsen. Tumstocken är det enda gula och drar ögat till avståndet, som i
+       altanbilden, för det är avståndet reglerna bygger på. Den ligger vågrätt och har tumstreck och
+       runda ändar, så att den läses som ett mått och inte som en planka.
+       Tomtgränsen är en streckad lodrät linje från marken och upp över taknivån, så att den läses som
+       en gräns och inte som en stolpe. Den bär också motivets höjd: bbox-kvoten 1,72 byggs av gränsen,
+       inte av tom mark.
+       Markytan ligger på y=262 i hela bilden. Skrafferingen följer skissernas värden (10 px streck,
+       45 grader, blyerts-2 1,4 px) men glest, 26 px mellan strecken, som i de andra bilderna.
+       Ingen text-nod och inga läsbara tal: npm run illustrationer rör inte filen och den har ingen
+       källa under illustrationer-kallor. Skala 600 × 360.
+       Motivet är ritat i skala 1 och läggs ut med transform="translate(18.5 -18.8)" i yttre g:et.
+       Uppmätt på den renderade bilden 2026-09-28: 559 px brett (93,2 procent) och 318 px högt
+       (88,3 procent), bbox-kvot 1,76, med 20 px marginal i sidled och 20 till 23 px i höjdled.
+       Tunnaste linje är 1,4.
+       Tokens: tumstock #e8b830, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519. -->
+
+  <g transform="translate(18.5 -18.8)">
+
+    <!-- Marken. Den enda skrafferingen i bilden. -->
+    <g fill="none" stroke="#625a50" stroke-width="1.4" stroke-linecap="round">
+      <path d="M8,272 l10,10 M34,272 l10,10 M60,272 l10,10 M86,272 l10,10 M112,272 l10,10 M138,272 l10,10 M164,272 l10,10 M190,272 l10,10 M216,272 l10,10 M242,272 l10,10 M268,272 l10,10 M294,272 l10,10 M320,272 l10,10 M346,272 l10,10 M372,272 l10,10 M424,272 l10,10 M450,272 l10,10 M476,272 l10,10 M502,272 l10,10 M528,272 l10,10"/>
+      <path d="M21,304 l10,10 M47,304 l10,10 M73,304 l10,10 M99,304 l10,10 M125,304 l10,10 M151,304 l10,10 M177,304 l10,10 M203,304 l10,10 M229,304 l10,10 M255,304 l10,10 M281,304 l10,10 M307,304 l10,10 M333,304 l10,10 M359,304 l10,10 M385,304 l10,10 M437,304 l10,10 M463,304 l10,10 M489,304 l10,10 M515,304 l10,10 M541,304 l10,10"/>
+      <path d="M8,334 l10,10 M34,334 l10,10 M60,334 l10,10 M86,334 l10,10 M112,334 l10,10 M138,334 l10,10 M164,334 l10,10 M190,334 l10,10 M216,334 l10,10 M242,334 l10,10 M268,334 l10,10 M294,334 l10,10 M320,334 l10,10 M346,334 l10,10 M372,334 l10,10 M398,334 l10,10 M424,334 l10,10 M450,334 l10,10 M476,334 l10,10 M502,334 l10,10 M528,334 l10,10"/>
+    </g>
+
+    <!-- Markytan, en och samma nivå genom hela bilden -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3,262.5 Q140,264.4 280,262 Q420,263.6 559,262"/>
+    </g>
+
+    <!-- Vårt hus: sajtens hus, som i dräneringsbilden -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10,262 Q12.4,201.5 10,141"/>
+      <path d="M240,262 Q237.6,201.5 240,141"/>
+      <path d="M4,145 Q66.1,107 125,64.3 Q183.9,107 246,145"/>
+      <path d="M180,101 Q182,89 180,77 Q190,79 200,77 Q198,95.7 200,114.4"/>
+      <path d="M168,262 Q170,228.5 168,195 Q185,197 202,195 Q200,228.5 202,262"/>
+      <path d="M48,158 Q68,160 88,158 Q86,177 88,196 Q68,194 48,196 Q50,177 48,158 Z"/>
+    </g>
+    <g fill="none" stroke="#2a2521" stroke-width="1.75" stroke-linecap="round">
+      <path d="M68,158 Q66.4,177 68,196"/>
+      <path d="M48,177 Q68,178.6 88,177"/>
+    </g>
+
+    <!-- Förrådet med pulpettak, som faller mot gränsen, och en dörr -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M254,262 Q256,229 254,196"/>
+      <path d="M324,262 Q322,237 324,212"/>
+      <path d="M248,192 Q289,201.5 330,215"/>
+    </g>
+    <g fill="none" stroke="#2a2521" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M272,262 Q273.5,240 272,218 Q284,219.6 296,222.6 Q294.6,242 296,262"/>
+    </g>
+
+    <!-- Tomtgränsen, streckad, från marken och upp över taknivån -->
+    <path d="M412,280 Q413.6,160 412,40" fill="none" stroke="#2a2521" stroke-width="2" stroke-dasharray="11 9" stroke-linecap="round"/>
+
+    <!-- Grannens hus: samma hus i skala 0,552, utan skorsten -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M428,262 Q429.3,228.6 428,195.2"/>
+      <path d="M555,262 Q553.7,228.6 555,195.2"/>
+      <path d="M424.7,197.4 Q459,176.4 491.5,152.9 Q524,176.4 558.3,197.4"/>
+      <path d="M515,262 Q516.1,243.5 515,225 Q524.4,226.1 533.8,225 Q532.7,243.5 533.8,262"/>
+      <path d="M449,205 Q460,206.1 471,205 Q469.9,215.5 471,226 Q460,224.9 449,226 Q450.1,215.5 449,205 Z"/>
+    </g>
+
+    <!-- Tumstocken utfälld på marken, från förrådets vägg till tomtgränsen -->
+    <g transform="translate(328 252) rotate(-1)">
+      <rect x="0" y="-8" width="80" height="16" rx="8" fill="#e8b830" stroke="#2a2521" stroke-width="2"/>
+      <path d="M13,-8 V-2 M27,-8 V-4.5 M41,-8 V-2 M55,-8 V-4.5 M69,-8 V-2" fill="none" stroke="#2a2521" stroke-width="1.4" stroke-linecap="round"/>
+    </g>
+
+    <!-- Snickarpennans signatur under motivet -->
+    <path d="M160,352 Q235,356.7 310,349.5 Q385,346.5 460,351.5" fill="none" stroke="#ad3519" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+</svg>

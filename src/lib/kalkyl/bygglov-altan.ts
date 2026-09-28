@@ -23,11 +23,15 @@ export type Tak = 'nej' | 'skarmtak' | 'vaggar';
 export type Vardefullt = 'ja' | 'nej' | 'vet-inte';
 
 /** Svaret i stort format. */
-export type Svar = 'nej' | 'kanske' | 'ja';
+export type Svar = 'nej' | 'granne' | 'kanske' | 'ja';
 
 /**
- * Vad en enskild regel betyder. "granne" är regeln vid tomtgränsen: den kräver
- * grannens skriftliga ja, inte ett bygglov, och den lyfter därför inte svaret.
+ * Vad en enskild regel betyder. "granne" är regeln när ett skärmtak eller en
+ * inglasning gör altanen till en tillbyggnad närmare tomtgränsen än 4,5 m: då
+ * krävs grannens skriftliga medgivande (plan- och bygglagen 9 kap. 34 § 1 och
+ * 35 § första stycket 3), annars bygglov. Den kräver inget bygglov i sig och
+ * lyfter därför inte svaret. En altan utan tak står inte i 34 § och får aldrig
+ * "granne" (prop. 2024/25:169 s. 162).
  */
 export type Utfall = 'nej' | 'granne' | 'kanske' | 'ja';
 
@@ -76,7 +80,12 @@ export type BygglovAltanResultat =
       bedomningar: Bedomning[];
       /** Sant när de två fallen ger olika svar. */
       olikaFall: boolean;
-      /** Närmare gränsen än 4,5 m: hämta grannens skriftliga medgivande. */
+      /**
+       * Sant när någon bedömning har en regel med utfallet "granne": altanen har
+       * skärmtak eller inglasning, är en lovfri tillbyggnad och står närmare
+       * gränsen än 4,5 m. Inte längre bara avståndet; en altan utan tak kräver
+       * inget medgivande (plan- och bygglagen 9 kap. 34 §, prop. 2024/25:169 s. 162).
+       */
       kravGrannmedgivande: boolean;
       /** Byggsanktionsavgiften i kronor om altanen byggs utan lov. */
       avgiftKr: number;
@@ -108,19 +117,23 @@ export const HOJD_LANGRE_BORT_M = 1.2;
 export const NARA_BYGGNAD_M = 3.6;
 
 /**
- * Avståndet till tomtgränsen. Boverket vill att du hämtar skriftligt
- * medgivande från alla berörda grannar närmare gränsen än 4,5 m. Lagrummet om
- * lov nära gräns räknar upp byggnader, tillbyggnader, murar och plank över
- * 1,2 m, men inte altaner; rådet är därför Boverkets och inte lagtextens.
- * Lagrum: plan- och bygglagen 9 kap. 34 och 35 §§ samt Boverkets vägledning.
+ * Avståndet till tomtgränsen. Närmare gränsen än 4,5 m krävs bygglov för en
+ * annars lovfri byggnad, tillbyggnad eller mur och plank över 1,2 m, om inte
+ * de berörda grannarna skriftligen har medgett åtgärden. Altan står inte i
+ * uppräkningen, så för en altan utan tak gäller det inte (prop. 2024/25:169
+ * s. 162); med skärmtak eller inglasning är altanen en tillbyggnad och då
+ * gäller det. Jämförelsen är `<`. Samma konstant används av
+ * src/lib/kalkyl/grannemedgivande.ts.
+ * Lagrum: plan- och bygglagen 9 kap. 34 och 35 §§.
  */
 export const GRANS_M = 4.5;
 
 /**
- * Lovfri tillbyggnad av ett en- eller tvåbostadshus: högst 30,0 kvm bruttoarea
- * eller öppenarea, sammanlagt med andra lovfria tillbyggnader på huset, och
- * inte högre än husets taknock. Den gamla regeln om skärmtak på 15 kvm är
- * borta ur lagen. Lagrum: plan- och bygglagen 9 kap. 10 §.
+ * Lovfri tillbyggnad av en byggnad som inte är en komplementbyggnad eller ett
+ * komplementbostadshus: högst 30,0 kvm bruttoarea eller öppenarea, sammanlagt
+ * med andra lovfria tillbyggnader på huset, och inte högre än husets taknock.
+ * Gäller alltså inte bara en- eller tvåbostadshus. Den gamla regeln om
+ * skärmtak på 15 kvm är borta ur lagen. Lagrum: plan- och bygglagen 9 kap. 10 §.
  */
 export const LOVFRI_TILLBYGGNAD_KVM = 30;
 
@@ -147,12 +160,19 @@ export const REGLERNA_GALLER_FRAN = '1 december 2025';
  * områdesbestämmelser.
  */
 export const RAD_KOMMUNEN =
-  'Kommunen har sista ordet. Byggnadsnämnden prövar just din altan, och detaljplanen eller områdesbestämmelserna kan lägga till lovplikt utöver lagen. Skicka ett mejl med ett foto och de två måtten, det kostar ingenting.';
+  'Byggnadsnämnden prövar just din altan, och detaljplanen eller områdesbestämmelserna kan lägga till lovplikt utöver lagen. Är du osäker kostar ett mejl till bygglovsavdelningen ingenting.';
 
 export const SVAR_RUBRIK: Record<Svar, string> = {
   nej: 'Nej, du slipper bygglov',
   ja: 'Ja, du behöver bygglov',
   kanske: 'Troligen, fråga kommunen',
+  /*
+   * Svaret när en regel säger granne och ingen säger ja eller kanske (specen 12.1).
+   * Sidan delar rubriken på ', ' i ett stort ord och en rest. Det stora ordet får
+   * inte ensamt kunna läsas som att bygget är fritt; villkoret, grannens
+   * underskrift, står i ordet eller direkt efter det.
+   */
+  granne: 'Grannens ja, annars bygglov',
 };
 
 export const DETALJPLAN_VAL: { varde: Detaljplan; etikett: string }[] = [
@@ -229,13 +249,17 @@ export function sanktionsavgift(ytaKvm: number): {
   return { grundKr, tillaggKr, summaKr: grundKr + tillaggKr };
 }
 
-/** Hur tungt ett utfall väger. Grannmedgivandet lyfter inte svaret. */
-const VIKT: Record<Utfall, number> = { nej: 0, granne: 0, kanske: 1, ja: 2 };
-
+/**
+ * Svaret ur reglerna, i fallande ordning: ett ja ger ja, annars ger ett kanske
+ * kanske, annars ger ett granne granne, annars nej. Ett nej som bara gäller om
+ * grannen skriver under är inget nej (specen 12.1).
+ */
 function sammanvag(regler: Regel[]): Svar {
-  let vikt = 0;
-  for (const r of regler) vikt = Math.max(vikt, VIKT[r.utfall]);
-  return vikt === 2 ? 'ja' : vikt === 1 ? 'kanske' : 'nej';
+  const har = (u: Utfall) => regler.some((r) => r.utfall === u);
+  if (har('ja')) return 'ja';
+  if (har('kanske')) return 'kanske';
+  if (har('granne')) return 'granne';
+  return 'nej';
 }
 
 /**
@@ -269,7 +293,7 @@ function hojdRegel(i: BygglovAltanIndata): Regel {
 function utanforPlanRegel(): Regel {
   return {
     utfall: 'nej',
-    text: 'Tomten ligger utanför detaljplan. Då finns det inga mått att hålla sig till för en altan, varken för höjden eller för avståndet till huset, skriver Boverket. Kvar står kravet att altanen ska passa in i omgivningen och inte bli en betydande olägenhet för grannen.',
+    text: 'Tomten ligger utanför detaljplan. Då finns det inga mått att hålla sig till för en altan, varken för höjden eller för avståndet till huset, skriver Boverket. Kvar står kravet att altanen ska passa in i omgivningen och inte störa grannarna för mycket, det som lagen kallar betydande olägenhet.',
     lagrum: 'Boverket. Måttregeln i 9 kap. 19 § gäller bara inom detaljplan',
   };
 }
@@ -298,7 +322,8 @@ function takaltanRegel(planlagt: boolean): Regel {
 /**
  * Tak över altanen. Väggar eller inglasning gör altanen till en tillbyggnad,
  * och ett skärmtak räknas som öppenarea, vilket är samma sak i lagens mening.
- * Gränsen går vid 30,0 kvm på ett en- eller tvåbostadshus.
+ * Gränsen går vid 30,0 kvm för en tillbyggnad av en byggnad som inte är en
+ * komplementbyggnad eller ett komplementbostadshus, vilket hus det än är.
  * Lagrum: plan- och bygglagen 9 kap. 10 §.
  */
 function takRegel(i: BygglovAltanIndata): Regel | null {
@@ -310,7 +335,7 @@ function takRegel(i: BygglovAltanIndata): Regel | null {
       : `Ett tak utan väggar räknas som yta under tak, och även det är en tillbyggnad. Den gamla regeln om skärmtak på ${matt(15, 'kvm')} finns inte kvar.`;
   const jamforelse = `Altanen är ${matt(i.ytaKvm, 'kvm')} och gränsen för en lovfri tillbyggnad går vid ${matt(LOVFRI_TILLBYGGNAD_KVM, 'kvm')}.`;
   const dom = lovfri
-    ? 'Du håller dig under, så tillbyggnaden är lovfri på ett en- eller tvåbostadshus.'
+    ? 'Du håller dig under, så tillbyggnaden är lovfri.'
     : 'Du ligger över, och då krävs bygglov.';
   return {
     utfall: lovfri ? 'nej' : 'ja',
@@ -340,15 +365,36 @@ function vardefulltRegel(i: BygglovAltanIndata): Regel | null {
 }
 
 /**
- * Avståndet till tomtgränsen. Boverkets råd om skriftligt grannmedgivande.
- * Lagrum: plan- och bygglagen 9 kap. 34 och 35 §§.
+ * Avståndet till tomtgränsen, närmare än 4,5 m. Tre fall:
+ * - Utan tak står altanen inte i 9 kap. 34 §, och inget medgivande krävs
+ *   (prop. 2024/25:169 s. 162). Regeln säger det, med utfallet "nej".
+ * - Med skärmtak eller inglasning är altanen en tillbyggnad (9 kap. 10 §). Har
+ *   en annan regel redan krävt lov (harJa) hjälper inget medgivande, och regeln
+ *   utelämnas.
+ * - Annars krävs grannens skriftliga medgivande, utfallet "granne"
+ *   (9 kap. 34 § 1 och 35 § första stycket 3). Texten skiljer på fallet inom
+ *   och utanför detaljplan (planlagt): utanför plan kan väghållaren för en
+ *   allmän väg inte medge (prop. 2024/25:169 s. 170).
+ * Specen: docs/briefer/spec-kalkyl-grannemedgivande-2026-09-28.md avsnitt 11.1 och 12.3.
  */
-function gransRegel(i: BygglovAltanIndata): Regel | null {
+function gransRegel(i: BygglovAltanIndata, harJa: boolean, planlagt: boolean): Regel | null {
   if (i.avstandGransM >= GRANS_M) return null;
+  if (i.tak === 'nej') {
+    return {
+      utfall: 'nej',
+      text: `Altanen står ${matt(i.avstandGransM, 'm')} från tomtgränsen. Lagen räknar upp vad som kräver grannens medgivande närmare gränsen än ${matt(GRANS_M, 'm')}, och en altan utan tak finns inte med, så du behöver inget. Sätter du skärmtak eller glas över altanen, eller ett tätt plank som är högre än ${matt(1.2, 'm')} på den, krävs grannens skriftliga medgivande. Plankets höjd räknas från marken, så altanens höjd kommer med.`,
+      lagrum: 'Plan- och bygglagen 9 kap. 34 § och prop. 2024/25:169 s. 162',
+    };
+  }
+  if (harJa) return null;
   return {
     utfall: 'granne',
-    text: `Altanen står ${matt(i.avstandGransM, 'm')} från tomtgränsen. Boverket vill att du hämtar ett skriftligt medgivande från alla grannar som berörs när avståndet är kortare än ${matt(GRANS_M, 'm')}. Lagtexten räknar upp byggnader, murar och plank, men inte altaner, så rådet är Boverkets. Säger grannen nej söker du bygglov i stället.`,
-    lagrum: 'Plan- och bygglagen 9 kap. 34 och 35 §§ samt Boverkets vägledning',
+    text: planlagt
+      ? /* Inom detaljplan: grannen skriver under, och mot en gata eller park huvudmannen. Säger inte att medgivandet är nytt, bara att skriftligheten är det (specen 12.3). */
+        `Altanen står ${matt(i.avstandGransM, 'm')} från tomtgränsen, och med tak räknas den som en tillbyggnad. Närmare gränsen än ${matt(GRANS_M, 'm')} krävs då grannens skriftliga medgivande, annars bygglov. Går gränsen mot en gata eller en park är det huvudmannen för platsen som medger bygget.`
+      : /* Utanför detaljplan: grannen skriver under, men mot en allmän väg blir det bygglov, eftersom väghållaren inte kan medge (prop. 2024/25:169 s. 170). */
+        `Altanen står ${matt(i.avstandGransM, 'm')} från tomtgränsen, och med tak räknas den som en tillbyggnad. Närmare gränsen än ${matt(GRANS_M, 'm')} krävs då grannens skriftliga medgivande, annars bygglov. Går gränsen mot en allmän väg blir det bygglov ändå, eftersom väghållaren inte kan medge bygget.`,
+    lagrum: 'Plan- och bygglagen 9 kap. 34 § 1 och 35 § första stycket 3',
   };
 }
 
@@ -370,7 +416,7 @@ export function bedomFall(planlagt: boolean, i: BygglovAltanIndata): Bedomning {
   const vardefullt = vardefulltRegel(i);
   if (vardefullt) regler.push(vardefullt);
 
-  const grans = gransRegel(i);
+  const grans = gransRegel(i, regler.some((r) => r.utfall === 'ja'), planlagt);
   if (grans) regler.push(grans);
 
   return {
@@ -381,16 +427,17 @@ export function bedomFall(planlagt: boolean, i: BygglovAltanIndata): Bedomning {
 }
 
 const GOR_INTE_BYGG_FORST =
-  'Den som bygger först och frågar sedan får betala byggsanktionsavgiften ovanför även utan att ha vetat bättre, får söka lov i efterhand ändå, och kan få ett rivningskrav från nämnden om lovet inte beviljas. Fråga först.';
+  'Fråga kommunen innan du bygger, inte efteråt. Byggsanktionsavgiften i spalten får du betala ändå, och lovet söker du i efterhand. Beviljas inte lovet kan nämnden kräva att du river altanen.';
 
 const GOR_INTE_BARA_GOLVET =
   'Hela ytan under taket räknas när du mäter tillbyggnaden, inte bara altanens golv. Gränsen gäller dessutom alla lovfria tillbyggnader på huset tillsammans, och tillbyggnaden får inte bli högre än husets taknock.';
 
+/* Visas när kravGrannmedgivande är sant. */
 const GOR_INTE_MUNTLIGT_JA =
-  'Ett muntligt ja från grannen är värt ingenting den dag hon säljer. Boverket vill ha medgivandet skriftligt, och enklast är att grannen skriver under en ritning över tomten med altanen inritad. Spara pappret.';
+  'Grannens ja måste stå på papper. Lagen kräver att medgivandet är skriftligt, ett krav som kom med lagändringen. Låt grannen skriva under en situationsplan, som är en enkel karta över tomten med tillbyggnaden och avståndet inritade. Har grannfastigheten flera ägare ska var och en av dem skriva under.';
 
 const GOR_INTE_MAT_PA_OVANSIDAN =
-  'Sluttar marken mäter du altanen där den är som högst, från marken upp till golvets ovansida, och ett tätt plank ovanpå räknas in i samma mått. Måttet på tomtens höga sida säger ingenting.';
+  'Sluttar marken mäter du altanen där den är som högst, från marken upp till golvets ovansida. Måttet på tomtens höga sida säger ingenting.';
 
 export function raknaBygglovAltan(i: BygglovAltanIndata): BygglovAltanResultat {
   const fel: Partial<Record<keyof BygglovAltanIndata, string>> = {};
@@ -424,9 +471,12 @@ export function raknaBygglovAltan(i: BygglovAltanIndata): BygglovAltanResultat {
 
   const avgift = sanktionsavgift(i.ytaKvm);
 
+  /* Grannens medgivande krävs bara när en regel i någon bedömning säger "granne" (specen 11.1 punkt 2). */
+  const kravGrannmedgivande = bedomningar.some((b) => b.regler.some((r) => r.utfall === 'granne'));
+
   const gorInteDetHar: string[] = [GOR_INTE_BYGG_FORST];
   if (i.tak !== 'nej') gorInteDetHar.push(GOR_INTE_BARA_GOLVET);
-  if (i.avstandGransM < GRANS_M) gorInteDetHar.push(GOR_INTE_MUNTLIGT_JA);
+  if (kravGrannmedgivande) gorInteDetHar.push(GOR_INTE_MUNTLIGT_JA);
   if (i.detaljplan !== 'nej' && !i.paTak) gorInteDetHar.push(GOR_INTE_MAT_PA_OVANSIDAN);
 
   return {
@@ -435,7 +485,7 @@ export function raknaBygglovAltan(i: BygglovAltanIndata): BygglovAltanResultat {
     svarRubrik: SVAR_RUBRIK[svar],
     bedomningar,
     olikaFall,
-    kravGrannmedgivande: i.avstandGransM < GRANS_M,
+    kravGrannmedgivande,
     avgiftKr: avgift.summaKr,
     avgiftGrundKr: avgift.grundKr,
     avgiftTillaggKr: avgift.tillaggKr,

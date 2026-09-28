@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Ett hus sett från gaveln med gul vägg, och en öppen färgburk bredvid.">
+  <!-- Varumärkesillustration för /rakna/fasadyta/, riktning 1. Samma hand som symbolen,
+       startsidans hero (hus-tumstock.svg), kvadratmeter.svg och u-varde.svg: konturer i blyerts
+       2 px med runda ändar, tumstock som den enda fyllda färgen, ingen linjering, ingen
+       skraffering, transparent bakgrund, ett rött pennstreck som signatur.
+       Motivet är ytan som ska målas: ett hus rakt framifrån från gaveln, där hela gavelväggen,
+       rektangeln och spetsen, är en enda form i tumstock. Fönstret och dörren är urtag i
+       fyllningen (evenodd för fönstret, ett hack i konturen för dörren), så att pappret syns i
+       dem: ytan minus öppningarna utan ett ord. Takfallen är ett band med två linjer som skjuter
+       ut en bit utanför väggen på båda sidor. Till höger på samma marklinje står en färgburk
+       utan lock, med handtagsbåge och färgytan överst som en fylld ellips i tumstock.
+       Gaveln är den största formen, burken den näst största. Ingen panel, inga spröjs, ingen
+       skorsten. Marklinjen är en enda linje på y=330.
+       Ingen text-nod och inga läsbara tal: npm run illustrationer rör inte filen och den har
+       ingen källa under illustrationer-kallor. Skala 600 × 360 som räknarnas skisser.
+       Motivet är ritat i sin egen skala, bbox x −1 till 561 och y 27 till 356,3 med
+       linjebredderna, kvot 1,71, och läggs ut med transform="translate(24.98 -8.22)
+       scale(0.9822)" i yttre g:et: 552 px brett (92,0 procent) och 323,4 px högt (89,8
+       procent), 24 px marginal i sidled och 18,3 px i höjdled.
+       Tunnaste linje 1,4 i motivets skala.
+       Tokens: tumstock #e8b830, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519. -->
+
+  <g transform="translate(24.98 -8.22) scale(0.9822)">
+
+    <!-- Gavelväggen och spetsen som en form i tumstock, med dörren som hack och fönstret som hål -->
+    <path fill="#e8b830" fill-rule="evenodd" d="M40,330 L40,155 L200,40 L360,155 L360,330 L288,330 L288,228 L232,228 L232,330 Z M88,200 L152,200 L152,258 L88,258 Z"/>
+
+    <!-- Gavelns kontur, dörrkarmen och fönstret -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M40,330 Q38,242 40,155"/>
+      <path d="M360,155 Q362,242 360,330"/>
+      <path d="M232,330 Q231,279 232,228 Q260,226 288,228 Q289,279 288,330"/>
+      <path d="M88,200 Q120,198 152,200 Q154,229 152,258 Q120,260 88,258 Q86,229 88,200 Z"/>
+    </g>
+
+    <!-- Takfallen: ett band med två linjer som skjuter ut utanför väggen -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6,168 Q101,96 200,28 Q299,96 394,168"/>
+      <path d="M22,168 Q109,102 200,40 Q291,102 378,168"/>
+      <path d="M6,168 L22,168 M378,168 L394,168"/>
+    </g>
+
+    <!-- Färgburken: kropp, botten, kant, handtag. Färgytan överst fylld i tumstock. -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M440,236 Q439,279 440,322"/>
+      <path d="M540,236 Q541,279 540,322"/>
+      <path d="M440,322 Q490,338 540,322"/>
+      <path d="M440,246 C440,160 540,160 540,246"/>
+    </g>
+    <ellipse cx="490" cy="236" rx="50" ry="12" fill="#e8b830" stroke="#2a2521" stroke-width="2"/>
+    <path d="M440,252 Q490,266 540,252" fill="none" stroke="#2a2521" stroke-width="1.4" stroke-linecap="round"/>
+    <g fill="#2a2521">
+      <circle cx="440" cy="246" r="3.5"/>
+      <circle cx="540" cy="246" r="3.5"/>
+    </g>
+
+    <!-- Marken: en rak linje under huset och burken -->
+    <path d="M0,330 Q280,332 560,330" fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Snickarpennans signatur under motivet -->
+    <path d="M205,352 Q280,356 355,349 Q430,346 505,351" fill="none" stroke="#ad3519" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+</svg>

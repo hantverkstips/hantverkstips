@@ -1,0 +1,460 @@
+---
+/**
+ * Formuläret till fasadräknaren. Ett ställe: sidan /rakna/fasadyta/ renderar
+ * det i fullt format, och <Kalkylator namn="fasadyta" /> i en artikel renderar
+ * samma fält i kompakt format med action till verktygssidan.
+ *
+ * Ingen klient-JavaScript. Formuläret skickas som GET, och verktygssidan räknar.
+ * Spec: docs/briefer/spec-kalkyl-fasadyta-2026-09-28.md avsnitt 3.
+ *
+ * Kompakt: huset, tre takformer och en länk till mansardtaket, måttet på
+ * taket, antalen fönster och dörrar, fasaden, färgen och skicket. Inga
+ * hjälprader, inga öppningsmått, ingen strykningslista och inga mansardfält;
+ * det som inte renderas skickas inte och tas ur STANDARD på verktygssidan.
+ *
+ * All text kommer ur TEXT i src/lib/kalkyl/fasadyta.ts, utom färgernas
+ * etiketter, som kommer ur FARGTYPER i mala-ute.ts.
+ */
+import {
+  FARG_VAL,
+  STANDARD,
+  TEXT,
+  type Fasad,
+  type FasadytaIndata,
+  type FelNyckel,
+  type Skick,
+  type Takform,
+} from '../../lib/kalkyl/fasadyta.ts';
+import { ETIKETT_KLASS, FALT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, LANK_KLASS, ramKlass } from '../../lib/kalkyl/stil';
+
+type TalNyckel =
+  | 'langd'
+  | 'bredd'
+  | 'hojd'
+  | 'nock'
+  | 'vinkel'
+  | 'bryt'
+  | 'indrag'
+  | 'fonster'
+  | 'fonsterbredd'
+  | 'fonsterhojd'
+  | 'dorrar'
+  | 'dorrbredd'
+  | 'dorrhojd';
+
+interface Props {
+  /** Valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
+  indata?: FasadytaIndata;
+  /** Talen som de skrevs i adressen, så att ett felskrivet värde går att rätta. */
+  varden?: Record<TalNyckel, string>;
+  fel?: Partial<Record<FelNyckel, string>>;
+  /** Inbäddad i en artikel: färre fält, inga hjälprader. */
+  kompakt?: boolean;
+  /** Prefix på id-attributen, så att två formulär på samma sida inte krockar. */
+  idPrefix?: string;
+  knappText?: string;
+}
+
+const komma = (n: number): string => (Number.isFinite(n) ? String(n).replace('.', ',') : '');
+
+const {
+  indata = STANDARD,
+  varden = {
+    langd: komma(STANDARD.langdM),
+    bredd: komma(STANDARD.breddM),
+    hojd: komma(STANDARD.hojdM),
+    nock: komma(STANDARD.nockM),
+    vinkel: komma(STANDARD.vinkelGrader),
+    bryt: komma(STANDARD.brytM),
+    indrag: komma(STANDARD.indragM),
+    fonster: komma(STANDARD.fonster),
+    fonsterbredd: komma(STANDARD.fonsterBreddM),
+    fonsterhojd: komma(STANDARD.fonsterHojdM),
+    dorrar: komma(STANDARD.dorrar),
+    dorrbredd: komma(STANDARD.dorrBreddM),
+    dorrhojd: komma(STANDARD.dorrHojdM),
+  },
+  fel = {},
+  kompakt = false,
+  idPrefix = '',
+  knappText = 'Räkna ut',
+} = Astro.props;
+
+const id = (namn: string): string => `${idPrefix}${namn}`;
+
+/** aria-describedby av de id som finns, eller undefined. */
+const beskrivs = (...idn: (string | false | undefined)[]): string | undefined => {
+  const finns = idn.filter((v): v is string => typeof v === 'string' && v.length > 0);
+  return finns.length > 0 ? finns.join(' ') : undefined;
+};
+
+interface Falt {
+  namn: TalNyckel;
+  etikett: string;
+  enhet: string;
+  numeric?: boolean;
+  hjalp?: string;
+  /** Smalt fält för antalen. */
+  smal?: boolean;
+}
+
+/** Felet på ett talfält. Fältnamnen är query-nycklarna och felnycklarna på samma gång. */
+const felFor = (namn: TalNyckel): string | undefined => fel[namn];
+
+const husfalt: Falt[] = [
+  { namn: 'langd', etikett: TEXT.form.langd, enhet: 'm' },
+  { namn: 'bredd', etikett: TEXT.form.bredd, enhet: 'm', hjalp: TEXT.form['bredd-hjalp'] },
+  { namn: 'hojd', etikett: TEXT.form.hojd, enhet: 'm', hjalp: TEXT.form['hojd-hjalp'] },
+];
+const taktfalt: [Falt, Falt] = [
+  { namn: 'nock', etikett: TEXT.form.nock, enhet: 'm' },
+  { namn: 'vinkel', etikett: TEXT.form.vinkel, enhet: '°' },
+];
+const mansardfalt: [Falt, Falt] = [
+  { namn: 'bryt', etikett: TEXT.form.bryt, enhet: 'm' },
+  { namn: 'indrag', etikett: TEXT.form.indrag, enhet: 'm' },
+];
+const oppningar: { antal: Falt; matt: [Falt, Falt] }[] = [
+  {
+    antal: { namn: 'fonster', etikett: TEXT.form.fonster, enhet: 'st', numeric: true, smal: true },
+    matt: [
+      { namn: 'fonsterbredd', etikett: TEXT.form.fonsterbredd, enhet: 'm' },
+      { namn: 'fonsterhojd', etikett: TEXT.form.fonsterhojd, enhet: 'm' },
+    ],
+  },
+  {
+    antal: { namn: 'dorrar', etikett: TEXT.form.dorrar, enhet: 'st', numeric: true, smal: true },
+    matt: [
+      { namn: 'dorrbredd', etikett: TEXT.form.dorrbredd, enhet: 'm' },
+      { namn: 'dorrhojd', etikett: TEXT.form.dorrhojd, enhet: 'm' },
+    ],
+  },
+];
+
+const TAKFORMER: Takform[] = kompakt ? ['sadel', 'pulpet', 'valmat'] : ['sadel', 'pulpet', 'valmat', 'mansard'];
+const FASADER: Fasad[] = ['lock', 'slat', 'puts', 'tegel'];
+const SKICK: Skick[] = ['ommalning', 'skrapat', 'rent', 'kulor', 'byte'];
+const STRYK_VAL = ['auto', '1', '2', '3'] as const;
+
+const RADIO_KLASS = 'flex min-h-11 items-center gap-2 text-brod';
+const LEGEND_KLASS = [ETIKETT_KLASS, 'p-0'];
+const FIELDSET_KLASS = 'm-0 mb-6 p-0 border-0';
+---
+
+<form method="get" action="/rakna/fasadyta/">
+  {/* Huset: tre fält, ett per rad. */}
+  <fieldset class={FIELDSET_KLASS}>
+    <legend class:list={LEGEND_KLASS}>{TEXT.form['legend-huset']}</legend>
+    {
+      husfalt.map((f) => {
+        const felet = felFor(f.namn);
+        const hjalpId = !kompakt && f.hjalp ? id(`${f.namn}-hjalp`) : undefined;
+        return (
+          <div class="mb-4">
+            <label for={id(f.namn)} class="block mb-1 text-brod text-blyerts">
+              {f.etikett}
+            </label>
+            <div class="flex items-center gap-2">
+              <input
+                id={id(f.namn)}
+                name={f.namn}
+                type="text"
+                inputmode="decimal"
+                value={varden[f.namn]}
+                aria-describedby={beskrivs(felet && id(`${f.namn}-fel`), hjalpId)}
+                class:list={[FALT_KLASS, 'min-w-0', ramKlass(Boolean(felet))]}
+              />
+              <span class="text-brod text-blyerts-2">{f.enhet}</span>
+            </div>
+            {felet && (
+              <p id={id(`${f.namn}-fel`)} class={FEL_KLASS}>
+                {felet}
+              </p>
+            )}
+            {hjalpId && (
+              <p id={hjalpId} class={HJALP_KLASS}>
+                {f.hjalp}
+              </p>
+            )}
+          </div>
+        );
+      })
+    }
+  </fieldset>
+
+  <fieldset id={id('takform')} class={FIELDSET_KLASS}>
+    <legend class:list={LEGEND_KLASS}>{TEXT.form['legend-takform']}</legend>
+    {
+      TAKFORMER.map((t) => (
+        <label class={RADIO_KLASS}>
+          <input
+            type="radio"
+            name="takform"
+            value={t}
+            checked={indata.takform === t}
+            aria-describedby={!kompakt ? id('takform-hjalp') : undefined}
+          />
+          {TEXT.takform[t]}
+        </label>
+      ))
+    }
+    {
+      kompakt ? (
+        <p class="m-0 text-liten">
+          <a href="/rakna/fasadyta/#takform" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
+            {TEXT.form['kompakt-mansard']}
+          </a>
+        </p>
+      ) : (
+        <p id={id('takform-hjalp')} class={HJALP_KLASS}>
+          {TEXT.form['takform-hjalp']}
+        </p>
+      )
+    }
+  </fieldset>
+
+  <fieldset class={FIELDSET_KLASS}>
+    <legend class:list={LEGEND_KLASS}>{TEXT.form['legend-matt']}</legend>
+    {
+      fel.matt && (
+        <p id={id('matt-fel')} class:list={[FEL_KLASS, 'mb-1']}>
+          {fel.matt}
+        </p>
+      )
+    }
+    <div class="flex flex-wrap gap-x-4">
+      <label class={RADIO_KLASS}>
+        <input
+          type="radio"
+          name="matt"
+          value="nock"
+          checked={indata.matt === 'nock'}
+          aria-describedby={fel.matt ? id('matt-fel') : undefined}
+        />
+        {TEXT.form['matt-nock']}
+      </label>
+      <label class={RADIO_KLASS}>
+        <input
+          type="radio"
+          name="matt"
+          value="vinkel"
+          checked={indata.matt === 'vinkel'}
+          aria-describedby={fel.matt ? id('matt-fel') : undefined}
+        />
+        {TEXT.form['matt-vinkel']}
+      </label>
+    </div>
+    {/* Båda fälten står alltid, med sina egna värden; radioknappen avgör vilket som räknas. */}
+    <div class="mt-2 grid grid-cols-2 gap-3">
+      {
+        taktfalt.map((f) => {
+          const felet = felFor(f.namn);
+          const hjalpId = !kompakt ? id('matt-hjalp') : undefined;
+          return (
+            <div>
+              <label for={id(f.namn)} class="block mb-1 text-brod text-blyerts">
+                {f.etikett}
+              </label>
+              <div class="flex items-center gap-2">
+                <input
+                  id={id(f.namn)}
+                  name={f.namn}
+                  type="text"
+                  inputmode="decimal"
+                  value={varden[f.namn]}
+                  aria-describedby={beskrivs(felet && id(`${f.namn}-fel`), hjalpId)}
+                  class:list={[FALT_KLASS, 'min-w-0', ramKlass(Boolean(felet))]}
+                />
+                <span class="text-brod text-blyerts-2">{f.enhet}</span>
+              </div>
+              {felet && (
+                <p id={id(`${f.namn}-fel`)} class={FEL_KLASS}>
+                  {felet}
+                </p>
+              )}
+            </div>
+          );
+        })
+      }
+    </div>
+    {
+      !kompakt && (
+        <p id={id('matt-hjalp')} class={HJALP_KLASS}>
+          {TEXT.form['matt-hjalp']}
+        </p>
+      )
+    }
+  </fieldset>
+
+  {
+    !kompakt && (
+      <fieldset class={FIELDSET_KLASS}>
+        <legend class:list={LEGEND_KLASS}>{TEXT.form['legend-mansard']}</legend>
+        <div class="grid grid-cols-2 gap-3">
+          {mansardfalt.map((f) => {
+            const felet = felFor(f.namn);
+            return (
+              <div>
+                <label for={id(f.namn)} class="block mb-1 text-brod text-blyerts">
+                  {f.etikett}
+                </label>
+                <div class="flex items-center gap-2">
+                  <input
+                    id={id(f.namn)}
+                    name={f.namn}
+                    type="text"
+                    inputmode="decimal"
+                    value={varden[f.namn]}
+                    aria-describedby={beskrivs(felet && id(`${f.namn}-fel`), id('mansard-hjalp'))}
+                    class:list={[FALT_KLASS, 'min-w-0', ramKlass(Boolean(felet))]}
+                  />
+                  <span class="text-brod text-blyerts-2">{f.enhet}</span>
+                </div>
+                {felet && (
+                  <p id={id(`${f.namn}-fel`)} class={FEL_KLASS}>
+                    {felet}
+                  </p>
+                )}
+              </div>
+            );
+          })}
+        </div>
+        <p id={id('mansard-hjalp')} class={HJALP_KLASS}>
+          {TEXT.form['mansard-hjalp']}
+        </p>
+      </fieldset>
+    )
+  }
+
+  <fieldset class={FIELDSET_KLASS}>
+    <legend class:list={LEGEND_KLASS}>{TEXT.form['legend-oppningar']}</legend>
+    {
+      oppningar.map((o) => {
+        const felet = felFor(o.antal.namn);
+        return (
+          <div class="mb-4">
+            <label for={id(o.antal.namn)} class="block mb-1 text-brod text-blyerts">
+              {o.antal.etikett}
+            </label>
+            <div class="flex max-w-28 items-center gap-2">
+              <input
+                id={id(o.antal.namn)}
+                name={o.antal.namn}
+                type="text"
+                inputmode="numeric"
+                value={varden[o.antal.namn]}
+                aria-describedby={felet ? id(`${o.antal.namn}-fel`) : undefined}
+                class:list={[FALT_KLASS, 'min-w-0', ramKlass(Boolean(felet))]}
+              />
+              <span class="text-brod text-blyerts-2">{o.antal.enhet}</span>
+            </div>
+            {felet && (
+              <p id={id(`${o.antal.namn}-fel`)} class={FEL_KLASS}>
+                {felet}
+              </p>
+            )}
+            {!kompakt && (
+              <div class="mt-2 grid grid-cols-2 gap-3">
+                {o.matt.map((f) => {
+                  const mattFel = felFor(f.namn);
+                  return (
+                    <div>
+                      <label for={id(f.namn)} class="block mb-1 text-liten text-blyerts-2">
+                        {f.etikett}
+                      </label>
+                      <div class="flex items-center gap-2">
+                        <input
+                          id={id(f.namn)}
+                          name={f.namn}
+                          type="text"
+                          inputmode="decimal"
+                          value={varden[f.namn]}
+                          aria-describedby={mattFel ? id(`${f.namn}-fel`) : undefined}
+                          class:list={[FALT_KLASS, 'min-w-0', ramKlass(Boolean(mattFel))]}
+                        />
+                        <span class="text-brod text-blyerts-2">{f.enhet}</span>
+                      </div>
+                      {mattFel && (
+                        <p id={id(`${f.namn}-fel`)} class={FEL_KLASS}>
+                          {mattFel}
+                        </p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        );
+      })
+    }
+  </fieldset>
+
+  <fieldset class={FIELDSET_KLASS}>
+    <legend class:list={LEGEND_KLASS}>{TEXT.form['legend-fasad']}</legend>
+    {
+      FASADER.map((f) => (
+        <label class={RADIO_KLASS}>
+          <input type="radio" name="fasad" value={f} checked={indata.fasad === f} />
+          {TEXT.fasad[f]}
+        </label>
+      ))
+    }
+  </fieldset>
+
+  <fieldset class={FIELDSET_KLASS}>
+    <legend class:list={LEGEND_KLASS}>{TEXT.form['legend-farg']}</legend>
+    {
+      FARG_VAL.map((f) => (
+        <label class={RADIO_KLASS}>
+          <input
+            type="radio"
+            name="farg"
+            value={f.varde}
+            checked={indata.farg === f.varde}
+            aria-describedby={!kompakt ? id('farg-hjalp') : undefined}
+          />
+          {f.etikett}
+        </label>
+      ))
+    }
+    {
+      !kompakt && (
+        <p id={id('farg-hjalp')} class={HJALP_KLASS}>
+          {TEXT.form['farg-hjalp']}
+        </p>
+      )
+    }
+  </fieldset>
+
+  <fieldset class={FIELDSET_KLASS}>
+    <legend class:list={LEGEND_KLASS}>{TEXT.form['legend-skick']}</legend>
+    {
+      SKICK.map((s) => (
+        <label class={RADIO_KLASS}>
+          <input type="radio" name="skick" value={s} checked={indata.skick === s} />
+          {TEXT.skick[s]}
+        </label>
+      ))
+    }
+  </fieldset>
+
+  {
+    !kompakt && (
+      <div class="mb-6">
+        <label for={id('stryk')} class={ETIKETT_KLASS}>
+          {TEXT.form.stryk}
+        </label>
+        <select id={id('stryk')} name="stryk" class:list={[FALT_KLASS, 'border-blyerts-2']}>
+          {STRYK_VAL.map((v) => (
+            <option value={v} selected={String(indata.stryk) === v}>
+              {v === 'auto' ? TEXT.stryk.auto : TEXT.stryk.n(Number(v))}
+            </option>
+          ))}
+        </select>
+      </div>
+    )
+  }
+
+  <button type="submit" class={KNAPP_KLASS}>{knappText}</button>
+</form>

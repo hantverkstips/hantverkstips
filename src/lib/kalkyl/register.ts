@@ -92,7 +92,16 @@ export const KALKYLATORER: Kalkylator[] = [
   {
     slug: 'bygglov-altan',
     namn: 'Behöver altanen bygglov?',
-    rad: 'Fyll i hur högt golvet ligger och hur nära huset altanen står, så får du ett ja eller nej med paragrafen bakom.',
+    rad: 'Säg hur hög altanen är och hur nära huset och tomtgränsen den står. Svaret visar om den behöver bygglov eller grannens underskrift, med paragrafen bakom.',
+    sasong: [2, 6],
+    pelare: ['altan'],
+  },
+  {
+    slug: 'grannemedgivande',
+    namn: 'Behöver du grannemedgivande?', // bär "grannemedgivande"; ankartext i artiklarna
+    rad: 'Se om grannen måste skriva under, och skriv ut ett färdigt medgivande.', // högst tolv ord, en mening med verb
+    /* Byggsäsongen. "grannemedgivande" toppar i mars enligt
+       docs/data/keyword-stats-2026-09-20-sorterad.tsv. */
     sasong: [2, 6],
     pelare: ['altan'],
   },
@@ -153,6 +162,27 @@ export const KALKYLATORER: Kalkylator[] = [
     rad: 'Skriv in dagens väder och nattens prognos, så får du veta om färgen hinner torka före daggen och när du senast ska sluta.',
     sasong: [4, 10],
     pelare: ['fasad', 'altan'],
+  },
+  {
+    slug: 'fasadyta',
+    /* Bär SEO:s fras; ankartext i guiden. */
+    namn: 'Beräkna fasadyta och färg till huset',
+    /* En mening med verb, som till en granne. */
+    rad: 'Mät huset runt om och upp till takfoten, så räknar jag ut väggytan med gavlarna och hur många burkar färg den tar.',
+    /* Fasaden mäts och färgen köps innan målarsäsongen; mala-ute går från april.
+       ANTAGANDE tills SEO har säsongsdata för frasen. */
+    sasong: [3, 9],
+    pelare: ['fasad'],
+  },
+  {
+    slug: 'kontrollplan',
+    /* Bär ordet kontrollplan; ankartext i artiklarna. */
+    namn: 'Skriv ut en kontrollplan för ditt bygge',
+    /* En mening med verb, högst tolv ord. */
+    rad: 'Välj vad du bygger, så får du planen med kontrollerna ifyllda.',
+    /* Samma som bygglov-altan: ansökningarna görs före byggsäsongen. */
+    sasong: [2, 6],
+    pelare: ['altan', 'grund'],
   },
 ];
 

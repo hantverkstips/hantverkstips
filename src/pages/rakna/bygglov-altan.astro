@@ -31,6 +31,8 @@ import {
   type BygglovAltanResultat,
   type Utfall,
 } from '../../lib/kalkyl/bygglov-altan';
+import { delbarQuery, STANDARD as STANDARD_GM } from '../../lib/kalkyl/grannemedgivande';
+import { delbarQuery as kontrollplanQuery, franBygglovAltan } from '../../lib/kalkyl/kontrollplan';
 import { CELL_KLASS, ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
 import { verktyg } from '../../lib/strukturdata';
 import { verktygsDelningsbild, verktygsillustration, verktygsVarumarkesbild } from '../../lib/verktygsbild';
@@ -95,17 +97,43 @@ const delaQuery = new URLSearchParams({
 const delaLank = new URL(`/rakna/bygglov-altan/?${delaQuery.toString()}`, Astro.site ?? Astro.url).toString();
 
 /**
+ * Länken under regeln med utfallet "granne": altanen med tak är en
+ * tillbyggnad, och grannemedgivandet får ytan, avståndet och planen, så att
+ * läsaren landar på blanketten med sina mått förtryckta. Vid "vet inte" om
+ * detaljplanen utelämnas planen, och grannemedgivandet tar sin standard.
+ * Specen: docs/briefer/spec-kalkyl-grannemedgivande-2026-09-28.md avsnitt 11.2.
+ */
+const grannemedgivandeHref =
+  '/rakna/grannemedgivande/?' +
+  delbarQuery({
+    ...STANDARD_GM,
+    atgard: 'tillbyggnad',
+    areaKvm: visatIndata.ytaKvm,
+    gransM: visatIndata.avstandGransM,
+    ...(visatIndata.detaljplan === 'vet-inte' ? {} : { plan: visatIndata.detaljplan }),
+  }).toString();
+
+/**
  * Svaret i två delar: ordet i stort format och resten på raden under, som
  * enheten står efter talet på de andra kalkylatorerna.
  */
 const [svarOrd, svarRest] = visat.status === 'ok' ? visat.svarRubrik.split(', ') : ['', ''];
 
 /** Etiketten över varje regel, så att raden går att skumma. */
+/**
+ * Regellistan i "Därför blev svaret så": klasserna en gång på <ul>, som i
+ * u-värdesspecen 12.1 (specen för grannemedgivandet 12.13 punkt 2). Spannen
+ * är etikett, text och lagrum i den ordningen; länken till blanketten efter
+ * dem bär sina egna klasser. Ramen är linje på varje rad.
+ */
+const REGEL_LISTA_KLASS =
+  'm-0 p-0 list-none text-brod lg:text-brod-lg [&>li]:mb-4 [&>li]:border-l-2 [&>li]:border-linje [&>li]:pl-4 [&>li>span]:block [&>li>span:nth-child(1)]:text-etikett lg:[&>li>span:nth-child(1)]:text-etikett-lg [&>li>span:nth-child(1)]:uppercase [&>li>span:nth-child(1)]:text-blyerts-2 [&>li>span:nth-child(3)]:text-liten [&>li>span:nth-child(3)]:text-blyerts-2';
+
 const UTFALL_ETIKETT: Record<Utfall, string> = {
   ja: 'Bygglov',
-  nej: 'Inget lov',
+  nej: 'Klarar sig utan lov',
   kanske: 'Osäkert',
-  granne: 'Grannens ja',
+  granne: 'Grannens underskrift',
 };
 
 /** Metaraden under svaret, skriven så att noll meter inte står som ett mått. */
@@ -114,14 +142,54 @@ const avstandText =
     ? 'och altanen står mot husväggen'
     : `och den står ${talText(visatIndata.avstandByggnadM)} m från närmaste byggnad`;
 
-const takText =
+/**
+ * Metaraden om taket, en hel verbfras efter "och altanen" (specen 12.1).
+ * Korrekturen underkände "altanen är med skärmtak".
+ */
+const TAK_FRAS = {
+  vaggar: 'har väggar eller glas runt om',
+  skarmtak: 'har skärmtak',
+  patak: 'ligger ovanpå en byggnad',
+  nej: 'är öppen, utan tak',
+};
+const takFras =
   visatIndata.tak === 'vaggar'
-    ? 'med inglasning eller väggar'
+    ? TAK_FRAS.vaggar
     : visatIndata.tak === 'skarmtak'
-      ? 'med skärmtak'
+      ? TAK_FRAS.skarmtak
       : visatIndata.paTak
-        ? 'ovanpå en byggnad'
-        : 'utan tak';
+        ? TAK_FRAS.patak
+        : TAK_FRAS.nej;
+
+/*
+ * Beskedsräknare: vid ogiltigt värde visar spalten bara varningen och den
+ * delbara adressen, inget svar, ingen avgift och inga regler (specen 12.8).
+ * Talräknarna behåller standardvarningen. Varningen är likadan på alla
+ * beskedsräknare och säger att svaret kommer när fältet är rättat.
+ */
+const BESKEDSVARNING = 'Ett av fälten gick inte att läsa. Rätta värdet där felet står, så visar jag svaret.';
+const ogiltig = resultat.status === 'ogiltig';
+
+/* Raden i spalten när grannen måste skriva under (specen 12.1): en mening med verb, och länken till blanketten. */
+const SPALT_GRANNE = 'Grannen måste skriva under innan du bygger, annars behöver altanen bygglov.';
+const SPALT_GRANNE_LANK = 'Skriv ut medgivandet med dina mått';
+/*
+ * Länken till kontrollplansgeneratorn i spalten (specen för kontrollplanen 16.2
+ * K22, SEO B1). Visas bara när det sammanvägda svaret är ja eller kanske, aldrig
+ * vid nej. Ska innehålla ordet kontrollplan.
+ */
+const KONTROLLPLAN_LANK = 'Skriv ut en kontrollplan för altanen till bygglovet';
+/*
+ * Adressen till kontrollplanen med de värden läsaren redan gett, för de nycklar
+ * kontrollplanen har (läsarens retur varv 2, specen för kontrollplanen 16.7):
+ * skärmtak blir tak=skarmtak, väggar eller glas gör altanen till en tillbyggnad,
+ * vardefullt=ja följer med. Altanen räknas som vid huset bara när den ligger an
+ * mot en byggnad, avstånd 0 (plac: visatIndata.avstandByggnadM === 0 ?
+ * 'vid-huset' : 'fristaende'); en altan några meter bort är fristående för
+ * räckets krav, även om den är nära nog för bygglovsregeln. Mappningen står i
+ * franBygglovAltan i kontrollplanens modul och testas där.
+ */
+const kontrollplanHref = `/rakna/kontrollplan/?${kontrollplanQuery(franBygglovAltan(visatIndata))}`;
 
 const PLANTEXT: Record<BygglovAltanIndata['detaljplan'], string> = {
   ja: 'inom detaljplan',
@@ -156,10 +224,10 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
   },
   {
     storhet: 'Avstånd till tomtgränsen',
-    varde: '4,5 m, sedan grannens skriftliga ja',
+    varde: 'utan tak inget krav, med tak grannens skriftliga ja under 4,5 m',
     grund: 'Källa',
-    stod: 'Boverkets vägledning. Plan- och bygglagen 9 kap. 34 och 35 §§ räknar upp murar och plank, men inte altaner',
-    url: 'https://www.boverket.se/sv/byggande/bygglov-rivningslov-marklov-och-anmalan/vad-far-jag-bygga-utan-bygglov/mur-plank-altan-och-annat/',
+    stod: 'Plan- och bygglagen 9 kap. 34 och 35 §§ räknar upp tillbyggnader, murar och plank men inte altaner, och regeringen lämnade altanerna utanför med avsikt, prop. 2024/25:169 s. 162',
+    url: 'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/plan-och-bygglag-2010900_sfs-2010-900/',
   },
   {
     storhet: 'Tak, väggar eller inglasning',
@@ -206,14 +274,14 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Ingen anmälan för altan',
     varde: 'varken anmälan eller startbesked',
     grund: 'Källa',
-    stod: 'Plan- och byggförordningen 6 kap. 1 §. Altanen på plintar rör varken bärande delar, brandskydd eller installationer',
+    stod: 'Plan- och byggförordningen 6 kap. 1 §',
     url: 'https://lagen.nu/2011:338',
   },
   {
     storhet: 'Huset jag räknar på',
     varde: 'en- eller tvåbostadshus',
     grund: 'Antagande',
-    stod: 'Villa, parhus eller radhus med egen tomt. Gränsen på 30 kvm gäller inte flerbostadshus, och då krävs bygglov för taket',
+    stod: 'Villa, parhus eller radhus med egen tomt. Bara vid ett sådant hus får en lovfri tillbyggnad strida mot detaljplanen, till exempel stå på prickmark, enligt 10 kap. 2 a §',
   },
   {
     storhet: 'Räcket ovanpå altanen',
@@ -230,20 +298,20 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
 const FRAGOR = [
   {
     fraga: 'Behöver jag bygglov för altan?',
-    svar: `Inom detaljplan slipper du bygglov när golvet ligger högst ${komma(HOJD_NARA_BYGGNAD_M)} meter över marken och altanen står nära en byggnad. Nära betyder inom ${komma(NARA_BYGGNAD_M)} meter, mätt från fasaden till altanens ytterkant. Står den längre bort sjunker gränsen till 1,2 meter. Utanför detaljplan finns inga mått alls, men altanen ska passa in i omgivningen och får inte bli en betydande olägenhet för grannen. Sätter du väggar eller glas runt den är det ingen altan längre i lagens mening utan en tillbyggnad, och då är det ytan som räknas.`,
+    svar: `Inom detaljplan slipper du bygglov när golvet ligger högst ${komma(HOJD_NARA_BYGGNAD_M)} meter över marken och altanen står nära en byggnad. Nära betyder inom ${komma(NARA_BYGGNAD_M)} meter, mätt från fasaden till altanens ytterkant. Står den längre bort sjunker gränsen till 1,2 meter. Utanför detaljplan finns inga mått alls, men altanen ska passa in i omgivningen och får inte störa grannarna för mycket. Sätter du tak, väggar eller glas på den är det ingen altan längre i lagens mening utan en tillbyggnad, och då är det ytan som räknas.`,
   },
   {
-    fraga: `Vad ändrades ${REGLERNA_GALLER_FRAN}?`,
-    svar: 'Då trädde lag 2025:974 i kraft, och hela bygglovskapitlet i plan- och bygglagen byttes ut. Altanregeln står nu i 9 kap. 19 § och är skriven tvärtom mot den gamla, som en regel om när lov krävs i stället för som ett undantag. Orden friggebod, attefallshus och attefallsaltan är borta ur lagtexten, och med dem försvann kravet på anmälan och startbesked för det som är lovfritt. Måtten är oförändrade, så en altan som var fri förut är fri nu också.',
+    fraga: 'Vad ändrades med den nya bygglagen?',
+    svar: 'Lag 2025:974 trädde i kraft, och hela bygglovskapitlet i plan- och bygglagen byttes ut. Altanregeln står nu i 9 kap. 19 § och är skriven tvärtom mot den gamla, som en regel om när lov krävs i stället för som ett undantag. Orden friggebod, attefallshus och attefallsaltan är borta ur lagtexten, och med dem försvann kravet på anmälan och startbesked för det som är lovfritt. Måtten är oförändrade, så en altan som var fri förut är fri nu också.',
     lank: { text: 'Hela genomgången står i artikeln om bygglov för altan.', href: '/altan/bygglov-altan/' },
   },
   {
     fraga: 'Måste jag anmäla altanen eller vänta på startbesked?',
-    svar: `Nej, inte längre. Före ${REGLERNA_GALLER_FRAN} skulle en lovfri altan på över 1,2 meter anmälas, och du fick inte börja bygga förrän kommunen gett ett startbesked. Den regeln försvann med lagändringen. En altan på plintar rör varken bärande delar, brandskydd eller installationer, så du behöver varken lov, anmälan eller startbesked när måtten håller sig under gränserna. Många sidor på nätet säger fortfarande att du måste anmäla. Titta på datumet innan du litar på dem.`,
+    svar: `Nej, inte längre. Före lagändringen skulle en lovfri altan på över 1,2 meter anmälas, och du fick inte börja bygga förrän kommunen gett ett startbesked. Den regeln försvann, så du behöver varken lov, anmälan eller startbesked när måtten håller sig under gränserna. Många sidor på nätet säger fortfarande att du måste anmäla. Titta på datumet innan du litar på dem.`,
   },
   {
     fraga: 'Hur nära tomtgränsen får altanen ligga?',
-    svar: `Ligger altanen närmare tomtgränsen än ${komma(GRANS_M)} meter vill Boverket att du hämtar ett skriftligt medgivande från varje granne som berörs. Går gränsen mot en gata eller en park är kommunen grannen, och då söker du lov i stället. Ett muntligt ja är värt ingenting den dag grannen säljer, så be om en namnteckning på en ritning med måtten i.`,
+    svar: `Altanen får ligga närmare än ${komma(GRANS_M)} meter utan grannens medgivande, så länge den är öppen. Höjden spelar in för bygglovet men inte för medgivandet. Lagen räknar upp vad som kräver medgivande nära gränsen, och altaner är inte med. Med skärmtak eller inglasning är altanen en tillbyggnad, och då behöver du grannens skriftliga medgivande eller bygglov. Ett tätt plank som är högre än 1,2 meter över marken kräver också medgivande. Går gränsen mot en gata eller en park skriver kommunen under, eller vägföreningen om det är den som sköter gatan.`,
   },
 ];
 
@@ -294,8 +362,8 @@ const huvudbild = varumarke ?? illustration;
         <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
           Två mått avgör om du får bygga altanen utan bygglov: hur högt golvet ligger över marken, med gränsen vid
           1,8 meter, och om altanen står inom 3,6 meter från huset. Fyll i dem, så svarar jag ja, nej eller kanske,
-          och skriver ut paragrafen bakom varje rad. Paragrafen skrevs om den 1 december 2025, så en hel del
-          av det som står på nätet är fel i dag. Svaret här är vägledning, och det är byggnadsnämnden i din kommun
+          och skriver ut paragrafen bakom varje rad. Paragrafen är ny, så en hel del av det som står på nätet är fel
+          i dag. Svaret här är vägledning, och det är byggnadsnämnden i din kommun
           som fattar beslutet.
         </p>
       </div>
@@ -320,14 +388,21 @@ const huvudbild = varumarke ?? illustration;
     {
       visat.status === 'ok' && (
         <Faktaruta variant="kortsvar">
-          <p class="m-0 leading-6">Måtten som står i formuläret ger svaret {visat.svarRubrik.toLowerCase()}.</p>
+          {/* Första raden följer svaret och står inte när ett fält är ogiltigt (specen 12.8). */}
+          {!ogiltig && (
+            <p class="m-0 leading-6">
+              {visat.svar === 'granne'
+                ? 'Med måtten i formuläret behöver grannen skriva under, annars krävs bygglov.'
+                : `Måtten som står i formuläret ger svaret ${visat.svarRubrik.toLowerCase()}.`}
+            </p>
+          )}
           <p class="m-0 leading-6">
             Inom detaljplan går gränsen vid <Markering>1,8 m över marken</Markering> när altanen står nära huset, och
             längre bort från byggnaden sjunker den till 1,2 m.
           </p>
           <p class="m-0 leading-6">
-            Ligger altanen närmare tomtgränsen än 4,5 m behöver du grannens skriftliga ja, och byggnadsnämnden i din
-            kommun har sista ordet.
+            En öppen altan får ligga närmare tomtgränsen än 4,5 m utan grannens medgivande, men med skärmtak eller
+            inglasning krävs grannens skriftliga medgivande eller bygglov.
           </p>
         </Faktaruta>
       )
@@ -340,11 +415,11 @@ const huvudbild = varumarke ?? illustration;
 
       <div class="mt-8 border-t border-linje pt-6 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
         {
-          visat.status === 'ok' && (
+          ogiltig && <p class="m-0 mb-2 text-liten text-varning">{BESKEDSVARNING}</p>
+        }
+        {
+          visat.status === 'ok' && !ogiltig && (
             <>
-              {resultat.status === 'ogiltig' && (
-                <p class="m-0 mb-2 text-liten text-varning">Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.</p>
-              )}
               <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
                 Altan på {talText(visatIndata.ytaKvm)} kvm, {PLANTEXT[visatIndata.detaljplan]}
               </p>
@@ -358,8 +433,16 @@ const huvudbild = varumarke ?? illustration;
                 Golvet ligger {talText(visatIndata.hojdM)} m över marken, {avstandText}.
               </p>
               <p class="m-0 mt-1 text-liten text-blyerts-2">
-                Det är {talText(visatIndata.avstandGransM)} m till tomtgränsen, och altanen är {takText}.
+                Det är {talText(visatIndata.avstandGransM)} m till tomtgränsen, och altanen {takFras}.
               </p>
+              {visat.kravGrannmedgivande && (
+                <p class="m-0 mt-3 text-brod">
+                  {SPALT_GRANNE}{' '}
+                  <a href={grannemedgivandeHref} class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
+                    {SPALT_GRANNE_LANK}
+                  </a>
+                </p>
+              )}
 
               <div class="mt-6 border-t border-linje pt-4">
                 <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
@@ -391,19 +474,30 @@ const huvudbild = varumarke ?? illustration;
                   Så bedömer jag
                 </a>
               </p>
+              {(visat.svar === 'ja' || visat.svar === 'kanske') && (
+                <p class="m-0">
+                  <a href={kontrollplanHref} class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
+                    {KONTROLLPLAN_LANK}
+                  </a>
+                </p>
+              )}
 
-              {/* Dela. Svaret står i adressen, så ett skrivskyddat fält räcker:
-                  markera och kopiera fungerar utan en rad JavaScript. */}
-              <div class="mt-4 border-t border-linje pt-4">
-                <label for="dela" class={ETIKETT_KLASS}>
-                  Dela svaret
-                </label>
-                <input id="dela" type="text" readonly value={delaLank} class:list={[FALT_KLASS, 'border-blyerts-2']} />
-                <p class="m-0 mt-1 text-liten text-blyerts-2">Dina värden ligger i adressen. Markera den och kopiera, så får den du skickar länken till samma svar.</p>
-              </div>
             </>
           )
         }
+        {/* Dela. Svaret står i adressen, så ett skrivskyddat fält räcker:
+            markera och kopiera fungerar utan en rad JavaScript. Bara när
+            värdena är giltiga: vid ogiltigt värde står bara varningen, för det
+            finns inget svar att dela (specen för grannemedgivandet 12.13 punkt 1). */}
+        {!ogiltig && (
+          <div class="mt-4 border-t border-linje pt-4">
+            <label for="dela" class={ETIKETT_KLASS}>
+              Dela svaret
+            </label>
+            <input id="dela" type="text" readonly value={delaLank} class:list={[FALT_KLASS, 'border-blyerts-2']} />
+            <p class="m-0 mt-1 text-liten text-blyerts-2">Dina värden ligger i adressen. Markera den och kopiera, så får den du skickar länken till samma svar.</p>
+          </div>
+        )}
       </div>
     </div>
 
@@ -411,7 +505,7 @@ const huvudbild = varumarke ?? illustration;
         inte i spalten: en läsare som just fått ett besked läser svaret, inte
         femton motiveringar bredvid formuläret. Se SPEC-SIDMALLAR.md 4.7. */}
     {
-      visat.status === 'ok' && (
+      visat.status === 'ok' && !ogiltig && (
         <>
           <section>
             <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
@@ -419,17 +513,28 @@ const huvudbild = varumarke ?? illustration;
               <>
                 {visat.bedomningar.length > 1 && (
                   <p class="m-0 mt-6 font-sans text-h3 lg:text-h3-lg text-blyerts">
-                    {b.fall}: {b.svar === 'ja' ? 'bygglov' : b.svar === 'nej' ? 'inget bygglov' : 'fråga kommunen'}
+                    {b.fall}:{' '}
+                    {b.svar === 'ja'
+                      ? 'bygglov'
+                      : b.svar === 'nej'
+                        ? 'inget bygglov'
+                        : b.svar === 'granne'
+                          ? 'grannens underskrift eller bygglov'
+                          : 'fråga kommunen'}
                   </p>
                 )}
-                <ul class="m-0 p-0 list-none text-brod lg:text-brod-lg">
+                <ul class={REGEL_LISTA_KLASS}>
                   {b.regler.map((regel) => (
-                    <li class="mb-4 border-l-2 border-linje pl-4">
-                      <span class="block text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
-                        {UTFALL_ETIKETT[regel.utfall]}
-                      </span>
-                      <span class="block">{regel.text}</span>
-                      <span class="block text-liten text-blyerts-2">{regel.lagrum}</span>
+                    <li>
+                      <span>{UTFALL_ETIKETT[regel.utfall]}</span>
+                      <span>{regel.text}</span>
+                      <span>{regel.lagrum}</span>
+                      {regel.utfall === 'granne' && (
+                        <a href={grannemedgivandeHref} class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
+                          {/* Länken till blanketten med altanens mått förtryckta. */}
+                          Skriv ut medgivandet till grannen med dina mått ifyllda
+                        </a>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -452,10 +557,10 @@ const huvudbild = varumarke ?? illustration;
     }
 
     <section>
-      <Pennstreck id="bygglov-altan-2025">Bygglov för altan, de tre måtten i plan- och bygglagen 9 kap. 19 § och vad som ändrades 1 december 2025</Pennstreck>
+      <Pennstreck id="bygglov-altan-2025">Bygglov för altan, de två måtten i plan- och bygglagen 9 kap. 19 § och vad som ändrades 1 december 2025</Pennstreck>
       <p class="m-0 text-brod lg:text-brod-lg">
-        Den 1 december 2025 trädde lag 2025:974 i kraft, och då upphävdes hela bygglovskapitlet i plan- och bygglagen
-        och ersattes av ett nytt. Paragrafen som alla hänvisade till förut, 9 kap. 4 f §, finns inte kvar. Altanregeln
+        När lag 2025:974 trädde i kraft upphävdes hela bygglovskapitlet i plan- och bygglagen och ersattes av ett
+        nytt. Paragrafen som alla hänvisade till förut, 9 kap. 4 f §, finns inte kvar. Altanregeln
         står nu i 9 kap. 19 §, och den är skriven tvärtom mot den gamla. I stället för ett undantag för villor är den
         en regel om när lov krävs inom detaljplan. Orden friggebod, attefallshus och attefallsaltan är borta ur
         lagtexten, och med dem försvann kravet på anmälan och startbesked för det som är lovfritt. En altan på plintar
@@ -463,7 +568,7 @@ const huvudbild = varumarke ?? illustration;
         när måtten håller.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Själva måtten är oförändrade, och de är tre. Det första är höjden. Ligger altangolvet högst 1,8 meter över
+        Själva måtten är oförändrade, och de är två. Det första är höjden. Ligger altangolvet högst 1,8 meter över
         marken är altanen fri, förutsatt att den står nära en byggnad. Höjden mäter du från marken vid altanens
         yttersida upp till golvets ovansida, och sluttar tomten mäter du på nedsidan. Ett glest räcke räknas inte in,
         men ett tätt plank gör det.
@@ -471,27 +576,33 @@ const huvudbild = varumarke ?? illustration;
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
         Det andra måttet är avståndet till huset. Nära betyder inom 3,6 meter, mätt från fasaden till altanens
         ytterkant. Står altanen längre bort sjunker gränsen till 1,2 meter. Lagen säger en byggnad och inte
-        bostadshuset, så en altan intill garaget eller förrådet räknas som nära den byggnaden. Det tredje måttet är
-        avståndet till tomtgränsen. Under 4,5 meter vill Boverket att du hämtar ett skriftligt medgivande från varje
-        granne som berörs. Går gränsen mot en gata eller en park är kommunen grannen.
+        bostadshuset, så en altan intill garaget eller förrådet räknas som nära den byggnaden.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Två saker faller utanför måtten. Sätter du väggar eller glas runt altanen är den inte längre en altan i lagens
-        mening utan en tillbyggnad, och en tillbyggnad av ett en- eller tvåbostadshus är fri upp till 30 kvadratmeter.
+        Avståndet till tomtgränsen är ett tredje mått, men det spelar bara in när altanen får tak, glas eller ett tätt
+        plank. Lagen räknar upp vad som kräver grannens medgivande närmare gränsen än 4,5 meter, och altaner saknas i
+        listan. Regeringen bedömde att en altan nära gränsen inte påverkar omgivningen så mycket att den borde kräva
+        grannens medgivande. Sätter du skärmtak eller glas över altanen blir den en tillbyggnad, och då behöver du
+        grannens skriftliga medgivande eller bygglov. Ett tätt plank som är högre än 1,2 meter över marken kräver också
+        medgivande, och står det på altanen räknas altanens höjd med. Boverkets sida för privatpersoner säger något
+        annat om den öppna altanen, och varför jag går på lagen förklarar jag i{' '}
+        <a href="/altan/bygglov-altan/" class={LANK_KLASS}>artikeln om bygglov för altan</a>.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Två saker faller utanför måtten. Sätter du tak, väggar eller glas på altanen är den inte längre en altan i
+        lagens mening utan en tillbyggnad, och en tillbyggnad är fri upp till 30 kvadratmeter.
         Den gamla regeln om skärmtak på 15 kvadratmeter är borta. Ligger altanen ovanpå ett garage växer ingen volym,
         men golvet hamnar högt, och domstol har sett en takaltan som en ändring av fasaden. Räkna med lov där.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
         Vad ett bygge utan lov kostar ser du i spalten ovanför. Byggsanktionsavgiften för en altan är ett kvarts
         prisbasbelopp i grunden plus en halv hundradel av prisbasbeloppet per kvadratmeter, och den tas ut även om
-        du inte visste bättre. Utanför detaljplan finns däremot inga mått alls för en altan. Kvar står kravet att den
-        ska passa in i omgivningen och inte bli en betydande olägenhet för grannen. Hela genomgången, med
+        du inte visste bättre. Hela genomgången, med
         beslutstabellen och avgiften för olika ytor, står i{' '}
         <a href="/altan/bygglov-altan/" class={LANK_KLASS}>
           artikeln om bygglov för altan och måtten som avgör
         </a>
-        . Många sidor om altan är skrivna före december 2025 och säger fortfarande att du måste anmäla bygget, så
-        titta på datumet innan du litar på dem.
+        .
       </p>
     </section>
 
@@ -502,7 +613,7 @@ const huvudbild = varumarke ?? illustration;
           <Illustration
             namn="rakna/bygglov-altan"
             alt="Hus i sidovy med en altan på plintar, måttsatt 1,8 m upp från marken, 3,6 m ut från fasaden och 4,5 m till tomtgränsen"
-            bildtext="De tre måtten jag bedömer är höjden över marken, avståndet till huset och avståndet till tomtgränsen."
+            bildtext="Bygglovet hänger på två mått, höjden över marken och avståndet till huset. Avståndet till tomtgränsen spelar bara in med tak, glas eller ett tätt plank."
           />
         )
       }
@@ -518,8 +629,9 @@ const huvudbild = varumarke ?? illustration;
           Vet du inte vilket som gäller kör jag båda fallen och visar svaret för vart och ett.
         </li>
         <li class="mb-2">
-          Tak med väggar eller inglasning gör altanen till en tillbyggnad, och då prövas ytan mot{' '}
-          {LOVFRI_TILLBYGGNAD_KVM} kvadratmeter i stället för höjden.
+          {/* Ska säga att skärmtak, väggar och inglasning alla gör altanen till en tillbyggnad (9 kap. 10 §, öppenarea), och att ytan då prövas mot 30 m² (specen 12.7). */}
+          Altanen blir en tillbyggnad oavsett om den får skärmtak, väggar eller inglasning, eftersom ytan under
+          taket räknas med. Då prövas ytan mot {LOVFRI_TILLBYGGNAD_KVM}&nbsp;m² i stället för höjden.
         </li>
         <li class="mb-2">
           En altan ovanpå en byggnad får svaret räkna med bygglov, eftersom golvet nästan alltid ligger högt och
@@ -530,8 +642,10 @@ const huvudbild = varumarke ?? illustration;
           oavsett vad måtten säger.
         </li>
         <li class="mb-2">
-          Avståndet till tomtgränsen ger aldrig ett bygglovskrav i sig. Det ger raden om grannens skriftliga
-          medgivande.
+          {/* Ska säga att avståndet prövas sist av reglerna, och nämna svaret granne (specen 12.7). */}
+          Avståndet till tomtgränsen prövar jag efter de andra reglerna. Står en altan med tak närmare gränsen än{' '}
+          {komma(GRANS_M)}&nbsp;meter och kräver inget annat lov, blir svaret att grannen ska skriva under, och utan
+          underskriften krävs bygglov.
         </li>
         <li>
           Byggsanktionsavgiften räknas sist, ur altanens yta, och visas oavsett vad svaret blev. Den är vad ett bygge
@@ -577,8 +691,7 @@ const huvudbild = varumarke ?? illustration;
 
       <p class="m-0 mt-6 text-brod lg:text-brod-lg">
         Jag läser lagen och Boverkets vägledning på de uppgifter du fyller i, och det är vägledning. Din detaljplan,
-        dina områdesbestämmelser och ett strandskydd vid vattnet ser jag inte härifrån, och beslutet fattar
-        byggnadsnämnden i din kommun. Bara nämnden kan ge ett bindande besked. Avgiften jag räknar ut är
+        dina områdesbestämmelser och ett strandskydd vid vattnet ser jag inte härifrån. Avgiften jag räknar ut är
         byggsanktionsavgiften, och bygglovsavgiften i efterhand tillkommer.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
@@ -587,12 +700,12 @@ const huvudbild = varumarke ?? illustration;
         om året. Ändras talet till nästa år ändras avgiften med det.
       </p>
       {
-        visat.status === 'ok' && (
+        visat.status === 'ok' && !ogiltig && (
           <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-            Avgiften tas ut även om du inte visste bättre. Den kan sättas ned till{' '}
+            Avgiften kan sättas ned till{' '}
             {formateraTal(visat.avgiftHalvKr)} kr eller {formateraTal(visat.avgiftFjardedelKr)} kr om den är orimlig,
-            och den faller bort helt om du river eller rättar innan nämnden tagit upp ärendet på ett sammanträde.
-            Sedan får du söka lov i efterhand ändå.
+            och den faller bort helt om du river altanen eller rättar felet innan nämnden tagit upp ärendet på ett sammanträde.
+            Står altanen kvar får du ändå söka lov i efterhand.
           </p>
         )
       }

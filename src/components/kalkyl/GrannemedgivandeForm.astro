@@ -1,0 +1,297 @@
+---
+/**
+ * Formuläret till grannemedgivandet. Ett ställe: sidan
+ * /rakna/grannemedgivande/ renderar det i fullt format, och
+ * <Kalkylator namn="grannemedgivande" /> renderar det i kompakt format med
+ * action till verktygssidan.
+ *
+ * Ingen klient-JavaScript. Formuläret skickas som GET, och verktygssidan svarar.
+ *
+ * Åtgärden väljs i fullt format med länkar, inte radioknappar: en radioknapp
+ * som byter åtgärd utan att fälten byts förrän man skickat är en fälla utan
+ * skript. Länken laddar om sidan med rätt fält och den nya åtgärdens
+ * standardmått, och bär de gemensamma värdena (bytAtgardQuery, byggd av
+ * sidan). I kompakt format är åtgärden radioknappar, eftersom formuläret då
+ * skickas till sidan som visar fälten.
+ *
+ * Formuläret har inga fritextfält: inga personuppgifter går genom adressen
+ * (specen beslut 1). All synlig text kommer ur TEXT i
+ * src/lib/kalkyl/grannemedgivande.ts. Spec:
+ * docs/briefer/spec-kalkyl-grannemedgivande-2026-09-28.md avsnitt 3.
+ */
+import {
+  ATGARD_FALT,
+  ATGARD_ORDNING,
+  ENHET,
+  harTakfot,
+  JARNVAG_M,
+  STANDARD,
+  talText,
+  TEXT,
+  type Atgard,
+  type FelNyckel,
+  type GrannemedgivandeIndata,
+  type Mot,
+  type Plan,
+  type TalNyckel,
+} from '../../lib/kalkyl/grannemedgivande.ts';
+import {
+  ETIKETT_KLASS,
+  FALT_KLASS,
+  FEL_KLASS,
+  HJALP_KLASS,
+  KNAPP_KLASS,
+  LANK_KLASS,
+  ramKlass,
+} from '../../lib/kalkyl/stil';
+
+type Varden = Partial<Record<TalNyckel | 'grans', string>>;
+
+interface Props {
+  /** Valen och talen. Standardvärdena när propen utelämnas. */
+  indata?: GrannemedgivandeIndata;
+  /** Råa strängar ur adressen, så att ett felskrivet värde går att rätta. */
+  varden?: Varden;
+  fel?: Partial<Record<FelNyckel, string>>;
+  /** Inbäddad i en artikel: åtgärd, gräns och plan, inget annat. */
+  kompakt?: boolean;
+  /** Prefix på id-attributen, så att två formulär på samma sida inte krockar. */
+  idPrefix?: string;
+  knappText?: string;
+  /** Länk per åtgärd, byggd av sidan med bytAtgardQuery. Krävs när kompakt är falskt. */
+  atgardHref?: Record<Atgard, string>;
+}
+
+const {
+  indata = STANDARD,
+  varden = {},
+  fel = {},
+  kompakt = false,
+  idPrefix = '',
+  knappText = TEXT.falt.knapp,
+  atgardHref,
+} = Astro.props;
+
+if (!kompakt && !atgardHref) {
+  throw new Error('[GrannemedgivandeForm] atgardHref krävs i fullt format');
+}
+
+const id = (namn: string) => `${idPrefix}${namn}`;
+
+/** aria-describedby av de id som finns, eller undefined. */
+const beskrivs = (...idn: (string | false | undefined)[]) => {
+  const finns = idn.filter((v): v is string => typeof v === 'string' && v.length > 0);
+  return finns.length > 0 ? finns.join(' ') : undefined;
+};
+
+/** Värdet i fältet: strängen som den skrevs, annars talet i indata med komma. */
+const varde = (nyckel: TalNyckel | 'grans', tal: number) => varden[nyckel] ?? talText(tal);
+
+const atgardFalt = kompakt
+  ? []
+  : ATGARD_FALT[indata.atgard].map(({ nyckel, falt }) => ({
+      nyckel,
+      etikett: TEXT.falt[nyckel].etikett,
+      hjalp: TEXT.falt[nyckel].hjalp,
+      enhet: ENHET[nyckel],
+      varde: varde(nyckel, indata[falt]),
+      fel: fel[nyckel],
+    }));
+
+const MOT: Mot[] = ['tomt', 'gata', 'vag'];
+const PLAN: Plan[] = ['ja', 'nej'];
+const talKlass = (harFel: boolean) => [FALT_KLASS, ramKlass(harFel), 'max-w-28'];
+---
+
+<form method="get" action="/rakna/grannemedgivande/">
+  {
+    kompakt ? (
+      <fieldset class="m-0 mb-4 p-0 border-0">
+        <legend class:list={[ETIKETT_KLASS, 'p-0']}>{TEXT.falt['atgard-kompakt-legend']}</legend>
+        {ATGARD_ORDNING.map((a) => (
+          <div class="mb-1">
+            <label class="flex min-h-11 items-center gap-2 text-brod">
+              <input
+                type="radio"
+                name="atgard"
+                value={a}
+                checked={indata.atgard === a}
+                aria-describedby={id(`atgard-${a}-hint`)}
+              />
+              {TEXT.atgard[a].namn}
+            </label>
+            {/* Förklaringen under varje val, så att den som har en altan med tak ser att det heter tillbyggnad (specen 12.6). */}
+            <p id={id(`atgard-${a}-hint`)} class:list={[HJALP_KLASS, 'pl-6']}>
+              {TEXT.atgard[a].hint}
+            </p>
+          </div>
+        ))}
+      </fieldset>
+    ) : (
+      <div class="mb-6">
+        <p id={id('atgard-rubrik')} class:list={[ETIKETT_KLASS, 'm-0']}>
+          {TEXT.falt['atgard-rubrik']}
+        </p>
+        <ul
+          class="m-0 p-0 list-none"
+          aria-labelledby={id('atgard-rubrik')}
+          aria-describedby={fel.atgard ? id('atgard-fel') : undefined}
+        >
+          {ATGARD_ORDNING.map((a) => (
+            <li class="mb-1">
+              {indata.atgard === a ? (
+                <strong aria-current="true" class="inline-flex min-h-11 items-center text-brod text-blyerts">
+                  {TEXT.atgard[a].namn}
+                </strong>
+              ) : (
+                <a href={atgardHref?.[a]} class:list={['inline-flex min-h-11 items-center text-brod', LANK_KLASS]}>
+                  {TEXT.atgard[a].namn}
+                </a>
+              )}
+              <span class="block text-liten text-blyerts-2">{TEXT.atgard[a].hint}</span>
+            </li>
+          ))}
+        </ul>
+        {fel.atgard && (
+          <p id={id('atgard-fel')} class={FEL_KLASS}>
+            {fel.atgard}
+          </p>
+        )}
+        <input type="hidden" name="atgard" value={indata.atgard} />
+      </div>
+    )
+  }
+
+  {
+    atgardFalt.map((f) => (
+      <div class="mb-4">
+        <label for={id(f.nyckel)} class={ETIKETT_KLASS}>
+          {f.etikett}
+        </label>
+        <div class="flex items-center gap-2">
+          <input
+            id={id(f.nyckel)}
+            name={f.nyckel}
+            type="text"
+            inputmode="decimal"
+            autocomplete="off"
+            value={f.varde}
+            aria-describedby={beskrivs(f.fel && id(`${f.nyckel}-fel`), id(`${f.nyckel}-hjalp`))}
+            class:list={talKlass(Boolean(f.fel))}
+          />
+          <span class="text-brod text-blyerts-2">{f.enhet}</span>
+        </div>
+        {f.fel && (
+          <p id={id(`${f.nyckel}-fel`)} class={FEL_KLASS}>
+            {f.fel}
+          </p>
+        )}
+        <p id={id(`${f.nyckel}-hjalp`)} class={HJALP_KLASS}>
+          {f.hjalp}
+        </p>
+      </div>
+    ))
+  }
+
+  <div class="mb-4">
+    <label for={id('grans')} class={ETIKETT_KLASS}>
+      {TEXT.falt.grans.etikett}
+    </label>
+    <div class="flex items-center gap-2">
+      <input
+        id={id('grans')}
+        name="grans"
+        type="text"
+        inputmode="decimal"
+        autocomplete="off"
+        value={varde('grans', indata.gransM)}
+        aria-describedby={beskrivs(fel.grans && id('grans-fel'), !kompakt && id('grans-hjalp'))}
+        class:list={talKlass(Boolean(fel.grans))}
+      />
+      <span class="text-brod text-blyerts-2">{ENHET.grans}</span>
+    </div>
+    {
+      fel.grans && (
+        <p id={id('grans-fel')} class={FEL_KLASS}>
+          {fel.grans}
+        </p>
+      )
+    }
+    {
+      !kompakt && (
+        <p id={id('grans-hjalp')} class={HJALP_KLASS}>
+          {harTakfot(indata.atgard) ? TEXT.falt.grans.hjalp.byggnad : TEXT.falt.grans.hjalp.annat}
+        </p>
+      )
+    }
+  </div>
+
+  {
+    !kompakt && (
+      <fieldset class="m-0 mb-4 p-0 border-0">
+        <legend class:list={[ETIKETT_KLASS, 'p-0']}>{TEXT.falt.mot.legend}</legend>
+        {MOT.map((m) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input
+              type="radio"
+              name="mot"
+              value={m}
+              checked={indata.mot === m}
+              aria-describedby={fel.mot ? id('mot-fel') : undefined}
+            />
+            {TEXT.falt.mot[m]}
+          </label>
+        ))}
+        {fel.mot && (
+          <p id={id('mot-fel')} class={FEL_KLASS}>
+            {fel.mot}
+          </p>
+        )}
+      </fieldset>
+    )
+  }
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>{TEXT.falt.plan.legend}</legend>
+    <div class="flex flex-wrap gap-x-6">
+      {
+        PLAN.map((p) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input
+              type="radio"
+              name="plan"
+              value={p}
+              checked={indata.plan === p}
+              aria-describedby={kompakt ? undefined : id('plan-hjalp')}
+            />
+            {TEXT.falt.plan[p]}
+          </label>
+        ))
+      }
+    </div>
+    {
+      !kompakt && (
+        <p id={id('plan-hjalp')} class={HJALP_KLASS}>
+          {TEXT.falt.plan.hjalp}
+        </p>
+      )
+    }
+  </fieldset>
+
+  {
+    !kompakt && (
+      <div class="mb-6">
+        <label class="flex min-h-11 items-center gap-2 text-brod">
+          <input type="checkbox" name="jarnvag" value="1" checked={indata.jarnvag} />
+          {TEXT.falt.jarnvag(JARNVAG_M)}
+        </label>
+        <label class="flex min-h-11 items-center gap-2 text-brod">
+          <input type="checkbox" name="varde" value="1" checked={indata.vardefullt} />
+          {TEXT.falt.vardefullt}
+        </label>
+      </div>
+    )
+  }
+
+  <button type="submit" class={KNAPP_KLASS}>{knappText}</button>
+</form>

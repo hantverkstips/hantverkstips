@@ -1,0 +1,172 @@
+---
+/**
+ * Formuläret till kontrollplansgeneratorn. Sidan /rakna/kontrollplan/ renderar
+ * det i fullt format, och <Kalkylator namn="kontrollplan" /> i en artikel
+ * renderar bara kryssrutorna för åtgärderna, utan förval, med action till
+ * verktygssidan (specen 4.3).
+ *
+ * Ingen klient-JavaScript. Formuläret skickas som GET. Alla grupper står
+ * alltid framme, också altanens och eldstadens frågor: att dölja dem tills
+ * åtgärden är vald kräver skript (specen 4.1).
+ *
+ * All text står i TEXT i src/lib/kalkyl/kontrollplan.ts.
+ */
+import {
+  ATGARD_ORDNING,
+  FORMULAR_NYCKEL,
+  STANDARD,
+  TEXT,
+  type Atgard,
+  type FelNyckel,
+  type Hus,
+  type Inkom,
+  type JaNej,
+  type KontrollplanIndata,
+  type Placering,
+  type Rokkanal,
+  type Tak,
+  type TextNyckel,
+} from '../../lib/kalkyl/kontrollplan';
+import { ETIKETT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS } from '../../lib/kalkyl/stil';
+
+interface Props {
+  /** Valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
+  indata?: KontrollplanIndata;
+  fel?: Partial<Record<FelNyckel, string>>;
+  /** Inbäddad i en artikel: bara åtgärderna, utan förval, och knappen. */
+  kompakt?: boolean;
+  /** Prefix på id-attributen, så att två formulär på samma sida inte krockar. */
+  idPrefix?: string;
+  knappText?: string;
+  /**
+   * Åtgärder som står först i listan, utan förval, till exempel källarens tre
+   * i /grund/inreda-kallare/. Övriga följer i ATGARD_ORDNING. Adressen sorteras
+   * ändå av tolkaQuery, så ordningen här ändrar inget i planen.
+   */
+  forst?: readonly Atgard[];
+}
+
+const {
+  indata = STANDARD,
+  fel = {},
+  kompakt = false,
+  idPrefix = '',
+  knappText = 'Visa kontrollplanen',
+  forst = [],
+} = Astro.props;
+const ordning: Atgard[] = [...forst, ...ATGARD_ORDNING.filter((a) => !forst.includes(a))];
+
+const id = (namn: string) => `${idPrefix}${namn}`;
+/** Det kompakta formuläret har inget förval (specen 4.3). */
+const valda = new Set(kompakt ? [] : indata.atgarder);
+
+/** En radiogrupp: namnet i adressen, alternativen och det valda värdet. */
+interface Grupp {
+  namn: 'hus' | 'tak' | 'plac' | 'rok' | 'vardefullt' | 'inkom';
+  varden: readonly string[];
+  vald: string;
+}
+const HUS: readonly Hus[] = ['bostadshus', 'komplementbostadshus'];
+const TAK: readonly Tak[] = ['nej', 'skarmtak'];
+const PLAC: readonly Placering[] = ['vid-huset', 'fristaende'];
+const ROK: readonly Rokkanal[] = ['ny', 'befintlig'];
+const JA_NEJ: readonly JaNej[] = ['ja', 'nej'];
+const INKOM: readonly Inkom[] = ['fore-juli-2026', 'juli-sept-2026', 'fran-okt-2026'];
+
+const hus: Grupp = { namn: 'hus', varden: HUS, vald: indata.hus };
+const altan: Grupp[] = [
+  { namn: 'tak', varden: TAK, vald: indata.tak },
+  { namn: 'plac', varden: PLAC, vald: indata.plac },
+];
+const eldstad: Grupp = { namn: 'rok', varden: ROK, vald: indata.rok };
+const vardefullt: Grupp = { namn: 'vardefullt', varden: JA_NEJ, vald: indata.vardefullt };
+const inkom: Grupp = { namn: 'inkom', varden: INKOM, vald: indata.inkom };
+
+const t = (k: string): string => TEXT[k as TextNyckel];
+
+/** Raden för ett alternativ: minst 48 px, kontrollen 24 px till vänster, etiketten bredvid. */
+const RAD = 'flex min-h-12 items-start gap-3 py-2 text-brod';
+const KONTROLL = 'mt-0.5 size-6 shrink-0';
+const LEGEND = [ETIKETT_KLASS, 'p-0'];
+/** Legenden för en grupp med fel får ramen i varning till vänster. */
+const legendFel = (harFel: boolean) => [...LEGEND, harFel && 'border-l-4 border-varning pl-2'];
+---
+
+<form method="get" action="/rakna/kontrollplan/">
+  {/* Bara formulären skickar fältet, så att ett formulär utan kryss ger felet på a och inte standardfallet. */}
+  <input type="hidden" name={FORMULAR_NYCKEL} value="1" />
+  <fieldset class="m-0 mb-6 p-0 border-0" aria-describedby={fel.a ? id('a-fel') : undefined}>
+    <legend class:list={legendFel(Boolean(fel.a))}>{TEXT['falt.a']}</legend>
+    {fel.a && <p id={id('a-fel')} class={FEL_KLASS}>{fel.a}</p>}
+    {
+      ordning.map((a) => (
+        <label class={RAD}>
+          <input type="checkbox" name="a" value={a} checked={valda.has(a)} class={KONTROLL} />
+          <span>
+            {t(`atgard.${a}.etikett`)}
+            {!kompakt && <span class:list={[HJALP_KLASS, 'block']}>{t(`atgard.${a}.hjalp`)}</span>}
+          </span>
+        </label>
+      ))
+    }
+  </fieldset>
+
+  {
+    !kompakt && (
+      <>
+        <fieldset class="m-0 mb-6 p-0 border-0" aria-describedby={fel.hus ? id('hus-fel') : undefined}>
+          <legend class:list={legendFel(Boolean(fel.hus))}>{TEXT['falt.hus']}</legend>
+          {fel.hus && <p id={id('hus-fel')} class={FEL_KLASS}>{fel.hus}</p>}
+          {hus.varden.map((v) => (
+            <label class={RAD}>
+              <input type="radio" name={hus.namn} value={v} checked={hus.vald === v} class={KONTROLL} />
+              <span>{t(`falt.${hus.namn}.${v}`)}</span>
+            </label>
+          ))}
+        </fieldset>
+
+        <div class="mb-6">
+          <p class={ETIKETT_KLASS}>{TEXT['falt.altan-hjalp']}</p>
+          {altan.map((g) => (
+            <fieldset class="m-0 mt-2 p-0 border-0">
+              <legend class:list={LEGEND}>{t(`falt.${g.namn}`)}</legend>
+              {g.varden.map((v) => (
+                <label class={RAD}>
+                  <input type="radio" name={g.namn} value={v} checked={g.vald === v} class={KONTROLL} />
+                  <span>{t(`falt.${g.namn}.${v}`)}</span>
+                </label>
+              ))}
+            </fieldset>
+          ))}
+        </div>
+
+        <div class="mb-6">
+          <p class={ETIKETT_KLASS}>{TEXT['falt.eldstad-hjalp']}</p>
+          <fieldset class="m-0 mt-2 p-0 border-0">
+            <legend class:list={LEGEND}>{TEXT['falt.rok']}</legend>
+            {eldstad.varden.map((v) => (
+              <label class={RAD}>
+                <input type="radio" name={eldstad.namn} value={v} checked={eldstad.vald === v} class={KONTROLL} />
+                <span>{t(`falt.rok.${v}`)}</span>
+              </label>
+            ))}
+          </fieldset>
+        </div>
+
+        {[vardefullt, inkom].map((g) => (
+          <fieldset class="m-0 mb-6 p-0 border-0">
+            <legend class:list={LEGEND}>{t(`falt.${g.namn}`)}</legend>
+            {g.varden.map((v) => (
+              <label class={RAD}>
+                <input type="radio" name={g.namn} value={v} checked={g.vald === v} class={KONTROLL} />
+                <span>{t(`falt.${g.namn}.${v}`)}</span>
+              </label>
+            ))}
+          </fieldset>
+        ))}
+      </>
+    )
+  }
+
+  <button type="submit" class={KNAPP_KLASS}>{knappText}</button>
+</form>

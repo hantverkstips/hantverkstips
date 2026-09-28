@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Tomten sedd uppifrån på linjerat papper. Till vänster huset med taknocken, till höger en streckad tomtgräns och bortom den grannens hus. Parallellt med gränsen, 4,5 meter in på den egna tomten, går en tunn streckad linje, och zonen mellan den och gränsen är skrafferad. Inne i zonen står ett förråd på 12 kvadratmeter, 2,0 meter från gränsen, och en röd pil går från förrådet över gränsen mot grannens hus. Nyckeltalet 4,5 meter är markerat.">
+  <!-- Anteckningsboken, verktygsskiss för /rakna/grannemedgivande/. Tomten uppifrån, som en situationsplan,
+       så att den inte blir en tredje sidovy bredvid artikelns och altanräknarens skisser.
+       Blyerts 2 px för husen och förrådet, blyerts-2 för grannens hus, tomtgränsen, zonlinjen, skrafferingen
+       och måttbyglarna, snickarpenna för pilen från förrådet mot grannen (den enda pennsaken),
+       tumstock bakom nyckeltalet 4,5 m.
+       Skala ungefär 1 m = 30 px: tomtgräns x=450, zonlinjen 4,5 m in x=315, förrådets vägg x=390
+       (2,0 m från gränsen), förrådet 2,4 × 5 m = 12 m², taksprånget 6 px utanför väggen.
+       Skrafferingen är utelämnad inne i förrådet och bakom text och byglar, i stället för papperslappar.
+       Etiketterna för gränsen, grannen och zonen är hantverkarens (specen 9.1); talen är fasta.
+       Handskrift i Caveat 500, 24 px, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2: skrafferingen i zonen närmare gränsen än 4,5 m -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M321,64 l7,-7 M337,64 l7,-7 M433,64 l7,-7 M329,80 l7,-7 M425,80 l7,-7 M417,128 l7,-7 M433,128 l7,-7 M409,144 l7,-7 M425,144 l7,-7 M417,160 l7,-7 M433,160 l7,-7 M409,176 l7,-7 M425,176 l7,-7 M417,224 l7,-7 M433,224 l7,-7 M409,240 l7,-7 M425,240 l7,-7 M417,256 l7,-7 M433,256 l7,-7 M409,272 l7,-7 M425,272 l7,-7 M329,304 l7,-7 M345,304 l7,-7 M361,304 l7,-7 M321,320 l7,-7 M337,320 l7,-7 M353,320 l7,-7 M369,320 l7,-7"/>
+  </g>
+
+  <!-- Blyerts-2: zonlinjen 4,5 m in och tomtgränsen -->
+  <path d="M315,50 Q316,191 315,334" fill="none" stroke="#625a50" stroke-width="1.25" stroke-dasharray="5 6" stroke-linecap="round"/>
+  <path d="M450,40 Q449,190 450,344" fill="none" stroke="#625a50" stroke-width="1.75" stroke-dasharray="10 7" stroke-linecap="round"/>
+
+  <!-- Blyerts: vårt hus uppifrån, med taknocken -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M60,78 Q146,76 232,78"/>
+    <path d="M232,76 Q234,172 232,268"/>
+    <path d="M234,266 Q146,269 58,266"/>
+    <path d="M60,268 Q58,173 60,76"/>
+    <path d="M62,172 Q146,170 230,172"/>
+  </g>
+
+  <!-- Blyerts: förrådet, taksprånget runt och väggen streckad under -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M312,112 Q354,110 396,112"/>
+    <path d="M396,110 Q398,193 396,276"/>
+    <path d="M398,274 Q354,277 310,274"/>
+    <path d="M312,276 Q310,193 312,110"/>
+  </g>
+  <path d="M318,118 H390 V268 H318 Z" fill="none" stroke="#2a2521" stroke-width="1.25" stroke-dasharray="4 4"/>
+
+  <!-- Blyerts-2: grannens hus -->
+  <g fill="none" stroke="#625a50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M488,98 Q538,96 588,98"/>
+    <path d="M588,96 Q590,176 588,256"/>
+    <path d="M590,254 Q538,257 486,254"/>
+    <path d="M488,256 Q486,177 488,96"/>
+    <path d="M538,100 Q540,176 538,252"/>
+  </g>
+
+  <!-- Blyerts-2: måttbyglar, 4,5 m från zonlinjen till gränsen och 2,0 m från förrådets vägg -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M315,100 Q382,99 450,100 M315,95 v10 M450,95 v10"/>
+    <path d="M390,296 Q420,295 450,296 M390,291 v10 M450,291 v10"/>
+    <path d="M390,270 V290" stroke-dasharray="3 3"/>
+  </g>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="352" y="66" width="62" height="26" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 383 79)"/>
+
+  <!-- Snickarpenna: pilen från förrådet över gränsen mot grannens hus -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M404,190 Q441,188 478,190"/>
+    <path d="M468,183 L479,190 L468,197"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="318" y="38" fill="#625a50">medgivande</text>
+    <text x="360" y="87">4,5 m</text>
+    <text x="330" y="200">12 m²</text>
+    <text x="396" y="322" fill="#625a50">2,0 m</text>
+    <text x="470" y="38" fill="#625a50">tomtgräns</text>
+    <text x="462" y="290" fill="#625a50">grannen</text>
+  </g>
+</svg>

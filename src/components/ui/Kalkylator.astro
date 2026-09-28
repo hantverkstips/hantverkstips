@@ -13,14 +13,17 @@
  * Rubriken är ett <p> i H3-stil, inte en H3: komponenten kan stå var som helst i
  * en artikel och en riktig H3 skulle kunna ge fel rubrikordning.
  */
+import { tolkaQuery as tolkaGrannemedgivande } from '../../lib/kalkyl/grannemedgivande';
 import { hittaKalkylator } from '../../lib/kalkyl/register';
 import AltanForm from '../kalkyl/AltanForm.astro';
 import AvfuktareForm from '../kalkyl/AvfuktareForm.astro';
 import BygglovAltanForm from '../kalkyl/BygglovAltanForm.astro';
 import DaggpunktForm from '../kalkyl/DaggpunktForm.astro';
 import DraneringForm from '../kalkyl/DraneringForm.astro';
+import FasadytaForm from '../kalkyl/FasadytaForm.astro';
 import ElkostnadForm from '../kalkyl/ElkostnadForm.astro';
 import GipspluggForm from '../kalkyl/GipspluggForm.astro';
+import GrannemedgivandeForm from '../kalkyl/GrannemedgivandeForm.astro';
 import GipsskruvForm from '../kalkyl/GipsskruvForm.astro';
 import InnervaggForm from '../kalkyl/InnervaggForm.astro';
 import KallareForm from '../kalkyl/KallareForm.astro';
@@ -29,11 +32,28 @@ import MalaUteForm from '../kalkyl/MalaUteForm.astro';
 import RotavdragForm from '../kalkyl/RotavdragForm.astro';
 import TrappaForm from '../kalkyl/TrappaForm.astro';
 import UVardeForm from '../kalkyl/UVardeForm.astro';
+import KontrollplanForm from '../kalkyl/KontrollplanForm.astro';
+import { ATGARD_ORDNING, type Atgard } from '../../lib/kalkyl/kontrollplan';
 import Ikon from './Ikon.astro';
 
 interface Props {
   /** Kalkylatorns slug i src/lib/kalkyl/register.ts. */
   namn: string;
+  /**
+   * Förval som en querysträng, till exempel "atgard=altan". Finns bara för
+   * grannemedgivandet (docs/briefer/spec-kalkyl-grannemedgivande-2026-09-28.md
+   * 12.6); en annan slug med förval ger byggfel, så att ingen tror att det
+   * fungerar tyst. Skrivs efter namn, eftersom kontrollen i
+   * scripts/kontrollera-innehall.ts kräver att namn står först.
+   */
+  forval?: string;
+  /**
+   * Åtgärder som står först i kontrollplanens kompakta formulär, utan förval,
+   * separerade med mellanslag, till exempel "barande ventilation va" i
+   * källarguiden. Finns bara för kontrollplanen; en annan slug, eller ett ord
+   * som inte är en åtgärd, ger byggfel. Skrivs efter namn.
+   */
+  forst?: string;
 }
 
 /** Kalkylatorer som har ett formulär att bädda in. */
@@ -53,9 +73,12 @@ const MED_FORMULAR = [
   'rotavdrag',
   'trappa',
   'u-varde',
+  'fasadyta',
+  'grannemedgivande',
+  'kontrollplan',
 ];
 
-const { namn } = Astro.props;
+const { namn, forval, forst } = Astro.props;
 const k = hittaKalkylator(namn);
 if (!k) {
   throw new Error(`[Kalkylator] Okänd kalkylator "${namn}". Lägg till den i src/lib/kalkyl/register.ts`);
@@ -65,6 +88,27 @@ if (!MED_FORMULAR.includes(namn)) {
     `[Kalkylator] Kalkylatorn "${namn}" har inget formulär att bädda in. Lägg till komponenten i src/components/kalkyl/ och slugen i MED_FORMULAR.`,
   );
 }
+
+if (forval !== undefined && namn !== 'grannemedgivande') {
+  throw new Error(`[Kalkylator] Förval finns bara för grannemedgivandet, inte för "${namn}".`);
+}
+/** Grannemedgivandets förval, tolkat som adressen på verktygssidan. */
+if (forst !== undefined && namn !== 'kontrollplan') {
+  throw new Error(`[Kalkylator] forst finns bara för kontrollplanen, inte för "${namn}".`);
+}
+const forstAtgarder: Atgard[] = (forst ?? '').split(/\s+/).filter((o) => o !== '').map((o) => {
+  const a = ATGARD_ORDNING.find((x) => x === o);
+  if (!a) throw new Error(`[Kalkylator] "${o}" i forst är ingen åtgärd i kontrollplanen.`);
+  return a;
+});
+const forvalIndata = forval ? tolkaGrannemedgivande(new URLSearchParams(forval)).indata : undefined;
+
+/*
+ * Fotraden under varje inbäddat verktyg. Ska vara sann för alla inbäddade
+ * verktyg, också generatorerna som inte ger något tal, inte nämna tal och
+ * säga räknaren (docs/briefer/spec-kalkyl-grannemedgivande-2026-09-28.md 12.6).
+ */
+const FOTRAD = 'Knappen tar dig till räknaren med dina värden ifyllda. Där får du hela svaret och ser vad det bygger på.';
 
 const href = `/rakna/${k.slug}/`;
 const prefix = `${k.slug}-inbaddad-`;
@@ -95,8 +139,11 @@ const prefix = `${k.slug}-inbaddad-`;
   {namn === 'rotavdrag' && <RotavdragForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'trappa' && <TrappaForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'u-varde' && <UVardeForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
+  {namn === 'fasadyta' && <FasadytaForm kompakt={true} idPrefix={prefix} knappText="Räkna ut ytan och färgen" />}
+  {namn === 'grannemedgivande' && <GrannemedgivandeForm kompakt={true} indata={forvalIndata} idPrefix={prefix} knappText="Se om grannen ska skriva under" />}
+  {namn === 'kontrollplan' && <KontrollplanForm kompakt={true} forst={forstAtgarder} idPrefix={prefix} knappText="Visa kontrollplanen" />}
 
   <p class="m-0 mt-4 text-liten text-blyerts-2">
-    Knappen tar dig till kalkylatorn med dina värden ifyllda. Där står svaret med källan bakom varje tal.
+    {FOTRAD}
   </p>
 </div>

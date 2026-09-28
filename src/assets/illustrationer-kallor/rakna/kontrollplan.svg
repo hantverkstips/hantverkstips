@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Altan i genomskärning med kontrollplanens numrerade kontroller vid husväggen, plinten, bärlinan, räcket och trappan">
+  <!-- Anteckningsboken, verktygsskiss för /rakna/kontrollplan/ (specen
+       docs/briefer/spec-kalkyl-kontrollplan-2026-09-28.md 12.1, etiketterna ordagrant ur avsnittet
+       "Etiketter till skissen"). Standardfallet: altan utan tak vid huset, i genomskärning från sidan.
+       Husväggen till vänster, altanen på två plintar med golvet 1,5 m över marken, räcke, trappa ner
+       till höger. Blyerts 2 px för hus, altan och plintar, blyerts-2 för markskraffering, gropen,
+       måttbygeln och de numrerade ringarna, snickarpennan för pilen mot plinten under mark (den enda
+       pennsaken), tumstock bakom nyckeltalet 8.
+       Skala: 1 m = 60 px. Marklinje y=250, altangolv y=160 (1,5 m), husvägg x=118.
+       Ringarna, 22 px, motsvarar planens rader vid standard: 1 läget, 2 plinten, 3 bärlinan,
+       5 räcket, 6 trappan.
+       Handskrift i Caveat 500, 24 px, konverteras till banor av npm run illustrationer.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2: marken under marklinjen -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M70,256 l-8,10 M96,256 l-8,10 M122,256 l-8,10 M148,256 l-8,10 M174,256 l-8,10 M200,256 l-8,10 M300,256 l-8,10 M326,256 l-8,10 M404,256 l-8,10 M430,256 l-8,10 M456,256 l-8,10 M482,256 l-8,10 M508,256 l-8,10 M534,256 l-8,10 M560,256 l-8,10"/>
+    <path d="M300,280 l-8,10 M326,280 l-8,10 M404,280 l-8,10 M430,280 l-8,10"/>
+  </g>
+
+  <!-- Blyerts: marklinje och husväggen med ett fönster -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M48,250 Q310,252 572,250"/>
+    <path d="M118,254 Q119,150 118,46"/>
+    <path d="M102,254 Q101,150 102,46"/>
+    <path d="M56,96 Q78,95 98,96 Q97,120 98,144 Q77,145 56,144 Q55,120 56,96 Z"/>
+  </g>
+
+  <!-- Blyerts: trall, bärlina, stolpar och plintar -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M118,156 Q250,154 382,156"/>
+    <path d="M118,164 Q250,162 382,164"/>
+    <path d="M130,168 Q250,166 372,168 L372,182 Q250,184 130,182 Z"/>
+    <path d="M240,182 Q241,208 240,234 M252,182 Q251,208 252,234"/>
+    <path d="M350,182 Q351,208 350,234 M362,182 Q361,208 362,234"/>
+    <path d="M232,236 h28 v54 h-28 z"/>
+    <path d="M342,236 h28 v54 h-28 z"/>
+  </g>
+
+  <!-- Blyerts-2: gropen runt den vänstra plinten, ännu inte igenfylld -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M212,251 Q216,276 220,300 Q246,302 272,300 Q276,276 280,251"/>
+  </g>
+
+  <!-- Blyerts: räcket -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M126,156 Q125,128 126,100 M374,156 Q375,128 374,100"/>
+    <path d="M122,100 Q250,98 378,100"/>
+    <path d="M160,156 V104 M200,156 V104 M300,156 V104 M340,156 V104"/>
+  </g>
+
+  <!-- Blyerts: trappan ner till höger -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M382,160 h30 v30 h30 v30 h30 v30"/>
+    <path d="M382,166 Q428,210 472,252"/>
+  </g>
+
+  <!-- Blyerts-2: måttbygeln för golvets höjd -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M512,160 Q511,205 512,250 M507,160 h10 M507,250 h10"/>
+    <path d="M386,156 H502" stroke-dasharray="7 5" stroke-width="1.25"/>
+  </g>
+
+  <!-- Blyerts-2: de numrerade ringarna, öppna som när man ringar in för hand -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M84,211 a11,11 0 1 0 -3,-1"/>
+    <path d="M222,225 a11,11 0 1 0 -3,-1"/>
+    <path d="M300,207 a11,11 0 1 0 -3,-1"/>
+    <path d="M250,77 a11,11 0 1 0 -3,-1"/>
+    <path d="M448,181 a11,11 0 1 0 -3,-1"/>
+  </g>
+
+  <!-- Papperslappar bakom handskriften nere i marken -->
+  <rect x="46" y="280" width="130" height="26" fill="#f5efe3"/>
+  <rect x="46" y="306" width="212" height="28" fill="#f5efe3"/>
+  <rect x="462" y="304" width="112" height="30" fill="#f5efe3"/>
+
+  <!-- Snickarpenna: pilen mot plinten under mark -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M178,292 Q206,292 226,276"/>
+    <path d="M214,276 L227,275 L222,287"/>
+  </g>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="467" y="306" width="22" height="27" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 478 319)"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="150" y="40" fill="#625a50">altan utan tak, vid huset</text>
+    <text x="84" y="208" fill="#625a50" text-anchor="middle">1</text>
+    <text x="222" y="222" fill="#625a50" text-anchor="middle">2</text>
+    <text x="300" y="204" fill="#625a50" text-anchor="middle">3</text>
+    <text x="250" y="74" fill="#625a50" text-anchor="middle">5</text>
+    <text x="448" y="178" fill="#625a50" text-anchor="middle">6</text>
+    <text x="52" y="300" fill="#ad3519">kolla plinten</text>
+    <text x="52" y="326" fill="#ad3519">innan gropen fylls igen</text>
+    <text x="522" y="212" fill="#625a50">1,5 m</text>
+    <text x="471" y="327">8</text>
+    <text x="494" y="327">kontroller</text>
+  </g>
+</svg>

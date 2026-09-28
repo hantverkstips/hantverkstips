@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Skiss av ett enplanshus med gaveln och långsidan bredvid varandra, där gavelspetsens triangel är markerad.">
+  <!-- Anteckningsboken, verktygsskiss för /rakna/fasadyta/: guidens enplanshus, 10 × 8 m, 2,8 m till
+       takfoten och 2 m från takfoten till nocken, som snickarens fasadritning (specen 13.4): två
+       vyer bredvid varandra på en gemensam marklinje, gaveln rakt framifrån till vänster och
+       långsidan rakt framifrån till höger. Ingen perspektivlinje. Ingen skraffering.
+       Skala 24 px per meter i båda vyerna, så att 10 m blir längre än 8 m.
+       Marklinjen y=300, x 56–584. Gaveln x 100–292 (8 m), vägg y 233–300 (2,8 m), nocken i
+       (196, 185), 2 m över takfoten; takfallen skjuter ut 10 px utanför väggen. Ett fönster mitt på.
+       Långsidan x 324–564 (10 m), samma vägg; takfotslinjen y 233 från x 314 till 574, nocklinjen
+       y 185 från x 318 till 570 och de två korta gavelkanterna. Tre fönster och en dörr som står
+       på marklinjen. 32 px mellan vyerna.
+       Blyerts 2 px för huset och marken, blyerts-2 1,5 px för måttbyglarna och måtten,
+       snickarpenna 2,5 px för gavelspetsens triangel och pilen från etiketten till triangeln,
+       med spetsen inne i triangeln (det enda som pekar). Tumstock bara bakom "98,2 m²".
+       Etiketternas ord är hantverkarens (specen 9.1 och 13.4), högst cirka 22 tecken
+       vid spetsen och 20 ovanför långsidan. Talen är fasta:
+       10 m, 8 m, 2,8 m, 2 m, 16 m², 98,2 m².
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="470" y="58" width="100" height="30" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 520 73)"/>
+
+  <!-- Blyerts: marken, gaveln och långsidan med tak, fönster och dörr -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M56,300 Q320,302 584,300"/>
+    <path d="M100,302 Q98,267 100,231"/>
+    <path d="M292,302 Q294,267 292,231"/>
+    <path d="M90,238 Q142,213 196,185 Q250,213 302,238"/>
+    <path d="M172,248 Q196,247 220,248 Q221,263 220,278 Q196,279 172,278 Q171,263 172,248 Z"/>
+    <path d="M324,302 Q322,267 324,231"/>
+    <path d="M564,302 Q566,267 564,231"/>
+    <path d="M312,233 Q444,235 576,233"/>
+    <path d="M318,185 Q444,183 570,185"/>
+    <path d="M314,233 Q315,209 318,185"/>
+    <path d="M574,233 Q573,209 570,185"/>
+    <path d="M350,248 Q365,247 380,248 Q381,263 380,278 Q365,279 350,278 Q349,263 350,248 Z"/>
+    <path d="M404,248 Q419,247 434,248 Q435,263 434,278 Q419,279 404,278 Q403,263 404,248 Z"/>
+    <path d="M512,248 Q527,247 542,248 Q543,263 542,278 Q527,279 512,278 Q511,263 512,248 Z"/>
+    <path d="M458,300 Q457,272 458,245 Q471,244 484,245 Q485,272 484,300"/>
+  </g>
+
+  <!-- Snickarpenna: gavelspetsens triangel omritad längs sina tre sidor, och pilen från etiketten in i triangeln -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M100,233 Q148,210 196,185 Q244,210 292,233 Q196,235 100,233 Z"/>
+    <path d="M108,166 Q134,190 158,214"/>
+    <path d="M145,212 L158,214 L157,201"/>
+  </g>
+
+  <!-- Blyerts-2: måttbyglarna. 2,8 m till vänster om gaveln, 2 m inne i spetsen, 8 m och 10 m under vyerna. -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M92,300 Q91,266 92,233"/>
+    <path d="M86,300 h12 M86,233 h12"/>
+    <path d="M196,231 Q197,209 196,187"/>
+    <path d="M190,231 h12 M190,187 h12"/>
+    <path d="M100,318 Q196,320 292,318"/>
+    <path d="M100,312 v12 M292,312 v12"/>
+    <path d="M324,318 Q444,320 564,318"/>
+    <path d="M324,312 v12 M564,312 v12"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="42" y="274" fill="#625a50">2,8 m</text>
+    <text x="202" y="222" fill="#625a50">2 m</text>
+    <text x="180" y="346" fill="#625a50">8 m</text>
+    <text x="426" y="346" fill="#625a50">10 m</text>
+    <text x="50" y="128">båda gavelspetsarna</text>
+    <text x="50" y="154">16 m²</text>
+    <text x="380" y="170">öppningarna dras av</text>
+    <text x="476" y="82">98,2 m²</text>
+  </g>
+</svg>

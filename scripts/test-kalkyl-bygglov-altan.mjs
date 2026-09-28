@@ -39,7 +39,7 @@ test('konstanterna är lagens och artikelns', () => {
   assert.equal(HOJD_NARA_BYGGNAD_M, 1.8);
   assert.equal(HOJD_LANGRE_BORT_M, 1.2);
   assert.equal(NARA_BYGGNAD_M, 3.6);
-  /* Boverkets råd om grannmedgivande, och 9 kap. 34 och 35 §§. */
+  /* Plan- och bygglagen 9 kap. 34 och 35 §§. */
   assert.equal(GRANS_M, 4.5);
   /* Plan- och bygglagen 9 kap. 10 §, lovfri tillbyggnad. */
   assert.equal(LOVFRI_TILLBYGGNAD_KVM, 30);
@@ -128,12 +128,32 @@ const FALL = [
     grannmedgivande: false,
   },
   {
+    /* Altan utan tak står inte i 9 kap. 34 §: inget medgivande (prop. 2024/25:169 s. 162). */
     namn: 'Låg altan 2 m från tomtgränsen, alltså närmare än 4,5 m',
     indata: altan({ avstandGransM: 2 }),
     svar: 'nej',
     antalRegler: 2,
-    lagrum: '9 kap. 34 och 35 §§',
+    lagrum: '9 kap. 34 §',
+    grannmedgivande: false,
+  },
+  {
+    /* Skärmtaket gör altanen till en tillbyggnad, och då krävs grannens skriftliga medgivande. */
+    namn: 'Skärmtak 20 kvm 2 m från tomtgränsen',
+    indata: altan({ tak: 'skarmtak', avstandGransM: 2 }),
+    /* Ett nej som bara gäller om grannen skriver under är inget nej (specen 12.1). */
+    svar: 'granne',
+    antalRegler: 3,
+    lagrum: '35 § första stycket 3',
     grannmedgivande: true,
+  },
+  {
+    /* Över 30 kvm krävs bygglov, och då hjälper inget medgivande. */
+    namn: 'Inglasning 40 kvm 2 m från tomtgränsen',
+    indata: altan({ tak: 'vaggar', ytaKvm: 40, avstandGransM: 2 }),
+    svar: 'ja',
+    antalRegler: 2,
+    lagrum: '9 kap. 10 §',
+    grannmedgivande: false,
   },
   {
     namn: 'Låg altan på ett hus som är utpekat som särskilt värdefullt',
@@ -173,6 +193,18 @@ for (const f of FALL) {
   });
 }
 
+test('skärmtak nära gränsen med okänd detaljplan ger granne i båda fallen, inte kanske', () => {
+  const r = raknaBygglovAltan(altan({ detaljplan: 'vet-inte', tak: 'skarmtak', avstandGransM: 2 }));
+  assert.equal(r.status, 'ok');
+  assert.equal(r.svar, 'granne');
+  assert.equal(r.olikaFall, false);
+  assert.equal(r.svarRubrik, SVAR_RUBRIK.granne);
+});
+
+test('rubriken för granne går att dela i ett stort ord och en rest', () => {
+  assert.ok(SVAR_RUBRIK.granne.includes(', '), SVAR_RUBRIK.granne);
+});
+
 test('vet inte om tomten ligger inom detaljplan ger svaret för båda fallen', () => {
   /* 1,5 m hög altan 5 m från huset: bygglov inom plan, inget lov utanför. */
   const r = raknaBygglovAltan(altan({ detaljplan: 'vet-inte', hojdM: 1.5, avstandByggnadM: 5, avstandGransM: 10 }));
@@ -211,9 +243,10 @@ test('gränsen mellan 1,8 och 1,2 m går vid 3,6 m från byggnaden', () => {
   assert.equal(raknaBygglovAltan(altan({ hojdM: 1.81, avstandByggnadM: 3.6 })).svar, 'ja');
   assert.equal(raknaBygglovAltan(altan({ hojdM: 1.2, avstandByggnadM: 3.7, avstandGransM: 10 })).svar, 'nej');
   assert.equal(raknaBygglovAltan(altan({ hojdM: 1.21, avstandByggnadM: 3.7, avstandGransM: 10 })).svar, 'ja');
-  /* Grannmedgivandet slår in först under 4,5 m, inte på måttet. */
-  assert.equal(raknaBygglovAltan(altan({ avstandGransM: 4.5 })).kravGrannmedgivande, false);
-  assert.equal(raknaBygglovAltan(altan({ avstandGransM: 4.49 })).kravGrannmedgivande, true);
+  /* Grannmedgivandet slår in först under 4,5 m, inte på måttet, och bara med tak. */
+  assert.equal(raknaBygglovAltan(altan({ tak: 'skarmtak', avstandGransM: 4.5 })).kravGrannmedgivande, false);
+  assert.equal(raknaBygglovAltan(altan({ tak: 'skarmtak', avstandGransM: 4.49 })).kravGrannmedgivande, true);
+  assert.equal(raknaBygglovAltan(altan({ avstandGransM: 4.49 })).kravGrannmedgivande, false);
 });
 
 test('sanktionsavgiften stämmer mot tabellen i artikeln', () => {

@@ -1,0 +1,575 @@
+---
+/**
+ * Fasadräknaren: väggytan på ett hus ur omkrets, höjd och gavelspetsar efter
+ * takform, minus fönster och dörrar, och liter färg och burkar på den målade
+ * ytan. Formuläret skickas som GET till samma sida och räkningen sker på
+ * servern, så sidan fungerar utan ett enda byte klient-JS.
+ * Se docs/SPEC-SIDMALLAR.md avsnitt 4.7 och
+ * docs/briefer/spec-kalkyl-fasadyta-2026-09-28.md.
+ *
+ * Formeln, konstanterna och all text som modulen äger ligger i
+ * src/lib/kalkyl/fasadyta.ts. Sidan räknar ingenting själv, den visar svaret och
+ * redovisar källan bakom varje rad.
+ *
+ * Inga produkter och inget reklamband, enligt affiliateagentens beslut i
+ * docs/briefer/affiliate-fasad-2026-09-28.md avsnitt 3.
+ */
+export const prerender = false;
+
+import Bas from '../../layouts/Bas.astro';
+import {
+  antagandenFor,
+  beskedVarden,
+  burkText,
+  delbarQuery,
+  literGarAtText,
+  literText,
+  m2Text,
+  vinkelText,
+  atgangstabell,
+  GRUND_ATGANG,
+  raknaFasadyta,
+  STANDARD,
+  TEXT,
+  tolkaQuery,
+  type FasadytaIndata,
+  type KallaRef,
+} from '../../lib/kalkyl/fasadyta';
+import { ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
+import { verktyg } from '../../lib/strukturdata';
+import { verktygsDelningsbild, verktygsillustration, verktygsVarumarkesbild } from '../../lib/verktygsbild';
+import FasadytaForm from '../../components/kalkyl/FasadytaForm.astro';
+import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Faq from '../../components/ui/Faq.astro';
+import Illustration from '../../components/ui/Illustration.astro';
+import Markering from '../../components/ui/Markering.astro';
+import Pennstreck from '../../components/ui/Pennstreck.astro';
+import StrukturData from '../../components/ui/StrukturData.astro';
+import Tabellyta from '../../components/ui/Tabellyta.astro';
+
+Astro.locals.sidtyp = 'verktyg';
+
+Astro.response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+
+/** Slug, namn och beskrivning på ett ställe: brödsmulan, og:image och WebApplication läser samma. */
+const SLUG = 'fasadyta';
+/* SEO:s fras. Samma namn som registerposten. */
+const VERKTYGSNAMN = 'Beräkna fasadyta och färg till huset';
+/* 120 till 155 tecken. */
+const BESKRIVNING =
+  'Beräkna fasadyta ur husets mått, med gavelspetsarna medräknade och fönstren avdragna, och se hur mycket färg det går åt i liter och burkar.';
+/* Högst 60 tecken. Bär SEO:s fras "beräkna fasadyta" (docs/briefer/seo-checklista-2026-09-28/raknare.md). */
+const titel = 'Beräkna fasadyta och liter färg till huset';
+
+/* Sidans egen text. */
+/* H1 bär SEO:s fras "hur mycket färg går det åt till ett hus" (docs/briefer/seo-checklista-2026-09-28/raknare.md). */
+const H1 = 'Hur mycket färg går det åt till huset?';
+const INGRESS =
+  'Färgburken säger hur många kvadratmeter en liter räcker till, men inte hur många kvadratmeter ditt hus har. Skriv in längden, bredden och höjden upp till takfoten, välj takform och räkna fönstren och dörrarna, så får du fasadytan med gavlarna medräknade och öppningarna avdragna. Sedan räknar jag liter och burkar för din panel, din färg och det skick fasaden är i.';
+/**
+ * Kortsvaret, tre till fem meningar, ett stycke per rad. Säger båda ytorna och
+ * varför de skiljer sig. Gavelspetsen förklaras här och ingen annanstans på
+ * sidan. Talen är standardvärdenas: 98,2 m², 117,84 m² målat, 33,67 liter i
+ * fyra burkar om 9 liter, och 28,06 liter på slät panel.
+ */
+const KORTSVAR: { fore: string; markering?: string; efter?: string }[] = [
+  {
+    fore: 'Ett enplanshus på 10 gånger 8 meter, med 2,8 meter upp till takfoten och ett sadeltak som stiger 2 meter, har ',
+    markering: '98 kvadratmeter fasadyta',
+    efter:
+      '. Då är gavelspetsarna medräknade, de trekantiga delarna av gavlarna som går upp mot nocken, och tio fönster och två dörrar är avdragna.',
+  },
+  {
+    fore: 'Det är ytan en målare tar betalt för. På lockpanel målar du mer, eftersom lockbrädornas kanter också ska ha färg, och där blir det 118 kvadratmeter. Med två strykningar akrylatfärg, som räcker till 7 kvadratmeter per liter, går det åt 28 liter på slät panel och 34 på lockpanel, och till lockpanelen köper du fyra burkar om 9 liter, alltså 36 liter.',
+  },
+];
+/* Alt under 125 tecken, ordagrant samma som aria-label på skissens rotelement. */
+const SKISS_ALT =
+  'Skiss av ett enplanshus med gaveln och långsidan bredvid varandra, där gavelspetsens triangel är markerad.';
+const SKISS_BILDTEXT =
+  'Gaveln till vänster är 8 meter bred och långsidan till höger 10 meter lång, och väggen är 2,8 meter hög upp till takfoten. Gavelspetsen stiger 2 meter till nocken och är 8 kvadratmeter, 16 med båda gavlarna. När fönstren och dörrarna är avdragna blir det 98,2 m² fasadyta.';
+const LAS_VIDARE = [
+  { href: '/fasad/mala-om-huset/', text: 'Vad det kostar att måla om huset, med målare eller på egen hand' },
+  { href: '/rakna/mala-ute/', text: 'Räkna på temperaturen och daggen för dagen du vill måla' },
+  { href: '/rakna/kvadratmeter/', text: 'Räkna ut kvadratmeter och färg till ett rum inomhus' },
+];
+/* Tre till fem frågor. Ingen fråga som guiden besvarar ordagrant; guiden äger kostnadsfrågan. */
+const FRAGOR = [
+  {
+    fraga: 'Ska takfoten och vindskivorna räknas in i fasadytan?',
+    svar: 'Nej. Höjden mäts upp till takfoten, där panelen slutar, och det som sitter ovanför ligger utanför talet. Det gäller brädorna under takutsprånget och vindskivorna längs gavlarnas takfall. Mät dem i löpmeter och räkna färgen till dem för sig, särskilt om de har en annan kulör än väggen.',
+  },
+  {
+    fraga: 'Räknas knutbrädor och fönsterfoder bort från ytan?',
+    svar: 'Nej. Knutbrädorna i hörnen och fodren runt fönstren sitter ovanpå panelen, och i räkningen är ytan bakom dem vägg. Har de samma kulör som väggen finns färgen till dem därför ungefär med i literna. Har de en egen kulör köper du en liten burk till dem.',
+  },
+  {
+    fraga: 'Mäter jag höjden från marken eller från sockeln?',
+    svar: 'Från sockeln, där panelen börjar. En sockel av betong eller puts ska inte ha träfasadfärg, så den hör inte till höjden. Med en hög sockel kan det skilja flera kvadratmeter på en enda långsida.',
+  },
+  {
+    fraga: 'Hur mycket färg går det åt till ett tvåplanshus?',
+    svar: 'Med samma bottenplatta som huset i formuläret, 10 gånger 8 meter, och 5,6 meter upp till takfoten blir fasadytan 199 kvadratmeter, om fönstren och dörrarna är lika många. På lockpanel går det åt 68 liter akrylatfärg för två strykningar, åtta burkar om 9 liter, och på slät panel 57 liter, sju burkar. Har övervåningen egna fönster fyller du i dem också, och då blir det mindre.',
+  },
+];
+
+/* Gränssnittstext, ordagrant ur specen 4.1 och skillen nytt-verktyg. */
+const STANDARDVARNING = 'Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.';
+const DELATEXT = 'Dina värden ligger i adressen. Markera den och kopiera, så får den du skickar länken till samma svar.';
+
+const q = Astro.url.searchParams;
+const { indata } = tolkaQuery(q);
+const resultat = raknaFasadyta(indata);
+const fel = resultat.status === 'ogiltig' ? resultat.fel : {};
+// Vid ogiltig indata visas standardvärdenas svar, med varningen överst.
+const visatIndata: FasadytaIndata = resultat.status === 'ogiltig' ? STANDARD : indata;
+const visat = raknaFasadyta(visatIndata);
+if (visat.status !== 'ok') throw new Error('[fasadyta] Standardvärdena ska alltid ge ett svar');
+
+const komma = (n: number): string => (Number.isFinite(n) ? String(n).replace('.', ',') : '');
+
+/**
+ * Fältens värden kommer från adressen som den skrevs, inte från de tolkade
+ * talen: "abc" blir NaN i tolkaQuery, och NaN i ett fält som läsaren ska rätta
+ * är obrukbart.
+ */
+function faltVarde(nyckel: string, standardVarde: number): string {
+  const ra = q.get(nyckel);
+  if (ra !== null) return ra;
+  return komma(standardVarde);
+}
+const varden = {
+  langd: faltVarde('langd', STANDARD.langdM),
+  bredd: faltVarde('bredd', STANDARD.breddM),
+  hojd: faltVarde('hojd', STANDARD.hojdM),
+  nock: faltVarde('nock', STANDARD.nockM),
+  vinkel: faltVarde('vinkel', STANDARD.vinkelGrader),
+  bryt: faltVarde('bryt', STANDARD.brytM),
+  indrag: faltVarde('indrag', STANDARD.indragM),
+  fonster: faltVarde('fonster', STANDARD.fonster),
+  fonsterbredd: faltVarde('fonsterbredd', STANDARD.fonsterBreddM),
+  fonsterhojd: faltVarde('fonsterhojd', STANDARD.fonsterHojdM),
+  dorrar: faltVarde('dorrar', STANDARD.dorrar),
+  dorrbredd: faltVarde('dorrbredd', STANDARD.dorrBreddM),
+  dorrhojd: faltVarde('dorrhojd', STANDARD.dorrHojdM),
+};
+
+/** Delbar länk, byggd av de tolkade värdena. */
+const delaLank = new URL(`/rakna/fasadyta/?${delbarQuery(visatIndata).toString()}`, Astro.site ?? Astro.url).toString();
+
+/** Beskedet, med talen i rubriken (specen 2.9). */
+const bv = beskedVarden(visat, visatIndata);
+const besked = TEXT.besked[visat.utfall];
+
+/** Länken till måla ute: med färgen vid trä, utan parameter vid puts. */
+const malaUteHref = visat.utfall === 'puts' ? '/rakna/mala-ute/' : `/rakna/mala-ute/?farg=${visatIndata.farg}`;
+
+/**
+ * Cellklasserna en gång på <table>, inte per cell (u-värde 12.1). Samma
+ * utseende som CELL_KLASS i stil.ts: ram under varje rad, p-2, align-top, blyerts.
+ */
+const TABELL_KLASS =
+  'w-full border-collapse text-liten tabular-nums [&_th]:p-2 [&_td]:p-2 [&_th]:align-top [&_td]:align-top [&_th]:text-left [&_tbody_th]:[font-weight:inherit] [&_tr]:border-b [&_tr]:border-linje [&_th]:text-blyerts [&_td]:text-blyerts [&_thead_th]:text-etikett [&_thead_th]:uppercase [&_thead_th]:text-blyerts-2';
+/** Regellistan: klasserna på <ul>, som u-värde 12.1. */
+const REGEL_LISTA_KLASS =
+  'm-0 mt-6 p-0 list-none text-brod lg:text-brod-lg [&>li]:mb-4 [&>li]:border-l-2 [&>li]:border-blyerts-2 [&>li]:pl-4 [&_span]:block [&_span+span]:text-liten [&_span+span]:text-blyerts-2';
+
+/** Uträkningen i "Därför blev svaret så", en rad per steg med talen ur resultatet (specen 4.4). */
+const uttrakning: string[] = [];
+uttrakning.push(TEXT.darfor.vaggar(m2Text(visat.omkretsM), komma(visatIndata.hojdM), m2Text(visat.vaggarBruttoM2)));
+if (visatIndata.takform === 'sadel' && visat.tM !== null && visat.vinkelGrader !== null) {
+  uttrakning.push(TEXT.darfor['gavel-sadel'](literText(visat.tM), vinkelText(visat.vinkelGrader), m2Text(visat.gavelM2)));
+} else if (visatIndata.takform === 'pulpet' && visat.tM !== null && visat.vinkelGrader !== null) {
+  uttrakning.push(TEXT.darfor['gavel-pulpet'](literText(visat.tM), vinkelText(visat.vinkelGrader), m2Text(visat.gavelM2)));
+} else if (visatIndata.takform === 'valmat') {
+  uttrakning.push(TEXT.darfor['gavel-valmat']);
+} else if (visat.mansard) {
+  uttrakning.push(
+    TEXT.darfor['gavel-mansard'](
+      literText(visat.mansard.t1M),
+      literText(visat.mansard.t2M),
+      literText(visat.mansard.ovreBreddM),
+      m2Text(visat.gavelM2),
+    ),
+  );
+}
+if (visatIndata.fonster > 0) {
+  uttrakning.push(
+    TEXT.darfor.fonster(
+      visatIndata.fonster,
+      komma(visatIndata.fonsterBreddM),
+      komma(visatIndata.fonsterHojdM),
+      m2Text(visat.avdragFonsterM2),
+    ),
+  );
+}
+if (visatIndata.dorrar > 0) {
+  uttrakning.push(
+    TEXT.darfor.dorrar(
+      visatIndata.dorrar,
+      komma(visatIndata.dorrBreddM),
+      komma(visatIndata.dorrHojdM),
+      m2Text(visat.avdragDorrM2),
+    ),
+  );
+}
+uttrakning.push(TEXT.darfor.fasadyta(m2Text(visat.fasadytaM2)));
+if (visat.maladYtaM2 !== null && visat.profilfaktor !== null && visat.profilfaktor !== 1) {
+  uttrakning.push(TEXT.darfor['malad-yta'](m2Text(visat.maladYtaM2), komma(visat.profilfaktor)));
+}
+if (visat.tackfarg) {
+  uttrakning.push(
+    TEXT.darfor['liter-tack'](literGarAtText(visat.tackfarg.literRaknat), visat.tackfarg.strykningar, visat.tackfarg.m2PerLiter),
+  );
+}
+if (visat.grundfarg) {
+  uttrakning.push(TEXT.darfor['liter-grund'](literGarAtText(visat.grundfarg.literRaknat), visat.grundfarg.m2PerLiter));
+}
+if (visat.grundPer10M2 !== null) {
+  uttrakning.push(TEXT.darfor['grund-bart'](literGarAtText(visat.grundPer10M2), GRUND_ATGANG.sagat));
+}
+
+/** Den fasta åtgångstabellen i "Så räknar jag" (specen 14.4). Samma på varje sida, oberoende av indata. */
+const tabellAtgang = atgangstabell().map((rad) => {
+  const t = TEXT.atgangstabell;
+  if (rad.nyckel === 'tegel') {
+    return { nyckel: rad.nyckel, m2: t.tegel.m2, stryk: t.tegel.strykningar, liter: t.tegel.liter };
+  }
+  const garAt = rad.literGarAt === null ? '' : literGarAtText(rad.literGarAt);
+  const kopa = rad.literAttKopa === null ? '' : literText(rad.literAttKopa);
+  const liter =
+    rad.nyckel === 'grund-skrapat'
+      ? t.grundBart(garAt)
+      : rad.nyckel === 'silikat'
+        ? t.putsUtanBinder(garAt, kopa)
+        : t.liter(garAt, kopa, rad.burkar ? burkText(rad.burkar) : '');
+  return {
+    nyckel: rad.nyckel,
+    m2: rad.m2PerLiter === null ? '' : komma(rad.m2PerLiter),
+    stryk: rad.strykningar === null ? '' : String(rad.strykningar),
+    liter,
+  };
+});
+
+/**
+ * Antagandetabellen visar bara raderna svaret vilar på, och källorna står en
+ * gång under tabellen i den ordning de först förekommer (u-värde 12.2).
+ */
+const antaganden = antagandenFor(visat, visatIndata);
+const kallor: KallaRef[] = [];
+for (const a of antaganden) {
+  for (const k of a.kallor) if (!kallor.some((x) => x.url === k.url && x.titel === k.titel)) kallor.push(k);
+}
+
+const illustration = verktygsillustration(SLUG);
+/** Varumärkesbilden i sidhuvudet (docs/DESIGN.md avsnitt 7). Finns den står skissen i "Så räknar jag". */
+const varumarke = verktygsVarumarkesbild(SLUG);
+const huvudbild = varumarke ?? illustration;
+
+/* Den målade ytan i spalten, när profilfaktorn inte är 1 (specen 4.3 punkt 4). */
+const visaMaladYta = visat.maladYtaM2 !== null && visat.profilfaktor !== null && visat.profilfaktor !== 1;
+---
+
+<Bas
+  title={titel}
+  description={BESKRIVNING}
+  reklam={false}
+  brodsmulor={[
+    { namn: 'Hantverkstips', href: '/' },
+    { namn: 'Räkna själv', href: '/rakna/' },
+    { namn: VERKTYGSNAMN },
+  ]}
+  bred={true}
+  ogBild={verktygsDelningsbild(SLUG)}
+>
+  <StrukturData
+    slot="head"
+    data={verktyg({ url: `/rakna/${SLUG}/`, namn: VERKTYGSNAMN, beskrivning: BESKRIVNING })}
+  />
+
+  <div class="mx-auto w-full max-w-lasbredd">
+    {/* Sidhuvudet: rubrik och ingress i 7/12, bilden i 5/12 från lg, under ingressen på mobil. */}
+    <section class="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-7">
+        <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">{H1}</h1>
+        <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">{INGRESS}</p>
+      </div>
+
+      {
+        huvudbild && (
+          <div class="lg:col-span-5">
+            <img
+              src={huvudbild.src}
+              alt=""
+              width={huvudbild.width}
+              height={huvudbild.height}
+              fetchpriority="high"
+              decoding="async"
+              class:list={['block h-auto w-full', !varumarke && 'rounded-sm border border-linje']}
+            />
+          </div>
+        )
+      }
+    </section>
+
+    <Faktaruta variant="kortsvar">
+      {
+        KORTSVAR.map((s) => (
+          <p class="m-0 leading-6">
+            {s.fore}{s.markering && <Markering>{s.markering}</Markering>}{s.efter}
+          </p>
+        ))
+      }
+    </Faktaruta>
+
+    <div class="linjerat mt-8 lg:grid lg:grid-cols-2 lg:gap-8">
+      {/* Formuläret ligger i src/components/kalkyl/FasadytaForm.astro, så att
+          <Kalkylator namn="fasadyta" /> i artikeln visar samma fält. */}
+      <FasadytaForm indata={indata} varden={varden} fel={fel} />
+
+      <div class="mt-8 border-t border-linje pt-6 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
+        {resultat.status === 'ogiltig' && <p class="m-0 mb-2 text-liten text-varning">{STANDARDVARNING}</p>}
+
+        <p class="m-0 font-sans text-h3 lg:text-h3-lg font-bold text-blyerts">{besked.rubrik(bv)}</p>
+        <p class="m-0 mt-1 text-brod">{besked.rad(bv)}</p>
+
+        <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">{TEXT.spalt['etikett-yta']}</p>
+        <p class="m-0 mt-1 flex flex-wrap items-baseline gap-x-2 tabular-nums">
+          <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
+            <Markering>{m2Text(visat.fasadytaM2)}</Markering>
+          </span>
+          <span class="text-ingress lg:text-ingress-lg">m²</span>
+        </p>
+        <p class="m-0 mt-2 text-liten text-blyerts-2 tabular-nums">
+          {TEXT.spalt['rad-brutto'](m2Text(visat.bruttoM2), m2Text(visat.avdragM2))}
+        </p>
+
+        {
+          visat.utfall === 'farg' && visat.tackfarg && visat.tackfarg.literAttKopa !== null && (
+            <>
+              <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
+                {TEXT.spalt['etikett-farg']}
+              </p>
+              <p class="m-0 mt-1 font-serif text-h1 lg:text-h1-lg text-blyerts tabular-nums">
+                {literText(visat.tackfarg.literAttKopa)}&nbsp;liter
+              </p>
+              {visat.tackfarg.burkar && <p class="m-0 mt-1 text-brod">{burkText(visat.tackfarg.burkar)}</p>}
+              {/* Den målade ytan före litern, så att kedjan läses framlänges (specen 14.2 rad 1). */}
+              {visaMaladYta && visat.maladYtaM2 !== null && visat.profilfaktor !== null && (
+                <p class="m-0 mt-1 text-liten text-blyerts-2 tabular-nums">
+                  {TEXT.spalt['rad-malad-yta'](m2Text(visat.maladYtaM2), komma(visat.profilfaktor))}
+                </p>
+              )}
+              <p class="m-0 mt-1 text-liten text-blyerts-2 tabular-nums">
+                {TEXT.spalt['rad-raknat'](
+                  literGarAtText(visat.tackfarg.literRaknat),
+                  m2Text(visat.maladYtaM2 ?? visat.fasadytaM2),
+                  visat.tackfarg.strykningar,
+                  visat.tackfarg.m2PerLiter,
+                )}
+              </p>
+            </>
+          )
+        }
+
+        {
+          visat.grundfarg && (
+            <p class="m-0 mt-4 text-brod tabular-nums">
+              <span class="text-etikett lg:text-etikett-lg uppercase text-blyerts-2">{TEXT.spalt['etikett-grund']}</span>{' '}
+              {TEXT.spalt['rad-grund'](
+                literGarAtText(visat.grundfarg.literRaknat),
+                visat.grundfarg.burkar ? burkText(visat.grundfarg.burkar) : '',
+              )}
+            </p>
+          )
+        }
+        {
+          visat.grundPer10M2 !== null && (
+            <p class="m-0 mt-4 text-brod tabular-nums">
+              <span class="text-etikett lg:text-etikett-lg uppercase text-blyerts-2">{TEXT.spalt['etikett-grund']}</span>{' '}
+              {TEXT.spalt['rad-grund-bart'](literGarAtText(visat.grundPer10M2))}
+            </p>
+          )
+        }
+
+        {
+          visat.utfall === 'puts' && visat.tackfarg && (
+            <>
+              <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
+                {TEXT.spalt['etikett-farg']}
+              </p>
+              <p class="m-0 mt-1 font-serif text-h1 lg:text-h1-lg text-blyerts tabular-nums">
+                {literText(visat.tackfarg.literAttKopa ?? visat.tackfarg.literRaknat)}&nbsp;liter
+              </p>
+              <p class="m-0 mt-1 text-liten text-blyerts-2 tabular-nums">
+                {TEXT.spalt['rad-raknat'](
+                  literGarAtText(visat.tackfarg.literRaknat),
+                  m2Text(visat.maladYtaM2 ?? visat.fasadytaM2),
+                  visat.tackfarg.strykningar,
+                  visat.tackfarg.m2PerLiter,
+                )}
+              </p>
+              <p class="m-0 mt-1 text-liten text-blyerts-2">{TEXT.spalt['rad-puts-burkar']}</p>
+            </>
+          )
+        }
+
+        <p class="m-0 mt-4 text-liten text-blyerts-2">
+          <a href="#darfor-blev-svaret-sa" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
+            {TEXT.spalt.pekrad}
+          </a>
+        </p>
+        <p class="m-0 mt-2">
+          <a href="#sa-raknar-jag" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>Så räknar jag</a>
+        </p>
+        {
+          (visat.utfall === 'farg' || visat.utfall === 'puts') && (
+            <p class="m-0">
+              <a href={malaUteHref} class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
+                {TEXT.spalt['lank-mala-ute']}
+              </a>
+            </p>
+          )
+        }
+
+        {/* Dela. Svaret står i adressen, så ett skrivskyddat fält räcker. */}
+        <div class="mt-4 border-t border-linje pt-4">
+          <label for="dela" class={ETIKETT_KLASS}>{TEXT.spalt['dela-etikett']}</label>
+          <input id="dela" type="text" readonly value={delaLank} class:list={[FALT_KLASS, 'border-blyerts-2']} />
+          <p class="m-0 mt-1 text-liten text-blyerts-2">{DELATEXT}</p>
+        </div>
+      </div>
+    </div>
+
+    <section>
+      <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
+      <ol class="m-0 pl-6 list-decimal text-brod lg:text-brod-lg tabular-nums [&>li]:mb-2">
+        {uttrakning.map((rad) => <li>{rad}</li>)}
+      </ol>
+      <ul class={REGEL_LISTA_KLASS}>
+        {
+          visat.regler.map((nyckel) => {
+            const regel = TEXT.regel[nyckel];
+            return (
+              <li>
+                <span>{regel.text}</span>
+                {regel.kallor.length > 0 && (
+                  <span>
+                    {regel.kallor.map((k, i) => (
+                      <>
+                        {i > 0 && '; '}
+                        <a href={k.url} rel="nofollow" class={LANK_KLASS}>{k.titel}</a>
+                      </>
+                    ))}
+                  </span>
+                )}
+              </li>
+            );
+          })
+        }
+      </ul>
+    </section>
+
+    {
+      visat.gorInteDetHar.length > 0 && (
+        <section>
+          <Pennstreck id="gor-inte-det-har">Gör inte det här</Pennstreck>
+          {visat.gorInteDetHar.map((g, i) => (
+            <p class:list={['m-0 text-brod lg:text-brod-lg', i > 0 && 'mt-4']}>{TEXT.gorInte[g]}</p>
+          ))}
+        </section>
+      )
+    }
+
+    <section>
+      <Pennstreck id="sa-raknar-jag">Så räknar jag</Pennstreck>
+      {
+        varumarke && illustration && visatIndata.takform === 'sadel' && (
+          <Illustration namn="rakna/fasadyta" alt={SKISS_ALT} bildtext={SKISS_BILDTEXT} />
+        )
+      }
+      <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg">
+        {TEXT.steg.map((s) => <li class="mb-2">{s}</li>)}
+      </ol>
+
+      {/* Den fasta åtgångstabellen (specen 14.4): alltid, oberoende av indata. */}
+      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">{TEXT.atgangstabell.rubrik}</h3>
+      <Tabellyta kolumner={5} class="mt-4">
+        <table class={`${TABELL_KLASS} [&_tbody_th]:min-w-36 [&_td:nth-child(2)]:whitespace-nowrap [&_td:nth-child(3)]:whitespace-nowrap [&_td:nth-child(4)]:min-w-56 [&_td:nth-child(5)]:min-w-32`}>
+          <thead>
+            <tr>
+              {TEXT.atgangstabell.kolumner.map((k) => <th scope="col">{k}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {
+              tabellAtgang.map((r) => (
+                <tr>
+                  <th scope="row">{TEXT.atgangstabell.rad[r.nyckel]}</th>
+                  <td>{r.m2}</td>
+                  <td>{r.stryk}</td>
+                  <td>{r.liter}</td>
+                  <td>{TEXT.atgangstabell.kalla[r.nyckel]}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </Tabellyta>
+      <p class="m-0 mt-2 text-liten text-blyerts-2">{TEXT.atgangstabell.under}</p>
+
+      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad siffrorna vilar på</h3>
+      <Tabellyta kolumner={3} class="mt-4">
+        <table class={TABELL_KLASS}>
+          <thead>
+            <tr>
+              <th scope="col">Vad</th>
+              <th scope="col">Värde</th>
+              <th scope="col">Källa eller antagande</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              antaganden.map((a) => (
+                <tr>
+                  <th scope="row">{TEXT.antagande[a.nyckel]}</th>
+                  <td>{a.varde}</td>
+                  <td>
+                    {a.typ}.{a.kallor.length > 0 && ` ${a.kallor.map((k) => k.titel).join('; ')}`}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </Tabellyta>
+      <ul class="m-0 mt-4 pl-6 text-liten">
+        {
+          kallor.map((k) => (
+            <li>
+              {/* Kommat på samma rad som </a>, annars blir radbrytningen ett mellanslag före kommat (u-värde 12.42). */}
+              <a href={k.url} rel="nofollow" class={LANK_KLASS}>{k.titel}</a>, {k.last}
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section>
+      <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
+      <ul class="m-0 p-0 list-none">
+        {
+          LAS_VIDARE.map((l) => (
+            <li class="border-t border-linje">
+              <a href={l.href} class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
+                {l.text}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <Faq fragor={FRAGOR} />
+  </div>
+</Bas>

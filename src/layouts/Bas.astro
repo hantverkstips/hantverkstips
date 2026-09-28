@@ -195,11 +195,11 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
   </head>
 
   <body class="min-h-dvh flex flex-col bg-papper text-blyerts text-brod lg:text-brod-lg">
-    <a href="#innehall" class="hoppa">Hoppa till innehåll</a>
+    <a href="#innehall" class="hoppa print:hidden">Hoppa till innehåll</a>
 
     <Fragment set:html={ikoner} />
 
-    <header class="relative border-b border-linje">
+    <header class="relative border-b border-linje print:hidden">
       <div class="mx-auto max-w-sidbredd px-4 sm:px-6 lg:px-8 h-14 lg:h-16 flex items-center justify-between">
         <a href="/" class="ordmarke" aria-label="Hantverkstips, till startsidan">
           <Fragment set:html={ordmarke} />
@@ -300,14 +300,14 @@ const sidfotLank = 'text-papper underline decoration-1 underline-offset-2 hover:
       ]}
     >
       {brodsmulor && brodsmulor.length > 0 && !brodsmulorIVy && (
-        <div class="mb-6">
+        <div class="mb-6 print:hidden">
           <Brodsmulor lista={brodsmulor} />
         </div>
       )}
       <slot />
     </main>
 
-    <footer class="mt-12 lg:mt-24 bg-blyerts text-papper text-liten">
+    <footer class="mt-12 lg:mt-24 bg-blyerts text-papper text-liten print:hidden">
       <div class="mx-auto max-w-sidbredd px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
         <div class="ordmarke" style="--color-blyerts: var(--color-papper)">
           <Fragment set:html={ordmarke} />
