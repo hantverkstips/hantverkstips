@@ -28,6 +28,7 @@ import KvadratmeterForm from '../kalkyl/KvadratmeterForm.astro';
 import MalaUteForm from '../kalkyl/MalaUteForm.astro';
 import RotavdragForm from '../kalkyl/RotavdragForm.astro';
 import TrappaForm from '../kalkyl/TrappaForm.astro';
+import UVardeForm from '../kalkyl/UVardeForm.astro';
 import Ikon from './Ikon.astro';
 
 interface Props {
@@ -51,6 +52,7 @@ const MED_FORMULAR = [
   'kallare',
   'rotavdrag',
   'trappa',
+  'u-varde',
 ];
 
 const { namn } = Astro.props;
@@ -92,6 +94,7 @@ const prefix = `${k.slug}-inbaddad-`;
   {namn === 'kallare' && <KallareForm kompakt={true} idPrefix={prefix} knappText="Ge mig svaret" />}
   {namn === 'rotavdrag' && <RotavdragForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'trappa' && <TrappaForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
+  {namn === 'u-varde' && <UVardeForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
 
   <p class="m-0 mt-4 text-liten text-blyerts-2">
     Knappen tar dig till kalkylatorn med dina värden ifyllda. Där står svaret med källan bakom varje tal.

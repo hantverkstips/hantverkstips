@@ -306,8 +306,8 @@ Skikt och tillägg valideras inte i läget `uvarde`, och `uf`, `ue` inte i läge
    - `krPerAr = kwhPerAr × ELPRIS_KR_PER_KWH`
    - per värmepump: `krMin = kwhPerAr / scopMax × elpris`, `krMax = kwhPerAr / scopMin × elpris`. Inget medelvärde.
 9. **Återbetalningen:**
+   - ingen besparing: `null`, `'ingen-besparing'` (först; ändrat vid granskning 1, fall 10 i 6.1 kräver det)
    - läget uvarde: `null`, `aterbetalningSaknas: 'uvarde-lage'`
-   - ingen besparing: `null`, `'ingen-besparing'`
    - något tillägg saknar pris: `null`, `'inget-pris'`
    - annars `kostnadKr = Σ ytaM2 × tjocklekMm × materialprisKrM2Mm(material, tjocklekMm)`, `ar = kostnadKr / krPerAr`, `aterbetalningSaknas: null`
    - `materialprisKrM2Mm`: vindsull → `PRIS_VINDSULL_KR_M2_MM`; flexibatts → 45-priset om `tjocklekMm <= 70`, annars 95-priset; övriga `null`.
@@ -469,7 +469,7 @@ Vid `ogiltig` står fälten kvar med läsarens värden och felen under, och spal
 1. Standardvarningen, bara vid `ogiltig`.
 2. Beskedet: `TEXT.besked[visat.besked].rubrik` i H3-stil (`<p>`, inte `<h3>`), raden under i `text-brod`.
 3. Etiketten "U-värde" (TEXT SAKNAS: `etikett-u`) i etikett-stil, sedan på en baslinje: `treDecimaler(uSlut)` i `text-siffra` med `<Markering>`, och "W/m²K" i `text-ingress`. När `uEfter` finns, en rad i `text-liten text-blyerts-2` med U före (TEXT SAKNAS: `rad-u-fore`, talet ur koden).
-4. Jämförelsen, två rader i en `<ul>` med `border-t border-linje py-2`: kolumnens rubrik, gränsen med tre decimaler för vägg, tak, golv och en decimal för fönster och dörr, och `klarar` eller `klararInte`.
+4. Jämförelsen, två rader i en `<ul>` med `border-t border-linje py-2`: kolumnens rubrik, gränsen som Boverket skriver den ("0,18", "1,1"; ändrat vid granskning 1, se 12.3), och `klarar` eller `klararInte`.
 5. Bara när `besparing` finns: etiketten (TEXT SAKNAS: `etikett-sparar`), `heltal(krPerAr)` + " kr" i `text-h1` (andra talet, ingen Markering), en rad i `text-liten` med `heltal(kwhPerAr)` kWh, regionens namn och elprisets `ELPRIS_KALLA.period` (TEXT SAKNAS: `rad-kwh`). Perioden ska stå intill kronorna.
 6. Bara när `besparing` finns: värmepumparna, fem rader i en `<ul>`, "{vp-namn}: {heltal(krMin)} till {heltal(krMax)} kr" (TEXT SAKNAS: `rad-vp`, talen ur koden). Ingen tabell i spalten.
 7. Återbetalningen: finns den, `endecimal(ar)` år och `heltal(kostnadKr)` kr i ull (TEXT SAKNAS: `rad-aterbetalning`); annars `TEXT.aterbetalningSaknas[orsak]`.
@@ -488,7 +488,7 @@ Vid `bara-u-*` och `ingen-forbattring` faller punkt 5 och 6 bort och punkt 7 sä
 
 formeln; Rsi vägg, tak, golv; Rse; Rse bakom ventilerad luftspalt; regelandel; λ i regeln; de tretton materialen; gradtimmar Mellansverige, söder, norr; elpris med period; fem SCOP-rader; Boverket tak, vägg, golv, fönster, dörr (värdet "0,13 och 0,13", båda kolumnerna); pris Vindsull, Flexibatts 45, Flexibatts 95; ANTAGANDE ΔU = 0; A1 tillägg utan reglar och innanför luftspalten; A2 skivpris närmaste tjocklek; exakt åtgång och bara ullen; A3 återbetalning mot direktverkande el och utan ränta, prisändring och rotavdrag; hela besparingen från värmepumpen; tak mot kallvind Rse 0,04; golv som bjälklag mot uteluft; cellulosa 0,040 spannets sämre ände; gränserna för känt U.
 
-Prisraderna har datum i Värde eller Källa. Testet kontrollerar att varje konstant i 2.2 har en rad.
+Prisraderna har datum i Värde eller Källa. Testet kontrollerar att varje konstant i 2.2 har en rad, utom `STANDARD` (granskning 1: standardvärdena syns i formuläret och är inget svaret vilar på). Sidan visar bara raderna som gäller svaret, se 12.2.
 
 ---
 
@@ -649,3 +649,629 @@ Jag rendrar båda på 343 px och godkänner mot DESIGN.md avsnitt 7 innan de rä
 2. **`/el/u-varde/`, lambdatabellen.** En rad för Rockwool Vindsull, stenull, lösull handutlagd, λ 0,042, och källan i `kallor`: Bauhaus produktdata, https://www.bauhaus.se/losull-rockwool-roxull-vindsull-20kg , läst 2026-09-24. Cellens ordalydelse blir `MATERIAL['stenull-vindsull'].etikett`.
 
 Vindsexemplet: artikeln `/el/u-varde/` räknar inget vindsexempel alls, och vindguiden skriver "950 kilowattimmar om året, drygt 2 200 kr", vilket är 946 och 2 271 avrundat. Talen 862 och 2 070 står ingenstans på sajten; ingen rättning behövs för dem.
+
+---
+
+## 12. Granskning 1, 2026-09-24 (UX och bygge)
+
+Testet 45 av 45 grönt, `astro check` 0 fel, delad adress ger samma spalt i fyra prövade fall, 375 px utan sidledsscroll (mätt med `scrollWidth` i en riktig 375-vy), spalten 789 tecken. Varumärkesbilden godkänd (bbox 1,75, 92,7 procent av bredden, 3,9 kB). Två medvetna avvikelser godkända: återbetalningens orsaker med `ingen-besparing` först (2.7 steg 9 är rättad), och ingen `STANDARD`-rad (4.6 är rättad).
+
+Retur för budgeten: `/rakna/u-varde/` väger 98,9 kB vid standard och 100,3 kB med sex skikt och två tillägg (dev-HTML utan Vites skript och `data-astro-source-*`, som stämmer med bygget inom 0,5 kB på `/el/u-varde/`). Gränsen är 66. Av överskottet är 12 kB klassattribut i de två tabellerna, 7 kB samma källa upprepad per rad i antagandetabellen och 8 kB listornas materialnamn. Inbäddningen lägger 10,5 kB på `/el/u-varde/`.
+
+### 12.1 Tabellerna utan klass per cell
+
+Båda tabellerna i sidan (skikttabellen i "Därför blev svaret så" och antagandetabellen) får sina cellklasser en gång på `<table>` med godtyckliga varianter, i en konstant överst i sidan, till exempel `const TABELL_KLASS = 'w-full border-collapse text-liten tabular-nums [&_th]:p-2 [&_td]:p-2 [&_th]:align-top [&_td]:align-top [&_th]:text-left [&_tbody_th]:font-normal [&_tr]:border-b [&_tr]:border-linje [&_th]:text-blyerts [&_td]:text-blyerts [&_thead_th]:text-etikett [&_thead_th]:uppercase [&_thead_th]:text-blyerts-2'`. Inga `class` på `th`, `td` eller `tr` i raderna, utom `class="font-bold"` på summaradernas `<tr>`. Samma sätt för regellistan i "Därför blev svaret så": klasserna på `<li>` och dess `<span>` flyttas till `<ul>` som varianter, bara ramfärgen per slag står kvar på `<li>`. Utseendet ska vara oförändrat på 375 och 1280 px.
+
+### 12.2 Antagandetabellen visar det svaret vilar på
+
+- `AntagandeRad.kalla?: KallaRef` blir `kallor: KallaRef[]` (tom för Antagande). Boverksraderna får `[BBR_9_92, BFS_2026_9]`, eftersom kolumnen till och med 30 september 2026 kommer ur BFS 2011:6 och i dag inte citeras någonstans på sidan.
+- Raderna `cellulosa` och `material-luftspalt` tas bort ur `ANTAGANDEN` och `TEXT.antagande`. `material-cellulosa` får `typ: 'Antagande'` med Energimyndigheten som källa (etiketten säger redan "räknad med 0,040"). `rse-luftspalt` bär luftspalten.
+- Ny export `antagandenFor(r)` för ett `ok`-resultat. Den returnerar raderna ur `ANTAGANDEN`, i deras ordning, när villkoret gäller:
+  - `formel`, `delta-u`: läget skikt. `rsi-{del}`: läget skikt och samma del. `rse`: läget skikt utan luftspalt. `rse-luftspalt`: luftspalt finns. `regelandel`, `lambda-regel`: ett regelskikt räknas.
+  - `material-{m}`: `m` finns i `detaljer.rader` med `raknas: true` (före eller tillägg).
+  - `tillagg-utan-reglar`: läget skikt med tillägg. `tak-kallvind`: skikt och tak. `golv-uteluft`: skikt och golv.
+  - `boverket-{del}`: alltid, bara aktuell del.
+  - `gradtimmar-{region}` (bara aktuell region), `elpris`, de fem `scop-*`, `hela-besparingen-vp`: när `besparing` finns.
+  - `exakt-atgang`, `aterbetalning-direktel`: när `aterbetalning` finns. `pris-vindsull`, `pris-flexibatts-45`, `pris-flexibatts-95`: när `aterbetalning` finns och just det priset användes. `skivpris-narmaste`: när `aterbetalning` finns och Flexibatts finns bland tilläggen.
+  - `granser-u`: läget uvarde.
+- Sidan renderar `antagandenFor(visat)`. Kolumnen "Källa eller antagande" visar `{typ}.` och källornas `titel` som text utan länk, skilda med semikolon. Direkt under tabellen, i samma `<section>`, en `<ul class="m-0 mt-4 pl-6 text-liten">` med varje källa som förekommer i de visade raderna **en gång**, i den ordning de först förekommer: `<a href rel="nofollow" class={LANK_KLASS}>{titel}</a>, {last}`. Ingen ny text.
+- Test: `antagandenFor` för fall 2 ger mängden `formel, rsi-vagg, rse-luftspalt, regelandel, lambda-regel, material-stenull-flexibatts, material-gips, gradtimmar-mitt, elpris, scop-luft-luft, scop-luft-vatten, scop-jord-sjo, scop-berg, scop-franluft, boverket-vagg, pris-flexibatts-45, delta-u, tillagg-utan-reglar, skivpris-narmaste, exakt-atgang, aterbetalning-direktel, hela-besparingen-vp`, i `ANTAGANDEN`s ordning; fall 3 innehåller `granser-u` och varken `formel` eller något `material-*`; fall 7a innehåller `boverket-fonster` och inget annat `boverket-*`; fall 6a innehåller `pris-vindsull`, `material-stenull-vindsull`, `rsi-tak` och `tak-kallvind`. Testet på hela `ANTAGANDEN` justeras för de två borttagna nycklarna.
+
+### 12.3 U-värdet och gränsen i spalten
+
+- Nya exporter `avrundaU(u: number, del: Byggnadsdel): number` och `uText(u, del): string`. Fönster och dörr: två decimaler. Vägg, tak och golv: tre. `avrundaU` är `Math.round(u * 10 ** n) / 10 ** n`, `uText` är `avrundaU(u, del).toFixed(n)` med komma.
+- `jamfor` jämför `avrundaU(u, del)` med gränsen, så att det visade talet och klarar eller klarar inte aldrig säger olika saker.
+- Sidan: det stora talet och "Före var det" använder `uText(..., visat.del)`. Gränsen visas som Boverket skriver den, `komma(grans)`: "0,18", "0,13", "0,15", "1,2", "1,1". `gransText` tas bort. Skikttabellen i "Därför" behåller tre decimaler.
+- Test: `uText(1.15, 'fonster') === '1,15'`, `uText(2.8, 'fonster') === '2,80'`, `uText(0.35689, 'vagg') === '0,357'`, `uText(0.4, 'vagg') === '0,400'`; uvarde fönster 2,8 till 1,104 ger `klarar`, 2,8 till 1,106 ger `klarar-gamla`.
+
+### 12.4 Formuläret
+
+- `MATERIAL[m].kort`, högst 26 tecken, visas i båda listorna (fullt och kompakt). `etikett` står kvar i skikttabellen. TEXT SAKNAS till hantverkaren; testet kräver icke-tom sträng och högst 26 tecken. I dag klipps "Stenull, skiva, Rockwool Flexibatts" av i listan på 375 px.
+- Fullt format: skiktrader 1 till `min(6, max(2, högsta rad i indata.skikt + 1))`, tilläggsrader 1 till `min(2, max(1, högsta rad i indata.tillagg + 1))`. Standard ger fem skiktrader och två tillägg. `hjalp-skikt` får en mening om att en ny tom rad kommer när man fyllt den sista och tryckt på knappen (hantverkaren).
+- Kompakt format: skiktrader 1 till 3 (gips, ull med reglar, luftspalt; panelen utanför luftspalten ändrar inte U, fall 9a och 9b) och tillägg 1.
+- Läget uvarde för fönster och dörr: `hjalp-uw` bara under `uf`, ingen hjälprad under `ue` (i dag står samma mening två gånger).
+
+### 12.5 Sidan i övrigt
+
+- Faq: frågan "Vad sparar jag om jag har värmepump?" tas bort. Svaret står redan i spalten och i regeln om SCOP. Tre frågor kvar.
+- Steg 6 i `STEG` säger "avrundat till tre decimaler"; hantverkaren skriver om det efter 12.3.
+
+### 12.6 Mätning och gräns
+
+**Beslut av koordinatorn 2026-09-24, ersätter sista meningen nedan:** räknaren publiceras när granskningarna är gröna, utan att vänta på skalet. 12.1 till 12.5 är fortfarande krav för mitt godkännande, eftersom de är sidans eget överskott. Specen för sidhuvud och sidfot är mitt nästa uppdrag direkt efter, och den sänker alla sidor på en gång. Min hållning står kvar i protokollet: räknarsidorna mäts mot samma 66 kB (SPEC-SIDMALLAR.md avsnitt 10, med preview och curl), och `/rakna/u-varde/` och `/el/u-varde/` ligger över den tills skalspecen är genomförd.
+
+Utvecklaren mäter med `npm run dev` på standard och på `?m1=gips&d1=13&m2=stenull-flexibatts&d2=120&r2=1&m3=eps&d3=50&m4=pir&d4=30&m5=luftspalt&m6=tra&d6=22&tm1=stenull-flexibatts&td1=50&tm2=stenull-vindsull&td2=100`, med HTML:en rensad från `<script>` utom JSON-LD, `<style>` och attributen `data-astro-source-file` och `data-astro-source-loc`, och rapporterar båda talen och formulärets storlek i `/el/u-varde/`. Min uppskattning efter 12.1 till 12.5 är 68 till 71 kB. Resten är skalet: sidhuvud och sidfot väger 24,6 kB, varav 8,6 kB klassattribut (samma länkklass 35 gånger i sidfoten), mot budgetens 6. Det tar jag i en egen spec om skalet. Verktyget, registerposten och de två inbäddningarna publiceras inte förrän bygget visar högst 66 kB på båda adresserna.
+
+### 12.7 Skissen `illustrationer-kallor/rakna/u-varde.svg`
+
+- Isoleringen skrafferas enligt DESIGN.md avsnitt 7 (korta snedstreck 10 px, 45 grader, `blyerts-2` 1,25 px, 22 px emellan) i båda lagren i stället för öglor, som i `el/vind-bjalklag.svg`. Spec 9.1 sade öglor och var fel mot DESIGN.md. Nya lagrets knöliga överkant står kvar.
+- Tre bjälkar i det gamla lagret, jämnt fördelade, som smala genomskurna reglar: två lodräta linjer i `blyerts` 2 px från innertaket till gamla lagrets överkant, cirka 11 px breda, ingen skraffering i dem. Nya lagret ligger obrutet över dem.
+- Markeringen bara bakom "2 271 kr", inte bakom "om året".
+- `aria-label` på rotelementet blir sidans `SKISS_ALT` ordagrant.
+- Allt annat står kvar. Under 40 kB efter `npm run illustrationer`. Jag rendrar på 343 px igen innan den är godkänd.
+
+### 12.8 Vindguiden
+
+`<Verktygskort kalkylator="u-varde" />` står i dag på rad 79, mellan två stycken som hör ihop (förklaringen av U-värdet och "Vet du inte vad som ligger där uppe"). Den flyttas till platsen i avsnitt 8: direkt efter stycket som slutar "… runt 7 500 kr." (rad 117) och före "Det finns en hake med besparingen också".
+
+---
+
+## 12 B. Läsarens retur, 2026-09-24 (`retur-rakna-u-varde-2026-09-24.md`, betyg 2 av 5)
+
+Här står det som ändrar beteende eller struktur. Texterna skriver hantverkaren; varje ny nyckel står som `TEXT SAKNAS: <nyckel>` tills dess. Avsnitten 12.9 till 12.16 gäller tillsammans med 12.1 till 12.8.
+
+### 12.9 Hur mycket mer som behövs
+
+- Nytt fält i `ok`-resultatet: `saknas: { mm: number; material: MaterialNyckel; grans: number } | null`.
+- Räknas bara i läget skikt, och bara när beskedet är `bara-u-over` eller `battre-men-over`. Annars `null`.
+- Materialet är tillägg 1:s material. Vid `bara-u-over` (inga tillägg) är det `STANDARD.tillagg[0].material`, alltså Flexibatts.
+- Gränsen är kolumnen `fran-2026-10-01` för delen.
+- Räkningen: behåll skikten och alla valda tillägg, och lägg till ett extra homogent lager `e` av materialet. Pröva `e = 10, 20, … 600` mm. Det första `e` där `avrundaU(uForSkikt(rsi, rse, homogena + tillaggR + e/1000/λ, regelskikt).u, del) <= grans` är `mm`. Klarar inte ens 600 mm gränsen blir `saknas` `null`.
+- Ny export `extraForGrans(...)` med den loopen, så att testet kan anropa den direkt.
+- Test (egen räkning 2026-09-24):
+  - Fall 2 ger `{ mm: 50, material: 'stenull-flexibatts', grans: 0.18 }`, och U efter 50 mm till blir 0,17735.
+  - Fall 1 ger `mm: 100` med Flexibatts.
+  - Fall 8 (golv, gräns 0,15) ger `mm: 40`.
+  - Fall 3 och fall 10 ger `null`, fall 6a ger `null`.
+
+### 12.10 Beskeden med tal i rubriken
+
+- `TEXT.besked[b].rubrik` blir en funktion `(v: BeskedVarden) => string`. Samma objekt skickas till alla sex:
+  `interface BeskedVarden { u: string; grans: string; uFore: string; kr: string | null; mm: string | null; material: string | null }`.
+- Sidan bygger objektet med `uText(visat.uSlut, del)` och `komma(gransen i fran-kolumnen)`. `uFore` är `uText(visat.uFore, del)` och `kr` är `heltal(krPerAr)` eller `null`. `mm` är `heltal(saknas.mm)` eller `null`, och `material` är `MATERIAL[saknas.material].kort` eller `null`.
+- Hantverkaren väljer vilka tal rubriken bär, som i elkostnad och rotavdrag. Kravet: rubriken för `battre-men-over` och `bara-u-over` säger millimetrarna och materialet när `mm` finns. Rubriken för `klarar` säger kronorna.
+- `rad` förblir en sträng.
+- Test:
+  - Rubriken för fall 2 innehåller `"50"` och Flexibatts korta namn.
+  - Rubriken för fall 1 innehåller `"100"`.
+  - Rubriken för fall 3 innehåller `heltal(krPerAr)`.
+  - Varje rubrik i fall 1, 2, 3, 7c och 10 innehåller minst en siffra.
+  - Testet på `klarar-gamla` byts mot ett nytt när texten finns.
+
+### 12.11 Återbetalningen säger vad den räknar på
+
+`TEXT.spalt['rad-aterbetalning']` ska på samma rad säga att bara isoleringen är med, alltså inte reglar, skivor, vindskydd och arbete. Raden står kvar på sin plats i spalten, punkt 7 i 4.4. Test: raden för fall 2 innehåller hantverkarens ord för förbehållet. Påståendet skrivs när texten finns.
+
+### 12.12 Reglarna väljs en gång, och bara på isolering
+
+Det ersätter kryssrutorna `r1` till `r6`, som i dag står på varje rad, också på gips och panel.
+
+- **Query:** nyckeln `rg` med ett radnummer, 1 till 6, eller tomt för inga reglar. `r1` till `r6` läses inte längre. `STANDARD` motsvarar `rg=2`. `delbarQuery` skriver `rg` bara när ett skikt har reglar.
+- **Indata:** `tolkaQuery` sätter `reglar: true` på skiktet med den raden. Om raden saknas i listan har inget skikt reglar, och felet `reglar` sätts.
+- **Modulen:** `MATERIAL[m].isolering: boolean`. Sant för de åtta isoleringsmaterialen och `mineralull-okand` (12.14), falskt för trä, gips, lättbetong, betong och luftspalt.
+- **Validering:** ny felnyckel `reglar`, text `fel-reglar-inte-isolering`. Den sätts när `rg` pekar på en tom rad eller på ett material som inte är isolering. `fel-reglar-luftspalt` och `fel-reglar-flera` tas bort, eftersom det inte längre går att välja två.
+- **Formuläret:**
+  - Efter skiktraderna en `<label for={id('rg')}>` (`TEXT SAKNAS: reglar-etikett`) och en `<select name="rg">` i `FALT_KLASS`.
+  - Första alternativet är `value=""` (`TEXT SAKNAS: reglar-inga`). Därefter ett alternativ per renderad skiktrad vars material är isolering, med texten `TEXT.form['skikt-etikett'](n)` följd av materialets `kort`.
+  - Är `rg` satt i adressen till en rad som inte är isolering visas den ändå som valt alternativ, med felet under och `aria-describedby`.
+  - Under listan står hjälpraden `hjalp-reglar`, bara i fullt format (12.13).
+  - Kompakt: samma lista för rad 1 till 3.
+- **Test:**
+  - `rg=2` sätter reglar på rad 2.
+  - `rg=1` med gips på rad 1 ger `fel.reglar`, och `rg=3` med luftspalt ger `fel.reglar`.
+  - `rg=5` utan rad 5 ger `fel.reglar`.
+  - Rundturen i `delbarQuery` håller.
+  - Testerna på `r2=1` och `r2=ja`, på "reglar på två skikt" och på "reglar på luftspalten" ersätts av dessa.
+
+### 12.13 Hjälptexterna där de behövs
+
+Nya och omskrivna nycklar, alla i `TEXT.form`, bara i fullt format:
+
+- `hjalp-reglar` står under reglarlistan. Den förklarar vad 12 procent trä betyder, alltså andelen i Svenskt Träs räkneexempel. Den säger inte vad andelen omfattar och inget cc-mått, eftersom Träguiden 9.3 bara skriver "12 procent träregelandel" (rättat vid granskning 2 efter hantverkarens kontroll; "syll och hammarband" saknade källa).
+- `hjalp-skikt` skrivs om:
+  - Den säger hur man ser att väggen har en ventilerad luftspalt: luft bakom en panel på läkt.
+  - Den säger att tjockleksfältet på luftspaltens rad lämnas tomt.
+  - Den säger att en ny tom rad kommer när den sista är ifylld (12.4).
+  - Tegelmeningen flyttas ut ur hjälptexten; Faq-frågan om tegel räcker.
+
+Formuläret ändras inte för detta, bara texten.
+
+### 12.14 Mineralull utan märke
+
+- Nytt material `mineralull-okand`, λ **0,045**, `isolering: true` och `pris: null`.
+- Källan är Energimyndigheten, Isolering, ET 2025:06, tabell 1, s. 7: stenull 0,035 till 0,045 och glasull 0,032 till 0,040.
+- `ANTAGANDE:` spannets sämre ände, som täcker både sten- och glasull, för ull vars märke och ålder läsaren inte känner till. Samma mönster som cellulosa.
+- Det står först i `MATERIAL_ORDNING`, eftersom det är det vanligaste på en gammal vind.
+- `etikett` och `kort` skrivs av hantverkaren.
+- Antagandetabellen får raden `material-mineralull-okand` med `typ: 'Antagande'`.
+- Andra material i läsarens lista (spånskiva, träfiberskiva, plywood, tegel) läggs inte till. Underlaget har inget värde för dem, och träfiber har bara ett spann utan en rad i artikeln.
+- Rättning 3 i avsnitt 11 gäller: artikelns lambdatabell får samma rad, så att testet 6.3 håller.
+- Test: λ 0,045. Artikelns tabell har raden, och testet läser den från disk.
+
+### 12.15 Boverkets krav på en rad när kolumnerna är lika
+
+- Spalten, punkt 4 i 4.4: när `jamforelse[0].grans === jamforelse[1].grans` (vägg, vindsbjälklag, golv) visas **en** rad. Etiketten är `TEXT.kolumn.bada` (TEXT SAKNAS), följd av gränsen och klarar eller klarar inte.
+- Fönster och dörr behåller två rader.
+- Antagandetabellen: för vägg, vindsbjälklag och golv blir värdet bara `"0,18 W/m²K"`, utan "och". `TEXT.antagande['boverket-*']` skrivs om utan datumen (hantverkaren).
+- Test: fall 2 renderar en rad. Sidan har ingen testsvit, så det kontrolleras i min granskning.
+
+### 12.16 Skissens bildtext
+
+`SKISS_BILDTEXT` i sidan ska inte säga 0,184 och 0,078 som räknarens egna tal för gammal ull. Talen är Rockwools tabellvärden med takstolar. Skikt för skikt ger räknaren 0,179, se Faq. Hantverkaren skriver om bildtexten så att den säger var talen kommer ifrån och att de är vad man skriver in under "Jag vet U-värdet". Skissen ändras inte för detta.
+
+### Rättning 3 i artikeln (hantverkaren, inte utvecklaren)
+
+`/el/u-varde/`, lambdatabellen: en rad för mineralull med okänt märke, λ 0,045, sämre änden av Energimyndighetens spann. Källan finns redan i `kallor` (ET 2025:06). Cellens ordalydelse blir `MATERIAL['mineralull-okand'].etikett`.
+
+---
+
+## 12 C. Granskning 2 och läsarens andra läsning, 2026-09-24 (`retur-rakna-u-varde-varv-2-2026-09-24.md`, betyg 3)
+
+Granskning 2 godkände 12.1 till 12.16 utom SCOP-raden (12.17). Avsnitten 12.18 till 12.23 kommer ur läsarens andra läsning. De gäller före allt tidigare i specen där de krockar, i första hand 2.5 (`STANDARD`), 6.1 (facit för standard) och 8 (inbäddningen).
+
+### 12.17 SCOP-raderna i antagandetabellen
+
+- **Fel i dag:** `ANTAGANDEN`, `scop-*` (i `VP_TYPER.map`), visar "3,5 till 5", "3 till 4,5" och "4 till 5".
+- **Rättning:** värdet skrivs med `v.scopMin.toFixed(1).replace('.', ',')` och samma för `scopMax`. Då blir det "3,5 till 5,0", "3,0 till 4,5" och "4,0 till 5,0".
+- **Test:** raden `scop-luft-vatten` har värdet `'3,0 till 4,5'`.
+
+### 12.18 Standardfallet är vindsbjälklaget
+
+Väggen med 50 mm på insidan byts ut. Rubriken uppmanade till mer isolering på insidan, fast sidan varnar för just det under "Gör inte det här". Återbetalningstiden var dessutom missvisande för en vägg, där ullen är en liten del av kostnaden. På vinden är lösullen nästan hela kostnaden, och det är vindens fall som Rockwool, skissen och vindguiden räknar på.
+
+Beslut:
+- Tillägget är **300 mm** Vindsull, inte 100 mm. Då är det samma fall som skissen, Rockwools tabellrad och vindguiden (200 plus 300 mm).
+- Tillägget är Vindsull och inte Granulate, eftersom Vindsull har pris och återbetalningen därför visas.
+
+```ts
+export const STANDARD: UVardeIndata = {
+  lage: 'skikt', del: 'tak', ytaM2: 100, region: 'mitt',
+  skikt: [
+    { rad: 1, material: 'gips', tjocklekMm: 13, reglar: false },
+    { rad: 2, material: 'mineralull-okand', tjocklekMm: 200, reglar: true },   // rg=2, bjälkarna
+  ],
+  tillagg: [{ rad: 1, material: 'stenull-vindsull', tjocklekMm: 300 }],
+  uFore: 0.184, uEfter: 0.078,   // läget uvarde: Rockwools rad, fall 4a
+};
+```
+
+Kommentaren över `STANDARD` skrivs om efter detta.
+
+**Facit** (egen räkning 2026-09-24 med modulens funktioner). Nytt fall 14 = `STANDARD`:
+- `uFore` 0,26550 ("0,265", oavrundat 0,265498) och `uEfter` 0,09010 ("0,090").
+- Före: rOvre 3,79275, rUndre 3,74027, rTotal 3,76651. Efter: rTotal 11,09873. rsi 0,10, rse 0,04.
+- Beskedet `klarar`, `saknas` `null`.
+- kWh 1 565,95 och kr 3 758,28.
+- Luft-luft 751,66 till 1 073,79 kr.
+- Kostnad 25 137 kr (100 × 300 × 0,8379) och återbetalning 6,7 år.
+- `gorInteDetHar` är `['glom-termostaten']`.
+
+**Uvarde-läget med standardvärden** ger fall 4a: 946,37 kWh och 2 271,28 kr.
+
+**Testet:**
+- Fall 1, fall 2, fall 13 och rundturen använder i dag `STANDARD` som väggen. De får en egen konstant i testet, `VAGG_EXEMPEL`, med väggens gamla värden: gips 13, Flexibatts 120 med reglar, luftspalt, trä 22, tillägg Flexibatts 50, 100 m² och Mellansverige. Talen i fallen ändras inte.
+- Testet i 12.2 för `antagandenFor` gäller fall 2 och alltså väggen.
+- Testet på `tolkaQuery` med tom adress jämför fortfarande med `STANDARD`.
+
+**Kompakt form** visar rad 1 till 3 som förut. Med standard är rad 3 tom.
+
+**Sidan:** kontrollera att inget i sidans text räknar med väggen som standard. Det gäller bland annat kortsvarets stycke om 0,357 och Faq-frågan om tillverkarens tabell. Standardfallets gamla ull räknas med 0,045 och bjälkar och ger 0,265, medan Faq nämner 0,179 för Flexibatts utan bjälkar och bildtexten 0,184. Hantverkaren får den listan (se slutet).
+
+**Artikeln:** `<Kalkylator namn="u-varde" />` i `src/content/kunskap/el/u-varde.mdx` flyttas från rad 183, efter väggstycket, till efter stycket som börjar "Formeln fungerar lika bra på andra byggnadsdelar, och jag har använt den för både vindsbjälklaget …" (i dag rad 203). Det står före H2 "U-värdet på fönster gäller glas, båge och karm", med blankrad före och efter. Där har läsaren just fått kilowattimmarna och kronorna förklarade och vinden nämnd, och formuläret visar vinden. Ingen annan rad ändras.
+
+### 12.19 Tilläggslistan innehåller bara isolering
+
+- `UVardeForm.astro`: `tillaggsMaterial` blir `MATERIAL_ORDNING.filter((m) => MATERIAL[m].isolering)`.
+- `tolkaQuery`: `tm{n}` med ett material som inte är isolering ger `material: null` och alltså felet `material-okant` på `t{n}`, på samma sätt som `luftspalt` i dag.
+- **Test:** `tm1=gips` och `tm1=betong` ger `material: null`.
+
+### 12.20 Förslaget utan valt tillägg är märkeslöst
+
+- I `raknaUVarde` (12.9) är materialet för `saknas` tillägg 1:s material när ett tillägg finns. Annars är det `'mineralull-okand'`, inte `STANDARD.tillagg[0]`. Ett märke står bara i beskedet när läsaren själv valt det.
+- **Test:**
+  - Fall 1 (väggen utan tillägg) ger `{ mm: 120, material: 'mineralull-okand', grans: 0.18 }`, och U blir 0,17851.
+  - `STANDARD` utan tillägg ger `{ mm: 170, material: 'mineralull-okand', grans: 0.13 }`, och U blir 0,12982.
+  - Rubriken i båda fallen innehåller inget varumärke.
+
+### 12.21 Beskedet säger hela tjockleken
+
+- `BeskedVarden` får två fält till:
+  - `mmValt: string | null`: tjockleken på tillägg 1 med `heltal`, eller `null` utan tillägg.
+  - `mmTotalt: string | null`: `mmValt` plus `mm` när tillägg finns, annars samma som `mm`.
+- `mm` betyder fortfarande det som saknas.
+- `extraForGrans` prövar bara upp till `GRANSER.tjocklekMm[1] − tillägg 1:s tjocklek`, så att totalen aldrig blir en tjocklek formuläret avvisar. Om ingen tjocklek räcker blir `saknas` `null`.
+- Rubrikerna för `battre-men-over` och `bara-u-over` skrivs om av hantverkaren. Den första ska säga totalen, till exempel att tillägget ska vara 100 mm, eller "ytterligare 50 utöver de 50" med båda talen. Formuleringen "når U-värdet" byts mot "kommer ner till".
+- **Test:** väggfallet (fall 2) ger `mm '50'`, `mmValt '50'` och `mmTotalt '100'`, och rubriken innehåller `'100'`.
+
+### 12.22 Inget löfte om eget elpris
+
+Elkostnadsräknaren har inget fält för kilowattimmar, så löftet tas bort på alla tre ställena. Ett kWh-fält i elkostnaden blir inte en del av det här arbetet.
+- Sidan tar bort länken `TEXT.spalt['rad-eget-elpris']` till `/rakna/elkostnad/` ur spalten, punkt 8 i 4.4, och ur `TEXT`.
+- `TEXT.regel.elpris` stryker meningen om elkostnadsräknaren (hantverkaren). Den kan i stället säga att kronorna är kilowattimmarna gånger ditt pris per kWh.
+- `LAS_VIDARE` stryker posten `/rakna/elkostnad/`. Tre länkar kvar.
+
+**Test:** modulens `TEXT` innehåller inte strängen `elkostnadsräknaren`.
+
+### 12.23 Återbetalningen gäller direktverkande el
+
+Återbetalningstiden räknas bara mot kronorna med direktverkande el (A3). Den räknas inte om per värmepump, eftersom spalten redan har fem spann och tiden skulle bli fem spann till.
+
+`TEXT.spalt['rad-aterbetalning']` ska på samma rad säga att den räknas mot direktverkande el och att den blir längre med värmepump (hantverkaren). **Test:** raden för fall 14 innehåller hantverkarens ord för värmepump, och påståendet skrivs när texten finns.
+
+### Till hantverkaren från 12 C (texten, inte koden)
+
+- Beskedrubrikerna för `battre-men-over` och `bara-u-over` (12.21).
+- `rad-aterbetalning` (12.23) och `regel.elpris` (12.22).
+- Kommentaren över `STANDARD`.
+- Kortsvaret, Faq-frågan om tillverkarens tabell och bildtexten mot det nya standardfallet (12.18).
+- Läsarens punkt om fönstrets kolumnrubriker ("Till och med 30 september 2026" läses i november som historia) är ren text i `TEXT.kolumn` och hör också dit.
+
+---
+
+## 12 D. Beslut efter granskning 3, 2026-09-24
+
+Före detta gäller från granskning 3: skyddsraden på testets rad 736 tas bort.
+
+### 12.24 Ingen regelrad i standardfallet
+
+Beslut: standardfallet har **inga reglar**. `STANDARD.skikt[1].reglar` blir `false`, och `delbarQuery(STANDARD)` skriver alltså ingen `rg`. Någon egen andel för vindsbjälklag läggs inte in.
+
+Varför:
+- Svenskt Träs 12 procent gäller en regelvägg och ger en vind för stor andel trä.
+- En andel på 4 procent för takstolar skulle vara egen geometri (45 på 1 200 mm) utan källa för att måtten är typiska. Underlaget avsnitt 1.3 säger just att andra andelar saknar källa.
+- Regeln `tak-kallvind` säger redan att takstolarna inte är med. Med "Mineralull utan märke" (0,045, spannets sämre ände) är talet ändå försiktigt.
+- Reglarlistan står kvar med 12 procent för den som räknar en vägg.
+- Skissens bjälkar står kvar. De visar vad ett bjälklag är, inte räkningens andel.
+
+**Nytt facit för standard** (fall 14, egen räkning 2026-09-24 med modulens funktioner). Det ersätter facit i 12.18:
+
+| | Värde |
+|---|---|
+| U före | 0,21558, visas "0,216" (R_T 4,63861) |
+| U efter | 0,08488, visas "0,085" (R_T 11,78147) |
+| rsi, rse | 0,10 och 0,04, inga `rOvre`/`rUndre` |
+| Besked | `klarar`, `saknas` `null` |
+| kWh per år | 1 166,91, visas "1 167" |
+| kr per år | 2 800,59, visas "2 801" |
+| Luft-luft | 560,12 till 800,17 kr |
+| Luft-vatten | 622,35 till 933,53 kr |
+| Jord eller sjö | 560,12 till 700,15 kr |
+| Berg | 509,20 till 700,15 kr |
+| Frånluft | 700,15 till 1 120,24 kr |
+| Ullen | 25 137 kr |
+| Återbetalning | 8,976 år, visas "9" med `endecimal` |
+| `gorInteDetHar` | `['glom-termostaten']` |
+| `antagandenFor` | innehåller inte `regelandel` eller `lambda-regel` |
+
+`STANDARD` utan tillägg ger `bara-u-over` och `saknas` `{ mm: 140, material: 'mineralull-okand', grans: 0.13 }`. Det ersätter 170 i 12.20, som räknade med reglar.
+
+Samma tal ska stå i kortsvaret, bildtexten, Faq och skissens etiketter, om de nämner standardfallet (hantverkaren). Skissen visar Rockwools rad 0,184 till 0,078 och 2 271 kr, och den ändras inte. Standardfallet ger 2 801 kr för gammal ull utan märke. Den skillnaden ska texten förklara, inte dölja.
+
+**Test:** fall 14 med talen ovan. Testerna i 12.18 och 12.20 som räknade standard med reglar byts mot dessa.
+
+### 12.25 Beskedet vet alltid vad som lagts till
+
+`beskedVarden()` fyller två fält för alla besked, inte bara när `saknas` finns:
+- `mmValt` är tillägg 1:s tjocklek med `heltal`, eller `null` utan tillägg.
+- Nytt fält `materialValt: string | null` är tillägg 1:s `kort`, eller `null`.
+- `material` betyder fortfarande materialet i förslaget (`saknas`). `mm` och `mmTotalt` är som förut.
+
+Rubriken för `klarar` kan då säga vad som räckte (hantverkaren). Rubriker med märke följer 12.20: märket står bara när läsaren valt det. Standardfallets Vindsull är vårt val, så rubriken för `klarar` bör använda ett ord för slaget av material och inte `materialValt` rakt av. Hantverkaren avgör formen.
+
+**Test:** för standard ger `beskedVarden` `mmValt '300'` och `materialValt === MATERIAL['stenull-vindsull'].kort`, och fall 3 (läget uvarde) ger båda `null`.
+
+### 12.26 Cellplast utan märke, och två texter
+
+- **Nytt material `cellplast-okand`:** λ **0,038**, `isolering: true`, `pris: null`.
+  - Källan är Energimyndigheten ET 2025:06, tabell 1, s. 7: EPS 0,035 till 0,038 och XPS 0,030 till 0,036, återgivet i `docs/briefer/faktablad/kunskap-u-varde.md`.
+  - `ANTAGANDE:` den sämre änden av EPS-spannet, som också täcker XPS, för cellplast vars märke läsaren inte känner till. Samma mönster som `mineralull-okand`.
+  - Det står direkt före `eps` i `MATERIAL_ORDNING`. `etikett` och `kort` skrivs av hantverkaren.
+  - Antagandetabellen får raden `material-cellplast-okand` med `typ: 'Antagande'`.
+  - **Test:** λ 0,038 och artikelns tabellrad.
+- **Rättning 4 i artikeln (hantverkaren):** `/el/u-varde/` får en rad i lambdatabellen för cellplast med okänt märke, 0,038, och källmeningen under tabellen nämner Energimyndigheten även för den.
+- **Texter:** `rad` i registerposten (`src/lib/kalkyl/register.ts`) och `BESKRIVNING` i `src/pages/rakna/u-varde.astro` skrivs om av hantverkaren. Utvecklaren rör dem inte.
+
+### 12.27 Standardvärden per byggnadsdel
+
+**Felet** (`retur-rakna-u-varde-varv-4-2026-09-24.md` punkt 11): byggnadsdelen byts med radioknapparna och knappen. Formuläret skickar då med vindens förifyllda 100 m², 0,184 och 0,078, och ett fönster ger 32 141 kr om året. Lägeslänken har samma fel: från skikt med en vägg till "Jag vet U-värdet" ger vindens U-värden på en vägg.
+
+**Standardvärdena.** Ny export `STANDARD_PER_DEL: Record<Byggnadsdel, { ytaM2: number; uFore: number; uEfter: number }>`. Varje rad har kommentaren Källa eller ANTAGANDE:
+
+| Del | Yta | U före | U efter | Märkning |
+|---|---|---|---|---|
+| `tak` | 100 | 0,184 | 0,078 | Källa: Rockwools tabellrad (fall 4a). Ytan ANTAGANDE: vindguidens exempel |
+| `vagg` | 100 | 0,40 | 0,18 | Källa: Energimyndigheten ET 2025:06, 1961 till 1980, och Boverkets krav. Ytan ANTAGANDE: artikelns fasad (fall 3) |
+| `golv` | 80 | 0,233 | 0,177 | ANTAGANDE: underlagets golvexempel (fall 8) avrundat till tre decimaler |
+| `fonster` | 1,5 | 2,8 | 0,9 | ANTAGANDE: underlagets fönsterexempel (fall 7a), ett fönster med karm som i hjälptexten för ytan. 0,9 ligger i Energimyndighetens spann för energifönster (ET 2025:01, tabell 1) |
+| `dorr` | 2 | 2,0 | 1,1 | ANTAGANDE: ingen källa. En ytterdörr med karm, och efter lika med kravet |
+
+- För fönster väljer jag underlagets 1,5 m² och 0,9 i stället för de föreslagna 10 m² och 1,1. Hjälptexten säger att ytan är ett fönster med karm, och det fallet har ett räkneexempel. 10 m² har ingen källa.
+- `STANDARD.ytaM2`, `uFore` och `uEfter` läses ur `STANDARD_PER_DEL.tak` i stället för att skrivas två gånger.
+- Tabellen står inte i antagandetabellen. Den är förifyllda fält och inget svaret vilar på, som `STANDARD` i 4.6.
+
+**Hur det bärs:** standardvärdena följer delen, och det går utan skript.
+1. **Nyckel saknas:** saknas `yta`, `uf` eller `ue` i adressen tar `tolkaQuery` värdet ur `STANDARD_PER_DEL[del]` i stället för ur `STANDARD`.
+2. **Formuläret** får ett dolt fält `<input type="hidden" name="sd" value={indata.del}>`, alltså delen som fälten fylldes i för. Det gäller både fullt och kompakt format.
+3. **I `tolkaQuery`:** om `sd` är en giltig del och skiljer sig från `del`, jämförs `yta`, `uf` och `ue` var för sig med `STANDARD_PER_DEL[sd]` efter `tillTal`, med skillnad under 1e-9. Ett värde som är lika med den gamla delens standard byts mot den nya delens. Ett värde läsaren själv skrivit är olikt och står kvar. Ett ogiltigt `sd` läses inte.
+4. **Lägeslänken** (`bytLageHref` i sidan): sätter också `sd` till den nuvarande delen, så att regeln i punkt 3 gäller när delen byts från fönster eller dörr till vägg.
+5. **Sidans `varden`** (fältens råsträngar): när ett värde byttes i punkt 3 eller 1 visas det nya standardvärdet med komma, inte råsträngen ur adressen. `tolkaQuery` returnerar därför också `bytta: { yta: boolean; uf: boolean; ue: boolean }`, och sidan använder det.
+6. **`delbarQuery`** skriver inte `sd`. Den delade adressen har de lösta talen och ger samma svar.
+
+**Test:**
+- `lage=uvarde&del=fonster` ger yta 1,5, uf 2,8 och ue 0,9, och 254,45 kWh och 610,68 kr (fall 7a). Det låser att fönstret med standardvärden ger en rimlig summa: `krPerAr < 2000`.
+- `lage=uvarde&del=fonster&sd=tak&yta=100&uf=0,184&ue=0,078` ger samma indata som raden ovan (läsarens fall).
+- `lage=uvarde&del=fonster&sd=tak&yta=12&uf=0,184&ue=0,078` ger yta 12 men uf 2,8 och ue 0,9.
+- `lage=uvarde&del=vagg` ger 1 964,16 kWh (fall 3).
+- `lage=uvarde&del=golv` ger 399,97 kWh och 959,94 kr, efter (0,233 − 0,177) × 80 × 89 280 / 1 000.
+- `lage=uvarde&del=dorr` ger 160,70 kWh och 385,69 kr.
+- `sd=mars` läses inte.
+- `STANDARD.ytaM2 === STANDARD_PER_DEL.tak.ytaM2`.
+- Rundturen i `delbarQuery` håller, och adressen har inget `sd`.
+- För varje del ger standardvärdena status `ok` och ett besked som inte är `ingen-forbattring`.
+
+---
+
+## 12 E. Läsarens femte läsning, 2026-09-24 (`retur-rakna-u-varde-varv-5-2026-09-24.md`, betyg 3)
+
+### 12.28 Raden under beskedet beror på läge och del
+
+- `TEXT.besked[b].rad` blir en funktion `(k: BeskedKontext) => string`, som rubriken:
+  ```ts
+  interface BeskedKontext {
+    lage: Lage;
+    del: Byggnadsdel;
+    klaradeFore: boolean;          // jamforelseFore: båda kolumnerna klarar
+    harTillagg: boolean;           // läget skikt med minst ett tillägg
+    aterbetalning: boolean;        // aterbetalning !== null
+    aterbetalningSaknas: AterbetalningSaknas | null;
+  }
+  ```
+  Ny export `beskedKontext(r: UVardeOk): BeskedKontext`. Sidan anropar `TEXT.besked[visat.besked].rad(beskedKontext(visat))`.
+- Hantverkaren skriver varje rad så att den stämmer i alla fall där beskedet kan uppstå:
+  - Vid `klarar`:
+    - `klaradeFore` sant ger ingen mening om att det som sitter där i dag inte räcker.
+    - Läget skikt med tillägg får ett råd som passar `del`: vind, vägg eller golv.
+    - Hänvisningen till återbetalningsraden står bara när `aterbetalning` är sann.
+    - Läget uvarde får inget vindsråd för fönster och dörr.
+  - Samma princip gäller de andra fem beskeden.
+- **Återbetalningen för fönster och dörr:** ny orsak `'fonster-dorr'` i `AterbetalningSaknas`. Den gäller i läget uvarde när `del` är fönster eller dörr, i ordningen `ingen-besparing`, `fonster-dorr`, `uvarde-lage`. Ny text `TEXT.aterbetalningSaknas['fonster-dorr']` skrivs av hantverkaren och skickar inte läsaren till Skikt för skikt, som inte finns för fönster.
+- **Test:**
+  - `rad` anropas för alla sex besked × båda lägena × fem delar × `klaradeFore` sant och falskt. Varje anrop ger en icke-tom sträng.
+  - För `del` fönster och dörr innehåller varken `rad` eller texten för återbetalningen `TEXT.form['lage-skikt']`.
+  - Fall 7a ger `aterbetalningSaknas: 'fonster-dorr'`, och fall 3 ger fortfarande `'uvarde-lage'`.
+  - Påståenden om ordalydelsen läggs till när texten finns.
+
+### 12.29 Fönster och dörr betyder läget "Jag vet U-värdet"
+
+- `tolkaQuery`: är `del` `fonster` eller `dorr` blir `lage` alltid `'uvarde'`, vad `lage` i adressen än säger. `?del=fonster` ger då fönstrets standardvärden (12.27), status `ok` och ingen standardvarning.
+- Valideringen `del-skikt` i `raknaUVarde` står kvar för direkta anrop men nås inte från en adress.
+- Lägeslänken från fönster eller dörr till skikt sätter `del=vagg` som i dag, och 12.30 ger då väggens skikt.
+- **Test:** `tolkaQuery('del=fonster').indata.lage === 'uvarde'`, och `lage=skikt&del=dorr` ger `'uvarde'` och status `ok`.
+
+### 12.30 Byggnadsdelen byter också skikten
+
+- **Ny export `STANDARD_SKIKT_PER_DEL: Record<'tak' | 'vagg' | 'golv', { skikt: Skikt[]; tillagg: Tillagg[] }>`.** Varje rad har kommentaren Källa eller ANTAGANDE. Inga varumärken i standardskikten utom vindens Vindsull, som behövs för att återbetalningen ska visas (12.18). Annars är gammal och ny ull `mineralull-okand` (12.20, samma skäl).
+
+  | Del | Skikt | Tillägg | Märkning |
+  |---|---|---|---|
+  | `tak` | gips 13, mineralull-okand 200, inga reglar | stenull-vindsull 300 | som `STANDARD` (12.18, 12.24) |
+  | `vagg` | gips 13, mineralull-okand 120 med reglar (`rg=2`), luftspalt, trä 22 | mineralull-okand 50 | ANTAGANDE: underlagets sjuttiotalsvägg (avsnitt 7, exempel 1) med okänt märke |
+  | `golv` | trä 22, mineralull-okand 145, inga reglar | mineralull-okand 50 | ANTAGANDE: underlagets golv (fall 8) med okänt märke, 80 m² som i 12.27 |
+
+  `STANDARD.skikt` och `STANDARD.tillagg` läses ur `STANDARD_SKIKT_PER_DEL.tak`.
+- **Samma mekanik som 12.27:**
+  1. Finns ingen `m`-nyckel i adressen tar `tolkaQuery` `STANDARD_SKIKT_PER_DEL[del]`. Finns ingen `tm`-nyckel tar den delens tillägg.
+  2. Om `sd` är en giltig del av `tak`, `vagg` eller `golv` och skiljer sig från `del`, jämförs de tolkade skikten med `STANDARD_SKIKT_PER_DEL[sd].skikt`: samma rader, material, tjocklek (skillnad under 1e-9, NaN lika med NaN för luftspalten) och reglar. Är de lika byts de mot den nya delens. Tilläggen jämförs och byts var för sig på samma sätt. Det läsaren själv har ändrat står kvar.
+  3. `bytta` från 12.27 får `skikt` och `tillagg`. Sidan visar då den nya delens tjocklekar i fälten och väljer `rg` ur den nya delens skikt.
+  4. Läsaren kan välja en luftspalt på vägg och sedan byta till vind utan att ändra något annat. Då är skikten väggens standard, de byts mot vindens, och felet `luftspalt-bara-vagg` uppstår inte.
+- **Facit** (egen räkning 2026-09-24):
+  - Vägg: U 0,40351 till 0,27437, `battre-men-over`, 1 152,97 kWh och 2 767,14 kr, `saknas` `{ mm: 90, material: 'mineralull-okand', grans: 0.18 }`, `aterbetalningSaknas: 'inget-pris'`. U före ligger nära Energimyndighetens 0,40 för 1961 till 1980.
+  - Golv: U 0,27860 till 0,21274, `battre-men-over`, 470,37 kWh och 1 128,89 kr, `saknas` `{ mm: 90, material: 'mineralull-okand', grans: 0.15 }`, `'inget-pris'`.
+- **Test:**
+  - `del=vagg` ger väggens skikt och tillägg och talen ovan. `del=golv` ger golvets.
+  - `del=golv&sd=tak` med vindens standardskikt i adressen (`m1=gips&d1=13&m2=mineralull-okand&d2=200&tm1=stenull-vindsull&td1=300`) ger golvets skikt och tillägg.
+  - Samma adress med `d2=250` behåller läsarens skikt men byter tillägget.
+  - `del=tak&sd=vagg` med väggens standard, luftspalt inräknad, ger status `ok` med vindens skikt.
+  - Rundturen i `delbarQuery` håller för alla tre.
+
+### 12.31 Kolumnrubrikerna säger när reglerna gäller
+
+- `TEXT.kolumn['till-2026-09-30']` blir "Gamla regler" och `TEXT.kolumn['fran-2026-10-01']` "Nya regler från 1 oktober 2026" (hantverkaren får finslipa orden men inte lägga ett slutdatum på de gamla reglerna). Kolumnnycklarna i koden ändras inte.
+- När de gamla reglerna får väljas förklaras i regeln `boverket-overgang`, som redan visas på varje svar. Den säger fram till 1 oktober 2027 och inte blanda.
+- `bada` ("Boverket, gamla och nya regler") står kvar.
+- **Test:** ingen av de två kolumntexterna innehåller "30 september", och `TEXT.regel['boverket-overgang'].text` innehåller "2027".
+
+---
+
+## 12 F. Granskning av 12 E och läsarens sjätte läsning, 2026-09-28 (`retur-rakna-u-varde-varv-6-2026-09-24.md`, betyg 3)
+
+12 E är granskad och inte godkänd; rättningarna står först, i 12.32 och 12.33. Avsnitten 12.34 till 12.41 kommer ur läsarens sjätte läsning och gäller före allt tidigare i specen där de krockar, i första hand 12.25 (beskedets värden), 12.30 (standardskikten) och 4.3 (sidans ordning).
+
+**Filer som får röras:** `src/lib/kalkyl/u-varde.ts`, `src/pages/rakna/u-varde.astro`, `src/components/kalkyl/UVardeForm.astro`, `scripts/test-kalkyl-u-varde.mjs`. Inget annat. Hantverkaren redigerar texter i `u-varde.ts`; utvecklaren börjar först när koordinatorn säger att filen är fri, och skriver aldrig över en befintlig textsträng. Varje ny publik sträng står som `'TEXT SAKNAS: <nyckel>'` med en kommentar om när den visas.
+
+**Kontroller:** `node --experimental-strip-types --test scripts/test-kalkyl-u-varde.mjs` grönt (85 i dag; alla gamla kvar eller uttryckligen ersatta nedan), `npx astro check --minimumSeverity error` 0 fel, `npm run kontrollera` 0 fel. Arbetaren kör inte `npm run build`. Inget klientskript, inget nytt beroende.
+
+### 12.32 Lägeslänken från fönster eller dörr ger väggens skikt (rättning av 12 E)
+
+**Felet:** från fönster eller dörr till "Skikt för skikt" sätter sidan `del=vagg`, men `m`-, `d`-, `tm`- och `td`-nycklarna från ett tidigare vindsläge följer med i adressen. `sd=fonster` är ingen skiktdel, så 12.30 byter dem inte, och vinden räknas som vägg.
+
+- **Ny export** i `u-varde.ts`:
+  ```ts
+  export function bytLageQuery(q: URLSearchParams, i: UVardeIndata): URLSearchParams
+  ```
+  Kopierar `q`, sätter `lage` till det andra läget och `sd` till `i.del`. När det nya läget är `skikt` och `i.del` är `fonster` eller `dorr`: sätter också `del=vagg` och tar bort varje nyckel som matchar `/^t?[md][1-6]$/` samt `rg`. Inget annat ändras.
+- **Sidan:** rad 170 till 175 ersätts av `const bytLageHref = '/rakna/u-varde/?' + bytLageQuery(q, indata).toString();`.
+- **Test:**
+  1. `lage=uvarde&del=fonster&m1=gips&d1=13&m2=mineralull-okand&d2=200&tm1=stenull-vindsull&td1=300` genom `bytLageQuery` och sedan `tolkaQuery` ger `lage 'skikt'`, `del 'vagg'`, skikt och tillägg lika med `STANDARD_SKIKT_PER_DEL.vagg`, och status `ok`.
+  2. `lage=uvarde&del=dorr` utan `m`-nycklar ger samma sak.
+  3. Standardvinden i skiktläget (`delbarQuery(STANDARD)`) ger `lage 'uvarde'`, `sd 'tak'`, och alla `m`-, `d`-, `tm`- och `td`-nycklar oförändrade.
+
+### 12.33 Värdet i Boverksraden står till höger (rättning av 12 E)
+
+`u-varde.astro` rad 381: värdets `<span>` får `class="ml-auto"`, så att "1,1 W/m²K, klarar inte" står i högerkanten även när etiketten "Nya regler från 1 oktober 2026" bryter rad på 375 px. Kontrolleras i min granskning på 375 px med fönster 2,8 till 1,15.
+
+### 12.34 Standardtillägget på vägg och golv är en skiva med pris
+
+**Felet:** vägg och golv har tillägget 50 mm `mineralull-okand`, alltså ull av okänd ålder som ny isolering, utan pris. Rubriken blir "140 mm mineralull totalt, 90 mm utöver de 50 du lagt in" och återbetalningen saknas.
+
+**Beslut:** tillägget för `vagg` och `golv` blir **95 mm `stenull-flexibatts`**. Det är den tjockaste skiva som har ett daterat pris (`PRIS_FLEXIBATTS_95_KR_M2_MM`, Bauhaus 84,95 kr/m², 2026-09-24), så kostnaden räknas utan antagande A2. Flexibatts har pris bara i 45 och 95 mm (underlaget 6.2); 45 mm ger 0,266 på väggen, långt från kravet, och andra tjocklekar har inget pris. Vindens tillägg ändras inte. Skikten ändras inte.
+
+`STANDARD_SKIKT_PER_DEL`, kommentaren per rad:
+
+| Del | Skikt | Tillägg | Märkning |
+|---|---|---|---|
+| `tak` | oförändrad | oförändrad | oförändrad |
+| `vagg` | oförändrad | `stenull-flexibatts` 95 | Skikten ANTAGANDE: underlagets sjuttiotalsvägg (avsnitt 7, exempel 1) med okänt märke. Tillägget: Källa för priset Bauhaus jämförpris 84,95 kr/m², 2026-09-24; tjockleken ANTAGANDE: den tjockaste skiva med daterat pris |
+| `golv` | oförändrad | `stenull-flexibatts` 95 | Skikten ANTAGANDE: underlagets golv (fall 8) med okänt märke, 80 m². Tillägget som väggen |
+
+Ingen rad står utan Källa eller ANTAGANDE, och kommentaren skiljer skikten från tillägget. Kommentaren över tabellen ("Inga varumärken … utom vindens Vindsull") skrivs om: märket står i standardtilläggen där det behövs för priset, och rubriken nämner inte märket när tillägget är förvalet (12.36, 12.37).
+
+**Facit** (egen räkning 2026-09-28 med modulens funktioner; ersätter facit för vägg och golv i 12.30):
+
+| | Vägg, 100 m² | Golv, 80 m² |
+|---|---|---|
+| U före | 0,40351 | 0,27860 |
+| U efter | 0,19506 | 0,16242 |
+| Besked | `battre-men-over` | `battre-men-over` |
+| kWh per år | 1 861,06 | 829,82 |
+| kr per år | 4 466,54 | 1 991,57 |
+| Luft-luft | 893,31 till 1 276,15 | 398,31 till 569,02 |
+| Ullen | 8 495,00 kr (100 × 84,95) | 6 796,00 kr (80 × 84,95) |
+| Återbetalning | 1,902 år, visas "1,9" | 3,412 år, visas "3,4" |
+| `saknas` | `{ mm: 20, material: 'stenull-flexibatts', grans: 0.18 }` | `{ mm: 20, material: 'stenull-flexibatts', grans: 0.15 }` |
+| `mmTotalt` | "115" | "115" |
+| `antagandenFor` innehåller | `pris-flexibatts-95`, `skivpris-narmaste`, `exakt-atgang`, `aterbetalning-direktel` | samma |
+
+**Test:**
+- "12.30: väggen med sina standardskikt" och "12.30: golvet med sina standardskikt" får talen ovan och `aterbetalningSaknas: null`.
+- `VAGG_I_ADRESSEN` i testet får `tm1=stenull-flexibatts&td1=95`.
+- Nytt: för `tak`, `vagg` och `golv` ger standardvärdena `aterbetalning !== null`, så att hela spalten syns i varje standardfall.
+
+### 12.35 Rubriken när det gamla redan klarade kravet
+
+**Felet:** `klarar` säger "Lägger du på 100 mm lösull klarar du kravet …", och i läget uvarde "Efter jobbet klarar du kravet …", också när det som sitter där klarade kravet redan före. Läsaren tror att jobbet behövs för kravet.
+
+- `BeskedVarden` får två fält: `klaradeFore: boolean` (samma definition som i `beskedKontext`: båda kolumnerna i `jamforelseFore` klarar) och `del: Byggnadsdel`.
+- `TEXT.besked.klarar.rubrik` väljer variant i den här ordningen:
+  1. `klaradeFore` och ett tillägg finns: **ny variant** `'TEXT SAKNAS: klarar-redan-tillagg'`. Kommentar i koden: *visas i skiktläget när det som sitter där redan klarar kravet och läsaren lagt till något; säger att det redan klarar och vad tillägget sparar i kronor; får använda `del`, `mmValt`, `tillaggNamn` (12.37) och `kr`.*
+  2. `klaradeFore` utan tillägg (läget uvarde, alla fem delar): **ny variant** `'TEXT SAKNAS: klarar-redan-uvarde'`. Kommentar: *visas i läget "Jag vet U-värdet" när U före redan klarar kravet; säger det och vad det nya U-värdet sparar i kronor. Får inte antyda att det inte klarade före.*
+  3. Annars de varianter som finns i dag.
+- Raden under (`rad`) ändras inte i koden; 12.28 har redan `klaradeFore`.
+- **Test** (egen räkning 2026-09-28):
+  - Skikt, tak, gips 13 och `mineralull-okand` 400, tillägg `stenull-vindsull` 100, 100 m², mitt: U 0,11010 till 0,08723, `klarar`, 489,95 kr ("490"), återbetalning 17,1 år, `beskedVarden(r).klaradeFore === true`. Rubriken innehåller "490" och skiljer sig från rubriken för samma värden med `klaradeFore: false`.
+  - Uvarde, tak, 0,11 till 0,08, 100 m², mitt: `klarar`, 642,82 kr ("643"), `klaradeFore === true`, och rubriken skiljer sig från samma värden med `klaradeFore: false`.
+  - `STANDARD` ger `klaradeFore === false` och samma rubrik som i dag.
+  - Så länge varianterna är `TEXT SAKNAS` skrivs påståendena om skillnaden i ordalydelse som `{ todo: 'text 12.35' }`; att rubriken är en icke-tom sträng gäller från början.
+
+### 12.36 Rubriken när tillägget är förvalet
+
+**Felet:** "90 mm utöver de 50 du lagt in" när läsaren inte lagt in något. Förvalet talar som om läsaren valt det.
+
+**Beslut:** jämförelse mot standard i modulen, inte `bytta` i sidan. `bytta` är sant för en adress utan nycklar men falskt för den delade adressen med samma tal, och då skulle samma svar få två rubriker. Jämförelsen ger samma rubrik för båda.
+
+- `BeskedVarden` får `forval: boolean`: sant när `lage` är `skikt`, delen är `tak`, `vagg` eller `golv`, och tilläggsraderna i `detaljer.rader` (`kalla: 'tillagg'`) har samma rad, material och tjocklek (skillnad under 1e-9) som `STANDARD_SKIKT_PER_DEL[del].tillagg`, i samma antal. Skikten jämförs inte; det är tillägget rubriken talar om.
+- `battre-men-over`, grenen med `mmValt`: när `forval` är sant **ny variant** `'TEXT SAKNAS: battre-men-over-forval'`. Kommentar: *visas när tillägget är formulärets förval; säger totalen (`mmTotalt`) och gärna hur mycket mer (`mm`) än förvalet, utan "du lagt in" och utan märke; materialet med `forslagNamn` (12.37).* Grenen med `forval` falskt står kvar ("utöver de X du lagt in").
+- `klarar` med `forval` ändras inte; "Lägger du på 300 mm lösull" är ett villkor och inget påstående om vad läsaren gjort.
+- **Test:**
+  - `STANDARD`, `del=vagg` och `del=golv` (utan andra nycklar) ger `forval === true`. `delbarQuery` av dem, tolkad igen, ger också `forval === true`.
+  - `STANDARD` med tillägget 250 mm, och väggen med `tm1=stenull-paroc&td1=95`, ger `forval === false`.
+  - Läget uvarde ger alltid `forval === false`.
+  - Väggens standard: rubriken innehåller "115" och inte "Rockwool". Väggen med tillägget Flexibatts 45 som läsaren valt (`forval` falskt): rubriken innehåller "115", "70", "45" och "Rockwool Flexibatts" (egen räkning: U efter 0,26648, `saknas.mm` 70).
+
+### 12.37 Materialnamnet i rubriken, ett ställe
+
+**Felet:** `battre-men-over` använder `materialIForslag`, som ger "lösull, stenull totalt". `klarar` använder `tillaggIMening`. Två vägar till samma namn (korrekturens varv 6, punkt 1).
+
+- **Ny intern funktion** `namnIRubrik(m: MaterialNyckel, forval: boolean): string`, den enda som gör ett material till rubrikord:
+  - `mineralull-okand` → som `materialIForslag` i dag ("mineralull").
+  - `stenull-vindsull` → `'lösull'`, alltid (som `tillaggIMening` i dag; det korta namnet har kommatecken och går inte att sätta i en mening).
+  - `stenull-flexibatts` med `forval` sant → `'TEXT SAKNAS: rubrik-flexibatts-forval'`. Kommentar: *slaget av material utan märke; visas bara när Flexibatts är förvalet på vägg och golv (12.34).*
+  - annars `materialIMening(MATERIAL[m].kort)`.
+- `BeskedVarden` får `tillaggNamn: string | null` (tillägg 1 genom `namnIRubrik`, null utan tillägg) och `forslagNamn: string | null` (`saknas.material` genom `namnIRubrik`, null utan `saknas`). `material` och `materialValt` står kvar, eftersom testet i 12.25 läser dem, men ingen rubrik använder dem.
+- Alla rubriker som nämner ett material använder `tillaggNamn` eller `forslagNamn`. `materialIForslag` och `tillaggIMening` används bara inuti `namnIRubrik`.
+- **Test** (egen räkning 2026-09-28): skikt, tak, gips 13 och `mineralull-okand` 50, tillägg `stenull-vindsull` 100, 100 m², mitt, ger `battre-men-over` och `saknas { mm: 170, material: 'stenull-vindsull', grans: 0.13 }`. Rubriken innehåller "270 mm lösull" och varken "Lösull, stenull" eller "lösull, stenull". `STANDARD`: rubriken innehåller "300 mm lösull".
+
+### 12.38 "Så räknar jag" efter läge och del
+
+**Felet:** fönster och dörr får vindens skiss och nio steg om skikt och ull.
+
+- **Skissen** visas bara när `visat.del === 'tak'`, i båda lägena (skissens tal 0,184 och 0,078 är vindens standard i läget uvarde). Villkoret blir `varumarke && illustration && visat.del === 'tak'`. Vägg, golv, fönster och dörr får ingen bild. `SKISS_BILDTEXT` ska stämma i båda lägena (hantverkaren).
+- **Stegen**, tre listor i sidan i stället för `STEG`:
+  - `STEG_SKIKT`: dagens nio steg, när `visat.lage === 'skikt'`.
+  - `STEG_KANT_U`: läget uvarde och delen `tak`, `vagg` eller `golv`. `TEXT SAKNAS`, fyra steg i den här ordningen: talen före och efter tas som du skrev dem; talet efter jämförs med Boverkets krav för delen; skillnaden gånger ytan gånger gradtimmarna delat med 1 000 ger kilowattimmarna, gånger elpriset kronorna, och med värmepump delat med SCOP först; återbetalningen saknas eftersom materialet inte är känt.
+  - `STEG_FONSTER_DORR`: delen `fonster` eller `dorr`. `TEXT SAKNAS`, fyra steg: Uw före och efter som du skrev dem; jämförelsen med de gamla och de nya reglernas tal för delen; kilowattimmar och kronor som ovan; återbetalningen får du genom att dela priset i offerten med kronorna om året.
+  - Tal i stegen byggs av konstanterna (`BOVERKET`, `GRADTIMMAR`), aldrig skrivna i strängen.
+- H2 "Så räknar jag", ankaret `#sa-raknar-jag`, H3 "Vad siffrorna vilar på" och tabellen står kvar i alla fall.
+- **Kontroll** i min granskning (sidan har ingen testsvit): `?del=fonster`, `?del=dorr` och `?lage=uvarde&del=vagg` visar ingen `<img>` under `#sa-raknar-jag` och rätt lista; standardvyn och `?lage=uvarde` visar skissen.
+
+### 12.39 Etiketten för det som förenklas
+
+**Felet:** etiketten "Det jag inte räknar med" står över regeln `tak-kallvind`, som börjar "Vindsbjälklaget räknar jag med …".
+
+- Slaget `begransning` behåller `tak-kallvind`, `golv-uteluft` och `energi-inte-matare` och får `delta-u`, som sätter korrektionen till noll och alltså förenklar. `SLAG['delta-u']` blir `'begransning'`.
+- `TEXT.darfor['slag-begransning']` blir `'TEXT SAKNAS: slag-begransning'`. Kommentar: *etiketten över regler som säger vad räkningen förenklar: vindsbjälklaget mot kall vind, golvet mot uteluft, korrektionen som sätts till noll, och att uträkningen inte är elmätaren. Den ska passa en regel som börjar med vad som räknas.*
+- Inget annat i listan ändras.
+
+### 12.40 Materiallistan i grupper
+
+**Felet:** "Rockwool Granulate" och "Lösull, stenull" står bredvid varandra utan att läsaren kan skilja dem, lösullen är namngiven på två sätt, och samma produkt heter tre saker på samma skärm.
+
+- **Ny export** `MATERIAL_GRUPPER: { grupp: 'okand' | 'losull' | 'skivor' | 'ovrigt'; material: MaterialNyckel[] }[]`, i den här ordningen:
+  1. `okand`: `mineralull-okand`, `cellplast-okand`
+  2. `losull`: `stenull-vindsull`, `glasull-fyllupp`, `stenull-granulate`, `cellulosa` (först de två man lägger för hand, sedan de två som blåses in)
+  3. `skivor`: `stenull-flexibatts`, `stenull-paroc`, `eps`, `pir`
+  4. `ovrigt`: `gips`, `tra`, `lattbetong`, `betong`, `luftspalt`
+- `MATERIAL_ORDNING` blir `MATERIAL_GRUPPER.flatMap((g) => g.material)`. Antagandetabellen följer den nya ordningen; testet i 12.2 som räknar upp raderna för fall 2 sorteras om efter den.
+- **Formuläret:** båda listorna renderar en `<optgroup label={TEXT.form['grupp-' + grupp]}>` per grupp efter alternativet "Inget valt". Tilläggens lista filtrerar på `isolering` och hoppar över en grupp som blir tom (`ovrigt`). Fältnamn, värden och id ändras inte. Inbyggd `<optgroup>`, inget skript.
+- **Texterna** (hantverkaren): `TEXT.form['grupp-okand']`, `['grupp-losull']`, `['grupp-skivor']`, `['grupp-ovrigt']` som `TEXT SAKNAS`, och `kort` för de fyra lösullsmaterialen. Vad som ska stå bredvid vad:
+  - Varje lösull säger ullslaget (sten, glas, cellulosa) och om den läggs för hand eller blåses in, byggt på samma sätt i alla fyra. Vindsull och Granulate skiljs åt av just det.
+  - Vindsullens `kort`, dess `etikett` och rubrikordet i 12.37 ("lösull") har samma huvudord, så att samma produkt inte heter tre saker. `etikett` ändras bara om artikelns tabellcell ändras samtidigt (testet 6.3).
+- **Test:** `MATERIAL_ORDNING` innehåller varje `MaterialNyckel` exakt en gång; varje `kort` är unikt och högst 26 tecken; `TEXT.form` har de fyra gruppnycklarna som icke-tomma strängar; `MATERIAL['stenull-vindsull'].kort` och `.etikett` innehåller båda "lösull" (gemener).
+- **Kontroll** i min granskning: listan på 375 px, grupprubrikerna syns i den inbyggda väljaren, inga avklippta namn.
+
+### 12.41 Hjälprad för del av landet och länk till daggpunktsräknaren
+
+**Del av landet:**
+- Formuläret, fullt format: direkt under regionens `<legend>` en `<p id={id('region-hjalp')} class={HJALP_KLASS}>` med `TEXT.form['hjalp-region']` (`TEXT SAKNAS`), och `aria-describedby={id('region-hjalp')}` på regionens `<fieldset>`. Kompakt format: ingen hjälprad.
+- Kommentar till hantverkaren: *vilken del läsaren ska välja. Källan (Rockwool) nämner bara Örebro, Västerås och Uppsala och drar inga gränser.* Ska raden kunna ge besked för Gävle eller Karlstad behövs ett underlag med graddagar per ort; det beställer koordinatorn av underlagsarbetaren, och det ändrar inte koden.
+- Regeln `gradtimmar` behåller sin mening om orterna.
+
+**Länken till `/rakna/daggpunkt/`:**
+- `TEXT.gorInte` bär i dag bara strängar och sidan renderar dem som `<p>`. `RegelText` bär bara källans länk. Ingen av dem kan bära en länk i löptexten, så länken ska inte ligga i regeln utan i `gorInte`.
+- Typen blir `Record<GorInte, { text: string; lank?: { href: string; text: string } }>`. `lank.text` är ett ord eller en fras som står **exakt en gång** i `text`.
+- `inifran-utan-daggpunkt` får `lank: { href: '/rakna/daggpunkt/', text: 'TEXT SAKNAS: daggpunkt-lanktext' }`; hantverkaren väljer frasen ur sin egen mening.
+- Sidan delar `text` vid `lank.text` och renderar `{före}<a href={href} class={LANK_KLASS}>{lank.text}</a>{efter}`. Intern länk, inget `rel`. Utan `lank` som i dag.
+- **Test:** för varje `gorInte` med `lank` förekommer `lank.text` exakt en gång i `text`, och `href` börjar med `/rakna/`. Så länge länktexten är `TEXT SAKNAS` skrivs testet som `{ todo: 'text 12.41' }`.
+
+### Till hantverkaren från 12 F (texten, inte koden)
+
+- `klarar-redan-tillagg` och `klarar-redan-uvarde` (12.35), `battre-men-over-forval` (12.36), `rubrik-flexibatts-forval` (12.37).
+- `STEG_KANT_U`, `STEG_FONSTER_DORR` och `SKISS_BILDTEXT` för båda lägena (12.38).
+- `slag-begransning` (12.39).
+- `grupp-*` och `kort` för lösullen (12.40).
+- `hjalp-region` och `daggpunkt-lanktext` (12.41).
+
+## 12 G. Korrektur och läsare, varv 7, 2026-09-28 (`korrektur-rakna-u-varde-varv-7-2026-09-28.md`, `retur-rakna-u-varde-varv-7-2026-09-28.md`)
+
+Specad av koordinatorn 2026-09-28, godkänns av UX och bygge. En rad per krav.
+
+- **12.42** Källistan i `u-varde.astro`: `</a>, {k.last}` på samma rad, så att inget mellanslag hamnar före kommat. (specad av koordinatorn 2026-09-28, godkänns av UX och bygge)
+- **12.43** `namnIRubrik`: `cellplast-okand` går genom `materialIForslag` som `mineralull-okand` ("cellplast"). Rubrikorden för lösullen står i en egen tabell `RUBRIKORD` i modulen: `stenull-granulate` "lösull av stenull", `glasull-fyllupp` "lösull av glasull", `cellulosa` "cellulosa", `stenull-vindsull` "lösull" som förut. Ingen strängmanipulation av `kort`. (specad av koordinatorn 2026-09-28, godkänns av UX och bygge)
+- **12.44** `fel['skikt-for-manga']` och `fel['tillagg-for-manga']` skriver talet med bokstäver (sex, två) genom en liten tabell för tal under tretton i modulen; ingen exporterad hjälpare fanns i `src/lib`. (specad av koordinatorn 2026-09-28, godkänns av UX och bygge)
+- **12.45** Återbetalningstid bara för vindsbjälklaget. Ny orsak `bara-vind` i `AterbetalningSaknas` för `del` `vagg` och `golv` i läget skikt när något sparas, oavsett material; texten `TEXT.aterbetalningSaknas['bara-vind']` är `TEXT SAKNAS`. Kronorna om året visas som förut. Testfallen i 12.34: vägg och golv ger `bara-vind`, vinden 9 år som förut. (specad av koordinatorn 2026-09-28, godkänns av UX och bygge)
+- **12.46** Förslaget för Flexibatts är en total som går att köpa: den minsta summa av skivtjocklekarna med pris (`FLEXIBATTS_TJOCKLEKAR_MM`, 45 och 95 mm) som når kravet, räknad med `extraSkivorForGrans`. Lösull och övriga material avrundas i steg om 10 mm som förut. Testfall: standardväggen och standardgolvet. (specad av koordinatorn 2026-09-28, godkänns av UX och bygge)
+- **12.47** Regeln `delta-u` visas bara för `del` `vagg`. Vinden och golvet behåller gruppen "Förenklingarna" med `tak-kallvind` respektive `golv-uteluft` och `energi-inte-matare`. (specad av koordinatorn 2026-09-28, godkänns av UX och bygge)
+
+### Till hantverkaren från 12 G (texten, inte koden)
+
+- `aterbetalningSaknas['bara-vind']` (12.45): visas i läget skikt för vägg och golv när något sparas. Säger varför tiden saknas: räknaren har bara skivornas pris, och en vägg eller ett golv kräver också panel, läkt, vindskydd och att konstruktionen öppnas.

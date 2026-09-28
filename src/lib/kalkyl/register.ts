@@ -52,6 +52,16 @@ export const KALKYLATORER: Kalkylator[] = [
     pelare: ['el', 'fukt'],
   },
   {
+    slug: 'u-varde',
+    namn: 'Beräkna U-värde och vad mer isolering sparar',
+    rad: 'Fyll i vad vinden eller väggen består av, så ser du om den klarar Boverkets krav och hur många kronor om året du sparar genom att isolera mer.',
+    /* Eldningssäsongen. "tilläggsisolera vind" toppar i februari enligt
+       docs/SOKORDSANALYS.md, och frågan om vad isoleringen sparar ställs när
+       elräkningen kommer. */
+    sasong: [10, 3],
+    pelare: ['el'],
+  },
+  {
     slug: 'innervagg',
     namn: 'Räkna reglar, gips och skruv till väggen',
     rad: 'Väggens längd och höjd räcker för en inköpslista med virke, skivor, skruv och ull, spillet inräknat.',

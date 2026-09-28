@@ -1,0 +1,453 @@
+---
+/**
+ * Formuläret till U-värdesräknaren. Ett ställe: sidan /rakna/u-varde/
+ * renderar det i fullt format, och <Kalkylator namn="u-varde" /> renderar samma
+ * fält i kompakt format med action till verktygssidan.
+ *
+ * Ingen klient-JavaScript. Formuläret skickas som GET, och verktygssidan räknar.
+ *
+ * Två lägen: skikt för skikt, eller ett känt U-värde före och efter. Läget byts
+ * med en vanlig länk som sidan bygger (bytLageHref), så värdena från det andra
+ * läget följer med i adressen. Luftspalten står med i listan oavsett
+ * byggnadsdel, eftersom formuläret inte kan dölja den utan skript; felet ges
+ * vid räkningen.
+ *
+ * All synlig text kommer ur TEXT i src/lib/kalkyl/u-varde.ts. Spec:
+ * docs/briefer/spec-kalkyl-u-varde-2026-09-24.md avsnitt 3.
+ */
+import {
+  MATERIAL,
+  MATERIAL_GRUPPER,
+  STANDARD,
+  TEXT,
+  type Byggnadsdel,
+  type FelNyckel,
+  type MaterialNyckel,
+  type Region,
+  type UVardeIndata,
+} from '../../lib/kalkyl/u-varde.ts';
+import {
+  ETIKETT_KLASS,
+  FALT_KLASS,
+  FEL_KLASS,
+  HJALP_KLASS,
+  KNAPP_KLASS,
+  LANK_KLASS,
+  ramKlass,
+} from '../../lib/kalkyl/stil';
+
+type Sex = [string, string, string, string, string, string];
+
+interface Props {
+  /** Valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
+  indata?: UVardeIndata;
+  /** Råa strängar ur adressen, så att ett felskrivet värde går att rätta. */
+  varden?: { yta: string; uf: string; ue: string; d: Sex; td: [string, string] };
+  fel?: Partial<Record<FelNyckel, string>>;
+  /** Inbäddad i en artikel: skiktrad 1 till 3, ett tillägg, inga hjälprader. */
+  kompakt?: boolean;
+  /** Prefix på id-attributen, så att två formulär på samma sida inte krockar. */
+  idPrefix?: string;
+  knappText?: string;
+  /** Länken som byter läge, byggd av sidan. Utelämnad: /rakna/u-varde/?lage=<andra läget>. */
+  bytLageHref?: string;
+}
+
+const komma = (n: number) => String(n).replace('.', ',');
+
+/** Standardskiktens tjocklekar på sina rader, tomt på resten och för luftspalten. */
+function standardTjocklekar(): Sex {
+  const d: Sex = ['', '', '', '', '', ''];
+  for (const s of STANDARD.skikt) {
+    if (s.material !== 'luftspalt' && Number.isFinite(s.tjocklekMm)) d[s.rad - 1] = komma(s.tjocklekMm);
+  }
+  return d;
+}
+function standardTillagg(): [string, string] {
+  const td: [string, string] = ['', ''];
+  for (const t of STANDARD.tillagg) td[t.rad - 1] = komma(t.tjocklekMm);
+  return td;
+}
+
+const {
+  indata = STANDARD,
+  varden = {
+    yta: komma(STANDARD.ytaM2),
+    uf: komma(STANDARD.uFore),
+    ue: komma(STANDARD.uEfter),
+    d: standardTjocklekar(),
+    td: standardTillagg(),
+  },
+  fel = {},
+  kompakt = false,
+  idPrefix = '',
+  knappText = 'Räkna ut',
+  bytLageHref,
+} = Astro.props;
+
+const id = (namn: string) => `${idPrefix}${namn}`;
+const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
+const skiktlage = indata.lage === 'skikt';
+const andraLaget = skiktlage ? 'uvarde' : 'skikt';
+const bytHref = bytLageHref ?? `/rakna/u-varde/?lage=${andraLaget}`;
+
+const delar: Byggnadsdel[] = skiktlage ? ['vagg', 'tak', 'golv'] : ['vagg', 'tak', 'golv', 'fonster', 'dorr'];
+const regioner: Region[] = ['mitt', 'syd', 'norr'];
+
+/** Raderna 1 till n. */
+const rader = (n: number) => Array.from({ length: n }, (_, i) => i + 1);
+const hogstaRad = (lista: { rad: number }[]) => lista.reduce((max, x) => Math.max(max, x.rad), 0);
+/*
+ * Fullt format: en tom rad efter den sista ifyllda, minst två skikt och ett
+ * tillägg. Kompakt: gips, ull och luftspalt, panelen utanför luftspalten
+ * ändrar inte U-värdet (specen 12.4).
+ */
+const skiktRader = kompakt ? rader(3) : rader(Math.min(6, Math.max(2, hogstaRad(indata.skikt) + 1)));
+const tillaggRader = kompakt ? [1] : rader(Math.min(2, Math.max(1, hogstaRad(indata.tillagg) + 1)));
+
+/*
+ * Reglarna väljs en gång, bara på en skiktrad med isolering (specen 12.12).
+ * Pekar adressen på en annan rad visas den ändå som vald, med felet under.
+ */
+const valdRegelrad = indata.reglarPaTomRad ?? indata.skikt.find((x) => x.reglar)?.rad ?? null;
+const regelAlternativ = skiktRader
+  .map((n) => ({ n, material: indata.skikt.find((x) => x.rad === n)?.material ?? null }))
+  .filter((a) => (a.material !== null && MATERIAL[a.material].isolering) || a.n === valdRegelrad);
+if (valdRegelrad !== null && !regelAlternativ.some((a) => a.n === valdRegelrad)) {
+  regelAlternativ.push({ n: valdRegelrad, material: indata.skikt.find((x) => x.rad === valdRegelrad)?.material ?? null });
+}
+const regelText = (a: { n: number; material: MaterialNyckel | null }) =>
+  a.material === null ? TEXT.form['skikt-etikett'](a.n) : `${TEXT.form['skikt-etikett'](a.n)}, ${MATERIAL[a.material].kort}`;
+/*
+ * Listorna i grupper, en <optgroup> per grupp (specen 12.40). Bara isolering
+ * går att lägga till (specen 12.19), och en grupp som då blir tom hoppas över.
+ */
+const skiktGrupper = MATERIAL_GRUPPER.map((g) => ({ etikett: TEXT.form[`grupp-${g.grupp}`], material: g.material }));
+const tillaggsGrupper = skiktGrupper
+  .map((g) => ({ etikett: g.etikett, material: g.material.filter((m) => MATERIAL[m].isolering) }))
+  .filter((g) => g.material.length > 0);
+
+/** aria-describedby av de id som finns, eller undefined. */
+const beskrivs = (...idn: (string | false | undefined)[]) => {
+  const finns = idn.filter((v): v is string => typeof v === 'string' && v.length > 0);
+  return finns.length > 0 ? finns.join(' ') : undefined;
+};
+
+const uFalt = [
+  {
+    namn: 'uf',
+    etikett: TEXT.form['etikett-uf'],
+    varde: varden.uf,
+    fel: fel.uFore,
+    hjalp: indata.del === 'fonster' || indata.del === 'dorr' ? TEXT.form['hjalp-uw'] : TEXT.form['hjalp-uf'],
+  },
+  {
+    namn: 'ue',
+    etikett: TEXT.form['etikett-ue'],
+    varde: varden.ue,
+    fel: fel.uEfter,
+    /* För fönster och dörr står Uw-raden bara under U-värdet före (specen 12.4). */
+    hjalp: indata.del === 'fonster' || indata.del === 'dorr' ? null : TEXT.form['hjalp-ue'],
+  },
+] as const;
+---
+
+<form method="get" action="/rakna/u-varde/">
+  <input type="hidden" name="lage" value={indata.lage} />
+  {/* Delen som fälten fylldes i för, så att standardvärdena följer ett byte av del (specen 12.27). */}
+  <input type="hidden" name="sd" value={indata.del} />
+
+  {
+    kompakt ? (
+      <p class="m-0 mb-4 text-liten">
+        <a href="/rakna/u-varde/?lage=uvarde" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
+          {TEXT.form['lage-kompakt']}
+        </a>
+      </p>
+    ) : (
+      <div class="mb-4">
+        <p class="m-0 text-liten text-blyerts-2">{TEXT.form['lage-rubrik']}</p>
+        <p class="m-0 flex flex-wrap items-center gap-x-2 text-brod">
+          {skiktlage ? (
+            <>
+              <strong aria-current="true" class="inline-flex min-h-11 items-center">
+                {TEXT.form['lage-skikt']}
+              </strong>
+              <span aria-hidden="true">·</span>
+              <a href={bytHref} class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
+                {TEXT.form['lage-uvarde']}
+              </a>
+            </>
+          ) : (
+            <>
+              <a href={bytHref} class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
+                {TEXT.form['lage-skikt']}
+              </a>
+              <span aria-hidden="true">·</span>
+              <strong aria-current="true" class="inline-flex min-h-11 items-center">
+                {TEXT.form['lage-uvarde']}
+              </strong>
+            </>
+          )}
+        </p>
+      </div>
+    )
+  }
+
+  <fieldset class="m-0 mb-4 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>{TEXT.form['legend-del']}</legend>
+    <div class={radioKlass}>
+      {
+        delar.map((d) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input
+              type="radio"
+              name="del"
+              value={d}
+              checked={indata.del === d}
+              aria-describedby={fel.del ? id('del-fel') : undefined}
+            />
+            {TEXT.del[d]}
+          </label>
+        ))
+      }
+    </div>
+    {fel.del && <p id={id('del-fel')} class={FEL_KLASS}>{fel.del}</p>}
+  </fieldset>
+
+  {
+    skiktlage ? (
+      <>
+        <fieldset class="m-0 mb-4 p-0 border-0">
+          <legend class:list={[ETIKETT_KLASS, 'p-0']}>{TEXT.form['legend-skikt']}</legend>
+          {fel.skikt && (
+            <p id={id('skikt-fel')} class:list={[FEL_KLASS, 'mb-2']}>
+              {fel.skikt}
+            </p>
+          )}
+          {!kompakt && <p class:list={[HJALP_KLASS, 'mb-2']}>{TEXT.form['hjalp-skikt']}</p>}
+          {skiktRader.map((n) => {
+            const s = indata.skikt.find((x) => x.rad === n);
+            const radFel = fel[`s${n}` as FelNyckel];
+            const felId = radFel ? id(`s${n}-fel`) : undefined;
+            const gemensamt = fel.skikt ? id('skikt-fel') : undefined;
+            return (
+              <fieldset class="m-0 mb-3 p-0 border-0">
+                <legend class="sr-only">{TEXT.form['skikt-etikett'](n)}</legend>
+                <label for={id(`m${n}`)} class="block mb-1 text-liten text-blyerts-2">
+                  {TEXT.form['skikt-etikett'](n)}
+                </label>
+                <select
+                  id={id(`m${n}`)}
+                  name={`m${n}`}
+                  aria-describedby={beskrivs(felId, gemensamt)}
+                  class:list={[FALT_KLASS, ramKlass(Boolean(radFel))]}
+                >
+                  <option value="" selected={!s}>
+                    {TEXT.form['skikt-tomt-alternativ']}
+                  </option>
+                  {skiktGrupper.map((g) => (
+                    <optgroup label={g.etikett}>
+                      {g.material.map((m) => (
+                        <option value={m} selected={s?.material === m}>
+                          {MATERIAL[m].kort}
+                        </option>
+                      ))}
+                    </optgroup>
+                  ))}
+                </select>
+                <div class="mt-2 flex flex-wrap items-center gap-2">
+                  <input
+                    id={id(`d${n}`)}
+                    name={`d${n}`}
+                    type="text"
+                    inputmode="decimal"
+                    value={varden.d[n - 1]}
+                    aria-label={TEXT.form['tjocklek-aria'](n)}
+                    aria-describedby={beskrivs(felId, gemensamt)}
+                    class:list={[FALT_KLASS, ramKlass(Boolean(radFel)), 'max-w-28']}
+                  />
+                  <span class="text-brod text-blyerts-2">mm</span>
+                </div>
+                {radFel && (
+                  <p id={felId} class={FEL_KLASS}>
+                    {radFel}
+                  </p>
+                )}
+              </fieldset>
+            );
+          })}
+          <div class="mt-1">
+            <label for={id('rg')} class="block mb-1 text-liten text-blyerts-2">
+              {TEXT.form['reglar-etikett']}
+            </label>
+            <select
+              id={id('rg')}
+              name="rg"
+              aria-describedby={beskrivs(fel.reglar && id('reglar-fel'), !kompakt && id('rg-hjalp'))}
+              class:list={[FALT_KLASS, ramKlass(Boolean(fel.reglar))]}
+            >
+              <option value="" selected={valdRegelrad === null}>
+                {TEXT.form['reglar-inga']}
+              </option>
+              {regelAlternativ.map((a) => (
+                <option value={String(a.n)} selected={a.n === valdRegelrad}>
+                  {regelText(a)}
+                </option>
+              ))}
+            </select>
+            {fel.reglar && (
+              <p id={id('reglar-fel')} class={FEL_KLASS}>
+                {fel.reglar}
+              </p>
+            )}
+            {!kompakt && (
+              <p id={id('rg-hjalp')} class={HJALP_KLASS}>
+                {TEXT.form['hjalp-reglar']}
+              </p>
+            )}
+          </div>
+        </fieldset>
+
+        <fieldset class="m-0 mb-4 p-0 border-0">
+          <legend class:list={[ETIKETT_KLASS, 'p-0']}>{TEXT.form['legend-tillagg']}</legend>
+          {fel.tillagg && (
+            <p id={id('tillagg-fel')} class:list={[FEL_KLASS, 'mb-2']}>
+              {fel.tillagg}
+            </p>
+          )}
+          {!kompakt && <p class:list={[HJALP_KLASS, 'mb-2']}>{TEXT.form['hjalp-tillagg']}</p>}
+          {tillaggRader.map((n) => {
+            const t = indata.tillagg.find((x) => x.rad === n);
+            const radFel = fel[`t${n}` as FelNyckel];
+            const felId = radFel ? id(`t${n}-fel`) : undefined;
+            const gemensamt = fel.tillagg ? id('tillagg-fel') : undefined;
+            return (
+              <fieldset class="m-0 mb-3 p-0 border-0">
+                <legend class="sr-only">{TEXT.form['tillagg-etikett'](n)}</legend>
+                <label for={id(`tm${n}`)} class="block mb-1 text-liten text-blyerts-2">
+                  {TEXT.form['tillagg-etikett'](n)}
+                </label>
+                <select
+                  id={id(`tm${n}`)}
+                  name={`tm${n}`}
+                  aria-describedby={beskrivs(felId, gemensamt)}
+                  class:list={[FALT_KLASS, ramKlass(Boolean(radFel))]}
+                >
+                  <option value="" selected={!t}>
+                    {TEXT.form['skikt-tomt-alternativ']}
+                  </option>
+                  {tillaggsGrupper.map((g) => (
+                    <optgroup label={g.etikett}>
+                      {g.material.map((m) => (
+                        <option value={m} selected={t?.material === m}>
+                          {MATERIAL[m].kort}
+                        </option>
+                      ))}
+                    </optgroup>
+                  ))}
+                </select>
+                <div class="mt-2 flex flex-wrap items-center gap-2">
+                  <input
+                    id={id(`td${n}`)}
+                    name={`td${n}`}
+                    type="text"
+                    inputmode="decimal"
+                    value={varden.td[n - 1]}
+                    aria-label={TEXT.form['tillagg-tjocklek-aria'](n)}
+                    aria-describedby={beskrivs(felId, gemensamt)}
+                    class:list={[FALT_KLASS, ramKlass(Boolean(radFel)), 'max-w-28']}
+                  />
+                  <span class="text-brod text-blyerts-2">mm</span>
+                </div>
+                {radFel && (
+                  <p id={felId} class={FEL_KLASS}>
+                    {radFel}
+                  </p>
+                )}
+              </fieldset>
+            );
+          })}
+        </fieldset>
+      </>
+    ) : (
+      uFalt.map((f) => (
+        <div class="mb-4">
+          <label for={id(f.namn)} class={ETIKETT_KLASS}>
+            {f.etikett}
+          </label>
+          <div class="flex items-center gap-2">
+            <input
+              id={id(f.namn)}
+              name={f.namn}
+              type="text"
+              inputmode="decimal"
+              value={f.varde}
+              aria-describedby={f.fel ? id(`${f.namn}-fel`) : !kompakt && f.hjalp ? id(`${f.namn}-hjalp`) : undefined}
+              class:list={[FALT_KLASS, ramKlass(Boolean(f.fel))]}
+            />
+            <span class="text-brod text-blyerts-2 whitespace-nowrap">W/m²K</span>
+          </div>
+          {f.fel ? (
+            <p id={id(`${f.namn}-fel`)} class={FEL_KLASS}>
+              {f.fel}
+            </p>
+          ) : (
+            !kompakt && f.hjalp && (
+              <p id={id(`${f.namn}-hjalp`)} class={HJALP_KLASS}>
+                {f.hjalp}
+              </p>
+            )
+          )}
+        </div>
+      ))
+    )
+  }
+
+  <div class="mb-4">
+    <label for={id('yta')} class={ETIKETT_KLASS}>{TEXT.form['etikett-yta']}</label>
+    <div class="flex items-center gap-2">
+      <input
+        id={id('yta')}
+        name="yta"
+        type="text"
+        inputmode="decimal"
+        value={varden.yta}
+        aria-describedby={fel.yta ? id('yta-fel') : !kompakt ? id('yta-hjalp') : undefined}
+        class:list={[FALT_KLASS, ramKlass(Boolean(fel.yta))]}
+      />
+      <span class="text-brod text-blyerts-2">m²</span>
+    </div>
+    {
+      fel.yta ? (
+        <p id={id('yta-fel')} class={FEL_KLASS}>
+          {fel.yta}
+        </p>
+      ) : (
+        !kompakt && (
+          <p id={id('yta-hjalp')} class={HJALP_KLASS}>
+            {TEXT.form['hjalp-yta']}
+          </p>
+        )
+      )
+    }
+  </div>
+
+  <fieldset class="m-0 mb-6 p-0 border-0" aria-describedby={!kompakt ? id('region-hjalp') : undefined}>
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>{TEXT.form['legend-region']}</legend>
+    {/* Hjälpraden bara i fullt format (specen 12.41). */}
+    {!kompakt && <p id={id('region-hjalp')} class={HJALP_KLASS}>{TEXT.form['hjalp-region']}</p>}
+    <div class={radioKlass}>
+      {
+        regioner.map((r) => (
+          <label class="flex min-h-11 items-center gap-2 text-brod">
+            <input type="radio" name="region" value={r} checked={indata.region === r} />
+            {TEXT.region[r]}
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <button type="submit" class={KNAPP_KLASS}>{knappText}</button>
+</form>

@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Ett vindsbjälklag i genomskärning, med ett lager gammal ull och ett tjockare lager ny lösull ovanpå.">
+  <!-- Anteckningsboken, verktygsskiss för /rakna/u-varde/, räknarens standardfall utan reglar (specen 12.24): vindsbjälklaget i genomskärning.
+       Blyerts 2 px för innertak, ullagrens kanter, bjälkarna och takstolarna, blyerts-2 för
+       skrafferingen i ullen (DESIGN.md avsnitt 7), värmestrecken, måttbyglarna och etiketterna, snickarpenna för pilen från den nya ullen till
+       nyckeltalet (den enda pennsaken), tumstock bara bakom "2 801 kr".
+       Skala i höjdled: 1 px är 4 mm. Gammal ull y=246–296 (50 px, 200 mm), ny lösull y=171–246
+       (75 px, 300 mm), alltså 2 : 3. Innertak y=296, ullen x=152–440.
+       Tre bjälkar i den gamla ullen, 11 px breda, mitt på x=224, 296 och 368.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="313" y="75" width="83" height="28" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 354 89)"/>
+
+  <!-- Blyerts: takstolarna i övre hörnen, innertaket, ullagrens kanter, bjälkarna i den gamla ullen -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M46,150 Q118,86 198,12 M58,162 Q130,96 210,22"/>
+    <path d="M594,136 Q545,76 506,14 M582,146 Q532,86 494,24"/>
+    <path d="M110,296 Q296,298 482,296"/>
+    <path d="M150,246 Q296,244 442,246"/>
+    <path d="M150,248 Q151,272 152,296 M440,248 Q441,272 440,296"/>
+    <path d="M152,244 Q151,210 153,174 M440,244 Q441,210 439,176"/>
+    <path d="M218.5,296 Q219.5,271 218.5,247 M229.5,296 Q228.5,271 229.5,247 M290.5,296 Q291.5,271 290.5,247 M301.5,296 Q300.5,271 301.5,247 M362.5,296 Q363.5,271 362.5,247 M373.5,296 Q372.5,271 373.5,247"/>
+    <path d="M153,174 C164,164 172,176 184,168 C196,160 204,172 218,170 C230,166 238,160 250,168 C262,176 272,164 286,166 C300,170 308,178 322,170 C336,162 346,168 358,172 C370,176 380,164 394,166 C408,168 416,178 428,172 C434,169 437,172 439,176"/>
+  </g>
+
+  <!-- Blyerts-2: skraffering i den nya lösullen och i den gamla ullen, inte i bjälkarna och inte där pilen börjar -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M160,184 l7,7 M182,184 l7,7 M204,184 l7,7 M226,184 l7,7 M248,184 l7,7 M270,184 l7,7 M292,184 l7,7 M336,184 l7,7 M358,184 l7,7 M380,184 l7,7 M402,184 l7,7 M424,184 l7,7"/>
+    <path d="M171,206 l7,7 M193,206 l7,7 M215,206 l7,7 M237,206 l7,7 M259,206 l7,7 M281,206 l7,7 M347,206 l7,7 M369,206 l7,7 M391,206 l7,7 M413,206 l7,7"/>
+    <path d="M160,228 l7,7 M182,228 l7,7 M204,228 l7,7 M226,228 l7,7 M248,228 l7,7 M270,228 l7,7 M292,228 l7,7 M314,228 l7,7 M336,228 l7,7 M358,228 l7,7 M380,228 l7,7 M402,228 l7,7 M424,228 l7,7"/>
+    <path d="M158,254 l7,7 M180,254 l7,7 M202,254 l7,7 M246,254 l7,7 M268,254 l7,7 M312,254 l7,7 M334,254 l7,7 M378,254 l7,7 M400,254 l7,7 M422,254 l7,7"/>
+    <path d="M169,276 l7,7 M191,276 l7,7 M235,276 l7,7 M257,276 l7,7 M279,276 l7,7 M323,276 l7,7 M345,276 l7,7 M389,276 l7,7 M411,276 l7,7"/>
+  </g>
+
+  <!-- Blyerts-2: två värmestreck som stiger ur rummet och slutar under isoleringen -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M214,350 q-6,-7 0,-14 q6,-7 0,-14 q-6,-7 0,-14"/>
+    <path d="M262,346 q-6,-7 0,-14 q6,-7 0,-14 q-6,-7 0,-12"/>
+  </g>
+
+  <!-- Blyerts-2: måttbyglarna till vänster, 300 mm över den nya ullen och 200 mm över den gamla -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M132,171 Q131,208 132,246 Q133,271 132,296"/>
+    <path d="M126,171 h12 M126,246 h12 M126,296 h12"/>
+  </g>
+
+  <!-- Snickarpenna: pilen från den nya ullen till nyckeltalet -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M318,204 Q330,152 356,114"/>
+    <path d="M343,120 L356,114 L357,128"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="52" y="216" fill="#625a50">300 mm</text>
+    <text x="52" y="279" fill="#625a50">200 mm</text>
+    <text x="456" y="216" fill="#625a50">efter 0,085</text>
+    <text x="456" y="279" fill="#625a50">före 0,216</text>
+    <text x="330" y="334" fill="#625a50">100 m²</text>
+    <text x="318" y="96">2 801 kr</text>
+    <text x="397" y="96">om året</text>
+  </g>
+</svg>

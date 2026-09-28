@@ -26,7 +26,7 @@ Prioritet efter sökbehov, hur unikt verktyget är, och om det pekar på dyra pr
 | 6 | Trall- och regelräknare för altan, byggd | Altan | Trall, reglar, plintar, skruv och spill ur yta och riktning | Finns hos alla; vår har källa och spillregel | Trallskruv, skruvautomat |
 | 7 | Vilken gipsskruv, byggd | Väggar | Skivtjocklek, antal lag och regel ger längd, gänga, spets och ytbehandling | Ingen har den; butikerna säljer skruven utan att säga vilken | Bandad skruv, skruvautomat |
 | 8 | Kvadratmeter och materialåtgång | Golv, Kök, Väggar | Yta av rum med avdrag för dörrar och fönster, sedan färg, tapet, kakel eller golv | Störst sökvolym av alla, mest konkurrens | Färg, verktyg |
-| 9 | Isolering och U-värde | El och energi | Vad tilläggsisolering sparar i kWh och kr per år, med Boverkets U-värden | Fixhuset har en enkel; vår med U-värden och fuktvarning | Ingen direkt |
+| 9 | Isolering och U-värde, byggd | El och energi | Vad tilläggsisolering sparar i kWh och kr per år, med Boverkets U-värden | Fixhuset har en enkel; vår med U-värden och fuktvarning | Ingen direkt |
 | 10 | Dränering och källare, byggd | Grund | Löpmeter, djup och schablonpris ger intervall, och om avfuktaren räcker i stället | Ingen har den | Avfuktare |
 | 11 | Takvinkel, snölast och takarea | Tak | Vinkel ur höjd och bredd, takarea för material, snölast per zon | Kalkylatorer finns utomlands, få på svenska | Ingen |
 | 12 | Spannmålare och kapoptimering | Verktyg | Kapa lister och reglar ur standardlängder med minst spill | Kalkylverket har en | Kapsåg, lasermätare |

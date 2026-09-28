@@ -1,0 +1,622 @@
+---
+/**
+ * U-värdesräknaren: U-värdet ur skikten eller ett känt U-värde, jämförelsen
+ * mot Boverkets krav, vad det sparar i kilowattimmar och kronor, och
+ * återbetalningstiden för ullen. Formuläret skickas som GET till samma sida och
+ * räkningen sker på servern, så sidan fungerar utan ett enda byte klient-JS.
+ * Se docs/SPEC-SIDMALLAR.md avsnitt 4.7 och
+ * docs/briefer/spec-kalkyl-u-varde-2026-09-24.md.
+ *
+ * Formeln, konstanterna och all text som modulen äger ligger i
+ * src/lib/kalkyl/u-varde.ts. Sidan räknar ingenting själv, den visar svaret och
+ * redovisar källan bakom varje rad.
+ *
+ * Räkningen pekar inte ut någon produkt, så sidan har varken produktkort eller
+ * reklamband.
+ */
+export const prerender = false;
+
+import Bas from '../../layouts/Bas.astro';
+import { ELPRIS_KALLA } from '../../lib/antaganden';
+import {
+  antagandenFor,
+  beskedKontext,
+  beskedVarden,
+  BOVERKET,
+  bytLageQuery,
+  delbarQuery,
+  endecimal,
+  GRADTIMMAR,
+  heltal,
+  MATERIAL,
+  raknaUVarde,
+  STANDARD,
+  STANDARD_PER_DEL,
+  TEXT,
+  tolkaQuery,
+  treDecimaler,
+  uText,
+  type GorInteText,
+  type KallaRef,
+  type Motstand,
+  type RegelNyckel,
+  type UVardeIndata,
+} from '../../lib/kalkyl/u-varde';
+import { ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
+import { verktyg } from '../../lib/strukturdata';
+import { verktygsDelningsbild, verktygsillustration, verktygsVarumarkesbild } from '../../lib/verktygsbild';
+import UVardeForm from '../../components/kalkyl/UVardeForm.astro';
+import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Faq from '../../components/ui/Faq.astro';
+import Illustration from '../../components/ui/Illustration.astro';
+import Markering from '../../components/ui/Markering.astro';
+import Pennstreck from '../../components/ui/Pennstreck.astro';
+import StrukturData from '../../components/ui/StrukturData.astro';
+import Tabellyta from '../../components/ui/Tabellyta.astro';
+
+Astro.locals.sidtyp = 'verktyg';
+
+Astro.response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+
+/** Slug, namn och beskrivning på ett ställe: brödsmulan, og:image och WebApplication läser samma. */
+const SLUG = 'u-varde';
+const VERKTYGSNAMN = 'U-värdesräknare';
+const BESKRIVNING =
+  'Beräkna U-värde skikt för skikt eller skriv in det du vet. Se om väggen, vinden eller golvet klarar Boverkets krav och vad tilläggsisolering sparar per år.';
+const titel = 'Beräkna U-värde och vad mer isolering sparar';
+
+/* Sidans egen text. Talen är desamma som i /el/u-varde/ och i konstanterna i modulen. */
+const H1 = 'Klarar vinden eller väggen Boverkets krav på U-värde?';
+const INGRESS =
+  'Du har mätt ullen på vinden, eller du vet ungefär vad väggen består av, och undrar om det lönar sig att lägga på mer. Välj materialen som sitter där, med början närmast rummet, skriv hur tjocka de är och välj sedan det du vill lägga till. Då ser du U-värdet före och efter, om det klarar Boverkets krav och vad tillägget sparar i kilowattimmar och kronor om året. Om det inte räcker får du veta hur många millimeter till som behövs. Ett U-värde du redan känner till, till exempel ett fönsters, skriver du in direkt.';
+/** Kortsvaret, ett stycke per rad. Markeringen står runt nyckeltalet i det stycke som har det. */
+const KORTSVAR: { fore: string; markering?: string; efter?: string }[] = [
+  {
+    fore: 'Jag går igenom vinden eller väggen lager för lager och räknar ut U-värdet, som säger hur mycket värme som tar sig ut genom varje kvadratmeter. Sedan jämför jag talet med Boverkets krav, som vid en ombyggnad är 0,13 W/m²K för ett vindsbjälklag och 0,18 för en yttervägg.',
+  },
+  {
+    fore: 'Formuläret är ifyllt med en vind som har 200 mm gammal ull och U-värdet 0,216. Med 300 mm lösull ovanpå kommer U-värdet ner till ',
+    markering: '0,085 W/m²K',
+    efter: ', och vinden klarar kravet med god marginal. På 100 kvadratmeter i Mellansverige sparar det 2 801 kr om året med direktverkande el.',
+  },
+];
+const SKISS_ALT = 'Ett vindsbjälklag i genomskärning, med ett lager gammal ull och ett tjockare lager ny lösull ovanpå.';
+/*
+ * Skissen visas bara för vindsbjälklaget, i båda lägena (specen 12.38). Skissens
+ * tal är skiktlägets; läget ”Jag vet U-värdet” börjar med Rockwools tal för
+ * samma vind, och bildtexten säger det.
+ */
+const SKISS_BILDTEXT = `Skissen visar vinden som räknaren börjar med, där 300 mm lösull ligger ovanpå 200 mm gammal ull. Längst ner sitter innertaket och uppe i hörnen takstolarna, och de två strecken som stiger ur rummet och slutar under ullen är värmen på väg ut. Pilen går från den nya ullen till U-värdet före och efter, räknat skikt för skikt. Under ”Jag vet U-värdet” börjar formuläret i stället med Rockwools tal för samma vind, ${uText(STANDARD_PER_DEL.tak.uFore, 'tak')} och ${uText(STANDARD_PER_DEL.tak.uEfter, 'tak')}.`;
+/**
+ * Stegen i ord, en lista per läge och del (specen 12.38). STEG_SKIKT är
+ * räkningen skikt för skikt, ett per steg i specen 2.7 steg 1 till 9.
+ */
+const STEG_SKIKT = [
+  'Jag går igenom skikten inifrån och ut. Kommer jag till en ventilerad luftspalt slutar jag räkna där, och för utsidan tar jag samma motstånd som för den stilla luften inne.',
+  'Varje skikt får sitt motstånd, tjockleken i meter delat med lambdavärdet. För skiktet med reglar räknar jag också motståndet rakt genom träet.',
+  'Utan reglar lägger jag ihop motstånden med luftens motstånd inne och ute och tar 1 delat med summan. Med reglar blir det två räkningar, och jag tar medelvärdet av motstånden.',
+  'Det du lägger till tar jag som hela lager utan reglar och gör samma räkning en gång till.',
+  'Svaret är det nya U-värdet om du har lagt till något, och annars det du har i dag.',
+  'Jag avrundar U-värdet precis som det står i svaret och jämför det sedan med Boverkets krav, så att talet och beskedet aldrig säger olika saker.',
+  'Om U-värdet inte klarar kravet lägger jag på tio millimeter i taget av det du valt att lägga till, tills det gör det. Det är de millimetrarna som står överst i svaret.',
+  'Skillnaden i U-värde gånger ytan gånger gradtimmarna för din del av landet, delat med 1 000, blir kilowattimmarna du sparar på ett år. Gånger elpriset blir det kronor med direktverkande el, och med värmepump delar jag först med pumpens SCOP.',
+  'Återbetalningstiden är vad ullen kostar i butiken delat med kronorna per år. Den får du bara för ett vindsbjälklag med lösull av stenull eller Rockwool Flexibatts. Det är de enda materialen jag har ett daterat butikspris för, och på en vägg eller ett golv kostar panel, läkt och vindskydd mer än ullen.',
+];
+/** Ett tal ur konstanterna med decimalkomma, för stegen nedan. */
+const talIText = (n: number) => String(n).replace('.', ',');
+const NYA = BOVERKET['fran-2026-10-01'];
+const GAMLA = BOVERKET['till-2026-09-30'];
+/** Läget ”Jag vet U-värdet” för vindsbjälklag, yttervägg och golv (specen 12.38). Talen ur BOVERKET och GRADTIMMAR. */
+const STEG_KANT_U = [
+  'U-värdena före och efter används precis som du har skrivit in dem. Här finns inga skikt att gå igenom.',
+  `Talet efter jämförs med Boverkets krav för den del du har valt, som är ${talIText(NYA.tak)} W/m²K för ett vindsbjälklag, ${talIText(NYA.vagg)} för en yttervägg och ${talIText(NYA.golv)} för ett golv.`,
+  `Skillnaden mellan talen gånger ytan gånger gradtimmarna blir den värme du sparar på ett år, räknad i wattimmar. I Mellansverige är det ${heltal(GRADTIMMAR.mitt)} gradtimmar om året. Delat med 1 000 blir det kilowattimmar, och gånger elpriset blir det kronor med direktverkande el. För en värmepump delas värmen först med pumpens SCOP.`,
+  'Någon återbetalningstid blir det inte, för utan ett material har jag inget pris att dela med kronorna.',
+];
+/*
+ * Fönster och ytterdörr (specen 12.38). Boverket har samma tal för båda i
+ * BOVERKET, därför räcker fönstrets i steg 2.
+ */
+const STEG_FONSTER_DORR = [
+  'Uw före och efter tar jag som du har skrivit in dem, från databladet eller offerten.',
+  `Uw efter jämförs med två tal från Boverket för fönster och ytterdörrar: ${talIText(GAMLA.fonster)} W/m²K, som är målet i de gamla reglerna, och ${talIText(NYA.fonster)}, som är kravet i de nya.`,
+  'Kilowattimmarna räknas som för en vägg: skillnaden i Uw gånger fönstrets eller dörrens yta gånger gradtimmarna för din del av landet, delat med 1 000. Elpriset gör dem till kronor, och med värmepump blir kronorna färre, eftersom jag först delar med pumpens SCOP.',
+  'Återbetalningstiden får du genom att dela priset i offerten med kronorna om året. Den räkningen gör du själv, för priser på fönster och dörrar har jag inte.',
+];
+const LAS_VIDARE = [
+  { href: '/el/u-varde/', text: 'Vad U-värdet betyder, med hela uträkningen för en sjuttiotalsvägg' },
+  { href: '/el/tillaggsisolera-vind/', text: 'Tilläggsisolera vinden själv, och varför tätningen kommer först' },
+  { href: '/rakna/daggpunkt/', text: 'Räkna ut daggpunkten och se om det blir kondens på väggen' },
+];
+const FRAGOR = [
+  {
+    fraga: 'Hur räknar jag med en tegelfasad?',
+    svar: 'Med en ventilerad luftspalt bakom teglet väljer du ”Ventilerad luftspalt”, och då räknas varken spalten eller teglet. Ligger teglet direkt mot isoleringen, eller är hela väggen murad, räknar du med de andra skikten och låter teglet vara. Något lambdavärde för tegel som jag kan lita på har jag inte hittat. Utan teglet blir U-värdet något för högt, och hellre för högt än för lågt.',
+  },
+  {
+    fraga: 'Går det att räkna på golvet över en krypgrund?',
+    svar: 'Inte så att talet blir rätt. Här räknas golvet som ett bjälklag med uteluft rakt under, och ett golv över en krypgrund eller direkt på mark räknas efter en annan standard, där U-värdet blir lägre. Räkna golvet här bara om det verkligen har uteluft under sig.',
+  },
+  {
+    fraga: 'Varför får jag ett annat U-värde än i tillverkarens tabell?',
+    svar: 'Rockwool har en tabell för vindar med takstolar, och den ger ett bättre U-värde än mitt för samma mängd ull. Skillnaden sitter i den gamla ullen, som här får lambdavärdet för mineralull av okänt märke och okänd ålder, den sämre änden av Energimyndighetens spann. På 100 kvadratmeter i Mellansverige blir besparingen 2 801 kr om året med mina tal och 2 271 kr med Rockwools. Har du tillverkarens tal för just din konstruktion är de bättre än mina, och då skriver du in dem under ”Jag vet U-värdet”.',
+  },
+];
+
+/* Gränssnittstext, ordagrant ur specen och skillen nytt-verktyg. */
+const STANDARDVARNING = 'Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.';
+const DELATEXT = 'Dina värden ligger i adressen. Markera den och kopiera, så får den du skickar länken till samma svar.';
+
+const q = Astro.url.searchParams;
+const { indata, bytta } = tolkaQuery(q);
+const resultat = raknaUVarde(indata);
+const fel = resultat.status === 'ogiltig' ? resultat.fel : {};
+// Vid ogiltig indata visas standardvärdenas svar i samma läge, med varningen överst.
+const visatIndata: UVardeIndata = resultat.status === 'ogiltig' ? { ...STANDARD, lage: indata.lage } : indata;
+const visat = raknaUVarde(visatIndata);
+if (visat.status !== 'ok') throw new Error('[u-varde] Standardvärdena ska alltid ge ett svar');
+
+const komma = (n: number) => String(n).replace('.', ',');
+
+/**
+ * Fältens värden kommer från adressen som den skrevs, inte från de tolkade
+ * talen: "abc" blir NaN i tolkaQuery, och NaN i ett fält som läsaren ska rätta
+ * är obrukbart. Ett värde som tolkaQuery bytte mot delens standard (specen
+ * 12.27) visas som det nya standardvärdet med komma.
+ */
+function faltVarde(nyckel: 'yta' | 'uf' | 'ue', tolkat: number): string {
+  const ra = q.get(nyckel);
+  return bytta[nyckel] || ra === null ? komma(tolkat) : ra;
+}
+
+/*
+ * Tjocklekarna: råsträngarna ur adressen, eller delens standardskikt när
+ * tolkaQuery tog dem därifrån eller bytte dem mot den nya delens (specen 12.30).
+ */
+type Sex = [string, string, string, string, string, string];
+const d: Sex = ['', '', '', '', '', ''];
+if (bytta.skikt) {
+  for (const s of indata.skikt) if (s.material !== 'luftspalt') d[s.rad - 1] = komma(s.tjocklekMm);
+} else {
+  for (let n = 1; n <= 6; n++) d[n - 1] = q.get(`d${n}`) ?? '';
+}
+const td: [string, string] = ['', ''];
+if (bytta.tillagg) {
+  for (const t of indata.tillagg) td[t.rad - 1] = komma(t.tjocklekMm);
+} else {
+  for (let n = 1; n <= 2; n++) td[n - 1] = q.get(`td${n}`) ?? '';
+}
+const varden = {
+  yta: faltVarde('yta', indata.ytaM2),
+  uf: faltVarde('uf', indata.uFore),
+  ue: faltVarde('ue', indata.uEfter),
+  d,
+  td,
+};
+
+/** Lägesväxlingen, byggd i modulen (specen 12.32). */
+const bytLageHref = '/rakna/u-varde/?' + bytLageQuery(q, indata).toString();
+
+/** Delbar länk, byggd av de tolkade värdena. */
+const delaLank = new URL(`/rakna/u-varde/?${delbarQuery(visatIndata).toString()}`, Astro.site ?? Astro.url).toString();
+
+/**
+ * Cellklasserna en gång på <table>, inte per cell (specen 12.1). Samma utseende
+ * som CELL_KLASS i stil.ts: ram under varje rad, p-2, align-top, blyerts.
+ */
+const TABELL_KLASS =
+  'w-full border-collapse text-liten tabular-nums [&_th]:p-2 [&_td]:p-2 [&_th]:align-top [&_td]:align-top [&_th]:text-left [&_tbody_th]:[font-weight:inherit] [&_tr]:border-b [&_tr]:border-linje [&_th]:text-blyerts [&_td]:text-blyerts [&_thead_th]:text-etikett [&_thead_th]:uppercase [&_thead_th]:text-blyerts-2';
+/** Regellistan: klasserna på <ul>, bara ramfärgen per slag står på <li>. */
+const REGEL_LISTA_KLASS =
+  'm-0 p-0 list-none text-brod lg:text-brod-lg [&>li]:mb-4 [&>li]:border-l-2 [&>li]:pl-4 [&_span]:block [&_span:first-child]:text-etikett lg:[&_span:first-child]:text-etikett-lg [&_span:first-child]:uppercase [&_span:first-child]:text-blyerts-2 [&_span:last-child]:text-liten [&_span:last-child]:text-blyerts-2';
+
+/** Boverkets krav: en rad när kolumnerna är lika (vägg, vindsbjälklag, golv), annars två (specen 12.15). */
+const [kolumnFore, kolumnEfter] = visat.jamforelse;
+const jamforRader =
+  kolumnFore.grans === kolumnEfter.grans
+    ? [{ etikett: TEXT.kolumn.bada, grans: kolumnEfter.grans, klarar: kolumnEfter.klarar }]
+    : visat.jamforelse.map((j) => ({ etikett: TEXT.kolumn[j.kolumn], grans: j.grans, klarar: j.klarar }));
+
+/** Rubriken bär talen (specen 12.10). */
+const rubrik = TEXT.besked[visat.besked].rubrik(beskedVarden(visat));
+
+/**
+ * Antagandetabellen visar bara raderna svaret vilar på, och källorna står en
+ * gång under tabellen i den ordning de först förekommer (specen 12.2).
+ */
+const antaganden = antagandenFor(visat);
+const kallor: KallaRef[] = [];
+for (const a of antaganden) {
+  for (const k of a.kallor) if (!kallor.some((x) => x.url === k.url && x.titel === k.titel)) kallor.push(k);
+}
+
+/** Etiketten på varje rad i "Därför blev svaret så". */
+type Slag = 'formel' | 'boverket' | 'besparing' | 'begransning';
+const SLAG: Record<RegelNyckel, Slag> = {
+  formel: 'formel',
+  luftspalt: 'formel',
+  reglar: 'formel',
+  cellulosa: 'formel',
+  /* Korrektionen sätts till noll, alltså en förenkling (specen 12.39). */
+  'delta-u': 'begransning',
+  'boverket-andring': 'boverket',
+  'boverket-overgang': 'boverket',
+  'boverket-anpassning': 'boverket',
+  'boverket-50': 'boverket',
+  'fonster-uw': 'boverket',
+  gradtimmar: 'besparing',
+  elpris: 'besparing',
+  scop: 'besparing',
+  'aterbetalning-bara-ull': 'besparing',
+  'tak-kallvind': 'begransning',
+  'golv-uteluft': 'begransning',
+  'energi-inte-matare': 'begransning',
+};
+const SLAG_ETIKETT: Record<Slag, string> = {
+  formel: TEXT.darfor['slag-formel'],
+  boverket: TEXT.darfor['slag-boverket'],
+  besparing: TEXT.darfor['slag-besparing'],
+  begransning: TEXT.darfor['slag-begransning'],
+};
+const SLAG_RAM: Record<Slag, string> = {
+  formel: 'border-blyerts',
+  boverket: 'border-blyerts-2',
+  besparing: 'border-blyerts-2',
+  begransning: 'border-linje',
+};
+
+/** Raderna i skikttabellen. Tomma celler för Rsi, Rse och summorna. */
+interface Tabellrad {
+  etikett: string;
+  tjocklek: string;
+  lambda: string;
+  r: string;
+  summa?: boolean;
+}
+function summarader(m: Motstand, efter: boolean): Tabellrad[] {
+  const rader: Tabellrad[] = [];
+  if (m.rOvre !== null && m.rUndre !== null) {
+    rader.push({ etikett: TEXT.darfor[efter ? 'rad-ovre-efter' : 'rad-ovre'], tjocklek: '', lambda: '', r: treDecimaler(m.rOvre) });
+    rader.push({ etikett: TEXT.darfor[efter ? 'rad-undre-efter' : 'rad-undre'], tjocklek: '', lambda: '', r: treDecimaler(m.rUndre) });
+  }
+  rader.push({ etikett: TEXT.darfor[efter ? 'rad-rt-efter' : 'rad-rt-fore'], tjocklek: '', lambda: '', r: treDecimaler(m.rTotal), summa: true });
+  rader.push({ etikett: TEXT.darfor[efter ? 'rad-u-efter' : 'rad-u-fore-tabell'], tjocklek: '', lambda: '', r: treDecimaler(m.u), summa: true });
+  return rader;
+}
+const tabell: Tabellrad[] = [];
+if (visat.detaljer) {
+  const { rader, fore, efter } = visat.detaljer;
+  tabell.push({ etikett: TEXT.darfor['rad-rsi'], tjocklek: '', lambda: '', r: treDecimaler(fore.rsi) });
+  for (const r of rader.filter((x) => x.kalla === 'fore')) {
+    let rText = TEXT.darfor['raknas-inte'];
+    if (r.raknas && r.r !== null) rText = r.rRegel !== null ? `${treDecimaler(r.r)} / ${treDecimaler(r.rRegel)}` : treDecimaler(r.r);
+    tabell.push({
+      etikett: MATERIAL[r.material].etikett,
+      tjocklek: r.tjocklekMm === null ? '' : komma(r.tjocklekMm),
+      lambda: r.lambda === null ? '' : komma(r.lambda),
+      r: rText,
+    });
+  }
+  tabell.push({ etikett: TEXT.darfor['rad-rse'], tjocklek: '', lambda: '', r: treDecimaler(fore.rse) });
+  tabell.push(...summarader(fore, false));
+  if (efter) {
+    for (const r of rader.filter((x) => x.kalla === 'tillagg')) {
+      tabell.push({
+        etikett: TEXT.darfor['rad-tillagg'](MATERIAL[r.material].etikett),
+        tjocklek: r.tjocklekMm === null ? '' : komma(r.tjocklekMm),
+        lambda: r.lambda === null ? '' : komma(r.lambda),
+        r: r.r === null ? '' : treDecimaler(r.r),
+      });
+    }
+    tabell.push(...summarader(efter, true));
+  }
+}
+
+const illustration = verktygsillustration(SLUG);
+/**
+ * Varumärkesbilden i sidhuvudet (docs/DESIGN.md avsnitt 7). Finns den står
+ * skissen i stället i "Så räknar jag".
+ */
+const varumarke = verktygsVarumarkesbild(SLUG);
+const huvudbild = varumarke ?? illustration;
+
+/** Stegen under ”Så räknar jag” efter läge och del (specen 12.38). */
+const steg =
+  visat.del === 'fonster' || visat.del === 'dorr'
+    ? STEG_FONSTER_DORR
+    : visat.lage === 'skikt'
+      ? STEG_SKIKT
+      : STEG_KANT_U;
+
+/**
+ * Råden under ”Gör inte det här”, delade vid länktexten (specen 12.41). Står
+ * länktexten inte i rådet visas länken efter texten, så att den syns tills
+ * texten är skriven; testet kräver att den står där exakt en gång.
+ */
+const gorInte = visat.gorInteDetHar.map((g) => {
+  const { text, lank }: GorInteText = TEXT.gorInte[g];
+  if (!lank) return { fore: text, lank: null, efter: '' };
+  const delar = text.split(lank.text);
+  return delar.length === 2
+    ? { fore: delar[0], lank, efter: delar[1] }
+    : { fore: `${text} `, lank, efter: '' };
+});
+---
+
+<Bas
+  title={titel}
+  description={BESKRIVNING}
+  reklam={false}
+  brodsmulor={[
+    { namn: 'Hantverkstips', href: '/' },
+    { namn: 'Räkna själv', href: '/rakna/' },
+    { namn: VERKTYGSNAMN },
+  ]}
+  bred={true}
+  ogBild={verktygsDelningsbild(SLUG)}
+>
+  <StrukturData
+    slot="head"
+    data={verktyg({ url: `/rakna/${SLUG}/`, namn: VERKTYGSNAMN, beskrivning: BESKRIVNING })}
+  />
+
+  <div class="mx-auto w-full max-w-lasbredd">
+    {/* Sidhuvudet: rubrik och ingress i 7/12, bilden i 5/12 från lg, under ingressen på mobil. */}
+    <section class="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-7">
+        <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">{H1}</h1>
+        <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">{INGRESS}</p>
+      </div>
+
+      {
+        huvudbild && (
+          <div class="lg:col-span-5">
+            <img
+              src={huvudbild.src}
+              alt=""
+              width={huvudbild.width}
+              height={huvudbild.height}
+              fetchpriority="high"
+              decoding="async"
+              class:list={['block h-auto w-full', !varumarke && 'rounded-sm border border-linje']}
+            />
+          </div>
+        )
+      }
+    </section>
+
+    <Faktaruta variant="kortsvar">
+      {
+        KORTSVAR.map((s) => (
+          <p class="m-0 leading-6">
+            {s.fore}{s.markering && <Markering>{s.markering}</Markering>}{s.efter}
+          </p>
+        ))
+      }
+    </Faktaruta>
+
+    <div class="linjerat mt-8 lg:grid lg:grid-cols-2 lg:gap-8">
+      {/* Formuläret ligger i src/components/kalkyl/UVardeForm.astro, så att
+          <Kalkylator namn="u-varde" /> i artikeln visar samma fält. */}
+      <UVardeForm indata={indata} varden={varden} fel={fel} bytLageHref={bytLageHref} />
+
+      <div class="mt-8 border-t border-linje pt-6 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
+        {resultat.status === 'ogiltig' && <p class="m-0 mb-2 text-liten text-varning">{STANDARDVARNING}</p>}
+
+        <p class="m-0 font-sans text-h3 lg:text-h3-lg font-bold text-blyerts">{rubrik}</p>
+        <p class="m-0 mt-1 text-brod">{TEXT.besked[visat.besked].rad(beskedKontext(visat))}</p>
+
+        <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">{TEXT.spalt['etikett-u']}</p>
+        <p class="m-0 mt-1 flex flex-wrap items-baseline gap-x-2">
+          <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
+            <Markering>{uText(visat.uSlut, visat.del)}</Markering>
+          </span>
+          <span class="text-ingress lg:text-ingress-lg">W/m²K</span>
+        </p>
+        {
+          visat.uEfter !== null && (
+            <p class="m-0 mt-2 text-liten text-blyerts-2">{TEXT.spalt['rad-u-fore'](uText(visat.uFore, visat.del))}</p>
+          )
+        }
+
+        <ul class="m-0 mt-4 p-0 list-none text-brod tabular-nums">
+          {
+            jamforRader.map((j) => (
+              <li class="flex flex-wrap justify-between gap-x-2 border-t border-linje py-2">
+                <span>{j.etikett}</span>
+                <span class="ml-auto">
+                  {komma(j.grans)}&nbsp;W/m²K, {j.klarar ? TEXT.klarar : TEXT.klararInte}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+
+        {
+          visat.besparing && (
+            <>
+              <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
+                {TEXT.spalt['etikett-sparar']}
+              </p>
+              <p class="m-0 mt-1 font-serif text-h1 lg:text-h1-lg text-blyerts tabular-nums">
+                {heltal(visat.besparing.krPerAr)}&nbsp;kr
+              </p>
+              <p class="m-0 mt-1 text-liten text-blyerts-2">
+                {TEXT.spalt['rad-kwh'](
+                  heltal(visat.besparing.kwhPerAr),
+                  TEXT.region[visat.region],
+                  ELPRIS_KALLA.period,
+                )}
+              </p>
+              <ul class="m-0 mt-4 p-0 list-none text-brod tabular-nums">
+                {visat.besparing.varmepump.map((v) => (
+                  <li class="border-t border-linje py-2">
+                    {TEXT.spalt['rad-vp'](TEXT.vp[v.typ], heltal(v.krMin), heltal(v.krMax))}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )
+        }
+
+        <p class="m-0 mt-4 text-brod">
+          {
+            visat.aterbetalning
+              ? TEXT.spalt['rad-aterbetalning'](
+                  endecimal(visat.aterbetalning.ar),
+                  heltal(visat.aterbetalning.kostnadKr),
+                )
+              : visat.aterbetalningSaknas && TEXT.aterbetalningSaknas[visat.aterbetalningSaknas]
+          }
+        </p>
+
+        <p class="m-0 mt-4 text-liten text-blyerts-2">
+          <a href="#darfor-blev-svaret-sa" class={LANK_KLASS}>{TEXT.spalt.pekrad}</a>
+        </p>
+        <p class="m-0 mt-2">
+          <a href="#sa-raknar-jag" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>Så räknar jag</a>
+        </p>
+
+        {/* Dela. Svaret står i adressen, så ett skrivskyddat fält räcker. */}
+        <div class="mt-4 border-t border-linje pt-4">
+          <label for="dela" class={ETIKETT_KLASS}>{TEXT.spalt['dela-etikett']}</label>
+          <input id="dela" type="text" readonly value={delaLank} class:list={[FALT_KLASS, 'border-blyerts-2']} />
+          <p class="m-0 mt-1 text-liten text-blyerts-2">{DELATEXT}</p>
+        </div>
+      </div>
+    </div>
+
+    <section>
+      <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
+      {
+        tabell.length > 0 && (
+          <Tabellyta kolumner={4} class="mb-6">
+            <table class={TABELL_KLASS}>
+              <caption class="sr-only">{TEXT.darfor['tabell-caption']}</caption>
+              <thead>
+                <tr>
+                  <th scope="col">{TEXT.darfor['tabell-skikt']}</th>
+                  <th scope="col">{TEXT.darfor['tabell-tjocklek']}</th>
+                  <th scope="col">{TEXT.darfor['tabell-lambda']}</th>
+                  <th scope="col">{TEXT.darfor['tabell-r']}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tabell.map((rad) => (
+                  <tr class={rad.summa ? 'font-bold' : undefined}>
+                    <th scope="row">{rad.etikett}</th>
+                    <td>{rad.tjocklek}</td>
+                    <td>{rad.lambda}</td>
+                    <td>{rad.r}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Tabellyta>
+        )
+      }
+      <ul class={REGEL_LISTA_KLASS}>
+        {
+          visat.regler.map((nyckel) => {
+            const regel: { text: string; kalla: { titel: string; url: string; lank?: false } } = TEXT.regel[nyckel];
+            const slag = SLAG[nyckel];
+            return (
+              <li class={SLAG_RAM[slag]}>
+                <span>{SLAG_ETIKETT[slag]}</span>
+                <span>{regel.text}</span>
+                <span>
+                  {regel.kalla.lank === false ? (
+                    regel.kalla.titel
+                  ) : (
+                    <a href={regel.kalla.url} rel="nofollow" class={LANK_KLASS}>
+                      {regel.kalla.titel}
+                    </a>
+                  )}
+                </span>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </section>
+
+    {
+      gorInte.length > 0 && (
+        <section>
+          <Pennstreck id="gor-inte-det-har">Gör inte det här</Pennstreck>
+          {gorInte.map((g, i) => (
+            <p class:list={['m-0 text-brod lg:text-brod-lg', i > 0 && 'mt-4']}>
+              {/* På en rad, så att inget mellanslag hamnar runt länken. */}
+              {g.fore}{g.lank && <a href={g.lank.href} class={LANK_KLASS}>{g.lank.text}</a>}{g.efter}
+            </p>
+          ))}
+        </section>
+      )
+    }
+
+    <section>
+      <Pennstreck id="sa-raknar-jag">Så räknar jag</Pennstreck>
+      {
+        varumarke && illustration && visat.del === 'tak' && (
+          <Illustration namn="rakna/u-varde" alt={SKISS_ALT} bildtext={SKISS_BILDTEXT} />
+        )
+      }
+      <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg">
+        {steg.map((s) => <li class="mb-2">{s}</li>)}
+      </ol>
+
+      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad siffrorna vilar på</h3>
+      <Tabellyta kolumner={3} class="mt-4">
+        <table class={TABELL_KLASS}>
+          <thead>
+            <tr>
+              <th scope="col">Vad</th>
+              <th scope="col">Räknat med</th>
+              <th scope="col">Källa eller antagande</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              antaganden.map((a) => (
+                <tr>
+                  <th scope="row">{TEXT.antagande[a.nyckel]}</th>
+                  <td>{a.varde}</td>
+                  <td>
+                    {a.typ}.{a.kallor.length > 0 && ` ${a.kallor.map((k) => k.titel).join('; ')}`}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </Tabellyta>
+      <ul class="m-0 mt-4 pl-6 text-liten">
+        {
+          kallor.map((k) => (
+            <li>
+              {/* Kommat på samma rad som </a>, annars blir radbrytningen ett mellanslag före kommat (specen 12.42). */}
+              <a href={k.url} rel="nofollow" class={LANK_KLASS}>{k.titel}</a>, {k.last}
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section>
+      <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
+      <ul class="m-0 p-0 list-none">
+        {
+          LAS_VIDARE.map((l) => (
+            <li class="border-t border-linje">
+              <a href={l.href} class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
+                {l.text}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <Faq fragor={FRAGOR} />
+  </div>
+</Bas>

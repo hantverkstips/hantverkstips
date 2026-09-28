@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Ett brett enplanshus i genomskärning med sadeltak. På vindsbjälklaget ligger ett tjockt gult lager lösull med knölig överkant, och under det stiger tre vågiga värmelinjer inne i huset och tar slut mot ullens undersida.">
+  <!-- Varumärkesillustration för /rakna/u-varde/, riktning 1. Samma hand som symbolen,
+       startsidans hero (hus-tumstock.svg), elkostnad.svg och trappa.svg: konturer i blyerts
+       2 px med runda ändar, tumstocken som den enda fyllda färgen, ingen linjering, ingen
+       skraffering, transparent bakgrund, ett rött pennstreck som signatur.
+       Motivet är "värmen stannar under ullen" och ska förstås på en sekund: ett brett
+       enplanshus med sadeltak och låg takfot, och på vindsbjälklaget ett tjockt fyllt band i
+       tumstock med knölig, molnlik överkant, så att det läses som lösull och inte som ett golv.
+       Bandet klipps av takets insida, så att ullen ligger på bjälklaget under taket och möter det.
+       Bandet är bildens näst största form efter huset. Under bandet stiger tre breda vågiga
+       värmelinjer i blyerts och tar slut mot bandets undersida. Ovanför bandet är det luft
+       upp till nocken. Inga fönster, dörrar eller skorsten.
+       Marklinjen är en enda linje på samma nivå, y=300, över hela bredden.
+       Ingen text-nod och inga läsbara tal: npm run illustrationer rör inte filen och den har ingen
+       källa under illustrationer-kallor. Skala 600 × 360, samma 5:3 som räknarnas skisser.
+       Motivet är ritat i sin egen skala (marken x 0-580, nock y=6, pennstreck y 331-337) och
+       läggs ut med transform="translate(21.96 14.95) scale(0.9588)" i yttre g:et.
+       Tokens: tumstock #e8b830, blyerts #2a2521, penna #ad3519. -->
+
+  <g transform="translate(21.96 14.95) scale(0.9588)">
+
+    <!-- Lösullen på vindsbjälklaget: fylld i tumstock med knölig överkant, klippt av takets
+         insida så att ullen möter taket. Ritas före taket så att taklinjen ligger över kanten. -->
+    <defs>
+      <clipPath id="u-varde-vind">
+        <path d="M61,192 L61,184 L290,6 L519,184 L519,192 Z"/>
+      </clipPath>
+    </defs>
+    <path clip-path="url(#u-varde-vind)"
+          d="M56,190 L56,133 a18,12 0 0 1 36,-0.5 a18,10 0 0 1 36,1 a18,13 0 0 1 36,-0.5 a18,11 0 0 1 36,0 a18,12.5 0 0 1 36,0.5 a18,10 0 0 1 36,-0.5 a18,12 0 0 1 36,0.5 a18,11 0 0 1 36,-0.5 a18,12 0 0 1 36,0 a18,10.5 0 0 1 36,0.5 a18,12.5 0 0 1 36,-0.5 a18,11 0 0 1 36,0 a18,12 0 0 1 36,0 L524,190 Z"
+          fill="#e8b830" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Huset: väggar, bjälklag och sadeltak med utstick -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M60,300 Q58.5,242.5 60,185"/>
+      <path d="M520,300 Q521.5,242.5 520,185"/>
+      <path d="M60,190 Q290,192.5 520,190"/>
+      <path d="M34,205 Q160,108 290,6 Q418,108 546,205"/>
+    </g>
+
+    <!-- Värmen i rummet: tre breda vågiga linjer som stiger och tar slut mot ullens undersida -->
+    <g fill="none" stroke="#2a2521" stroke-width="3" stroke-linecap="round">
+      <path d="M200,284 q-11,-14.5 0,-29 q11,-14.5 0,-29 q-11,-14.5 0,-29"/>
+      <path d="M290,284 q-11,-14.5 0,-29 q11,-14.5 0,-29 q-11,-14.5 0,-29"/>
+      <path d="M380,284 q-11,-14.5 0,-29 q11,-14.5 0,-29 q-11,-14.5 0,-29"/>
+    </g>
+
+    <!-- Marken. En linje, samma nivå över hela bilden. -->
+    <path d="M0,300 Q145,298 290,300.5 Q435,302.5 580,300" fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Snickarpennans signatur under motivet -->
+    <path d="M170,334 Q245,339 320,332 Q395,329 470,334" fill="none" stroke="#ad3519" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+</svg>
