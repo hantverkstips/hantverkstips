@@ -100,6 +100,18 @@ Prioriterade kategorier, i ordning. Sökvolym är min uppskattning tills SEO-str
 
 Bekräftat i sortimentet: avfuktare (39 maskiner, Wood's, Mitsubishi Electric, Master, Acetec, El-Björn), kap- och gersågar (DeWalt, Bosch, Makita, Metabo, Milwaukee, HiKOKI), skruvdragare (429), laserinstrument (460), kompressorer, spikpistoler, borrhammare (262). **Verifierad** (källa 15, 16, 17).
 
+### Butikens uppgifter vi inte följer
+
+Proffsmagasinets produktsidor är källa för pris, lagerstatus och artikelnummer. Där butikstexten avviker från tillverkaren eller en kontrollinstans står det här, och produkten länkas aldrig för det butiken påstår.
+
+| Produkt | Butikens uppgift | Det som gäller | Följd | Läst |
+|---|---|---|---|---|
+| Beckers Våtrumstäck | Produktsidan: ingår i Beckers system "som är godkänt av Måleribranschens Våtrumskontroll" | MVK: "Beckers Våtrumstäck utgick januari 2025". Utgångna system "kan fortsätta att användas under färgens hållbarhetstid" men står inte på den aktuella listan | Länkas aldrig som våtrumsfärg, inget kort, ingen knapp. Texten säger att systemet saknas på MVK:s aktuella lista, inte att butiken har fel | 2026-09-28, `docs/briefer/faktablad/kunskap-vatrumsfarg.md` rad 101–103, 329 |
+| Alcro Tät | Om butiken säljer den är inte kontrollerat | MVK: "Alcro Tät utgick januari 2025" | Samma som ovan | 2026-09-28, samma faktablad |
+| Kakelfärg, råd i butikens guide | Proffsmagasinets guide om att måla kakel: 48 h innan vattenstänk, klarlack i duschen | Går emot MVK 2026 och tillverkarnas datablad | Guiden används inte som källa, kakelfärg får inget kort | 2026-09-28, `docs/briefer/faktablad/guider-mala-kakel.md` rad 118, 233 |
+
+Källa för MVK: https://www.vatrumsmalning.se/godkanda-system/tidigare-mvk-godknda-system-som-utgtt
+
 Kategorier vi inte gör: virke och trall (kategorin "Byggmaterial" har 86 produkter, inget virke), takstegar och byggställningar (inte bekräftade i sortimentet, och de kräver montage vi inte kan ansvara för), trädgårdsmaskiner och robotgräsklippare (högt ordervärde men fel identitet, sajten handlar om hus), badrum och VVS-installation (12 000 produkter men det mesta får en lekman inte göra), handverktyg och förbrukning (ordervärde under provisionens vettighet), skydd och kläder. Blir "tak" ett ämnesområde i fas 2 länkar vi verktyg (spikpistol, vinkelslip, laser), inte takmaterial.
 
 ## 4. Krav på konverteringsdesign

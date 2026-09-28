@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Måla kakel på stänkskyddet mellan bänk och överskåp i köket, i fyra steg från tvättat till målat.">
+  <!-- Anteckningsboken. Blyerts 2 px för överskåpen, bänkskivan och plattorna i de två första fälten, blyerts-2 för
+       glimtar, droppar, prickar, penseldrag, de svagare plattorna och gränserna mellan fälten, snickarpenna för pilen
+       som visar ordningen (enda pennsaken). Inga mått och inga tal. Köksväggen rakt framifrån, fyra fält om 135 enheter.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2: fält 3 och 4, svagare plattor, penseldrag och täta drag -->
+  <path d="M320,154 Q387.5,154.8 455,154 M320,190 Q387.5,189.2 455,190 M320,226 Q387.5,226.8 455,226 M338,118 Q338.8,190 338,262 M374,118 Q373.2,190 374,262 M410,118 Q410.8,190 410,262 M446,118 Q445.2,190 446,262" fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M455,154 Q522.5,154.8 590,154 M455,190 Q522.5,189.2 590,190 M455,226 Q522.5,226.8 590,226 M482,118 Q482.8,190 482,262 M518,118 Q517.2,190 518,262 M554,118 Q554.8,190 554,262" fill="none" stroke="#625a50" stroke-width="1" stroke-linecap="round"/>
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M330,146 Q342,136 356,132 M372,138 Q384,128 398,124 M414,152 Q426,142 440,138 M340,190 Q352,180 366,176 M390,182 Q402,172 416,168 M428,198 Q440,188 454,184 M334,236 Q346,226 360,222 M378,228 Q390,218 404,214 M420,244 Q432,234 446,230 M362,254 Q374,244 388,240"/>
+    <path d="M460,124 Q458.5,190 460,256 M467,122 Q468.5,190 467,258 M474,124 Q472.5,190 474,256 M481,122 Q482.5,190 481,258 M488,124 Q486.5,190 488,256 M495,122 Q496.5,190 495,258 M502,124 Q500.5,190 502,256 M509,122 Q510.5,190 509,258 M516,124 Q514.5,190 516,256 M523,122 Q524.5,190 523,258 M530,124 Q528.5,190 530,256 M537,122 Q538.5,190 537,258 M544,124 Q542.5,190 544,256 M551,122 Q552.5,190 551,258 M558,124 Q556.5,190 558,256 M565,122 Q566.5,190 565,258 M572,124 Q570.5,190 572,256 M579,122 Q580.5,190 579,258 M463,125 Q464.2,190 463,257 M470,127 Q468.8,190 470,254 M477,125 Q478.2,190 477,257 M484,127 Q482.8,190 484,254 M491,125 Q492.2,190 491,257 M498,127 Q496.8,190 498,254 M505,125 Q506.2,190 505,257 M512,127 Q510.8,190 512,254 M519,125 Q520.2,190 519,257 M526,127 Q524.8,190 526,254 M533,125 Q534.2,190 533,257 M540,127 Q538.8,190 540,254 M547,125 Q548.2,190 547,257 M554,127 Q552.8,190 554,254 M561,125 Q562.2,190 561,257 M568,127 Q566.8,190 568,254 M575,125 Q576.2,190 575,257 M582,127 Q580.8,190 582,254"/>
+  </g>
+
+  <!-- Blyerts-2: fält 1 glimtar och droppar, fält 2 prickar, streckade gränser mellan fälten -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M56,131 Q56,124 63,124 M56,167 Q56,160 63,160 M56,203 Q56,196 63,196 M92,131 Q92,124 99,124 M92,167 Q92,160 99,160 M92,203 Q92,196 99,196 M128,131 Q128,124 135,124 M128,167 Q128,160 135,160 M128,203 Q128,196 135,196 M128,239 Q128,232 135,232 M164,131 Q164,124 171,124 M164,167 Q164,160 171,160 M164,203 Q164,196 171,196 M164,239 Q164,232 171,232"/>
+    <path d="M72,128 Q72.8,144 72,160 Q77,168 76,171 Q72,176 68,171 Q67,168 72,160 M112,150 Q112.8,173 112,196 Q117,204 116,207 Q112,212 108,207 Q107,204 112,196 M143,124 Q143.8,150 143,176 Q148,184 147,187 Q143,192 139,187 Q138,184 143,176 M170,166 Q170.8,187 170,208 Q175,216 174,219 Q170,224 166,219 Q165,216 170,208"/>
+    <path d="M192,126 h1.5 M206,126 h1.5 M220,126 h1.5 M234,126 h1.5 M248,126 h1.5 M262,126 h1.5 M276,126 h1.5 M290,126 h1.5 M304,126 h1.5 M199,137 h1.5 M213,137 h1.5 M227,137 h1.5 M241,137 h1.5 M255,137 h1.5 M269,137 h1.5 M283,137 h1.5 M297,137 h1.5 M311,137 h1.5 M192,148 h1.5 M206,148 h1.5 M220,148 h1.5 M234,148 h1.5 M248,148 h1.5 M262,148 h1.5 M276,148 h1.5 M290,148 h1.5 M304,148 h1.5 M199,159 h1.5 M213,159 h1.5 M227,159 h1.5 M241,159 h1.5 M255,159 h1.5 M269,159 h1.5 M283,159 h1.5 M297,159 h1.5 M311,159 h1.5 M192,170 h1.5 M206,170 h1.5 M220,170 h1.5 M234,170 h1.5 M248,170 h1.5 M262,170 h1.5 M276,170 h1.5 M290,170 h1.5 M304,170 h1.5 M199,181 h1.5 M213,181 h1.5 M227,181 h1.5 M241,181 h1.5 M255,181 h1.5 M269,181 h1.5 M283,181 h1.5 M297,181 h1.5 M311,181 h1.5 M199,203 h1.5 M213,203 h1.5 M227,203 h1.5 M241,203 h1.5 M255,203 h1.5 M269,203 h1.5 M283,203 h1.5 M297,203 h1.5 M311,203 h1.5 M192,214 h1.5 M206,214 h1.5 M220,214 h1.5 M234,214 h1.5 M248,214 h1.5 M262,214 h1.5 M276,214 h1.5 M290,214 h1.5 M304,214 h1.5 M192,236 h1.5 M206,236 h1.5 M220,236 h1.5 M234,236 h1.5 M248,236 h1.5 M262,236 h1.5 M276,236 h1.5 M290,236 h1.5 M304,236 h1.5 M199,247 h1.5 M213,247 h1.5 M227,247 h1.5 M241,247 h1.5 M255,247 h1.5 M269,247 h1.5 M283,247 h1.5 M297,247 h1.5 M311,247 h1.5"/>
+    <path d="M185,118 V262 M320,118 V262 M455,118 V262" stroke-dasharray="6 5"/>
+  </g>
+
+  <!-- Blyerts: plattorna i fält 1 och 2, överskåpen med tre luckor och handtag, bänkskivan -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M50,154 Q117.5,154.8 185,154 M50,190 Q117.5,189.2 185,190 M50,226 Q117.5,226.8 185,226 M86,118 Q86.8,190 86,262 M122,118 Q121.2,190 122,262 M158,118 Q158.8,190 158,262 M185,154 Q252.5,154.8 320,154 M185,190 Q252.5,189.2 320,190 M185,226 Q252.5,226.8 320,226 M194,118 Q194.8,190 194,262 M230,118 Q229.2,190 230,262 M266,118 Q266.8,190 266,262 M302,118 Q301.2,190 302,262"/>
+    <path d="M48,14 Q320,15 592,14 M48,118 Q320,117 592,118 M50,12 Q51,66 50,120 M590,12 Q589,66 590,120 M230,14 Q230.8,66 230,118 M410,14 Q409.2,66 410,118"/>
+    <path d="M218,94 V110 M242,94 V110 M578,94 V110"/>
+    <path d="M42,262 Q320,261 598,262 M42,280 Q320,281 598,280 M44,274 Q320,274.6 596,274 M44,260 Q44.5,271 44,282 M596,260 Q595.5,271 596,282"/>
+  </g>
+
+  <!-- Papperslapp bakom bänkskiva på stänkskyddet -->
+  <rect x="52" y="236" width="86" height="24" fill="#f5efe3"/>
+
+  <!-- Snickarpenna: pilen som visar ordningen, från vänster till höger -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M70,336 Q195,334 320,336 Q445,338 570,336"/>
+    <path d="M560,329 L570,336 L560,343"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="64" y="62" fill="#625a50">överskåp</text>
+    <text x="55" y="255" fill="#625a50">bänkskiva</text>
+    <text x="117.5" y="312" text-anchor="middle">tvättat</text>
+    <text x="252.5" y="312" text-anchor="middle">mattat</text>
+    <text x="387.5" y="312" text-anchor="middle">grundat</text>
+    <text x="522.5" y="312" text-anchor="middle">målat</text>
+  </g>
+</svg>

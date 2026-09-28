@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Ett badkar på fötter framför en kakelvägg, där en del av plattorna är nya och gula.">
+  <!-- Varumärkesillustration för /rakna/badrum-kostnad/, riktning 1. Samma hand som symbolen,
+       startsidans hero, fasadyta.svg och rotavdrag.svg: konturer i blyerts 2 px med runda ändar,
+       tumstock som den enda fyllda färgen, ingen linjering, ingen skraffering, transparent
+       bakgrund, ett rött pennstreck som signatur.
+       Motivet är renoveringen: ett badkar på fyra fötter sett rakt från sidan, framför en
+       kakelvägg med 5 × 4 plattor. Ett sammanhängande block om sex plattor uppe till vänster är
+       fyllt i tumstock, det nya kaklet; resten är bara konturer. Blandaren med pip sitter på väggen
+       ovanför karets högra ände. Fogarna bryts med en mask där karet och fötterna går fram, och det gula
+       klipps mot karets ytterkontur; ingen pappersfylld yta, så pappret syns genom karet.
+       Karet är den största formen, väggen den näst största. Golvet är en rak linje på y=298
+       utan skraffering. Inga droppar, handdukar, duschslang eller propp.
+       Ingen text-nod och inga läsbara tal: npm run illustrationer rör inte filen och den har
+       ingen källa under illustrationer-kallor. Skala 600 × 360 som räknarnas skisser.
+       Motivet är ritat i sin egen skala, bbox x −1 till 561 och y −2 till 322,3 med
+       linjebredderna, kvot 1,73, och läggs ut med transform="translate(24.98 22.71)
+       scale(0.9822)" i yttre g:et: 552 px brett (92,0 procent) och 318,5 px högt (88,5
+       procent), 24 px marginal i sidled och 20,8 px i höjdled.
+       Tokens: tumstock #e8b830, blyerts #2a2521, penna #ad3519. -->
+
+  <g transform="translate(24.98 22.71) scale(0.9822)">
+    <defs>
+      <!-- Karet, kanten och fötterna skär bort fogarna och det gula bakom sig -->
+      <mask id="bakom-karet" maskUnits="userSpaceOnUse" x="-20" y="-20" width="600" height="360">
+        <rect x="-20" y="-20" width="600" height="360" fill="#fff"/>
+        <g fill="#000" stroke="#000" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="40" y="140" width="420" height="16" rx="8"/>
+          <path d="M52,156 C52,240 100,262 160,262 L340,262 C400,262 448,240 448,156 Z"/>
+          <path d="M110,254 Q108,276 100,290 M150,261 Q150,278 146,290 M350,261 Q350,278 354,290 M390,254 Q392,276 400,290" fill="none"/>
+          <circle cx="100" cy="292" r="5"/>
+          <circle cx="146" cy="292" r="5"/>
+          <circle cx="354" cy="292" r="5"/>
+          <circle cx="400" cy="292" r="5"/>
+        </g>
+      </mask>
+      <!-- Allt utom karets ytterkontur (kanten och kroppen): det gula slutar exakt mot konturen -->
+      <clipPath id="utanfor-karet">
+        <path clip-rule="evenodd" d="M-20,-20 H580 V340 H-20 Z M48,140 Q250,138 452,140 Q460,148 452,156 L448,156 C448,240 400,262 340,262 L160,262 C100,262 52,240 52,156 L48,156 Q40,148 48,140 Z"/>
+      </clipPath>
+    </defs>
+
+    <!-- Det nya kaklet i tumstock, klippt mot karets kontur utan glipa -->
+    <rect x="10" y="0" width="324" height="149" fill="#e8b830" clip-path="url(#utanfor-karet)"/>
+
+    <!-- Fogarna, brutna bakom karet -->
+    <g mask="url(#bakom-karet)">
+      <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round">
+        <path d="M118,0 L118,298 M226,0 L226,298 M334,0 L334,298 M442,0 L442,298"/>
+        <path d="M10,74.5 L550,74.5 M10,149 L550,149 M10,223.5 L550,223.5"/>
+      </g>
+    </g>
+
+    <!-- Väggens kontur: rak överkant och raka sidor -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10,0 Q280,-2 550,0"/>
+      <path d="M10,0 Q8,149 10,298"/>
+      <path d="M550,0 Q552,149 550,298"/>
+    </g>
+
+    <!-- Blandaren med pip, på väggen ovanför karets högra ände -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M378,96 Q400,94 422,96 Q429,103 422,110 Q400,112 378,110 Q371,103 378,96 Z"/>
+      <circle cx="368" cy="103" r="7"/>
+      <circle cx="432" cy="103" r="7"/>
+      <path d="M400,111 Q401,128 388,134"/>
+    </g>
+
+    <!-- Karet: kanten, kroppen och fyra fötter -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M48,140 Q250,138 452,140 Q460,148 452,156 Q250,158 48,156 Q40,148 48,140 Z"/>
+      <path d="M52,156 C52,240 100,262 160,262 L340,262 C400,262 448,240 448,156"/>
+      <path d="M110,254 Q108,276 100,290"/>
+      <path d="M150,261 Q150,278 146,290"/>
+      <path d="M350,261 Q350,278 354,290"/>
+      <path d="M390,254 Q392,276 400,290"/>
+      <circle cx="100" cy="292" r="5"/>
+      <circle cx="146" cy="292" r="5"/>
+      <circle cx="354" cy="292" r="5"/>
+      <circle cx="400" cy="292" r="5"/>
+    </g>
+
+    <!-- Golvet: en rak linje under fötterna -->
+    <path d="M0,298 Q280,300 560,298" fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Snickarpennans signatur under motivet -->
+    <path d="M170,316 Q260,321 350,314 Q440,311 520,316" fill="none" stroke="#ad3519" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+</svg>

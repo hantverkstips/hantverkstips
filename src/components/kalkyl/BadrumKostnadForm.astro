@@ -1,0 +1,184 @@
+---
+/**
+ * Formuläret till badrumsräknaren. Sidan /rakna/badrum-kostnad/ renderar det i
+ * fullt format. Kompakt format finns för mönstrets skull; ingen artikel bäddar
+ * in formuläret i dag (docs/briefer/spec-kalkyl-badrum-kostnad-2026-09-29.md
+ * avsnitt 3).
+ *
+ * Ingen klient-JavaScript. Formuläret skickas som GET, och verktygssidan räknar.
+ * Namnen är query-nycklarna i tolkaQuery.
+ *
+ * Kompakt: inga hjälprader utom den under egen insats, som bär gränsen för vad
+ * läsaren kan göra själv, och inget timprisfält. Det som inte renderas skickas
+ * inte och tas ur STANDARD.
+ */
+import {
+  EGEN_VAL,
+  kvmText,
+  NIVA_VAL,
+  STANDARD,
+  TEXT,
+  type BadrumIndata,
+  type FelNyckel,
+} from '../../lib/kalkyl/renovering.ts';
+import { ETIKETT_KLASS, FALT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, ramKlass, VAL_KLASS } from '../../lib/kalkyl/stil';
+
+interface Props {
+  /** Valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
+  indata?: BadrumIndata;
+  /** Talen som de skrevs i adressen, så att ett felskrivet värde går att rätta. */
+  varden?: { yta: string; rot: string; timpris: string };
+  fel?: Partial<Record<FelNyckel, string>>;
+  kompakt?: boolean;
+  /** Prefix på id-attributen, så att två formulär på samma sida inte krockar. */
+  idPrefix?: string;
+  knappText?: string;
+}
+
+const {
+  indata = STANDARD,
+  varden = {
+    yta: kvmText(STANDARD.ytaKvm),
+    rot: STANDARD.rotKr === 0 ? '' : String(STANDARD.rotKr),
+    timpris: String(STANDARD.timprisKr),
+  },
+  fel = {},
+  kompakt = false,
+  idPrefix = '',
+  knappText = 'Räkna ut',
+} = Astro.props;
+
+const id = (namn: string) => `${idPrefix}${namn}`;
+
+/** aria-describedby med hjälpraden och felet när de finns. Hjälpraden står kvar vid fel. */
+function beskrivs(...delar: (string | false | undefined)[]): string | undefined {
+  const idn = delar.filter((d): d is string => typeof d === 'string');
+  return idn.length > 0 ? idn.join(' ') : undefined;
+}
+
+const LEGEND_KLASS = [ETIKETT_KLASS, 'p-0'];
+const FALTGRUPP_KLASS = 'm-0 mb-6 p-0 border-0';
+const ENHET_KLASS = 'text-brod text-blyerts-2';
+---
+
+<form method="get" action="/rakna/badrum-kostnad/">
+  <fieldset class={FALTGRUPP_KLASS}>
+    <legend class:list={LEGEND_KLASS}>{TEXT.form['legend-badrummet']}</legend>
+    <label for={id('yta')} class="block mb-1 text-liten text-blyerts-2">{TEXT.form.yta}</label>
+    <div class="flex items-center gap-2">
+      <input
+        id={id('yta')}
+        name="yta"
+        type="text"
+        inputmode="decimal"
+        value={varden.yta}
+        aria-describedby={beskrivs(!kompakt && id('yta-hjalp'), fel.yta && id('yta-fel'))}
+        class:list={[FALT_KLASS, 'max-w-40', ramKlass(Boolean(fel.yta))]}
+      />
+      <span class={ENHET_KLASS}>kvm</span>
+    </div>
+    {fel.yta && <p id={id('yta-fel')} class={FEL_KLASS}>{fel.yta}</p>}
+    {!kompakt && <p id={id('yta-hjalp')} class={HJALP_KLASS}>{TEXT.form['yta-hjalp']}</p>}
+  </fieldset>
+
+  <fieldset class={FALTGRUPP_KLASS}>
+    <legend class:list={LEGEND_KLASS}>{TEXT.form['legend-inredning']}</legend>
+    {
+      NIVA_VAL.map((n) => (
+        <label class={VAL_KLASS}>
+          <input type="radio" name="niva" value={n} checked={indata.niva === n} />
+          {TEXT.niva[n]}
+        </label>
+      ))
+    }
+  </fieldset>
+
+  <fieldset class={FALTGRUPP_KLASS}>
+    <legend class:list={LEGEND_KLASS}>{TEXT.form['legend-egen']}</legend>
+    {
+      EGEN_VAL.map((e) => (
+        <label class={VAL_KLASS}>
+          <input
+            type="checkbox"
+            name="egen"
+            value={e}
+            checked={indata.egen.includes(e)}
+            aria-describedby={id('egen-hjalp')}
+          />
+          {TEXT.egen[e]}
+        </label>
+      ))
+    }
+    <p id={id('egen-hjalp')} class={HJALP_KLASS}>{TEXT.form['egen-hjalp']}</p>
+  </fieldset>
+
+  <fieldset class={FALTGRUPP_KLASS}>
+    <legend class:list={LEGEND_KLASS}>{TEXT.form['legend-agare']}</legend>
+    <div class="flex flex-wrap gap-x-4">
+      {
+        ([1, 2] as const).map((a) => (
+          <label class={VAL_KLASS}>
+            <input
+              type="radio"
+              name="agare"
+              value={a}
+              checked={indata.agare === a}
+              aria-describedby={fel.agare ? id('agare-fel') : undefined}
+            />
+            {a === 1 ? TEXT.form['agare-1'] : TEXT.form['agare-2']}
+          </label>
+        ))
+      }
+    </div>
+    {fel.agare && <p id={id('agare-fel')} class={FEL_KLASS}>{fel.agare}</p>}
+
+    <label for={id('rot')} class="block mt-3 mb-1 text-liten text-blyerts-2">{TEXT.form.rot}</label>
+    <div class="flex items-center gap-2">
+      <input
+        id={id('rot')}
+        name="rot"
+        type="text"
+        inputmode="numeric"
+        value={varden.rot}
+        placeholder="0"
+        aria-describedby={beskrivs(!kompakt && id('rot-hjalp'), fel.rot && id('rot-fel'))}
+        class:list={[FALT_KLASS, 'max-w-40', ramKlass(Boolean(fel.rot))]}
+      />
+      <span class={ENHET_KLASS}>kr</span>
+    </div>
+    {fel.rot && <p id={id('rot-fel')} class={FEL_KLASS}>{fel.rot}</p>}
+    {!kompakt && <p id={id('rot-hjalp')} class={HJALP_KLASS}>{TEXT.form['rot-hjalp']}</p>}
+  </fieldset>
+
+  {
+    !kompakt && (
+      <div class="mb-6">
+        <label for={id('timpris')} class="block mb-1 text-liten text-blyerts-2">
+          {TEXT.form.timpris}
+        </label>
+        <div class="flex items-center gap-2">
+          <input
+            id={id('timpris')}
+            name="timpris"
+            type="text"
+            inputmode="decimal"
+            value={varden.timpris}
+            aria-describedby={beskrivs(id('timpris-hjalp'), fel.timpris && id('timpris-fel'))}
+            class:list={[FALT_KLASS, 'max-w-40', ramKlass(Boolean(fel.timpris))]}
+          />
+          <span class={ENHET_KLASS}>kr/h</span>
+        </div>
+        {fel.timpris && (
+          <p id={id('timpris-fel')} class={FEL_KLASS}>
+            {fel.timpris}
+          </p>
+        )}
+        <p id={id('timpris-hjalp')} class={HJALP_KLASS}>
+          {TEXT.form['timpris-hjalp']}
+        </p>
+      </div>
+    )
+  }
+
+  <button type="submit" class={KNAPP_KLASS}>{knappText}</button>
+</form>

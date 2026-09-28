@@ -56,7 +56,7 @@ Utöver mallens fasta avsnitt:
 
 0. **Kortsvaret** (`Faktaruta variant="kortsvar"`): vad ett badrum på 4 till 5 kvm kostar i två standarder, enkel och mellan, med källa och datum, hur stor del som är arbete, och vad rotavdraget blir.
 1. **Vad som gör priset.** Posterna: rivning, tätskikt och kakel, VVS, el, inredning, container. Vilka som är arbete och vilka som är material.
-2. **Vad du kan göra själv och vad det sparar.** Rivning, målning av tak, montering av inredning, med tabellen från tätskiktssidan som gräns. **Bär renovera badrum billigt.**
+2. **Vad du kan göra själv och vad det sparar.** Rivning och bortforsling, med tabellen från tätskiktssidan som gräns. Målning i badrummet, taket inräknat, är våtzon 2 och kräver ett godkänt system (beslut 7 i SOKORDSANALYS 8.9), så den är ingen egen insats. Montering av inredning som kräver hål i tätskiktet är det inte heller. **Bär renovera badrum billigt.**
 3. **Rotavdraget för badrummet.** Två ägare, utnyttjat tak, att material inte ger avdrag.
 
 ### 7. Längd
@@ -119,6 +119,15 @@ Det ettan har som vi måste ha:
 - Räknaren får inte antyda att läsaren lägger tätskiktet själv. Egen insats omfattar bara det som 8.3 säger ja till.
 - Offertförmedlarna nämns inte i publik text, bara i antagandetabellen och i `kallor`.
 
+
+### Beslut efter bygget, 2026-09-29
+
+Specen är `docs/briefer/spec-kalkyl-badrum-kostnad-2026-09-29.md`.
+
+1. **Målningen är ingen egen insats.** Taket i badrummet är våtzon 2 och kräver ett godkänt system. Räknaren gör rätt, och avsnitt 2 i punkt 6 är rättat: egen insats är rivning och bortforsling.
+2. **Målningen godkänns som egen post.** Den har källa (Badrumsexperter), och utan den blir totalen för låg mot källans 208 800 kr före rot. Beskrivningen av posten säger att det är ett godkänt våtrumssystem utfört av målare.
+3. **Ytan utökas till 4 till 8 kvm, med Byggstarts tillägg i stället för linjär skalning över 5 kvm.** Byggstarts 8 000 till 16 000 kr per extra kvm är en källa, och den väger tyngre än vårt eget antagande om linjär skalning. Mellan 4 och 5 kvm står den linjära nedskalningen kvar och märks ANTAGANDE. Från 5 kvm läggs Byggstarts spann till per kvm, och spannet syns i resultatet. Över 8 kvm visas inget belopp. Gränsen på 8 kvm är vår, eftersom Byggstart inte anger något tak, och den står i antagandetabellen. Underlag behöver inte leta efter fler källor nu.
+
 ---
 
 ## /rakna/kok-kostnad/
@@ -158,7 +167,7 @@ Utöver mallens fasta avsnitt:
 
 0. **Kortsvaret**: vad de tre vägarna kostar i ett kök med 4 till 5 meter skåp, med källa och datum, och vad rotavdraget blir.
 1. **Tre vägar och vad de kostar.** Byta luckor, byta bänkskiva, nytt kök. Varför el och VVS blir den stora överraskningen när planlösningen ändras.
-2. **Vad du kan göra själv.** Montera stommar och luckor, måla. El och fast vatten gör en behörig, enligt Elsäkerhetsverket och Säker Vatten 2026:1. **Bär renovera kök billigt.**
+2. **Vad du kan göra själv.** Montera stommar och luckor, måla. **El:** fast installation görs av ett registrerat elinstallationsföretag enligt Elsäkerhetsverket. Att det gäller hällen och spisens anslutning är vår slutsats, och det märks så, eftersom Elsäkerhetsverket inte nämner dem. **Vatten:** Säker Vatten är branschregler, inte lag, och förbjuder ingen privatperson att byta blandare. Det som har stöd är att bara ett auktoriserat VVS-företag kan utfärda intyg om Säker Vatteninstallation, och att försäkringsbolagen kräver att reglerna följts (If, se badrum.md). Sidan skriver just det och inget förbud. **Bär renovera kök billigt.**
 3. **Rotavdraget för köket.** Två ägare, material ger inget avdrag.
 
 ### 7. Längd
@@ -203,15 +212,24 @@ Det ettan har som vi måste ha:
 4. **Källa och datum på varje pris.**
 5. **Delbart resultat.**
 
-**Krav på underlaget** (`docs/briefer/underlag-kalkyl-kok-kostnad-[datum].md`):
+**Underlaget** är `docs/briefer/faktablad/rakna-kok-kostnad.md` (klart 2026-09-29). Namnet behöver inte bytas, och den här checklistan pekar dit.
+
+**Beslut om poster och nivåer, 2026-09-29:**
+
+- **Med, en källa räcker (regel 3):** luckor per styck i de nivåer som har källa, stommar per meter i **enkel nivå**, bänkskiva per löpmeter, bänkskivans montering (Totalbyggarna), rivning (Hantverkskollen), vitvaror, el och VVS vid flytt där de har källa. Varje post med en enda källa står med den källan i antagandetabellen.
+- **Inte med:** stommar på mellan- och hög nivå (ingen källa), container (ingen källa), folie (priset saknar antal luckor och går inte att räkna per lucka), IKEA:s monteringspris 3 399 kr (står inte på IKEA:s sida), verkstadslackering med rot (lackering i företagets lokaler ger inget rot).
+- **Nytt kök** räknas därför bara i enkel nivå. Resultatet säger att dyrare stommar ligger över räknarens tak och att källor saknas för dem. Byta luckor och byta bänkskiva räknas i alla nivåer som har källa.
+- Priser utan publiceringsdatum, som Picky Living, står med hämtningsdatum.
+
+**Krav på underlaget** (kvar att fylla om nivåerna ska utökas):
 
 - Pris per post (luckor per styck i tre nivåer, stommar per meter, bänkskiva per löpmeter per material, vitvaror, montering, el och VVS vid flytt), med källkraven i regel 3. Kandidater: Offerta, Hantverkskollen (2026-07-17, källor Skatteverket och Elsäkerhetsverket), Totalbyggarna, Husexperter, IKEA:s tjänstepriser (mätning 1 295 kr, montering 3 399 kr), kitchens.se och Totalbyggarna för bänkskivor. Källorna säger olika om laminatpriset, och spannet redovisas.
-- Elsäkerhetsverkets besked om vad en lekman får göra i ett kök, och Säker Vattens om blandare och diskmaskin.
+- Klart: Elsäkerhetsverket nämner inte spis och häll med namn, och Säker Vatten reglerar intyget och inte privatpersonen (se avsnitt 2 ovan).
 - Samma rotkonstanter som ovan.
 
 ### 12. Fällor
 
-- **Ingen "IKEA-montering" som fras.** IKEA äger den (vinnbarhet 1). IKEA:s tjänstepriser får stå som källa.
+- **Ingen "IKEA-montering" som fras.** IKEA äger den (vinnbarhet 1). IKEA:s tjänstepriser får stå som källa bara där de står på IKEA:s egen sida. Mätningen (1 295 kr) kontrolleras där, och monteringen (3 399 kr) är struken.
 - **Rätt rot-tak.** 50 000 kr för rot, 75 000 kr är det gemensamma taket.
 - Offertförmedlarna nämns inte i publik text.
 
@@ -299,7 +317,18 @@ Det ettan har som vi måste ha:
 4. **Takvinkel och antal takstolar** i samma resultat.
 5. **Delbart resultat**, utan kontaktuppgifter.
 
-**Krav på underlaget** (`docs/briefer/underlag-kalkyl-takbyte-[datum].md`):
+**Beslut om prisunderlaget, 2026-09-29.** Underlaget är `docs/briefer/faktablad/rakna-takbyte.md`.
+
+- **Räknaren använder bara källor som anger priset före rot**, eller där det framgår av exemplet. Tre källor uppfyller det: Takexperter (P1), Hantverkskollens sida om plåttak med material och arbete för sig (P4) och Totalbyggarna (P5). Byggstart (P3) tas med för papp och shingel bara om underlag kan visa att priset är före rot. Annars stryks den, och materialet får de källor som återstår.
+- **Tas inte med:** Beckmans (P2) och Hantverkskollens jämförelsetabell (P4b), som är samma tal. Beckmans kallar dem "efter rot" och Hantverkskollen "före rot", och motsägelsen går inte att lösa. BraByggare (P6), eftersom rotläget inte anges. Tak i Väst (P7), som gäller efter rot för ett enda projekt. Svenska Byggruppen (P8), som är odaterad. Bygghemma (P9), som saknar pris per material.
+- **Dubbletter räknas som en källa:** Husexperter är Takexperter, och Hantverkskollens jämförelsetabell är Beckmans.
+- **Spannet per material** går från den lägsta låga till den högsta höga bland de källor som används för materialet. Källorna står i "Så räknar jag". Inget medelvärde räknas. Material med en enda källa (till exempel tegel, bara Takexperter) står med den och märks i antagandetabellen.
+- **Takexperters tillägg** för resor, etablering och projektering, cirka 30 000 kr, visas som en egen rad med källan, inte inbakat i kvadratmeterpriset.
+- **Andelen arbete** tas från Hantverkskollen (P4) och Takexperter (P1), som delar upp material och arbete. Där båda saknas märks andelen ANTAGANDE.
+- **Skalning:** linjär bara för takytor mellan 100 och 200 kvm, det intervall som källornas exempel täcker (Hantverkskollen 100 till 200, Takexperter och Totalbyggarna 150). Utanför intervallet visar räknaren takarean och takstolarna men inget belopp.
+- **Valmtak** avgör UX (faktabladet 2.4).
+
+**Krav på underlaget** (kvar för en senare version):
 
 - Pris per kvm lagt och andelen arbete för bandtäckt plåt, takpanneplåt, betongpannor, tegelpannor, papp och shingel, med källkraven i regel 3. Kandidater: Takexperter (tabeller för 150 kvm), Byggstart (plåt 1 700 kr, shingel 800 till 1 600 kr, papp 1 200 kr), Bygghemma (2026-02-23), Offerta (shingel), Beckmans.
 - Geometrin för sadeltak och pulpettak med takutsprång, och om valmtak kan tas med i första versionen. Det är ett beslut för UX och bygge-agenten, som ska nämnas i underlaget.
@@ -391,3 +420,12 @@ Det ettan har som vi måste ha: referenserna till standarden och RA Hus.
 
 - **Lindab och Plannja** får nämnas som källa till tabellen, men räknaren länkar inte till deras verktyg.
 - **SS 82 40 31 från 1988** står med år, aldrig som gällande standard utan förbehåll.
+
+### Beslut efter underlaget, 2026-09-29
+
+Underlaget är `docs/briefer/underlag-kalkyl-takavvattning-2026-09-28.md` och faktabladet `docs/briefer/faktablad/rakna-takavvattning.md`.
+
+1. **Stupröret dimensioneras efter RA Hus 21** (via Teknikhandboken). Tabellen är enligt Teknikhandboken dimensionerad i överkant, och för ett stuprör är det rätt fel att göra. SS 82 40 31 (1988) visas inte i svaret. Den står i "Så räknar jag" som jämförelse, med år och med beskedet att den ger andra dimensioner.
+2. **Rännan följer RA Hus och Plannja**, som båda byter till 125-ränna vid 75 kvm. Lindab byter redan vid 50 kvm. Ligger takytan mellan 50 och 75 kvm visar beskedet 100-rännan och en pekrad om att Lindab vill ha 125 i det intervallet, så att läsaren väljer efter det fabrikat hon köper. Utanför intervallet är källorna överens och ingen pekrad behövs.
+3. **Plaststuprör faller bort ur räknaren.** Det finns inget pris, och en post utan källa tas inte med (regel 3). Räknaren visar dimension och antal för alla material, men materialkostnaden räknas bara för stål, där varje post har en källa. Plast nämns i svaret utan kronor, med en länk till hängrännesidan. Plastrännans enda pris (Bauhaus) räcker inte för en totalsumma när stupröret saknas.
+4. **Takarean:** UX avgör i specen om den mäts längs lutningen eller vågrätt. Kravet härifrån är att räknaren säger vilket av dem den använder, med källa i "Så räknar jag", och att samma val gäller i `/rakna/takbyte/`.

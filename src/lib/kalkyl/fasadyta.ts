@@ -20,6 +20,9 @@
 /* Ändelserna står med, så att node kan köra testskriptet utan bygge. */
 import { bastaBurkar, OVERSKOTT_GRANS, type Burk } from './kvadratmeter.ts';
 import { FARGTYPER } from './mala-ute.ts';
+import { m2Text, nockUrVinkel, vinkelText, vinkelUrNock, VINKELGRANSER } from './tak.ts';
+
+export { m2Text, vinkelText, VINKELGRANSER } from './tak.ts';
 
 /* ------------------------------------------------------------------ *
  * Typer
@@ -498,9 +501,6 @@ export const GRANSER = {
   dorrHojdM: [1, 4],
 } as const;
 
-/** Takvinklar i grader, inklusive. ANTAGANDE, underlaget avsnitt 1. */
-export const VINKELGRANSER = { sadel: [5, 60], pulpet: [3, 30] } as const;
-
 /* ------------------------------------------------------------------ *
  * Formatering. Sidan använder bara dessa.
  * ------------------------------------------------------------------ */
@@ -519,16 +519,6 @@ function medDecimaler(n: number, decimaler: number): string {
 function enDecimalUtanNolla(n: number): string {
   const rundat = Math.round(n * 10) / 10;
   return Number.isInteger(rundat) ? medDecimaler(rundat, 0) : medDecimaler(rundat, 1);
-}
-
-/** Högst en decimal med komma: 98.2 → "98,2", 36 → "36", 1234.56 → "1 234,6". */
-export function m2Text(n: number): string {
-  return enDecimalUtanNolla(n);
-}
-
-/** Vinkeln i grader: heltal när talet är helt, annars en decimal. 15 → "15", 26.565 → "26,6". */
-export function vinkelText(n: number): string {
-  return enDecimalUtanNolla(n);
 }
 
 /** Liter som går åt, en decimal utan nolla på slutet: 33.67 → "33,7", 36 → "36". */
@@ -1434,8 +1424,6 @@ function tvaDecimaler(n: number): number {
   return Math.round(n * 100) / 100;
 }
 
-const GRADER = Math.PI / 180;
-
 /**
  * Gavelspetsarnas yta utöver väggarna, båda gavlarna. Egen räkning, plan
  * geometri (underlaget avsnitt 1).
@@ -1461,16 +1449,6 @@ export function gavelyta(
   const t2 = mansard.nockM - mansard.brytM;
   const ovre = B - 2 * mansard.indragM;
   return 2 * (((B + ovre) / 2) * t1 + (ovre * t2) / 2);
-}
-
-/** Vinkeln ur nockhöjden, i grader. */
-function vinkelUrNock(takform: 'sadel' | 'pulpet', t: number, B: number): number {
-  return (Math.atan(takform === 'sadel' ? (2 * t) / B : t / B) / GRADER);
-}
-
-/** Nockhöjden ur vinkeln. */
-function nockUrVinkel(takform: 'sadel' | 'pulpet', v: number, B: number): number {
-  return (takform === 'sadel' ? B / 2 : B) * Math.tan(v * GRADER);
 }
 
 function farglager(

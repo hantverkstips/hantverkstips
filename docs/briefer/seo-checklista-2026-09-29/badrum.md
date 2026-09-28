@@ -1,6 +1,6 @@
 # SEO-checklista, badrumsklustret, 2026-09-29
 
-Fyra artiklar i den nya pelaren Badrum och våtrum (`badrum`, beslut 1 i SOKORDSANALYS 8.9): tätskikt, våtrumsfärg, fogar och byta toalettstol. Kakelsidan flyttade till Kök 2026-09-29 (beslut 5) och står i `kok.md`, och toalettstolen tog dess plats (beslut 6). Räknaren `/rakna/badrum-kostnad/` har sin checklista i `raknare.md`. Tillsammans med `/rakna/rotavdrag/`, som får pelaren `badrum` (beslut 2), blir det sex sidor, och hubben kan publiceras. Hantverkaren läser sitt avsnitt före skrivningen, `underlag` läser punkt 11 och 12 innan faktabladet skrivs, och SEO och GEO-agenten läser den färdiga sidan mot samma avsnitt efteråt.
+Fyra artiklar i den nya pelaren Badrum och våtrum (`badrum`, beslut 1 i SOKORDSANALYS 8.9): tätskikt, våtrumsfärg, fogar och byta toalettstol (kunskapssida med sitsen som gör det själv-del, beslut 8). Kakelsidan flyttade till Kök 2026-09-29 (beslut 5) och står i `kok.md`, och toalettstolen tog dess plats (beslut 6). Räknaren `/rakna/badrum-kostnad/` har sin checklista i `raknare.md`. Tillsammans med `/rakna/rotavdrag/`, som får pelaren `badrum` (beslut 2), blir det sex sidor, och hubben kan publiceras. Hantverkaren läser sitt avsnitt före skrivningen, `underlag` läser punkt 11 och 12 innan faktabladet skrivs, och SEO och GEO-agenten läser den färdiga sidan mot samma avsnitt efteråt.
 
 **Ingen badrumssida får skrivas innan pelaren finns i registret.** `pelare: badrum` är ogiltigt tills `src/lib/pelare.ts`, ikonen och `src/content/pelare/badrum.mdx` är på plats (SOKORDSANALYS 8.9, beslut 1). UX och bygge specar det före första sidan.
 
@@ -137,6 +137,60 @@ Det ettan eller tvåan har som vi måste ha:
 - **Rot 50 procent** gällde bara betalningar 12 maj till 31 december 2025.
 - Weber, Clas Fixare och Sonochfar nämns inte i publik text.
 - Försäkringsbolagen får nämnas med namn i brödtexten när deras villkor citeras. Det är källa, inte reklam.
+
+### Kontroll efter skrivningen, 2026-09-29
+
+Utkastet `src/content/kunskap/badrum/tatskikt-badrum.mdx` läst mot punkt 1 till 12, de sex gemensamma punkterna och besluten i SOKORDSANALYS 8.9 (beslut 6 och 8). `npm run kontrollera` ger inget fel eller varning på sidan.
+
+**Stämmer, inget att ändra:** adress, samling, pelare, nivå, inget produktkort. seoTitle "Tätskikt i badrum, reglerna som gäller 2026" är 43 tecken, suffixet läggs på, och ingen annan title börjar med "Tätskikt". H1 "Vad reglerna kräver av tätskiktet i ditt badrum" delar inga tre första ord med title. Kortsvaret har lagkravet, branschreglerna med datum, svaret om att göra själv och försäkringen, och går att lyfta utan resten av sidan. Övergången i BFS 2024:14 punkt 3 står med "påbörjades", BBR bara som upphörd. Zontabellen, BBV § 1.5 ordagrant, GVK, tre bolags villkor med sida och datum, Trygg-Hansa och Konsumenternas, rot 30 procent och 50 000 kr, kurs 1 och 3, källarundantaget ur BBV § 3.1.1 och Faq-svaren med Länsförsäkringar odaterad och GVK 2016. Säker Vatten utan www i `kallor`. Weber, Clas Fixare och Sonochfar nämns inte. Inga externa länkar i brödtext. Länkarna ut till fogar, måla kakel, våtrumsfärg (i tabellen och vid klass VT), toalettstol och rotavdraget finns.
+
+**Bättre än ettan:** punkt 1, 3, 4, 5 och 6 finns. Punkt 2 finns som tabell, och skissen `badrum/vatzoner` ska vara inlagd med specens alt (117 tecken, med tätskikt och våtzon) innan sidan publiceras.
+
+**Beslut om åldersavdragen** (gemensam punkt 4 och punkt 6.4): tabellen står som den är, med materialen som rader och bolagen som kolumner. Det är villkorens egen form, och "år sedan renovering" som rubrik hade krävt tal som inget bolag skriver. Räkneexemplet med 20 år under tabellen täcker frågan läsaren och en AI ställer. Punkt 6.4 ändras till den här formen.
+
+**Beslut om priserna:** löptext med källa och datum godkänns. Källorna delar in tätskikten olika, och en tabell hade sett jämförbar ut utan att vara det. Bättre än ettan punkt 5 är uppfylld.
+
+**Beslut om description och rubriker:** descriptionen (142 tecken) står kvar. De tre regelkoderna är den enda sidan i SERP:en som namnger dem, och det är just det en sökning på "tätskikt badrum regler" och en AI letar efter. Rubrikerna bär fraserna: "Reglerna för tätskikt i badrum sedan 2025" bär regler, "Hela golvet ligger i våtzon 1" bär golv, "Badrum i källaren" bär källare, och priset bärs av rubriken tillsammans med första meningen ("Räkna med 8 000 till 22 000 kr för tätskiktet"). Inget byts.
+
+**Längden:** prosan utan tabeller, citat, källrader och Faq är cirka 2 140 ord räknat på det här sättet. Taket sätts till **högst 1 900**, eftersom regelcitaten och de fyra tabellerna bär sidan. Det här tas ut, och inget annat:
+
+1. Rad 93, hela meningen "Byggkeramikrådet är kakelbranschens organisation …". Tabellen ovanför och sista meningen i första stycket under zon-H2:n säger samma sak.
+2. Rad 124, meningarna om skärmväggen. Meningen om ytterväggen står kvar.
+3. Rad 128, de tre första meningarna om fallet i duschen och på golvet. Fallet står redan i avsnittet om BFS 2024:8. Sista meningen, om toalett och tvättstuga utan dusch, står kvar.
+4. Rad 144 och 146 helt. Det är råd till den som lägger själv och ligger för nära en guide (punkt 12).
+5. Rad 158 helt. Elen står i tabellen över arbeten, och intyget om Säker Vatteninstallation står i försäkringsavsnittet och sist i kostnadsavsnittet.
+6. Rad 220, meningen om LeadHive.
+7. Rad 236, meningen om GVK:s våtrumsintyg och konsumenttjänstlagen. Meningarna om BBV:s digitala kvalitetsdokument och VVS-intyget inom fyra veckor står kvar.
+
+**Rättas före publicering:**
+
+1. Rad 203, raden om toalettstolen, strider mot beslut 8 och mot `/badrum/byta-toalettstol/`. Kolumnen Själv? ska säga att det är lagligt men att en VVS-firma bör göra det, som raden om tätskiktet. Kolumnen Vad som gäller ska ha försäkringsbeskedet: If kräver Säker Vatten även när du byter själv och gör som regel 25 procent avdrag, och Folksam höjer självrisken med 10 procent, lägst 10 000 kr. Källraden på rad 212 får Ifs villkor (s. 8 och 14) och Folksam B7 för toaletten. Två sidor på sajten får inte ge olika svar på samma fråga.
+2. Rad 206, handfatet: Själv? ska vara "ja, med villkor", som i 8.3, eftersom källan för att göra det själv bara är firmor.
+3. Rad 126: skriv att det är MVK:s våtzon 1 och våtzon 2, och att taket hör till MVK:s våtzon 2. Utan det säger tätskiktssidan att våtzon 2 är "övriga väggar" och våtrumsfärgssidan att taket ingår, och en AI ställer dem mot varandra.
+4. Rad 224: kommentaren blir `<Verktygskort kalkylator="badrum-kostnad" />` i samma commit som räknaren registreras.
+5. Rad 122: `<Illustration namn="badrum/vatzoner" …>` med alt och bildtext ur `docs/briefer/spec-skiss-vatzoner-2026-09-28.md`.
+6. `publicerad` och `uppdaterad` sätts till publiceringsdagen.
+
+**Inlänken från `/inomhus/gipsskruv/`:** rad 170, andra meningen, "Tätskiktet är den vattentäta duken eller massan som sitter under kaklet i ett badrum". Ordet **Tätskiktet** i början av meningen länkas till `/badrum/tatskikt-badrum/`. Inget annat i stycket ändras, och det blir den enda länken från gipsskruvsidan till badrumspelaren.
+
+### Publiceringen av badrumsklustret i en commit
+
+Sidorna: `/badrum/tatskikt-badrum/`, `/badrum/vatrumsfarg/`, `/badrum/fogar-badrum/`, `/badrum/byta-toalettstol/`, `/kok/mala-kakel/` och `/rakna/badrum-kostnad/`. Med `/rakna/rotavdrag/`, som redan har `badrum` i registret, får hubben sex poster: fyra artiklar och två räknare. Ordningen inom committen, så att bygget är grönt vid varje steg som körs lokalt:
+
+1. **Räknaren först.** `badrum-kostnad` registreras i `src/lib/kalkyl/register.ts` med `pelare: ['badrum']`, och TEXT SAKNAS i `src/lib/kalkyl/renovering.ts` och `src/pages/rakna/badrum-kostnad.astro` är ersatt (i dag två fel i kontrollen), och BESKRIVNING är 120 till 155 tecken. Räknarens egen kontroll mot `raknare.md` ska vara godkänd.
+2. **Bilderna.** `badrum/vatzoner` in på tätskiktssidan och `badrum/vatzoner-vatrumsfarg` på våtrumsfärgssidan, enligt specen.
+3. **Korten.** Kommentaren på tätskiktssidan rad 224 och på toalettstolssidan rad 142 blir `<Verktygskort kalkylator="badrum-kostnad" />`. Ett kort per sida. Det ger räknaren två inlänkar.
+4. **Rättelserna ovan** på tätskiktssidan, och på `/kok/mala-kakel/` rad 172: "Hur du färgar om dem" stryks, eftersom fogsidan inte längre ger fogfärg som råd i badrummet (fogar, beslut 5). Meningen säger i stället att fogarna tvättas och byts, med samma länk.
+5. **Inlänkarna från publicerade sidor:**
+   - `/inomhus/gipsskruv/` rad 170 till `/badrum/tatskikt-badrum/`, enligt ovan.
+   - `/fukt/luftfuktighet-inomhus/` rad 155, ny mening efter "frånluftens jobb att ta topparna", ankaret "mögel på fogarna", till `/badrum/fogar-badrum/` (fogar, beslut 4).
+   - `/badrum/vatrumsfarg/` rad 78, tabellraden "Väggen bakom en vägghängd toalett": orden **vägghängd toalett** länkas till `/badrum/byta-toalettstol/`. Toalettstolen har annars bara en inlänk (från tätskiktet), eftersom fogsidan inte nämner silikon runt foten.
+   - Övriga inlänkar finns redan mellan sidorna: tätskiktet får fyra (fogar, måla kakel, våtrumsfärg, toalettstol), våtrumsfärg två, fogar två plus luftfuktigheten, måla kakel tre.
+6. **`utkast: false`** på alla fem innehållsfiler samtidigt, med `publicerad` och `uppdaterad` satta till dagen. Sidor som länkar till ett utkast stoppar bygget, så ingen av dem får släppas ensam.
+7. **Hubben** `src/content/pelare/badrum.mdx`: `utkast: false` och `uppdaterad` till dagen. **Description och ingress skrivs om av hantverkaren först.** Descriptionen lovar i dag att "måla kaklet utanför duschen" och ingressen att "toalettstolen går bra att göra själv". Båda strider mot sidorna (8.3, beslut 7 och 8). Den nya descriptionen, 120 till 155 tecken, nämner tätskiktet, fogarna och gränsen för vad du gör själv, och lovar inget som en sida i pelaren säger nej till.
+8. `npm run build` grönt, och `npm run kontrollera` utan fel och utan föräldralösa sidor i pelaren.
+
+Kökshubben (`kok.mdx`) står kvar som utkast tills Kök har fem sidor. Efter publiceringen begärs indexering av `/badrum/` och `/badrum/tatskikt-badrum/` i Search Console när Christian ber om det; resten följer via sitemapen. En vecka efter publiceringen frågar SEO och GEO-agenten en AI om "tätskikt badrum regler" och "får man lägga tätskikt själv" och antecknar i SOKORDSANALYS om sajten nämns.
 
 ---
 
@@ -354,18 +408,19 @@ Utkastet `src/content/guider/badrum/fogar-badrum.mdx` har cirka 1 950 ord brödt
 2. **Fraserna räcker.** "byta kakelfog" (20) bärs av H2:n "Kakelfogen går att byta eller färga om", och "fog badrum torktid" (10) av H3:n om torktiden. Kravet "i sina H2" gäller inte ordagrant vid den volymen.
 3. **Descriptionen godkänns som den står** (148 tecken): "Tvätta bort mögel på fogarna i badrummet utan att blanda klor med syra, se när silikonfogen är slut och hur den byts utan att kniven når tätskiktet." Att den inte lovar "fukt bakom fogen" är rätt, eftersom det saknar källa. Kravet i punkt 4 ovan ändras till den här lydelsen.
 4. **Inlänken från `/fukt/luftfuktighet-inomhus/`** sätts i stycket "Badrummet står utan riktvärde med flit …", efter meningen som slutar "det är frånluftens jobb att ta topparna". Det blir en ny mening om att fukten efter duschen är det som ger mögel på fogarna. Ankaret är **mögel på fogarna** eller **mögel på fogarna i badrummet**, och länken går till `/badrum/fogar-badrum/`. Hantverkaren formulerar meningen. Det blir den enda länken till fogsidan från luftfuktighetssidan, och den läggs till i samma commit som fogsidan publiceras. Inlänken från `/badrum/tatskikt-badrum/` läggs i dess tabell över vad du får göra själv, på raden om silikonfog.
+5. **Fogfärg i badrummet stryks som råd** (efter kontrollen av `/kok/mala-kakel/`, 2026-09-29). Kakelsidan återger Beckers: fukten under plattorna stängs in när plattorna och den öppna fogen målas över. En fogfärg som försluter cementfogen stänger just den vägen, och enda källan för rådet är Villaägarna (redaktion) och en butikssida. Två sidor på sajten får inte ge svar som en AI kan ställa mot varandra. Stycket om fogfärg skrivs om till att fogen tvättas, och byts när tvätten inte räcker; fogfärgen nämns bara som det du låter bli i badrummet, med Beckers skäl. Tile Guard-meningen och Bauhaus-posten i `kallor` stryks. H2:n blir en rubrik om att byta kakelfogen utan "färga om"; den bär fortfarande "byta kakelfog", och "måla kakelfogar" ägs av `/kok/mala-kakel/`. Punkt 6.5 ovan ändras därefter.
 
 ---
 
 ## /badrum/byta-toalettstol/
 
-Ny i startlistan 2026-09-29 (SOKORDSANALYS 8.9, beslut 6). Den ersätter kakelsidan, som flyttade till Kök.
+Ny i startlistan 2026-09-29 (SOKORDSANALYS 8.9, beslut 6). **Omvinklad samma dag efter faktabladet `docs/briefer/faktablad/guider-byta-toalettstol.md` (beslut 8).** Sidan är ingen gör det själv-guide för stolen längre. Den är en kunskapssida om vad som gäller, vad försäkringen gör om det går fel och hur ett rätt utfört byte ser ut, och den har en gör det själv-del för sitsen.
+
+Skälet: ingen myndighet, branschorganisation eller försäkringsbolag säger att en privatperson får byta en toalettstol, bara firmorna gör det. Ifö rekommenderar "alltid" en certifierad VVS-installatör. Ifs villkor (december 2025, s. 8) kräver att även husägaren följer Säker Vatten vid reparation, med 25 procent avdrag som regel om det inte görs (s. 14). Folksam har förhöjd självrisk, 10 procent och lägst 10 000 kr, om branschreglerna inte följts. Länsförsäkringar kan sätta ned ersättningen om tillverkarens anvisning inte följts. En guide som lär ut bytet skulle alltså lägga läsaren i ett sämre läge vid en vattenskada, samma gräns som för tätskiktet (8.3). Det försäkringsbeskedet i kronor har ingen i topp 5, och det är sidans största fördel.
 
 ### 1. Adress och sidtyp
 
-`/badrum/byta-toalettstol/` · `src/content/guider/badrum/byta-toalettstol.mdx` · samling **guider**, `typ: projektguide`, `pelare: badrum`, `niva: enkel`. Hubgrupp: Gör det själv. Inget produktkort (AFFILIATE.md: badrum och VVS görs inte).
-
-Läsaren har en golvstående stol som läcker, spricker eller ska bytas vid en uppfräschning, och undrar om hon får göra det själv, hur det görs och vad det kostar med rörmokare. Sidan skriver guiden för en golvstående stol och säger nej till vägghängd stol med inbyggd cistern (SOKORDSANALYS 8.3).
+`/badrum/byta-toalettstol/` · `src/content/kunskap/badrum/byta-toalettstol.mdx` · samling **kunskap**, `pelare: badrum`, `niva: enkel`. Hubgrupp: Välj rätt. Inget produktkort.
 
 ### 2. Huvudfras och sidofraser
 
@@ -373,88 +428,86 @@ Läsaren har en golvstående stol som läcker, spricker eller ska bytas vid en u
 
 Sidofraser, med plats:
 
-- **byta toalettstol själv** (170, −57 procent) i H1 eller kortsvaret.
-- **byta toalettstol pris** (90, +27 procent) i H2:n om kostnad.
-- **byta toalettsits** (170, +336 procent på ett år, topp juli och augusti 2026) i en egen H2 med måttabell. Uppgången kan vara en engångseffekt, så frasen får en H2 men inte titeln.
+- **byta toalettstol själv** (170) i H2:n om vad försäkringen säger, med svaret.
+- **byta toalettstol pris** (90) i H2:n om kostnad.
+- **byta toalettsits** (170, +336 procent) i en egen H2, som är sidans gör det själv-del.
 
 ### 3. Title
 
-Krav: **högst 44 tecken**, börjar med **Byta toalettstol**. Löftet: vad du får göra själv, eller hela bytet med vad som skruvas var. Ingen annan title börjar med "Byta toalettstol".
+Krav: **högst 44 tecken**, börjar med **Byta toalettstol**. Löftet: vad försäkringen kräver, eller själv eller med rörmokare. Titeln får inte lova en steg-för-steg-guide.
 
 ### 4. Description
 
-Krav: **120 till 155 tecken.** Ska lova om du får byta själv och vad som gäller för infästning och tätning, bytet steg för steg, och priset med rörmokare och rotavdrag.
+Krav: **120 till 155 tecken.** Ska lova vad försäkringsbolagen gör om branschreglerna inte följts, hur ett rätt utfört byte ser ut, priset med rotavdrag, och att sitsen byter du själv.
 
 ### 5. H1
 
-Krav: löftet. Delar inte de tre första orden med title.
+Krav: läsarens fråga, gärna om hon kan göra det själv. Delar inte de tre första orden med title.
 
 ### 6. H2-struktur
 
-0. **Kortsvaret**: en golvstående toalettstol får ägaren byta själv, men infästningen och tätningen ska följa Säker Vattens branschregler 2026:1. Skruven ska ha minst 60 mm borr- och skruvdjup i betong, massiv konstruktion eller träregel, och varje hål ska tätas mot tätskiktet (4.7 och 4.7.2). Vägghängd stol med inbyggd cistern är en rörmokares jobb, eftersom cisternen kräver läckageindikering och fixturen skruvas i väggen (4.2.3 och 4.7.1). Priset med rörmokare och rotavdrag med källa och datum.
-1. **Får jag byta toalettstolen själv?** Vad Säker Vatten reglerar och för vem (reglerna vänder sig till auktoriserade företag och säger ingenting om privatpersoner), vad försäkringsbolagen kräver, och gränsen mellan golvstående och vägghängd. **Bär byta toalettstol själv.**
-2. **Innan du köper.** Mät avståndet till avloppet, vilken sorts anslutning stolen har, och om de gamla hålen i golvet går att återanvända.
-3. **Så byter du, steg för steg.** Stäng vattnet, töm, lossa, ta bort, rengör och täta de gamla hålen, placera den nya, borra och täta, skruva, anslut vatten och avlopp, provspola och kontrollera. Varje moment som rör tätskiktet har en källa.
-4. **Byta toalettsits.** Tabell över hålavstånd och sitsformer från två tillverkare, och hur man mäter. **Bär byta toalettsits.**
-5. **Vad det kostar.** Stolen i tre prisnivåer, rörmokare med och utan rotavdrag, med källa och datum. **Bär byta toalettstol pris.**
+0. **Kortsvaret**: ingen lag förbjuder dig att byta stolen, men försäkringsbolagen kräver att bytet följer Säker Vattens branschregler, även när du gör det själv. If gör som regel 25 procent avdrag om de inte följts, och Folksam höjer självrisken med 10 procent, lägst 10 000 kr. Tillverkaren Ifö rekommenderar alltid en certifierad VVS-installatör. Sitsen byter du själv. Källor och datum i samma stycke.
+1. **Vad försäkringen gör om det läcker.** If, Folksam och Länsförsäkringar med villkorens lydelse, sida och datum, i en jämförande tabell med källorna på raden under. **Bär byta toalettstol själv.**
+2. **Så ska bytet vara gjort.** En lista som läsaren kan kontrollera montörens jobb mot. Den är ingen guide:
+   - golvet ska tillåta 60 mm borr- och skruvdjup under stolen (Säker Vatten 4.7.2, ett krav på golvet och inte på skruven)
+   - en plan monteringsyta på minst 300 × 400 mm som lutar högst 1:100 (GVK § 10.5.1, BBV 26:1 § 4.2)
+   - **limning med våtrumssilikon som förstahandsval** (Säker Vatten 4.7.3, GVK:s råd att inte göra hål i tätskiktet i onödan, BBV 26:1 § 9)
+   - skruv bara med tätning i tätskiktsnivån där hål behövs (Säker Vatten 4.7, BBV § 9, GVK § 10.2)
+   - Säker Vatten-intyget, som enligt 2.1.4 är en värdehandling vid en skada
+3. **Golvstående eller vägghängd.** Vägghängd stol med inbyggd cistern kräver läckageindikering och fixtur i vägg (Säker Vatten 4.2.3 och 4.7.1) och ett obrutet tätskikt bakom (BBV 26:1 § 6.6).
+4. **Vad bytet kostar.** Stolen i tre prisnivåer, montering hos behörig VVS-firma med och utan rotavdrag, med källa och datum. **Bär byta toalettstol pris.**
+5. **Byta toalettsitsen själv.** Hur man mäter hålavståndet och formen, Ifös mått (15,5 cm) från tillverkaren och Gustavsbergs mått från butiken, tydligt märkt som butikens. Det blir inget påstående om sitsformer med mått, eftersom ingen tillverkare anger dem. **Bär byta toalettsits.**
 
-Faq: silikon eller inte runt foten, varför stolen gungar, vad man gör med den gamla stolen.
+Faq: varför stolen gungar, vad montören gör med de gamla skruvhålen, om man kan limma stolen när det finns golvvärme (GVK: monteringsytan ska vara fri från golvvärme; Ifö: silikon är fördelaktigt vid golvvärme).
 
 ### 7. Längd
 
-Mål **1 000 till 1 300 ord** plus Faq. Clas Fixares två sidor är kortare och har inga källor.
+Mål **1 000 till 1 300 ord** plus Faq.
 
 ### 8. Bilder
 
-- **Snittskiss** av stolens fot mot golvet: tätskikt, borrhål med tätning, skruv med 60 mm djup och anslutning till avloppet. Alt högst 125 tecken med orden byta toalettstol. Måttet står i bildtexten med Säker Vatten som källa.
+- **Snittskiss i två fall** av stolens fot mot golvet: limmad med silikonsträng, och skruvad med borrhål, tätning i tätskiktsnivån och plugg. Golvets 60 mm som byglar i båda. Alt högst 125 tecken med orden toalettstol och tätskikt. Källorna står i bildtexten.
 
 ### 9. Interna länkar
 
 **Ut**, alla är krav:
 
-- `/badrum/tatskikt-badrum/` i avsnitt 1 och 3: vad tätskiktet är och varför hålen ska tätas.
+- `/badrum/tatskikt-badrum/` i avsnitt 2: vad tätskiktet är.
 - `/rakna/rotavdrag/` i kostnadsavsnittet.
-- `/rakna/badrum-kostnad/` som `<Verktygskort kalkylator="badrum-kostnad" />` i kostnadsavsnittet, för den som byter mer än stolen.
+- `/rakna/badrum-kostnad/` som `<Verktygskort kalkylator="badrum-kostnad" />` i kostnadsavsnittet.
 
 **In**, krav:
 
-- `/badrum/tatskikt-badrum/`, i tabellen över vad du får göra själv.
-- `/badrum/fogar-badrum/`, i Faq-frågan om silikon runt foten om den finns där, annars i avsnittet om mjukfog.
+- `/badrum/tatskikt-badrum/`, i tabellen över vad du får göra själv, på raden om toalettstol, som nu säger att bytet bör göras av behörig.
+- `/badrum/fogar-badrum/`, där silikon runt foten nämns, om ett sådant ställe finns.
 
 ### 10. Strukturerad data och komponenter
 
-`Article`, `BreadcrumbList` Hantverkstips / Badrum och våtrum / sidan, `FAQPage` bara med riktig Faq. `kallor` med Säker Vatten 2026:1, försäkringsbolagen, tillverkarnas måttblad och prisernas källor.
+`Article`, `BreadcrumbList` Hantverkstips / Badrum och våtrum / sidan, `FAQPage` bara med riktig Faq. `kallor` med Säker Vatten 2026:1, GVK 2026, BBV 26:1, Ifs, Folksams och Länsförsäkringars villkor, Ifös och Gustavsbergs anvisningar och prisernas källor.
 
 ### 11. Ettan och Bättre än ettan
 
-Topp 5 för huvudfrasen: clasfixare.se (två sidor), vvsochbad.se, byggahus.se (forum, oläst), hemfixarna.se. För sitsen: biltema.se, gds.se (2023-05-03), bygghemma.se (2026-02-23), toalettsitsar.com, ifo.se. **Ettan: clasfixare.se.** Sidan säger att man får byta själv men har inga källor och säger ingenting om 60 mm skruvdjup eller tätning mot tätskiktet. Tjänstesidan anger 2 800 kr med Säker Vatten-behörig montör och rotavdrag.
+Topp 5 för huvudfrasen: clasfixare.se (två sidor), vvsochbad.se, byggahus.se (forum, oläst), hemfixarna.se. **Ettan: clasfixare.se.** Sidan säger "ja, vi får lov att byta ut toalettstolen på egen hand", utan källa och utan ett ord om försäkringen. Tjänstesidan anger 2 800 kr med behörig montör och rotavdrag.
 
 Det ettan har som vi måste ha:
 
-- Beskedet att en privatperson får byta en golvstående stol.
-- Stegen i ordning.
-- Ett pris för montering med rotavdrag.
+- Ett rakt svar på frågan om man får byta själv.
+- Ett pris för monteringen med rotavdrag.
 
 **Bättre än ettan** (krav):
 
-1. **Säker Vatten 2026:1 punkt 4.7 och 4.7.2** med 60 mm skruvdjup och tätning mot tätskiktet, med källa och datum.
-2. **Gränsen mot vägghängd stol** med skälen (4.2.3 och 4.7.1).
-3. **Snittskissen** med skruv, tätning och tätskikt.
-4. **Måttabell för sitsen** med hålavstånd från två tillverkare. Ingen i topp 5 för sitsen har en.
-5. **Pris med rotavdraget rätt**, 30 procent och 50 000 kr per person.
+1. **Försäkringsbeskedet i kronor och procent** från tre bolag, med villkorens sida och datum. Ingen i topp 5 har det.
+2. **Hur ett rätt utfört byte ser ut**, med Säker Vatten, GVK och BBV per punkt, och limning som förstahandsval.
+3. **Snittskissen i två fall**, limmad och skruvad.
+4. **Gränsen mot vägghängd stol** med skälen.
+5. **Sitsen som gör det själv-del**, med tillverkarens mått där det finns och butikens märkt som butikens.
 
-**Krav på faktabladet** (`docs/briefer/faktablad/guider-byta-toalettstol.md`):
-
-- Säker Vatten 2026:1 punkt 4.2.3, 4.7, 4.7.1, 4.7.2 och 4.7.3 ordagrant med sidnummer, ur PDF:en på sakervatten.se.
-- Vad Säker Vatten, GVK eller en myndighet säger om att en privatperson byter en toalettstol. Saknas det står det så, och sidan skriver villkoren, inte ett löfte.
-- Folksams och Ifs villkor om våtrum. Faktabladet för tätskikt kan återanvändas.
-- Monteringsanvisning för en golvstående stol från två tillverkare (Gustavsberg, Ifo): anslutning, tätning mot golv, skruv.
-- Hålavstånd och sitsformer från två tillverkare, med datum.
-- Pris för stol i tre nivåer och för montering med rörmokare från två källor, med datum.
+**Krav på faktabladet:** klart 2026-09-29. Det som saknas är ett sitsmått från en andra tillverkare, och det står inte på sidan förrän det finns.
 
 ### 12. Fällor
 
-- **Ingen guide för vägghängd stol med inbyggd cistern.**
-- **Inget "ingen lag förbjuder"** utan källa. Det finns bara hos firmor.
-- **Inga produktkort.**
+- **Ingen steg-för-steg-guide för stolen**, inte heller i en ruta.
+- **"60 mm" är ett krav på golvet**, inte på skruven.
+- **Inget "ingen lag förbjuder" utan att försäkringsbeskedet står i samma stycke.**
+- **Inga sitsformer med mått** som påstås vara tillverkarens.
 - Clas Fixare nämns inte i publik text.

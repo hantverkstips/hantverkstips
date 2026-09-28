@@ -77,7 +77,7 @@ C:\Hantverkstips\
 │   │   ├── guider.ts          # filtren på /guider/: urval, rubriker, filterrader
 │   │   ├── format.ts          # pris, datum, tal enligt stilguiden
 │   │   ├── strukturdata.ts    # byggare för JSON-LD
-│   │   └── kalkyl/            # rena beräkningsfunktioner, en fil per kalkylator, plus register
+│   │   └── kalkyl/            # rena beräkningsfunktioner, en fil per kalkylator, plus register, stil.ts och delade moduler utan egen sida (tak.ts: takets geometri för takbyte, takavvattning och fasadyta)
 │   └── styles/
 │       └── global.css         # Tailwind + designtokens
 ├── supabase/

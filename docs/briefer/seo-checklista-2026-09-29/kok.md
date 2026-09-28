@@ -131,7 +131,7 @@ Krav: **högst 44 tecken**, börjar med **Måla köksluckor**. Löftet: vad som 
 
 ### 4. Description
 
-Krav: **120 till 155 tecken.** Ska lova att sidan börjar med luckans material, korn och antal strykningar, härdningstid innan köket används, och vad det kostar mot att lackera.
+Krav: **120 till 155 tecken.** Ska lova att sidan börjar med luckans material, slipning och antal strykningar, hur länge färgen behöver härda, och vad det kostar mot att lackera.
 
 ### 5. H1
 
@@ -186,7 +186,7 @@ Det ettan har som vi måste ha:
 **Bättre än ettan** (krav):
 
 1. **Besked per luckmaterial**: trä, MDF, laminat, folie, högblankt, med källa.
-2. **Korn, övermålningstid och härdningstid ur datablad**, med fabrikat och datum.
+2. **Slipning, övermålningstid och genomhärdning med källa**, med fabrikat och datum. Ingen tillverkare anger korn för luckor, så kornet tas från Caparols produktlista (240) och anges som Caparols. Hornbachs 180 och 400 får stå som butikens. Härdningen är genomhärdning (Flügger 28 dagar, Jotun 4 veckor) och Alcros en vecka för ställytor. Den skrivs aldrig som "innan köket kan användas", eftersom ingen tillverkare säger det.
 3. **Kostnaden mot lackering och byte** i kronor för samma kök, med källa och datum och rotavdraget rätt.
 4. **Roller mot färgspruta** med ett besked.
 5. **Skiss** av ordningen på luckan.
@@ -200,7 +200,8 @@ Det ettan har som vi måste ha:
 
 ### 12. Fällor
 
-- **Ingen härdningstid utan fabrikat.**
+- **Ingen härdningstid utan fabrikat**, och ingen tid "innan köket kan användas". Det som finns är genomhärdning och Alcros ställytor.
+- **Lackering i verkstad ger inget rotavdrag**, eftersom arbetet inte görs i hemmet. Jämförelseraden för verkstadslackering har inget rot. Målare på plats har rot.
 - **Kortet** står efter texten om verktyget, aldrig före kortsvaret.
 - Alcro nämns bara som färgtillverkare med datablad, inte som konkurrent.
 
@@ -315,6 +316,10 @@ Utkastet `src/content/guider/kok/mala-kakel.mdx`: seoTitle "Måla kakel i köket
 
 Title och H1 kontrolleras här eftersom de är nya: seoTitle börjar med "Måla kakel", ryms inom 44 tecken så att suffixet läggs på, och delar inte de tre första orden med H1, `/kok/mala-koksluckor/` eller `/fasad/mala-om-huset/`. Godkänt.
 
+### Kontroll efter skrivningen, 2026-09-29
+
+H1 är nu "Ge kaklet i köket ny färg utan att riva något". Mot seoTitle "Måla kakel i köket, men aldrig i badrummet" (42 tecken), "Måla köksluckor i trä, MDF eller laminat" och "Måla om huset kostnad 2026 …" delas inga tre första ord, och ingen annan title eller H1 börjar med "Ge". Godkänt. Alla fem punkter i Bättre än ettan finns; punkt 2 kräver sidnumret vid regeln i badrumsavsnittet. Handtestet vid full låga på gasspisen är ett råd om gasspis utan källa (punkt 12) och stryks. Huvudbilden `kok/mala-kakel-stankskydd` får bildAlt på högst 125 tecken; specens lydelse är 130.
+
 ---
 
 ## /kok/byta-koksluckor/
@@ -354,7 +359,7 @@ Krav: löftet med den befintliga stommen. Delar inte de tre första orden med ti
 0. **Kortsvaret**: nya luckor på gamla stommar går om stommarna är hela och håller ett standardmått. Tre saker avgör: stommens bredd och höjd, gångjärnssystemet och hur luckan sitter i förhållande till stommen. Mät varje lucka, inte stommen. Priset med källa och datum, jämfört med att måla.
 1. **Passar nya luckor min stomme?** Tabell per stommärke (IKEA, Marbodal, HTH, Vedum, Ballingslöv och fler om faktabladet har dem): standardbredder, gångjärnssystem, med källorna på en rad under tabellen. **Bär byta köksluckor befintlig stomme.**
 2. **Så mäter du.** Steg och en skiss med måtten. Vad beställningen behöver: bredd, höjd, borrning för gångjärn, vänster eller höger.
-3. **Byta, måla eller lackera.** Tabell i kronor för samma kök med 16 luckor: byta, måla själv, målare, sprutlackera, folie. Källorna står på en rad under tabellen. **Bär renovera köksluckor.**
+3. **Byta, måla eller lackera.** Tabell i kronor för samma kök med 16 luckor: byta, måla själv, målare på plats (med rot), sprutlackering i verkstad (utan rot), och folie utan kronor per lucka (se punkt 11). Källorna står på en rad under tabellen. **Bär renovera köksluckor.**
 4. **Vad det kostar.** Luckor per styck i tre prisnivåer, gångjärn, handtag och montering, med rotavdraget på monteringen. `<Kalkylator namn="kok-kostnad" />` bäddas in här. **Bär byta köksluckor pris och befintlig stomme pris.**
 5. **Montera luckorna.** Gångjärn, justering i tre led, och vad som krävs av verktyg.
 
@@ -405,9 +410,9 @@ Det ettan har som vi måste ha:
 **Krav på faktabladet** (`docs/briefer/faktablad/guider-byta-koksluckor.md`):
 
 - Standardmått (bredder och höjder) och gångjärnssystem för minst fyra stommärken, från tillverkarens egna sidor eller måttlistor, med datum.
-- Pris per lucka i tre prisnivåer från minst två luckleverantörer, med datum. Pickylivings exempel (20 769 kr exklusive frakt) får användas med sitt datum.
+- Pris per lucka i tre prisnivåer från minst två luckleverantörer, med datum. Picky Livings exempel (20 769 kr exklusive frakt) saknar publiceringsdatum och får stå med hämtningsdatum, "hämtat 28 september 2026". **IKEA:s monteringspris 3 399 kr stryks**, eftersom det inte står på IKEA:s sida.
 - Montering per timme eller per kök från två källor, med datum. Totalbyggarnas 350 kr per timme efter rot räknas om till pris före rot och märks.
-- Pris för sprutlackering och folie per lucka från två källor.
+- Pris för sprutlackering per lucka, med rotregeln ovan. **Folie** har bara ett pris utan antal luckor (Design Foliering) och kan inte räknas om till pris per lucka. I tabellen står folie utan kronor per lucka, med priset som källan anger det och villkoret utskrivet, eller inte alls.
 
 ### 12. Fällor
 

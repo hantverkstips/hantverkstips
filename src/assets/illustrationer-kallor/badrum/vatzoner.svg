@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Badrum snett uppifrån där tätskiktets våtzon 1 omfattar väggarna en meter ut från duschen, hela golvet och ytterväggen.">
+  <!-- Anteckningsboken. Blyerts 2 px för rummets väggar och golv, fönstret, duschen och toaletten, blyerts-2 för
+       duschplatsens streckade gräns, golvbrunnen, måttbyglarna, snickarpenna för zongränsen en meter ut från
+       duschen (enda pennsaken). Tumstock bakom 1 m. Ungefär skalenlig: 100 enheter per meter i bredd och höjd,
+       djupvektor (-40, 28) per meter. BBV 26:1 och GVK 2026. Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts: bakväggen, vänsterväggen (yttervägg) med fönstret, golvet, duschen, den vägghängda toaletten -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M148,44 Q300,43 452,44 M450,42 Q451,163 450,286 M150,42 Q149,163 150,286"/>
+    <path d="M151,43 Q101,76 52,112 M54,109 Q53,230 54,353"/>
+    <path d="M148,284 Q300,285 452,284 M451,283 Q403,318 353,352 M356,351 Q205,352 52,351 M151,283 Q103,318 53,352"/>
+    <path d="M102,146 Q103,177 102,209 M103,207 Q90,216 77,226 M78,226 Q77,195 78,163 M77,165 Q90,155 103,146"/>
+    <path d="M222,250 Q223,170 222,92 M222,92 Q212,92 208,100 M200,100 Q208,104 216,100 Q210,97 200,100"/>
+    <path d="M383,236 Q405,235 427,236 M385,236 Q386,262 405,262 Q424,262 425,236"/>
+    <path d="M394,170 Q405,169 416,170 M415,169 Q416,180 415,191 M416,190 Q405,191 394,190 M395,191 Q394,180 395,169"/>
+  </g>
+
+  <!-- Blyerts-2: duschplatsen streckad på golvet och på väggen upp till 2,0 m, golvbrunnen -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="7 5">
+    <path d="M150,284 L240,284 L204,309 L114,309"/>
+    <path d="M240,284 Q241,184 240,84 M150,84 Q195,85 240,84"/>
+  </g>
+  <circle cx="177" cy="296" r="6" fill="none" stroke="#625a50" stroke-width="1.5"/>
+
+  <!-- Blyerts-2: måttbyglarna, 1 m ut från duschen och duschplatsens 2,0 m -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M240,64 Q290,63 340,64 M240,59 v10 M340,59 v10"/>
+    <path d="M166,284 Q167,184 166,84 M161,284 h10 M161,84 h10"/>
+  </g>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="274" y="67" width="34" height="24" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 291 79)"/>
+
+  <!-- Snickarpenna: zongränsen en meter ut från duschen, från golv till tak -->
+  <path d="M340,284 Q342,224 340,164 Q338,104 340,44" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="291" y="86" text-anchor="middle">1 m</text>
+    <text x="169" y="226" fill="#625a50">2,0 m</text>
+    <text x="170" y="150" fill="#625a50">dusch</text>
+    <text x="252" y="176">våtzon 1</text>
+    <text x="352" y="120">våtzon 2</text>
+    <text x="203" y="334" text-anchor="middle">hela golvet våtzon 1</text>
+    <text x="121" y="294" transform="rotate(-90 121 294)">hel yttervägg</text>
+    <text x="146" y="278" transform="rotate(-90 146 278)">våtzon 1</text>
+  </g>
+</svg>

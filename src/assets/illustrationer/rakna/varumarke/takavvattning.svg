@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Ett hushörn med en gul hängränna under takfoten och ett gult stuprör som går ner längs väggen till en utkastare över marken.">
+  <!-- Varumärkesillustration för /rakna/takavvattning/, riktning 1. Samma hand som symbolen,
+       startsidans hero, fasadyta.svg och rotavdrag.svg: konturer i blyerts 2 px med runda
+       ändar, tumstock som den enda fyllda färgen, ingen linjering, ingen skraffering,
+       transparent bakgrund, ett rött pennstreck som signatur.
+       Motivet är ett utsnitt av ett hushörn rakt framifrån. Upptill två pannrader och takfotens
+       kant som ett smalt band tvärs över bilden. Under kanten löper hängrännan hela vägen, med
+       vulsten som ett band längs framkanten och halvröret i genomskärning vid den fria änden
+       till vänster. Fyra rännkrokar går från takfoten över vulsten. Vid högra änden går
+       stupröret ner: omvikningskupan under rännan, två böjar in mot väggen, ett rakt rör med
+       två rörsvep som band runt röret och armar in till väggen, och en utkastare strax ovanför
+       marken som pekar ut över den. Rännan och stupröret är fyllda i tumstock och är
+       tillsammans bildens största form. Väggen är en lodlinje till höger om röret. Röret ritas
+       som en blyertslinje på 26 med en tumstockslinje på 22 ovanpå, så att konturen blir 2 px
+       på båda sidor. Inga droppar, inget vatten, inget regn, inga löv. Kvoten nås med rännans
+       längd, stupröret ger höjden.
+       Ingen text-nod och inga läsbara tal: npm run illustrationer rör inte filen och den har
+       ingen källa under illustrationer-kallor. Skala 600 × 360 som räknarnas skisser.
+       Motivet är ritat i sin egen skala, bbox x −2 till 561 och y 2 till 324,8 med
+       linjebredderna, kvot 1,74, och läggs ut med transform="translate(22.98 18.07)
+       scale(0.9911)" i yttre g:et: 558 px brett (93,0 procent) och 320,0 px högt (88,9
+       procent), 21 px marginal i sidled och 20 px i höjdled.
+       Tunnaste linje 1,4 i motivets skala.
+       Tokens: tumstock #e8b830, blyerts #2a2521, penna #ad3519. -->
+
+  <g transform="translate(22.98 18.07) scale(0.9911)">
+
+    <!-- Pannraderna och takfotens kant -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M0,4 Q274,2 548,4 L548,56"/>
+      <path d="M0,44 Q274,45.5 548,44"/>
+      <path d="M0,56 Q274,57.5 548,56"/>
+    </g>
+    <g fill="none" stroke="#2a2521" stroke-width="1.75" stroke-linecap="round">
+      <path d="M0,24 Q274,22.5 548,24"/>
+      <path d="M30,4 V24 M70,4 V24 M110,4 V24 M150,4 V24 M190,4 V24 M230,4 V24 M270,4 V24 M310,4 V24 M350,4 V24 M390,4 V24 M430,4 V24 M470,4 V24 M510,4 V24 M50,24 V44 M90,24 V44 M130,24 V44 M170,24 V44 M210,24 V44 M250,24 V44 M290,24 V44 M330,24 V44 M370,24 V44 M410,24 V44 M450,24 V44 M490,24 V44 M530,24 V44"/>
+    </g>
+
+    <!-- Väggen vid hörnet -->
+    <path d="M528,56 Q530,181 528,306" fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Stupröret: blyerts 26 under, tumstock 22 ovanpå -->
+    <path d="M455,100 L455,116 Q455,124 462,131 L487,154 Q494,161 494,170 L494,252 Q494,278 470,281 L454,282" fill="none" stroke="#2a2521" stroke-width="26" stroke-linejoin="round"/>
+    <path d="M455,100 L455,116 Q455,124 462,131 L487,154 Q494,161 494,170 L494,252 Q494,278 470,281 L454,282" fill="none" stroke="#e8b830" stroke-width="22" stroke-linejoin="round"/>
+
+    <!-- Utkastarens mynning, skarvarna vid böjarna och rörsvepen med armar till väggen -->
+    <ellipse cx="454" cy="282" rx="4.5" ry="12" fill="#e8b830" stroke="#2a2521" stroke-width="2"/>
+    <g fill="none" stroke="#2a2521" stroke-width="1.75" stroke-linecap="round">
+      <path d="M444,118 L466,118 M483,168 L505,168 M483,252 L505,252"/>
+    </g>
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M481,186 L507,186 L507,196 L481,196 Z M507,191 L528,191"/>
+      <path d="M481,224 L507,224 L507,234 L481,234 Z M507,229 L528,229"/>
+    </g>
+
+    <!-- Omvikningskupan under rännan -->
+    <path d="M436,88 L444,106 L466,106 L474,88 Z" fill="#e8b830" stroke="#2a2521" stroke-width="2" stroke-linejoin="round"/>
+
+    <!-- Hängrännan: framsidan med vulsten, gaveln till höger, halvröret i genomskärning till vänster -->
+    <path d="M60,62 L512,62 Q518,62 518,68 L518,82 Q518,90 510,90 L60,90 Z" fill="#e8b830"/>
+    <path d="M4,62 A28,28 0 0 0 60,62 L53,62 A21,21 0 0 1 11,62 Z" fill="#e8b830" stroke="#2a2521" stroke-width="2" stroke-linejoin="round"/>
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M60,62 Q286,60.5 512,62 Q518,62 518,68 L518,82 Q518,90 510,90 Q285,91.5 60,90"/>
+      <path d="M60,70 Q289,71.5 518,70"/>
+    </g>
+    <circle cx="4" cy="60" r="5" fill="#e8b830" stroke="#2a2521" stroke-width="2"/>
+
+    <!-- Rännkrokarna från takfoten över vulsten -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M120,54 L120,72 Q120,79 111,78"/>
+      <path d="M230,54 L230,72 Q230,79 221,78"/>
+      <path d="M340,54 L340,72 Q340,79 331,78"/>
+      <path d="M420,54 L420,72 Q420,79 411,78"/>
+    </g>
+
+    <!-- Marken: en rak linje -->
+    <path d="M0,306 Q280,308 560,306" fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Snickarpennans signatur under motivet -->
+    <path d="M150,321 Q225,325 300,318 Q375,315 450,320" fill="none" stroke="#ad3519" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+</svg>

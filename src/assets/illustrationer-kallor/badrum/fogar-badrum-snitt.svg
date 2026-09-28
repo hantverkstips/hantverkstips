@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Snitt genom hörnet mellan vägg och golv i ett badrum, där kniven skär ur silikonfogen och stannar före tätskiktet.">
+  <!-- Anteckningsboken. Blyerts 2 px för stommens insida, tätskiktet, plattorna och silikonfogen, blyerts-2 för
+       skraffering, fästmassans prickar, cementfogarnas streck, silikonens bågar och ledare, snickarpenna för
+       kniven som stannar i silikonfogen (enda pennsaken). Inte skalenlig: skikten är förstorade och plattorna kortade.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Papperslappar bakom etiketterna i skrafferingen -->
+  <g fill="#f5efe3">
+    <rect x="50" y="123" width="43" height="26"/>
+    <rect x="297" y="320" width="39" height="29"/>
+  </g>
+
+  <!-- Blyerts-2: stommen skrafferad, väggen x 44 till 150 och golvet y 296 till 360 -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M48,4 l10,10 M70,4 l10,10 M92,4 l10,10 M114,4 l10,10 M136,4 l10,10"/>
+    <path d="M59,26 l10,10 M81,26 l10,10 M103,26 l10,10 M125,26 l10,10"/>
+    <path d="M48,48 l10,10 M70,48 l10,10 M92,48 l10,10 M114,48 l10,10 M136,48 l10,10"/>
+    <path d="M59,70 l10,10 M81,70 l10,10 M103,70 l10,10 M125,70 l10,10"/>
+    <path d="M48,92 l10,10 M70,92 l10,10 M92,92 l10,10 M114,92 l10,10 M136,92 l10,10"/>
+    <path d="M103,114 l10,10 M125,114 l10,10"/>
+    <path d="M114,136 l10,10 M136,136 l10,10"/>
+    <path d="M59,158 l10,10 M81,158 l10,10 M103,158 l10,10 M125,158 l10,10"/>
+    <path d="M48,180 l10,10 M70,180 l10,10 M92,180 l10,10 M114,180 l10,10 M136,180 l10,10"/>
+    <path d="M59,202 l10,10 M81,202 l10,10 M103,202 l10,10 M125,202 l10,10"/>
+    <path d="M48,224 l10,10 M70,224 l10,10 M92,224 l10,10 M114,224 l10,10 M136,224 l10,10"/>
+    <path d="M59,246 l10,10 M81,246 l10,10 M103,246 l10,10 M125,246 l10,10"/>
+    <path d="M48,268 l10,10 M70,268 l10,10 M92,268 l10,10 M114,268 l10,10 M136,268 l10,10"/>
+    <path d="M59,290 l10,10 M81,290 l10,10 M103,290 l10,10 M125,290 l10,10"/>
+    <path d="M48,312 l10,10 M70,312 l10,10 M92,312 l10,10 M114,312 l10,10 M136,312 l10,10 M158,312 l10,10 M180,312 l10,10 M202,312 l10,10 M224,312 l10,10 M246,312 l10,10 M268,312 l10,10 M356,312 l10,10 M378,312 l10,10 M400,312 l10,10 M422,312 l10,10 M444,312 l10,10 M466,312 l10,10 M488,312 l10,10 M510,312 l10,10 M532,312 l10,10 M554,312 l10,10 M576,312 l10,10"/>
+    <path d="M59,334 l10,10 M81,334 l10,10 M103,334 l10,10 M125,334 l10,10 M147,334 l10,10 M169,334 l10,10 M191,334 l10,10 M213,334 l10,10 M235,334 l10,10 M257,334 l10,10 M279,334 l10,10 M345,334 l10,10 M367,334 l10,10 M389,334 l10,10 M411,334 l10,10 M433,334 l10,10 M455,334 l10,10 M477,334 l10,10 M499,334 l10,10 M521,334 l10,10 M543,334 l10,10 M565,334 l10,10"/>
+  </g>
+
+  <!-- Blyerts-2: fästmassans prickar, cementfogarnas tvärstreck, silikonens bågar -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M164,6 h1.5 M172,18 h1.5 M164,30 h1.5 M172,42 h1.5 M164,54 h1.5 M172,66 h1.5 M164,78 h1.5 M172,90 h1.5 M164,102 h1.5 M172,114 h1.5 M164,126 h1.5 M172,138 h1.5 M164,150 h1.5 M172,162 h1.5 M164,174 h1.5 M172,186 h1.5 M164,198 h1.5 M172,210 h1.5 M164,222 h1.5 M172,234 h1.5 M164,246 h1.5 M172,258 h1.5"/>
+    <path d="M164,274 h1.5 M178,274 h1.5 M192,274 h1.5 M206,274 h1.5 M220,274 h1.5 M234,274 h1.5 M248,274 h1.5 M262,274 h1.5 M276,274 h1.5 M290,274 h1.5 M304,274 h1.5 M318,274 h1.5 M332,274 h1.5 M346,274 h1.5 M360,274 h1.5 M374,274 h1.5 M388,274 h1.5 M402,274 h1.5 M416,274 h1.5 M430,274 h1.5 M444,274 h1.5 M458,274 h1.5 M472,274 h1.5 M486,274 h1.5 M500,274 h1.5 M514,274 h1.5 M528,274 h1.5 M542,274 h1.5 M556,274 h1.5 M570,274 h1.5 M584,274 h1.5"/>
+    <path d="M171,282 h1.5 M185,282 h1.5 M199,282 h1.5 M213,282 h1.5 M227,282 h1.5 M241,282 h1.5 M255,282 h1.5 M269,282 h1.5 M283,282 h1.5 M297,282 h1.5 M311,282 h1.5 M325,282 h1.5 M339,282 h1.5 M353,282 h1.5 M367,282 h1.5 M381,282 h1.5 M395,282 h1.5 M409,282 h1.5 M423,282 h1.5 M437,282 h1.5 M451,282 h1.5 M465,282 h1.5 M479,282 h1.5 M493,282 h1.5 M507,282 h1.5 M521,282 h1.5 M535,282 h1.5 M549,282 h1.5 M563,282 h1.5 M577,282 h1.5 M591,282 h1.5"/>
+    <path d="M188,60 l-1,6 M196,60 l-1,6 M204,60 l-1,6 M464,242 l6,-1 M464,250 l6,-1 M464,258 l6,-1"/>
+    <path d="M197,211 Q204,209 211,211 M197,226 Q204,228 211,226 M216,223 Q218,228 226,229"/>
+  </g>
+
+  <!-- Blyerts: stommens insida och tätskiktet, väggplattorna, golvplattorna, silikonfogen -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M150,-2 Q151,148 150,298 M148,296 Q375,297 602,296"/>
+    <path d="M158,-2 Q159,139 158,280 Q158,288 166,288 Q384,289 602,288"/>
+    <path d="M178,-2 Q179,29 178,60 M176,58 Q196,59 216,58 M214,60 Q215,29 214,-2"/>
+    <path d="M176,68 Q196,67 216,68 M214,66 Q215,136 214,206 M216,204 Q196,205 176,204 M178,206 Q177,136 178,66"/>
+    <path d="M176,232 Q320,231 464,232 M462,230 Q463,250 462,270 M464,268 Q320,269 176,268 M178,270 Q177,250 178,230"/>
+    <path d="M470,232 Q536,231 602,232 M470,268 Q536,269 602,268 M472,230 Q471,250 472,270"/>
+    <path d="M178,202 Q177,218 178,234 M214,191 Q216,229 239,232"/>
+  </g>
+
+  <!-- Blyerts-2: ledare -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M258,24 L196,63"/>
+    <path d="M258,50 L168,110"/>
+    <path d="M258,76 L154,150"/>
+    <path d="M258,102 L204,130"/>
+    <path d="M258,128 L204,210"/>
+    <path d="M522,219 L530,250"/>
+  </g>
+
+  <!-- Snickarpenna: kniven in i silikonfogen och stoppstrecket där silikonen slutar, före tätskiktet -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M330,218 Q294,216 258,218 Q222,220 186,218"/>
+    <path d="M193,212 L186,218 L193,224"/>
+    <path d="M181,208 Q182,218 181,228"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#625a50">
+    <text x="52" y="140">vägg</text>
+    <text x="300" y="340">golv</text>
+    <text x="262" y="30">cementfog</text>
+    <text x="262" y="56">fästmassa</text>
+    <text x="262" y="82">tätskikt</text>
+    <text x="262" y="108">kakel</text>
+    <text x="262" y="134" fill="#2a2521">silikonfog</text>
+    <text x="486" y="214">klinker</text>
+    <text x="250" y="176" fill="#ad3519">kniven stannar</text>
+    <text x="250" y="200" fill="#ad3519">före tätskiktet</text>
+  </g>
+</svg>

@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="En villa sedd från långsidan med ett brett tak av pannrader. Den vänstra delen av taket är ny och gul, resten är gammalt.">
+  <!-- Varumärkesillustration för /rakna/takbyte/, riktning 1. Samma hand som symbolen,
+       startsidans hero, fasadyta.svg och rotavdrag.svg: konturer i blyerts 2 px med runda
+       ändar, tumstock som den enda fyllda färgen, ingen linjering, ingen skraffering,
+       transparent bakgrund, ett rött pennstreck som signatur.
+       Motivet är taket som byts: en villa rakt från långsidan där takfallet är den största
+       formen, en liggande parallelltrapets med nocken rak överst och takfoten utskjutande förbi
+       väggarna. Takfallet är fem pannrader med korta lodräta skarvar i förband. Den vänstra
+       delen, ungefär två femtedelar, är fylld i tumstock och är det nya taket; gränsen följer
+       skarvarna i trappsteg. Resten är bara konturer, det gamla. Skorstenen står på takfallet
+       till höger och bryter nocken där den går fram. Väggen har två fönster med korsande spröjs
+       och en dörr. Marken är en rak linje utan skraffering. Inga människor, ingen stege, ingen
+       ställning, inga verktyg. Kvoten nås med husets längd, inte med tom mark.
+       Ingen text-nod och inga läsbara tal: npm run illustrationer rör inte filen och den har
+       ingen källa under illustrationer-kallor. Skala 600 × 360 som räknarnas skisser.
+       Motivet är ritat i sin egen skala, bbox x −1 till 561 och y −1 till 323,8 med
+       linjebredderna, kvot 1,73, och läggs ut med transform="translate(24.98 21.48)
+       scale(0.9822)" i yttre g:et: 552 px brett (92,0 procent) och 319,0 px högt (88,6
+       procent), 24 px marginal i sidled och 20,5 px i höjdled.
+       Tunnaste linje 1,4 i motivets skala.
+       Tokens: tumstock #e8b830, blyerts #2a2521, penna #ad3519. -->
+
+  <g transform="translate(24.98 21.48) scale(0.9822)">
+
+    <!-- Det nya taket: vänstra delen av takfallet i tumstock, gränsen i trappsteg längs skarvarna -->
+    <path fill="#e8b830" d="M110,30 L250,30 L250,58 L230,58 L230,86 L250,86 L250,114 L230,114 L230,142 L250,142 L250,170 L30,170 Z"/>
+
+    <!-- Takfallets kontur: nocken bruten vid skorstenen, takfallets gavelkanter, takfoten -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M110,30 Q246,28 382,30"/>
+      <path d="M416,30 Q433,31 450,30"/>
+      <path d="M110,30 Q68,99 30,170"/>
+      <path d="M450,30 Q492,99 530,170"/>
+      <path d="M26,170 Q280,172 534,170"/>
+      <path d="M30,170 Q29,174 30,178 Q280,180 530,178 Q531,174 530,170"/>
+    </g>
+
+    <!-- Pannraderna och skarvarna i förband -->
+    <g fill="none" stroke="#2a2521" stroke-width="1.75" stroke-linecap="round">
+      <path d="M94,58 Q280,56.5 466,58 M78,86 Q280,87.5 482,86 M62,114 Q280,112.5 498,114 M46,142 Q280,143.5 514,142"/>
+      <path d="M130,30 V58 M170,30 V58 M210,30 V58 M250,30 V58 M290,30 V58 M330,30 V58 M370,30 V58 M150,58 V86 M190,58 V86 M230,58 V86 M270,58 V86 M310,58 V86 M350,58 V86 M390,58 V86 M430,58 V86 M130,86 V114 M170,86 V114 M210,86 V114 M250,86 V114 M290,86 V114 M330,86 V114 M370,86 V114 M410,86 V114 M450,86 V114 M150,114 V142 M190,114 V142 M230,114 V142 M270,114 V142 M310,114 V142 M350,114 V142 M390,114 V142 M430,114 V142 M470,114 V142 M130,142 V170 M170,142 V170 M210,142 V170 M250,142 V170 M290,142 V170 M330,142 V170 M370,142 V170 M410,142 V170 M450,142 V170 M490,142 V170"/>
+    </g>
+
+    <!-- Skorstenen på takfallet till höger -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M384,58 Q382,32 384,6 Q399,8 414,6 Q416,32 414,58"/>
+      <path d="M379,6 Q399,4 419,6 M379,0 Q399,1.5 419,0 M379,0 L379,6 M419,0 L419,6"/>
+    </g>
+
+    <!-- Väggen, fönstren och dörren -->
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M60,178 Q58,234 60,290"/>
+      <path d="M500,178 Q502,234 500,290"/>
+      <path d="M110,202 Q140,200 170,202 Q172,226 170,250 Q140,252 110,250 Q108,226 110,202 Z"/>
+      <path d="M250,202 Q280,200 310,202 Q312,226 310,250 Q280,252 250,250 Q248,226 250,202 Z"/>
+      <path d="M384,290 Q382,248 384,206 Q406,204 428,206 Q430,248 428,290"/>
+    </g>
+    <g fill="none" stroke="#2a2521" stroke-width="1.75" stroke-linecap="round">
+      <path d="M140,202 Q138.5,226 140,250 M110,226 Q140,227.5 170,226"/>
+      <path d="M280,202 Q278.5,226 280,250 M250,226 Q280,227.5 310,226"/>
+    </g>
+
+    <!-- Marken: en rak linje -->
+    <path d="M0,290 Q280,292 560,290" fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Snickarpennans signatur under motivet -->
+    <path d="M190,320 Q265,324 340,317 Q415,314 490,319" fill="none" stroke="#ad3519" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+</svg>
