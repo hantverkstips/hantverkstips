@@ -18,6 +18,8 @@
  *   - tankstreck (– eller —) i publik text, en fras ur listan i docs/ROST.md
  *     avsnitt 3, kortSvar som inte är i blockstil (|), och <Illustration> utan alt
  *     (tillagt 2026-09-22: det mekaniska i rösten räknas här, inte av en agent)
+ *   - platshållaren TEXT SAKNAS i en fil under src/, och en pelare i
+ *     src/lib/pelare.ts vars ikon saknas i ikoner.svg (tillagt 2026-09-28)
  *
  * Varnar (bygget går vidare) vid:
  *   - publicerad artikel, test eller jämförelse utan inlänk från en annan
@@ -44,7 +46,7 @@ import { fileURLToPath } from 'node:url';
 import { lasFrontmatter, strang } from './frontmatter.ts';
 import { KALKYLATORER } from '../src/lib/kalkyl/register.ts';
 import { NIVAER } from '../src/lib/niva.ts';
-import { PELARE_SLUGS } from '../src/lib/pelare.ts';
+import { PELARE, PELARE_SLUGS } from '../src/lib/pelare.ts';
 
 const ROT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const INNEHALL = join(ROT, 'src', 'content');
@@ -178,6 +180,33 @@ for (const k of KALKYLATORER) {
   }
   if (k.kategori !== undefined && !kategorier.has(k.kategori)) {
     felet('src/lib/kalkyl/register.ts', `kalkylatorn "${k.slug}" har kategori "${k.kategori}" som saknar fil`);
+  }
+}
+
+/* Platshållaren TEXT SAKNAS får aldrig nå bygget: rad i pelarregistret syns på
+   startsidan fast pelaren är utkast, och en registerrad eller komponenttext syns
+   på varje sida. Specfilerna i docs/ omfattas inte. Inga undantag för
+   kommentarer: * är också en punktlista i Markdown. Den som beskriver
+   platshållaren i en kommentar under src/ hänvisar hit i stället.
+   Spec: docs/briefer/spec-pelare-badrum-2026-09-29.md 7.1. */
+const PLATSHALLARE = 'TEXT SAKNAS';
+function kollaPlatshallare(mapp: string) {
+  for (const namn of readdirSync(mapp)) {
+    const sokvag = join(mapp, namn);
+    if (statSync(sokvag).isDirectory()) kollaPlatshallare(sokvag);
+    else if (/\.(ts|astro|md|mdx)$/.test(namn) && readFileSync(sokvag, 'utf8').includes(PLATSHALLARE)) {
+      felet(relative(ROT, sokvag).replaceAll('\\', '/'), 'innehåller TEXT SAKNAS, texten skrivs av hantverkaren före bygget');
+    }
+  }
+}
+kollaPlatshallare(join(ROT, 'src'));
+
+/* Varje pelare har sin ikon i spriten. En saknad symbol ger annars en tom ruta
+   utan fel. Läses som text. Spec: spec-pelare-badrum-2026-09-29 7.2. */
+const SPRITE = readFileSync(join(ROT, 'src', 'assets', 'brand', 'riktning-1', 'ikoner.svg'), 'utf8');
+for (const p of PELARE) {
+  if (!SPRITE.includes(`id="ikon-${p.ikon}"`)) {
+    felet('src/lib/pelare.ts', `pelaren "${p.slug}" har ikonen "${p.ikon}" som saknas i ikoner.svg`);
   }
 }
 

@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg">
-  <!-- Riktning 1, Anteckningsboken. 16 ikoner, 24 x 24, linje 1,75, runda ändar,
+  <!-- Riktning 1, Anteckningsboken. 21 ikoner, 24 x 24, linje 1,75, runda ändar,
        lätt darr i långa linjer och små överskjut i hörnen (blyertskänsla).
        stroke = currentColor, sätts till token blyerts #2a2521 via CSS.
        Användning: <svg width="24" height="24"><use href="/ikoner.svg#ikon-fukt"/></svg> -->
@@ -56,6 +56,15 @@
     <path d="M3,13 Q12,12.5 21,13 L19.5,20 Q12,20.5 4.5,20 Z"/>
     <path d="M12,13 V8 Q12,5 15,5 H17 M17,3.5 V6.5"/>
     <path d="M9,3.5 Q12,3 12,6"/>
+  </symbol>
+
+  <!-- Badrum, ritad 2026-09-28 när badrum blev egen pelare: duschen, eftersom kakel är inomhus och en skål är kök. -->
+  <symbol id="ikon-badrum" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6,21.5 Q5.8,13.8 6,6 Q6,3.5 8.5,3.5 Q11.8,3.2 15,3.5 V6.5"/>
+    <path d="M13,6.5 H17 L18.5,9 H11.5 Z"/>
+    <path d="M12.5,11.5 L11.9,14 M15,11.5 V14 M17.5,11.5 L18.1,14"/>
+    <path d="M13.7,16.5 L13.3,19 M16.3,16.5 L16.7,19"/>
+    <path d="M2.5,21.5 Q12,21 21.5,21.5"/>
   </symbol>
 
   <symbol id="ikon-verktyg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">

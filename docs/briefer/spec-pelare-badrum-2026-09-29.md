@@ -377,3 +377,30 @@ Dokumenten har gått ifrån koden sedan omläggningen 2026-09-17 på fler ställ
 - **SEO och GEO-agenten:** `docs/INNEHALLSARKITEKTUR.md`. Brödsmulan och `BreadcrumbList` på `/kok/slipa-bankskiva/` byter "Kök och bad" mot "Kök" automatiskt; filterknappen på `/guider/` gör detsamma.
 - **Verktygshuben:** budgeten räcker inte för den (9.1). Egen spec när den får plats i kön.
 - **Typen på `pelare` i `Kalkylator`** kunde vara `PelareSlug[]` i stället för `string[]`. Kontrollskriptet fångar redan felet, så det görs inte här.
+
+---
+
+## Texter
+
+Hantverkaren, 2026-09-28. Utvecklaren för in dem ordagrant. Teckenantalet är räknat med mellanslag.
+
+| Nyckel | Text | Tecken |
+|---|---|---|
+| `pelare.ts`, `kok.rad` | Bänkskivor, luckor och kakel som du klarar själv. | 49 (8 ord) |
+| `pelare.ts`, `badrum.rad` | Fogar, kakel och vad våtrumsreglerna kräver. | 44 (6 ord) |
+| `badrum.mdx`, `description` | Byt fogarna, måla kaklet utanför duschen och sätt upp duschväggen själv. Tätskiktet ska läggas enligt branschreglerna, eftersom försäkringen kräver det. | 152 |
+| `badrum.mdx`, `ingress` | Ingen lag hindrar dig från att lägga tätskiktet själv, men utan kvalitetsdokument står du sämre när det läcker. Fogarna och toalettstolen går bra att göra själv, men tätskiktet skulle jag låta en firma lägga. | 208 |
+| `kok.mdx`, `description` | Ett slitet kök går att förnya utan att riva ut det. Här oljar du bänkskivan, målar eller byter luckorna, kaklar ovanför diskbänken och väljer vitvaror. | 151 |
+| `kok.mdx`, `ingress` | Jag skulle slipa bänkskivan och måla luckorna först. Det kostar mindre än att byta dem, och sedan ser du vad i köket som verkligen måste ut. | 140 |
+
+Badrumsraden säger "vad våtrumsreglerna kräver" och inte "vad du får göra själv", eftersom ingen lag hindrar en privatperson från att bygga sitt eget badrum (8.3). Det du inte får göra själv är elen, och den hör till El.
+
+### Raden "På väg" på `/amnen/`
+
+Föreslagen: "På väg, i den ordning de fylls på: Tak och vind, Kök, Badrum och våtrum, Verktyg och maskiner." Den läses fel. Med tre "och" i fyra namn kan läsaren inte se var ett namn slutar, och "Kök, Badrum och våtrum" ser ut som en uppräkning av tre. "I den ordning de fylls på" stämmer inte heller, eftersom listan följer registret medan startlista 3 fyller tak, badrum och kök i den ordningen.
+
+Hantverkarens förslag: bygg raden av `kort` i gemener, med "och" före det sista namnet och stor bokstav först:
+
+"Tak, kök, badrum och verktyg är på väg." (39 tecken)
+
+Med ett namn blir det "Verktyg är på väg." och med två "Kök och verktyg är på väg." Det är utvecklarens ändring i `src/pages/amnen/index.astro` rad 105 och 106 och kräver att UX och bygge-agenten lägger filen i avsnitt 11.

@@ -140,12 +140,14 @@ export const KALKYLATORER: Kalkylator[] = [
        fakturan som avgör vilket års tak avdraget hamnar på, så den som vill nå
        upp till taket betalar före nyår. Se ARET i src/lib/kalkyl/rotavdrag.ts. */
     sasong: [11, 1],
-    /* Fyra pelare, inte åtta. Christians beslut 2026-09-20: rot gäller förvisso
+    /* Fem pelare, inte åtta. Christians beslut 2026-09-20: rot gäller förvisso
        arbete i varje pelare där man anlitar någon, men ett verktyg som står i
-       åtta hubbars grupp Räkna står ingenstans. De fyra är de där notan oftast
-       är stor nog att taket biter: grunden, golvet, köket och badrummet, och
-       el och energi. */
-    pelare: ['grund', 'golv', 'kok', 'el'],
+       åtta hubbars grupp Räkna står ingenstans. De som valdes är de där notan
+       oftast är stor nog att taket biter: grunden, golvet, köket och badrummet,
+       och el och energi. Badrummet låg då i kok och flyttade till egen pelare
+       2026-09-28 (docs/SOKORDSANALYS.md 8.9 beslut 2); beslutet följde med.
+       Tak läggs inte till: takbytesräknaren räknar rot själv. */
+    pelare: ['grund', 'golv', 'kok', 'badrum', 'el'],
   },
   {
     slug: 'trappa',

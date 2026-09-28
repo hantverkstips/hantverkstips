@@ -12,6 +12,7 @@ export type IkonNamn =
   | 'fasad'
   | 'golv'
   | 'kok'
+  | 'badrum'
   | 'altan'
   | 'tak'
   | 'grund'
@@ -38,6 +39,6 @@ interface Props {
 const { namn, storlek = 24, class: klass } = Astro.props;
 ---
 
-<svg width={storlek} height={storlek} aria-hidden="true" class:list={['shrink-0', klass]}>
+<svg width={storlek} height={storlek} aria-hidden="true" class:list={[klass]}>
   <use href={`${sprite}#ikon-${namn}`} />
 </svg>

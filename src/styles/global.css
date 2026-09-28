@@ -175,6 +175,11 @@ body {
   Reglerna för var de får användas står i DESIGN.md avsnitt 2 och 6.
 */
 @layer components {
+  /* Ikonerna ur spriten krymper aldrig i en flexrad. Förut en klass på varje ikon. */
+  svg:has(> use) {
+    flex-shrink: 0;
+  }
+
   /* Pennstreck. Ett handdraget rött streck under H2 och under ordmärket i textform.
      Strecket ritas som en mask så att färgen fortsätter vara token penna.
      Bredden följer textens bredd (fit-content), inte spaltens. Aldrig under H3,

@@ -102,8 +102,11 @@ const amnen = await Promise.all(
   }),
 );
 
-const paVag = PELARE.filter((p) => !hubbar.some((h) => h.id === p.slug)).map((p) => p.namn);
-const PA_VAG = paVag.length > 0 ? `På väg, i den ordning de fylls på: ${paVag.join(", ")}.` : "";
+// Kortnamnen i gemener med "och" före det sista och stor bokstav först, i
+// registrets ordning: "Tak, kök, badrum och verktyg är på väg."
+const paVag = PELARE.filter((p) => !hubbar.some((h) => h.id === p.slug)).map((p) => p.kort.toLocaleLowerCase('sv'));
+const paVagLista = paVag.length > 1 ? `${paVag.slice(0, -1).join(', ')} och ${paVag.at(-1)}` : (paVag[0] ?? '');
+const PA_VAG = paVagLista ? `${paVagLista.charAt(0).toLocaleUpperCase('sv')}${paVagLista.slice(1)} är på väg.` : '';
 
 const strukturdata = lista({
   url: '/amnen/',

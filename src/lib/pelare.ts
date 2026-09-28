@@ -10,8 +10,9 @@ import type { IkonNamn } from '../components/ui/Ikon.astro';
  * byggda för det vi fyller på framåt, inte för det som råkar finnas i dag.
  * Tre grupper, i den ordning de visas:
  *   ute    tak, fasad, altan, grund       (uppifrån och ner)
- *   inne   väggar, golv, kök och bad
+ *   inne   väggar, golv, kök, badrum
  *   huset  tvärgående ämnen: fukt, el och energi, verktyg
+ * Badrum blev egen pelare 2026-09-28, docs/SOKORDSANALYS.md 8.9 beslut 1.
  *
  * rad är kortets enda mening i ämnesraden och på /amnen/, högst åtta ord.
  * En pelare i registret har inte automatiskt en sida. Hubsidan /[pelare]/ finns
@@ -77,11 +78,19 @@ export const PELARE = [
   },
   {
     slug: 'kok',
-    namn: 'Kök och badrum',
-    kort: 'Kök och bad',
+    namn: 'Kök',
+    kort: 'Kök',
     ikon: 'kok',
     grupp: 'inne',
-    rad: 'Bänkskivor, våtrum, kakel och vitvaror.',
+    rad: 'Bänkskivor, luckor och kakel som du klarar själv.',
+  },
+  {
+    slug: 'badrum',
+    namn: 'Badrum och våtrum',
+    kort: 'Badrum',
+    ikon: 'badrum',
+    grupp: 'inne',
+    rad: 'Fogar, kakel och vad våtrumsreglerna kräver.',
   },
   {
     slug: 'fukt',

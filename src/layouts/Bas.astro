@@ -265,10 +265,10 @@ const ar = new Date().getFullYear();
         </details>
       </div>
 
-      {/* Ämnesraden. Bara på desktop; mobilen har ämnena i menyn. */}
+      {/* Ämnesraden. Bara på desktop; mobilen har ämnena i menyn. Raden bryts när hubbarna inte ryms, aldrig sidledsrullning. */}
       <nav aria-label="Ämnen" class="amnesrad hidden lg:block border-t border-linje bg-papper-2">
         <ul
-          class="mx-auto max-w-sidbredd px-8 m-0 p-0 list-none flex items-center gap-1 overflow-x-auto [&_li:not(.ml-auto)_a]:flex [&_li:not(.ml-auto)_a]:h-11 [&_li:not(.ml-auto)_a]:items-center [&_li:not(.ml-auto)_a]:gap-2 [&_li:not(.ml-auto)_a]:whitespace-nowrap [&_li:not(.ml-auto)_a]:px-3 [&_li:not(.ml-auto)_a]:text-liten [&_li:not(.ml-auto)_a]:text-blyerts [&_li:not(.ml-auto)_a]:no-underline [&_li:not(.ml-auto)_a]:hover:underline [&_li:not(.ml-auto)_a]:hover:decoration-penna"
+          class="mx-auto max-w-sidbredd px-8 m-0 p-0 list-none flex items-center gap-1 flex-wrap [&_li:not(.ml-auto)_a]:flex [&_li:not(.ml-auto)_a]:h-11 [&_li:not(.ml-auto)_a]:items-center [&_li:not(.ml-auto)_a]:gap-2 [&_li:not(.ml-auto)_a]:whitespace-nowrap [&_li:not(.ml-auto)_a]:px-3 [&_li:not(.ml-auto)_a]:text-liten [&_li:not(.ml-auto)_a]:text-blyerts [&_li:not(.ml-auto)_a]:no-underline [&_li:not(.ml-auto)_a]:hover:underline [&_li:not(.ml-auto)_a]:hover:decoration-penna"
         >
           {
             AMNESRAD.map((m) => (

@@ -1,11 +1,11 @@
 ---
 /**
  * Ämnesraden på startsidan. Alla pelare i PELARE-ordning som kort, direkt
- * under öppningen, i sidbredd. Fem kolumner från 1024 px, två under: tio
- * ämnen blir två rader på desktop och fem på mobil. Sedan 2026-09-17 täcker
- * pelarna huset från tak till grund, ute och inne, och kortets etikett säger
- * vilken grupp ämnet hör till (Utsidan, Insidan, Hela huset) och hur många
- * sidor som finns.
+ * under öppningen, i sidbredd. Fyra kolumner från 1024 px, tre från 640, två under.
+ * Elva ämnen blir tre rader på desktop, en per grupp, och sex på mobil, där det
+ * sista kortet tar hela bredden. Sedan 2026-09-17 täcker pelarna huset från
+ * tak till grund, ute och inne, och kortets etikett säger vilken grupp ämnet
+ * hör till (Utsidan, Insidan, Hela huset) och hur många sidor som finns.
  *
  * En pelare vars hub är publicerad blir ett klickbart kort med artikelkortets
  * ram, hover och fokus. Övriga står kvar som dämpade kort utan länk med ordet
@@ -35,7 +35,7 @@ const kort = await Promise.all(
 ---
 
 <nav aria-label="Ämnen" class="mt-8 lg:mt-12">
-  <ul class="m-0 grid list-none grid-cols-2 gap-3 p-0 sm:grid-cols-3 lg:grid-cols-5 lg:gap-5">
+  <ul class="m-0 grid list-none grid-cols-2 gap-3 p-0 sm:grid-cols-3 lg:grid-cols-4 lg:gap-5 [&>li:last-child:nth-child(odd)]:col-span-2 sm:[&>li:last-child:nth-child(odd)]:col-span-1">
     {
       kort.map((k) =>
         k.publicerad ? (

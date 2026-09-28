@@ -658,7 +658,7 @@ export function medTal(text: string): string {
 
 /* ------------------------------------------------------------------ *
  * Publika strängar. Skrivs av hantverkaren. En nyckel per rad i specen 2.10,
- * platshållaren "TEXT SAKNAS: <nyckel>" tills texten finns. Testet kräver att
+ * platshållare (se kontrollera-innehall.ts) tills texten finns. Testet kräver att
  * varje nyckel finns och är icke-tom, och att ingen innehåller orden i specens
  * beslut 3. När varje text visas står i kommentaren över gruppen.
  * ------------------------------------------------------------------ */
