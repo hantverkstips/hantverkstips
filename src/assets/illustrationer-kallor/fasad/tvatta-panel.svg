@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Skiss av en lockpanel där fasadtvätten stryks på nerifrån och upp och sköljs av uppifrån och ner.">
+  <!-- Anteckningsboken. Blyerts 2 px för marken, sockeln, takfoten och panelen, blyerts-2 1,25 px för
+       skrafferingen under marken, blyerts-2 1,5 px för takfallens brytlinjer och pilen upp.
+       Snickarpenna 2,5 px för sköljningen uppifrån och ner, som är den enda saken som pekar.
+       Tumstock bakom nyckeltalet 16 %, fuktkvoten innan panelen får färg.
+       Stående lockpanel rakt framifrån: fyra underbrädor och tre lockbrädor över skarvarna.
+       Inga verktyg ritas; riktningarna är pilar. Spec: docs/briefer/spec-bilder-fasad-2026-09-28.md avsnitt 1.
+       Etiketterna skrivna av hantverkaren 2026-09-28.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Tumstock bakom nyckeltalet, bara bakom talet -->
+  <rect x="464" y="52" width="52" height="25" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 490 64.5)"/>
+
+  <!-- Blyerts: marken, sockeln, takfoten och panelen -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M56,316 Q320,318.5 584,316"/>
+    <path d="M193,292 Q300,293.2 407,292M196,289 Q197,302.5 196,319M404,289 Q403,302.5 404,319"/>
+    <path d="M177,52 Q300,50.5 423,52"/>
+    <path d="M197,56.5 Q300,55.5 403,56.5M200,53 Q201.5,174 200,295M400,53 Q398.5,174 400,295"/>
+    <path d="M243,53 Q244.2,174 243,295M257,53 Q255.8,174 257,295M293,53 Q294.2,174 293,295M307,53 Q305.8,174 307,295M343,53 Q344.2,174 343,295M357,53 Q355.8,174 357,295"/>
+  </g>
+
+  <!-- Blyerts-2: takfallen uppåt från takfotens kanter, med brytlinje där de slutar -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M180,52 Q193,41.5 206,30M420,52 Q407,41.5 394,30M199,24 L204,33 L208,26 L213,35M401,24 L396,33 L392,26 L387,35"/>
+  </g>
+
+  <!-- Blyerts-2: skraffering under marken -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M62,322 l10,10M84,322 l10,10M106,322 l10,10M128,322 l10,10M150,322 l10,10M172,322 l10,10M194,322 l10,10M216,322 l10,10M238,322 l10,10M260,322 l10,10M282,322 l10,10M304,322 l10,10M326,322 l10,10M348,322 l10,10M370,322 l10,10M392,322 l10,10M414,322 l10,10M436,322 l10,10M458,322 l10,10M480,322 l10,10M502,322 l10,10M524,322 l10,10M546,322 l10,10M568,322 l10,10M73,337 l10,10M95,337 l10,10M117,337 l10,10M139,337 l10,10M161,337 l10,10M183,337 l10,10M205,337 l10,10M227,337 l10,10M249,337 l10,10M271,337 l10,10M293,337 l10,10M315,337 l10,10M337,337 l10,10M359,337 l10,10M381,337 l10,10M403,337 l10,10M425,337 l10,10M447,337 l10,10M469,337 l10,10M491,337 l10,10M513,337 l10,10M535,337 l10,10M557,337 l10,10"/>
+  </g>
+
+  <!-- Blyerts-2: pilen upp, medlet stryks nerifrån och upp -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M236,280 Q234.5,180 236,80M228,91 L236,80 L244,91"/>
+  </g>
+
+  <!-- Snickarpenna: sköljningen uppifrån och ner, med vattnet som rinner -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M364,72 Q365.8,178 364,284M355.5,272 L364,284 L372.5,272"/>
+    <path d="M384,108 q4,6 0,11 q-4,6 0,11M386,170 q4,6 0,11 q-4,6 0,11M383,228 q4,6 0,11 q-4,6 0,11"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="470" y="70">16 %</text>
+    <!-- Medlet stryks nerifrån och upp: x 52 till 190, högst 13 tecken per rad -->
+    <text x="56" y="150">stryk på</text>
+    <text x="56" y="176">nerifrån upp</text>
+    <!-- Sköljningen uppifrån och ner: x 412 till 590, högst 16 tecken per rad -->
+    <text x="414" y="170">skölj uppifrån</text>
+    <text x="414" y="196">och ner</text>
+    <!-- Vad talet 16 % är: x 430 till 590, högst 15 tecken per rad -->
+    <text x="432" y="100" fill="#625a50">fuktkvot högst</text>
+    <text x="432" y="126" fill="#625a50">före målning</text>
+  </g>
+</svg>

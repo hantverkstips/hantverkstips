@@ -807,7 +807,7 @@ export const TEXT = {
   /* Färgens namn inne i en mening, och silikatfärgens vid puts. */
   fargIMening: {
     akrylat: 'akrylatfärg',
-    oljealkyd: 'oljefärg',
+    oljealkyd: 'alkydoljefärg',
     slamfarg: 'slamfärg',
     silikat: 'silikatfärg',
   } satisfies Record<Farg | 'silikat', string>,
@@ -927,12 +927,12 @@ export const TEXT = {
     ] as string[],
     /* Radnamnen. Täckfärgsraderna säger både akrylat- och oljefärg. */
     rad: {
-      'tack-ommalning': 'Akrylat- eller oljefärg, ommålning',
-      'tack-skrapat': 'Akrylat- eller oljefärg, skrapat och grundat',
+      'tack-ommalning': 'Akrylat- eller alkydoljefärg, ommålning',
+      'tack-skrapat': 'Akrylat- eller alkydoljefärg, skrapat och grundat',
       'grund-skrapat': 'Grundfärg på skrapat, bart trä',
-      'tack-nytt': 'Akrylat- eller oljefärg, nytt trä',
+      'tack-nytt': 'Akrylat- eller alkydoljefärg, nytt trä',
       'grund-nytt': 'Grundfärg på nytt trä',
-      'tack-kulor': 'Akrylat- eller oljefärg, ny kulör',
+      'tack-kulor': 'Akrylat- eller alkydoljefärg, ny kulör',
       'grund-kulor': 'Grundfärg vid ny kulör',
       'slam-ommalning': 'Slamfärg, ommålning',
       'slam-nytt': 'Slamfärg, nytt virke',
@@ -968,7 +968,7 @@ export const TEXT = {
       tegel: 'Alcro och Wienerberger',
     } satisfies Record<AtgangsNyckel, string>,
     /* En mening under tabellen om varifrån talen kommer. */
-    under: 'Talen gäller 98,2 m² fasadyta, huset i formuläret utan tillägget för lockpanel, och bygger på den nedre kanten av spannet i tillverkarnas datablad, där akrylatfärg och oljefärg har samma tal.',
+    under: 'Talen gäller 98,2 m² fasadyta, huset i formuläret utan tillägget för lockpanel, och bygger på den nedre kanten av spannet i tillverkarnas datablad, där akrylatfärg och alkydoljefärg har samma tal.',
   },
 
   /*
@@ -1030,7 +1030,7 @@ export const TEXT = {
       kallor: [SVENSKT_TRA],
     },
     atgang: {
-      text: `Hur långt en liter räcker tar jag ur tillverkarnas datablad. Akrylatfärg och oljefärg räcker till ${ATGANG.akrylat.malat} m² per liter och strykning på trä som målats förut och till ${ATGANG.akrylat.sagat} på nytt sågat trä, enligt Alcro Bestå och Beckers Perfekt Oljefärg. Beckers Perfekt Fasad anger 6 till 8 utan att skilja på underlaget. Slamfärg räcker till ${ATGANG.slamfarg} m² per liter enligt Falu Rödfärg.`,
+      text: `Hur långt en liter räcker tar jag ur tillverkarnas datablad. Akrylatfärg och alkydoljefärg räcker till ${ATGANG.akrylat.malat} m² per liter och strykning på trä som målats förut och till ${ATGANG.akrylat.sagat} på nytt sågat trä, enligt Alcro Bestå och Beckers Perfekt Oljefärg. Beckers Perfekt Fasad anger 6 till 8 utan att skilja på underlaget. Slamfärg räcker till ${ATGANG.slamfarg} m² per liter enligt Falu Rödfärg.`,
       kallor: [BECKERS_FASAD, BECKERS_OLJA, ALCRO_BESTA, NORDSJO_TINOVA, FALU_FOLDER, FALU_FAQ],
     },
     kanten: {
@@ -1088,8 +1088,8 @@ export const TEXT = {
     'profil-slat': 'Tillägg för slät panel',
     'atgang-akrylat-malat': 'Akrylatfärg på trä som målats förut, per strykning',
     'atgang-akrylat-sagat': 'Akrylatfärg på nytt sågat trä, per strykning',
-    'atgang-oljealkyd-malat': 'Oljefärg på trä som målats förut, per strykning',
-    'atgang-oljealkyd-sagat': 'Oljefärg på nytt sågat trä, per strykning',
+    'atgang-oljealkyd-malat': 'Alkydoljefärg på trä som målats förut, per strykning',
+    'atgang-oljealkyd-sagat': 'Alkydoljefärg på nytt sågat trä, per strykning',
     'atgang-slamfarg': 'Slamfärg, per strykning',
     'atgang-silikat': 'Silikatfärg på puts, per strykning',
     'grund-sagat': 'Grundfärg på sågat eller skrapat trä',

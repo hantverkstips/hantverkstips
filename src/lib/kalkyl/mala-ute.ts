@@ -225,7 +225,7 @@ export const FARGER: Record<Fargtyp, Farg> = {
     kallaUrl: 'https://beckers.se/produkter/perfekt-fasad',
   },
   oljealkyd: {
-    namn: 'Oljealkydfärg för fasad',
+    namn: 'Alkydoljefärg för fasad',
     minTempC: 7,
     klibbfriH: 2,
     overmalningsbarH: 6,
@@ -255,7 +255,7 @@ export const FARGER: Record<Fargtyp, Farg> = {
 
 export const FARGTYPER: { varde: Fargtyp; etikett: string }[] = [
   { varde: 'akrylat', etikett: 'Akrylatfärg, vattenburen fasadfärg' },
-  { varde: 'oljealkyd', etikett: 'Oljealkydfärg' },
+  { varde: 'oljealkyd', etikett: 'Alkydoljefärg' },
   { varde: 'slamfarg', etikett: 'Slamfärg, som Falu Rödfärg' },
   { varde: 'traolja', etikett: 'Träolja eller lasyr till trall' },
 ];

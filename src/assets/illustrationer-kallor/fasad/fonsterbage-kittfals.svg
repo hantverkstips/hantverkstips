@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Snitt genom en fönsterbåge som ska kittas, med glaset, kittet och den grundade kittfalsen">
+  <!-- Anteckningsboken. Blyerts 2 px för bågens nederstycke, glaset, kittets kontur och stiftspiken, blyerts-2 1,5 px
+       för brytlinjerna, färgen över kittet, måttbygeln och ledlinjerna. Snickarpenna 2,5 px för
+       grundfärgen i kittfalsen, ritad som ett tunt lager på falsens lodräta och vågräta yta, som är
+       den enda saken som pekar. Tumstock bakom nyckeltalet 1 till 2 mm.
+       Snitt genom bågens nedre del, inne till vänster och ute till höger, i skala 1,5 med falsens hörn som ankare.
+       Skalan är inte verklig: glaset, kittet och färgskiktet är ritade tjockare än de är för att synas.
+       Glaset står i falsen med insidan mot den grundade lodräta ytan, och glappet mot falsens yta
+       är kittbädden bakom glaset. Glaset står direkt på falsens botten. Stiftspiken går ner i falsens
+       botten tätt utanför glaset.
+       Spec: docs/briefer/spec-bilder-fasad-2026-09-28.md avsnitt 2 och 6.2.
+       Etiketterna skrivna av hantverkaren 2026-09-28.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Tumstock bakom nyckeltalet, bara bakom talet -->
+  <rect x="440" y="128" width="116" height="25" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 498 140.5)"/>
+
+  <!-- Kittet fylls med papperet, utan egen färg -->
+  <path d="M381,186 L447,237 L381,237 Z" fill="#f5efe3"/>
+
+  <!-- Blyerts: bågens nederstycke med kittfalsen, glaset, kittets kontur och stiftspiken -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M177,180 Q270,181.8 363,180M360,177 Q361.4,208.5 360,243M357,240 Q404,241.3 453,240M450,237 Q451.8,282 450,328M180,177 Q178.2,252 180,328"/>
+    <path d="M369,234 Q367.4,137 369,44M381,234 Q382.6,137 381,44"/>
+    <path d="M381,186 Q413,210.5 447,236"/>
+    <path d="M392,212 L392,252M387,212 H397"/>
+  </g>
+
+  <!-- Snickarpenna: grundfärgen i kittfalsen, direkt på träet under kittet -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M363,184 Q363.8,210.5 363,237 Q405,237.8 447,237"/>
+  </g>
+
+  <!-- Blyerts-2: brytlinjerna, färgen över kittet, måttbygeln och ledlinjerna -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M176,328 L208,334 L240,322 L272,334 L304,322 L336,334 L368,322 L400,334 L432,322 L454,328"/>
+    <path d="M361,44 L369,37 L375,47 L381,39 L389,44"/>
+    <path d="M446,232.5 Q415,208.5 384.5,184.5 L384.5,164"/>
+    <path d="M390,164 Q396,163.8 402,164M390,186 Q396,186.2 402,186M398,164 Q398.6,175 398,186"/>
+    <path d="M444,152 Q424,160 404,174"/>
+    <path d="M466,200 Q444,212 420,226"/>
+    <path d="M458,266 Q444,250 432,238"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="80" y="120" fill="#625a50">inne</text>
+    <text x="530" y="120" fill="#625a50">ute</text>
+    <text x="446" y="146">1 till 2 mm</text>
+    <!-- glas: x 300, högst 6 tecken -->
+    <text x="300" y="100">glaset</text>
+    <!-- kitt: x 470, högst 8 tecken, med ledlinje in i kittet -->
+    <text x="470" y="206">kittet</text>
+    <!-- Kittfalsen, grundad före kittet: x 460 till 590, upp till tre rader, högst 12 tecken per rad, ledlinje till pennlinjen -->
+    <text x="460" y="272">kittfalsen</text>
+    <text x="460" y="298">grundas före</text>
+    <text x="460" y="324">kittet</text>
+    <!-- Vad bygeln mäter: x 402 till 590, högst 18 tecken per rad -->
+    <text x="402" y="70" fill="#625a50">färgen går ut</text>
+    <text x="402" y="96" fill="#625a50">på glaset</text>
+    <!-- bågen: x 220, högst 8 tecken -->
+    <text x="220" y="290" fill="#625a50">bågen</text>
+  </g>
+</svg>

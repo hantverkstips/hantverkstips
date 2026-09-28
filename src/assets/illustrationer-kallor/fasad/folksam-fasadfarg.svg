@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Staplar över hur många fasadfärger som klarade Folksams krav på hållbarhet och miljö 2015 och 2018.">
+  <!-- Diagram i Anteckningsbokens hand. Axlar och etiketter i blyerts-2, Atkinson Hyperlegible 22.
+       Hållbarheten i blyerts 2 px utan fyllning, miljö och hälsa i blyerts-2 2 px fylld med linje,
+       båda i snickarpenna 2,5 px, som är den enda serien i penna. Tumstock bakom 2018 års 4.
+       En enda anteckning i Caveat 24 i penna.
+       Talen ur tabellen i src/content/kunskap/fasad/valja-fasadfarg.mdx, läst 2026-09-28:
+       2015: 45 färger, 9 hållbarheten, 16 miljö och hälsa, 4 båda.
+       2018: 46 färgsystem, 31 hållbarheten, 5 miljö och hälsa, 4 båda (efter rättelsen 2018-05-25).
+       Källa: Folksams test av utomhusfärger 2015 och 2018. Ändras tabellen ritas staplarna om.
+       Skala 4,4 px per färg, nollinje y 290, axeln till 50 (y 70).
+       Spec: docs/briefer/spec-bilder-fasad-2026-09-28.md avsnitt 3.
+       Etiketterna skrivna av hantverkaren 2026-09-28.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Y-axeln med skalstreck i blyerts-2 -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M80,290 Q79,180 80,70"/>
+    <path d="M74,290 h6M74,246 h6M74,202 h6M74,158 h6M74,114 h6M74,70 h6"/>
+  </g>
+  <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="22" fill="#625a50" text-anchor="end">
+    <text x="72" y="297.5">0</text>
+    <text x="72" y="253.5">10</text>
+    <text x="72" y="209.5">20</text>
+    <text x="72" y="165.5">30</text>
+    <text x="72" y="121.5">40</text>
+    <text x="72" y="77.5">50</text>
+  </g>
+
+  <!-- Antalet färger i testet: tunn streckad linje över varje grupp, 45 (y 92) och 46 (y 87,6) -->
+  <g fill="none" stroke="#c9bca3" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="6 6">
+    <path d="M120,92 H290M350,87.6 H520"/>
+  </g>
+  <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="22" fill="#625a50">
+    <text x="296" y="99.5">45</text>
+    <text x="526" y="95">46</text>
+  </g>
+
+  <!-- Miljö och hälsa: blyerts-2 2 px, fylld med linje -->
+  <g fill="#c9bca3" stroke="#625a50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M181,290 Q180.2,254.8 181.3,219.6 H229 Q229.8,254.8 229,290 Z"/>
+    <path d="M411,290 Q410.4,279 411.2,268 H459 Q459.6,279 459,290 Z"/>
+  </g>
+
+  <!-- Hållbarheten: blyerts 2 px, ingen fyllning -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M120,291 Q119.3,270.7 120.4,250.4 H168 Q168.7,270.7 168,291"/>
+    <path d="M350,291 Q348.8,222.3 350.5,153.6 H398 Q399.2,222.3 398,291"/>
+  </g>
+
+  <!-- Båda: snickarpenna 2,5 px, ingen fyllning -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M242,291 Q241.5,281.7 242.3,272.4 H290 Q290.5,281.7 290,291"/>
+    <path d="M472,291 Q471.5,281.7 472.3,272.4 H520 Q520.5,281.7 520,291"/>
+  </g>
+
+  <!-- X-axeln i blyerts, över staplarnas fötter -->
+  <path d="M80,290 Q320,291 560,290" fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Tumstock bakom 2018 års 4, som enda markering -->
+  <rect x="485" y="248" width="22" height="24" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 496 260)"/>
+
+  <!-- Talen ovanför staplarna, 6 px över stapeln -->
+  <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="22" fill="#2a2521" text-anchor="middle">
+    <text x="144" y="244.4">9</text>
+    <text x="205" y="213.6">16</text>
+    <text x="266" y="266.4">4</text>
+    <text x="374" y="147.6">31</text>
+    <text x="435" y="262">5</text>
+    <text x="496" y="266.4">4</text>
+  </g>
+
+  <!-- Gruppetiketterna: årtalet på y 318, andra raden på y 344 om hantverkaren vill ha den (högst 14 tecken) -->
+  <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="22" fill="#625a50" text-anchor="middle">
+    <text x="205" y="318">2015</text>
+    <text x="435" y="318">2018</text>
+    <text x="205" y="344">45 färger</text>
+    <text x="435" y="344">46 system</text>
+  </g>
+
+  <!-- Förklaringen: tre rutor 16 × 16 i seriernas stil, namnen bredvid (högst 12, 16 och 6 tecken) -->
+  <path d="M80,24.5 Q88,24 96,24.5 Q96.4,32.5 96,40.5 Q88,41 80,40.5 Q79.6,32.5 80,24.5 Z" fill="none" stroke="#2a2521" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M260,24.5 Q268,24 276,24.5 Q276.4,32.5 276,40.5 Q268,41 260,40.5 Q259.6,32.5 260,24.5 Z" fill="#c9bca3" stroke="#625a50" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M484,24.5 Q492,24 500,24.5 Q500.4,32.5 500,40.5 Q492,41 484,40.5 Q483.6,32.5 484,24.5 Z" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linejoin="round"/>
+  <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="22" fill="#625a50">
+    <text x="104" y="40">Hållbarheten</text>
+    <text x="284" y="40">Miljö och hälsa</text>
+    <text x="508" y="40">Båda</text>
+  </g>
+
+  <!-- Anteckningen, det enda i handskrift: från x 408, y 190 och 216, högst 14 tecken per rad (spec avsnitt 6.1) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#ad3519">
+    <text x="408" y="190">Fyra vinnare</text>
+    <text x="408" y="216">båda åren</text>
+  </g>
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M500,224 Q499.5,235 497,246"/>
+    <path d="M497,246 L491.5,236.5M497,246 L503.5,237.5"/>
+  </g>
+</svg>
