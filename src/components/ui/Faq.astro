@@ -62,9 +62,15 @@ const markup = {
   fragor.length > 0 && (
     <section class="faq">
       <Pennstreck id={slugify(rubrik)}>{rubrik}</Pennstreck>
-      <div class="border-t border-linje">
+      {/*
+        Klasserna för varje fråga står en gång här som varianter, inte på varje
+        <details>, <summary> och svar (spec-skal-budget-2026-09-28 avsnitt
+        13.1, 5.1). Svarets <p> har ingen m-0: preflight nollar redan
+        marginalen, och en variant på föräldern skulle slå länkradens mt-2.
+      */}
+      <div class="border-t border-linje [&_details]:border-b [&_details]:border-linje [&_summary]:min-h-11 [&_summary]:cursor-pointer [&_summary]:py-3 [&_summary]:font-sans [&_summary]:font-bold [&_summary]:leading-6 [&_summary]:text-blyerts [&_details>div]:pb-4 [&_p]:text-brod [&_p]:lg:text-brod-lg">
         {fragor.map((f) => (
-          <details class="border-b border-linje">
+          <details>
             {/*
               Ingen flex-klass här. <summary> har display: list-item, och det
               är den egenskapen som ritar triangeln; byts den mot flex
@@ -72,13 +78,13 @@ const markup = {
               något som säger att den går att fälla ut. py-3 plus radavståndet
               ger 48 px klickhöjd.
             */}
-            <summary class="min-h-11 cursor-pointer py-3 font-sans font-bold leading-6 text-blyerts">
+            <summary>
               {f.fraga}
             </summary>
-            <div class="pb-4">
-              <p class="m-0 text-brod lg:text-brod-lg">{f.svar}</p>
+            <div>
+              <p>{f.svar}</p>
               {f.lank && (
-                <p class="m-0 mt-2 text-brod lg:text-brod-lg">
+                <p class="mt-2">
                   <a
                     href={f.lank.href}
                     class="inline-flex min-h-11 items-center lank"

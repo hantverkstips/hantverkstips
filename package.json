@@ -11,7 +11,7 @@
     "kontrollera": "node --experimental-strip-types scripts/kontrollera-innehall.ts",
     "illustrationer": "node scripts/konvertera-handskrift.mjs",
     "delningsbilder": "node --experimental-strip-types scripts/generera-delningsbilder.mjs",
-    "build": "npm run kontrollera && npm run illustrationer && npm run delningsbilder && astro build",
+    "build": "npm run kontrollera && npm run illustrationer && npm run delningsbilder && astro build && node scripts/budget-html.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },

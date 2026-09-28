@@ -5,9 +5,9 @@
  * databasen direkt, så att samma fyra värden visas för alla produkter i en
  * kategori. Se docs/SPEC-SIDMALLAR.md avsnitt 2.3.
  */
-import { getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import type { KlickModul } from '../../lib/affiliate';
-import { produktForval } from '../../lib/kalkyl/elkostnad';
+import { ELKOSTNAD_KATEGORIER, produktForval } from '../../lib/kalkyl/elkostnad';
 import { publicerade, testUrl } from '../../lib/innehall';
 import {
   billigasteErbjudande,
@@ -44,7 +44,15 @@ const modul: KlickModul = Astro.props.modul ?? (variant === 'full' ? 'kort_full'
 const produkt = await hamtaProdukt(slug);
 if (!produkt) varnaSaknadProdukt(slug, Astro.url.pathname);
 
-const kategori = produkt?.kategoriSlug ? await getEntry('kategorier', produkt.kategoriSlug) : undefined;
+/**
+ * Kategorin slås upp i samlingen, inte med getEntry: databasen har kategorier
+ * utan kategorisida (färgborttagare, högtryckstvättar), och getEntry varnar i
+ * bygget för varje sådan produkt. Utan fil blir det inga nyckelvärden.
+ * Spec: docs/briefer/spec-bilder-fasad-2026-09-28.md avsnitt 7.5.
+ */
+const kategori = produkt?.kategoriSlug
+  ? (await getCollection('kategorier')).find((k) => k.id === produkt.kategoriSlug)
+  : undefined;
 const specs = (kategori?.data.specs ?? [])
   .filter((s) => {
     const v = produkt?.specs[s.nyckel];
@@ -59,13 +67,18 @@ const erbjudande = produkt ? billigasteErbjudande(produkt) : null;
 const namn = produkt ? produktNamn(produkt) : slug;
 const bild = produkt ? lokalBild(produkt) : null;
 
-const kortKlass = [
-  'border border-linje rounded-sm p-4 lg:p-6',
-  rekommenderad ? 'bg-papper-2' : 'bg-papper',
-];
+/** Ram, radie, luft och bakgrund står i .produktkort i global.css; den rekommenderade får papper-2. */
+const kortKlass = ['produktkort', rekommenderad && 'bg-papper-2'];
 const harBild = bild !== null;
-/** Utan effekt i databladet finns inget att räkna på, och länken utgår. */
-const harEffekt = produkt ? produktForval(produkt.specs).effektW !== null : false;
+/**
+ * Utan effekt i databladet finns inget att räkna på, och länken utgår. Den
+ * visas bara i kategorier som räknaren är gjord för (ELKOSTNAD_KATEGORIER).
+ */
+const harEffekt =
+  produkt !== null &&
+  produkt.kategoriSlug !== null &&
+  ELKOSTNAD_KATEGORIER.includes(produkt.kategoriSlug) &&
+  produktForval(produkt.specs).effektW !== null;
 const bildBredd = variant === 'kompakt' ? 96 : 400;
 const bildHojd = variant === 'kompakt' ? 72 : 300;
 ---
@@ -77,6 +90,8 @@ const bildHojd = variant === 'kompakt' ? 72 : 300;
       <p class="m-0 mt-2 text-liten text-blyerts-2">Produktdata saknas i bygget</p>
     </div>
   ) : (
+    /* Nyckelvärdenas stil står i .produktkort i global.css, inte på varje par
+       (spec-skal-budget-2026-09-28 avsnitt 13.1, 5.2, och 14.3). */
     <div class:list={kortKlass}>
       <div class:list={['flex gap-4', harBild && variant === 'full' ? 'flex-col lg:flex-row lg:gap-6' : 'flex-row']}>
         <div class:list={[harBild && variant === 'full' ? 'lg:w-2/5 shrink-0' : 'shrink-0']}>
@@ -97,7 +112,7 @@ const bildHojd = variant === 'kompakt' ? 72 : 300;
             </div>
           ) : (
             /* Utan bild blir rutan alltid kompakt, aldrig en tom 4:3-yta i full bredd. */
-            <div class="bg-papper-2 border border-linje rounded-sm flex items-center justify-center text-center p-2 w-24 h-18">
+            <div class="produktkort-bild">
               <span class="text-etikett uppercase text-blyerts-2">{produkt.marke ?? produkt.namn}</span>
             </div>
           )}
@@ -120,9 +135,9 @@ const bildHojd = variant === 'kompakt' ? 72 : 300;
           {specs.length > 0 && (
             <dl class="m-0 mt-3 grid grid-cols-1 sm:grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-1 text-liten">
               {specs.map((s) => (
-                <div class="contents">
-                  <dt class="m-0 text-blyerts-2">{s.etikett}</dt>
-                  <dd class="m-0 mb-2 sm:mb-0 tabular-nums text-blyerts">
+                <div>
+                  <dt>{s.etikett}</dt>
+                  <dd>
                     {String(produkt.specs[s.nyckel])}
                     {s.enhet ? ` ${s.enhet}` : ''}
                   </dd>

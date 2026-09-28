@@ -24,6 +24,7 @@ import {
   HJALP_KLASS,
   KNAPP_KLASS,
   ramKlass,
+  VAL_KLASS,
 } from '../../lib/kalkyl/stil';
 
 interface Props {
@@ -227,7 +228,7 @@ const oppningar = [
     <div class={radioKlass}>
       {
         RAKNAR_VAL.map((r) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input type="radio" name="raknar" value={r.varde} checked={indata.raknar === r.varde} />
             {r.etikett}
           </label>
@@ -248,7 +249,7 @@ const oppningar = [
     <div class={radioKlass}>
       {
         MATERIAL_VAL.map((m) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input type="radio" name="material" value={m.varde} checked={indata.material === m.varde} />
             {m.etikett}
           </label>
@@ -325,7 +326,7 @@ const oppningar = [
     <div class={radioKlass}>
       {
         LAGGNINGAR.map((l) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input type="radio" name="laggning" value={l.varde} checked={indata.laggning === l.varde} />
             {l.etikett}
           </label>

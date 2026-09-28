@@ -90,8 +90,9 @@ const text =
 const knappKlass = [
   // Det gemensamma står i .kopknapp i global.css (spec-skal-budget-2026-09-28 steg 4).
   'kopknapp',
-  bredd === 'full' ? 'flex w-full sm:inline-flex sm:w-auto' : 'inline-flex',
-  ejKopbar ? 'border-2 border-blyerts text-blyerts-2' : 'bg-penna text-papper hover:bg-blyerts hover:text-papper',
+  // Full bredd och det köpbara läget är modifierare i global.css (spec-skal-budget-2026-09-28 avsnitt 14.3).
+  bredd === 'full' ? 'kopknapp-full' : 'inline-flex',
+  ejKopbar ? 'border-2 border-blyerts text-blyerts-2' : 'kopknapp-aktiv',
 ];
 const prisrad = datum && harPris ? `pris ${formateraDatumKort(datum)}` : '';
 ---

@@ -282,3 +282,159 @@ Samma regler som steg 1 till 4:
 - 0 pixlar olika på 375 och 1280 px, på de fyra sidorna plus startsidan och `/rakna/u-varde/`
 - ingen text ändras
 - fasadfilerna rörs inte medan de skrivs; `/fasad/mala-om-huset/` mäts, men dess MDX ändras inte
+
+---
+
+## 14. Granskning av steg 5.0 till 5.3 och beslut, 2026-09-28 (UX och bygge)
+
+Läst: `git diff` för `Pennstreck.astro`, `Faq.astro`, `Jamforelsetabell.astro`, `Produktkort.astro`, blocket `.pennstreck` i `global.css` och `scripts/budget-html.mjs`. Mätt på `dist/client` från bygget 20:09.
+
+**5.0 till 5.3 är godkända, med de tre avvikelser utvecklaren angett:**
+- `.pennstreck:not(.pennstreck-tat)` står sist i komponentlagret. Det behövs för att marginalen ska gälla bara utan `pennstreck-tat`, och anroparens verktygsklasser vinner fortfarande.
+- Faq-svarets `<p>` har ingen `m-0`, eftersom preflight nollar marginalen och en variant på föräldern annars slår länkradens `mt-2`. Utvecklaren mätte 0 pixlar olika på artiklarna med Faq.
+- Jämförelsetabellens hörncell undantas med `td:not(:first-child)`. Varje annan `td` har en `th` före sig, så selektorn träffar exakt samma celler som förut.
+
+Läget efter 5.3, i byte:
+
+| Sida | byte | Över med |
+|---|---|---|
+| `/luftavfuktare/` | 79 688 | 12 104, undantag |
+| `/fukt/avfuktare-kallare/` | 73 153 | 5 569 |
+| `/fasad/mala-om-huset/` | 68 615 | 1 031 |
+| övriga 69 | under | – |
+
+### 14.1 Beslut: formulärens klasser blir komponentklasser
+
+Tre klassträngar står på varje fält i alla femton formulär under `src/components/kalkyl/`. `FALT_KLASS` finns i `stil.ts` och används 94 gånger. Etiketten till radioknappar och kryssrutor är handskriven i 15 filer, och `/fasad/mala-om-huset/` bär den 24 gånger. De blir komponentklasser i `@layer components`, som `.lank`:
+
+| Ny klass | Ersätter | Var |
+|---|---|---|
+| `.falt` | `FALT_KLASS` (`w-full min-h-12 rounded-sm border bg-papper px-3 text-brod text-blyerts tabular-nums`) | `stil.ts`: `FALT_KLASS = 'falt'` |
+| `.val` | `flex min-h-11 items-center gap-2 text-brod`, etiketten runt radioknapp och kryssruta | ny `VAL_KLASS = 'val'` i `stil.ts`. De 15 formulären byter sin handskrivna sträng mot konstanten |
+
+- `ramKlass()`, `min-w-0`, `max-w-28`, `border-blyerts-2` och andra tillägg står kvar som verktyg bredvid och vinner över komponentlagret, som `text-*` bredvid `.lank`.
+- Står formuläret i `.prosa` (Kalkylator i en artikel), krävs `.prosa .falt` och `.prosa .val` av samma skäl som `.prosa .lank`, om `.prosa` sätter något på `input` eller `label`. Utvecklaren kontrollerar det och tar med dem bara om det behövs.
+- Förväntat: −2,5 kB på `/fasad/mala-om-huset/`, som då hamnar under gränsen, och −1 till −2 kB på varje räknarsida.
+
+### 14.2 Beslut: `kort-cell` sätts bara på minoriteten
+
+`kort-cell` sätts per cell, eftersom det är cellens egen textlängd som avgör. Klassen kan därför inte ensam flyttas till tabellen. Två ändringar i `markeraKortaCeller` i `astro.config.mjs` och i `.brodtabell`-reglerna i `global.css`, med samma rendering som i dag:
+
+1. **Ingen `th` markeras.** Regeln `.prosa .brodtabell th, .prosa .brodtabell th.kort-cell` tar redan bort all verkan av klassen på `th`, och `td:not(.kort-cell)` gäller bara `td`. Klassen på `th` gör alltså ingenting i dag.
+2. **Bara den mindre gruppen celler får en klass.** Pluginet räknar per tabell korta och långa `td`:
+   - Är de korta minst lika många som de långa, får `<table>` klassen `korta-celler` och bara de långa `td` får `lang-cell`.
+   - Annars är det som i dag: `kort-cell` på de korta.
+   - CSS:en skrivs så att båda fallen ger exakt samma regler som nu:
+     - `nowrap` på korta `td`: `.prosa .brodtabell .kort-cell` och `.prosa .brodtabell.korta-celler td:not(.lang-cell)`.
+     - `min-width: 4rem` på långa `td`: `.prosa .brodtabell:not(.korta-celler) td:not(.kort-cell)` och `.prosa .brodtabell.korta-celler td.lang-cell`.
+     - Fyrkolumnsregeln (`white-space: normal` från fyra kolumner) gäller båda.
+   - Pluginet sätter tabellklassen i samma genomgång som det sätter cellklasserna. Det är ett hast-plugin i Sätteri, och tabellen nås via `ctx.parent`, som i `tabellBehallare`.
+3. Test: ett nytt `scripts/test-tabellceller.mjs` kör pluginfunktionen på tre små tabeller:
+   - övervägande korta celler: tabellen får `korta-celler`, och bara den långa cellen får `lang-cell`
+   - övervägande långa celler: som i dag
+   - rubrikrad: ingen `th` får någon klass
+
+   Utvecklaren kör dessutom 0 pixlar olika på de fem artiklar som har flest brödtabeller, som mätskriptet listar.
+
+Förväntat: cirka −1,8 kB på `/fukt/avfuktare-kallare/`.
+
+### 14.3 Beslut: produktkortet och köpknappens två lägen
+
+`/fukt/avfuktare-kallare/` behöver 5,6 kB och har sju produktkort på 7,9 kB. Efter 14.1 och 14.2 återstår cirka 3,5 kB.
+- `.produktkort` i komponentlagret tar rotens klasser (`border border-linje rounded-sm p-4 lg:p-6 bg-papper`) och variantlistan för `dl`, `dt` och `dd` från 5.2 som vanlig CSS (`.produktkort dl > div { display: contents }` och så vidare, med tokens).
+- `.produktkort-bild` tar bildytans klasser (`bg-papper-2 border border-linje rounded-sm flex items-center justify-center text-center p-2 w-24 h-18`).
+- `.kopknapp` får två modifierare för det som i dag står som verktyg, `.kopknapp-full` (`flex w-full sm:inline-flex sm:w-auto`) och `.kopknapp-aktiv` (`bg-penna text-papper hover:bg-blyerts hover:text-papper`, hover inom `@media (hover: hover)`). Läget utan pris behåller sina verktyg.
+- `.prosa .produktkort` och `.prosa .kopknapp-*` behövs, som för `.lank`.
+- Affiliatelänkarnas `href`, `rel` och `data-*` rörs inte, och affiliateagenten tittar på en produktsida efter bygget.
+
+Förväntat: −3 till −4 kB.
+
+Når `/fukt/avfuktare-kallare/` inte under 67 584 byte efter 14.1 till 14.3, rapporterar utvecklaren siffrorna, och jag beslutar innan något mer byggs. Texten, produkterna och deras antal rörs inte för budgetens skull.
+
+### 14.4 Beslut: undantagen i mätskriptet, och skriptet i bygget nu
+
+Skriptet läggs i `npm run build` **nu**, sist efter `astro build`, med undantag som har ett tak och ett skäl. Ett undantag låter sidan ligga över 66 kB men inte växa. Bygget blir då grönt i dag och rött så fort någon sida blir tyngre eller en ny sida går över.
+
+`UNDANTAG` blir `Map<string, { tak: number; skal: string }>`:
+
+| Sida | Tak, byte | Skäl | Tas bort när |
+|---|---|---|---|
+| `/luftavfuktare/` | 80 712 | kategorisidans tabell och uppställning, egen spec | den specen är byggd |
+| `/fukt/avfuktare-kallare/` | 74 177 | produktkorten och brödtabellerna, avsnitt 14.2 och 14.3 | 14.2 och 14.3 är byggda |
+| `/fasad/mala-om-huset/` | 69 639 | formulärens klasser, avsnitt 14.1 | 14.1 är byggt |
+
+Taket är dagens storlek plus 1 024 byte, så att en rättad mening inte stoppar bygget.
+
+Skriptet ändras så här:
+- **Fel (kod 1):** en sida utan undantag över 67 584 byte, en sida med undantag över sitt tak, eller `<use href="data:` på någon sida.
+- **Varning (kod 0):** en sida med undantag som ligger under 67 584 byte. Utskriften är "Undantaget för [sida] kan tas bort". Den som bygger 14.1 till 14.3 tar bort raden i samma ändring.
+- I bygget körs skriptet utan `--preview` och `--dev`.
+- `package.json`: `build` får `&& node scripts/budget-html.mjs` sist.
+- Dokumenten ändras i samma omgång: `.claude/skills/astro-och-prestanda/SKILL.md` avsnitt 3 och 7 (bygget kör budgetkontrollen) och `docs/SPEC-SIDMALLAR.md` avsnitt 10. Det gör jag när utvecklaren levererat.
+
+### 14.5 Ordning
+
+1. 14.4, skriptet i bygget med undantagen.
+2. 14.1, som tar bort undantaget för `/fasad/mala-om-huset/`. Fasadfilernas MDX rörs inte.
+3. 14.2 och 14.3, som tar bort undantaget för `/fukt/avfuktare-kallare/`.
+
+Samma krav som tidigare gäller: 0 pixlar olika på 375 och 1280 px, på de berörda sidorna plus startsidan, `/rakna/u-varde/`, `/rakna/grannemedgivande/` och en produktsida. Ingen text ändras.
+
+---
+
+## 15. Granskning av 14.1 till 14.4, 2026-09-28 (UX och bygge)
+
+Läst: `git diff` för `astro.config.mjs`, `package.json`, `global.css`, `stil.ts`, de 15 formulären, `Kopknapp.astro`, `Produktkort.astro` och `elkostnad.ts`, samt `scripts/budget-html.mjs`, `scripts/tabellceller.mjs` och `scripts/test-tabellceller.mjs`. `test-tabellceller` ger 5 av 5 gröna. Mätskriptet är kört på bygget från 20:51.
+
+**Godkänt:**
+- `.falt` och `.val` ger samma beräknade värden som verktygen, också radavståndet med `--tw-leading` som reserv. Att `.prosa .falt` och `.prosa .val` inte behövdes stämmer, eftersom `.prosa` inte sätter något på `input` eller `label`.
+- `border-style: var(--tw-border-style, solid)` på `.falt`, `.produktkort` och `.produktkort-bild`, alltså samma sätt som Tailwinds `border`.
+- Tabellcellerna: `markeraCeller` i en egen modul som både konfigurationen och testet laddar, ingen `th` markerad, och tabellklassen satt i samma genomgång. CSS:en har båda formerna i varje regel. Utvecklaren mätte 0 pixlar olika.
+- `.kopknapp-full` och `.kopknapp-aktiv`, med hover i `@media (hover: hover)` och `.prosa`-varianter för färgen.
+- `.produktkort` med `dl`, `dt` och `dd`.
+- De två ändringarna i produktkortet (`ELKOSTNAD_KATEGORIER`, kategorin via `getCollection` utan varning) följer `spec-bilder-fasad-2026-09-28.md` 7.4 och 7.5 och är inte budgetarbete. Godkända här eftersom de ligger i samma diff. `pelareForKategori` får vara orörd.
+- Mätskriptet sist i `npm run build`, undantagen som `Map` med tak och skäl, fel vid `<use href="data:`, och varning när ett undantag kan tas bort.
+
+**Godkänd av UX och bygge** för commit av 14.1 till 14.4 som det står.
+
+### 15.1 Taken följer med ner
+
+Ett tak som ligger långt över sidans storlek vaktar ingenting. I nästa ändring sätts taken till dagens storlek plus 1 024 byte:
+
+| Sida | Byte i dag | Nytt tak |
+|---|---|---|
+| `/luftavfuktare/` | 73 254 | 74 278 |
+| `/fukt/avfuktare-kallare/` | 68 445 | 69 469, tills 15.2 är byggd |
+| `/fasad/mala-om-huset/` | 67 667 | 68 691, tills 15.3 är byggd |
+
+Skälet för `/fasad/mala-om-huset/` ändras från "UX och bygge beslutar" till "DetHarBehoverDu (avsnitt 15.3)".
+
+**Regel från och med nu:** den som gör en sida lättare sänker dess tak i samma ändring.
+
+### 15.2 `/fukt/avfuktare-kallare/`, 861 byte över: produktkortets inre klasser
+
+Sju kort bär samma klasser inuti. De flyttas till `.produktkort` i `global.css` som CSS på elementen i kortet, eller till kortets rot som varianter, med samma värden:
+- rubriken i kortet: `m-0 font-sans text-h3 lg:text-h3-lg text-blyerts`
+- märkesraden: `m-0 mb-1 text-etikett lg:text-etikett-lg uppercase text-penna`
+- priset: `m-0 mb-2 font-bold tabular-nums text-brod text-blyerts`
+- nyckelvärdenas `dl`: `m-0 mt-3 grid grid-cols-1 sm:grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-1 text-liten`
+
+Utvecklaren väljer det som ger minst HTML, och varje element får en egen selektor, till exempel `.produktkort > … h3`. Uppskattat cirka −1,9 kB.
+
+`/fukt/avfuktare-kallare/` hamnar då under 66 kB, och undantaget tas bort i samma ändring.
+
+### 15.3 `/fasad/mala-om-huset/`, 83 byte över: DetHarBehoverDu
+
+`src/components/ui/DetHarBehoverDu.astro` skriver samma två klasser på varje rad i båda listorna:
+- namnet: `m-0 font-bold text-brod lg:text-brod-lg text-blyerts`, 11 gånger på sidan
+- varför-raden: `m-0 mt-1 text-brod text-blyerts-2`, 10 gånger
+
+De flyttas till de två `<ul>` (rad 62 och 106) som varianter på `li p:first-child` och `li p:nth-child(2)`. Prisraden `m-0 shrink-0 font-bold tabular-nums …` i verktygslistan står kvar på sitt element. Uppskattat cirka −1 kB på varje sida med listan.
+
+Undantaget för `/fasad/mala-om-huset/` tas bort i samma ändring. Fasadfilernas MDX rörs inte.
+
+### 15.4 Därefter
+
+Kvar står bara undantaget för `/luftavfuktare/`, som tas i kategorisidans egen spec. Jag skriver den när koordinatorn ger den en plats i kön.
+
+Samma krav som tidigare gäller: 0 pixlar olika på 375 och 1280 px, på de två sidorna plus en produktsida och `/luftavfuktare/`. Ingen text ändras. Bygget ska vara grönt med mätskriptet.

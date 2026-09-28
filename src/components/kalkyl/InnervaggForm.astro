@@ -25,6 +25,7 @@ import {
   KNAPP_KLASS,
   LANK_KLASS,
   ramKlass,
+  VAL_KLASS,
 } from '../../lib/kalkyl/stil';
 
 interface Props {
@@ -117,7 +118,7 @@ const talfalt = [
     <div class={radioKlass}>
       {
         REGELDIMENSIONER.map((r) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input type="radio" name="regel" value={r.varde} checked={indata.regel === r.varde} />
             {kompakt ? r.etikett.split(',')[0] : r.etikett}
           </label>
@@ -131,7 +132,7 @@ const talfalt = [
     <div class={radioKlass}>
       {
         SKIVLAG.map((s) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input type="radio" name="lag" value={String(s.varde)} checked={indata.lag === s.varde} />
             {s.etikett}
           </label>
@@ -145,7 +146,7 @@ const talfalt = [
     <div class={radioKlass}>
       {
         REGELAVSTAND.map((c) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input
               type="radio"
               name="cc"
@@ -211,11 +212,11 @@ const talfalt = [
   <fieldset class="m-0 mb-6 p-0 border-0">
     <legend class:list={[ETIKETT_KLASS, 'p-0']}>Mineralull 45 mm mellan reglarna</legend>
     <div class={radioKlass}>
-      <label class="flex min-h-11 items-center gap-2 text-brod">
+      <label class={VAL_KLASS}>
         <input type="radio" name="ull" value="ja" checked={indata.ull} />
         Ja
       </label>
-      <label class="flex min-h-11 items-center gap-2 text-brod">
+      <label class={VAL_KLASS}>
         <input type="radio" name="ull" value="nej" checked={!indata.ull} />
         Nej
       </label>

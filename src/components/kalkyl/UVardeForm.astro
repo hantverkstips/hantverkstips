@@ -34,6 +34,7 @@ import {
   KNAPP_KLASS,
   LANK_KLASS,
   ramKlass,
+  VAL_KLASS,
 } from '../../lib/kalkyl/stil';
 
 type Sex = [string, string, string, string, string, string];
@@ -199,7 +200,7 @@ const uFalt = [
     <div class={radioKlass}>
       {
         delar.map((d) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input
               type="radio"
               name="del"
@@ -440,7 +441,7 @@ const uFalt = [
     <div class={radioKlass}>
       {
         regioner.map((r) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input type="radio" name="region" value={r} checked={indata.region === r} />
             {TEXT.region[r]}
           </label>

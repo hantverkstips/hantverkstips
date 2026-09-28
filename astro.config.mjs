@@ -7,35 +7,7 @@ import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
 import { satteri } from '@astrojs/markdown-satteri';
 import { noindexAdresser } from './scripts/noindex-sidor.mjs';
-
-/** Längsta celltext som får hållas ihop på en rad. Värden som "1 × 12,5 mm"
- *  och "1,9 °C" ska aldrig brytas mellan tal och enhet; hela meningar bryts
- *  som vanligt, annars blir tabellen orimligt bred att dra i. 16 tecken,
- *  sänkt från 30 efter granskningen 2026-09-16 punkt 5.2: ett tal med enhet
- *  ryms, en kort mening ("Bygglov krävs alltid") gör det inte, och det var
- *  sådana celler som sköt tvåkolumnstabellen utanför 343 px. */
-const KORT_CELL = 16;
-
-/** @type {(nod: any) => string} */
-function celltext(nod) {
-  if (nod.type === 'text') return nod.value ?? '';
-  if (!Array.isArray(nod.children)) return '';
-  return nod.children.map(celltext).join('');
-}
-
-/** Ny gren där korta celler fått klassen `kort-cell`. Inget muteras. */
-/** @type {(nod: any) => any} */
-function markeraKortaCeller(nod) {
-  if (nod.type !== 'element' || !Array.isArray(nod.children)) return nod;
-  const barn = nod.children.map(markeraKortaCeller);
-  if (nod.tagName !== 'td' && nod.tagName !== 'th') return { ...nod, children: barn };
-  // Tomma celler räknas som korta: de ska inte kräva någon spaltbredd alls.
-  const text = celltext(nod).trim();
-  if (text.length > KORT_CELL) return { ...nod, children: barn };
-  const gamla = nod.properties?.className;
-  const klasser = Array.isArray(gamla) ? gamla : gamla ? [gamla] : [];
-  return { ...nod, properties: { ...nod.properties, className: [...klasser, 'kort-cell'] }, children: barn };
-}
+import { markeraCeller } from './scripts/tabellceller.mjs';
 
 /**
  * Lägger samma behållare runt varje markdown-tabell som Jamforelsetabell
@@ -70,6 +42,17 @@ const svenskaCitat = {
   },
 };
 
+/**
+ * Tabellen med klassen brodtabell och korta och långa celler markerade av
+ * markeraCeller() i scripts/tabellceller.mjs (spec-skal-budget-2026-09-28
+ * avsnitt 14.2). Tabellklassen och cellklasserna sätts i samma genomgång.
+ */
+/** @type {(node: any) => any} */
+function tabellMedCellklasser(node) {
+  const { tabellklasser, barn } = markeraCeller(node.children ?? []);
+  return { ...node, properties: { ...node.properties, className: ['brodtabell', ...tabellklasser] }, children: barn };
+}
+
 const tabellBehallare = {
   name: 'hantverkstips:tabell-behallare',
   element: {
@@ -99,13 +82,7 @@ const tabellBehallare = {
                 type: 'element',
                 tagName: 'div',
                 properties: { className: ['tabell-behallare'] },
-                children: [
-                  {
-                    ...node,
-                    properties: { ...node.properties, className: ['brodtabell'] },
-                    children: (node.children ?? []).map(markeraKortaCeller),
-                  },
-                ],
+                children: [tabellMedCellklasser(node)],
               },
             ],
           },

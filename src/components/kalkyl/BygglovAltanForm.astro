@@ -17,7 +17,7 @@ import {
   VARDEFULLT_VAL,
   type BygglovAltanIndata,
 } from '../../lib/kalkyl/bygglov-altan.ts';
-import { ETIKETT_KLASS, FALT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, ramKlass } from '../../lib/kalkyl/stil';
+import { ETIKETT_KLASS, FALT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, ramKlass, VAL_KLASS } from '../../lib/kalkyl/stil';
 
 interface Props {
   /** Valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
@@ -93,7 +93,7 @@ const talfalt = [
     <div class={radioKlass}>
       {
         DETALJPLAN_VAL.map((v) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input
               type="radio"
               name="plan"
@@ -153,7 +153,7 @@ const talfalt = [
     <div class={radioKlass}>
       {
         TAK_VAL.map((v) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input type="radio" name="tak" value={v.varde} checked={indata.tak === v.varde} />
             {kompakt ? v.kort : v.etikett}
           </label>
@@ -165,11 +165,11 @@ const talfalt = [
   <fieldset class="m-0 mb-4 p-0 border-0">
     <legend class:list={[ETIKETT_KLASS, 'p-0']}>Ligger altanen ovanpå ett garage eller en annan byggnad?</legend>
     <div class={radioKlass}>
-      <label class="flex min-h-11 items-center gap-2 text-brod">
+      <label class={VAL_KLASS}>
         <input type="radio" name="patak" value="ja" checked={indata.paTak} />
         Ja
       </label>
-      <label class="flex min-h-11 items-center gap-2 text-brod">
+      <label class={VAL_KLASS}>
         <input type="radio" name="patak" value="nej" checked={!indata.paTak} />
         Nej
       </label>
@@ -181,7 +181,7 @@ const talfalt = [
     <div class={radioKlass}>
       {
         VARDEFULLT_VAL.map((v) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input
               type="radio"
               name="vardefullt"

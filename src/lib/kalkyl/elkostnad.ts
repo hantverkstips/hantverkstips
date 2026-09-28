@@ -120,6 +120,16 @@ export function produktSlugFranQuery(q: URLSearchParams): string | null {
   return /^[a-z0-9-]{1,80}$/.test(slug) ? slug : null;
 }
 
+/**
+ * Kategorier vars produktkort länkar hit med "Räkna elkostnaden". Räknaren är
+ * gjord för maskiner som går i timmar varje dag i månader. En kategori läggs
+ * till när en maskin i den går så, som avfuktare och värmefläktar. En
+ * färgborttagare eller högtryckstvätt har effekt i databladet men används
+ * någon timme i taget, och talet blir några kronor.
+ * Spec: docs/briefer/spec-bilder-fasad-2026-09-28.md avsnitt 7.4.
+ */
+export const ELKOSTNAD_KATEGORIER: readonly string[] = ['luftavfuktare'] as const;
+
 /** Det enda vi förifyller ur en produkt: effekten. */
 export interface ProduktForval {
   effektW: number | null;

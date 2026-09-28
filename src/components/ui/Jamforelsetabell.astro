@@ -85,7 +85,16 @@ function kolumnKlass(slug: string): string {
       <p class="lg:hidden m-0 mb-2 text-liten text-blyerts-2">Dra i sidled för att se alla</p>
       <div class="tabell-yta">
         <div class="tabell-behallare border border-linje rounded-sm">
-          <table class="w-full border-collapse text-liten tabular-nums">
+          {/*
+            Cellernas klasser står en gång här som varianter, inte på varje cell
+            (spec-skal-budget-2026-09-28 avsnitt 13.1, 5.3). Hörncellen är första
+            td i sin rad och undantas; alla andra td har en th före sig.
+            text-blyerts på tabellen ärvs av cellerna; bästa värdet sätter
+            font-bold text-ok på sin egen cell.
+          */}
+          <table
+            class="w-full border-collapse text-liten tabular-nums text-blyerts [&_td:not(:first-child)]:min-w-[150px] [&_td:not(:first-child)]:p-3 [&_td:not(:first-child)]:align-top [&_th[scope=row]]:sticky [&_th[scope=row]]:left-0 [&_th[scope=row]]:bg-papper-2 [&_th[scope=row]]:border-r [&_th[scope=row]]:border-linje [&_th[scope=row]]:p-3 [&_th[scope=row]]:text-left [&_th[scope=row]]:align-top [&_th[scope=row]]:font-normal [&_th[scope=row]]:text-blyerts-2"
+          >
             <caption class="sr-only">Jämförelse av {kategori?.data.namn ?? kategoriSlug}</caption>
           <tbody>
             {/* En huvudrad med bild och namn. Hörncellen är tom: "Bild" och
@@ -118,11 +127,11 @@ function kolumnKlass(slug: string): string {
 
             {harEtiketter && (
               <tr class="border-b border-linje">
-                <th scope="row" class="sticky left-0 bg-papper-2 border-r border-linje p-3 text-left align-top font-normal text-blyerts-2">
+                <th scope="row">
                   Vårt omdöme
                 </th>
                 {produkter.map((p) => (
-                  <td class:list={['min-w-[150px] p-3 align-top', kolumnKlass(p.slug)]}>
+                  <td class:list={[kolumnKlass(p.slug)]}>
                     {etiketter[p.slug] ? (
                       <span class="text-etikett uppercase text-penna">{etiketter[p.slug]}</span>
                     ) : (
@@ -137,7 +146,7 @@ function kolumnKlass(slug: string): string {
               const basta = bastaSlugs(s.nyckel, s.bast);
               return (
                 <tr class="border-b border-linje">
-                  <th scope="row" class="sticky left-0 bg-papper-2 border-r border-linje p-3 text-left align-top font-normal text-blyerts-2">
+                  <th scope="row">
                     {s.etikett}
                     {s.enhet ? `, ${s.enhet}` : ''}
                   </th>
@@ -145,11 +154,7 @@ function kolumnKlass(slug: string): string {
                     const v = varde(p, s.nyckel);
                     return (
                       <td
-                        class:list={[
-                          'min-w-[150px] p-3 align-top',
-                          kolumnKlass(p.slug),
-                          basta.has(p.slug) ? 'font-bold text-ok' : 'text-blyerts',
-                        ]}
+                        class:list={[kolumnKlass(p.slug), basta.has(p.slug) && 'font-bold text-ok']}
                       >
                         {v ?? <span class="text-blyerts-2">ej angivet</span>}
                       </td>
@@ -161,13 +166,13 @@ function kolumnKlass(slug: string): string {
 
             {harNagotPris && (
               <tr>
-                <th scope="row" class="sticky left-0 bg-papper-2 border-r border-linje p-3 text-left align-top font-normal text-blyerts-2">
+                <th scope="row">
                   Pris
                 </th>
                 {produkter.map((p) => {
                   const e = erbjudanden.get(p.slug) ?? null;
                   return (
-                    <td class:list={['min-w-[150px] p-3 align-top', kolumnKlass(p.slug)]}>
+                    <td class:list={[kolumnKlass(p.slug)]}>
                       {kopknappar ? (
                         <Kopknapp
                           produkt={p.slug}

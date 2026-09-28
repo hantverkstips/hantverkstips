@@ -11,7 +11,7 @@
  * uträkning att visa värden ur; då står standardvärdena i fälten.
  */
 import { FARGTYPER, STANDARD, YTOR, type MalaUteIndata } from '../../lib/kalkyl/mala-ute.ts';
-import { ETIKETT_KLASS, FALT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, ramKlass } from '../../lib/kalkyl/stil';
+import { ETIKETT_KLASS, FALT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, ramKlass, VAL_KLASS } from '../../lib/kalkyl/stil';
 
 interface Props {
   /** Valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
@@ -164,7 +164,7 @@ const klockfalt = [
     <div class={radioKlass}>
       {
         FARGTYPER.map((f) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input type="radio" name="farg" value={f.varde} checked={indata.fargtyp === f.varde} />
             {f.etikett}
           </label>
@@ -186,7 +186,7 @@ const klockfalt = [
     <div class={radioKlass}>
       {
         YTOR.map((y) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input type="radio" name="yta" value={y.varde} checked={indata.yta === y.varde} />
             {y.etikett}
           </label>
@@ -204,7 +204,7 @@ const klockfalt = [
   </fieldset>
 
   <div class="mb-6">
-    <label class="flex min-h-11 items-center gap-2 text-brod">
+    <label class={VAL_KLASS}>
       <input type="checkbox" name="regn" value="ja" checked={indata.regn} />
       Regn väntas inom 24 timmar
     </label>

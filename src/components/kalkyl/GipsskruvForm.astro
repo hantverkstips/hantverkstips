@@ -18,7 +18,7 @@ import {
   STANDARD,
   type GipsskruvIndata,
 } from '../../lib/kalkyl/gipsskruv.ts';
-import { ETIKETT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS } from '../../lib/kalkyl/stil';
+import { ETIKETT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, VAL_KLASS } from '../../lib/kalkyl/stil';
 
 interface Props {
   /** Valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
@@ -43,7 +43,7 @@ const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
     <div class={radioKlass}>
       {
         SKIVA_VAL.map((v) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input
               type="radio"
               name="skiva"
@@ -77,7 +77,7 @@ const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
     <div class={radioKlass}>
       {
         LAG_VAL.map((v) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input type="radio" name="lag" value={String(v.varde)} checked={indata.lag === v.varde} />
             {kompakt ? v.kort : v.etikett}
           </label>
@@ -91,7 +91,7 @@ const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
     <div class={radioKlass}>
       {
         REGEL_VAL.map((v) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input
               type="radio"
               name="regel"
@@ -117,7 +117,7 @@ const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
   <fieldset class="m-0 mb-4 p-0 border-0">
     <legend class:list={[ETIKETT_KLASS, 'p-0']}>Sitter det torr fogtätning bakom skivan</legend>
     <div class={radioKlass}>
-      <label class="flex min-h-11 items-center gap-2 text-brod">
+      <label class={VAL_KLASS}>
         <input
           type="radio"
           name="fog"
@@ -127,7 +127,7 @@ const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
         />
         Nej
       </label>
-      <label class="flex min-h-11 items-center gap-2 text-brod">
+      <label class={VAL_KLASS}>
         <input
           type="radio"
           name="fog"
@@ -153,7 +153,7 @@ const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
     <div class={radioKlass}>
       {
         MILJO_VAL.map((v) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input
               type="radio"
               name="miljo"

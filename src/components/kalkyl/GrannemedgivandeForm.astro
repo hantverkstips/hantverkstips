@@ -43,6 +43,7 @@ import {
   KNAPP_KLASS,
   LANK_KLASS,
   ramKlass,
+  VAL_KLASS,
 } from '../../lib/kalkyl/stil';
 
 type Varden = Partial<Record<TalNyckel | 'grans', string>>;
@@ -110,7 +111,7 @@ const talKlass = (harFel: boolean) => [FALT_KLASS, ramKlass(harFel), 'max-w-28']
         <legend class:list={[ETIKETT_KLASS, 'p-0']}>{TEXT.falt['atgard-kompakt-legend']}</legend>
         {ATGARD_ORDNING.map((a) => (
           <div class="mb-1">
-            <label class="flex min-h-11 items-center gap-2 text-brod">
+            <label class={VAL_KLASS}>
               <input
                 type="radio"
                 name="atgard"
@@ -231,7 +232,7 @@ const talKlass = (harFel: boolean) => [FALT_KLASS, ramKlass(harFel), 'max-w-28']
       <fieldset class="m-0 mb-4 p-0 border-0">
         <legend class:list={[ETIKETT_KLASS, 'p-0']}>{TEXT.falt.mot.legend}</legend>
         {MOT.map((m) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input
               type="radio"
               name="mot"
@@ -256,7 +257,7 @@ const talKlass = (harFel: boolean) => [FALT_KLASS, ramKlass(harFel), 'max-w-28']
     <div class="flex flex-wrap gap-x-6">
       {
         PLAN.map((p) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input
               type="radio"
               name="plan"
@@ -281,11 +282,11 @@ const talKlass = (harFel: boolean) => [FALT_KLASS, ramKlass(harFel), 'max-w-28']
   {
     !kompakt && (
       <div class="mb-6">
-        <label class="flex min-h-11 items-center gap-2 text-brod">
+        <label class={VAL_KLASS}>
           <input type="checkbox" name="jarnvag" value="1" checked={indata.jarnvag} />
           {TEXT.falt.jarnvag(JARNVAG_M)}
         </label>
-        <label class="flex min-h-11 items-center gap-2 text-brod">
+        <label class={VAL_KLASS}>
           <input type="checkbox" name="varde" value="1" checked={indata.vardefullt} />
           {TEXT.falt.vardefullt}
         </label>

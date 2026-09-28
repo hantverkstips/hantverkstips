@@ -26,6 +26,7 @@ import {
   KNAPP_KLASS,
   LANK_KLASS,
   ramKlass,
+  VAL_KLASS,
 } from '../../lib/kalkyl/stil';
 
 interface Props {
@@ -112,7 +113,7 @@ const talfalt = [
     <div class={radioKlass}>
       {
         TRALLBREDDER.map((t) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input
               type="radio"
               name="trallbredd"
@@ -140,7 +141,7 @@ const talfalt = [
     <div class={radioKlass}>
       {
         RIKTNINGAR.map((r) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input
               type="radio"
               name="riktning"
@@ -168,7 +169,7 @@ const talfalt = [
     <div class={radioKlass}>
       {
         REGELAVSTAND.map((c) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input
               type="radio"
               name="cc"
@@ -199,7 +200,7 @@ const talfalt = [
     <div class={radioKlass}>
       {
         REGELDIMENSIONER.map((r) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input
               type="radio"
               name="regel"
@@ -227,7 +228,7 @@ const talfalt = [
     <div class={radioKlass}>
       {
         GRUNDER.map((g) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input
               type="radio"
               name="grund"

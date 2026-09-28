@@ -25,7 +25,7 @@ import {
   type Skick,
   type Takform,
 } from '../../lib/kalkyl/fasadyta.ts';
-import { ETIKETT_KLASS, FALT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, LANK_KLASS, ramKlass } from '../../lib/kalkyl/stil';
+import { ETIKETT_KLASS, FALT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, LANK_KLASS, ramKlass, VAL_KLASS } from '../../lib/kalkyl/stil';
 
 type TalNyckel =
   | 'langd'
@@ -136,7 +136,6 @@ const FASADER: Fasad[] = ['lock', 'slat', 'puts', 'tegel'];
 const SKICK: Skick[] = ['ommalning', 'skrapat', 'rent', 'kulor', 'byte'];
 const STRYK_VAL = ['auto', '1', '2', '3'] as const;
 
-const RADIO_KLASS = 'flex min-h-11 items-center gap-2 text-brod';
 const LEGEND_KLASS = [ETIKETT_KLASS, 'p-0'];
 const FIELDSET_KLASS = 'm-0 mb-6 p-0 border-0';
 ---
@@ -186,7 +185,7 @@ const FIELDSET_KLASS = 'm-0 mb-6 p-0 border-0';
     <legend class:list={LEGEND_KLASS}>{TEXT.form['legend-takform']}</legend>
     {
       TAKFORMER.map((t) => (
-        <label class={RADIO_KLASS}>
+        <label class={VAL_KLASS}>
           <input
             type="radio"
             name="takform"
@@ -223,7 +222,7 @@ const FIELDSET_KLASS = 'm-0 mb-6 p-0 border-0';
       )
     }
     <div class="flex flex-wrap gap-x-4">
-      <label class={RADIO_KLASS}>
+      <label class={VAL_KLASS}>
         <input
           type="radio"
           name="matt"
@@ -233,7 +232,7 @@ const FIELDSET_KLASS = 'm-0 mb-6 p-0 border-0';
         />
         {TEXT.form['matt-nock']}
       </label>
-      <label class={RADIO_KLASS}>
+      <label class={VAL_KLASS}>
         <input
           type="radio"
           name="matt"
@@ -394,7 +393,7 @@ const FIELDSET_KLASS = 'm-0 mb-6 p-0 border-0';
     <legend class:list={LEGEND_KLASS}>{TEXT.form['legend-fasad']}</legend>
     {
       FASADER.map((f) => (
-        <label class={RADIO_KLASS}>
+        <label class={VAL_KLASS}>
           <input type="radio" name="fasad" value={f} checked={indata.fasad === f} />
           {TEXT.fasad[f]}
         </label>
@@ -406,7 +405,7 @@ const FIELDSET_KLASS = 'm-0 mb-6 p-0 border-0';
     <legend class:list={LEGEND_KLASS}>{TEXT.form['legend-farg']}</legend>
     {
       FARG_VAL.map((f) => (
-        <label class={RADIO_KLASS}>
+        <label class={VAL_KLASS}>
           <input
             type="radio"
             name="farg"
@@ -431,7 +430,7 @@ const FIELDSET_KLASS = 'm-0 mb-6 p-0 border-0';
     <legend class:list={LEGEND_KLASS}>{TEXT.form['legend-skick']}</legend>
     {
       SKICK.map((s) => (
-        <label class={RADIO_KLASS}>
+        <label class={VAL_KLASS}>
           <input type="radio" name="skick" value={s} checked={indata.skick === s} />
           {TEXT.skick[s]}
         </label>

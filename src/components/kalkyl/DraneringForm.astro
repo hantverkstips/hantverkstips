@@ -18,7 +18,7 @@ import {
   TEJPTESTER,
   type DraneringIndata,
 } from '../../lib/kalkyl/dranering.ts';
-import { ETIKETT_KLASS, FALT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, ramKlass } from '../../lib/kalkyl/stil';
+import { ETIKETT_KLASS, FALT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, ramKlass, VAL_KLASS } from '../../lib/kalkyl/stil';
 
 interface Props {
   /** Valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
@@ -151,7 +151,7 @@ const matt = [
     <div class={radioKlass}>
       {
         ATERSTALLNINGAR.map((a) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input type="radio" name="aterstall" value={a.varde} checked={indata.aterstallning === a.varde} />
             {a.etikett}
           </label>

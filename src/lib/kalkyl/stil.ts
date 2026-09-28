@@ -7,7 +7,13 @@
  * 1 px, radie sm, bakgrund papper, etiketten ovanför fältet.
  */
 
-export const FALT_KLASS = 'w-full min-h-12 rounded-sm border bg-papper px-3 text-brod text-blyerts tabular-nums';
+/**
+ * Fältet och etiketten runt en radioknapp eller kryssruta är komponentklasser i
+ * global.css (.falt och .val), eftersom de står på varje fält i varje formulär.
+ * Tillägg som ramKlass() skrivs som verktyg bredvid och vinner.
+ */
+export const FALT_KLASS = 'falt';
+export const VAL_KLASS = 'val';
 export const ETIKETT_KLASS = 'block mb-1 font-bold text-blyerts';
 export const HJALP_KLASS = 'm-0 mt-1 text-liten text-blyerts-2';
 export const FEL_KLASS = 'm-0 mt-1 text-liten text-varning';

@@ -10,7 +10,7 @@
  * uträkning att visa värden ur; då står standardvärdena i fälten.
  */
 import { FUKTNIVAER, STANDARD, TEMPERATURVAL, type AvfuktareIndata } from '../../lib/kalkyl/avfuktare';
-import { ETIKETT_KLASS, FALT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, ramKlass } from '../../lib/kalkyl/stil';
+import { ETIKETT_KLASS, FALT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, ramKlass, VAL_KLASS } from '../../lib/kalkyl/stil';
 
 interface Props {
   /** Valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
@@ -88,7 +88,7 @@ const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
     <div class={radioKlass}>
       {
         FUKTNIVAER.map((f) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input type="radio" name="fukt" value={f.varde} checked={indata.fuktniva === f.varde} />
             {f.etikett}
           </label>
@@ -102,7 +102,7 @@ const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
     <div class={radioKlass}>
       {
         TEMPERATURVAL.map((t) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input type="radio" name="temp" value={t.varde} checked={indata.temperatur === t.varde} />
             {t.etikett}
           </label>

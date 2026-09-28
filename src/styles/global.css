@@ -583,10 +583,14 @@ body {
     vertical-align: top;
     border-bottom: 1px solid var(--color-linje);
   }
-  /* Korta celler (tal med enhet, produktnamn) hålls ihop på en rad. Klassen
-     sätts vid bygget av pluginet i astro.config.mjs, som är det enda stället
-     där celltexten går att mäta utan JavaScript hos läsaren. */
-  .prosa .brodtabell .kort-cell {
+  /* Korta celler (tal med enhet, produktnamn) hålls ihop på en rad. Klasserna
+     sätts vid bygget av pluginet i astro.config.mjs (scripts/tabellceller.mjs),
+     som är det enda stället där celltexten går att mäta utan JavaScript hos
+     läsaren. Bara den mindre gruppen td får en klass: kort-cell på de korta,
+     eller korta-celler på tabellen och lang-cell på de långa. Båda formerna
+     står i varje regel nedan och ger samma rendering. th markeras aldrig. */
+  .prosa .brodtabell td.kort-cell,
+  .prosa .brodtabell.korta-celler td:not(.lang-cell) {
     white-space: nowrap;
   }
   /* Från fyra kolumner släpps nowrap på alla celler. Fyra korta celler à 16
@@ -595,7 +599,8 @@ body {
      2026-09-16 punkt 5.3). Ett tal med enhet som bryts mellan tal och enhet är
      ett mindre ont än en kolumn läsaren aldrig ser. Med två eller tre kolumner
      finns bredden kvar och nowrap gäller som förut. */
-  .prosa .brodtabell:has(tr > *:nth-child(4)) .kort-cell {
+  .prosa .brodtabell:has(tr > *:nth-child(4)) td.kort-cell,
+  .prosa .brodtabell.korta-celler:has(tr > *:nth-child(4)) td:not(.lang-cell) {
     white-space: normal;
   }
   /* Celler med hel text får en minsta spaltbredd, annars pressar tabellen ihop
@@ -604,19 +609,20 @@ body {
      textkolumner à 6 rem plus innermarginaler blev bredare än 343 px och
      klipptes på mobil. 4 rem (64 px, varav 24 px innermarginal) räcker för ett
      ord per rad utan att pressa isär bokstäverna. */
-  .prosa .brodtabell td:not(.kort-cell) {
+  .prosa .brodtabell:not(.korta-celler) td:not(.kort-cell),
+  .prosa .brodtabell.korta-celler td.lang-cell {
     min-width: 4rem;
   }
   /* Kolumnrubriker bryts alltid, också de korta. Pluginet räknar "Tillverkarens
      maxyta" (20 tecken) som kort cell, och nowrap på den gjorde rubriken till
      tabellens minsta bredd: fyra sådana rubriker blev bredare än 343 px och
      tabellen klipptes på mobil. Granskningen 2026-09-16. hyphens: auto avstavar
-     på svenska, <html> har lang="sv". Klassen står i selektorn för att väga
-     tyngre än .kort-cell ovan. min-width 3 rem (48 px, varav 24 px
+     på svenska, <html> har lang="sv". min-width 3 rem (48 px, varav 24 px
      innermarginal) är golvet som hindrar att en rubrik pressas till ett tecken
-     per rad, och är lågt nog att fyra rubriker på två ord får plats i 343 px. */
-  .prosa .brodtabell th,
-  .prosa .brodtabell th.kort-cell {
+     per rad, och är lågt nog att fyra rubriker på två ord får plats i 343 px.
+     Sedan 2026-09-28 får ingen th någon cellklass, och reglerna ovan gäller
+     bara td. */
+  .prosa .brodtabell th {
     white-space: normal;
     hyphens: auto;
     overflow-wrap: break-word;
@@ -767,6 +773,161 @@ body {
     font-weight: var(--font-weight-bold);
     text-decoration-line: none;
     text-align: center;
+  }
+
+  /*
+    Räknarnas fält och etiketten runt en radioknapp eller kryssruta. Samma som
+    Tailwinds w-full min-h-12 rounded-sm border bg-papper px-3 text-brod
+    text-blyerts tabular-nums (FALT_KLASS) och flex min-h-11 items-center gap-2
+    text-brod (VAL_KLASS) i src/lib/kalkyl/stil.ts, en gång här i stället för
+    på varje fält (spec-skal-budget-2026-09-28 avsnitt 14.1). Ramens färg och
+    andra tillägg står som verktyg bredvid och vinner. .prosa sätter inget på
+    input eller label, så ingen .prosa-variant behövs.
+  */
+  .falt {
+    width: 100%;
+    min-height: calc(var(--spacing) * 12);
+    border-radius: var(--radius-sm);
+    border-style: var(--tw-border-style, solid);
+    border-width: 1px;
+    background-color: var(--color-papper);
+    padding-inline: calc(var(--spacing) * 3);
+    font-size: var(--text-brod);
+    line-height: var(--tw-leading, var(--text-brod--line-height));
+    color: var(--color-blyerts);
+    --tw-numeric-spacing: tabular-nums;
+    font-variant-numeric: var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacing,) var(--tw-numeric-fraction,);
+  }
+  .val {
+    display: flex;
+    min-height: calc(var(--spacing) * 11);
+    align-items: center;
+    gap: calc(var(--spacing) * 2);
+    font-size: var(--text-brod);
+    line-height: var(--tw-leading, var(--text-brod--line-height));
+  }
+
+  /*
+    Köpknappens två lägen som står på nästan varje knapp: full bredd på mobil
+    (flex w-full sm:inline-flex sm:w-auto) och köpbar (bg-penna text-papper
+    hover:bg-blyerts hover:text-papper). Läget utan pris behåller sina verktyg.
+    .prosa-varianten behövs för färgen: .prosa a sätter penna och väger tyngre
+    än en ensam klass. Spec: spec-skal-budget-2026-09-28 avsnitt 14.3.
+  */
+  .kopknapp-full,
+  .prosa .kopknapp-full {
+    display: flex;
+    width: 100%;
+  }
+  @media (width >= 40rem) {
+    .kopknapp-full,
+    .prosa .kopknapp-full {
+      display: inline-flex;
+      width: auto;
+    }
+  }
+  .kopknapp-aktiv,
+  .prosa .kopknapp-aktiv {
+    background-color: var(--color-penna);
+    color: var(--color-papper);
+  }
+  @media (hover: hover) {
+    .kopknapp-aktiv:hover,
+    .prosa .kopknapp-aktiv:hover {
+      background-color: var(--color-blyerts);
+      color: var(--color-papper);
+    }
+  }
+
+  /*
+    Produktkortet och dess bildyta utan foto, som förut stod som verktyg på
+    varje kort: border border-linje rounded-sm p-4 lg:p-6 bg-papper, och
+    nyckelvärdenas dl, dt och dd. Den rekommenderade får bg-papper-2 som verktyg
+    bredvid. .prosa-varianten behövs för dt och dd: .prosa dd och .prosa dd + dt
+    ger marginal och väger tyngre än .produktkort dt.
+    Spec: spec-skal-budget-2026-09-28 avsnitt 14.3.
+  */
+  .produktkort {
+    border-style: var(--tw-border-style, solid);
+    border-width: 1px;
+    border-color: var(--color-linje);
+    border-radius: var(--radius-sm);
+    padding: calc(var(--spacing) * 4);
+    background-color: var(--color-papper);
+  }
+  @media (width >= 64rem) {
+    .produktkort {
+      padding: calc(var(--spacing) * 6);
+    }
+  }
+  .produktkort dl > div,
+  .prosa .produktkort dl > div {
+    display: contents;
+  }
+  .produktkort dt,
+  .prosa .produktkort dt {
+    margin: 0;
+    color: var(--color-blyerts-2);
+  }
+  .produktkort dd,
+  .prosa .produktkort dd {
+    margin: 0;
+    margin-bottom: calc(var(--spacing) * 2);
+    --tw-numeric-spacing: tabular-nums;
+    font-variant-numeric: var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacing,) var(--tw-numeric-fraction,);
+    color: var(--color-blyerts);
+  }
+  @media (width >= 40rem) {
+    .produktkort dd,
+    .prosa .produktkort dd {
+      margin-bottom: 0;
+    }
+  }
+  .produktkort-bild {
+    display: flex;
+    width: calc(var(--spacing) * 24);
+    height: calc(var(--spacing) * 18);
+    align-items: center;
+    justify-content: center;
+    border-style: var(--tw-border-style, solid);
+    border-width: 1px;
+    border-color: var(--color-linje);
+    border-radius: var(--radius-sm);
+    padding: calc(var(--spacing) * 2);
+    background-color: var(--color-papper-2);
+    text-align: center;
+  }
+
+  /*
+    H2:ans typografi och luft, en gång här i stället för på varje rubrik
+    (Pennstreck.astro; spec-skal-budget-2026-09-28 avsnitt 13.1, 5.0). Samma
+    värden som font-serif text-h2 lg:text-h2-lg mb-3 text-blyerts mt-12
+    lg:mt-16. Strecket självt står i .pennstreck överst i lagret.
+    .pennstreck-tat (utanLuft) har ingen marginal ovanför, som när mt-12
+    saknades. :not() ger marginalen samma företräde framför .prosa > * + * som
+    verktyget hade, och blocket står sist i lagret av samma skäl. klass från
+    anroparen ligger i verktygslagret och vinner.
+  */
+  .pennstreck {
+    font-family: var(--font-serif);
+    font-size: var(--text-h2);
+    line-height: var(--tw-leading, var(--text-h2--line-height));
+    font-weight: var(--tw-font-weight, var(--text-h2--font-weight));
+    margin-bottom: calc(var(--spacing) * 3);
+    color: var(--color-blyerts);
+  }
+  .pennstreck:not(.pennstreck-tat) {
+    margin-top: calc(var(--spacing) * 12);
+  }
+  @media (width >= 64rem) {
+    .pennstreck {
+      font-size: var(--text-h2-lg);
+      line-height: var(--tw-leading, var(--text-h2-lg--line-height));
+      font-weight: var(--tw-font-weight, var(--text-h2-lg--font-weight));
+    }
+    .pennstreck:not(.pennstreck-tat) {
+      margin-top: calc(var(--spacing) * 16);
+    }
   }
 }
 

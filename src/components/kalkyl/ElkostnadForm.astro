@@ -23,6 +23,7 @@ import {
   KNAPP_KLASS,
   LANK_KLASS,
   ramKlass,
+  VAL_KLASS,
 } from '../../lib/kalkyl/stil';
 
 interface Props {
@@ -146,13 +147,13 @@ const talfalt = [
     <div class={radioKlass}>
       {
         PERIODER.map((p) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input type="radio" name="dagar" value={String(p.dagar)} checked={indata.dagar === p.dagar} />
             {p.etikett}
           </label>
         ))
       }
-      <label class="flex min-h-11 items-center gap-2 text-brod">
+      <label class={VAL_KLASS}>
         <input type="radio" name="dagar" value="eget" checked={!fardigPeriod} />
         Eget antal
       </label>

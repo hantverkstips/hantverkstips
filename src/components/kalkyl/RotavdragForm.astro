@@ -13,7 +13,7 @@
  * ger avdrag, materialet sedan, och först därefter de tre frågorna om taken.
  */
 import { AGARVAL, GEMENSAMT_TAK_KR, kronor, ROT_TAK_KR, STANDARD, type RotavdragIndata } from '../../lib/kalkyl/rotavdrag.ts';
-import { ETIKETT_KLASS, FALT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, ramKlass } from '../../lib/kalkyl/stil';
+import { ETIKETT_KLASS, FALT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, ramKlass, VAL_KLASS } from '../../lib/kalkyl/stil';
 
 interface Props {
   /** Valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
@@ -132,7 +132,7 @@ const taken = [
     <div class="flex flex-wrap gap-x-4">
       {
         AGARVAL.map((a) => (
-          <label class="flex min-h-11 items-center gap-2 text-brod">
+          <label class={VAL_KLASS}>
             <input type="radio" name="agare" value={a.varde} checked={indata.antalAgare === a.varde} />
             {a.etikett}
           </label>
