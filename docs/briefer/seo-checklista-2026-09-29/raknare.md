@@ -1,0 +1,388 @@
+# SEO-checklista, fyra räknare, 2026-09-29
+
+`/rakna/badrum-kostnad/`, `/rakna/kok-kostnad/`, `/rakna/takbyte/` och `/rakna/takavvattning/`. Startlista 3 har fyra räknare, inte tre. Takavvattningen är ett stöd till hängrännesidan och bär ingen trafik själv, men den räknas till takhubbens fem och har därför en checklista här. Hantverkaren läser sitt avsnitt före skrivningen, UX och bygge-agenten läser punkt 1, 9 och 10 före specen, och SEO och GEO-agenten läser den färdiga sidan mot samma avsnitt efteråt (skillarna `ny-sida` och `nytt-verktyg`).
+
+Så här läses checklistan:
+
+- **Underlag:** SERP-läsningen i SOKORDSANALYS 8.2, verktygsbeskeden i 8.5, besluten i 8.9, volymerna i `docs/keyword-stats-2026-09-28.csv`.
+- **Ordningen i topp 5 är osäker**, eftersom sökverktyget svarar från USA.
+- **Title** (`titel` i rutthuvudet) räknas utan suffixet " · Hantverkstips". 44 tecken är kravet om frasen tillåter det.
+- **Punkt 6** anger avsnitten utöver mallens fasta ("Därför blev svaret så", "Gör inte det här", "Så räknar jag", "Läs vidare").
+- **Punkt 11** innehåller **Bättre än ettan** (krav) och **Krav på underlaget**. Underlaget för en räknare heter `docs/briefer/underlag-kalkyl-[slug]-[datum].md`, som för de tidigare räknarna.
+
+Fyra saker gäller alla fyra räknare:
+
+1. **Ingen räknare publiceras utan sin värdartikel** (`nytt-verktyg`, Vad som stoppar). Värdartikeln står i punkt 9 och ska vara publicerad eller gå ut i samma omgång.
+2. **Resultatet ligger i adressen**, och delningsbilden `public/og/rakna-[slug].png` genereras.
+3. **Inga gissade tal.** Kostnadsräknarna är bara så bra som priserna per post. Varje pris ska ha källa och datum i formelmodulen och i "Så räknar jag". Egna antaganden märks ANTAGANDE och står i antagandetabellen. Finns inte två källor för en post stoppas posten, och därmed räknaren, tills underlaget har dem.
+4. **Rotavdraget räknas som i `/rakna/rotavdrag/`**: 30 procent av arbetet, högst 50 000 kr per person och år, 75 000 kr gemensamt med rut, och fälten antal ägare och utnyttjat i år. Konstanterna importeras från `src/lib/kalkyl/rotavdrag.ts` och skrivs inte om, så att decemberrutinen där också uppdaterar de här räknarna.
+
+---
+
+## /rakna/badrum-kostnad/
+
+### 1. Adress och sidtyp
+
+`/rakna/badrum-kostnad/` · `src/pages/rakna/badrum-kostnad.astro` · **kalkylator**. Formelmodulen `src/lib/kalkyl/renovering.ts` delas med `/rakna/kok-kostnad/` (SOKORDSANALYS 8.5). Registret: `pelare: ['badrum']`, `sasong` september till mars. Ingen produkt och inget reklamband.
+
+Läsaren fyller i badrummets golvyta och standard, vad hon gör själv och hur många som äger huset. Hon får kostnaden per post, uppdelad på arbete och material, rotavdraget och vad hon betalar.
+
+### 2. Huvudfras och sidofraser
+
+**Huvudfras: renovera badrum kostnad, 1 300 per månad**, −38 procent på ett år. Toppen är september till oktober (1 600). Vinnbarhet 4. Avsikten med varianterna är 3 620.
+
+Sidofraser, med plats:
+
+- **renovera badrum pris** (1 600) i H1 eller i beskedet.
+- **badrumsrenovering kostnad** (720) i brödtexten.
+- **renovera badrum billigt** (390) i H2:n om vad du kan göra själv.
+- **kakla badrum pris** (210) och **tätskikt badrum pris** (50) som poster i resultatet. De blir inga rubriker.
+
+### 3. Title
+
+Krav: **högst 44 tecken**, börjar med **Renovera badrum, kostnad** eller **Vad kostar det att renovera badrummet**. Titeln leder med frasen, som dräneringsräknarens beslut i 7.3. En framtida artikel om att renovera badrum får inte börja med "Renovera badrum kostnad".
+
+### 4. Description
+
+Krav: **120 till 155 tecken.** Ska lova kostnaden per post, arbete och material för sig, och rotavdraget för två ägare.
+
+### 5. H1
+
+Krav: läsarens fråga. Delar inte de tre första orden med title.
+
+### 6. H2-struktur
+
+Utöver mallens fasta avsnitt:
+
+0. **Kortsvaret** (`Faktaruta variant="kortsvar"`): vad ett badrum på 4 till 5 kvm kostar i tre standarder med källa och datum, hur stor del som är arbete, och vad rotavdraget blir.
+1. **Vad som gör priset.** Posterna: rivning, tätskikt och kakel, VVS, el, inredning, container. Vilka som är arbete och vilka som är material.
+2. **Vad du kan göra själv och vad det sparar.** Rivning, målning av tak, montering av inredning, med tabellen från tätskiktssidan som gräns. **Bär renovera badrum billigt.**
+3. **Rotavdraget för badrummet.** Två ägare, utnyttjat tak, att material inte ger avdrag.
+
+### 7. Längd
+
+Mål **700 till 1 000 ord** utöver formuläret. Byggstart och Totalbyggarna har 1 500 till 2 500 ord utan räknare. Räknaren är skillnaden, inte texten.
+
+### 8. Bilder
+
+- Räknarens skiss i `src/assets/illustrationer-kallor/rakna/`: ett badrum i planvy med posterna utmärkta. Alt högst 125 tecken med orden renovera badrum och kostnad.
+
+### 9. Interna länkar
+
+**Värdartikel: `/badrum/tatskikt-badrum/`**, `<Verktygskort kalkylator="badrum-kostnad" />` i kostnadsavsnittet (se badrum.md). Tätskiktet är den största posten, och sidan är den som publiceras först i pelaren.
+
+**Ut**, krav:
+
+- `/badrum/tatskikt-badrum/` i avsnitt 2, för gränsen.
+- `/rakna/rotavdrag/` i avsnitt 3.
+- `/badrum/mala-kakel/` i avsnitt 2, som det billigaste alternativet.
+
+**In**, krav: tätskiktssidan (värdartikeln) och `/rakna/rotavdrag/` i "Läs vidare" eller utfallet.
+
+### 10. Strukturerad data och komponenter
+
+`WebApplication`, `BreadcrumbList` Hantverkstips / Räkna själv / räknaren, `FAQPage` bara med riktig Faq. Formuläret som GET, noll klient-JS.
+
+### 11. Ettan och Bättre än ettan
+
+Topp 5: byggstart.se, mbbyggsyd.se, totalbyggarna.se, sonochfar.se, hantverkarpriser.se. **Ettan: byggstart.se.** Sidan har ett exempel med 133 000 kr till entreprenören och 51 000 kr i egna inköp och ett snitt kring 185 000 kr, men inga källor, ingen författare och **inget om rotavdraget**.
+
+Det ettan har som vi måste ha:
+
+- Ett totalpris för ett vanligt badrum.
+- Entreprenör och egna inköp för sig.
+- En kostnad per extra kvadratmeter.
+
+**Bättre än ettan** (krav):
+
+1. **Arbete och material per post**, så att rotavdraget går att räkna. Ingen i topp 5 gör det i en räknare.
+2. **Rotavdraget rätt för en eller två ägare**, med utnyttjat tak.
+3. **Källa och datum på varje pris** i "Så räknar jag".
+4. **Vad egen insats sparar**, med gränsen från 8.3.
+5. **Delbart resultat** i adressen.
+
+**Krav på underlaget** (`docs/briefer/underlag-kalkyl-badrum-kostnad-[datum].md`):
+
+- Pris per post (rivning, tätskikt och kakel per kvm, VVS, el, inredning i tre nivåer, container) från **minst två källor som går att läsa**, med datum. Kandidater: Byggstart, Badrumsexperter (arbete 118 800 kr, material 40 500 kr, 600 kr per timme), Totalbyggarna, Villaägarna, Hantverkskollen.
+- Andelen arbete per post, med källa, eller märkt som antagande. Totalbyggarnas procentandelar går inte ihop och används inte.
+- Konstanterna för rot från `src/lib/kalkyl/rotavdrag.ts`, inte från en ny källa.
+
+### 12. Fällor
+
+- **Rot 50 procent** gällde bara betalningar 12 maj till 31 december 2025.
+- **Inga produkter.** Badrumsklustret bär inte affiliate (8.6).
+- Räknaren får inte antyda att läsaren lägger tätskiktet själv. Egen insats omfattar bara det som 8.3 säger ja till.
+- Offertförmedlarna nämns inte i publik text, bara i antagandetabellen och i `kallor`.
+
+---
+
+## /rakna/kok-kostnad/
+
+### 1. Adress och sidtyp
+
+`/rakna/kok-kostnad/` · `src/pages/rakna/kok-kostnad.astro` · **kalkylator** med samma formelmodul som badrummet. Registret: `pelare: ['kok']`, `sasong` september till mars. Ingen produkt och inget reklamband.
+
+Läsaren väljer vad som görs: byta luckor på befintlig stomme, byta bänkskiva, nytt kök med eller utan ändrad planlösning. Hon anger köksmetrar och standard, egen insats och antal ägare, och får kostnaden per post med arbete och material för sig och rotavdraget.
+
+### 2. Huvudfras och sidofraser
+
+**Huvudfras: renovera kök kostnad, 720 per månad**, −33 procent på ett år. Vinnbarhet 4. Avsikten med varianterna är 2 140. "renovera kök" (1 000) ingår i avsikten, eftersom topp 5 visar kostnadssidor också där.
+
+Sidofraser, med plats:
+
+- **köksrenovering pris** (210) i H1 eller beskedet.
+- **renovera kök billigt** (140) i H2:n om egen insats.
+- **renovera kök** (1 000) i brödtexten.
+- **byta bänkskiva kök kostnad** (50, +200 procent) och **byta köksluckor pris** som val i formuläret. Frasen **byta köksluckor pris** ägs av `/kok/byta-koksluckor/`.
+
+### 3. Title
+
+Krav: **högst 44 tecken**, börjar med **Renovera kök, kostnad** eller **Vad kostar det att renovera köket**. Delar inte de tre första orden med badrumsräknaren. "Renovera kök" och "Renovera badrum" skiljer sig i andra ordet, så det räcker.
+
+### 4. Description
+
+Krav: **120 till 155 tecken.** Ska lova kostnaden för tre vägar (luckor, bänkskiva, nytt kök), arbete och material för sig, och rotavdraget.
+
+### 5. H1
+
+Krav: läsarens fråga. Delar inte de tre första orden med title.
+
+### 6. H2-struktur
+
+Utöver mallens fasta avsnitt:
+
+0. **Kortsvaret**: vad de tre vägarna kostar i ett kök med 4 till 5 meter skåp, med källa och datum, och vad rotavdraget blir.
+1. **Tre vägar och vad de kostar.** Byta luckor, byta bänkskiva, nytt kök. Varför el och VVS blir den stora överraskningen när planlösningen ändras.
+2. **Vad du kan göra själv.** Montera stommar och luckor, måla. El och fast vatten gör en behörig, enligt Elsäkerhetsverket och Säker Vatten 2026:1. **Bär renovera kök billigt.**
+3. **Rotavdraget för köket.** Två ägare, material ger inget avdrag.
+
+### 7. Längd
+
+Mål **700 till 1 000 ord** utöver formuläret.
+
+### 8. Bilder
+
+- Räknarens skiss: en köksvägg med stommar, luckor och bänkskiva, och posterna utmärkta. Alt högst 125 tecken med orden renovera kök och kostnad.
+
+### 9. Interna länkar
+
+**Värdartikel: `/kok/byta-koksluckor/`**, `<Kalkylator namn="kok-kostnad" />` i kostnadsavsnittet (se kok.md).
+
+**Ut**, krav:
+
+- `/kok/byta-koksluckor/` i avsnitt 1.
+- `/kok/mala-koksluckor/` i avsnitt 1 och 2.
+- `/rakna/rotavdrag/` i avsnitt 3.
+
+**In**, krav: `/kok/byta-koksluckor/` (värdartikel) och `/kok/mala-koksluckor/` (verktygskort).
+
+### 10. Strukturerad data och komponenter
+
+`WebApplication`, `BreadcrumbList`, `FAQPage` bara med riktig Faq. GET-formulär, noll klient-JS.
+
+### 11. Ettan och Bättre än ettan
+
+Topp 5: offerta.se (2026-09-25), clasfixare.se, ikea.com, byggstart.se, brabyggare.se. **Ettan: offerta.se.** Sidan har rot rätt med Skatteverket som källa och ett spann på 60 000 till 350 000 kr, delvis uppdelat, men ingen tabell och ingen räknare. Clas Fixare har fortfarande 75 000 kr som rot-tak. Husexperter längre ner har en räknare med arbete och material, men utan procent och tak.
+
+Det ettan har som vi måste ha:
+
+- Rotavdraget rätt med källa.
+- Ett spann från enkelt till påkostat.
+- Vissa poster för sig (snickare).
+
+**Bättre än ettan** (krav):
+
+1. **Tre vägar i samma räknare**: luckor, bänkskiva, nytt kök.
+2. **Arbete och material per post** med rotavdraget för en eller två ägare.
+3. **El och VVS som egna poster** när planlösningen ändras. Körning 2 pekade ut det som den vanligaste budgetöverraskningen, och ingen prissätter dem.
+4. **Källa och datum på varje pris.**
+5. **Delbart resultat.**
+
+**Krav på underlaget** (`docs/briefer/underlag-kalkyl-kok-kostnad-[datum].md`):
+
+- Pris per post (luckor per styck i tre nivåer, stommar per meter, bänkskiva per löpmeter per material, vitvaror, montering, el och VVS vid flytt) från minst två källor som går att läsa, med datum. Kandidater: Offerta, Hantverkskollen (2026-07-17, källor Skatteverket och Elsäkerhetsverket), Totalbyggarna, Husexperter, IKEA:s tjänstepriser (mätning 1 295 kr, montering 3 399 kr), kitchens.se och Totalbyggarna för bänkskivor. Källorna säger olika om laminatpriset, och spannet redovisas.
+- Elsäkerhetsverkets besked om vad en lekman får göra i ett kök, och Säker Vattens om blandare och diskmaskin.
+- Samma rotkonstanter som ovan.
+
+### 12. Fällor
+
+- **Ingen "IKEA-montering" som fras.** IKEA äger den (vinnbarhet 1). IKEA:s tjänstepriser får stå som källa.
+- **Rätt rot-tak.** 50 000 kr för rot, 75 000 kr är det gemensamma taket.
+- Offertförmedlarna nämns inte i publik text.
+
+---
+
+## /rakna/takbyte/
+
+### 1. Adress och sidtyp
+
+`/rakna/takbyte/` · `src/pages/rakna/takbyte.astro` · **kalkylator**. Formelmodulen `src/lib/kalkyl/tak.ts` bär geometrin (takarea, takvinkel, takfallslängd, nockhöjd, antal takstolar) och är verktygsplanens rad 11. Takavvattningen använder samma takarea. Registret: `pelare: ['tak']`, `sasong` mars till oktober. Ingen produkt och inget reklamband.
+
+Läsaren fyller i husets längd och bredd, takutsprång, taklutning i grader eller nockhöjd, takform (sadel, pulpet) och det nya materialet. Hon får takarean, kostnaden i ett spann med arbete och material för sig, rotavdraget, och som bonus takvinkeln och antalet takstolar vid valt centrumavstånd.
+
+### 2. Huvudfras och sidofraser
+
+**Huvudfras: byta tak kostnad, 880 per månad**, −23 procent på ett år. Toppen är september och maj (1 300). Vinnbarhet 4. Avsikten är 2 080 inklusive verktygsplanens rad 11 (takvinkel 210, beräkna takvinkel 110, snölast tak 30, beräkna takarea 10).
+
+Sidofraser, med plats:
+
+- **takbyte kostnad** (320, +50 procent) och **takbyte** (480) i H1 eller beskedet.
+- **takbyte kostnad per kvm** (20) och **takbyte kvm pris** (20) i resultatet och i "Så räknar jag".
+- **beräkna takarea** (10) och **takvinkel** (210) i en H2 om takarean.
+- **plåttak kostnad** (320) ägs inte här men är ett val i formuläret.
+
+### 3. Title
+
+Krav: **högst 44 tecken**, börjar med **Byta tak, kostnad** eller **Vad kostar det att byta tak**. Löftet: från husets mått. Ingen annan title börjar med "Byta tak".
+
+### 4. Description
+
+Krav: **120 till 155 tecken.** Ska lova takarean ur husets mått och lutning, pris per material, och rotavdraget.
+
+### 5. H1
+
+Krav: läsarens fråga. Delar inte de tre första orden med title.
+
+### 6. H2-struktur
+
+Utöver mallens fasta avsnitt:
+
+0. **Kortsvaret**: vad ett takbyte på en villa kostar per kvadratmeter takyta för tre material, med källa och datum, och att takarean är större än bottenytan med en faktor som lutningen styr.
+1. **Takarean ur husets mått.** Formeln i klartext, en tabell över lutningen och påslaget på bottenytan, och takutsprånget. **Bär beräkna takarea och takvinkel.** Det här är luckan ingen i topp 5 fyller.
+2. **Vad som ingår i priset.** Rivning, underlag, läkt, material, plåtdetaljer, ställning, container. Arbete och material för sig.
+3. **Rotavdraget på takbytet.** Två ägare, och vad som räknas som arbete.
+
+### 7. Längd
+
+Mål **800 till 1 100 ord** utöver formuläret. Takexperter har cirka 2 500 ord och tre tabeller men ingen takarea.
+
+### 8. Bilder
+
+- Räknarens skiss: en husgavel med bredd, takutsprång, lutning och takfallslängd utsatta. Alt högst 125 tecken med orden takbyte och takarea. Måtten står i bildtexten.
+
+### 9. Interna länkar
+
+**Värdartikel: `/tak/plattak/`**, `<Kalkylator namn="takbyte" />` i kostnadsavsnittet (se tak.md).
+
+**Ut**, krav:
+
+- `/tak/plattak/` i avsnitt 2.
+- `/tak/takstolar/` där antalet takstolar visas i resultatet.
+- `/rakna/rotavdrag/` i avsnitt 3.
+- `/rakna/takavvattning/` i "Läs vidare": takarean är redan räknad.
+
+**In**, krav: `/tak/plattak/` (värdartikel), `/tak/snorasskydd/` och `/tak/takstolar/` (verktygskort), `/rakna/fasadyta/` i "Läs vidare" om den räknar gavelspetsar med samma lutning. Underlag kontrollerar det.
+
+### 10. Strukturerad data och komponenter
+
+`WebApplication`, `BreadcrumbList`, `FAQPage` bara med riktig Faq. GET-formulär, noll klient-JS.
+
+### 11. Ettan och Bättre än ettan
+
+Topp 5: leadhive.se (2026-03-03, uppdaterad 2026-09-26), takexperter.se, svenskabyggruppen.se, takpriser.se, takivast.se. Beckmansbygg.se och vertextak.se längre ner har räknare som kräver att läsaren redan vet takytan, och Beckmans kräver kontaktuppgifter. **Ettan: leadhive.se.** Sidan anger 1 300 till 1 700 kr per kvm efter Beckmans, men ingen rotprocent, inget tak och ingen formel för takarean. Den varnar bara för att offertens yta ska vara takyta.
+
+Det ettan har som vi måste ha:
+
+- Pris per kvadratmeter med ett spann.
+- Varningen att takyta inte är bottenyta.
+
+**Bättre än ettan** (krav):
+
+1. **Takarean ur bottenyta, takutsprång och lutning.** Ingen i topp 5 eller någon av räknarna gör det.
+2. **Pris per material med källa och datum**, arbete och material för sig.
+3. **Rotavdraget rätt** med 30 procent, 50 000 kr per person och två ägare. Takexperter saknar taket.
+4. **Takvinkel och antal takstolar** i samma resultat.
+5. **Delbart resultat**, utan kontaktuppgifter.
+
+**Krav på underlaget** (`docs/briefer/underlag-kalkyl-takbyte-[datum].md`):
+
+- Pris per kvm lagt och andelen arbete för bandtäckt plåt, takpanneplåt, betongpannor, tegelpannor, papp och shingel från minst två källor som går att läsa, med datum. Kandidater: Takexperter (tabeller för 150 kvm), Byggstart (plåt 1 700 kr, shingel 800 till 1 600 kr, papp 1 200 kr), Bygghemma (2026-02-23), Offerta (shingel), Beckmans.
+- Geometrin för sadeltak och pulpettak med takutsprång, och om valmtak kan tas med i första versionen. Det är ett beslut för UX och bygge-agenten, som ska nämnas i underlaget.
+- Poster för ställning och container med pris.
+- Om ställning och container räknas som arbete för rot enligt Skatteverket.
+- Vanligt centrumavstånd för takstolar (samma källa som `/tak/takstolar/`).
+
+### 12. Fällor
+
+- **Snölast** ska inte räknas i första versionen. Frasen är 30 i månaden, och det saknas en gällande källa efter att EKS upphörde (tak.md, snörasskydd). Den blir en senare version.
+- **Takläggarsajterna och förmedlarna** nämns inte i publik text.
+- **Priser utan datum** får inte finnas i modulen.
+
+---
+
+## /rakna/takavvattning/
+
+### 1. Adress och sidtyp
+
+`/rakna/takavvattning/` · `src/pages/rakna/takavvattning.astro` · **kalkylator**. Den använder takarean från `src/lib/kalkyl/tak.ts`. Registret: `pelare: ['tak']`, `sasong` april till september. Ingen produkt och inget reklamband.
+
+Läsaren anger takarean för den sida som ska avvattnas, eller husets mått så att räknaren tar den, och rännans längd. Hon får rännans dimension, stuprörets dimension, antal stuprör och minsta fall i mm per meter.
+
+### 2. Huvudfras och sidofraser
+
+**Huvudfras: takavvattning dimensionering, 40 per månad**, med hängrännor dimensioner (10). Räknaren bär ingen trafik själv. Den ger hängrännesidan (2 880) det som ingen i topp 5 har. Vinnbarhet 4.
+
+Sidofraser: **hängrännor dimension**, **stuprör dimension** (volym inte mätt) i resultatet och i "Så räknar jag".
+
+### 3. Title
+
+Krav: **högst 44 tecken**, börjar med **Takavvattning** eller **Hängränna och stuprör, dimension**. Får inte börja med "Hängrännor", eftersom den titeln ägs av `/tak/hangrannor/`.
+
+### 4. Description
+
+Krav: **120 till 155 tecken.** Ska lova rännans och stuprörets dimension efter takytan, antal stuprör och fallet.
+
+### 5. H1
+
+Krav: läsarens fråga. Delar inte de tre första orden med title.
+
+### 6. H2-struktur
+
+Utöver mallens fasta avsnitt:
+
+0. **Kortsvaret**: vilken ränna ett tak på 75, 125 och 200 kvm behöver, stupröret, fall och högsta rännlängd per stuprör, med källa och år.
+1. **Tabellen bakom.** Plannja 2010 och RA Hus, märkta som äldre. Om underlaget hittar en nyare tabell används den, och den äldre står som jämförelse.
+
+### 7. Längd
+
+Mål **500 till 800 ord** utöver formuläret. Räknaren är ett stöd, och texten bor i värdartikeln.
+
+### 8. Bilder
+
+- Räknarens skiss: tak i planvy med rännor, stuprör och fall utsatta. Alt högst 125 tecken med orden takavvattning och dimension.
+
+### 9. Interna länkar
+
+**Värdartikel: `/tak/hangrannor/`**, `<Kalkylator namn="takavvattning" />` direkt efter dimensionstabellen (se tak.md).
+
+**Ut**, krav: `/tak/hangrannor/` i "Läs vidare", `/rakna/takbyte/` för takarean.
+
+**In**, krav: `/tak/hangrannor/` (värdartikel) och `/rakna/takbyte/` ("Läs vidare").
+
+### 10. Strukturerad data och komponenter
+
+`WebApplication`, `BreadcrumbList`. GET-formulär, noll klient-JS.
+
+### 11. Ettan och Bättre än ettan
+
+Topp 5 för dimensioneringen: husbyggaren.se (RA Hus, tabellerna i PDF, ingen räknare), Lindabs Rainline Selection Tool (tillverkarens verktyg som slutar i en orderlista, inte testat), Plannjas PDF från 2010. **Ettan räknas som husbyggaren.se.** Den har referenserna (RA Hus 18, 0,013 l/s per kvm, SS 82 40 31 från 1988, SS-EN 12056-3) men inga tabeller på sidan och ingen räknare.
+
+Det ettan har som vi måste ha: referenserna till standarden och RA Hus.
+
+**Bättre än ettan** (krav):
+
+1. **Dimensionen direkt ur takarean** utan PDF.
+2. **Antal stuprör ur rännlängden** med regeln om högsta längd per stuprör.
+3. **Fallet i mm per meter** med källa.
+4. **Källornas år synliga**, och den äldre tabellen märkt som äldre.
+
+**Krav på underlaget** (`docs/briefer/underlag-kalkyl-takavvattning-[datum].md`):
+
+- Plannjas tabell (mars 2010) ordagrant, med adress.
+- En nyare tabell om den finns: Lindab, Plannja eller SS-EN 12056-3 i sammanfattning. Dessutom regnintensiteten som används (0,013 l/s per kvm enligt RA Hus), med källa.
+- Högsta rännlängd per stuprör och minsta fall, med källa.
+
+### 12. Fällor
+
+- **Lindab och Plannja** får nämnas som källa till tabellen, men räknaren länkar inte till deras verktyg.
+- **SS 82 40 31 från 1988** står med år, aldrig som gällande standard utan förbehåll.

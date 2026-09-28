@@ -524,7 +524,7 @@ Tak räknar inte isolera tak (1 040), som hör till El enligt arkitekturens besl
 
 **Badrum blir egen pelare, `/badrum/`.** Tre skäl. Badrum är dubbelt så stort som kök i sökningar, och det är det enda klustret där sajtens regelkoll är själva produkten. Sidorna behöver samma avgränsning om och om igen (8.3), och en hub som samlar dem blir den enda svenska sidan där gränsen står per arbete med källa. Och adressen styr: `/kok/tatskikt-badrum/` säger fel sak till läsaren och till Google, och en slug är permanent, så valet måste göras innan första badrumssidan publiceras. Kostnaden är att två hubbar i stället för en ska nå fem sidor. Startlistan nedan är byggd så att båda gör det.
 
-Kök behåller sluggen `kok` och får namnet "Kök". Har Christian hellre en pelare kvar, fungerar startlistan ändå: då hamnar alla elva kök- och badrumssidor under `kok` och huben publiceras efter sida fyra i stället för efter sida sex.
+Kök behåller sluggen `kok` och får namnet "Kök". Beslutet är fattat, se 8.9.
 
 ### 8.5 Verktyg
 
@@ -589,10 +589,50 @@ Tak får sex sidor (1, 10 till 14), Badrum fem (2 till 6), Kök sex med de tre s
 
 1. **Tre ämnen är lika stora som två hela körningar.** 100 410 i månaden, och tak och badrum är vart och ett större än hela golvpelaren i körning 2. Kök och bad och Tak, som 7.6 lät vänta, går före.
 2. **Regelbytet 2025 till 2026 är den gemensamma luckan.** Ingen etta citerar BFS 2024:8 eller 2024:9, BBV 26:1, GVK 2026, Säker Vatten 2026:1, dagens rotavdrag eller bygglovsändringen 1 december 2025. Sidor som gör det från start har ett försprång som krymper när konkurrenterna uppdaterar.
-3. **Badrum föreslås bli egen pelare**, och en tredjedel av badrumsfraserna skrivs som kunskap i stället för guide, eftersom tätskikt, kakel i dusch, golvbrunn och elgolvvärme inte går att lära ut ärligt.
+3. **Badrum blir egen pelare** (beslut i 8.9), och en tredjedel av badrumsfraserna skrivs som kunskap i stället för guide, eftersom tätskikt, kakel i dusch, golvbrunn och elgolvvärme inte går att lära ut ärligt.
 4. **Två kostnadsräknare och en takräknare går före texterna de bor i.** Takarean ur husets mått är den lucka både körning 2 och 3 hittade, och den löser också verktygsplanens rad 11. Takstolar och snörasskydd får ingen räknare nu.
 5. **Kök är den enda av de tre som bär affiliate**, och bara på luckor, bänkskivor och kakel. Tak och badrum byggs för trafik och förtroende.
 6. **Nischen fortsätter krympa, men delarna växer.** 136 av 222 fraser backar. Det som växer är att renovera en del i stället för helheten: måla kakel, byta luckor på befintlig stomme, kostnaden för ett takbyte.
+
+### 8.9 Beslut 2026-09-28
+
+Christian lämnade de fyra frågorna i 8.4 till 8.7 till SEO och GEO-agenten ("Seo agenten bestämmer allt"). Besluten gäller från i dag och checklistorna i `docs/briefer/seo-checklista-2026-09-29/` bygger på dem.
+
+**1. Badrum blir egen pelare med sluggen `badrum`.** Skälen står i 8.4: klustret är dubbelt så stort som köket, avgränsningen i 8.3 behöver en egen hub, och adressen är permanent, så valet måste göras innan första badrumssidan finns. Ingen badrumssida är publicerad under `/kok/`, så inga omdirigeringar behövs. Kök behåller `kok`, eftersom `/kok/slipa-bankskiva/` redan är publicerad där.
+
+Vad som ska ändras i kod och innehåll. UX och bygge-agenten specar, utvecklaren bygger, ingen kod är ändrad här:
+
+- **`src/lib/pelare.ts`**, `PELARE`:
+  - Raden `kok`: `namn` från `'Kök och badrum'` till `'Kök'`, `kort` från `'Kök och bad'` till `'Kök'`, `rad` skrivs om så att den inte lovar våtrum (hantverkarens mening, högst åtta ord; innehållet är bänkskivor, luckor, kakel och vitvaror).
+  - Ny rad direkt efter `kok`, i gruppen `inne`: `slug: 'badrum'`, `namn: 'Badrum och våtrum'`, `kort: 'Badrum'`, `ikon: 'badrum'`, `grupp: 'inne'`, `rad` av hantverkaren, högst åtta ord, om våtrum, kakel, fogar och vad du får göra själv. Ordningen i registret blir då tak, fasad, altan, grund, inomhus, golv, kok, badrum, fukt, el, verktyg.
+  - `content.config.ts` bygger sitt enum ur registret, så `pelare: badrum` blir giltigt i frontmatter utan fler ändringar. Undermapparna `src/content/guider/badrum/` och `src/content/kunskap/badrum/` skapas med första sidan.
+  - `badrum` krockar inte med `RESERVERADE_ROTSLUGS` eller någon kategori (kategorierna i dag är `krysslaser` och `luftavfuktare`).
+- **`src/components/ui/Ikon.astro`**: nytt `IkonNamn` `'badrum'` med en ritad ikon i samma stil som `'kok'`. Illustratören ritar, UX och bygge godkänner. Utan ikonen bygger inte registret, så den ska finnas i samma commit som registerraden.
+- **`src/content/pelare/badrum.mdx`**, ny fil, samma form som `tak.mdx`: `title: Badrum och våtrum`, `description` och `ingress` av hantverkaren (description 120 till 155 tecken, ska nämna tätskiktet, kaklet, fogarna och gränsen för vad du får göra själv), `uppdaterad` satt till dagens datum, **`utkast: true`**, samma kommentar om att hubben är ett galleri, ingen brödtext.
+- **`src/content/pelare/kok.mdx`**: `title` från `Kök och badrum` till `Kök`. `description` och `ingress` skrivs om av hantverkaren, eftersom båda i dag lovar våtrum och tätskikt. Filen står kvar som `utkast: true` tills Kök har fem sidor.
+- **`src/lib/kalkyl/register.ts`**, räknaren `rotavdrag`: `pelare` från `['grund', 'golv', 'kok', 'el']` till `['grund', 'golv', 'kok', 'badrum', 'el']`, och kommentaren om Christians beslut 2026-09-20 kompletteras med en rad om att badrummet flyttade till egen pelare 2026-09-28 (se beslut 2).
+- **`docs/INNEHALLSARKITEKTUR.md` avsnitt 1**: raden `kok` blir "Kök, bänkskivor, luckor, kakel, vitvaror", och en ny rad `badrum`, "Badrum och våtrum, tätskikt, kakel och fogar, toalett och handfat, gränsen för eget arbete". Avsnitt 2 får klustren Tak, Badrum och Kök med sidorna i 8.7. **`docs/ARKITEKTUR.md`**: rutten `/badrum/` i listan över pelare.
+- **Layouten**: ämnesraden i sidhuvudet, mobilmenyn, sidfoten, startsidans ämnesrad och `/amnen/` läser registret. Badrum syns som dämpat kort med "Kommer" tills huben publiceras. Registret får elva pelare, så UX och bygge ska se startsidans ämnesrad vid 375 och 1024 px.
+
+**2. Rotavdragsräknaren står i fem pelare: grund, golv, kök, badrum och el.** Christians beslut 2026-09-20 räknade badrummet som en av de fyra där notan är stor nog att taket biter, och det var då en del av `kok`. Det beslutet flyttar med badrummet. Tak läggs inte till. Takbytesräknaren (`/rakna/takbyte/`) räknar rotavdraget själv med 30 procent och 50 000 kr per ägare och länkar till rotavdragsräknaren i sin text. Samma sak gäller de två kostnadsräknarna för badrum och kök. En sjätte hubb med samma räknare späder ut gruppen Räkna, vilket var skälet till Christians gräns.
+
+**3. `/kok/slipa-bankskiva/` får en seoTitle som börjar med "Olja bänkskiva".** "olja bänkskiva" med varianter är 720, "slipa bänkskiva" med varianter 330 (210 i körning 1 plus ek och för hand), och Google visar delvis samma adresser på båda. En sida äger båda. Kraven:
+
+- `seoTitle` börjar med **Olja bänkskiva** och innehåller **slipa**, högst 60 tecken och helst högst 44. Ingen annan sida börjar med "Olja".
+- H1 (`title`) och URL rörs inte. Frasen "slipa bänkskiva" står redan i H1.
+- Sidan har redan det som ettan (gds.se, 2026-08-05) saknar: svarta fläckar på ek, varningen för självantändande trasor och torktider ur datablad. Det som saknas för olja-frasen är en description och en H2 som bär frasen, ett svar på vilken olja som passar ek, och en myndighetskälla för självantändningen i stället för bara tillverkarna. Ändringen är en justering av metadata och ett tillägg, inte en omskrivning. Den går genom steg 1, 2, 3, 4b och 5 i `ny-sida` och står först i kök-checklistan.
+
+**4. Sajten säger nej till målat kakel i duschen, också när Proffsmagasinet säger något annat.** MVK kräver ett system i klass VT i våtzon 1 och att befintligt kakel tas bort före ett målat våtrumssystem. Ett råd om målarfärg och klarlack på kakel i duschen strider alltså mot branschreglerna. Det försämrar läsarens läge vid en vattenskada, eftersom försäkringsbolagen kräver att våtrummet följer reglerna (Folksam, If, Trygg-Hansa). Vi skriver det som gäller, med källa. Proffsmagasinet nämns inte och länkas inte, varken i brödtexten eller i källistan, eftersom sajten aldrig pekar ut en konkurrent i publik text. Konflikten med partnern är medveten, som på "räkna ut kvadratmeter" i 7.5. Affiliateagenten informeras, eftersom sidan har ett produktkort (excenterslip) från samma butik. Kortet står kvar, eftersom det svarar på slipningen i kök och våtzon 2 och inte på målningen i duschen.
+
+**Ordningen per pelare**, från startlista 3:
+
+| Pelare | Sidor i ordning | Hubben publiceras |
+|---|---|---|
+| Tak | `/tak/snorasskydd/`, `/rakna/takbyte/`, `/tak/plattak/`, `/tak/hangrannor/`, `/rakna/takavvattning/`, `/tak/takstolar/` | efter `/rakna/takavvattning/` (fem med de två räknarna), senast i februari |
+| Badrum | `/badrum/tatskikt-badrum/`, `/badrum/mala-kakel/`, `/rakna/badrum-kostnad/`, `/badrum/vatrumsfarg/`, `/badrum/fogar-badrum/` | efter `/badrum/vatrumsfarg/`: fem med rotavdragsräknaren, sex med fogarna |
+| Kök | `/kok/slipa-bankskiva/` (omskrivning, beslut 3), `/kok/mala-koksluckor/`, `/kok/byta-koksluckor/`, `/rakna/kok-kostnad/` | efter `/kok/byta-koksluckor/`: fem med slipa bänkskiva, rotavdraget och kvadratmeterräknaren |
+
+Mellan pelarna gäller ordningen i 8.7. Snörasskyddet går först av säsongsskäl, badrummet före köket eftersom det är dubbelt så stort, och takets vårben sist.
 
 ## Källor
 
