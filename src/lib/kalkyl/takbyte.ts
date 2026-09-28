@@ -553,7 +553,7 @@ export const TEXT = {
         `Budgetera ${v.ettTal ? v.attBetalaLag ?? '' : `${v.attBetalaLag ?? ''} till ${v.attBetalaHog ?? ''}`} kr för ett tak med ${(v.material ?? '').toLowerCase()}`,
       /* Något annat än rubriken, till exempel att offerten ska räkna på takytan (takarea), inte bottenytan. */
       rad: (v: BeskedVarden): string =>
-        `Be firman räkna på takytan, så kan du jämföra med ${v.ettTal ? v.prisLag ?? '' : `${v.prisLag ?? ''} till ${v.prisHog ?? ''}`} kr per kvadratmeter.`,
+        `Be firman räkna på takytan, så kan du jämföra firmans pris med ${v.ettTal ? v.prisLag ?? '' : `${v.prisLag ?? ''} till ${v.prisHog ?? ''}`} kr per kvadratmeter.`,
     },
     tak: {
       /* Samma som vid belopp. Bär attBetalaLag. */
@@ -562,7 +562,7 @@ export const TEXT = {
       /* Att gränsen för rotavdraget stoppar kapat kr i den höga änden, och vad två ägare gör. Ordet "tak" står inte ensamt; det heter gräns. */
       rad: (v: BeskedVarden): string =>
         v.agare === 2
-          ? `Vid ${v.ettTal ? 'det här priset' : 'det högre priset'} når ni båda gränsen, så avdraget blir ${v.kapat ?? ''} kr mindre än ${ROT_PROCENT} procent av arbetet, och det är redan inräknat i beloppet. Går fakturan att dela på två år får den del som betalas efter nyår nästa års gräns.`
+          ? `Vid ${v.ettTal ? 'det här priset' : 'det högre priset'} når ni båda gränsen, så avdraget blir ${v.kapat ?? ''} kr mindre än ${ROT_PROCENT} procent av arbetet, och det är redan inräknat i beloppet. Går fakturan att dela på två år räknas den del som betalas efter nyår mot nästa års gräns.`
           : `Vid ${v.ettTal ? 'det här priset' : 'det högre priset'} når du gränsen, så avdraget blir ${v.kapat ?? ''} kr mindre än ${ROT_PROCENT} procent av arbetet, och det är redan inräknat i beloppet. Är ni två som står på lagfarten och båda betalar har ni en gräns var.`,
     },
     utanfor: {
@@ -606,7 +606,7 @@ export const TEXT = {
     nock: 'Nockhöjd',
     /* Hjälprad: nockhöjden mäts från takfoten vid väggen. Bara fullt format. */
     'nock-hjalp':
-      'Nockhöjden mäter du från takfoten vid väggen upp till nocken. På ett pulpettak skriver du i stället hur mycket högre den höga väggen är än den låga.',
+      'Nockhöjden är höjden från takfoten vid väggen upp till nocken, och den mäter du enklast på gaveln utifrån. På ett pulpettak skriver du i stället hur mycket högre den höga väggen är än den låga.',
     /* Legenden över det nya takmaterialet. */
     'legend-material': 'Det nya taket',
     /* Legenden över takstolarnas centrumavstånd. Bara fullt format. */
@@ -697,7 +697,7 @@ export const TEXT = {
      */
     'rad-kallor': (v: BeskedVarden): string =>
       v.ettTal
-        ? `Priset gäller före rotavdraget och kommer från en offertförmedlare, läst den ${v.hamtat}.`
+        ? `Priset gäller före rotavdraget och kommer från en offertförmedlare. Jag läste det den ${v.hamtat}.`
         : `Priserna per kvadratmeter gäller före rotavdraget och kommer från flera källor, som jag läste den ${v.hamtat}.`,
     /*
      * Takexperters tillägg, en rad under beloppet, bara när tillaggInraknat är
@@ -706,7 +706,7 @@ export const TEXT = {
      * (SEO-beslutet 2026-09-29, punkt 1); förmedlaren nämns inte vid namn.
      */
     'rad-tillagg': (v: BeskedVarden): string =>
-      `En av källorna lägger ungefär ${v.tillagg} kr ovanpå för resor och etablering, och det är inte med här, eftersom de andra har det i priset.`,
+      `En av källorna lägger på ungefär ${v.tillagg} kr för resor och etablering, och det är inte med här, eftersom de andra källorna har etableringen i sitt pris.`,
     /*
      * Vinkel eller nock (den som inte angavs), takfallslängden och takstolarna vid cc. Länken lank-takstolar står efter.
      * Pulpettak med vinkeln angiven: nock är höjdskillnaden mellan den höga och
@@ -714,7 +714,7 @@ export const TEXT = {
      */
     'rad-geometri': (v: BeskedVarden): string =>
       v.takform === 'pulpet' && v.matt === 'vinkel'
-        ? `Den höga väggen står ${v.nock} m högre än den låga och takfallet ${v.takfallslangd} m långt. Med ${v.cc} mm mellan takstolarna, mätt från mitt till mitt, ryms det ungefär ${v.takstolar} stycken.`
+        ? `Den höga väggen är ${v.nock} m högre än den låga, och takfallet är ${v.takfallslangd} m långt. Med ${v.cc} mm mellan takstolarna, mätt från mitt till mitt, ryms det ungefär ${v.takstolar} stycken.`
         : `${v.matt === 'nock' ? `Takvinkeln blir ${v.vinkel} grader` : `Nockhöjden blir ${v.nock} m`} och takfallet ${v.takfallslangd} m långt. Med ${v.cc} mm mellan takstolarna, mätt från mitt till mitt, ryms det ungefär ${v.takstolar} stycken.`,
     /* Etiketten över takarean vid utanfor. */
     'etikett-takarea': 'Takytan längs lutningen',
@@ -765,7 +765,7 @@ export const TEXT = {
     kallrad: 'Källorna står i tabellen längre ner',
     /* Vid utanfor, i stället för tabellen. */
     utanfor: (v: BeskedVarden): string =>
-      `Takytan på ${v.takarea} m² ligger ${v.sida === 'over' ? 'över' : 'under'} de ${v.min} till ${v.max} m² som priserna gäller för, så här blir det inga belopp. Jag har ändå räknat ut takets mått och takstolarna, och de står i svaret.`,
+      `Takytan på ${v.takarea} m² ligger ${v.sida === 'over' ? 'över' : 'under'} de ${v.min} till ${v.max} m² som priserna gäller för, och därför blir det inga belopp här. Jag har ändå räknat ut takets mått och takstolarna, och de står i svaret.`,
     /*
      * Stycket som ersätter tabellen när ettTal är sant. När tillaggInraknat är
      * sant går kedjan takarea gånger prisLag = lagtLag, plus tillagg =
@@ -809,7 +809,7 @@ export const TEXT = {
     'andel-arbete': {
       text: (v: BeskedVarden): string =>
         v.ettTal
-          ? `Arbetet är ${v.andelArbete ?? ''} procent av det lagda priset, utan tillägget, efter källans egen uppdelning i arbete och material.`
+          ? `Arbetet är ${v.andelArbete ?? ''} procent av priset för det färdiglagda taket, utan tillägget, efter källans egen uppdelning i arbete och material.`
           : `Arbetet är ${v.andelArbete ?? ''} procent av kostnaden. Där källorna delar upp priset olika har jag tagit den lägsta andelen arbete, så att rotavdraget hellre blir för litet än för stort.`,
       kallor: ['P1', 'P4'],
     },
@@ -833,7 +833,7 @@ export const TEXT = {
     },
     'rot-slog-i': {
       text: (v: BeskedVarden): string =>
-        `Avdraget når gränsen, så du får ${v.kapat ?? ''} kr mindre än ${ROT_PROCENT} procent av arbetet. Rotavdrag som redan är använt i år räknas in i gränsen.`,
+        `Avdraget når gränsen, så du får ${v.kapat ?? ''} kr mindre i avdrag än ${ROT_PROCENT} procent av arbetet. Rotavdrag som redan är använt i år räknas in i gränsen.`,
       kallor: ['SKV-ROT'],
     },
     intervall: {
@@ -843,7 +843,7 @@ export const TEXT = {
     },
     takstolar: {
       text: (v: BeskedVarden): string =>
-        `Räknaren använder ${v.cc} mm mellan takstolarna. Enligt TräGuiden från Svenskt Trä dimensioneras fabrikstillverkade takstolar oftast för ${kronor(CC_STANDARD)} mm, men ${CC_VAL.filter((c) => c !== CC_STANDARD).map((c) => kronor(c)).join(' och ')} mm förekommer också.`,
+        `Räknaren använder ${v.cc} mm mellan takstolarna. Enligt TräGuiden från Svenskt Trä dimensioneras fabrikstillverkade takstolar oftast för ${kronor(CC_STANDARD)} mm mellan stolarna, men ${CC_VAL.filter((c) => c !== CC_STANDARD).map((c) => kronor(c)).join(' och ')} mm förekommer också.`,
       kallor: ['TRAGUIDEN'],
     },
   } satisfies Record<RegelNyckel, RegelText>,
@@ -859,7 +859,7 @@ export const TEXT = {
      * samma meningar som rotavdrag.ts och renovering.ts.
      */
     'rot-pa-allt':
-      'Ställningen är två poster för Skatteverket. Arbetet med att resa den och plocka ner den ger rotavdrag, men hyran för veckorna den står där gör det inte, och samma sak gäller containern och pannorna eller plåten. Arbetet ska ändå stå för sig på fakturan, och där ser du vilken del avdraget gäller.',
+      'Ställningen är två poster för Skatteverket. Arbetet med att resa den och plocka ner den ger rotavdrag, men hyran för veckorna den står där gör det inte, och samma sak gäller containern och pannorna eller plåten. Arbetet ska stå för sig på fakturan, och där ser du vilken del avdraget gäller.',
     /* Beställ inte efter räknarens antal takstolar; leverantören räknar. */
     'bestall-takstolar':
       'Antalet takstolar här är en uppskattning. Ska de bytas räknar leverantören fram både antal och dimension för just ditt hus, och det är de siffrorna du beställer efter.',
@@ -870,11 +870,11 @@ export const TEXT = {
     takarea: 'Takytan',
     'langs-lutningen': 'Hur takytan mäts',
     'utsprang-lika': 'Utsprånget på ett pulpettak',
-    'pris-bandplat': 'Pris för bandtäckt eller falsad plåt, lagt',
-    'pris-takpanneplat': 'Pris för takpanneplåt, lagt',
-    'pris-betong': 'Pris för betongpannor, lagt',
-    'pris-tegel': 'Pris för tegelpannor, lagt',
-    'pris-papp': 'Pris för papp, lagt',
+    'pris-bandplat': 'Pris för lagd bandtäckt eller falsad plåt',
+    'pris-takpanneplat': 'Pris för lagd takpanneplåt',
+    'pris-betong': 'Pris för lagda betongpannor',
+    'pris-tegel': 'Pris för lagda tegelpannor',
+    'pris-papp': 'Pris för lagd papp',
     'en-kalla': 'Antal källor för priset',
     andel: 'Andelen arbete',
     tillagg: 'Tillägg för resor och etablering',
@@ -914,7 +914,7 @@ export const TEXT = {
     tillagg: (kr: string, inraknat: boolean): string =>
       inraknat ? `Cirka ${kr} kr, ingår i beloppet före rotavdraget` : `Cirka ${kr} kr, ingår inte i beloppet`,
     /* Hela tillägget räknas som kostnad utan rotavdrag (TILLAGG_ANDEL_ARBETE, ANTAGANDE med Skatteverkets text om övriga kostnader). */
-    'tillagg-utan-rot': 'Inget, resor och etablering är inte arbete på plats',
+    'tillagg-utan-rot': 'Inget, eftersom resor och etablering inte är arbete på plats',
     /* Ingår i källornas pris per m². */
     'stallning-container': 'Ingår i källornas pris per kvadratmeter',
     /* Priserna gäller sadeltak på villa. */
@@ -946,7 +946,7 @@ export const TEXT = {
      * avdrag. Vid flera källor läggs det inte till. Hantverkaren skriver.
      */
     `Om priset bara har en källa, och den källan tar betalt för resor och etablering för sig, lägger jag till ungefär ${v.tillagg} kr. Tillägget ger inget rotavdrag.`,
-    'Jag delar kostnaden i arbete och material efter källornas uppdelning, med den lägsta andelen arbete när de säger olika.',
+    'Jag delar kostnaden i arbete och material efter källornas uppdelning, med den lägsta andelen arbete när de anger olika andelar.',
     `Rotavdraget blir ${v.rotProcent} procent av arbetet, men aldrig mer än ${v.rotGrans} kr per ägare och år minus det som redan är använt i år. Kostnaden minus avdraget är det du betalar.`,
     `Till sist delar jag husets längd med avståndet mellan takstolarna, avrundar uppåt och lägger till en, så att båda gavlarna får en takstol. Om du inte har valt något annat är avståndet ${v.cc} mm.`,
   ],
@@ -975,7 +975,7 @@ export const TEXT = {
   kortsvar: (v: KortsvarVarden): KortsvarDelar => ({
     fore: `En villa med ${v.bottenyta ?? ''} m² bottenyta har ungefär ${v.takarea ?? ''} m² tak, eftersom taket sticker ut över väggarna och lutningen gör det ${v.paslag27 ?? ''} procent större än ytan det täcker. Med betongpannor för ${v.betong?.prisKvm ?? ''} kr per kvadratmeter och ungefär ${kronor(TILLAGG_KR)} kr för resor och etablering betalar du`,
     markering: `${v.betong?.attBetala ?? ''} kr`,
-    efter: ` efter rotavdraget. Tegelpannor för ${v.tegel?.prisKvm ?? ''} kr per kvadratmeter blir ${v.tegel?.attBetala ?? ''} kr med samma tillägg. Bandtäckt plåt kostar ${v.bandplat?.prisKvm ?? ''} kr per kvadratmeter med etableringen inräknad, och där blir det ${v.bandplat?.attBetala ?? ''} kr. Priserna gäller före rotavdraget och kommer från offertförmedlare och en byggfirma, lästa den ${v.hamtat ?? ''}.`,
+    efter: ` efter rotavdraget. Med tegelpannor för ${v.tegel?.prisKvm ?? ''} kr per kvadratmeter blir det ${v.tegel?.attBetala ?? ''} kr med samma tillägg. Bandtäckt plåt kostar ${v.bandplat?.prisKvm ?? ''} kr per kvadratmeter med etableringen inräknad, och då blir det ${v.bandplat?.attBetala ?? ''} kr efter avdraget. Priserna per kvadratmeter gäller före rotavdraget och kommer från offertförmedlare och en byggfirma, lästa den ${v.hamtat ?? ''}.`,
   }),
 
   /* Sparas till publiceringsomgången (specen 10). Alt under 125 tecken, med orden takbyte och takarea. */

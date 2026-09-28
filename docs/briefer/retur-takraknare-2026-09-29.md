@@ -134,3 +134,67 @@ Rotdelen har fått ett eget första stycke, men andra och tredje stycket följer
   1. Omvänd ordföljd med "jag" på andra plats: 14 fall på takbytet, 8 på avvattningen och 15 på badrummet, och de flesta stegen i "Så räknar jag" börjar så.
   2. Hänvisningen "Källorna står i tabellen längre ner" står 6 gånger på takbytets standardsvar, och badrummet gör likadant.
   3. Takbytets besked och spalt är badrumsräknarens meningar med nya ord, från "Räkna med … kr" och offertrådet till nyårsgränsen och länken om rutavdrag och skatt.
+
+---
+
+## Takbytet varv 4
+
+Läst som en husägare från Google. Sidan är renderad på dev-servern (port 4411) vid standardvärdena, med bandplåt, med pulpettak (27 och 10 grader), med tak på 226 och 232 m², och med bandplåt på 195 m² med en och två ägare, där gränsen för rotavdraget nås. Servern är stängd. Jämfört med /rakna/badrum-kostnad/ vid standardvärdena.
+
+**Betyg: 4.** Det räcker, men bara just. Talen går ihop i alla fall jag provade, till exempel 89 642 + 71 829 + 30 000 = 191 471, minus 26 893 = 164 578. Tillägget står i rubriken, kortsvaret, spalten och "Därför blev svaret så". Beskedet vid gränsen säger nu att det kapade avdraget "är redan inräknat i beloppet", och spalten håller sig till du. Det som var fel förra gången är rättat. Det som drar ner nu är mindre fel som ändå kan leda läsaren fel, se nedan.
+
+### Det läsaren kan göra fel efter att ha läst sidan
+
+1. **Hon tror att offerterna är för dyra.** Raden under rubriken säger: "Be firman räkna på takytan, så kan du jämföra med 1 124 kr per kvadratmeter." Men 1 124 kr är priset utan tillägget på 30 000 kr. Med tillägget blir det 191 471 / 143,7 = cirka 1 333 kr per kvadratmeter. En firma som har etableringen i sitt kvadratmeterpris och tar 1 300 kr ser 16 procent för dyr ut, fast den ligger under sidans egen summa. Det är samma sorts fel som "Gör inte det här" varnar för, bara åt andra hållet.
+2. **Hon räknar på ett pulpettak som inte finns.** Klickar hon på Pulpettak och låter vinkeln stå kvar på 27 grader får hon: "Den höga väggen står 4,59 m högre än den låga, och takfallet är 11,22 m långt." Det är en och en halv våning i höjdskillnad. Sidan säger ingenting om att vinkeln är orimlig för ett pulpettak. Beloppet räknas dessutom på priser som enligt tabellen gäller "Sadeltak på en villa", utan att beskedet eller spalten säger det.
+3. **Hon vet inte om hon ska lägga på 30 000 kr för plåt.** Spalten för bandplåt säger: "En av källorna lägger ungefär 30 000 kr ovanpå för resor och etablering, och det är inte med här, eftersom de andra källorna har etableringen i sitt pris." Det låter som "lägg inte till det". Några rader längre ner står: "Utöver det kan det tillkomma ungefär 30 000 kr för resor och etablering, om firman räknar som en av källorna gör." Det låter som "lägg kanske till det". Och "en av källorna" är inte ens en av plåtprisets källor, för den står inte i tabellraden för bandplåt.
+4. **Hon budgeterar på kronan.** "Budgetera 164 578 kr för ett tak med betongpannor" bygger på ett enda exempel hos en enda förmedlare, och sidan säger det själv. Ett avrundat tal ("runt 165 000 kr") hade sagt samma sak utan att låta exakt.
+
+### Meningar som inte går att förstå vid första läsningen, eller som skaver
+
+1. Spalten: "Priset gäller före rotavdraget och kommer från en offertförmedlare, läst den 28 september 2026." Den står direkt under det stora talet, som är *efter* avdraget. Vilket pris? Läsaren kan tro att 164 578 kr är före avdraget. Skriv "Priset per kvadratmeter".
+2. Spalten: "Nockhöjden blir 2,29 m …" Läsarens hus har redan en nockhöjd. "Blir" låter som att den ändras vid takbytet. "Nockhöjden är" räcker.
+3. Kortsvaret: "En villa med 108 m² bottenyta har ungefär 143,7 m² tak …" Samma problem som förra gången, fast mindre: det gäller vid 27 grader och en halvmeters utsprång, och det står inte. En läsare med 108 m² och 45 grader tror att hon har 143,7 m².
+4. Kortsvaret: "Tegelpannor för 1 464 kr per kvadratmeter blir 213 422 kr med samma tillägg." Före eller efter avdraget? Det går att räkna ut från meningen innan, men inte att läsa.
+5. Regeln: "Källan till det här priset tar ungefär 30 000 kr för resor och etablering …" En offertförmedlare tar inte betalt för resor. Det är firmorna i källans exempel som gör det.
+6. Regeln: "Arbetet är 55,5 procent av det lagda priset, utan tillägget, …" "Det lagda priset" är sidans eget ord. Brödtexten säger samtidigt "På betongpannor är arbetet drygt hälften av kostnaden", men i spalten heter summan med tillägget "kostnaden", och där är arbetet 47 procent.
+7. Brödtexten: "… länken i svaret fyller i arbetet och materialet vid det högsta priset, där gränsen nås först." Standardmaterialet betong har bara ett pris.
+8. Beskedet utanför intervallet: "Hur mycket billigare varje kvadratmeter blir på ett större tak vet jag inte …" Meningen förutsätter att det blir billigare men säger inte varför. Den är ändå mycket bättre än förra varvets "de gäller inte för ditt tak".
+9. Gör inte det här: "Arbetet ska ändå stå för sig på fakturan …" "Ändå" syftar inte på något. Stryk det.
+10. Tabellen "Vad siffrorna vilar på": "Andelen arbete | 55,5 procent | Antagande. Takexperter …; Hantverkskollen, Plåttak pris per kvadratmeter". En plåtsida som källa för betongpannor står kvar från förra varvet.
+11. Källistan: "… förmedlare, rubriken säger "Pris 2026", hämtad 2026-09-28". Står kvar från förra varvet och låter fortfarande som en anteckning.
+12. Spalten säger "en offertförmedlare" och regeln "Källan till det här priset", men tabellen och källistan skriver Takexperter. Läsaren undrar fortfarande varför namnet bara står på ena stället.
+
+### Kortet och beskedet
+
+Kortet finns inte än. Beskedet säger vad hon ska göra ("Budgetera …", "Be firman räkna på takytan", "Låt en takfirma räkna på dina 232,1 m² takyta"). Beskedet vid gränsen är nu rätt och lugnande: "… och det är redan inräknat i beloppet." Men jämförelsetalet i raden under rubriken (punkt 1 ovan) är fel tal att jämföra med när tillägget ligger i beloppet.
+
+### Människa eller mall
+
+Brödtexten, "Gör inte det här" och frågan om takstolarna låter som en människa: "Ställningen är två poster för Skatteverket", "Utsprången är lätta att glömma, men på ett långt hus blir de många kvadratmeter" och "skulle jag låta en konstruktör … titta på om stolarna bär den nya vikten". Spalten och regellistan låter fortfarande som badrumsräknaren med nya tal, och "Källorna står i tabellen längre ner" efter var och en av fem regler i rad är det tydligaste mallspåret på sidan.
+
+Bättre än förra varvet: summan går ihop, rotstycket är lättare att följa, takstolsregeln säger 1 200 mm rakt ut, och "Så räknar jag" har bara en omvänd "jag"-mening kvar ("Till sist delar jag").
+
+### Mönster mot badrum-kostnad
+
+| Plats | badrum-kostnad | takbyte |
+|---|---|---|
+| Beskedets rubrik | "Räkna med att betala 178 160 kr för badrummet" | "Budgetera 164 578 kr för ett tak med betongpannor" |
+| Raden under | "Lägg offerten bredvid tabellen här under och jämför post för post." | "Be firman räkna på takytan, så kan du jämföra med 1 124 kr per kvadratmeter." |
+| Etiketten | "Att betala efter rotavdrag" | "Du betalar efter rotavdraget" |
+| Delningen | "Arbetet kostar 118 800 kr, materialet 90 000 kr och containern 5 000 kr." | "I kostnaden ingår 89 642 kr arbete, 71 829 kr material och 30 000 kr för resor och etablering." |
+| Källraden | "Priserna hämtade jag den 28 september 2026 från offertförmedlare och en byggfirma …" | "Priset gäller före rotavdraget och kommer från en offertförmedlare, läst den 28 september 2026." |
+| Kortsvarets sista mening | "Talen kommer från offertförmedlare och en byggfirma, och kalkylen …" | "… kommer från offertförmedlare och en byggfirma, lästa den 28 september 2026." |
+| Hänvisning efter varje regel | "Varifrån varje tal kommer", 4 gånger | "Källorna står i tabellen längre ner", 6 gånger vid standard, 4 vid bandplåt |
+| Frågorna | timpris ("jag har inte räknat upp det"), byggstädning ("Jag har inte hittat något pris") | valmat tak ("Inte här."), takstolar ("Räknaren utgår från …"), snölast ("Den här räknaren dimensionerar inga takstolar") |
+| H1 | "Vad blir priset när du renoverar badrummet?" | "Vad kostar ett nytt tak på ditt hus?" |
+
+Nytt mönster: när den omvända ordföljden har rättats har "Jag" + verb tagit dess plats. "Jag tar …", "Jag multiplicerar …" och "Jag delar …" inleder tre av sex steg, och "Jag har räknat fram …" står två gånger i regellistan ("Jag har räknat fram nockhöjden", "Jag har räknat fram priset per kvadratmeter"). Det är inte fel än, men det är på väg att bli nästa tic.
+
+Frasen "offertförmedlare och en byggfirma" står ordagrant i båda kortsvaren och i badrummets spalt. En läsare som klickar mellan räknarna hör den.
+
+### Sammanfattning varv 4
+
+- Betyg: 4 (förra varvet 3).
+- Det viktigaste att rätta: jämförelsetalet i beskedet ska ha tillägget med (cirka 1 333 kr per kvadratmeter för betong), pulpettaket behöver en rimlig vinkel eller en varning, och bandplåtens två meningar om tillägget ska säga samma sak.
+- De tre värsta mönstren: hänvisningen "Källorna står i tabellen längre ner" efter var och en av fem regler i rad; spaltens rader följer badrummets ordning och byggnad rad för rad; "offertförmedlare och en byggfirma" som slutkläm i båda kortsvaren.

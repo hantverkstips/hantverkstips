@@ -685,10 +685,10 @@ export const TEXT = {
       } Räknaren följer RA Hus, och det gör också Plannjas anvisning.`,
     /* Den vågräta ytan enligt SS-EN 12056-3 som BMI sammanfattar den, med vagrattYta, vagrattRanna och vagrattStupror. Bara vid satt = hus. */
     vagratt: (v: BeskedVarden): string =>
-      `Den europeiska standarden SS-EN 12056-3 mäter enligt tillverkaren BMI ytan vågrätt i stället för längs lutningen. Då blir det ${v.vagrattYta ?? ''} m² till varje stuprör, och det räcker med en ränna på ${v.vagrattRanna ?? ''} mm och ett rör på ${v.vagrattStupror ?? ''} mm. ${
+      `Enligt tillverkaren BMI mäter den europeiska standarden SS-EN 12056-3 ytan vågrätt i stället för längs lutningen. Då blir det ${v.vagrattYta ?? ''} m² till varje stuprör, och det räcker med en ränna på ${v.vagrattRanna ?? ''} mm och ett rör på ${v.vagrattStupror ?? ''} mm. ${
         v.vagrattRanna === v.ranna && v.vagrattStupror === v.stuprorDim
           ? 'För ditt tak spelar det ingen roll hur du mäter.'
-          : 'Ingen av standarderna är skäl att välja en mindre dimension än räknarens.'
+          : 'Ingen av standarderna är ett skäl att välja en mindre dimension än räknarens.'
       }`,
   },
 
@@ -710,7 +710,7 @@ export const TEXT = {
     'stupror-ra': 'Största takyta (m²)',
     /* Källraden under stuprörets tabell. */
     'stupror-kalla':
-      'Källa: RA Hus 21 enligt Teknikhandboken, ändrad i november 2020. Plannjas anvisning från 2026 har samma tal upp till 120 mm, och bladet från 2010 har samma tal i hela tabellen.',
+      'Källa: RA Hus 21 enligt Teknikhandboken, som ändrades i november 2020. Plannjas anvisning från 2026 har samma tal upp till 120 mm, och bladet från 2010 har samma tal i hela tabellen.',
   },
 
   antagande: {
@@ -733,7 +733,7 @@ export const TEXT = {
   antagandeVarde: {
     'langs-lutningen': 'Längs lutningen, som i räknaren för takbyte',
     'rannfall-lika': 'Lika mycket tak och lika lång ränna till varje rör',
-    'lage-ej': 'Frågas inte efter, rännans delar antas lika långa',
+    'lage-ej': 'Frågas inte efter, så rännans delar antas vara lika långa',
     'steg-87-90': 'Räknas som 90 och 110 mm',
     /* cc mm c/c, kant mm från kanten, samma vid fall åt båda håll. */
     krokar: (cc: string, kant: string): string =>
@@ -745,7 +745,7 @@ export const TEXT = {
   /* "Så räknar jag" som numrerad lista. Talen ur StegVarden. */
   steg: (v: StegVarden): string[] => [
     'Jag tar takfallets yta längs lutningen och räknar rännan lika lång som takfoten.',
-    `Sedan delar jag rännan så att inget stuprör får mer än ${v.rannlangdPerStupror} m, och takytan fördelas lika mellan rören.`,
+    `Sedan delar jag rännan så att inget stuprör får mer än ${v.rannlangdPerStupror} m ränna, och takytan fördelas lika mellan rören.`,
     `Ytan som går till ett stuprör slår jag upp i tabellerna för ränna och stuprör, och jag tar den minsta dimension som räcker. Rännans tabell slutar vid ${v.max} m² till ett rör.`,
     `Till sist blir fallet ${v.fallMin} mm per meter gånger rännans längd fram till röret, och krokarna sitter med ${v.krokCc} mm mellan varandra och ${v.krokKant} mm från ändarna.`,
   ],
