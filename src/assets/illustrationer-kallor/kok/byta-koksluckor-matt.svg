@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Överskåp med luckan framför stommen och en förstoring av gångjärnet, med de mått du tar när du ska byta köksluckor.">
+  <!-- Anteckningsboken. Blyerts 2 px för skåpet, luckan, stomsidan, koppen, armen och de tre små snitten, blyerts-2
+       för fältgränser, brytlinjer, snittkryss, måttbyglar, hjälplinjer och ledare, snickarpenna för ringen runt
+       stomsidans framkant (enda pennsaken). Tumstock bakom 35 mm. Fält A skåpet snett uppifrån, djupvektor (40, -28),
+       inte skalenligt i djupled. Fält B gångjärnet uppifrån, cirka 3 enheter per mm. Fält C tre snitt, 1 enhet per mm.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2 1,25: fältgränserna, snittkrysset i stomsidan -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M308,16 Q309,186 308,356 M316,223 Q455,224 594,223"/>
+    <path d="M333,46 L384,114 M384,46 L333,114"/>
+  </g>
+
+  <!-- Blyerts-2 1,5: brytlinjerna, måttbyglarna och hjälplinjerna -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M325,42 l9,-6 l8,7 l9,-7 l8,7 l9,-7 l8,7 l9,-6 l12,4 M590,114 l-5,9 l7,8 l-7,9 l7,8 l-7,9 l7,8 l-2,7"/>
+    <path d="M80,336 V350 M258,336 V350 M80,344 Q169,345 258,344 M76,348 l8,-8 M254,348 l8,-8"/>
+    <path d="M56,76 H75 M56,332 H75 M62,76 Q61,204 62,332 M58,80 l8,-8 M58,336 l8,-8"/>
+    <path d="M330,34 V22 M387,34 V22 M330,28 Q358,29 387,28 M326,32 l8,-8 M383,32 l8,-8"/>
+    <path d="M330,180 V194 M330,188 H345 Q397,189 450,188 M326,192 l8,-8 M341,192 l8,-8 M446,192 l8,-8"/>
+    <path d="M345,124 V194 M450,124 V194" stroke-dasharray="4 4"/>
+  </g>
+
+  <!-- Papperslappar på byglarna i fält A, tumstock bakom 35 mm -->
+  <rect x="144" y="334" width="50" height="22" fill="#f5efe3"/>
+  <rect x="50" y="185" width="27" height="38" fill="#f5efe3"/>
+  <rect x="426" y="194" width="62" height="24" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 457 206)"/>
+
+  <!-- Blyerts: fält A skåpet och luckan, fält B stomsidan, luckan, koppen och armen, fält C de tre snitten -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M78,76 Q169,75 260,76 M258,74 Q259,204 258,334 M260,332 Q169,333 78,332 M80,334 Q79,204 80,74"/>
+    <path d="M80,76 L86,72 M258,76 L264,72 M258,332 L264,328 M84,72 Q175,71 266,72 M264,70 Q265,199 264,329"/>
+    <path d="M86,72 L126,44 M124,44 Q214,43 304,44 M264,71 L302,44 M94,72 L134,44 M254,72 L294,44 M302,42 Q303,170 302,300 L264,325"/>
+    <path d="M330,38 Q331,78 330,120 M387,38 Q386,78 387,118 M328,118 H389"/>
+    <path d="M328,120 H345 A52.5,39 0 0 0 450,120 Q520,119 590,120 M328,177 Q459,178 590,177 M330,118 Q331,148 330,179"/>
+    <path d="M387,60 H395 V90 H387 M397,152 Q397,121 392,90 M410,147 Q404,110 395,78"/>
+    <path d="M350,228 V248 M369,228 V248 M348,248 H422 M420,246 V269 M422,267 H348 M350,269 V246"/>
+    <path d="M366,272 V292 M385,272 V292 M328,292 H374 M372.5,290 V313 M374,311 H328 M330,313 V290 M377,292 H422 M420,290 V313 M422,311 H377 M378.5,290 V313"/>
+    <path d="M330,316 V356 M349,316 V356 M352,335 H422 M420,333 V356 M422,354 H352 M353.5,356 V333"/>
+  </g>
+
+  <!-- Blyerts-2: ledare -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M338,196 L338,192"/>
+    <path d="M430,197 L422,191"/>
+  </g>
+
+  <!-- Snickarpenna: ringen runt stomsidans framkant, öppen -->
+  <path d="M242,61 Q247,52 258,53 Q273,55 272,70 Q271,86 256,86 Q241,85 240,71" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#625a50">
+    <text x="169" y="353" text-anchor="middle">bredd</text>
+    <text x="71" y="204" text-anchor="middle" transform="rotate(-90 71 204)">höjd</text>
+    <text x="126" y="28" fill="#ad3519">stomsidans framkant</text>
+    <text x="396" y="36">16, 18 eller 19 mm</text>
+    <text x="318" y="214">3 till 7 mm</text>
+    <text x="457" y="214" text-anchor="middle" fill="#2a2521">35 mm</text>
+    <text x="430" y="256">helt påliggande</text>
+    <text x="430" y="300">halvt påliggande</text>
+    <text x="430" y="344">inliggande</text>
+  </g>
+</svg>

@@ -936,6 +936,7 @@ Blyertsskiss på linjerat papper. Förebilden är `src/assets/illustrationer/fuk
 - **Nyckeltalet.** Ett tal per illustration får gul markering: en rektangel i tumstock, 65 procents opacitet, roterad en till två grader, bakom texten.
 - **Mått.** Handritade måttbyglar i blyerts-2, 1,5 px, med måttet i handskrift: "2,2 m i tak", "c 600".
 - **Inga människor, inga verktyg i drift, inga produktbilder.** En avfuktare i en skiss är en rektangel med en pil för luftflödet.
+- **Storlek.** Den publicerade filen är under 40 kB. En kB är 1 024 byte, i den här gränsen, i varje specs egen gräns och i HTML-budgeten, eftersom det är vad `npm run illustrationer`, `scripts/budget-html.mjs` och PowerShells `1kb` skriver ut (beslut 2026-09-29). Gränsen 40 kB är alltså 40 960 byte, och en spec som säger 30 kB menar 30 720 byte.
 
 Altanen ritas som snickarens egen skiss med mått på reglarna, taket som en takstol med vinkeln noterad, garaget med fläkten och pilar för luftflödet. Chefredaktören beställer, designansvarig ritar eller specar, och varje ny illustration granskas mot listan ovan.
 

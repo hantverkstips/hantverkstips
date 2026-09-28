@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Snitt genom plåttaket vid takfoten med råspont, underlagspapp, ströläkt, bärläkt och takpanneplåt i lager.">
+  <!-- Anteckningsboken. Blyerts 2 px för råsponten, takfotsbeslaget, bärläkten i snitt och takpanneplåten, blyerts 1,5
+       för underlagspappen, blyerts-2 för ströläkten bakom snittet, kryssen i läkten, brytlinjen, väggen, måttbygeln och
+       ledare, snickarpenna för vattnet på pappen ut över beslaget (enda pennsaken). Tumstock bakom c 400 mm.
+       Inte skalenlig: skikten är förstorade. Snittet slutar i en brytlinje, nocken ritas inte.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2 1,5: ströläkten bakom snittet, brytlinjen, väggen, måttbygeln -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M89.6,272.1 Q303.2,184.3 517.8,98.8 M94.1,283.2 L89.2,271.2"/>
+    <path d="M533.2,131.5 L535.4,115.5 L514.5,106.6 L523.4,85.8 L509.2,72.1"/>
+    <path d="M179.4,270.3 Q180.4,313.1 179.4,356 M205.4,259.8 Q204.4,307.9 205.4,356"/>
+    <path d="M195.1,186.3 Q239.2,167.3 284.1,150.3 M192.3,192.8 L197.8,179.7 M281.3,156.8 L286.8,143.7"/>
+    <path d="M205.6,212.2 L192.8,180.7 M294.6,176.2 L281.8,144.7" stroke-dasharray="5 4"/>
+  </g>
+
+  <!-- Blyerts-2 1,25: kryssen i bärläkten -->
+  <path d="M110.5,262.5 L127.2,245 M106.8,253.3 L130.9,254.3 M199.5,226.5 L216.1,209 M195.8,217.3 L219.9,218.3 M288.5,190.5 L305.1,173 M284.7,181.3 L308.9,182.3 M377.5,154.5 L394.1,137 M373.7,145.3 L397.9,146.3 M466.5,118.5 L483.1,101 M462.7,109.3 L486.9,110.3" fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round"/>
+
+  <!-- Blyerts 1,5: underlagspappen -->
+  <path d="M88.1,289.9 Q305.6,200.9 523.8,113.7 M86.6,286.2 Q304.9,199 522.3,110 M88.3,290.4 L86.5,285.7" fill="none" stroke="#2a2521" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Blyerts: råsponten, takfotsbeslaget, bärläkten, takpanneplåten -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M94.1,304.8 Q311.5,215.5 529.8,128.5 M88.9,291.8 Q307.2,204.8 524.6,115.5 M96.8,305.9 Q93.4,297.5 90,289.2 M160.9,277.8 L155.6,264.8 M225.8,251.5 L220.5,238.5 M290.7,225.3 L285.4,212.3 M355.6,199 L350.3,186 M420.5,172.8 L415.2,159.8 M485.3,146.5 L480.1,133.5"/>
+    <path d="M118.2,278.8 Q103.2,284.4 89,290.7 L99.1,315.7 L94.6,321.8"/>
+    <path d="M109,264.2 L133.1,254.5 M132.6,255.8 L127.3,242.8 M128.6,243.3 L104.5,253.1 M105.1,251.8 L110.3,264.8 M198,228.2 L222.1,218.5 M221.6,219.8 L216.3,206.8 M217.6,207.3 L193.5,217.1 M194.1,215.8 L199.3,228.8 M287,192.2 L311.1,182.5 M310.6,183.8 L305.3,170.8 M306.6,171.3 L282.5,181.1 M283.1,179.8 L288.3,192.8 M376,156.2 L400.1,146.5 M399.6,147.8 L394.3,134.8 M395.6,135.3 L371.5,145.1 M372.1,143.8 L377.3,156.8 M465,120.2 L489.1,110.5 M488.5,111.8 L483.3,98.8 M484.6,99.3 L460.5,109.1 M461,107.8 L466.3,120.8"/>
+    <path d="M71.3,264.4 L69.8,260.7 Q86.6,251.5 103.6,242.7 L107.3,252 Q149.6,228.6 192.6,206.7 L196.3,216 Q238.6,192.6 281.5,170.7 L285.3,180 Q327.6,156.6 370.5,134.7 L374.3,144 Q416.6,120.6 459.5,98.7 L463.3,108 Q487,94.5 511.2,82.5"/>
+  </g>
+
+  <!-- Tumstock bakom c 400 mm -->
+  <rect x="172" y="129" width="88" height="27" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 216 142)"/>
+
+  <!-- Blyerts-2: ledare -->
+  <path d="M396,70 L429.3,114.7 M314,100 L385.8,145.8 M436,190 L392.2,156.1 M328,250 L274.8,212.8 M298,296 L232.4,241.3 M214,336 L96.5,309.2" fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round"/>
+
+  <!-- Snickarpenna: vattnet på pappen, ner över takfotsbeslaget och ut utanför droppnäsan -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M366.2,172 Q226.9,227.5 88.1,284.5 Q84.4,286 80.4,297.4 L90.1,321.5 Q91.1,333.7 90.1,346"/>
+    <path d="M84.6,339 L90.1,346.5 L95.6,339"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#625a50">
+    <text x="288" y="66">takpanneplåt</text>
+    <text x="250" y="100">bärläkt</text>
+    <text x="176" y="150" fill="#2a2521">c 400 mm</text>
+    <text x="440" y="58">vidare mot nocken</text>
+    <text x="440" y="208">ströläkt c 600</text>
+    <text x="332" y="262">underlagspapp</text>
+    <text x="300" y="306">råspont</text>
+    <text x="216" y="344">takfotsbeslaget</text>
+    <text x="48" y="180" fill="#ad3519">vatten på pappen</text>
+    <text x="48" y="204" fill="#ad3519">rinner ut här</text>
+  </g>
+</svg>

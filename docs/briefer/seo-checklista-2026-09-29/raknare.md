@@ -323,7 +323,7 @@ Det ettan har som vi måste ha:
 - **Tas inte med:** Beckmans (P2) och Hantverkskollens jämförelsetabell (P4b), som är samma tal. Beckmans kallar dem "efter rot" och Hantverkskollen "före rot", och motsägelsen går inte att lösa. BraByggare (P6), eftersom rotläget inte anges. Tak i Väst (P7), som gäller efter rot för ett enda projekt. Svenska Byggruppen (P8), som är odaterad. Bygghemma (P9), som saknar pris per material.
 - **Dubbletter räknas som en källa:** Husexperter är Takexperter, och Hantverkskollens jämförelsetabell är Beckmans.
 - **Spannet per material** går från den lägsta låga till den högsta höga bland de källor som används för materialet. Källorna står i "Så räknar jag". Inget medelvärde räknas. Material med en enda källa (till exempel tegel, bara Takexperter) står med den och märks i antagandetabellen.
-- **Takexperters tillägg** för resor, etablering och projektering, cirka 30 000 kr, visas som en egen rad med källan, inte inbakat i kvadratmeterpriset.
+- **Takexperters tillägg** för resor, etablering och projektering, cirka 30 000 kr, ändrat 2026-09-29, se nedan.
 - **Andelen arbete** tas från Hantverkskollen (P4) och Takexperter (P1), som delar upp material och arbete. Där båda saknas märks andelen ANTAGANDE.
 - **Skalning:** linjär bara för takytor mellan 100 och 200 kvm, det intervall som källornas exempel täcker (Hantverkskollen 100 till 200, Takexperter och Totalbyggarna 150). Utanför intervallet visar räknaren takarean och takstolarna men inget belopp.
 - **Valmtak** avgör UX (faktabladet 2.4).
@@ -341,6 +341,13 @@ Det ettan har som vi måste ha:
 - **Snölast** ska inte räknas i första versionen. Frasen är 30 i månaden, och det saknas en gällande källa efter att EKS upphörde (tak.md, snörasskydd). Den blir en senare version.
 - **Takläggarsajterna och förmedlarna** nämns inte i publik text.
 - **Priser utan datum** får inte finnas i modulen.
+
+
+### Beslut efter bygget, 2026-09-29
+
+1. **Tillägget räknas in i summan där Takexperter är enda källan.** Det gäller betong, tegel och papp. Takexperter skriver att tillägget kommer till totalpriset, så deras kvadratmeterpris utan tillägget är inte deras pris. Tillägget läggs på före rotavdraget, som en post med Takexperter som källa. Hur det delas mellan arbete och material märks ANTAGANDE, om underlaget inte har en uppdelning. Standardsvaret för betongpannor räknas om. För material med flera källor räknas tillägget inte in. Där står en rad under beloppet om att Takexperter lägger cirka 30 000 kr ovanpå, med källan.
+2. **Takexperters uträknade kvadratmeterpris används bara där de är enda källan.** Värdet 1 080 kr för bandplåt är vår egen division av ett exempel, utan tillägget, och ska inte sätta lägstapriset när det finns källor som anger ett spann direkt. **Bandplåt blir 1 500 till 2 500 kr per m²**, med Totalbyggarna för det låga värdet och Hantverkskollen för det höga. Samma regel gäller takpanneplåt och trapetsplåt.
+3. **Samma tal på båda sidorna.** `/tak/plattak/` rättas så att bandtäckning anges som 1 500 till 2 500 kr per m² med samma två källor som räknaren, i stället för Hantverkskollens 1 600 till 2 500 ensamt. Det är en kirurgisk rättning av talet och källraden. Samma kontroll görs för takpanneplåt och trapetsplåt i sidans tabell, så att en läsare som går mellan sidan och räknaren ser samma spann.
 
 ---
 

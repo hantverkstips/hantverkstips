@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Hängränna som lutar mot stupröret, där vattnet rinner ut genom utkastaren och bort från huset i en ränndal.">
+  <!-- Anteckningsboken. Blyerts 2 px för taket, takfotsbrädan, väggens hörn, rännan, krokarna, stupröret, utkastaren,
+       marken och ränndalen, blyerts-2 för pannraderna, hjälplinjerna för fallet, måttbyglarna, ränndalens botten och
+       ledare, snickarpenna för vattnets väg från rännan till ränndalen (enda pennsaken). Tumstock bakom minsta fallet.
+       Inte skalenlig: fallet är kraftigt överdrivet i höjdled. Långsidan rakt framifrån, marken lätt uppifrån.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2 1,25: pannraderna, ränndalens botten -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M52,56 Q228,57 404,56 M52,76 Q228,75 404,76"/>
+    <path d="M399,307 Q402,330 404,353"/>
+  </g>
+
+  <!-- Blyerts-2 1,5: hjälplinjen vågrätt och fallet 6 mm per meter, streckade -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="6 5">
+    <path d="M56,118 H440"/>
+    <path d="M56,118 L398,166"/>
+  </g>
+
+  <!-- Blyerts: taket, takfotsbrädan, väggens hörn, rännan med gavlar, krokarna, stupröret med kupa och rörsvep,
+       utkastaren, marken, ränndalen -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M48,36 Q229,35 410,36 M408,33 Q409,72 408,113 M48,96 Q229,95 410,96 M48,110 Q229,111 410,110"/>
+    <path d="M400,108 Q401,196 400,286"/>
+    <path d="M55,118 Q227,127 399,138 M55,132 Q227,141 399,152 M56,116 Q52,125 56,134 M398,136 Q401,144 398,154"/>
+    <path d="M70,100h4v23h-4z M120,100h4v26h-4z M170,100h4v29h-4z M220,100h4v32h-4z M270,100h4v35h-4z M320,100h4v37h-4z M370,100h4v40h-4z"/>
+    <path d="M377,151 L380,158 M399,152 L396,158 M380,156 Q379,219 380,282 M396,156 Q397,219 396,282 M377,206 H399 M377,211 H399 M377,258 H399 M377,263 H399"/>
+    <path d="M380,282 Q381,294 388,300 M396,282 Q401,288 412,295 M386,300 Q397,288 414,295 Q405,309 386,300"/>
+    <path d="M44,300 Q214,301 384,300 M416,300 Q505,299 594,300"/>
+    <path d="M388,304 Q399,303 410,304 M410,304 Q418,330 424,356 M424,356 Q404,357 384,356 M384,356 Q385,330 388,304"/>
+  </g>
+
+  <!-- Blyerts-2 1,5: måttbyglarna, 10 m under rännan och 25 och 60 mm vid rännans lägsta ände, med stödlinjer -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M56,190 V202 M52,200 l8,-8 M56,196 Q217,197 377,196 M394,200 l8,-8"/>
+    <path d="M403,138 H426 M403,166 H442"/>
+    <path d="M420,118 Q421,128 420,138 M416,122 l8,-8 M416,142 l8,-8"/>
+    <path d="M436,118 Q437,142 436,166 M432,122 l8,-8 M432,170 l8,-8"/>
+  </g>
+
+  <!-- Papperslappar och tumstock -->
+  <rect x="124" y="52" width="44" height="26" fill="#f5efe3"/>
+  <rect x="203" y="184" width="48" height="26" fill="#f5efe3"/>
+  <rect x="443" y="110" width="128" height="51" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 507 135)"/>
+
+  <!-- Blyerts-2: ledare -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M104,142 L111,134"/>
+    <path d="M133,77 L123,103"/>
+    <path d="M353,244 L379,247"/>
+    <path d="M441,283 L411,296"/>
+    <path d="M441,333 L414,330"/>
+  </g>
+
+  <!-- Snickarpenna: vattnets väg, i rännan mot stupröret, ner genom röret, ut ur utkastaren och bort i ränndalen -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M70,126 Q226,134 380,144 Q388,144.5 388,152 Q389,217 388,282 Q388,292 398,299 Q401,325 405,348"/>
+    <path d="M399.4,341 L405,348 L408.3,339.6"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#625a50">
+    <text x="70" y="160" fill="#2a2521">hängränna</text>
+    <text x="128" y="72">krok</text>
+    <text x="290" y="250">stuprör</text>
+    <text x="444" y="288">utkastare</text>
+    <text x="444" y="340">ränndal</text>
+    <text x="446" y="130" fill="#2a2521">minst 2,5 mm</text>
+    <text x="446" y="154" fill="#2a2521">per m = 25 mm</text>
+    <text x="446" y="184">självrensande</text>
+    <text x="446" y="208">6 mm per m</text>
+    <text x="227" y="204" text-anchor="middle">10 m</text>
+  </g>
+</svg>

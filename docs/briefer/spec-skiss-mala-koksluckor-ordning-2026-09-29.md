@@ -72,3 +72,7 @@ Etiketterna staplas i detaljens övre del med minst 26 enheters radavstånd, hö
 ## 7. Budget
 
 Publicerad fil under 28 kB. Resten som fogspecen avsnitt 7, med `kok/mala-koksluckor-ordning`. Vid granskningen på 343 px: syns det att detaljen är luckans kant, går de fem skikten att skilja, och är de röda tänderna det första ögat fastnar på?
+
+## 8. Godkännande
+
+Godkänt 2026-09-29, UX och bygge: M1 står i skivans tomma yta under den blanka delen, som tabellen i avsnitt 5 anger; skivan har varken skraffering eller ådring, så regeln om att inga etiketter står i skikten gäller färgskikten. Ledarna till M2, M4, M5 och M6 går snett genom de skikt som ligger ovanför målet, vilket fogspecen avsnitt 5 tillåter, och ingen korsar en annan.

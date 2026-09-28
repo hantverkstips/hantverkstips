@@ -74,3 +74,7 @@ Nio etiketter är taket för bilden. Står de för tätt för 24 px är P9 den s
 ## 7. Budget
 
 Publicerad fil under 32 kB. Resten som fogspecen avsnitt 7, med `tak/plattak-snitt`. Vid granskningen på 343 px: går de fem skikten att skilja, ser bärläkterna ut som tvärsnitt och ströläkten som ett band, och syns pennans linje gå ut över beslaget?
+
+## 8. Godkännande
+
+Godkänd 2026-09-29 av UX och bygge på 40 639 byte (39,7 kB), över specens 32 kB men under sajtens gräns 40 kB (40 960 byte, DESIGN.md avsnitt 7). Nio etiketter på 122 tecken väger cirka 35 kB som banor, och bilden läses ändå. Filen serveras som `<img loading="lazy">` med hash och `immutable`-cache och väger inget i sidans HTML, så etiketterna kortas inte för bytens skull. Bilden har ingen marginal kvar: en tionde etikett eller en längre lydelse kräver att en annan stryks, P9 först.

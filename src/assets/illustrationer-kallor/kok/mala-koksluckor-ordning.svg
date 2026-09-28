@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Lucka på bockar och ett förstorat snitt genom kanten, som visar i vilken ordning du ska måla köksluckor.">
+  <!-- Anteckningsboken. Blyerts 2 px för luckan, bockarna, golvet och skikten i snittet, blyerts-2 för ringen,
+       hjälplinjerna, detaljens ram, grundens streck, den lätta slipningen och ledare, snickarpenna för den
+       mattslipade ytan (enda pennsaken). Tumstock bakom korn 240. Inte skalenlig: skikten är mycket tjockare än de är.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2 1,25: detaljens ram, hjälplinjerna från ringen, grundens streck, den lätta slipningen -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M250,40Q422,39 594,40V320Q422,321 250,320V40"/>
+    <path d="M216,160L250,40M216,194L250,320"/>
+    <path d="M328,213h6M348,216h6M368,213h6M388,216h6M408,213h6M428,216h6M448,213h6M468,216h6M488,213h6M508,216h6M528,213h6M548,216h6M568,213h6"/>
+    <path d="M340,186Q467,185 594,186" stroke-dasharray="5 4"/>
+  </g>
+
+  <!-- Blyerts-2 1,5: ringen runt luckans ände, öppen -->
+  <path d="M200,163Q211,157 222,162Q231,169 229,180Q226,194 211,195Q196,194 194,180Q193,172 197,166" fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Tumstock bakom korn 240 -->
+  <rect x="252" y="151" width="84" height="25" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 294 164)"/>
+
+  <!-- Blyerts: luckan och bockarna, golvet, skikten i snittet -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M54,170Q139,169 224,170M222,168V186M224,184Q139,185 54,184M56,186V168"/>
+    <path d="M70,184V191H112V184M80,191L66,300M102,191L116,300M166,184V191H208V184M176,191L162,300M198,191L212,300"/>
+    <path d="M44,300Q137,301 230,300"/>
+    <path d="M250,236Q422,237 594,236M250,222H320"/>
+    <path d="M320,204V222M318,206Q456,205 594,206M340,184V206M360,164V186M358,166Q476,165 594,166"/>
+  </g>
+
+  <!-- Blyerts-2: ledare -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M464,60L490,174"/>
+    <path d="M413,86L440,194"/>
+    <path d="M345,112L380,212"/>
+    <path d="M346,140L333,219"/>
+    <path d="M300,262L290,230"/>
+  </g>
+
+  <!-- Snickarpenna: den mattslipade ytan, tänderna -->
+  <path d="M320,222L323,220.5L326,223.2L329,220.5L332,223.4L335,220.9L338,223.5L341,220.7L344,223.5L347,220.8L350,223.5L353,220.6L356,223.1L359,220.5L362,223.3L365,220.5L368,223.2L371,220.5L374,223.4L377,220.9L380,223.5L383,220.7L386,223.5L389,220.8L392,223.5L395,220.6L398,223.1L401,220.5L404,223.3L407,220.5L410,223.2L413,220.5L416,223.4L419,220.9L422,223.5L425,220.7L428,223.5L431,220.8L434,223.5L437,220.6L440,223.1L443,220.5L446,223.3L449,220.5L452,223.2L455,220.5L458,223.4L461,220.9L464,223.5L467,220.7L470,223.5L473,220.8L476,223.5L479,220.6L482,223.1L485,220.5L488,223.3L491,220.5L494,223.2L497,220.5L500,223.4L503,220.9L506,223.5L509,220.7L512,223.5L515,220.8L518,223.5L521,220.6L524,223.1L527,220.5L530,223.3L533,220.5L536,223.2L539,220.5L542,223.4L545,220.9L548,223.5L551,220.7L554,223.5L557,220.8L560,223.5L563,220.6L566,223.1L569,220.5L572,223.3L575,220.5L578,223.2L581,220.5L584,223.4L587,220.9L590,223.5L593,220.7L596,223.5" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#625a50">
+    <text x="256" y="66">andra, efter lätt slipning</text>
+    <text x="256" y="92">första strykningen</text>
+    <text x="256" y="118">grundfärg</text>
+    <text x="256" y="144" fill="#ad3519">mattslipad</text>
+    <text x="256" y="170" fill="#2a2521">korn 240</text>
+    <text x="262" y="284">gammal blank yta</text>
+  </g>
+</svg>

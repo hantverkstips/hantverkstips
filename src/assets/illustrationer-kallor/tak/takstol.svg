@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Takstol till sadeltak med spännvidd, tass, nockhöjd, takfallslängd och lutning utsatta, och under den en pulpettakstol.">
+  <!-- Anteckningsboken. Blyerts 2 px för takstolarnas virke, noderna och väggstumparna, blyerts-2 för måttbyglar,
+       hjälplinjer, lutningens båge och ledare, snickarpenna för pulpetstolens konstruktionshöjd (enda pennsaken).
+       Tumstock bakom 1/15 av spännvidden. Sadeltakstolen överst utan tal, pulpetstolen nederst med höjden 1/15 av
+       spännvidden och parallella ramar. Takstolarna sedda från gaveln. Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2 1,5: måttbyglar, hjälplinjer och lutningens båge -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M150,181 V196 M450,181 V196 M150,190 Q300,191 450,190 M146,194 l8,-8 M446,194 l8,-8"/>
+    <path d="M110,172 Q130,172.6 150,172 M106,176 l8,-8 M146,176 l8,-8"/>
+    <path d="M520,130 Q521,85 520,40 M516,134 l8,-8 M516,44 l8,-8"/>
+    <path d="M99,139 Q194.5,82 289,24 M96.9,135.6 L107.3,152.7 M286.9,20.6 L297.3,37.7"/>
+    <path d="M138,155 A28,28 0 0 0 133.9,140.5"/>
+    <path d="M110,350 Q300,351 490,350 M106,354 l8,-8 M486,354 l8,-8"/>
+    <path d="M110,158 V178 M304,40 H526 M454,130 H526 M112,155 H144" stroke-dasharray="5 4"/>
+  </g>
+
+  <!-- Tumstock bakom cirka 1/15 av spännvidden -->
+  <rect x="56" y="216" width="122" height="53" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 117 242)"/>
+
+  <!-- Blyerts: sadeltakstolen, väggstumparna, pulpetstolen -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M148,130 Q300,131 452,130 M110,155 Q205.5,98.3 301.7,39 M490,155 Q394.5,98.3 298.3,39"/>
+    <path d="M250,130 L225,85 M250,130 Q276,86 300,40 M350,130 Q324,86 300,40 M350,130 L375,85"/>
+    <path d="M150,129 Q151,154 150,178 M162,131 Q161,154 162,178 M438,131 Q439,154 438,178 M450,129 Q449,154 450,178"/>
+    <path d="M108,334.4 Q300,301.5 492,266.6 M108,309 Q300,274.3 492,241.2 M110,336 V306.6 M490,269 V239.6"/>
+    <path d="M110,334 L148,301.9 L186,320.6 L224,288.5 L262,307.2 L300,275.1 L338,293.8 L376,261.7 L414,280.4 L452,248.3 L490,267"/>
+    <path d="M110,334 Q111,345 110,356 M122,332 Q121,344 122,356 M478,269 Q479,312 478,356 M490,267 Q489,312 490,356"/>
+  </g>
+
+  <!-- Blyerts: noderna där delarna möts -->
+  <path fill="#2a2521" d="M148,130 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 M448,130 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 M298,40 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 M248,130 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 M348,130 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 M223,85 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 M373,85 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 M108,334 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 M108,308.6 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 M146,301.9 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 M184,320.6 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 M222,288.5 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 M260,307.2 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 M298,275.1 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 M336,293.8 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 M374,261.7 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 M412,280.4 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 M450,248.3 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 M488,267 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0 M488,241.6 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0"/>
+
+  <!-- Blyerts-2: ledare -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M500,34 L518,84"/>
+    <path d="M166,150 L138,148"/>
+    <path d="M89,272 L95,304"/>
+    <path d="M86,186 L124,174"/>
+  </g>
+
+  <!-- Snickarpenna: pulpetstolens konstruktionshöjd -->
+  <g fill="none" stroke="#ad3519" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M96,334 Q97,321 96,308.6 M91,334 H101 M91,308.6 H101" stroke-width="2.5"/>
+    <path d="M102,334 H108 M102,308.6 H108" stroke-width="1.25" stroke-dasharray="3 2"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#625a50">
+    <text x="52" y="72">takfallslängd</text>
+    <text x="436" y="26">nockhöjd</text>
+    <text x="170" y="158">lutning</text>
+    <text x="330" y="180" text-anchor="middle">spännvidd</text>
+    <text x="48" y="196">tass</text>
+    <text x="62" y="236" fill="#2a2521">cirka 1/15 av</text>
+    <text x="62" y="262" fill="#2a2521">spännvidden</text>
+    <text x="300" y="340" text-anchor="middle">spännvidd</text>
+  </g>
+</svg>

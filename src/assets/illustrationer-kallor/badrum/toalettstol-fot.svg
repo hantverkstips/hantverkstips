@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Snitt genom foten på en toalettstol som är limmad med silikon och en som är skruvad, med tätskiktet i golvet under dem.">
+  <!-- Anteckningsboken. Blyerts 2 px för foten, strängarna, klinkern, skruven, pluggen och massan, blyerts-2 för
+       skraffering, fästmassa, fogar, brytlinjer, delning, byglar och ledare, snickarpenna för tätskiktet (enda pennsaken).
+       Tumstock bakom 60 mm. Inte skalenlig. Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Papperslappar och tumstock bakom etiketterna i betongen -->
+  <rect x="440" y="268" width="130" height="52" fill="#f5efe3"/>
+  <rect x="258" y="304" width="124" height="52" fill="#f5efe3"/>
+  <rect x="262" y="306" width="116" height="48" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 320 330)"/>
+
+  <!-- Blyerts-2: betongen skrafferad under båda halvorna, en rad per path -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M48,256l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m34,-10l10,10m12,-10l10,10m56,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10"/>
+    <path d="M59,278l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m34,-10l10,10m34,-10l10,10m12,-10l10,10"/>
+    <path d="M48,300l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m320,-10l10,10"/>
+    <path d="M59,322l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m144,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10"/>
+    <path d="M48,344l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m144,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10"/>
+  </g>
+
+  <!-- Blyerts-2: fästmassans prickar, cementfogarnas tvärstreck, brytlinjerna, pluggens räfflor, skruvens gängor -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M50,231h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m40.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5M57,238h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m26.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5"/>
+    <path d="M72,211l6,-1M72,217l6,-1M72,223l6,-1M562,211l6,-1M562,217l6,-1M562,223l6,-1"/>
+    <path d="M132,85l5,-5l4,6l5,-5l4,5l4,-4M260,85l5,-5l4,6l5,-5l4,5l4,-4M416,85l5,-5l4,6l5,-5l4,5l4,-4M544,85l5,-5l4,6l5,-5l4,5l4,-4"/>
+    <path d="M409,266h4M409,274h4M409,282h4M409,290h4M427,266h4M427,274h4M427,282h4M427,290h4"/>
+    <path d="M418,214l4,-3M418,222l4,-3M418,230l4,-3"/>
+    <path d="M320,16V296" stroke-dasharray="6 5"/>
+  </g>
+
+  <!-- Blyerts: klinkern med cementfogar och hålet, stolens fötter, silikonsträngarna, skruven och pluggen -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M44,206H70M80,206Q246,207 413,206M427,206Q493,205 560,206M570,206H594M44,226H70M80,226Q246,225 413,226M427,226Q493,227 560,226M570,226H594M70,204V228M80,204V228M560,204V228M570,204V228"/>
+    <path d="M120,186Q135,185 150,186M120,184Q119,193 120,202M118,200Q142,201 166,200M150,186Q146,132 136,84M164,200Q160,140 150,84M264,186Q279,185 294,186M294,184Q295,193 294,202M248,200Q272,201 296,200M264,186Q268,132 278,84M250,200Q254,140 264,84M404,186Q419,185 434,186M404,184Q403,193 404,202M402,200Q426,201 450,200M434,186Q430,132 420,84M448,200Q444,140 434,84M548,186Q563,185 578,186M578,184Q579,193 578,202M532,200Q556,201 580,200M548,186Q552,132 562,84M534,200Q538,140 548,84"/>
+    <path d="M124,203Q132,197 140,203Q132,209 124,203M276,203Q284,197 292,203Q284,209 276,203M560,203Q568,197 576,203Q568,209 560,203"/>
+    <path d="M413,186V200M427,186V200M413,206V258M427,206V258M413,258Q412,279 413,300H427Q428,279 427,258H413"/>
+    <path d="M409,187Q420,178 431,187M418,187V292L420,298L422,292V187"/>
+  </g>
+
+  <!-- Blyerts: tätningsmassans täta prickar i hålet -->
+  <path d="M415,238h1m8,0h1m-10,3.5h1m8,0h1m-10,3.5h1m8,0h1m-10,3.5h1m8,0h1m-10,3.5h1m8,0h1m-10,3.5h1m8,0h1m-10,3.5h1m8,0h1m-10,3.5h1m8,0h1m-10,3.5h1m8,0h1m-10,3.5h1m8,0h1m-10,3.5h1m8,0h1m-10,3.5h1m8,0h1m-10,3.5h1m8,0h1m-10,3.5h1m8,0h1m-10,3.5h1m8,0h1m-10,3.5h1m8,0h1m-10,3.5h1m8,0h1" fill="none" stroke="#2a2521" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Blyerts-2 1,5: måttbyglarna, 60 mm från klinkerns yta, med hjälplinjer -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M296,206H312M296,296H312M304,206Q305,251 304,296M300,210l8,-8M300,300l8,-8"/>
+    <path d="M336,206H352M336,296H352M344,206Q343,251 344,296M340,210l8,-8M340,300l8,-8"/>
+  </g>
+
+  <!-- Blyerts-2: ledare -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M108,70L128,199"/>
+    <path d="M52,160L56,241"/>
+    <path d="M92,195L96,213"/>
+    <path d="M441,280L426,255"/>
+    <path d="M441,306L428,290"/>
+    <path d="M306,306L304,299M336,306L343,299"/>
+  </g>
+
+  <!-- Snickarpenna: tätskiktet, helt under den limmade foten och tätat mot massan runt hålet under den skruvade -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round">
+    <path d="M44,242Q228,243 413,242M427,242Q510,241 594,242M44,250Q228,249 413,250M427,250Q510,251 594,250"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#625a50">
+    <text x="60" y="38" fill="#2a2521">limmad</text>
+    <text x="344" y="38" fill="#2a2521">skruvad</text>
+    <text x="60" y="64">silikonsträng</text>
+    <text x="48" y="130" fill="#ad3519">helt</text>
+    <text x="48" y="154" fill="#ad3519">tätskikt</text>
+    <text x="60" y="190">klinker</text>
+    <text x="444" y="290">tätningsmassa</text>
+    <text x="444" y="314">plugg och skruv</text>
+    <text x="320" y="326" text-anchor="middle" fill="#2a2521">golvet ska</text>
+    <text x="320" y="350" text-anchor="middle" fill="#2a2521">tillåta 60 mm</text>
+  </g>
+</svg>

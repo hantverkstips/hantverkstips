@@ -1,0 +1,439 @@
+---
+/**
+ * Takavvattningen: vilken hängränna och vilket stuprör taket behöver, hur
+ * många stuprör, hur mycket fall och hur många krokar. Formuläret skickas som
+ * GET till samma sida och räkningen sker på servern, så sidan fungerar utan
+ * klient-JS. Se docs/SPEC-SIDMALLAR.md avsnitt 4.7 och
+ * docs/briefer/spec-kalkyl-tak-2026-09-29.md avsnitt 6.
+ *
+ * Formeln, konstanterna och all text som modulen äger ligger i
+ * src/lib/kalkyl/takavvattning.ts, geometrin i tak.ts. Inga kronor i första
+ * versionen (specen B5). Inga produkter och inget reklamband (checklistan 1).
+ */
+export const prerender = false;
+
+import Bas from '../../layouts/Bas.astro';
+import {
+  antagandenFor,
+  beskedVarden,
+  delbarQuery,
+  KALLOR,
+  kortsvarVarden,
+  m2Text,
+  raknaTakavvattning,
+  regelKallor,
+  STANDARD,
+  stegVarden,
+  tabellRanna,
+  tabellStupror,
+  takbyteQuery,
+  TEXT,
+  tolkaQuery,
+  type Kallkod,
+  type KallaRef,
+  type TakavvattningIndata,
+} from '../../lib/kalkyl/takavvattning.ts';
+import { ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
+import { verktyg } from '../../lib/strukturdata';
+import { verktygsDelningsbild, verktygsillustration, verktygsVarumarkesbild } from '../../lib/verktygsbild';
+import TakavvattningForm from '../../components/kalkyl/TakavvattningForm.astro';
+import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Faq from '../../components/ui/Faq.astro';
+import Illustration from '../../components/ui/Illustration.astro';
+import Markering from '../../components/ui/Markering.astro';
+import Pennstreck from '../../components/ui/Pennstreck.astro';
+import StrukturData from '../../components/ui/StrukturData.astro';
+import Tabellyta from '../../components/ui/Tabellyta.astro';
+
+Astro.locals.sidtyp = 'verktyg';
+
+Astro.response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+
+const SLUG = 'takavvattning';
+/* Utkast: sidan svarar 404 i produktion och har noindex i dev tills värdartikeln
+   /tak/hangrannor/ publiceras och hantverkarens text finns. Sätts till false i
+   publiceringscommiten, samtidigt som registerposten läggs till. */
+const UTKAST = true;
+const VERKTYGSNAMN = 'Räknare för takavvattning';
+const BESKRIVNING =
+  'Hängrännans och stuprörets dimensioner följer takfallets yta. Här räknar du fram dem ur husets mått, tillsammans med antalet stuprör och rännans fall.'; // 120 till 155 tecken, checklistan 4
+const titel = 'Takavvattning för villan, ränna och stuprör'; // högst 44 tecken, börjar med "Takavvattning" eller "Hängränna och stuprör, dimension", aldrig "Hängrännor", checklistan 3
+const H1 = 'Hur stor hängränna behöver ditt tak?'; // läsarens fråga, delar inte de tre första orden med titeln
+const INGRESS =
+  'Hur bred rännan och hur grovt stupröret ska vara beror på hur mycket tak som ska avvattnas. Här tar räknaren fram det ur husets mått eller takfallets yta, tillsammans med antalet stuprör, fallet i millimeter och hur många krokar som går åt.';
+
+/* Rubriken till hantverkarens H2, checklistans H2 1 "Tabellen bakom". */
+const H2_TABELLEN = 'Tabellerna jag räknar efter';
+
+const LAS_VIDARE = [
+  { href: '/tak/hangrannor/', text: 'Välja och byta hängrännor och stuprör' },
+  { href: '/rakna/takbyte/', text: 'Takytan och vad ett nytt tak kostar' },
+];
+
+const FRAGOR = [
+  {
+    fraga: 'Ska båda sidorna av taket ha lika breda rännor?',
+    svar: 'Rännan väljs efter det största takfallet, och då räcker den till båda sidorna. På ett vanligt sadeltak är takfallen dessutom lika stora.',
+  },
+  {
+    fraga: 'Varför blir rännan smalare med två stuprör?',
+    svar: 'När rännan leder till två stuprör delas takfallet mellan dem, och varje halva av rännan tar bara hand om vattnet från sin del av taket. Då räcker ofta en smalare ränna. Det förutsätter att rännan lutar mot båda rören, med den högsta punkten på mitten.',
+  },
+  {
+    fraga: 'Varför visar räknaren inga priser?',
+    svar: 'För en summa behövs ett pris på varje del, från rännan och rören till kupor, skarvar och utkastare, och jag har inte priser med källa för alla dimensioner. En summa av bara det jag har skulle bli för låg. Vad det brukar kosta att byta hela takavvattningen står i guiden om hängrännor.',
+  },
+];
+
+/* Gränssnittstext, ordagrant ur skillen nytt-verktyg. */
+const STANDARDVARNING = 'Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.';
+const DELATEXT = 'Dina värden ligger i adressen. Markera den och kopiera, så får den du skickar länken till samma svar.';
+
+if (UTKAST && import.meta.env.PROD) {
+  return new Response(null, { status: 404, headers: { 'X-Robots-Tag': 'noindex' } });
+}
+
+const q = Astro.url.searchParams;
+const { indata } = tolkaQuery(q);
+const resultat = raknaTakavvattning(indata);
+const fel = resultat.status === 'ogiltig' ? resultat.fel : {};
+const visatIndata: TakavvattningIndata = resultat.status === 'ogiltig' ? STANDARD : indata;
+const visat = raknaTakavvattning(visatIndata);
+if (visat.status !== 'ok') throw new Error('[takavvattning] Standardvärdena ska alltid ge ett svar');
+
+const komma = (n: number): string => String(n).replace('.', ',');
+const varden = {
+  langd: q.get('langd') ?? komma(STANDARD.langdM),
+  bredd: q.get('bredd') ?? komma(STANDARD.breddM),
+  utsprang: q.get('utsprang') ?? komma(STANDARD.utsprangM),
+  gavel: q.get('gavel') ?? komma(STANDARD.gavelM),
+  vinkel: q.get('vinkel') ?? komma(STANDARD.vinkelGrader),
+  nock: q.get('nock') ?? komma(STANDARD.nockM),
+  yta: q.get('yta') ?? komma(STANDARD.ytaM2),
+  ranna: q.get('ranna') ?? komma(STANDARD.rannaM),
+};
+
+const delaLank = new URL(
+  `/rakna/${SLUG}/?${delbarQuery(visatIndata, visat.geometri).toString()}`,
+  Astro.site ?? Astro.url,
+).toString();
+
+const bv = beskedVarden(visat, visatIndata);
+const besked = TEXT.besked[visat.utfall];
+const ks = TEXT.kortsvar(kortsvarVarden());
+
+const TABELL_KLASS =
+  'w-full border-collapse text-liten tabular-nums [&_th]:p-2 [&_td]:p-2 [&_th]:align-top [&_td]:align-top [&_th]:text-left [&_tbody_th]:[font-weight:inherit] [&_tr]:border-b [&_tr]:border-linje [&_th]:text-blyerts [&_td]:text-blyerts [&_thead_th]:text-etikett [&_thead_th]:uppercase [&_thead_th]:text-blyerts-2';
+const TAL_TABELL_KLASS = `${TABELL_KLASS} [&_td]:text-right [&_td]:whitespace-nowrap [&_thead_th+th]:text-right`;
+const REGEL_LISTA_KLASS =
+  'm-0 mt-6 p-0 list-none text-brod lg:text-brod-lg [&>li]:mb-4 [&>li]:border-l-2 [&>li]:border-blyerts-2 [&>li]:pl-4 [&_span]:block [&_span+span]:text-liten [&_span+span]:text-blyerts-2 [&_a]:text-penna [&_a]:underline [&_a]:decoration-1 [&_a]:underline-offset-2 [&_a:hover]:decoration-2';
+const LANKAR_KLASS = '[&_a]:text-penna [&_a]:underline [&_a]:decoration-1 [&_a]:underline-offset-2 [&_a:hover]:decoration-2';
+const STYCKE_KLASS = 'm-0 mt-4 text-brod lg:text-brod-lg';
+const SPALTRAD_KLASS = 'm-0 mt-1 text-liten text-blyerts-2 tabular-nums';
+const SPALTLANK_KLASS = ['inline-flex min-h-11 items-center', LANK_KLASS];
+
+const kalla = (k: Kallkod): KallaRef => KALLOR[k];
+
+const antaganden = antagandenFor(visat, visatIndata);
+const kallor: KallaRef[] = [];
+for (const a of antaganden) {
+  for (const k of a.kallor) if (!kallor.some((x) => x.kod === k)) kallor.push(kalla(k));
+}
+
+/** Lindabs intervall i cellen, med hantverkarens ord. */
+const lindabCell = ([fran, till]: [number | null, number | null]): string =>
+  fran === null && till !== null
+    ? TEXT.tabell['lindab-under'](till)
+    : fran !== null && till !== null
+      ? TEXT.tabell['lindab-mellan'](fran, till)
+      : TEXT.tabell['lindab-over'](fran ?? 0);
+
+const illustration = verktygsillustration(SLUG);
+const varumarke = verktygsVarumarkesbild(SLUG);
+const huvudbild = varumarke ?? illustration;
+---
+
+<Bas
+  title={titel}
+  description={BESKRIVNING}
+  reklam={false}
+  noindex={UTKAST}
+  brodsmulor={[
+    { namn: 'Hantverkstips', href: '/' },
+    { namn: 'Räkna själv', href: '/rakna/' },
+    { namn: VERKTYGSNAMN },
+  ]}
+  bred={true}
+  ogBild={verktygsDelningsbild(SLUG)}
+>
+  <StrukturData slot="head" data={verktyg({ url: `/rakna/${SLUG}/`, namn: VERKTYGSNAMN, beskrivning: BESKRIVNING })} />
+
+  <div class="mx-auto w-full max-w-lasbredd">
+    <section class="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-7">
+        <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">{H1}</h1>
+        <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">{INGRESS}</p>
+      </div>
+      {
+        huvudbild && (
+          <div class="lg:col-span-5">
+            <img
+              src={huvudbild.src}
+              alt=""
+              width={huvudbild.width}
+              height={huvudbild.height}
+              fetchpriority="high"
+              decoding="async"
+              class:list={['block h-auto w-full', !varumarke && 'rounded-sm border border-linje']}
+            />
+          </div>
+        )
+      }
+    </section>
+
+    <Faktaruta variant="kortsvar">
+      <p class="m-0 leading-6">
+        {ks.fore}{' '}<Markering>{ks.markering}</Markering>{ks.efter}
+      </p>
+    </Faktaruta>
+
+    <div class="linjerat mt-8 lg:grid lg:grid-cols-2 lg:gap-8">
+      <TakavvattningForm indata={indata} varden={varden} fel={fel} />
+
+      <div class="mt-8 border-t border-linje pt-6 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
+        {resultat.status === 'ogiltig' && <p class="m-0 mb-2 text-liten text-varning">{STANDARDVARNING}</p>}
+
+        <p class="m-0 font-sans text-h3 lg:text-h3-lg font-bold text-blyerts">{besked.rubrik(bv)}</p>
+        <p class="m-0 mt-1 text-brod">{besked.rad(bv)}</p>
+
+        {
+          visat.utfall === 'ok' ? (
+            <>
+              <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
+                {TEXT.spalt['etikett-ranna']}
+              </p>
+              <p class="m-0 mt-1 flex items-baseline gap-x-2 whitespace-nowrap tabular-nums">
+                <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
+                  <Markering>{visat.dim.ranna}</Markering>
+                </span>
+                <span class="text-ingress lg:text-ingress-lg">mm</span>
+              </p>
+              <p class="m-0 text-ingress lg:text-ingress-lg tabular-nums">{TEXT.spalt['och-stupror'](bv)}</p>
+              {visat.lindab !== null && <p class="m-0 mt-2 text-brod tabular-nums">{TEXT.spalt['rad-lindab'](bv)}</p>}
+              <p class:list={[SPALTRAD_KLASS, 'mt-2']}>{TEXT.spalt['rad-antal'](bv)}</p>
+              <p class={SPALTRAD_KLASS}>{TEXT.spalt['rad-fall'](bv)}</p>
+              <p class={SPALTRAD_KLASS}>{TEXT.spalt['rad-krokar'](bv)}</p>
+              <p class={SPALTRAD_KLASS}>{TEXT.spalt['rad-yta'](bv)}</p>
+            </>
+          ) : (
+            <>
+              <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
+                {TEXT.spalt['etikett-yta']}
+              </p>
+              <p class="m-0 mt-1 flex items-baseline gap-x-2 whitespace-nowrap tabular-nums">
+                <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
+                  <Markering>{m2Text(visat.ytaPerRannfallM2)}</Markering>
+                </span>
+                <span class="text-ingress lg:text-ingress-lg">m²</span>
+              </p>
+            </>
+          )
+        }
+
+        <p class="m-0 mt-4 text-liten text-blyerts-2">
+          <a href="#darfor-blev-svaret-sa" class:list={SPALTLANK_KLASS}>{TEXT.spalt.pekrad}</a>
+        </p>
+        <p class="m-0">
+          <a href="#sa-raknar-jag" class:list={SPALTLANK_KLASS}>{TEXT.spalt['lank-sa-raknar-jag']}</a>
+        </p>
+        {
+          visatIndata.satt === 'hus' && (
+            <p class="m-0">
+              <a href={`/rakna/takbyte/?${takbyteQuery(visatIndata, visat.geometri).toString()}`} class:list={SPALTLANK_KLASS}>
+                {TEXT.spalt['lank-takbyte']}
+              </a>
+            </p>
+          )
+        }
+        <p class="m-0">
+          <a href="/tak/hangrannor/" class:list={SPALTLANK_KLASS}>{TEXT.spalt['lank-hangrannor']}</a>
+        </p>
+
+        <div class="mt-4 border-t border-linje pt-4">
+          <label for="dela" class={ETIKETT_KLASS}>{TEXT.spalt['dela-etikett']}</label>
+          <input id="dela" type="text" readonly value={delaLank} class:list={[FALT_KLASS, 'border-blyerts-2']} />
+          <p class="m-0 mt-1 text-liten text-blyerts-2">{DELATEXT}</p>
+        </div>
+      </div>
+    </div>
+
+    <section>
+      <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
+      {
+        visat.utfall === 'ok' ? (
+          <p class:list={[STYCKE_KLASS, 'tabular-nums']}>{TEXT.darfor.totalt(bv)}</p>
+        ) : (
+          <p class={STYCKE_KLASS}>{TEXT.darfor.utanfor(bv)}</p>
+        )
+      }
+      <p class="m-0 mt-2 text-liten text-blyerts-2">
+        <a href="#vad-siffrorna-vilar-pa" class={LANK_KLASS}>{TEXT.darfor.kallrad}</a>
+      </p>
+      <ul class={REGEL_LISTA_KLASS}>
+        {
+          visat.regler.map((nyckel) => {
+            const namngivna = regelKallor(nyckel);
+            return (
+              <li>
+                <span>{TEXT.regel[nyckel].text(bv)}</span>
+                <span>
+                  {namngivna.map((k, n) => (
+                    <>
+                      {n > 0 && '; '}
+                      <a href={k.url} rel="nofollow">{k.titel}</a>, {k.slag}, {k.datum}
+                    </>
+                  ))}
+                </span>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </section>
+
+    <section>
+      <Pennstreck id="gor-inte-det-har">Gör inte det här</Pennstreck>
+      {visat.gorInteDetHar.map((g, n) => <p class:list={['m-0 text-brod lg:text-brod-lg', n > 0 && 'mt-4']}>{TEXT.gorInte[g]}</p>)}
+    </section>
+
+    <section class={LANKAR_KLASS}>
+      {/*
+        Tabellen bakom (checklistans H2 1). Texten säger vilken tabell som är
+        nyast och att den äldre står som jämförelse. SS 824031 står inte här.
+      */}
+      <Pennstreck>{H2_TABELLEN}</Pennstreck>
+      <p class="m-0 text-brod lg:text-brod-lg">
+        Den nyaste tabellen finns i RA Hus 21, och räknaren går efter den. Plannjas monteringsanvisning från januari 2026 har samma gränser för rännorna. Den äldre kolumnen kommer från ett dimensioneringsblad från mars 2010, som bygger på utgåvan RA 08 Hus. Talen är desamma upp till 150 mm, men den gamla tabellen slutar där, medan den nya har en ränna på 190 mm för de största taken.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Lindab byter till en bredare ränna vid mindre takyta än de andra, och när det ger en annan ränna än RA Hus visar räknaren det på en egen rad. Stuprörens tal är desamma i RA Hus och Plannjas anvisning upp till 120 mm.
+      </p>
+      <Tabellyta kolumner={4} class="mt-4">
+        <table class={TAL_TABELL_KLASS}>
+          <thead>
+            <tr>
+              <th scope="col">{TEXT.tabell['ranna-dim']}</th>
+              <th scope="col">{TEXT.tabell['ranna-ra']}</th>
+              <th scope="col">{TEXT.tabell['ranna-p10']}</th>
+              <th scope="col">{TEXT.tabell['ranna-lindab']}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              tabellRanna().map((r) => (
+                <tr>
+                  <th scope="row">{r.dim}</th>
+                  <td>{r.ra}</td>
+                  <td>{r.p10 ?? ''}</td>
+                  <td>{lindabCell(r.lindab)}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </Tabellyta>
+      <p class="m-0 mt-2 text-liten text-blyerts-2">{TEXT.tabell['ranna-kalla']}</p>
+      <Tabellyta kolumner={2} class="mt-6">
+        <table class={TAL_TABELL_KLASS}>
+          <thead>
+            <tr>
+              <th scope="col">{TEXT.tabell['stupror-dim']}</th>
+              <th scope="col">{TEXT.tabell['stupror-ra']}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              tabellStupror().map((r) => (
+                <tr>
+                  <th scope="row">{r.dim}</th>
+                  <td>{r.ra}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </Tabellyta>
+      <p class="m-0 mt-2 text-liten text-blyerts-2">{TEXT.tabell['stupror-kalla']}</p>
+    </section>
+
+    <section>
+      <Pennstreck id="sa-raknar-jag">Så räknar jag</Pennstreck>
+      {illustration && <Illustration namn={`rakna/${SLUG}`} alt={TEXT.skissAlt} bildtext={TEXT.skissBildtext} />}
+      <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg [&>li]:mb-2">
+        {TEXT.steg(stegVarden()).map((s) => <li>{s}</li>)}
+      </ol>
+      {
+        visat.utfall === 'ok' && (
+          <>
+            <p class:list={[STYCKE_KLASS, 'tabular-nums']}>{TEXT.jamforelse.ss(bv)}</p>
+            {visatIndata.satt === 'hus' && <p class:list={[STYCKE_KLASS, 'tabular-nums']}>{TEXT.jamforelse.vagratt(bv)}</p>}
+          </>
+        )
+      }
+
+      <h3 id="vad-siffrorna-vilar-pa" class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">
+        Vad siffrorna vilar på
+      </h3>
+      <Tabellyta kolumner={3} class="mt-4">
+        <table class={TABELL_KLASS}>
+          <thead>
+            <tr>
+              <th scope="col">Vad</th>
+              <th scope="col">Värde</th>
+              <th scope="col">Källa eller antagande</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              antaganden.map((a) => (
+                <tr>
+                  <th scope="row">{TEXT.antagande[a.nyckel]}</th>
+                  <td>{a.varde}</td>
+                  <td>
+                    {a.typ}.{a.kallor.length > 0 && ` ${a.kallor.map((k) => kalla(k).titel).join('; ')}`}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </Tabellyta>
+      <ul class:list={['m-0 mt-4 pl-6 text-liten', LANKAR_KLASS]}>
+        {
+          kallor.map((k) => (
+            <li>
+              <a href={k.url} rel="nofollow">{k.titel}</a>, {k.slag}, {k.datum}
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section>
+      <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
+      <ul class="m-0 p-0 list-none">
+        {
+          LAS_VIDARE.map((l) => (
+            <li class="border-t border-linje">
+              <a href={l.href} class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
+                {l.text}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    {FRAGOR.length > 0 && <Faq fragor={FRAGOR} />}
+  </div>
+</Bas>

@@ -76,3 +76,7 @@ Tumstock `#e8b830` 65 procent bakom V1, roterad 1 till 2 grader. Ingen annan mar
 ## 7. Budget
 
 Publicerad fil under 34 kB (två halvor och skraffering i hela bredden). Resten som fogspecen avsnitt 7, med `badrum/toalettstol-fot`. Vid granskningen på 343 px: syns det att tätskiktet är helt till vänster och tätat runt hålet till höger, skiljer sig tätningsmassan från fästmassan, och läses V1 som ett krav på golvet?
+
+## 8. Godkännande
+
+Godkända avvikelser 2026-09-29, UX och bygge: porslinets brytlinje vid y 84 i stället för 40, så att T1 och T3 får luft ovanför fötterna; T4 på två rader, "helt" och "tätskikt", eftersom luften vänster om foten är 72 enheter; T6 och T7 i betongen på papperslapp till höger om den skruvade foten, eftersom "tätningsmassa" inte ryms på 70 enheter; hålet 14 brett och pluggen från y 258; flänsarnas underkant vid y 200 i båda halvorna, så att silikonsträngen på 6 ryms, vilket lämnar den skruvade flänsen 6 över klinkern; 60 mm från klinkerns yta enligt avsnitt 2, förlagorna är inte sedda. Rättat vid granskningen: T3:s ledare gick längs porslinets yttervägg och lästes som en del av den; den går nu snett från (108,70) till strängen.

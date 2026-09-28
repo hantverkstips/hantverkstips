@@ -18,7 +18,8 @@ En namngiven scroll-tidslinje på behållaren. Finns det inget att scrolla är t
 
 - `scroll-timeline: --tabell inline` på `.tabell-behallare`.
 - `timeline-scope: --tabell` på blocket som håller både ledtexten och ytan. Ledtexten ligger utanför behållaren och ser annars inte tidslinjen. Varje block har sitt eget scope, så flera tabeller på samma sida stör inte varandra.
-- Ledtexten: `display: none` som utgångsläge och en animation med keyframes `from, to { display: block }` på `animation-timeline: --tabell`, `animation-fill-mode: both`.
+- Ledtexten: **inte** `display` (rättat 2026-09-29: Chromium startar ingen animation på ett element vars grundvärde är `display: none`, visat av utvecklaren på en testsida). Utgångsläget är `visibility: hidden; height: 0; margin: 0; overflow: hidden`. Animationen har keyframes `from, to { visibility: visible; height: auto; margin: 0 0 8px }` på `animation-timeline: --tabell`, med `animation-fill-mode: both`. Utgångsläget står bara inne i `@supports`-blocket.
+- En tabell som är några pixlar för bred scrollar på riktigt, till exempel antagandetabellen i badrumsräknaren med 346 px mot 343. Då är det rätt att ledtexten och kanten syns. Tabellen rättas i så fall på sin egen sida, inte genom att villkoret görs slappare.
 - Kanten, `.tabell-yta::after`: `opacity: 0` som utgångsläge och en animation från `opacity: 1` till `opacity: 0` på samma tidslinje. Kanten syns då fullt vid start och tonar bort när läsaren har dragit tabellen till slutet, vilket är rätt signal.
 - Allt det här står i `@supports (timeline-scope: --a) and (animation-timeline: scroll())`.
 - **Reserv:** i webbläsare utan stöd (Firefox i dag) gäller dagens regler oförändrade. De står i `@supports not (…)` eller är fallback som det nya blocket skriver över. Ingen läsare får sämre än i dag.
