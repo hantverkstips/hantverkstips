@@ -176,6 +176,15 @@ export const KALKYLATORER: Kalkylator[] = [
     pelare: ['badrum'],
   },
   {
+    slug: 'takbyte',
+    /* Bär "byta tak" och "kostar"; ankartext i korten och hubben. */
+    namn: 'Räkna ut vad det kostar att byta tak',
+    rad: 'Skriv in husets mått och takvinkel, så räknar jag ut takytan och vad ett nytt tak kostar efter rotavdraget.',
+    /* Tak byts mellan vår och höst. SEO, raknare.md "Kontroll efter röstvarvet". */
+    sasong: [3, 10],
+    pelare: ['tak'],
+  },
+  {
     slug: 'fasadyta',
     /* Bär SEO:s fras; ankartext i guiden. */
     namn: 'Beräkna fasadyta och färg till huset',

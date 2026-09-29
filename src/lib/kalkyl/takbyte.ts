@@ -71,7 +71,10 @@ export type Kallkod =
   | 'SKV-RATT'
   | 'TAKIVAST'
   | 'PL-ROYAL'
-  | 'LB-PANNA';
+  | 'LB-PANNA'
+  | 'BENDERS-BETONG'
+  | 'BMI-PANNOR'
+  | 'PL-BAND';
 
 export interface KallaRef {
   kod: Kallkod;
@@ -273,6 +276,34 @@ export const KALLOR: Record<Kallkod, KallaRef> = {
     slag: 'tillverkare',
     datum: '2024-09-20',
   },
+  /*
+   * Minsta lutningen för betong, tegel och bandtäckt plåt (MINSTA_LUTNING).
+   * Titel, adress och datum ur takbytesunderlaget 12.1, allt hämtat 2026-09-29.
+   * Benders och Plannja har bara år och månad på dokumentet; dagen är
+   * hämtdagen, som för PL-ROYAL. Moniers adress är en återförsäljares kopia
+   * (underlaget 12.1); BMI:s utgåva 2021 gick inte att läsa (12.5).
+   */
+  'BENDERS-BETONG': {
+    kod: 'BENDERS-BETONG',
+    titel: 'Benders, Monteringsanvisning betong 1- och 2-kupig',
+    url: 'https://www.benders.se/globalassets/c4-assets/document/Monteringsanvisning-BETONG-1o2kupig--2023-07-LU-2.pdf',
+    slag: 'tillverkare',
+    datum: '2023-07, hämtad 2026-09-29',
+  },
+  'BMI-PANNOR': {
+    kod: 'BMI-PANNOR',
+    titel: 'Monier/BMI, Monteringsanvisning Tegel- och betongtak',
+    url: 'https://hemmatema.se/userfiles/files/BMI_Monteringsanvisningtegel-%20och%20betongtak%202019_SWE_190827.pdf',
+    slag: 'tillverkare',
+    datum: '2019-08-27',
+  },
+  'PL-BAND': {
+    kod: 'PL-BAND',
+    titel: 'Plannja, Handbok för band- och skivtäckning i stål och aluminium',
+    url: 'https://www.plannja.se/docs/default-source/documents-se/montering-uppdelade-2020/se-plannja-planpl%C3%A5tst%C3%A4ckning-handbok-2020-1.pdf?sfvrsn=4637394718963370000',
+    slag: 'tillverkare',
+    datum: 'januari 2020, hämtad 2026-09-29',
+  },
 };
 
 /* ------------------------------------------------------------------ *
@@ -396,20 +427,57 @@ export function tillaggInraknat(m: Material): boolean {
  */
 export const YTA_INTERVALL = [100, 200] as const;
 
+/** Materialen som har en minsta lutning inom räknarens vinklar. */
+export type MaterialMedGrans = Exclude<Material, 'papp'>;
+
 /**
  * Minsta takvinkel i grader där materialet går att lägga. Under den blir
- * svaret utfallet lutning, utan belopp.
- * Källa: docs/briefer/faktablad/kunskap-plattak.md, tabellen över plåttyper:
- *   Plannja Royal "Min. taklutning 14° (1:4)", Plannja Regent 14° (1:4), och
- *   Lindab Torekov/Norrviken "Taklutningen måste vara minst 14°."
- * Andra material har ingen gräns med källa här och saknas därför.
+ * svaret utfallet lutning, utan belopp. Precis på gränsen går det.
+ * takpanneplat, Källa: docs/briefer/faktablad/kunskap-plattak.md, tabellen
+ *   över plåttyper: Plannja Royal "Min. taklutning 14° (1:4)", Plannja Regent
+ *   14° (1:4), och Lindab Torekov/Norrviken "Taklutningen måste vara minst 14°."
+ * betong, Källa: takbytesunderlaget 12.1 och 12.2. Benders 2023-07 s. 4:
+ *   "Benders takpannor kan läggas på taklutningar ned till 14°." Monier/BMI
+ *   2019-08-27 s. 5, "Tabell Taklutning": Jönåker Protector och Jönåker
+ *   Ytbehandlad min 14. Moniers Minster har 18; räknaren skiljer inte på
+ *   pannmodeller (koordinatorn 2026-09-29), så gränsen är de vanliga pannornas.
+ * tegel, Källa: Monier/BMI 2019-08-27 s. 5: KDN, Turmalin, Hollander,
+ *   Nortegel och Nova min 14. Vittinge T11 och E13 har 22; samma skäl som
+ *   Minster. Bara en tegeltillverkare är läst (underlaget 12.5).
+ * bandplat, Källa: Plannja, Handbok för band- och skivtäckning, januari 2020,
+ *   s. 5: "takets lutning som ska vara minst 1:10 eller 5,7°." Lindabs 8° för
+ *   klickfalsade SRP25N är en rekommendation för en profil och räknas inte in
+ *   (koordinatorn 2026-09-29, underlaget 12.4).
+ * papp saknas: Icopal TopSafe 3° klarar 3°, räknarens lägsta vinkel
+ *   (underlaget 12.3), så papp har ingen gräns inom räknarens vinklar.
  */
-export const MINSTA_LUTNING: Partial<Record<Material, number>> = { takpanneplat: 14 };
+export const MINSTA_LUTNING: Partial<Record<Material, number>> = {
+  takpanneplat: 14,
+  betong: 14,
+  tegel: 14,
+  bandplat: 5.7,
+};
+
+/** Källorna till varje materials minsta lutning, för antagandetabellen. */
+export const LUTNING_KALLOR: Record<MaterialMedGrans, Kallkod[]> = {
+  takpanneplat: ['PL-ROYAL', 'LB-PANNA'],
+  betong: ['BENDERS-BETONG', 'BMI-PANNOR'],
+  tegel: ['BMI-PANNOR'],
+  bandplat: ['PL-BAND'],
+};
+
+const MATERIAL_MED_GRANS: readonly MaterialMedGrans[] = ['bandplat', 'takpanneplat', 'betong', 'tegel'];
 
 /** Sant när takets vinkel är under materialets minsta lutning. */
 export function forLagLutning(m: Material, vinkelGrader: number): boolean {
   const min = MINSTA_LUTNING[m];
-  return min !== undefined && vinkelGrader < min;
+  /*
+   * Jämförs med vinkeln som sidan visar, avrundad till en decimal som
+   * vinkelText() i tak.ts gör, så att beskedet aldrig säger "kräver minst 14
+   * grader, och ditt lutar 14". 13,96° visas som 14 och ger belopp.
+   * Koordinatorn 2026-09-29.
+   */
+  return min !== undefined && Math.round(vinkelGrader * 10) / 10 < min;
 }
 
 export const MATERIAL_VAL: readonly Material[] = ['bandplat', 'takpanneplat', 'betong', 'tegel', 'papp'];
@@ -562,6 +630,8 @@ export interface BeskedVarden {
   hamtat: string;
   /** TEXT.material[nyckel]. */
   material: string;
+  /** Materialets nyckel, för de texter som skiljer sig per material (källan till den minsta lutningen). */
+  materialNyckel: Material;
 }
 
 export interface KortsvarMaterial {
@@ -619,6 +689,8 @@ export interface StegVarden {
 /** En regel i "Därför blev svaret så": texten och källornas koder. */
 export interface RegelText {
   text: (v: BeskedVarden) => string;
+  /** Regelns text när svaret saknar pris (lutning och utanfor), där den skiljer sig. text väljer den själv. */
+  utanPris?: (v: BeskedVarden) => string;
   /** Källorna är data. pris beror på materialet och är en funktion. */
   kallor: Kallkod[] | ((i: TakbyteIndata) => Kallkod[]);
 }
@@ -781,6 +853,21 @@ export const TEXT = hartaAllt({
     papp: 'Papp',
   } satisfies Record<Material, string>,
 
+  /*
+   * Vem som anger materialets minsta lutning (LUTNING_KALLOR), som en sats i
+   * darfor.lutning: "[sats], och därför blir det inget belopp." Förmedlare
+   * nämns inte, tillverkare får nämnas. Hantverkaren skriver.
+   */
+  'lutning-kalla': {
+    takpanneplat: 'Både Plannja och Lindab anger den gränsen',
+    /* Benders och Monier (BMI) anger båda 14 grader för betongpannor. */
+    betong: 'Både Benders och Monier anger den gränsen för sina betongpannor',
+    /* Monier (BMI) anger 14 grader för de flesta tegelpannor. */
+    tegel: 'Monier anger den gränsen för de flesta av sina tegelpannor',
+    /* Plannjas handbok för bandtäckning anger 5,7 grader, alltså 1:10. */
+    bandplat: 'Plannja anger den gränsen i sin handbok för bandtäckning',
+  } satisfies Record<MaterialMedGrans, string>,
+
   /* Radioetiketterna för centrumavståndet, med enheten. */
   cc: {
     600: `${kronor(600)} mm`,
@@ -898,9 +985,12 @@ export const TEXT = hartaAllt({
     tillagg: (v: BeskedVarden): string => jamforelse(v),
     /* Raden som pekar ner till "Vad siffrorna vilar på". */
     kallrad: 'Källorna står i tabellen längre ner',
-    /* Vid lutning, i stället för tabellen: varför det inte blir något belopp. Hantverkaren skriver. */
+    /*
+     * Vid lutning, i stället för tabellen: varför det inte blir något belopp.
+     * Vem som anger gränsen står per material i TEXT['lutning-kalla']. Hantverkaren skriver.
+     */
     lutning: (v: BeskedVarden): string =>
-      `${v.material ?? ''} ska ligga på ett tak som lutar minst ${v.minLutning ?? ''} grader, och ditt lutar ${v.vinkel}. Både Plannja och Lindab anger den gränsen, och därför blir det inget belopp. Takytan och antalet takstolar har jag ändå räknat ut, och de står i svaret.`,
+      `${v.material ?? ''} ska ligga på ett tak som lutar minst ${v.minLutning ?? ''} grader, och ditt lutar ${v.vinkel}. ${lutningKalla(v.materialNyckel)}, och därför blir det inget belopp. Takytan och antalet takstolar har jag ändå räknat ut, och de står i svaret.`,
     /* Vid utanfor, i stället för tabellen. */
     utanfor: (v: BeskedVarden): string =>
       `Takytan på ${v.takarea} m² ligger ${v.sida === 'over' ? 'över' : 'under'} de ${v.min} till ${v.max} m² som priserna gäller för, och därför blir det inga belopp här. Jag har ändå räknat ut takets mått och takstolarna, och de står i svaret.`,
@@ -923,8 +1013,18 @@ export const TEXT = hartaAllt({
    */
   regel: {
     takarea: {
+      /* Vid lutning och utanfor visas inget pris, och då står utanPris i stället (UX 2026-09-29). */
       text: (v: BeskedVarden): string =>
-        `Priset räknas på takytan längs lutningen, ${v.takarea} m² i ditt fall. Utsprången gör den större än husets ${v.bottenyta} m² bottenyta, och lutningen lägger sedan till ${v.paslag} procent på ytan som taket täcker sett uppifrån.`,
+        v.utfall === 'lutning' || v.utfall === 'utanfor'
+          ? takareaUtanPris(v)
+          : `Priset räknas på takytan längs lutningen, ${v.takarea} m² i ditt fall. Utsprången gör den större än husets ${v.bottenyta} m² bottenyta, och lutningen lägger sedan till ${v.paslag} procent på ytan som taket täcker sett uppifrån.`,
+      /*
+       * Samma regel utan pris, vid lutning och utanfor. Meningen får inte
+       * börja med priset. Bär takarea, bottenyta och paslag som texten ovanför.
+       * Hantverkaren skriver.
+       */
+      utanPris: (v: BeskedVarden): string =>
+        `Takytan längs lutningen är ${v.takarea} m² i ditt fall. Utsprången gör den större än husets ${v.bottenyta} m² bottenyta, och lutningen lägger sedan till ${v.paslag} procent på ytan som taket täcker sett uppifrån.`,
       kallor: ['TAKIVAST'],
     },
     vinkel: {
@@ -1029,8 +1129,18 @@ export const TEXT = hartaAllt({
     cc: 'Avstånd mellan takstolarna',
     'takstol-gavel': 'Takstolarna vid gavlarna',
     'ingen-valm': 'Valmat tak och mansardtak',
-    /* Materialets minsta lutning (MINSTA_LUTNING), bara vid utfallet lutning. Hantverkaren skriver. */
-    'minsta-lutning': 'Minsta lutning för takpanneplåt',
+    /*
+     * Materialets minsta lutning (MINSTA_LUTNING), en rad per material med
+     * gräns, bara vid utfallet lutning och bara för det valda materialet.
+     * Hantverkaren skriver.
+     */
+    'minsta-lutning-takpanneplat': 'Minsta lutning för takpanneplåt',
+    /* Etiketten för betongpannor. */
+    'minsta-lutning-betong': 'Minsta lutning för betongpannor',
+    /* Etiketten för tegelpannor. */
+    'minsta-lutning-tegel': 'Minsta lutning för tegelpannor',
+    /* Etiketten för bandtäckt eller falsad plåt. */
+    'minsta-lutning-bandplat': 'Minsta lutning för bandtäckt eller falsad plåt',
   } as Record<string, string>,
 
   /*
@@ -1073,8 +1183,16 @@ export const TEXT = hartaAllt({
     'takstol-gavel': 'En takstol står i varje gavel',
     /* Valmat tak och mansard räknas inte. */
     'ingen-valm': 'Går inte att välja, eftersom priserna gäller sadeltak',
-    /* MINSTA_LUTNING för materialet, i grader. Hantverkaren skriver. */
-    'minsta-lutning': `${MINSTA_LUTNING.takpanneplat ?? ''} grader enligt både Plannja och Lindab`,
+    /* MINSTA_LUTNING för materialet, i grader, och vem som anger den (LUTNING_KALLOR). Hantverkaren skriver. */
+    'minsta-lutning': {
+      takpanneplat: `${MINSTA_LUTNING.takpanneplat ?? ''} grader enligt både Plannja och Lindab`,
+      /* 14 grader enligt Benders och Monier (BMI). Moniers Minster kräver 18 grader. */
+      betong: `${komma(MINSTA_LUTNING.betong ?? 0)} grader enligt Benders och Monier, men Moniers betongpanna Minster kräver 18 grader`,
+      /* 14 grader enligt Monier (BMI) för de flesta pannor. Vittinge kräver 22 grader. */
+      tegel: `${komma(MINSTA_LUTNING.tegel ?? 0)} grader enligt Monier, men Moniers tegelpanna Vittinge kräver 22 grader`,
+      /* 5,7 grader, 1:10, enligt Plannja. */
+      bandplat: `${komma(MINSTA_LUTNING.bandplat ?? 0)} grader, eller 1:10, enligt Plannja`,
+    } satisfies Record<MaterialMedGrans, string>,
   },
 
   /*
@@ -1127,6 +1245,16 @@ export const TEXT = hartaAllt({
   skissBildtext:
     'Gaveln är mätt utvändigt och utsprånget vågrätt ut från väggen. Pilen visar takfallets längd från takfoten till nocken, och det markerade talet är takarean för huset som står i formuläret från början.',
 });
+
+/** Satsen om vem som anger materialets minsta lutning, eller tom för ett material utan gräns. */
+function lutningKalla(m: Material | undefined): string {
+  return m === undefined || m === 'papp' ? '' : TEXT['lutning-kalla'][m];
+}
+
+/** regel.takarea utan pris, för lutning och utanfor. */
+function takareaUtanPris(v: BeskedVarden): string {
+  return TEXT.regel.takarea.utanPris(v);
+}
 
 /* ------------------------------------------------------------------ *
  * Adressen
@@ -1365,6 +1493,7 @@ export function beskedVarden(r: TakbyteOk, i: TakbyteIndata): BeskedVarden {
     tillagg: kronor(TILLAGG_KR),
     hamtat: datumText(PRISER_HAMTADE),
     material: TEXT.material[i.material],
+    materialNyckel: i.material,
     minLutning: MINSTA_LUTNING[i.material] === undefined ? null : vinkelText(MINSTA_LUTNING[i.material] ?? 0),
   };
   if (r.utfall === 'utanfor' || r.utfall === 'lutning') {
@@ -1581,13 +1710,15 @@ export const ANTAGANDEN: AntagandeDef[] = [
   },
   { nyckel: 'takstol-gavel', varde: () => TEXT.antagandeVarde['takstol-gavel'], typ: 'Antagande', kallor: [] },
   { nyckel: 'ingen-valm', varde: () => TEXT.antagandeVarde['ingen-valm'], typ: 'Antagande', kallor: [] },
-  /* Källa: MINSTA_LUTNING, Plannja Royal och Regent samt Lindab Torekov och Norrviken. Bara vid utfallet lutning. */
-  {
-    nyckel: 'minsta-lutning',
-    varde: () => TEXT.antagandeVarde['minsta-lutning'],
-    typ: 'Källa',
-    kallor: ['PL-ROYAL', 'LB-PANNA'],
-  },
+  /* Källa: MINSTA_LUTNING med LUTNING_KALLOR, en rad per material med gräns. Bara vid utfallet lutning, för det valda materialet. */
+  ...MATERIAL_MED_GRANS.map(
+    (m): AntagandeDef => ({
+      nyckel: `minsta-lutning-${m}`,
+      varde: () => TEXT.antagandeVarde['minsta-lutning'][m],
+      typ: 'Källa',
+      kallor: LUTNING_KALLOR[m],
+    }),
+  ),
 ];
 
 /** Raderna ur ANTAGANDEN som svaret vilar på, i tabellens ordning (specen 4.5, kolumnen "Visas när"). */
@@ -1595,7 +1726,7 @@ export function antagandenFor(r: TakbyteOk, i: TakbyteIndata): AntagandeRad[] {
   const belopp = harBelopp(r);
   const galler = new Set<string>(['takarea', 'langs-lutningen', 'intervall', 'cc', 'takstol-gavel', 'ingen-valm']);
   if (i.takform === 'pulpet') galler.add('utsprang-lika');
-  if (r.utfall === 'lutning') galler.add('minsta-lutning');
+  if (r.utfall === 'lutning') galler.add(`minsta-lutning-${i.material}`);
   if (belopp) {
     for (const n of [
       `pris-${i.material}`,
