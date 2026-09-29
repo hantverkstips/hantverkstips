@@ -8,6 +8,7 @@
  * Utan miljövariabler returnerar allt tomt och komponenterna visar sina
  * platshållartillstånd. Se docs/SPEC-SIDMALLAR.md avsnitt 3.1 och 9.
  */
+import { arSlut } from './lagerlage';
 import { publikKlient } from './supabase';
 
 export interface Erbjudande {
@@ -254,34 +255,5 @@ export function lokalBild(p: Produkt): string | null {
   return p.bildUrl && p.bildUrl.startsWith('/') ? p.bildUrl : null;
 }
 
-/**
- * Lagerstatus i tre lägen. NULL betyder okänt och visas som köpbar (importen ska
- * sätta i_lager när det är kontrollerat). Texten kommer från butikens feed och
- * varierar i form: ej_bestallningsbar, "Ej beställningsbar", "slut i lager",
- * restnoterad, utgått. Se docs/AFFILIATE.md avsnitt 3.
- */
-export type Lagerlage = 'kopbar' | 'slut' | 'ej_bestallningsbar';
-
-/** Går inte att beställa alls, till skillnad från tillfälligt slut. */
-const EJ_BESTALLNINGSBAR = /ej.?best|icke.?best/i;
-/** Övriga negativa lägen: tillfälligt slut, restnoterat, ej i lager, utgått. */
-const SLUT = /slut|ej.?i.?lager|restnot|utg/i;
-
-export function lagerlage(e: Erbjudande | null): Lagerlage {
-  if (!e || !e.lagerstatus) return 'kopbar';
-  const status = e.lagerstatus.trim();
-  if (status === '') return 'kopbar';
-  if (EJ_BESTALLNINGSBAR.test(status)) return 'ej_bestallningsbar';
-  if (SLUT.test(status)) return 'slut';
-  return 'kopbar';
-}
-
-/** Sant när erbjudandet inte går att köpa: slut eller ej beställningsbart. */
-export function arSlut(e: Erbjudande | null): boolean {
-  return lagerlage(e) !== 'kopbar';
-}
-
-/** Sant bara för produkter butiken inte tar hem igen. Styr knapptexten. */
-export function arEjBestallningsbar(e: Erbjudande | null): boolean {
-  return lagerlage(e) === 'ej_bestallningsbar';
-}
+/** Lagerstatus: logiken ligger i lagerlage.ts, som testas utan Supabase. */
+export { arEjBestallningsbar, arRestnoterad, arSlut, lagerlage, type Lagerlage } from './lagerlage';

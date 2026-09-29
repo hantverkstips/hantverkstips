@@ -127,7 +127,7 @@ Modul "Det här behöver du" saknas i DESIGN.md och behöver ritas: två H3 (Ver
 
 Priset har alltid datum, "4 990 kr hos Proffsmagasinet, 12 sep", i finstilt. Det skiljer riktig data från påhittade priser och skyddar oss när priset ändrats.
 
-Lagerstatus visas bara när den är negativ. Ett grönt "i lager" på varje kort ser ut som en butik.
+Lagerstatus visas bara när den är negativ. Ett grönt "i lager" på varje kort ser ut som en butik. Restnoterad räknas som köpbar, eftersom butiken tar emot beställningen och levererar när varan kommer in: knappen står kvar och ordet "restnoterad" skrivs i raden under den, "Annonslänk · pris 29 sep · restnoterad" (beslut 2026-09-29).
 
 Prishistorik byggs från fas 2 som ett litet linjediagram i det fulla produktkortet, 90 dagar, lägsta pris markerat, inline-SVG utan hover. Prisjakt har gjort den grafen till sitt mest lästa element.
 

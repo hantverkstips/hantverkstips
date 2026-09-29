@@ -29,9 +29,11 @@ interface Props {
   /** Sekundär stil utan länk när lagerstatus är negativ. */
   slut?: boolean;
   /**
-   * Vilket negativt läge det är. Styr texten: slut i lager är tillfälligt,
-   * ej beställningsbar betyder att butiken inte tar hem varan igen. Utelämnas
-   * den härleds läget ur slut. Se lagerlage() i src/lib/produkter.ts.
+   * Vilket läge det är. Styr texten: slut i lager är tillfälligt, ej
+   * beställningsbar betyder att butiken inte tar hem varan igen, och
+   * restnoterad går att beställa med längre leveranstid (en vanlig
+   * annonslänk, läget i raden under). Utelämnas den härleds läget ur slut.
+   * Se src/lib/lagerlage.ts.
    */
   lager?: Lagerlage;
   /** full gör knappen block och full bredd på mobil, auto från sm. Standard auto. */
@@ -55,7 +57,9 @@ const {
 } = Astro.props;
 
 const lager: Lagerlage = Astro.props.lager ?? (slut ? 'slut' : 'kopbar');
-const ejKopbar = lager !== 'kopbar';
+const ejKopbar = lager === 'slut' || lager === 'ej_bestallningsbar';
+/** Negativ lagerstatus som ändå går att köpa: visas i raden under knappen. */
+const restnoterad = lager === 'restnoterad';
 
 const sidtyp = Astro.props.sidtyp ?? Astro.locals.sidtyp;
 /**
@@ -118,7 +122,7 @@ const prisrad = datum && harPris ? `pris ${formateraDatumKort(datum)}` : '';
   {
     (!ejKopbar || prisrad) && (
       <p class="kopknapp-annons">
-        {ejKopbar ? prisrad : `Annonslänk${prisrad ? ` · ${prisrad}` : ''}`}
+        {ejKopbar ? prisrad : `Annonslänk${prisrad ? ` · ${prisrad}` : ''}${restnoterad ? ' · restnoterad' : ''}`}
       </p>
     )
   }

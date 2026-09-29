@@ -4,6 +4,7 @@
  */
 import type { Brodsmula } from './innehall';
 import {
+  arRestnoterad,
   arSlut,
   billigasteErbjudande,
   hogstaPris,
@@ -95,6 +96,8 @@ export function artikel(a: ArtikelData): object {
 
 const I_LAGER = 'https://schema.org/InStock';
 const SLUT_I_LAGER = 'https://schema.org/OutOfStock';
+/** Restnoterad: butiken tar beställningen och levererar när varan kommer in. */
+const RESTNOTERAD = 'https://schema.org/BackOrder';
 
 /**
  * Lagerstatus i schema.org-form. Går via arSlut() och därmed lagerlage(), samma
@@ -102,7 +105,8 @@ const SLUT_I_LAGER = 'https://schema.org/OutOfStock';
  * saker: en knapp med texten "Slut i lager" får aldrig InStock bredvid sig.
  */
 function tillganglighet(p: Produkt): string {
-  return arSlut(billigasteErbjudande(p)) ? SLUT_I_LAGER : I_LAGER;
+  const e = billigasteErbjudande(p);
+  return arSlut(e) ? SLUT_I_LAGER : arRestnoterad(e) ? RESTNOTERAD : I_LAGER;
 }
 
 export interface ProduktData {
