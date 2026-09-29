@@ -890,3 +890,18 @@ Faq-frågor som hantverkaren kan överväga, utan att upprepa avsnitten: valmtak
 5. **Andelen arbete** är den lägsta av källornas tal (B3). Det gör att takpanneplåt får 23 procent arbete, efter Hantverkskollens tabell.
 6. **SS 82 40 31:s år** är inte bekräftat. Checklistans fälla vill ha året med, och underlaget har inte hittat det. `SS_AR` är `null` tills SIS har kontrollerats.
 7. **Valmtak** kommer inte med i första versionen (B2). SEO-beslutet lämnade frågan till UX.
+
+---
+
+## 12. Ändringar efter specen, 2026-09-29
+
+Koden följer det här, och där det krockar med avsnitten ovan gäller det här.
+
+1. **Takexperters tillägg räknas in** (SEO-beslutet i `seo-checklista-2026-09-29/raknare.md`, punkt 1) när P1 är enda källan för priset, alltså betong, tegel och papp. Det läggs på före rotavdraget och ger inget avdrag (`TILLAGG_ANDEL_ARBETE = 0`, ANTAGANDE med Skatteverkets text om övriga kostnader). Standard ger därför **164 578 kr** att betala, inte 134 578 (3.3, 4.6 och 7.2 F1). Fråga 11.4 är besvarad.
+2. **Bandplåt är 1 500 till 2 500 kr/m²** (punkt 2). P1:s uträknade 1 080 kr står inte med i spannet; P1:s uppdelning i arbete och material står kvar i `andelar`. F2 och tillståndet "Ifyllt, spann" i 4.6 ger 188 416 till 314 026 kr.
+3. **Utfallet `lutning`** i takbytet: materialet går inte att lägga på takets vinkel (`MINSTA_LUTNING`, i dag takpanneplåt 14°). Inget belopp, takarean som stort tal, reglerna `takarea`, `vinkel` och `takstolar`. Prövas efter intervallet, så ett tak utanför får `utanfor`.
+4. **Källraden** står högst en gång per sida (`src/lib/kalkyl/kallrad.ts`): i stycket ovanför reglerna när svaret har belopp, annars under den sista regeln som vilar på en förmedlare.
+5. **Källor per material:** reglerna `pris`, `andel-arbete` och `intervall` och antagandets `andel` tar källorna ur `prisKallor()` och `andelKallor()`, inte en fast lista.
+6. **Pulpetvarningen** i båda räknarna: vid pulpettak med vinkeln angiven säger beskedets rad hur mycket högre den höga väggen blir, och i takbytet att priserna gäller sadeltak.
+7. **Lindabs stuprör** (87 och 100 mm) står i `LINDAB_STUPROR` med källa L1, inte i texten.
+8. **Hårda mellanslag:** `hart()` och `hartaAllt()` i `tak.ts` lägger U+00A0 i tusental och mellan tal och enhet i all text i `TEXT` och i antagandetabellens värden, som `src/lib/format.ts` gör för resten av sajten. Tal bryts aldrig mitt i på 375 px.

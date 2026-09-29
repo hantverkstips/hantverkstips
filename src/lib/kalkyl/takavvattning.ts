@@ -30,10 +30,13 @@ import {
   takQuery,
   tillTal,
   valideraTak,
+  vinkelText,
   type TakFel,
   type Takform,
   type TakGeometri,
   type TakIndata,
+  hart,
+  hartaAllt,
 } from './tak.ts';
 
 export { m2Text, meterText };
@@ -273,6 +276,14 @@ export const RANNA_PLANNJA_2010 = {
  */
 export const LINDAB_RANNA = { under: 50, till: 100 } as const;
 
+/**
+ * Stupröret Lindab anger till sin ränna, i mm. Källa: L1, samma citat som
+ * LINDAB_RANNA ("125 mm breda hängrännor och stuprör med 87 mm diameter",
+ * "150 mm breda och stuprör med diameter 100 mm"). Bara för raden rad-lindab.
+ * Flyttad ur texten till en konstant av UX och bygge 2026-09-29.
+ */
+export const LINDAB_STUPROR: Partial<Record<Ranna, number>> = { 125: 87, 150: 100 };
+
 /** a < 50 ger 100, 50 ≤ a ≤ 100 ger 125, a > 100 ger 150 (L1). */
 export function lindabRanna(a: number): Ranna {
   if (a < LINDAB_RANNA.under) return 100;
@@ -402,6 +413,8 @@ export interface BeskedVarden {
   ranna: string | null;
   stuprorDim: string | null;
   lindab: string | null;
+  /** LINDAB_STUPROR för Lindabs ränna, null när Lindab-raden inte visas. */
+  lindabStupror: string | null;
   rannlangd: string | null;
   rannfall: string | null;
   fallMin: string | null;
@@ -423,6 +436,18 @@ export interface BeskedVarden {
   fallMinPerM: string;
   fallPlast: string;
   rannlangdPerStupror: string;
+  /**
+   * Takets form och mått vid satt = hus, null vid satt = yta. På ett pulpettak
+   * är nock höjdskillnaden mellan väggarna. Tillagda 2026-09-29 efter
+   * hantverkarens retur, punkt 6, så att en orimlig vinkel på ett pulpettak
+   * märks som i takbytet.
+   */
+  takform: Takform | null;
+  matt: 'vinkel' | 'nock' | null;
+  /** vinkelText(vinkelGrader). */
+  vinkel: string | null;
+  /** meterText(nockM). */
+  nock: string | null;
 }
 
 export interface KortsvarDim {
@@ -471,7 +496,27 @@ export interface RegelText {
   kallor: Kallkod[];
 }
 
-export const TEXT = {
+/**
+ * Varningen för pulpettak med vinkeln angiven, efter beskedets rad: med
+ * vinkeln syns höjdskillnaden mellan väggarna, så att en orimlig vinkel märks,
+ * som i takbytet. Tom sträng annars. Texten i TEXT.varning.
+ */
+const pulpetVarning = (v: BeskedVarden): string =>
+  v.takform === 'pulpet' && v.matt === 'vinkel' ? ` ${TEXT.varning['pulpet-vinkel'](v)}` : '';
+
+export const TEXT = hartaAllt({
+  /*
+   * Varningen för pulpettak med vinkeln angiven, sist i beskedets rad vid ok och
+   * utanfor. Bär vinkel och nock: med vinkel grader står den höga väggen nock m
+   * högre än den låga, och stämmer inte det med huset blir också ytan och
+   * rännan fel. Hantverkaren skriver; takbytets mening står i
+   * takbyte.ts, pulpetVarning.
+   */
+  varning: {
+    'pulpet-vinkel': (v: BeskedVarden): string =>
+      `Kontrollera vinkeln: med ${v.vinkel ?? ''} grader står den höga väggen ${v.nock ?? ''} m högre än den låga, och stämmer inte det med ditt hus blir också takfallets yta och rännan fel.`,
+  },
+
   /* Beskedet överst i spalten. rubrik är en mening med ett verb; rad säger inte samma sak. */
   besked: {
     ok: {
@@ -480,18 +525,21 @@ export const TEXT = {
         `Köp hängränna på ${v.ranna ?? ''} mm och stuprör på ${v.stuprorDim ?? ''} mm`,
       /* Något annat än rubriken, till exempel antalet stuprör eller att det gäller ett takfall. */
       rad: (v: BeskedVarden): string =>
-        v.satt === 'yta'
-          ? 'Svaret gäller takfallet du har mätt. Har huset fler takfall räknar du på vart och ett för sig.'
-          : v.takfall === 2
-            ? 'Svaret gäller ett takfall. Sadeltaket har två, så samma ränna och samma rör sitter på båda långsidorna.'
-            : 'Pulpettaket har ett enda takfall, och rännan sitter längs den låga sidan.',
+        `${
+          v.satt === 'yta'
+            ? 'Svaret gäller takfallet du har mätt. Har huset fler takfall räknar du på vart och ett för sig.'
+            : v.takfall === 2
+              ? 'Svaret gäller ett takfall. Sadeltaket har två, så samma ränna och samma rör sitter på båda långsidorna.'
+              : 'Pulpettaket har ett enda takfall, och rännan sitter längs den låga sidan.'
+        }${pulpetVarning(v)}`,
     },
     utanfor: {
       /* Att läsaren ska fråga tillverkaren. Bär ytaPerRannfall. */
       rubrik: (v: BeskedVarden): string =>
         `Fråga tillverkaren av det rännsystem du vill köpa vad som gäller för ${v.ytaPerRannfall} m² till ett stuprör`,
       /* Att tabellerna slutar vid max m² per rännfall. Kort. */
-      rad: (v: BeskedVarden): string => `Branschens tabell för rännor slutar vid ${v.max} m² takyta till varje stuprör.`,
+      rad: (v: BeskedVarden): string =>
+        `Branschens tabell för rännor slutar vid ${v.max} m² takyta till varje stuprör.${pulpetVarning(v)}`,
     },
   } satisfies Record<Utfall, { rubrik: (v: BeskedVarden) => string; rad: (v: BeskedVarden) => string }>,
 
@@ -575,7 +623,7 @@ export const TEXT = {
       v.satt === 'yta' ? `Takfallet är ${v.yta} m².` : `Takfallet är ${v.yta} m² mätt längs lutningen.`,
     /* Lindabs större ränna, när lindab inte är null. Läsaren väljer efter fabrikatet. */
     'rad-lindab': (v: BeskedVarden): string =>
-      `Lindab vill ha en ränna på ${v.lindab ?? ''} mm för den här ytan, och det gäller om du köper deras system.`,
+      `Lindab vill ha en ränna på ${v.lindab ?? ''} mm${v.lindabStupror === null ? '' : ` och ett stuprör på ${v.lindabStupror} mm`} för den här ytan, och det gäller om du köper deras system.`,
     /* Etiketten över ytan vid utanfor. */
     'etikett-yta': 'Takyta till varje stuprör',
     /* Länk till "Därför blev svaret så". */
@@ -616,7 +664,7 @@ export const TEXT = {
     },
     ranna: {
       text: (v: BeskedVarden): string =>
-        `RA Hus 21 är en handbok med råd för byggarbeten, och i den finns en tabell över hur mycket takyta varje rännbredd klarar. Plannjas anvisning från 2026 har samma gränser. Räknaren väljer den smalaste ränna som klarar ${v.ytaPerRannfall} m² takyta till varje stuprör.`,
+        `Rännan är den smalaste som klarar ${v.ytaPerRannfall} m² takyta till varje stuprör i tabellen i RA Hus 21, byggbranschens bok med råd för byggarbeten. Plannjas anvisning från 2026 har samma gränser.`,
       kallor: ['T1', 'P26'],
     },
     lindab: {
@@ -626,7 +674,7 @@ export const TEXT = {
     },
     stupror: {
       text: (v: BeskedVarden): string =>
-        `Stupröret på ${v.stuprorDim ?? ''} mm kommer ur tabellen för stuprör i samma handbok. Plåt & Ventföretagens Teknikhandbok beskriver den tabellen som generös, så röret har marginal.`,
+        `Stupröret på ${v.stuprorDim ?? ''} mm är det minsta som tabellen för stuprör i samma bok ger för ytan, och den tabellen är räknad med marginal.`,
       kallor: ['T2', 'T3'],
     },
     antal: {
@@ -635,7 +683,7 @@ export const TEXT = {
           ? `Ett stuprör får ta hand om högst ${v.rannlangdPerStupror} m ränna, och därför räknar jag med ${v.stupror === '1' ? 'ett stuprör' : `${v.stupror} stuprör`} på takfallet.`
           : v.stupror === '1'
             ? `Ett stuprör får ta hand om högst ${v.rannlangdPerStupror} m ränna, och din ränna på ${v.rannlangd} m klarar sig med ett.`
-            : `Ett stuprör får ta hand om högst ${v.rannlangdPerStupror} m ränna, så din ränna på ${v.rannlangd} m behöver ${v.stupror}. Varje rör får en lika lång del av rännan, ${v.rannfall ?? ''} m, som lutar mot just det röret.`,
+            : `Ett stuprör får ta hand om högst ${v.rannlangdPerStupror} m ränna, så din ränna på ${v.rannlangd} m behöver ${v.stupror} stuprör. Varje rör får en lika lång del av rännan, ${v.rannfall ?? ''} m, som lutar mot just det röret.${v.stupror === '2' ? '' : ' Var rören sitter bestämmer du, men räknaren utgår från att ingen del av rännan är längre än så.'}`,
       kallor: ['L1', 'P26'],
     },
     fall: {
@@ -649,7 +697,7 @@ export const TEXT = {
     },
     krokar: {
       text: (v: BeskedVarden): string =>
-        `Jag har räknat krokarna med det avstånd som tillverkarna anger, med den första och den sista en bit in från rännans ändar. Det blir ${v.krokar ?? ''} på takfallet.`,
+        `Med krokarna på det avstånd som tillverkarna anger, och den första och den sista en bit in från rännans ändar, blir det ${v.krokar ?? ''} krokar på takfallet.`,
       kallor: ['P26', 'L1'],
     },
     plast: {
@@ -659,7 +707,7 @@ export const TEXT = {
     },
     'over-250': {
       text: (v: BeskedVarden): string =>
-        `RA Hus 21 går upp till ${v.max} m² med den bredaste rännan. Redan för de största ytorna i tabellen ska tillverkarens katalog kontrolleras, enligt Teknikhandboken.`,
+        `RA Hus 21 går upp till ${v.max} m² med den bredaste rännan. Redan för de största ytorna i tabellen ska du kontrollera vad tillverkarens katalog säger.`,
       kallor: ['T1'],
     },
   } satisfies Record<RegelNyckel, RegelText>,
@@ -668,10 +716,10 @@ export const TEXT = {
     /* Under 2,5 mm/m gäller inte Lindabs garanti (LG). */
     'utan-fall': `I en plåtränna som hänger plant blir vatten och löv stående. Lindab lämnar ingen garanti på en ränna som lutar mindre än ${kortTal(FALL_MIN_MM_M)} mm per meter, så kontrollera fallet på krokarna innan rännan läggs i.`,
     /* Mer än 10 m ränna till ett stuprör. */
-    'langre-an-10': `Sätt inte ett enda stuprör i änden av en ränna som är längre än ${RANNLANGD_PER_STUPROR_M} m. Lindab och Plannja vill ha ett rör till, och då får rännan fall åt två håll. AMA Hus godtar ett rör mitt på rännan, med högst ${RANNLANGD_PER_STUPROR_M} m åt varje håll, men räknaren går efter den strängare regeln.`,
+    'langre-an-10': `Sätt inte ett enda stuprör i änden av en ränna som är längre än ${RANNLANGD_PER_STUPROR_M} m. Då vill Lindab och Plannja ha ett rör till, i andra änden, med fall åt båda hållen från mitten. Räknaren räknar så och delar takytan lika mellan rören.`,
     /* Välj inte det smalare röret som SS-tabellen tillåter; smala rör fryser lättare (T3). */
     'mindre-ror':
-      'Den svenska standarden SS 82 40 31 låter ett smalare stuprör ta hand om vattnet från samma tak, och det kan vara frestande att gå ner en storlek. Smala rör fryser lättare, enligt Teknikhandboken, så håll dig till dimensionen från RA Hus.',
+      'Den svenska standarden SS 82 40 31 låter ett smalare stuprör ta hand om vattnet från samma tak, och det kan vara frestande att gå ner en storlek. Låt bli, för ett klent rör fryser lättare sönder, och det varnar Teknikhandboken för.',
   } satisfies Record<GorInte, string>,
 
   /* Stycket i "Så räknar jag" om SS 824031 och den vågräta ytan, med räknarens tal för läsarens tak. */
@@ -744,24 +792,24 @@ export const TEXT = {
 
   /* "Så räknar jag" som numrerad lista. Talen ur StegVarden. */
   steg: (v: StegVarden): string[] => [
-    'Jag tar takfallets yta längs lutningen och räknar rännan lika lång som takfoten.',
-    `Sedan delar jag rännan så att inget stuprör får mer än ${v.rannlangdPerStupror} m ränna, och takytan fördelas lika mellan rören.`,
-    `Ytan som går till ett stuprör slår jag upp i tabellerna för ränna och stuprör, och jag tar den minsta dimension som räcker. Rännans tabell slutar vid ${v.max} m² till ett rör.`,
-    `Till sist blir fallet ${v.fallMin} mm per meter gånger rännans längd fram till röret, och krokarna sitter med ${v.krokCc} mm mellan varandra och ${v.krokKant} mm från ändarna.`,
+    'Takfallets yta räknas längs lutningen, och rännan är lika lång som takfoten.',
+    `Rännan delas så att inget stuprör får mer än ${v.rannlangdPerStupror} m ränna, och takytan fördelas lika mellan rören.`,
+    `Med ytan som går till ett stuprör väljer räknaren den minsta ränna och det minsta rör i tabellerna som räcker. Rännans tabell slutar vid ${v.max} m² till ett rör.`,
+    `Fallet blir ${v.fallMin} mm per meter gånger rännans längd fram till röret, och krokarna sitter med ${v.krokCc} mm mellan varandra och ${v.krokKant} mm från ändarna.`,
   ],
 
   /* Kortsvaret, byggt av kortsvarVarden() (checklistans H2 0). markering får <Markering>. */
   kortsvar: (v: KortsvarVarden): KortsvarDelar => ({
     fore: `Ett takfall på ${v.liten?.yta ?? ''} m² med ett stuprör i änden av rännan klarar sig med en hängränna på`,
     markering: `${v.liten?.ranna ?? ''} mm`,
-    efter: ` och ett stuprör på ${v.liten?.stupror ?? ''} mm, enligt ${v.ar?.ra ?? ''} och ${v.ar?.plannja ?? ''}. Vid ${v.mellan?.yta ?? ''} m² behövs ${v.mellan?.ranna ?? ''} och ${v.mellan?.stupror ?? ''} mm, och vid ${v.stor?.yta ?? ''} m² ${v.stor?.ranna ?? ''} och ${v.stor?.stupror ?? ''} mm. Rännan ska luta minst ${v.fallMin ?? ''} mm per meter mot röret, och mer om den ska spola sig ren. Är rännan längre än ${v.rannlangdPerStupror ?? ''} m behövs ett stuprör till.`,
+    efter: ` och ett stuprör på ${v.liten?.stupror ?? ''} mm. Vid ${v.mellan?.yta ?? ''} m² behövs en ränna på ${v.mellan?.ranna ?? ''} mm och ett stuprör på ${v.mellan?.stupror ?? ''} mm, och vid ${v.stor?.yta ?? ''} m² en ränna på ${v.stor?.ranna ?? ''} mm och ett rör på ${v.stor?.stupror ?? ''} mm. Gränserna är desamma i ${v.ar?.ra ?? ''} och i ${v.ar?.plannja ?? ''}. Rännan ska luta minst ${v.fallMin ?? ''} mm per meter mot röret, och mer om den ska spola sig ren. Är rännan längre än ${v.rannlangdPerStupror ?? ''} m behövs ett stuprör till.`,
   }),
 
   /* Sparas till publiceringsomgången. Alt med orden takavvattning och dimension. */
   skissAlt: 'Skiss av ett tak ovanifrån med rännor, stuprör och fall, och de dimensioner på takavvattningen som räknaren ger',
   skissBildtext:
     'Taket sett uppifrån med en ränna längs varje långsida och ett stuprör i varje ände. Pilarna visar fallet mot stuprören, och det markerade talet är rännans bredd för standardhuset i formuläret.',
-};
+});
 
 /* ------------------------------------------------------------------ *
  * Adressen
@@ -921,6 +969,10 @@ export function beskedVarden(r: TakavvattningOk, i: TakavvattningIndata): Besked
     fallMinPerM: kortTal(FALL_MIN_MM_M),
     fallPlast: kortTal(FALL_PLAST_MM_M),
     rannlangdPerStupror: String(RANNLANGD_PER_STUPROR_M),
+    takform: r.geometri ? r.geometri.takform : null,
+    matt: r.geometri ? i.matt : null,
+    vinkel: r.geometri ? vinkelText(r.geometri.vinkelGrader) : null,
+    nock: r.geometri ? meterText(r.geometri.nockM) : null,
   };
   if (r.utfall === 'utanfor') {
     return {
@@ -928,6 +980,7 @@ export function beskedVarden(r: TakavvattningOk, i: TakavvattningIndata): Besked
       ranna: null,
       stuprorDim: null,
       lindab: null,
+      lindabStupror: null,
       rannlangd: null,
       rannfall: null,
       fallMin: null,
@@ -950,6 +1003,7 @@ export function beskedVarden(r: TakavvattningOk, i: TakavvattningIndata): Besked
     ranna: String(r.dim.ranna),
     stuprorDim: String(r.dim.stupror),
     lindab: r.lindab === null ? null : String(r.lindab),
+    lindabStupror: r.lindab === null || LINDAB_STUPROR[r.lindab] === undefined ? null : String(LINDAB_STUPROR[r.lindab]),
     rannlangd: m2Text(r.rannlangdM),
     rannfall: m2Text(r.rannfallM),
     fallMin: String(r.fallMinMm),
@@ -986,7 +1040,7 @@ export function kortsvarVarden(): KortsvarVarden {
       '150': String(FALL_SJALVRENS_MM_M[150]),
     },
     rannlangdPerStupror: String(RANNLANGD_PER_STUPROR_M),
-    ar: { ra: 'RA Hus 21', plannja: 'Plannja 2026' },
+    ar: { ra: 'RA Hus 21', plannja: 'Plannjas anvisning från 2026' },
   };
 }
 
@@ -1116,7 +1170,7 @@ export function antagandenFor(r: TakavvattningOk, i: TakavvattningIndata): Antag
   const galler = new Set<string>(r.utfall === 'ok' ? [...alltid, ...vidOk] : alltid);
   return ANTAGANDEN.filter((a) => galler.has(a.nyckel)).map((a) => ({
     nyckel: a.nyckel,
-    varde: a.varde(i),
+    varde: hart(a.varde(i)),
     typ: a.typ,
     kallor: a.kallor,
   }));

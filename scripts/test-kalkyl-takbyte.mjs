@@ -27,6 +27,8 @@ import { dirname, join } from 'node:path';
 
 import {
   andelArbete,
+  andelKallor,
+  kallradRegel,
   ANTAGANDEN,
   antagandenFor,
   avvattningQuery,
@@ -305,6 +307,16 @@ test('kortsvarVarden byggs av standardhuset', () => {
   assert.equal(v.bottenyta, '108');
 });
 
+test('kortsvarVarden säger vilken vinkel och vilka utsprång takytan gäller för', () => {
+  const v = kortsvarVarden();
+  // Standardhuset i tak.ts: 27°, 0,5 m vid takfoten, 0,4 m vid gaveln.
+  assert.equal(v.vinkel, '27');
+  assert.equal(v.utsprangTakfot, '0,50');
+  assert.equal(v.utsprangGavel, '0,40');
+  // Samma tal som takytan räknas med: 12,8 · 10 / cos 27° = 143,66 → "143,7".
+  assert.equal(v.takarea, '143,7');
+});
+
 test('antagandenFor', () => {
   const nycklar = (over) => {
     const i = { ...STANDARD, ...over };
@@ -387,5 +399,105 @@ test('ANTAGANDEN: varje rad av typen Källa har en källa med https', () => {
     if (a.typ !== 'Källa') continue;
     assert.ok(a.kallor.length > 0, a.nyckel);
     for (const k of a.kallor) assert.ok(KALLOR[k].url.startsWith('https://'), `${a.nyckel}: ${k}`);
+  }
+});
+
+test('källraden står högst en gång: i stycket ovanför vid intervall, annars under sista förmedlarregeln', async () => {
+  const { kallradEfterRegel } = await import('../src/lib/kalkyl/kallrad.ts');
+  const kallor = [[{}], [], [{}], [], [{}]];
+  assert.equal(kallradEfterRegel(kallor, true), -1);
+  assert.equal(kallradEfterRegel(kallor, false), 3);
+  assert.equal(kallradEfterRegel([[{}], [{}]], false), -1);
+  assert.equal(kallradEfterRegel([], false), -1);
+  const sida = readFileSync(join(ROT, 'src', 'pages', 'rakna', 'takbyte.astro'), 'utf8');
+  assert.match(sida, /kallradRegel\(visat, visatIndata\)/);
+  assert.equal(sida.split('TEXT.darfor.kallrad').length - 1, 2, 'raden finns i stycket ovanför och under reglerna, inget mer');
+});
+
+/* Hantverkarens retur 2026-09-29. */
+
+test('retur 1: takpanneplåt under 14 grader ger utfallet lutning, utan belopp', () => {
+  const r = rakna({ material: 'takpanneplat', vinkelGrader: 10 });
+  assert.equal(r.status, 'ok');
+  assert.equal(r.utfall, 'lutning');
+  assert.equal('lag' in r, false);
+  assert.deepEqual(r.regler, ['takarea', 'vinkel', 'takstolar']);
+  assert.deepEqual(r.gorInteDetHar, ['bottenyta', 'bestall-takstolar']);
+  assert.equal(r.takstolar, 11);
+  /* Precis 14 grader går, och andra material har ingen gräns. */
+  assert.equal(rakna({ material: 'takpanneplat', vinkelGrader: 14 }).utfall, 'belopp');
+  assert.equal(rakna({ material: 'betong', vinkelGrader: 10 }).utfall, 'belopp');
+  /* Vinkeln ur nockhöjden räknas också: 9 m bred, nock 1,1 m ger 13,7 grader. */
+  assert.equal(rakna({ material: 'takpanneplat', matt: 'nock', nockM: 1.1 }).utfall, 'lutning');
+  /* Utanför intervallet vinner, som förut. */
+  assert.equal(rakna({ ...F10, material: 'takpanneplat', vinkelGrader: 10 }).utfall, 'utanfor');
+  const i = { ...STANDARD, material: 'takpanneplat', vinkelGrader: 10 };
+  const v = beskedVarden(raknaTakbyte(i), i);
+  assert.equal(v.attBetalaLag, null);
+  assert.equal(v.sida, null);
+  assert.equal(v.minLutning, '14');
+  assert.doesNotMatch(TEXT.besked.lutning.rubrik(v), /\d{3}/, 'rubriken bär inget belopp');
+  assert.ok(!antagandenFor(raknaTakbyte(i), i).some((a) => a.nyckel.startsWith('pris-')));
+  /* Beloppets rad bär inte längre varningen. */
+  const b = { ...STANDARD, material: 'takpanneplat', vinkelGrader: 14 };
+  assert.doesNotMatch(TEXT.besked.belopp.rad(beskedVarden(raknaTakbyte(b), b)), /14 grader/);
+});
+
+test('retur 2: källraden står under den sista förmedlarregeln vid utanfor, inte under vinkeln', () => {
+  const betong = { ...STANDARD, ...F10 };
+  const rb = raknaTakbyte(betong);
+  assert.equal(rb.utfall, 'utanfor');
+  assert.equal(rb.regler[kallradRegel(rb, betong)], 'intervall');
+  /* Plåt: intervallet har en firma vid namn, så ingen regel får raden. */
+  const plat = { ...STANDARD, ...F10, material: 'bandplat' };
+  assert.equal(kallradRegel(raknaTakbyte(plat), plat), -1);
+  /* Lutning: ingen förmedlarregel. Belopp: raden står ovanför. */
+  const lut = { ...STANDARD, material: 'takpanneplat', vinkelGrader: 10 };
+  assert.equal(kallradRegel(raknaTakbyte(lut), lut), -1);
+  assert.equal(kallradRegel(raknaTakbyte(STANDARD), STANDARD), -1);
+});
+
+test('retur 3: regeln om intervallet har materialets källor', () => {
+  const kallor = (material) => regelKallor('intervall', { ...STANDARD, material }).map((k) => k.kod);
+  assert.deepEqual(kallor('betong'), []);
+  assert.deepEqual(kallor('tegel'), []);
+  assert.deepEqual(kallor('bandplat'), ['P5']);
+});
+
+test('retur 4: KALLOR har riktiga datum', () => {
+  for (const k of Object.values(KALLOR)) assert.match(k.datum, /\d{4}-\d{2}-\d{2}/, k.kod);
+  assert.equal(KALLOR.P1.datum, 'hämtad 2026-09-28');
+});
+
+test('retur 5: andelen arbete har materialets källor', () => {
+  const rader = (material) => {
+    const i = { ...STANDARD, material };
+    return antagandenFor(raknaTakbyte(i), i).find((a) => a.nyckel === 'andel').kallor;
+  };
+  assert.deepEqual(rader('betong'), ['P1']);
+  assert.deepEqual(rader('takpanneplat'), ['P4']);
+  assert.deepEqual(rader('bandplat'), ['P4', 'P1']);
+  assert.deepEqual(andelKallor('papp'), ['P1']);
+});
+
+test('retur 7: spalt har ingen rad-tillagg', () => {
+  assert.equal('rad-tillagg' in TEXT.spalt, false);
+});
+
+/* UX retur 2 på /rakna/takbyte/: de 14 graderna har källa i antagandetabellen. */
+test('UX retur 2: minsta-lutning står med Plannja och Lindab vid utfallet lutning, bara där', () => {
+  const lut = { ...STANDARD, material: 'takpanneplat', vinkelGrader: 10 };
+  const rad = antagandenFor(raknaTakbyte(lut), lut).find((a) => a.nyckel === 'minsta-lutning');
+  assert.ok(rad, 'raden finns vid lutning');
+  assert.equal(rad.typ, 'Källa');
+  assert.deepEqual(rad.kallor, ['PL-ROYAL', 'LB-PANNA']);
+  assert.equal(KALLOR['PL-ROYAL'].slag, 'tillverkare');
+  assert.equal(KALLOR['LB-PANNA'].slag, 'tillverkare');
+  assert.match(KALLOR['PL-ROYAL'].url, /se-plannja-montering-royal-regent-2026-2\.pdf/);
+  assert.match(KALLOR['LB-PANNA'].url, /takpanna-torekov-norrviken-montering-se\.pdf/);
+  assert.equal(KALLOR['LB-PANNA'].datum, '2024-09-20');
+  /* Inte vid belopp eller utanför. */
+  for (const i of [STANDARD, { ...STANDARD, material: 'takpanneplat', vinkelGrader: 14 }, { ...STANDARD, ...F10 }]) {
+    assert.ok(!antagandenFor(raknaTakbyte(i), i).some((a) => a.nyckel === 'minsta-lutning'), JSON.stringify(i));
   }
 });

@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Skiss av ett badrum på 5 kvm ovanifrån, med kostnaden för att renovera badrummet efter rotavdraget">
+  <!-- Anteckningsboken, verktygsskiss för /rakna/badrum-kostnad/: badrummet i planvy, källornas
+       exempel på 5 kvm golv (REFERENSYTA_KVM i src/lib/kalkyl/renovering.ts, BE och BS).
+       Inga sidmått: källorna anger bara golvytan, så rummet har inga byglar och ytan står
+       i handskrift i rummet. Rummet är ritat 250 × 200 px, som 5 kvm, utan att sidorna är mått.
+       Innerväggen x 80–330, y 76–276, ytterväggen 10 px utanför. Dörren i nedre väggen x 248–318,
+       bladet hängt i (318, 276). Duschen i hörnet uppe till höger x 240–330, y 76–166, med
+       golvbrunnen i (285, 121). Handfatet mot övre väggen x 120–180, toaletten mot vänster vägg.
+       Blyerts 2 px för väggar, dörr och inredning, blyerts-2 1,5 px för dörrens slag och
+       1,25 px för ledarna, snickarpenna 2,5 px för tätskiktets kant 6 px innanför väggarna och
+       den öppna ringen runt golvbrunnen (det enda som pekar, enligt skissBildtext). Kanten är
+       bruten där handfatet, toaletten och dörren står. Tumstock bara bakom "178 160 kr", som är
+       att betala efter rotavdraget med räknarens standardvärden (raknaBadrumKostnad(STANDARD)).
+       Ändras konstanterna där ändras talet här.
+       Etiketterna är ord ur TEXT i renovering.ts (skissBildtext och niva.enkel) tills hantverkaren
+       har skrivit skissens etiketter.
+       Handskrift i Caveat 500, 24 px, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="374" y="291" width="116" height="30" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 432 306)"/>
+
+  <!-- Blyerts: väggarna, inre och yttre linje, brutna vid dörren -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M248,277 Q164,278 78,276 Q79,176 80,74 Q205,75 332,76 Q331,176 330,278 Q324,277 318,276"/>
+    <path d="M248,288 Q159,287 68,286 Q69,176 70,64 Q205,65 342,66 Q341,176 340,288 Q329,287 318,286"/>
+    <path d="M248,276 V286 M318,276 V286"/>
+    <!-- dörrbladet -->
+    <path d="M318,276 Q317,241 318,206"/>
+    <!-- duschen -->
+    <path d="M240,74 Q241,120 240,168 M238,166 Q285,167 332,166"/>
+    <!-- golvbrunnen -->
+    <circle cx="285" cy="121" r="10"/>
+    <path d="M279,121 H291 M285,115 V127"/>
+    <!-- handfatet -->
+    <path d="M120,76 Q119,94 120,112 Q150,113 180,112 Q181,94 180,76"/>
+    <ellipse cx="150" cy="93" rx="20" ry="10"/>
+    <!-- toaletten -->
+    <path d="M80,170 Q90,169 98,170 Q99,192 98,214 Q89,215 80,214"/>
+    <ellipse cx="122" cy="192" rx="24" ry="17"/>
+  </g>
+
+  <!-- Blyerts-2: dörrens slag -->
+  <path d="M318,206 A70,70 0 0 0 248,276" fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Snickarpenna: tätskiktets kant längs väggarna och ringen runt golvbrunnen -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M242,270 Q164,271 86,270 Q85,245 86,220"/>
+    <path d="M86,164 Q85,123 86,82 Q100,81 114,82"/>
+    <path d="M186,82 Q255,81 324,82 Q326,176 324,270"/>
+    <path d="M301,112 A18,18 0 1 0 297,134"/>
+  </g>
+
+  <!-- Blyerts-2: ledarna från etiketterna -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M368,108 Q336,112 305,118"/>
+    <path d="M368,212 Q347,220 327,228"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="116" y="52">handfat</text>
+    <text x="258" y="52">dusch</text>
+    <text x="152" y="200">toalett</text>
+    <text x="100" y="256" fill="#625a50">5 kvm golv</text>
+    <text x="372" y="114">golvbrunn</text>
+    <text x="372" y="218">tätskiktets kant</text>
+    <text x="380" y="314">178 160 kr</text>
+  </g>
+</svg>

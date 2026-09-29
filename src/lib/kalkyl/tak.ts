@@ -366,3 +366,34 @@ export function meterText(n: number): string {
 export function procentText(n: number): string {
   return enDecimalUtanNolla(n);
 }
+
+/**
+ * Hårda mellanslag i en färdig mening, som src/lib/format.ts gör: mellan
+ * tusentalen ("164 578") och mellan talet och enheten ("30 000 kr", "27 grader").
+ * kronor() i rotavdrag.ts skriver vanliga mellanslag och rörs inte, så texten
+ * rättas här i stället. Orden och talen ändras inte. UX och bygge, 2026-09-29,
+ * efter granskningen på 375 px där tal bröts mitt i.
+ */
+export function hart(s: string): string {
+  return s
+    .replace(/(\d) (?=\d{3}(?!\d))/g, `$1${HART}`)
+    .replace(/(\d) (?=(?:kr|m²|mm|m|grader|procent|stycken|°)(?![A-Za-zÅÄÖåäö]))/g, `$1${HART}`);
+}
+
+/**
+ * Samma objekt med hart() på varje sträng, och på varje sträng som en
+ * funktion i det returnerar, också i listor och objekt. För TEXT i
+ * takbyte.ts och takavvattning.ts, så att ingen mening behöver skrivas om.
+ */
+export function hartaAllt<T>(v: T): T {
+  const lagg = (x: unknown): unknown => {
+    if (typeof x === 'string') return hart(x);
+    if (typeof x === 'function') return (...a: unknown[]) => lagg((x as (...b: unknown[]) => unknown)(...a));
+    if (Array.isArray(x)) return x.map(lagg);
+    if (x !== null && typeof x === 'object') {
+      return Object.fromEntries(Object.entries(x as Record<string, unknown>).map(([k, y]) => [k, lagg(y)]));
+    }
+    return x;
+  };
+  return lagg(v) as T;
+}

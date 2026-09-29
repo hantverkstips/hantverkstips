@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Skiss av en husgavel med de mått som behövs för att räkna ut takarean vid ett takbyte">
+  <!-- Anteckningsboken, verktygsskiss för /rakna/takbyte/: gaveln rakt framifrån på huset som står i
+       formuläret från början (STANDARD i src/lib/kalkyl/takbyte.ts): gaveln 9 m bred mätt
+       utvändigt, takfotsutsprånget 0,5 m vågrätt ut från väggen, sadeltak med 27 graders vinkel.
+       Det ger takfallets längd 5,61 m från takfoten till nocken och takarean 143,7 m²
+       (raknaTakbyte(STANDARD), geometrin i tak.ts). Ändras standardvärdena ändras talen här.
+       Skala 36 px per meter i sidled och höjdled. Väggarna x 168–492 (9 m), mitt x 330.
+       Nocken i (330, 128), 2,29 m över väggens överkant y 210. Takfoten i (150, 219) och
+       (510, 219), 0,5 m utanför väggen. Väggens höjd är inget mått i räknaren och har ingen bygel.
+       Marklinjen y 300. Ett fönster mitt i gaveln.
+       Blyerts 2 px för huset och marken, blyerts-2 1,5 px för måttbyglarna och vinkelbågen,
+       snickarpenna 2,5 px för pilen längs högra takfallet från takfoten till nocken, 16 px
+       utanför takfallet (det enda som pekar), och dess mått. Tumstock bara bakom "143,7 m²".
+       Talen är fasta: 9 m, 0,5 m, 27°, 5,61 m, 143,7 m².
+       Handskrift i Caveat 500, 24 px, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="58" y="58" width="108" height="30" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 112 73)"/>
+
+  <!-- Blyerts: marken, väggarna, taket och fönstret -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M56,300 Q320,302 584,300"/>
+    <path d="M168,302 Q166,256 168,208"/>
+    <path d="M492,302 Q494,256 492,208"/>
+    <path d="M147,221 Q238,172 330,128 Q421,172 513,221"/>
+    <path d="M306,226 Q330,225 354,226 Q355,247 354,268 Q330,269 306,268 Q305,247 306,226 Z"/>
+    <path d="M330,226 V268"/>
+  </g>
+
+  <!-- Blyerts-2: måttbyglarna. 9 m under gaveln, 0,5 m under högra takfoten, vinkeln vid vänstra väggen. -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M168,318 Q330,320 492,318"/>
+    <path d="M168,312 v12 M492,312 v12"/>
+    <path d="M492,240 Q501,241 510,240"/>
+    <path d="M492,234 v12 M510,226 v20"/>
+    <path d="M168,210 Q200,211 232,210"/>
+    <path d="M224,210 A56,56 0 0 0 218,185"/>
+  </g>
+
+  <!-- Snickarpenna: takfallets längd, från takfoten till nocken, med pilspets i båda ändar -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M338,114 Q429,158 517,205"/>
+    <path d="M346,108 L338,114 L348,118"/>
+    <path d="M506,204 L517,205 L512,195"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="312" y="346" fill="#625a50">9 m</text>
+    <text x="520" y="250" fill="#625a50">0,5 m</text>
+    <text x="230" y="206" fill="#625a50">27°</text>
+    <text x="448" y="146" fill="#ad3519">5,61 m</text>
+    <text x="64" y="82">143,7 m²</text>
+  </g>
+</svg>

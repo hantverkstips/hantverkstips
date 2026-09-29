@@ -38,6 +38,8 @@ import {
   type Takform,
   type TakGeometri,
   type TakIndata,
+  hart,
+  hartaAllt,
 } from './tak.ts';
 import {
   raknaRotavdrag,
@@ -48,6 +50,7 @@ import {
   SKATTEVERKET_GER_RATT,
   type Begransning,
 } from './rotavdrag.ts';
+import { kallradEfterRegel } from './kallrad.ts';
 
 export { kronor };
 /* Formuläret och sidan läser takets delar härifrån, så att de har en import. */
@@ -59,7 +62,16 @@ export { CC_VAL, m2Text, meterText, paslagstabell, procentText, vinkelText } fro
 
 export type Material = 'bandplat' | 'takpanneplat' | 'betong' | 'tegel' | 'papp';
 export type Agare = 1 | 2;
-export type Kallkod = 'P1' | 'P4' | 'P5' | 'TRAGUIDEN' | 'SKV-ROT' | 'SKV-RATT' | 'TAKIVAST';
+export type Kallkod =
+  | 'P1'
+  | 'P4'
+  | 'P5'
+  | 'TRAGUIDEN'
+  | 'SKV-ROT'
+  | 'SKV-RATT'
+  | 'TAKIVAST'
+  | 'PL-ROYAL'
+  | 'LB-PANNA';
 
 export interface KallaRef {
   kod: Kallkod;
@@ -67,7 +79,7 @@ export interface KallaRef {
   titel: string;
   /** https. */
   url: string;
-  slag: 'förmedlare' | 'firma' | 'branschhandbok' | 'myndighet';
+  slag: 'förmedlare' | 'firma' | 'branschhandbok' | 'myndighet' | 'tillverkare';
   datum: string;
 }
 
@@ -123,7 +135,12 @@ export interface Ande {
   begransatAv: Begransning;
 }
 
-export type Utfall = 'belopp' | 'tak' | 'utanfor';
+/**
+ * lutning: materialet går inte att lägga på takets vinkel (MINSTA_LUTNING), så
+ * inget belopp räknas. Tillagt 2026-09-29 efter hantverkarens retur, punkt 1:
+ * rubriken bar ett belopp som raden sa inte gällde.
+ */
+export type Utfall = 'belopp' | 'tak' | 'utanfor' | 'lutning';
 export type GorInte = 'bottenyta' | 'rot-pa-allt' | 'bestall-takstolar';
 export type RegelNyckel =
   | 'takarea'
@@ -166,6 +183,14 @@ export type TakbyteResultat =
       gorInteDetHar: GorInte[];
       regler: RegelNyckel[];
     }
+  | {
+      status: 'ok';
+      utfall: 'lutning';
+      geometri: TakGeometri;
+      takstolar: number;
+      gorInteDetHar: GorInte[];
+      regler: RegelNyckel[];
+    }
   | { status: 'ogiltig'; fel: Partial<Record<FelNyckel, string>> };
 
 export type TakbyteOk = Extract<TakbyteResultat, { status: 'ok' }>;
@@ -182,7 +207,8 @@ export const KALLOR: Record<Kallkod, KallaRef> = {
     titel: 'Takexperter, Vad kostar det att byta tak? (Pris 2026)',
     url: 'https://www.takexperter.se/sida/vad-kostar-det-att-byta-tak-pris',
     slag: 'förmedlare',
-    datum: 'rubriken säger "Pris 2026", hämtad 2026-09-28',
+    /* Sidan är odaterad; datumet är dagen underlaget hämtade den (takbytesunderlaget, inledningen och 4.1). */
+    datum: 'hämtad 2026-09-28',
   },
   P4: {
     kod: 'P4',
@@ -226,6 +252,26 @@ export const KALLOR: Record<Kallkod, KallaRef> = {
     url: 'https://takivast.se/byta-tak-kostnad-pris/',
     slag: 'firma',
     datum: 'ändrad 2026-08-17',
+  },
+  /*
+   * Minsta lutningen för takpanneplåt (MINSTA_LUTNING). Titel, adress och
+   * datum ur docs/briefer/faktablad/kunskap-plattak.md 1.2, rad 48 och 57.
+   * Plannjas anvisning har bara versionen 2026-2; dagen är faktabladets
+   * hämtdatum, 2026-09-28.
+   */
+  'PL-ROYAL': {
+    kod: 'PL-ROYAL',
+    titel: 'Plannja, Monteringsanvisning Plannja Royal och Plannja Regent',
+    url: 'https://www.plannja.se/docs/default-source/documents-se/montering-uppdelade-2020/se-plannja-montering-royal-regent-2026-2.pdf?sfvrsn=38639147785467830000',
+    slag: 'tillverkare',
+    datum: 'version 2026-2, hämtad 2026-09-28',
+  },
+  'LB-PANNA': {
+    kod: 'LB-PANNA',
+    titel: 'Lindab Torekov & Norrviken (LPA/LPE) Monteringsanvisningar',
+    url: 'https://www.lindab.se/globalassets/commerce/lindabwebproductsdoc/assets/production/zde0otc2odatnzc1ms00ownhltkzzmmtotnmnzfmmdq1ntix/5250310262028213421/takpanna-torekov-norrviken-montering-se.pdf?v=1769298996',
+    slag: 'tillverkare',
+    datum: '2024-09-20',
   },
 };
 
@@ -350,6 +396,22 @@ export function tillaggInraknat(m: Material): boolean {
  */
 export const YTA_INTERVALL = [100, 200] as const;
 
+/**
+ * Minsta takvinkel i grader där materialet går att lägga. Under den blir
+ * svaret utfallet lutning, utan belopp.
+ * Källa: docs/briefer/faktablad/kunskap-plattak.md, tabellen över plåttyper:
+ *   Plannja Royal "Min. taklutning 14° (1:4)", Plannja Regent 14° (1:4), och
+ *   Lindab Torekov/Norrviken "Taklutningen måste vara minst 14°."
+ * Andra material har ingen gräns med källa här och saknas därför.
+ */
+export const MINSTA_LUTNING: Partial<Record<Material, number>> = { takpanneplat: 14 };
+
+/** Sant när takets vinkel är under materialets minsta lutning. */
+export function forLagLutning(m: Material, vinkelGrader: number): boolean {
+  const min = MINSTA_LUTNING[m];
+  return min !== undefined && vinkelGrader < min;
+}
+
 export const MATERIAL_VAL: readonly Material[] = ['bandplat', 'takpanneplat', 'betong', 'tegel', 'papp'];
 
 const materialDef = (m: Material): MaterialDef => {
@@ -376,6 +438,11 @@ export function andelArbete(m: Material): number {
 /** Källorna till materialets pris, i MATERIAL-ordning, var och en en gång. */
 export function prisKallor(m: Material): Kallkod[] {
   return [...new Set(materialDef(m).priser.map((p) => p.kalla))];
+}
+
+/** Källorna till materialets andel arbete, i MATERIAL-ordning, var och en en gång. */
+export function andelKallor(m: Material): Kallkod[] {
+  return [...new Set(materialDef(m).andelar.map((a) => a.kalla))];
 }
 
 /* ------------------------------------------------------------------ *
@@ -458,6 +525,13 @@ export interface BeskedVarden {
   /** Pris per m² i den låga och den höga änden. */
   prisLag: string | null;
   prisHog: string | null;
+  /**
+   * Kostnaden före rot, med tillägget, delad med takarean: det pris per m² som
+   * en firma med etableringen i kvadratmeterpriset ska jämföras med. Bara när
+   * tillaggInraknat (då är ettTal alltid sant); annars null. Tillagd av
+   * hantverkaren 2026-09-29 efter läsarens varv 4, punkt 1.
+   */
+  prisMedTillagg: string | null;
   /** Andelen arbete i procent, en decimal. */
   andelArbete: string | null;
   /** m2Text(takareaM2). */
@@ -478,6 +552,8 @@ export interface BeskedVarden {
   min: string;
   max: string;
   sida: 'under' | 'over' | null;
+  /** Materialets minsta lutning i grader (MINSTA_LUTNING), null när materialet saknar en. */
+  minLutning: string | null;
   agare: number;
   ettTal: boolean;
   tillagg: string;
@@ -505,6 +581,12 @@ export interface KortsvarVarden {
   bottenyta: string;
   /** "12,2". */
   paslag27: string;
+  /** Takvinkeln i grader som takytan gäller för: "27". */
+  vinkel: string;
+  /** Utsprånget vid takfoten i meter, per sida: "0,50". */
+  utsprangTakfot: string;
+  /** Utsprånget vid gaveln i meter, per gavel: "0,40". */
+  utsprangGavel: string;
   hamtat: string;
   /** De källor som förekommer i de tre materialen. */
   kallor: Kallkod[];
@@ -541,36 +623,93 @@ export interface RegelText {
   kallor: Kallkod[] | ((i: TakbyteIndata) => Kallkod[]);
 }
 
-export const TEXT = {
+/**
+ * Ett belopp avrundat till hela tusental, för rubriken: "164 578" → "165 000".
+ * Talet i spalten står kvar på kronan. Läsarens varv 4, punkt 4.
+ */
+const tusental = (belopp: string | null | undefined): string => {
+  const n = Number(String(belopp ?? '').replace(/\D/g, ''));
+  return n > 0 ? kronor(Math.round(n / 1000) * 1000) : '';
+};
+
+/** Rubrikens belopp: "runt 165 000" eller "188 000 till 314 000". */
+const budget = (v: BeskedVarden): string =>
+  v.ettTal ? `runt ${tusental(v.attBetalaLag)}` : `${tusental(v.attBetalaLag)} till ${tusental(v.attBetalaHog)}`;
+
+/**
+ * Varningen för pulpettak, efter beskedets rad: priserna gäller sadeltak, och
+ * med vinkeln angiven syns höjdskillnaden, så att en orimlig vinkel märks.
+ * Tom sträng på sadeltak. Läsarens varv 4, punkt 2.
+ */
+const pulpetVarning = (v: BeskedVarden, medPris: boolean): string =>
+  v.takform !== 'pulpet'
+    ? ''
+    : `${medPris ? ' Priserna gäller sadeltak, så beloppet är en fingervisning.' : ''}${
+        v.matt === 'vinkel' ? ' Stämmer inte väggarnas höjdskillnad i svaret med ditt hus har du skrivit in fel vinkel.' : ''
+      }`;
+
+/**
+ * Jämförelsetalet per m² i beskedets rad, vid belopp och vid gränsen. När
+ * tillägget ligger i beloppet jämförs med prisMedTillagg, och med prisLag om
+ * firman har etableringen på en egen rad. Plåtpriserna har redan etableringen
+ * med. Läsarens varv 4 punkt 1, och pelarläsningen 2026-09-29.
+ */
+const jamforelse = (v: BeskedVarden): string =>
+  v.tillaggInraknat
+    ? `Med resor och etablering inräknade blir priset här ungefär ${v.prisMedTillagg ?? ''} kr per kvadratmeter, och det jämför du med firmans kvadratmeterpris. Tar firman betalt för resor och etablering på en egen rad jämför du i stället med ${v.prisLag ?? ''} kr. Tillägget ger inget rotavdrag, eftersom resor och etablering inte är arbete på plats hos dig.`
+    : `Jämför firmans pris per kvadratmeter med ${v.ettTal ? v.prisLag ?? '' : `${v.prisLag ?? ''} till ${v.prisHog ?? ''}`} kr. I ${v.ettTal ? "det priset" : "de priserna"} ingår redan resor och etablering. Har offerten resor och etablering på en egen rad, lägger du ihop den raden med resten innan du jämför summan med beloppet före rotavdraget.`;
+
+export const TEXT = hartaAllt({
   /*
    * Beskedet överst i spalten. rubrik är en mening med ett verb som säger vad
    * läsaren ska göra. rad säger inte samma sak som rubriken.
    */
   besked: {
     belopp: {
-      /* Vad läsaren ska räkna med att betala för sitt material. Bär attBetalaLag, och attBetalaHog när ettTal är falskt. */
+      /* Vad läsaren ska räkna med att betala för sitt material, avrundat till tusental. */
       rubrik: (v: BeskedVarden): string =>
-        `Budgetera ${v.ettTal ? v.attBetalaLag ?? '' : `${v.attBetalaLag ?? ''} till ${v.attBetalaHog ?? ''}`} kr för ett tak med ${(v.material ?? '').toLowerCase()}`,
-      /* Något annat än rubriken, till exempel att offerten ska räkna på takytan (takarea), inte bottenytan. */
+        `Budgetera ${budget(v)} kr för ett tak med ${(v.material ?? '').toLowerCase()}`,
+      /*
+       * Jämförelsetalet per m². När tillägget ligger i beloppet jämförs med
+       * prisMedTillagg, som har tillägget i sig; plåtpriserna har redan
+       * etableringen med.
+       */
       rad: (v: BeskedVarden): string =>
-        `Be firman räkna på takytan, så kan du jämföra firmans pris med ${v.ettTal ? v.prisLag ?? '' : `${v.prisLag ?? ''} till ${v.prisHog ?? ''}`} kr per kvadratmeter.`,
+        v.takform === 'pulpet' ? pulpetVarning(v, true).trim() : `Jämför firmans pris per kvadratmeter med ${v.tillaggInraknat ? `ungefär ${v.prisMedTillagg ?? ''}` : v.ettTal ? v.prisLag ?? '' : `${v.prisLag ?? ''} till ${v.prisHog ?? ''}`} kr. I ${v.ettTal ? "det priset" : "de priserna"} ingår resor och etablering.`,
     },
     tak: {
-      /* Samma som vid belopp. Bär attBetalaLag. */
+      /* Samma som vid belopp. */
       rubrik: (v: BeskedVarden): string =>
-        `Budgetera ${v.ettTal ? v.attBetalaLag ?? '' : `${v.attBetalaLag ?? ''} till ${v.attBetalaHog ?? ''}`} kr för ett tak med ${(v.material ?? '').toLowerCase()}`,
+        `Budgetera ${budget(v)} kr för ett tak med ${(v.material ?? '').toLowerCase()}`,
       /* Att gränsen för rotavdraget stoppar kapat kr i den höga änden, och vad två ägare gör. Ordet "tak" står inte ensamt; det heter gräns. */
       rad: (v: BeskedVarden): string =>
-        v.agare === 2
-          ? `Vid ${v.ettTal ? 'det här priset' : 'det högre priset'} når ni båda gränsen, så avdraget blir ${v.kapat ?? ''} kr mindre än ${ROT_PROCENT} procent av arbetet, och det är redan inräknat i beloppet. Går fakturan att dela på två år räknas den del som betalas efter nyår mot nästa års gräns.`
-          : `Vid ${v.ettTal ? 'det här priset' : 'det högre priset'} når du gränsen, så avdraget blir ${v.kapat ?? ''} kr mindre än ${ROT_PROCENT} procent av arbetet, och det är redan inräknat i beloppet. Är ni två som står på lagfarten och båda betalar har ni en gräns var.`,
+        `${
+          v.agare === 2
+            ? `Vid ${v.ettTal ? 'det här priset' : 'det högre priset'} når ni båda gränsen för rotavdraget, och beloppet har den med.`
+            : `Vid ${v.ettTal ? 'det här priset' : 'det högre priset'} når du gränsen för rotavdraget, och beloppet har den med.${v.takform === 'pulpet' ? '' : ' Två ägare som betalar har en gräns var.'}`
+        }${pulpetVarning(v, true)}`,
+    },
+    lutning: {
+      /*
+       * Materialet går inte att lägga på takets vinkel (MINSTA_LUTNING), och
+       * inget belopp visas. Vad läsaren ska göra: välja ett material för låg
+       * lutning. Bär material och vinkel. Före 2026-09-29 stod varningen i
+       * radens slut vid belopp, med hantverkarens mening: "Takpanneplåt går
+       * inte att lägga på ett tak som lutar mindre än 14 grader, så beloppet
+       * gäller inte ditt tak med ${v.vinkel} grader. Välj ett material för låg
+       * lutning." Hantverkaren skriver.
+       */
+      rubrik: (v: BeskedVarden): string => `Välj ett annat material än ${(v.material ?? '').toLowerCase()} för ett tak som lutar ${v.vinkel} grader`,
+      /* Att materialet kräver minst minLutning grader och att taket lutar vinkel grader. Kort. */
+      rad: (v: BeskedVarden): string =>
+        `${v.material ?? ''} kräver minst ${v.minLutning ?? ''} grader, så räknaren visar inget belopp.${pulpetVarning(v, false)}`,
     },
     utanfor: {
       /* Vad läsaren ska göra i stället: begära offert. Bär takarea. */
       rubrik: (v: BeskedVarden): string => `Låt en takfirma räkna på dina ${v.takarea} m² takyta`,
       /* Att källornas priser gäller tak från min till max m², så räknaren visar inget belopp för ett tak som är sida. Kort. */
       rad: (v: BeskedVarden): string =>
-        `Priserna jag har gäller tak på ${v.min} till ${v.max} m². Hur mycket ${v.sida === 'over' ? 'billigare' : 'dyrare'} varje kvadratmeter blir på ett ${v.sida === 'over' ? 'större' : 'mindre'} tak vet jag inte, så jag visar inget belopp.`,
+        `Priserna jag har gäller tak på ${v.min} till ${v.max} m². Hur mycket ${v.sida === 'over' ? 'billigare' : 'dyrare'} varje kvadratmeter blir på ett ${v.sida === 'over' ? 'större' : 'mindre'} tak vet jag inte, så jag visar inget belopp.${pulpetVarning(v, false)}`,
     },
   } satisfies Record<Utfall, { rubrik: (v: BeskedVarden) => string; rad: (v: BeskedVarden) => string }>,
 
@@ -674,22 +813,29 @@ export const TEXT = {
   /* Resultatspalten (specen 4.3). Högst 800 tecken synlig text vid standard. */
   spalt: {
     /* Etiketten över det stora talet. */
-    'etikett-betala': 'Du betalar efter rotavdraget',
+    'etikett-betala': 'Ditt pris efter rotavdraget',
     /* Raden "till X kr" efter det stora talet, bara när ettTal är falskt. Bär attBetalaHog. */
     till: (v: BeskedVarden): string => `till ${v.attBetalaHog ?? ''} kr`,
     /*
      * Takarean mot bottenytan. Påslaget (paslag) gäller ytan sett uppifrån med
      * utsprången, inte bottenytan, och står därför i regeln om takarean.
      */
-    'rad-takarea': (v: BeskedVarden): string => `Takytan är ${v.takarea} m² längs lutningen, mot husets ${v.bottenyta} m² bottenyta.`,
-    /* Arbete och material. */
+    'rad-takarea': (v: BeskedVarden): string =>
+      `Takytan är ${v.takarea} m² längs lutningen, och husets bottenyta är ${v.bottenyta} m².`,
+    /*
+     * Kedjan från takytan: priset per m² gånger ytan, plus tillägget när det är
+     * inräknat, ger kostnaden före rot. Byggd ur räknarens eget jobb och inte
+     * efter badrumsräknarens delning i arbete och material, som står i tabellen.
+     */
     'rad-delning': (v: BeskedVarden): string =>
       v.tillaggInraknat
-        ? `I kostnaden ingår ${v.arbeteLag ?? ''} kr arbete, ${v.materialLag ?? ''} kr material och ${v.tillagg} kr för resor och etablering.`
-        : `I kostnaden ingår ${v.ettTal ? v.arbeteLag ?? '' : `${v.arbeteLag ?? ''} till ${v.arbeteHog ?? ''}`} kr arbete och ${v.ettTal ? v.materialLag ?? '' : `${v.materialLag ?? ''} till ${v.materialHog ?? ''}`} kr material.`,
-    /* Rotavdraget. */
+        ? `Med ${v.prisLag ?? ''} kr per kvadratmeter och ${v.tillagg} kr för resor och etablering kostar taket ${v.kostnadLag ?? ''} kr före avdraget.`
+        : `Med ${v.ettTal ? v.prisLag ?? '' : `${v.prisLag ?? ''} till ${v.prisHog ?? ''}`} kr per kvadratmeter kostar taket ${v.ettTal ? v.kostnadLag ?? '' : `${v.kostnadLag ?? ''} till ${v.kostnadHog ?? ''}`} kr före avdraget.`,
+    /* Arbetet i kostnaden och avdraget på det. */
     'rad-rot': (v: BeskedVarden): string =>
-      `Rotavdraget blir ${v.ettTal ? v.rotLag ?? '' : `${v.rotLag ?? ''} till ${v.rotHog ?? ''}`} kr.`,
+      v.ettTal
+        ? `Av summan är ${v.arbeteLag ?? ''} kr arbete, som ger ${v.rotLag ?? ''} kr i rotavdrag.`
+        : `Av summan är ${v.arbeteLag ?? ''} till ${v.arbeteHog ?? ''} kr arbete, som ger ${v.rotLag ?? ''} till ${v.rotHog ?? ''} kr i rotavdrag.`,
     /*
      * Att priserna är förmedlares och en firmas priser före rot, hämtade hamtat.
      * Förmedlarna nämns inte vid namn. En mening. Betong, tegel och papp har
@@ -697,16 +843,8 @@ export const TEXT = {
      */
     'rad-kallor': (v: BeskedVarden): string =>
       v.ettTal
-        ? `Priset gäller före rotavdraget och kommer från en offertförmedlare. Jag läste det den ${v.hamtat}.`
-        : `Priserna per kvadratmeter gäller före rotavdraget och kommer från flera källor, som jag läste den ${v.hamtat}.`,
-    /*
-     * Takexperters tillägg, en rad under beloppet, bara när tillaggInraknat är
-     * falskt (materialet har flera källor): att en av källorna lägger ungefär
-     * tillagg kr ovanpå för resor, etablering och projektering. Källan är P1
-     * (SEO-beslutet 2026-09-29, punkt 1); förmedlaren nämns inte vid namn.
-     */
-    'rad-tillagg': (v: BeskedVarden): string =>
-      `En av källorna lägger på ungefär ${v.tillagg} kr för resor och etablering, och det är inte med här, eftersom de andra källorna har etableringen i sitt pris.`,
+        ? `Kvadratmeterpriset är räknat ur en offertförmedlares exempel på ett helt tak, läst den ${v.hamtat}.`
+        : `Kvadratmeterpriserna är det lägsta och det högsta i två källor, lästa den ${v.hamtat}.`,
     /*
      * Vinkel eller nock (den som inte angavs), takfallslängden och takstolarna vid cc. Länken lank-takstolar står efter.
      * Pulpettak med vinkeln angiven: nock är höjdskillnaden mellan den höga och
@@ -714,8 +852,8 @@ export const TEXT = {
      */
     'rad-geometri': (v: BeskedVarden): string =>
       v.takform === 'pulpet' && v.matt === 'vinkel'
-        ? `Den höga väggen är ${v.nock} m högre än den låga, och takfallet är ${v.takfallslangd} m långt. Med ${v.cc} mm mellan takstolarna, mätt från mitt till mitt, ryms det ungefär ${v.takstolar} stycken.`
-        : `${v.matt === 'nock' ? `Takvinkeln blir ${v.vinkel} grader` : `Nockhöjden blir ${v.nock} m`} och takfallet ${v.takfallslangd} m långt. Med ${v.cc} mm mellan takstolarna, mätt från mitt till mitt, ryms det ungefär ${v.takstolar} stycken.`,
+        ? `Den höga väggen är ${v.nock} m högre än den låga, och takfallet är ${v.takfallslangd} m långt. Med ${v.cc} mm mellan takstolarna ryms ungefär ${v.takstolar} takstolar.`
+        : `${v.matt === 'nock' ? `Takvinkeln är ${v.vinkel} grader` : `Nockhöjden är ${v.nock} m`} och takfallet ${v.takfallslangd} m långt, och med ${v.cc} mm mellan takstolarna ryms ungefär ${v.takstolar} takstolar.`,
     /* Etiketten över takarean vid utanfor. */
     'etikett-takarea': 'Takytan längs lutningen',
     /* Enheten efter takarean vid utanfor. */
@@ -757,12 +895,12 @@ export const TEXT = {
      * rotavdraget och utan avdrag (TILLAGG_ANDEL_ARBETE); den texten skriver
      * hantverkaren.
      */
-    tillagg: (v: BeskedVarden): string =>
-      v.tillaggInraknat
-        ? 'Tillägget ger inget rotavdrag, eftersom resor och etablering inte är arbete på plats hos dig.'
-        : `Utöver det kan det tillkomma ungefär ${v.tillagg} kr för resor och etablering, om firman räknar som en av källorna gör.`,
+    tillagg: (v: BeskedVarden): string => jamforelse(v),
     /* Raden som pekar ner till "Vad siffrorna vilar på". */
     kallrad: 'Källorna står i tabellen längre ner',
+    /* Vid lutning, i stället för tabellen: varför det inte blir något belopp. Hantverkaren skriver. */
+    lutning: (v: BeskedVarden): string =>
+      `${v.material ?? ''} ska ligga på ett tak som lutar minst ${v.minLutning ?? ''} grader, och ditt lutar ${v.vinkel}. Både Plannja och Lindab anger den gränsen, och därför blir det inget belopp. Takytan och antalet takstolar har jag ändå räknat ut, och de står i svaret.`,
     /* Vid utanfor, i stället för tabellen. */
     utanfor: (v: BeskedVarden): string =>
       `Takytan på ${v.takarea} m² ligger ${v.sida === 'over' ? 'över' : 'under'} de ${v.min} till ${v.max} m² som priserna gäller för, och därför blir det inga belopp här. Jag har ändå räknat ut takets mått och takstolarna, och de står i svaret.`,
@@ -791,7 +929,7 @@ export const TEXT = {
     },
     vinkel: {
       text: (v: BeskedVarden): string =>
-        `${v.matt === 'nock' ? `Jag har räknat fram takvinkeln, ${v.vinkel} grader, ur ${v.takform === 'pulpet' ? 'höjdskillnaden mellan väggarna' : 'nockhöjden'} och gavelns bredd.` : `Jag har räknat fram ${v.takform === 'pulpet' ? 'höjdskillnaden mellan väggarna' : 'nockhöjden'}, ${v.nock} m, ur takvinkeln och gavelns bredd.`} Samma vinkel ger takfallets längd från den nedre kanten till den övre. Båda är egen räkning med vanlig trigonometri.`,
+        `${v.matt === 'nock' ? `Takvinkeln, ${v.vinkel} grader, följer av ${v.takform === 'pulpet' ? 'höjdskillnaden mellan väggarna' : 'nockhöjden'} och gavelns bredd.` : `${v.takform === 'pulpet' ? 'Höjdskillnaden mellan väggarna' : 'Nockhöjden'}, ${v.nock} m, följer av takvinkeln och gavelns bredd.`} Samma vinkel ger takfallets längd från den nedre kanten till den övre, med vanlig trigonometri.`,
       kallor: [],
     },
     pris: {
@@ -803,22 +941,23 @@ export const TEXT = {
     },
     'en-kalla': {
       text: (_v: BeskedVarden): string =>
-        'För det här materialet har jag bara en källa som anger priset före rotavdraget. Jag har räknat fram priset per kvadratmeter ur källans exempel på ett helt tak, och därför blir det ett enda tal.',
+        'För det här materialet finns bara en källa med pris före rotavdraget. Priset per kvadratmeter är källans exempel på ett helt tak delat med takytan i exemplet, och därför blir det ett enda tal.',
       kallor: ['P1'],
     },
     'andel-arbete': {
       text: (v: BeskedVarden): string =>
         v.ettTal
-          ? `Arbetet är ${v.andelArbete ?? ''} procent av priset för det färdiglagda taket, utan tillägget, efter källans egen uppdelning i arbete och material.`
+          ? `Av takytan gånger kvadratmeterpriset är ${v.andelArbete ?? ''} procent arbete, efter källans egen uppdelning i arbete och material.`
           : `Arbetet är ${v.andelArbete ?? ''} procent av kostnaden. Där källorna delar upp priset olika har jag tagit den lägsta andelen arbete, så att rotavdraget hellre blir för litet än för stort.`,
-      kallor: ['P1', 'P4'],
+      /* Källorna till materialets andel, inte alla andelskällor (hantverkarens retur 2026-09-29, punkt 5). */
+      kallor: (i: TakbyteIndata) => andelKallor(i.material),
     },
     tillagg: {
       /* När tillaggInraknat är sant ligger tillägget i beloppet; den texten skriver hantverkaren. */
       text: (v: BeskedVarden): string =>
         v.tillaggInraknat
-          ? `Etablering är kostnaden för att komma på plats med folk och utrustning. Källan till det här priset tar ungefär ${v.tillagg} kr för resor och etablering utöver priset per kvadratmeter, så jag har lagt till den summan i beloppet. Ställningen ingår däremot i priset per kvadratmeter.`
-          : 'Etablering är kostnaden för att komma på plats med folk och utrustning. En av källorna räknar den utanför sitt pris per kvadratmeter, medan de andra har den med i priset. Därför lägger jag inte in tillägget i beloppet, för då skulle etableringen räknas två gånger.',
+          ? `Etablering är kostnaden för att komma på plats med folk och utrustning. I exemplet som priset bygger på kommer ungefär ${v.tillagg} kr för resor, etablering och projektering ovanpå priset per kvadratmeter, och därför ligger den summan i beloppet. Ställningen ingår däremot i priset per kvadratmeter.`
+          : 'Etablering är kostnaden för att komma på plats med folk och utrustning. Källorna till plåtpriserna har den med i sitt pris per kvadratmeter, så här läggs inget tillägg till.',
       kallor: ['P1'],
     },
     'rot-arbete': {
@@ -839,11 +978,12 @@ export const TEXT = {
     intervall: {
       text: (v: BeskedVarden): string =>
         `Priserna gäller villatak på ${v.min} till ${v.max} m², och bara där räknar jag fram ett belopp. Inom det spannet följer priset ytan rakt av, vilket är mitt antagande.`,
-      kallor: ['P1', 'P4', 'P5'],
+      /* Källorna till materialets pris, som för regeln pris (hantverkarens retur 2026-09-29, punkt 3). */
+      kallor: (i: TakbyteIndata) => prisKallor(i.material),
     },
     takstolar: {
       text: (v: BeskedVarden): string =>
-        `Räknaren använder ${v.cc} mm mellan takstolarna. Enligt TräGuiden från Svenskt Trä dimensioneras fabrikstillverkade takstolar oftast för ${kronor(CC_STANDARD)} mm mellan stolarna, men ${CC_VAL.filter((c) => c !== CC_STANDARD).map((c) => kronor(c)).join(' och ')} mm förekommer också.`,
+        `Räknaren använder ${v.cc} mm mellan takstolarna. Fabrikstillverkade takstolar dimensioneras oftast för ${kronor(CC_STANDARD)} mm mellan stolarna, men ${CC_VAL.filter((c) => c !== CC_STANDARD).map((c) => kronor(c)).join(' och ')} mm förekommer också.`,
       kallor: ['TRAGUIDEN'],
     },
   } satisfies Record<RegelNyckel, RegelText>,
@@ -889,6 +1029,8 @@ export const TEXT = {
     cc: 'Avstånd mellan takstolarna',
     'takstol-gavel': 'Takstolarna vid gavlarna',
     'ingen-valm': 'Valmat tak och mansardtak',
+    /* Materialets minsta lutning (MINSTA_LUTNING), bara vid utfallet lutning. Hantverkaren skriver. */
+    'minsta-lutning': 'Minsta lutning för takpanneplåt',
   } as Record<string, string>,
 
   /*
@@ -931,6 +1073,8 @@ export const TEXT = {
     'takstol-gavel': 'En takstol står i varje gavel',
     /* Valmat tak och mansard räknas inte. */
     'ingen-valm': 'Går inte att välja, eftersom priserna gäller sadeltak',
+    /* MINSTA_LUTNING för materialet, i grader. Hantverkaren skriver. */
+    'minsta-lutning': `${MINSTA_LUTNING.takpanneplat ?? ''} grader enligt både Plannja och Lindab`,
   },
 
   /*
@@ -938,17 +1082,17 @@ export const TEXT = {
    * rotavdraget och takstolarna. Talen kommer ur StegVarden.
    */
   steg: (v: StegVarden): string[] => [
-    'Jag tar ytan som taket täcker sett uppifrån, med utsprången inräknade, och delar den med cosinus för takvinkeln. Då får jag takytan längs lutningen.',
-    `Jag multiplicerar takytan med det lägsta och det högsta priset per kvadratmeter för materialet, i de källor jag läste den ${v.hamtat}.`,
+    'Ytan som taket täcker sett uppifrån, med utsprången inräknade, delas med cosinus för takvinkeln. Det ger takytan längs lutningen.',
+    `Takytan gånger det lägsta och det högsta priset per kvadratmeter för materialet ger kostnaden före rotavdraget. Priserna läste jag den ${v.hamtat}.`,
     /*
      * Tillägget på v.tillagg kr: läggs till före rotavdraget när priset bara
      * har en källa, den som räknar det utanför sitt pris per m², och ger inget
      * avdrag. Vid flera källor läggs det inte till. Hantverkaren skriver.
      */
-    `Om priset bara har en källa, och den källan tar betalt för resor och etablering för sig, lägger jag till ungefär ${v.tillagg} kr. Tillägget ger inget rotavdrag.`,
-    'Jag delar kostnaden i arbete och material efter källornas uppdelning, med den lägsta andelen arbete när de anger olika andelar.',
-    `Rotavdraget blir ${v.rotProcent} procent av arbetet, men aldrig mer än ${v.rotGrans} kr per ägare och år minus det som redan är använt i år. Kostnaden minus avdraget är det du betalar.`,
-    `Till sist delar jag husets längd med avståndet mellan takstolarna, avrundar uppåt och lägger till en, så att båda gavlarna får en takstol. Om du inte har valt något annat är avståndet ${v.cc} mm.`,
+    `Har priset bara en källa, och tar den källan betalt för resor och etablering för sig, läggs ungefär ${v.tillagg} kr till före rotavdraget.`,
+    'Kostnaden delas i arbete och material efter källornas uppdelning, med den lägsta andelen arbete när de anger olika andelar.',
+    `Rotavdraget är ${v.rotProcent} procent av arbetet, men aldrig mer än ${v.rotGrans} kr per ägare och år minus det som redan är använt i år. Det du betalar är kostnaden minus avdraget.`,
+    `Antalet takstolar är husets längd delad med avståndet mellan dem, avrundat uppåt, plus en, så att båda gavlarna får en takstol. Om du inte väljer något annat är avståndet ${v.cc} mm.`,
   ],
 
   /* Påslagstabellen i brödtextens H2 om takarean (specen 4.4 punkt 4). */
@@ -973,16 +1117,16 @@ export const TEXT = {
    * markering är talet som får <Markering>.
    */
   kortsvar: (v: KortsvarVarden): KortsvarDelar => ({
-    fore: `En villa med ${v.bottenyta ?? ''} m² bottenyta har ungefär ${v.takarea ?? ''} m² tak, eftersom taket sticker ut över väggarna och lutningen gör det ${v.paslag27 ?? ''} procent större än ytan det täcker. Med betongpannor för ${v.betong?.prisKvm ?? ''} kr per kvadratmeter och ungefär ${kronor(TILLAGG_KR)} kr för resor och etablering betalar du`,
+    fore: `En villa med ${v.bottenyta ?? ''} m² bottenyta har ungefär ${v.takarea ?? ''} m² tak om taket lutar ${v.vinkel ?? ''} grader och sticker ut ${v.utsprangTakfot ?? ''} m över långsidorna och ${v.utsprangGavel ?? ''} m över gavlarna. Utsprången gör ytan större, och lutningen lägger på ytterligare ${v.paslag27 ?? ''} procent. Med betongpannor för ${v.betong?.prisKvm ?? ''} kr per kvadratmeter och ungefär ${kronor(TILLAGG_KR)} kr för resor och etablering betalar du`,
     markering: `${v.betong?.attBetala ?? ''} kr`,
-    efter: ` efter rotavdraget. Med tegelpannor för ${v.tegel?.prisKvm ?? ''} kr per kvadratmeter blir det ${v.tegel?.attBetala ?? ''} kr med samma tillägg. Bandtäckt plåt kostar ${v.bandplat?.prisKvm ?? ''} kr per kvadratmeter med etableringen inräknad, och då blir det ${v.bandplat?.attBetala ?? ''} kr efter avdraget. Priserna per kvadratmeter gäller före rotavdraget och kommer från offertförmedlare och en byggfirma, lästa den ${v.hamtat ?? ''}.`,
+    efter: ` efter rotavdraget, och med tegelpannor för ${v.tegel?.prisKvm ?? ''} kr blir det ${v.tegel?.attBetala ?? ''} kr. Bandtäckt plåt kostar ${v.bandplat?.prisKvm ?? ''} kr per kvadratmeter med etableringen inräknad, och då landar du på ${v.bandplat?.attBetala ?? ''} kr. Pannpriserna är räknade ur en offertförmedlares exempel och plåtpriset kommer från två källor, alla före rotavdraget och lästa den ${v.hamtat ?? ''}.`,
   }),
 
   /* Sparas till publiceringsomgången (specen 10). Alt under 125 tecken, med orden takbyte och takarea. */
   skissAlt: 'Skiss av en husgavel med de mått som behövs för att räkna ut takarean vid ett takbyte',
   skissBildtext:
     'Gaveln är mätt utvändigt och utsprånget vågrätt ut från väggen. Pilen visar takfallets längd från takfoten till nocken, och det markerade talet är takarean för huset som står i formuläret från början.',
-};
+});
 
 /* ------------------------------------------------------------------ *
  * Adressen
@@ -1146,6 +1290,21 @@ export function raknaTakbyte(i: TakbyteIndata): TakbyteResultat {
     };
   }
 
+  /*
+   * Steg 2b. Materialet går inte att lägga på vinkeln: inga belopp. Efter
+   * intervallet, så att ett tak utanför det får utanfor som förut.
+   */
+  if (forLagLutning(i.material, geometri.vinkelGrader)) {
+    return {
+      status: 'ok',
+      utfall: 'lutning',
+      geometri,
+      takstolar,
+      gorInteDetHar: ['bottenyta', 'bestall-takstolar'],
+      regler: ['takarea', 'vinkel', 'takstolar'],
+    };
+  }
+
   // Steg 3. Ändarna.
   const [lagPris, hogPris] = spann(i.material);
   const andel = andelArbete(i.material);
@@ -1206,8 +1365,9 @@ export function beskedVarden(r: TakbyteOk, i: TakbyteIndata): BeskedVarden {
     tillagg: kronor(TILLAGG_KR),
     hamtat: datumText(PRISER_HAMTADE),
     material: TEXT.material[i.material],
+    minLutning: MINSTA_LUTNING[i.material] === undefined ? null : vinkelText(MINSTA_LUTNING[i.material] ?? 0),
   };
-  if (r.utfall === 'utanfor') {
+  if (r.utfall === 'utanfor' || r.utfall === 'lutning') {
     return {
       ...gemensamt,
       attBetalaLag: null,
@@ -1225,8 +1385,9 @@ export function beskedVarden(r: TakbyteOk, i: TakbyteIndata): BeskedVarden {
       materialHog: null,
       prisLag: null,
       prisHog: null,
+      prisMedTillagg: null,
       andelArbete: null,
-      sida: r.sida,
+      sida: r.utfall === 'utanfor' ? r.sida : null,
       ettTal: false,
       tillaggInraknat: false,
     };
@@ -1248,6 +1409,7 @@ export function beskedVarden(r: TakbyteOk, i: TakbyteIndata): BeskedVarden {
     materialHog: kronor(r.hog.materialKr),
     prisLag: kronor(r.lag.prisKvm),
     prisHog: kronor(r.hog.prisKvm),
+    prisMedTillagg: r.tillaggInraknat ? kronor(Math.round(r.lag.kostnadKr / g.takareaM2)) : null,
     andelArbete: procentText(r.andelArbete * 100),
     sida: null,
     ettTal: r.ettTal,
@@ -1260,7 +1422,9 @@ export function kortsvarVarden(): KortsvarVarden {
   const g = raknaTak(STANDARD);
   const for_ = (material: Material): KortsvarMaterial => {
     const r = raknaTakbyte({ ...STANDARD, material });
-    if (r.status !== 'ok' || r.utfall === 'utanfor') throw new Error('[takbyte] Standardhuset ska ge ett belopp');
+    if (r.status !== 'ok' || (r.utfall !== 'belopp' && r.utfall !== 'tak')) {
+      throw new Error('[takbyte] Standardhuset ska ge ett belopp');
+    }
     const [lag, hog] = spann(material);
     return { prisKvm: spannText(lag, hog), attBetala: spannText(r.lag.attBetalaKr, r.hog.attBetalaKr) };
   };
@@ -1272,6 +1436,9 @@ export function kortsvarVarden(): KortsvarVarden {
     takarea: m2Text(g.takareaM2),
     bottenyta: m2Text(g.bottenytaM2),
     paslag27: procentText(g.paslagProcent),
+    vinkel: vinkelText(g.vinkelGrader),
+    utsprangTakfot: meterText(STANDARD.utsprangM),
+    utsprangGavel: meterText(STANDARD.gavelM),
     hamtat: datumText(PRISER_HAMTADE),
     kallor: [...new Set(tre.flatMap(prisKallor))],
   };
@@ -1307,6 +1474,25 @@ export function regelKallor(nyckel: RegelNyckel, i: TakbyteIndata): KallaRef[] {
     .filter((k) => k.slag !== 'förmedlare');
 }
 
+/** Sant vid belopp och tak, de utfall som har ändar och belopp. */
+export function harBelopp(r: TakbyteOk): r is TakbyteBelopp {
+  return r.utfall === 'belopp' || r.utfall === 'tak';
+}
+
+/**
+ * Regeln som får källraden under sig, eller -1. En förmedlarregel är en regel
+ * som vilar på en förmedlare och därför inte har någon källa vid namn; en
+ * regel utan källa alls (egen räkning, som vinkel) är ingen. Vid belopp och
+ * tak står raden redan i stycket ovanför listan och visas inte här.
+ * Hantverkarens retur 2026-09-29, punkt 2.
+ */
+export function kallradRegel(r: TakbyteOk, i: TakbyteIndata): number {
+  const markering = r.regler.map((n) =>
+    regelKallor(n, i).length === 0 && regelKallkoder(n, i).some((k) => KALLOR[k].slag === 'förmedlare') ? [] : [n],
+  );
+  return kallradEfterRegel(markering, harBelopp(r));
+}
+
 /* ------------------------------------------------------------------ *
  * Antagandetabellen (specen 4.5)
  * ------------------------------------------------------------------ */
@@ -1318,8 +1504,8 @@ export interface AntagandeDef {
   /** Byggs av konstanterna, aldrig för hand. */
   varde: (i: TakbyteIndata) => string;
   typ: AntagandeTyp;
-  /** Tom för ett antagande utan källa. */
-  kallor: Kallkod[];
+  /** Tom för ett antagande utan källa. En funktion när källorna följer materialet. */
+  kallor: Kallkod[] | ((i: TakbyteIndata) => Kallkod[]);
 }
 
 export interface AntagandeRad {
@@ -1356,7 +1542,8 @@ export const ANTAGANDEN: AntagandeDef[] = [
         materialDef(i.material).andelar.map((a) => procentText((a.arbeteKr / a.totaltKr) * 100)),
       ),
     typ: 'Antagande',
-    kallor: ['P1', 'P4'],
+    /* Källorna till materialets andel (hantverkarens retur 2026-09-29, punkt 5). */
+    kallor: (i) => andelKallor(i.material),
   },
   {
     nyckel: 'tillagg',
@@ -1394,13 +1581,21 @@ export const ANTAGANDEN: AntagandeDef[] = [
   },
   { nyckel: 'takstol-gavel', varde: () => TEXT.antagandeVarde['takstol-gavel'], typ: 'Antagande', kallor: [] },
   { nyckel: 'ingen-valm', varde: () => TEXT.antagandeVarde['ingen-valm'], typ: 'Antagande', kallor: [] },
+  /* Källa: MINSTA_LUTNING, Plannja Royal och Regent samt Lindab Torekov och Norrviken. Bara vid utfallet lutning. */
+  {
+    nyckel: 'minsta-lutning',
+    varde: () => TEXT.antagandeVarde['minsta-lutning'],
+    typ: 'Källa',
+    kallor: ['PL-ROYAL', 'LB-PANNA'],
+  },
 ];
 
 /** Raderna ur ANTAGANDEN som svaret vilar på, i tabellens ordning (specen 4.5, kolumnen "Visas när"). */
 export function antagandenFor(r: TakbyteOk, i: TakbyteIndata): AntagandeRad[] {
-  const belopp = r.utfall !== 'utanfor';
+  const belopp = harBelopp(r);
   const galler = new Set<string>(['takarea', 'langs-lutningen', 'intervall', 'cc', 'takstol-gavel', 'ingen-valm']);
   if (i.takform === 'pulpet') galler.add('utsprang-lika');
+  if (r.utfall === 'lutning') galler.add('minsta-lutning');
   if (belopp) {
     for (const n of [
       `pris-${i.material}`,
@@ -1419,8 +1614,8 @@ export function antagandenFor(r: TakbyteOk, i: TakbyteIndata): AntagandeRad[] {
   }
   return ANTAGANDEN.filter((a) => galler.has(a.nyckel)).map((a) => ({
     nyckel: a.nyckel,
-    varde: a.varde(i),
+    varde: hart(a.varde(i)),
     typ: a.typ,
-    kallor: a.kallor,
+    kallor: typeof a.kallor === 'function' ? a.kallor(i) : a.kallor,
   }));
 }

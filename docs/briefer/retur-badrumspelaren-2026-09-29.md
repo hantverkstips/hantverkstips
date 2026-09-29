@@ -783,3 +783,283 @@ Beskedet säger fortfarande vad jag ska göra. Men "6 april NaN" gör att jag tr
 Av andra läsningens fem punkter under "Det läsaren kan göra fel" är tre lösta: rollat tätskikt mot VT, lagen mot branschen och "tätskiktet" i Faq om färg. Priset är nästan löst. Kniven står kvar.
 
 **Medelbetyg: (4 + 4 + 4 + 4 + 3 + 5) / 6 = 4,0**, och 4,2 när NaN är borta.
+
+## Nya meningar efter SEO, 2026-09-29
+
+Läst som en husägare från Google, varje mening i sitt stycke.
+
+### fogar-badrum.mdx, rad 136 (BBV § 8.3)
+
+> "Byter du bara fogen och kniven stannar före tätskiktet har du inte rört det som försäkringens krav på ett våtrum gäller."
+
+Går att förstå, men först vid andra läsningen. "det som … kraven gäller" är en omväg; jag läste först "det som gäller" som "det som är giltigt". Rakare: "… har du inte rört tätskiktet, och det är tätskiktet som försäkringens krav gäller."
+
+> "Fogmassan hör nämligen inte till tätskiktet, och det slår Byggkeramikrådet fast i sina branschregler för våtrum, BBV 26:1 § 8.3."
+
+Klar och lugnande, och källan står där den behövs. Risk för fel: stycket ovanför säger att GVK vill att en fackman byter fogen, och den här meningen säger i praktiken att försäkringen inte bryr sig. Läsaren tar det senare och glömmer det förra. Det är väl avsikten, men då ska det sägas lika tydligt att det gäller bara så länge kniven stannar före tätskiktet. Stycket gör det bara halvt, eftersom "ringer du en fackman" kommer före och inte efter.
+
+### fogar-badrum.mdx, rad 180 (BBV § 1.4)
+
+> "Att skrapa ur fogarna ovanför ett tätskikt ligger så nära en delreparation att jag räknar det dit, och delreparationer i våtrum ska göras av en behörig plattsättare som är anställd i ett behörigt företag. Det står i § 1.4 i BBV 26:1."
+
+Går att förstå, men blandar två saker. Första halvan är Christians egen bedömning, andra halvan är regeln, och "Det står i § 1.4" efteråt låter som att paragrafen säger att fogskrapning är en delreparation. Läsaren kan inte se var åsikten slutar. Skriv regeln först och bedömningen sist: "Enligt § 1.4 i BBV 26:1 ska delreparationer i våtrum göras av … Att skrapa ur fogarna står inte där, men det ligger så nära att jag räknar det dit."
+
+"Behörig" tre gånger på två meningar ("behörig plattsättare", "behörig plattsättare", "behörigt företag"). Det hörs.
+
+Risk för fel: läsaren förstår inte varför silikonfogen får bytas själv men inte kakelfogen, när båda sitter framför tätskiktet och rad 136 just sa att fogmassan inte hör till tätskiktet. En halv mening om skillnaden (kakelfogen skrapas ur med mejsel eller multiverktyg rakt mot tätskiktet, i hela ytan) skulle knyta ihop dem. Och "i duschen": gäller det kakelfogen vid handfatet också? Rubriken säger "i badrummet", första meningen "i duschen".
+
+### vatrumsfarg.mdx, rad 57
+
+> "Måleribranschens regler från 2026 säger på s. 19 att underlag som inte är avsedda att måla på "ska avlägsnas helt", och de tre är reglernas egna exempel."
+
+Förståelig. "på s. 19" låter som en uppsats i brödtext, men stör inte. "de tre" fungerar eftersom de räknas upp i meningen före. Ingen risk för fel; tvärtom sätter meningen stopp för det vanligaste felet, att måla över kaklet.
+
+Länken till kökssidan ("Skälen till att kakel inte ska målas över gäller i hela badrummet") skickar en badrumsläsare till köket för skälen. Det går, men jag hade velat ha ett av skälen här i en bisats.
+
+### vatrumsfarg.mdx, rad 65
+
+> "Föreskriften BFS 2024:8 kräver i 7 kap. 7 och 9 §§ ett vattentätt skikt där ytan kan få vatten på sig, och ett vattenavvisande ytskikt där det stänker, där ytorna tvättas med vatten och där det bildas kondens."
+
+Tung. "7 kap. 7 och 9 §§" är juristnotation och kunde stå i källistan. Värre är att "där ytan kan få vatten på sig" och "där det stänker" låter som samma sak för en lekman: stänk är ju vatten på ytan. Den som har en duschvägg som "bara får stänk" kan läsa sig till att VA räcker. Tabellen längre ner räddar det, men meningen ensam kan få läsaren att välja fel klass. Skriv "där vatten spolas eller rinner mot ytan" för VT.
+
+> "Måleribranschen har gjort två klasser av kraven"
+
+Förståeligt men lite styltigt; "har delat upp kraven i två klasser" säger samma sak.
+
+### byta-toalettstol.mdx, kortsvaret
+
+Kortsvaret är bra och tydligt: "Ja, ingen lag förbjuder dig …, men i praktiken bör en VVS-firma göra det." Sedan kommer skälet, sedan beloppen med villkorens datum. Läsaren vet vad hen ska göra. Meningen om If och Folksam är lång, fyra led, men håller. "Säker Vatten, som skriver reglerna för VVS" förklarar namnet på rätt ställe.
+
+### byta-toalettstol.mdx, description
+
+> "Försäkringen kräver att branschreglerna följs när du byter toalettstol själv. Se vad montören ska ha gjort, priset med rotavdrag och hur du byter sitsen."
+
+Ja, den drar åt ett annat håll. Descriptionen läses i Google som "byt själv, men följ reglerna", alltså en gör-det-själv-sida med ett villkor. Kortsvaret säger tvärtom att en firma bör göra det, eftersom bara en auktoriserad firma kan intyga att reglerna följts. Den som bara läser snippeten och sedan köper en toalettstol på bygghandeln har fått fel råd. Andra meningen gör det rörigt: "när du byter själv" följt av "vad montören ska ha gjort". Vem är montören, om det är jag som byter? Förslag: "Du får byta toalettstolen själv, men utan intyg från en auktoriserad VVS-firma kan försäkringen dra av en fjärdedel. Se vad firman ska göra, priset med rotavdrag och hur du byter sitsen själv."
+
+### pelare/badrum.mdx, description och ingress
+
+> "Badrummet får du renovera själv, men försäkringen vill se reglerna följda. Fogarna klarar du, medan tätskiktet och toalettstolen är jobb för en firma."
+
+"Fogarna klarar du" är fel mot fogar-sidan. Där står att kakelfogen är ett jobb för en behörig plattsättare, och bara silikonfogen går att byta själv. Den som läser snippeten och sedan tar multiverktyget till kakelfogarna i duschen har gjort precis det sidan varnar för. Ingressen säger rätt sak ("en silikonfog som är slut kan du byta om du skär försiktigt"); descriptionen ska säga samma: "Silikonfogen klarar du, …".
+
+Descriptionen tappar också målningen, som ingressen räknar till firmans jobb. Inte farligt, men de två texterna säger olika långa listor.
+
+"Badrummet får du renovera själv" är det läsaren minns, eftersom det kommer först. Resten tar tillbaka det. Ingressen gör det bättre genom att börja i läckan och försäkringen och lägga "lagligt att göra själv" i en bisats.
+
+Ingressen i övrigt: klar, logisk ordning (läcka, intyg, därför firma, fogarna själv). "Fogarna håller du rena själv" är konkret och bra.
+
+### tatskikt-badrum.mdx, description och kortsvar
+
+Descriptionen öppnar med en rad förkortningar ("BFS 2024:8, BBV 26:1 och GVK 2026") innan läsaren fått veta något. Det ser auktoritativt ut i Google men säger ingenting till en husägare. Andra meningen är bra.
+
+> "Du får lägga tätskiktet själv, men då får du inget kvalitetsdokument, det intyg som en behörig firma lämnar på att reglerna har följts."
+
+"får … får" i samma mening, med två betydelser (tillåtelse och erhålla). Hörs vid första läsningen.
+
+### Går hubben och tätskiktssidan ihop?
+
+Inte för en läsare som kommer från hubben. Hubben säger rakt ut "tätskiktet är jobb för en firma". Kortsvaret börjar "Du får lägga tätskiktet själv". Första intrycket är att sidorna säger emot varandra. Den som läser vidare förstår att det ena är lagen och det andra är rådet, och hubbens ingress har bisatsen "även om det mesta är lagligt att göra själv" som bygger bron. Men kortsvaret landar aldrig i ett råd. Det räknar upp följderna (inget dokument, Byggkeramikrådet avråder, högre självrisk) och slutar där. Rådet ("Därför tycker jag att en behörig firma ska lägga tätskiktet") står först på rad 150, långt ner.
+
+Jämför toalettstolens kortsvar, som säger "men i praktiken bör en VVS-firma göra det" redan i första meningen. Tätskiktet är det dyrare och farligare jobbet och får det svagare kortsvaret. Den som läser kortsvaret och slutar där kan mycket väl tänka "jag får, jag följer monteringsanvisningen, det går bra", särskilt som sista ledet ("försäkringsbolagen kräver att badrummet följer de regler …") låter som att det räcker att följa reglerna. Förslag: "Du får lägga tätskiktet själv, men låt en behörig firma göra det. Bara firman kan lämna kvalitetsdokumentet, …". Då säger hubb, tätskikt och toalett samma sak i samma ordning: lagligt, men firma, och varför.
+
+### Registerposten för badrum-kostnad
+
+> namn: "Vad kostar det att renovera badrummet?"
+
+Bra. Det är frågan läsaren har.
+
+> rad: "Skriv in golvytan och välj standard, så får du varje del av jobbet i arbete och material och det som är kvar att betala efter rotavdraget."
+
+"välj standard" är tvetydigt: jag läste först "välj standardinställningen", inte "välj hur påkostat det ska bli". "Välj hur fint det ska bli" hade gått fram direkt. Andra halvan är hoppressad: "varje del av jobbet i arbete och material och det som är kvar" har tre "och" och läses som en lista som inte tar slut. Rakare: "så får du kostnaden för varje del, uppdelad på arbete och material, och vad du betalar efter rotavdraget." Kortet går att förstå utan sidan, men raden tar två läsningar.
+
+### Meningen på luftfuktighet-inomhus.mdx efter rad 155
+
+> "… och det är frånluftens jobb att ta topparna. Hinner den inte, blir fukten kvar och ger mögel på fogarna i badrummet."
+
+Fungerar i stycket. "den" pekar tydligt på frånluften, kopplingen från fukt till mögel är logisk och länken kommer naturligt. Kommat efter "Hinner den inte" behövs inte men stör inte. Ingen risk för fel. Den bästa av de nya meningarna.
+
+### Betyg för de nya meningarna tillsammans: 3
+
+Meningarna går att förstå var för sig, och flera är bra (luftfuktigheten, toalettens kortsvar, våtrumsfärg rad 57). Betyget dras ner av tre saker som kan få läsaren att göra fel: hubbens "Fogarna klarar du" säger emot fogar-sidan om kakelfogen, toalettstolens description lovar en gör-det-själv-sida som kortsvaret sedan inte är, och tätskiktets kortsvar säger "du får" utan "men låt en firma göra det", så hubb och tätskikt låter oense vid första läsningen. Rättas de tre är det en 4.
+
+## Rättade ställen efter SEO
+
+Läst 2026-09-29 som en husägare från Google, mot läsningen ovan.
+
+### 1. pelare/badrum.mdx, description mot ingressen och fogsidan
+
+> "Silikonfogen klarar du själv, men låt en firma ta tätskiktet, toalettstolen och målningen, för försäkringen vill se att branschreglerna följts i badrummet."
+
+Felet är borta. "Silikonfogen" i stället för "Fogarna" gör att ingen tar multiverktyget till kakelfogen efter att bara ha läst snippeten, och listan (tätskikt, toalettstol, målning) är nu densamma som i ingressen. Rådet kommer före skälet, och "själv" står inte längre först som det läsaren minns.
+
+Kan läsaren göra fel? Knappt. Två saker skaver:
+
+- "Silikonfogen klarar du själv" är något kaxigare än fogsidan, där GVK rekommenderar en fackman och du klarar det "så länge kniven stannar före tätskiktet". Ingressen har villkoret ("om du skär försiktigt"), descriptionen inte. Den som bara läser Google får inte veta att det finns en kniv och ett lager att akta.
+- Kakelfogen nämns varken i descriptionen eller ingressen. Ingressens "Fogarna håller du rena själv" och "en silikonfog som är slut kan du byta" är korrekt, men den som har grå, spruckna cementfogar får inget svar på hubben och kan läsa "fogarna" som alla fogar.
+
+"följts i badrummet" sist är en svans; "i badrummet" behövs inte.
+
+**Betyg: 4**
+
+### 2. tatskikt-badrum.mdx, kortSvar andra stycket
+
+> "Du har rätt att lägga tätskiktet själv, men låt en behörig firma göra det, för bara den kan lämna ett kvalitetsdokument, det intyg som visar att reglerna har följts."
+
+Nu landar kortsvaret i ett råd i första meningen, och "får … får" är borta. Hubb, tätskikt och toalett säger samma sak i samma ordning: lagligt, men firma, och varför. Bra.
+
+> "… och försäkringsbolagen kräver att badrummet följer de regler som gällde när det byggdes, annars blir självrisken högre eller ersättningen uteblir."
+
+Här finns kvar den lucka jag pekade på. "annars" hänger på "följer reglerna", inte på "har ett intyg". Den som läser snabbt tar med sig "följ reglerna, så betalar försäkringen", och det kan man tro att man gör med monteringsanvisningen i handen. Kopplingen intyg till försäkring finns bara om läsaren själv lägger ihop första och sista meningen. En halv mening knyter ihop det: "… och utan intyget är det svårt att visa försäkringsbolaget att reglerna följdes."
+
+> "Byggkeramikrådet avråder från eget arbete om du inte har mycket god kunskap och vana"
+
+"eget arbete" låter som en myndighetstext. Meningen öppnar också en dörr på glänt direkt efter att rådet sagt "låt en firma", men det är ärligt och stör inte.
+
+**Betyg: 4**
+
+### 3. Förslaget till description för byta-toalettstol, mot kortSvar
+
+> "Ingen lag hindrar dig, men försäkringen kräver branschreglerna, så låt en VVS-firma byta stolen. Se vad montören ska göra, priset och hur du byter sitsen."
+
+Riktningen stämmer nu med kortsvaret: firma först, sitsen själv. Den som bara läser snippeten gör inte fel. Men meningen är hoppressad på två ställen:
+
+- "Ingen lag hindrar dig" – från vad? Objektet saknas. Med titeln ovanför i Google går det, men descriptionen ska kunna läsas ensam.
+- "försäkringen kräver branschreglerna" – man kräver inte regler, man kräver att de följs. Och skälet till firman, att bara en auktoriserad firma kan intyga det, är bortpressat. Då följer "så låt en VVS-firma" inte av det som står: följer jag reglerna själv borde det ju räcka. Samma lucka som i punkt 2.
+- "montören" är ett tredje ord för samma person efter "VVS-firma". Mindre förvirrande nu när det är firman som byter, men "firman" hade varit rakare.
+
+Förslag i samma längd: "Du får byta toalettstolen själv, men försäkringen vill se ett intyg som bara en VVS-firma kan skriva. Se vad firman ska göra, priset och hur du byter sitsen."
+
+**Betyg: 3**
+
+### 3b. Registerposten för badrum-kostnad, mot syskonen i register.ts
+
+> "Med golvytan och hur påkostad inredningen ska vara får du priset post för post, med arbete och material för sig, och priset efter rotavdrag."
+
+Bättre än förra versionen: "välj standard" är borta, och "post för post, med arbete och material för sig" läses i ett andetag. Kortet går att förstå utan sidan.
+
+Skaver:
+
+- "priset" två gånger i samma mening.
+- Läsaren får inget att göra. Syskonen säger "Skriv in altanens mått", "Fyll i vad hantverkaren tar", "Säg hur tjock skivan är" eller "Rummets tre mått räcker". "Med golvytan … får du" låter som en sammanfattning, inte som en uppmaning, och är det enda kortet som börjar med "Med".
+- "inredningen" – gäller valet bara kranar och skåp, eller också kakel och klinker? Jag vet inte vad jag väljer.
+
+Förslag: "Skriv in golvytan och hur påkostat det ska bli, så får du priset post för post, med arbete och material för sig, och vad du betalar efter rotavdraget."
+
+**Betyg: 4**
+
+### 4. fogar-badrum.mdx, "Byter du bara fogen" och "Kakelfogen i badrummet är däremot"
+
+> "Byter du bara fogen och kniven stannar före tätskiktet har du inte rört något av det som försäkringen kräver av ett våtrum."
+
+Mycket bättre. Går fram vid första läsningen.
+
+> "Fogmassan hör nämligen inte till tätskiktet, och det slår Byggkeramikrådet fast i sina branschregler för våtrum, BBV 26:1 § 8.3."
+
+Den här meningen är nu det som gör att kakelstycket skaver. "Fogmassan" är allmänt, och cementfog är också en fogmassa för en lekman. Läsaren drar slutsatsen: fogen hör inte till tätskiktet, alltså kan jag skrapa ur kakelfogen också. Skriv "Silikonen hör nämligen inte till tätskiktet", eller låt meningen gälla bytet: "Ett fogbyte rör inte tätskiktet så länge kniven stannar före det".
+
+> "Kakelfogen i badrummet är däremot ett jobb för en plattsättare."
+
+"däremot" pekar tillbaka på ett avsnitt två rubriker upp; direkt ovanför står något om att silikon inte går att måla. Jag läste "däremot" som en motsats till hybridfogmassan. Meningen upprepar också rubriken ord för ord.
+
+> "Silikonfogen är en enda sträng i ett hörn, men cementfogen går mellan alla plattor på golvet och de kaklade väggarna, och överallt där sitter tätskiktet bakom."
+
+Framgår varför? Till hälften. Skälet som står är omfattningen: en sträng mot hela ytan. Men sidan har redan sagt att tätskiktet sitter "direkt bakom" silikonfogen också, så läsaren undrar varför en sträng är okej och tjugo inte. Det verkliga skälet, att kakelfogen skrapas ur med mejsel, fogkrats eller multiverktyg som slår och skär rakt in mot tätskiktet, står först i nästa stycke under "Själva jobbet går till så att …", som om det vore en beskrivning och inte skälet. Flytta verktygen in i den här meningen: "… och den skrapas ur med mejsel eller multiverktyg rakt mot tätskiktet, i hela ytan."
+
+Gäller regeln hela badrummet? Ja, nu framgår det: "på golvet och de kaklade väggarna", och rubriken och meningen säger båda "i badrummet". Förra läsningens "i duschen" är borta. Men frågan som uppstår är den omvända: gäller det också en enda trasig fog vid handfatet? "delreparation" låter som något litet, så läsaren kan tro att en liten lagning är undantagen. Sidan säger inget om det.
+
+> "Finns det ett tätskikt under plattorna får ingen slå eller skära för djupt."
+
+Säger emot meningen ovanför ("överallt där sitter tätskiktet bakom") och tätskiktssidan (hela golvet och alla kaklade väggar ska ha tätskikt). "Finns det" låter som att det kanske inte gör det, och då kan man ju skrapa. "får ingen slå" är också lite stelt.
+
+> "Att skrapa ur den ligger så nära en delreparation att jag räknar det dit, och delreparationer i våtrum ska enligt § 1.4 i BBV 26:1 göras av en behörig plattsättare som är anställd i ett behörigt företag."
+
+Bättre än förut: "enligt § 1.4" sitter nu på regeln, så det går att se var bedömningen slutar. "behörig" två gånger i stället för tre. Ordningen är fortfarande åsikt först, regel sen, men det håller.
+
+Kakelfog och cementfog blandas i samma stycke ("Kakelfogen … men cementfogen …"). Resten av sidan säger cementfog. Läsaren förstår, men det är två namn på samma sak utan att det sägs.
+
+**Betyg: 3**
+
+### Sammanfattning
+
+| Ställe | Kan läsaren göra fel? | Betyg |
+|---|---|---|
+| Hubbens description | Nej, felet om fogarna är rättat | 4 |
+| Tätskiktets kortsvar | Knappt; "annars" hänger på reglerna, inte på intyget | 4 |
+| Toalettstolens description | Nej, men "hindrar dig" och "kräver branschreglerna" är hoppressade | 3 |
+| Registerposten | Nej; "priset" två gånger, ingen uppmaning | 4 |
+| Fogsidan, silikon mot kakelfog | Ja, lite: "Fogmassan hör inte till tätskiktet" plus "Finns det ett tätskikt" kan läsas som att kakelfogen också går | 3 |
+
+**Medelbetyg: (4 + 4 + 3 + 4 + 3) / 5 = 3,6**
+
+Det som återkommer: skälet till firman (bara firman kan intyga, och försäkringen vill se intyget) pressas bort när texten kortas, i toalettens description och i tätskiktets sista mening. Kvar blir "försäkringen kräver reglerna", och det låter som något man kan uppfylla själv.
+
+## Rättade ställen efter SEO, andra omgången
+
+Samma ställen, lästa igen efter förslagen ovan. Hubbens description är oförändrad och har kvar sin 4:a.
+
+### 1. tatskikt-badrum.mdx, kortSvar andra stycket
+
+> "Försäkringsbolagen kräver att badrummet följer de regler som gällde när det byggdes, och utan intyget är det svårt att visa att det gör det, så självrisken kan bli högre eller ersättningen utebli."
+
+Nu hänger kedjan ihop: regler, intyg, försäkring, pengar. Den som läser kortsvaret och slutar där vet vad hen ska göra och varför. Att dela upp i tre meningar gjorde stycket lättare att läsa.
+
+Det enda som skaver är "det" och "gör det". "att visa att det gör det" läser jag två gånger för att se att "det" är badrummet. I stycket står "göra det" tre gånger: "låt en behörig firma göra det", "avråder från att göra det själv", "visa att det gör det". Det hörs, men läsaren gör inte fel av det. "att visa att badrummet gör det" räcker.
+
+**Betyg: 5**
+
+### 2. Toalettstolens description, 152 tecken
+
+> "Du får byta toalettstolen själv, men försäkringen vill se ett intyg som bara en VVS-firma kan skriva. Se vad firman gör, priset och hur du byter sitsen."
+
+Läses ensam, utan titeln. Skälet till firman står där, "montören" är borta och det är samma ord, "firman", hela vägen.
+
+Det som skaver: "vill se" är mjukt. Rådet att låta firman göra jobbet sägs inte, det antyds bara, och vad som händer utan intyg står inte. Den som skummar kan läsa "vill se" som något försäkringen gärna vill ha, inte som något som kostar en fjärdedel av ersättningen. Kortsvaret säger "i praktiken bör en VVS-firma göra det", och descriptionen är något svagare än så. Inom 155 tecken är det svårt att få med mer, så jag skulle låta det vara.
+
+**Betyg: 4**
+
+### 3. Registerposten för badrum-kostnad
+
+> "Skriv in golvytan och hur påkostat det ska bli, så får du priset post för post, med arbete och material för sig, och vad du betalar efter rotavdraget."
+
+Säger vad jag ska göra och vad jag får, precis som syskonen. "priset" står en gång. Går att förstå utan sidan. Den är lika lång som de längsta syskonen, men den flyter.
+
+Om formuläret kallar valet "standard" hittar läsaren inte "hur påkostat" igen. Jag såg inte etiketten i sidans text och kan inte avgöra det.
+
+**Betyg: 5**
+
+### 4. fogar-badrum.mdx, "Kakelfogen, som är cementfogen mellan plattorna" och stycket efter
+
+> "Kakelfogen, som är cementfogen mellan plattorna, ska en plattsättare byta. Silikonen skär du ur med en kniv längs ett hörn, men cementfogen måste skrapas ur med mejsel, fogkrats eller multiverktyg rakt mot tätskiktet, och det över hela golvet och alla kaklade väggar."
+
+Nu framgår det varför. Kniv längs ett hörn mot mejsel och multiverktyg rakt mot tätskiktet över hela ytan: den skillnaden ser jag framför mig. Att kakelfog och cementfog är samma sak sägs direkt, och "däremot" och upprepningen av rubriken är borta. Regeln gäller tydligt hela badrummet.
+
+Skaver fortfarande:
+
+- Rad 136 står kvar: "Fogmassan hör nämligen inte till tätskiktet". Nu när skälet står först i kakelstycket är risken liten, men ordet är fortfarande så allmänt att det också täcker cementfogen. "Silikonen hör nämligen inte …" kostar ingenting.
+- "och det över hela golvet och alla kaklade väggar" är talspråk utan verb. Går, men det hörs.
+- Om en enda trasig fog vid handfatet står inget, men "delreparation" plus plattsättaren gör att läsaren nog ringer, och det är rätt håll att göra fel åt.
+- "behörig plattsättare som är anställd i ett behörigt företag", "behörig" två gånger.
+
+> "Plattsättaren skrapar ur den gamla fogen utan att slå eller skära ner i tätskiktet och lägger i den nya med gummispackel och svamp."
+
+Utan komma före "och lägger" läste jag först "utan att slå, skära … och lägga i den nya". Ett komma löser det. "Finns det ett tätskikt" är borta, bra.
+
+> "De första dagarna ska den fuktas lätt 1 till 3 gånger, men under hela första veckan får den inte stå under vatten."
+
+Vem fuktar? Plattsättaren har gått hem. Står det här för att jag ska göra det, ska det sägas: "De första dagarna fuktar du fogen lätt …".
+
+**Betyg: 4**
+
+### Sammanfattning, andra omgången
+
+| Ställe | Kan läsaren göra fel? | Betyg |
+|---|---|---|
+| Hubbens description (oförändrad) | Nej | 4 |
+| Tätskiktets kortsvar | Nej | 5 |
+| Toalettstolens description | Nej; "vill se" är mjukt | 4 |
+| Registerposten | Nej | 5 |
+| Fogsidan, kakelfogen | Knappt; rad 136 "Fogmassan" står kvar | 4 |
+
+**Medelbetyg för de fyra omlästa: (5 + 4 + 5 + 4) / 4 = 4,5**, och 4,4 med hubben.
+
+Skälet till firman, intyget, står nu kvar på alla tre sidorna, och hubb, tätskikt och toalett säger samma sak i samma ordning.

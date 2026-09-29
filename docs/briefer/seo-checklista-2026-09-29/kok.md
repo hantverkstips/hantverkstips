@@ -475,6 +475,8 @@ För GEO är det inget problem, utan tvärtom. Ett tal med tillverkarens namn i 
 
 ### Publiceringen
 
+**Ersatt 2026-09-29** av den gemensamma listan "Publicering badrum och kök" sist i `badrum.md`. Alla steg nedan finns med där. Texten står kvar som historik.
+
 **Köket kan inte gå före badrummet.** Länkarna binder ihop sidorna. Mala-kakel länkar till vatrumsfarg och tatskikt-badrum, och det är krav (Bättre än ettan 5), och även till fogar-badrum. Tatskikt-badrum länkar i sin tur till byta-toalettstol. Mala-koksluckor länkar till mala-kakel och byta-koksluckor, och byta-koksluckor länkar till mala-koksluckor. Hubben når inte fem sidor utan mala-kakel. Att stryka badrumslänkarna i mala-kakel bryter ett krav. Köket publiceras därför i samma commit som badrumssidorna vatrumsfarg, tatskikt-badrum, fogar-badrum och byta-toalettstol, när de är godkända i sin egen kedja (fogar-badrum har 3 från läsaren i dag). Badrumshubben följer sin egen kontroll.
 
 Undantaget är slipa-bankskiva. Den är publicerad och länkar inte till något utkast, så punkt 1 kan gå ut nu, med `uppdaterad` satt till den dag ändringen driftsätts.

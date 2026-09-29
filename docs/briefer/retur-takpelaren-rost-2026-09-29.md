@@ -459,3 +459,46 @@ Ingenting av det kan få någon att göra fel, men sidan är inte en femma förr
 - **Källan som slutkläm:** snörasskydd 3, hängrännor 3, plåttak omkring 4, takstolar omkring 5. Det hörs inte längre som en mall, utom TräGuiden på takstolarna.
 - **Friskrivningar:** i praktiken borta i alla fyra artiklarna.
 - **Syskonsidornas ämnen:** oförändrat sedan varv 2. EKS står två gånger på snörasskyddet, och c förklaras på tre sidor.
+
+## Spalten, 2026-09-29
+
+Läst på /rakna/takbyte/ i fyra lägen: standard, `material=bandplat&langd=15`, `takform=pulpet&matt=vinkel&vinkel=27` och `material=takpanneplat&vinkel=10`. Som kontroll också `material=betong&vinkel=10`.
+
+### 1. Förstår jag varje mening i spalten vid första läsningen?
+
+Nästan. Rubrikerna ("Budgetera runt 165 000 kr för ett tak med betongpannor", "Välj ett annat material än takpanneplåt för ett tak som lutar 10 grader") är tydliga och säger vad jag ska göra. De här meningarna fick jag läsa två gånger:
+
+- "Be firman räkna på takytan, så går offerten att lägga bredvid talen här." Vilka "talen här"? Det står fem tal under, och det enda som går att lägga bredvid ett kvadratmeterpris i en offert (1 333 kr) står inte i spalten längre.
+- "Nockhöjden är 2,29 m och takfallet 5,61 m långt, och med 1 200 mm mellan takstolarna ryms ungefär 11." Tre fakta i en mening, och "ryms ungefär 11" slutar innan jag hunnit fatta att det är takstolar som räknas. "ungefär 11 takstolar" hade räckt.
+- "Den höga väggen är 4,59 m högre än den låga och takfallet 11,22 m långt, och med 1 200 mm mellan takstolarna ryms ungefär 11." Samma sak, och ännu längre. Det bra är att 4,59 m sticker ut, så jag ser själv att 27 grader är fel för mitt pulpettak.
+- "Stämmer inte höjdskillnaden mellan väggarna nedan med ditt hus är vinkeln fel." Den förstår jag, men "är vinkeln fel" låter som att räknaren har fel. "har du skrivit in fel vinkel" hade varit rakare.
+- "Är ni två ägare som båda betalar har ni en gräns var." Det är rätt, men jag får själv lista ut att jag ska klicka i "Två ägare" längre upp. Säg det.
+
+Beskedet vid gränsen ("Vid det högre priset når du gränsen för rotavdraget, och det är redan inräknat.") är kort och bra. Beskedet på takpanneplåt ("Takpanneplåt kräver minst 14 grader, så räknaren visar inget belopp.") är det bästa i hela spalten.
+
+### 2. Saknar jag något i spalten som gör att jag budgeterar eller jämför en offert fel?
+
+Budgeten blir rätt. Jämförelsen kan bli fel.
+
+- **Betong och tegel:** spalten säger "Med 1 124 kr per kvadratmeter och 30 000 kr för resor och etablering kostar taket 191 471 kr före avdraget." Har jag en offert på 1 300 kr per m² med allt inräknat, så jämför jag med 1 124, det enda kvadratmeterpriset jag ser, och tror att firman tar 16 procent för mycket. Att rätt tal är 1 333 kr står först under "Därför blev svaret så", och dit scrollar inte alla. Den gamla uppmaningen "Be firman räkna på takytan ..." pekar mig dessutom rakt mot kvadratmeterpriset. Den meningen borde bytas mot en som räcker till jämförelsen, till exempel: "Jämför med 1 333 kr per m² om offerten har resor och etablering inräknade, annars med 1 124 kr."
+- **Plåt:** spalten nämner inte etableringen alls: "Med 1 500 till 2 500 kr per kvadratmeter kostar taket 265 991 till 443 319 kr före avdraget." Den som nyss har räknat på betong och sett "och 30 000 kr för resor och etablering" kan tro att plåten saknar posten och lägga på 30 000 själv. Tre ord i spalten, "etableringen inräknad", som i det korta svaret högst upp, hade tagit bort risken.
+- **"beloppet här"** i Därför-delen för plåt: "lägger du ihop den raden med resten innan du jämför summan med beloppet här." Det stora talet i spalten är priset efter rotavdraget. Offerten visar oftast priset före. Skriv "med beloppet före rotavdraget", annars jämför jag 443 000 i offerten med 393 000 här och tror att firman är 50 000 kr dyrare.
+- **Betongpannor på 10 grader** ger ett belopp utan en enda varning ("Budgetera runt 152 000 kr för ett tak med betongpannor"), medan takpanneplåt stoppas vid 14 grader. Som läsare undrar jag om pannor verkligen går att lägga så flackt. Går de inte det, då budgeterar jag för ett tak som inte kan byggas. Någon bör kontrollera det mot tillverkarnas minsta lutning för pannor.
+
+### 3. Säger spalten och Därför-delen samma sak om tillägget för resor och etablering?
+
+- **Betong:** ja. Spalten och första stycket i Därför-delen har samma tal (30 000 kr, 191 471 kr). Punkten längre ner lägger till "projektering" ("ungefär 30 000 kr för resor, etablering och projektering"). Det ordet finns inte i spalten och inte i tabellen. Det är ingen motsägelse, men varför heter posten olika saker på samma sida?
+- **Plåt:** de motsäger inte varandra, men spalten är tyst. Därför-delen säger två gånger att etableringen ingår ("där resor och etablering redan ingår", "så här läggs inget tillägg till"). Det räcker för den som läser Därför, men inte för den som läser spalten.
+- **Olika metoder:** för betong säger sidan att jag ska jämföra kvadratmeterpriser (1 333 eller 1 124). För plåt ska jag jämföra totalsummor när offerten har en egen rad. Båda sätten stämmer, men att sidan byter sätt mellan materialen gör att jag tvekar. Samma sorts mening för båda hade varit lugnare.
+
+### 4. Går det att förstå varför det inte blir något belopp för takpanneplåt på 10 grader?
+
+Ja, direkt. Rubriken, meningen under och Därför-delen säger samma sak: gränsen är 14 grader, mitt tak lutar 10, och därför blir det inget belopp. Två saker saknas:
+
+- "Den gränsen anger både Plannja och Lindab" förutsätter att jag vet vilka de är. "plåttillverkarna Plannja och Lindab" räcker.
+- Spalten säger "Välj ett annat material" men inte vilket. Jag vill få veta att bandtäckt plåt eller papp klarar 10 grader, eller åtminstone få en länk dit. Nu ligger hänvisningen till plåttaket långt ner i brödtexten.
+- En mindre sak: punkten "Priset räknas på takytan längs lutningen, 130 m² i ditt fall" står kvar fast det inte finns något pris.
+
+### Betyg för takbytet: 4
+
+Spalten är kortare och rubrikerna säger vad jag ska göra. Beskedet vid gränsen och beskedet på takpanneplåt är bra. Att den inte får en femma beror på meningen "Be firman räkna på takytan, så går offerten att lägga bredvid talen här.". Den står på platsen där jämförelsetalet borde stå, och därför kan den som jämför en betongoffert komma fram till fel slutsats. Det rättas med en enda mening.

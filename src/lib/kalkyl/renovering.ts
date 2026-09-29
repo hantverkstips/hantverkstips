@@ -863,7 +863,7 @@ export const TEXT = {
   }),
 
   /* Publiceringsomgången (specen 9.2). Alt under 125 tecken. Skissen finns inte än. */
-  skissAlt: `Skiss av ett badrum på ${kvmText(REFERENSYTA_KVM)} kvm sett ovanifrån, med kostnaden för att renovera ett badrum uppdelad per post`,
+  skissAlt: `Skiss av ett badrum på ${kvmText(REFERENSYTA_KVM)} kvm ovanifrån, med kostnaden för att renovera badrummet efter rotavdraget`,
   skissBildtext: `Badrummet i källornas exempel har ${kvmText(REFERENSYTA_KVM)} kvm golv. De röda strecken visar golvbrunnen och tätskiktets kant längs väggarna, och det markerade talet är vad du betalar efter rotavdraget med räknarens standardvärden.`,
 };
 

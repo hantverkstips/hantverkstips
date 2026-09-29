@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Skiss av ett tak ovanifrån med rännor, stuprör och fall, och de dimensioner på takavvattningen som räknaren ger">
+  <!-- Anteckningsboken, verktygsskiss för /rakna/takavvattning/: sadeltaket rakt uppifrån på huset som
+       står i formuläret från början (STANDARD i src/lib/kalkyl/takavvattning.ts): 12 × 9 m,
+       takfotsutsprång 0,5 m, gavelutsprång 0,4 m, 27 grader. Räknaren ger en ränna längs varje
+       långsida, 12,8 m lång, ett stuprör i varje ände (fyra på huset), rännfallet 6,4 m fram till
+       röret, minst 16 mm fall på den sträckan (2,5 mm per meter), hängränna 100 mm och
+       stuprör 75 mm (raknaTakavvattning(STANDARD)). Ändras standardvärdena ändras talen här.
+       Skala 21 px per meter. Taket x 64–333 (12,8 m med gavelutsprången), y 86–296
+       (10 m med takfotsutsprången), nocken y 191. Rännorna utanför takfoten, y 68–76 och
+       306–314. Stuprören som ringar i rännornas ändar, x 76 och 321.
+       Blyerts 2 px för taket, nocken, rännorna och stuprören, blyerts-2 1,5 px för måttbygeln,
+       1,25 px för ledarna, snickarpenna 2,5 px för pilarna längs den övre rännan från mitten mot
+       stuprören i båda ändar och deras mått (det enda som pekar). Tumstock bara bakom "100 mm".
+       Etiketterna är ord ur TEXT i takavvattning.ts (spalt.etikett-ranna, spalt.rad-fall och
+       skissAlt) tills hantverkaren har skrivit skissens etiketter.
+       Handskrift i Caveat 500, 24 px, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="368" y="116" width="92" height="30" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 414 131)"/>
+
+  <!-- Blyerts: taket med nocken, rännorna och stuprören -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M62,86 Q198,85 335,86 M333,84 Q334,191 333,298 M335,296 Q198,297 62,296 M64,298 Q63,191 64,84"/>
+    <path d="M64,191 Q198,192 333,191"/>
+    <path d="M60,68 Q198,67 337,68 M60,76 Q198,77 337,76 M60,68 V76 M337,68 V76"/>
+    <path d="M60,306 Q198,305 337,306 M60,314 Q198,315 337,314 M60,306 V314 M337,306 V314"/>
+    <circle cx="76" cy="72" r="8"/>
+    <circle cx="321" cy="72" r="8"/>
+    <circle cx="76" cy="310" r="8"/>
+    <circle cx="321" cy="310" r="8"/>
+  </g>
+
+  <!-- Blyerts-2: måttbygeln för rännans längd under den nedre rännan, och ledarna -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M60,328 Q198,330 337,328"/>
+    <path d="M60,322 v12 M337,322 v12"/>
+  </g>
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M366,104 Q342,92 312,78"/>
+    <path d="M366,262 Q344,284 328,303"/>
+  </g>
+
+  <!-- Snickarpenna: fallet i den övre rännan, från mitten mot stuprören i båda ändar -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M190,56 Q141,55 92,56 M102,49 L92,56 L102,63"/>
+    <path d="M208,56 Q256,55 305,56 M295,49 L305,56 L295,63"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="140" y="38" fill="#ad3519">fall minst 16 mm</text>
+    <text x="172" y="354" fill="#625a50">12,8 m</text>
+    <text x="370" y="108">Hängrännans bredd</text>
+    <text x="374" y="140">100 mm</text>
+    <text x="370" y="252">stuprör</text>
+    <text x="370" y="284" fill="#625a50">75 mm</text>
+  </g>
+</svg>

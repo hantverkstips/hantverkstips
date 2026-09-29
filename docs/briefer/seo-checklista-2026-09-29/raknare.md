@@ -128,6 +128,8 @@ Specen är `docs/briefer/spec-kalkyl-badrum-kostnad-2026-09-29.md`.
 2. **Målningen godkänns som egen post.** Den har källa (Badrumsexperter), och utan den blir totalen för låg mot källans 208 800 kr före rot. Beskrivningen av posten säger att det är ett godkänt våtrumssystem utfört av målare.
 3. **Ytan utökas till 4 till 8 kvm, med Byggstarts tillägg i stället för linjär skalning över 5 kvm.** Byggstarts 8 000 till 16 000 kr per extra kvm är en källa, och den väger tyngre än vårt eget antagande om linjär skalning. Mellan 4 och 5 kvm står den linjära nedskalningen kvar och märks ANTAGANDE. Från 5 kvm läggs Byggstarts spann till per kvm, och spannet syns i resultatet. Över 8 kvm visas inget belopp. Gränsen på 8 kvm är vår, eftersom Byggstart inte anger något tak, och den står i antagandetabellen. Underlag behöver inte leta efter fler källor nu.
 
+**Kontroll efter röstvarvet, 2026-09-29:** det finns inget att ändra i texten. Skissen och registerposten görs i publiceringscommiten. Kontrollen och posten står i `badrum.md`, under "Kontroll efter röstvarvet" och "Publicering badrum och kök".
+
 ---
 
 ## /rakna/kok-kostnad/
@@ -436,3 +438,61 @@ Underlaget är `docs/briefer/underlag-kalkyl-takavvattning-2026-09-28.md` och fa
 2. **Rännan följer RA Hus och Plannja**, som båda byter till 125-ränna vid 75 kvm. Lindab byter redan vid 50 kvm. Ligger takytan mellan 50 och 75 kvm visar beskedet 100-rännan och en pekrad om att Lindab vill ha 125 i det intervallet, så att läsaren väljer efter det fabrikat hon köper. Utanför intervallet är källorna överens och ingen pekrad behövs.
 3. **Plaststuprör faller bort ur räknaren.** Det finns inget pris, och en post utan källa tas inte med (regel 3). Räknaren visar dimension och antal för alla material, men materialkostnaden räknas bara för stål, där varje post har en källa. Plast nämns i svaret utan kronor, med en länk till hängrännesidan. Plastrännans enda pris (Bauhaus) räcker inte för en totalsumma när stupröret saknas.
 4. **Takarean:** UX avgör i specen om den mäts längs lutningen eller vågrätt. Kravet härifrån är att räknaren säger vilket av dem den använder, med källa i "Så räknar jag", och att samma val gäller i `/rakna/takbyte/`.
+
+---
+
+## Kontroll efter röstvarvet, 2026-09-29
+
+Gäller `/rakna/takbyte/` och `/rakna/takavvattning/`, lästa i `src/pages/rakna/takbyte.astro`, `takavvattning.astro`, `src/lib/kalkyl/takbyte.ts` och `takavvattning.ts` som de ligger i arbetskatalogen i dag. Artiklarna och hela publiceringsordningen står i `tak.md` under samma rubrik.
+
+### /rakna/takbyte/
+
+Inget att ändra.
+
+- **Title** "Byta tak, kostnad räknad från husets mått", 41 tecken, börjar med "Byta tak, kostnad", och ingen annan title börjar med "Byta tak". **H1** "Vad kostar ett nytt tak på ditt hus?" delar inte orden. **Description** 144 tecken, lovar takarean ur mått och vinkel, pris per material och rotavdraget för en eller två ägare. **Alt** 85 tecken, med takbyte och takarea.
+- **Kortsvaret** har takarean för standardhuset, påslaget från lutningen, tre material med pris per m² och belopp efter rot, källa och hämtningsdatum. Det går att citera utan resten av sidan.
+- **H2** bär frasen: "Beräkna takarea ur husets mått och takvinkel" (beräkna takarea, takvinkel) med påslagstabellen, "Arbetet och materialet i ett takbyte" och "Rotavdraget på ett nytt tak".
+- **Bättre än ettan:** 1 takarean ur bottenyta, utsprång och lutning, 2 pris per material med källa och datum, arbete och material för sig, 3 rot med 30 procent, 50 000 kr per person och två ägare (regeln rot-gräns och antagandetabellen), 4 takvinkel och takstolar i samma resultat, 5 delbart resultat utan kontaktuppgifter. Alla uppfyllda.
+- **Samma tal på båda sidorna (beslut 3):** takpanneplåt 900 till 1 500 och bandplåt 1 500 till 2 500 i modulen, samma som plåttakets tabell. Plåttakets description och rad 128 rättas (tak.md, rättning 1 och 2).
+- **Länkar ut:** `/tak/plattak/` i H2 2, `/tak/takstolar/` i resultatspalten, `/rakna/rotavdrag/` i H2 3 och i spalten, `/rakna/takavvattning/` i spalten och i Läs vidare, och `/rakna/fasadyta/` i Läs vidare. **In:** plåttaket (inbäddning), snörasskyddet och takstolarna (kort), takavvattningen (Läs vidare) och fasadräknaren (Läs vidare, läggs till i commit 1).
+- **Strukturerad data:** `WebApplication` med samma namn och beskrivning som syns, `BreadcrumbList`, och `FAQPage` bara från den synliga Faq:n med tre frågor.
+
+### /rakna/takavvattning/
+
+Inget att ändra.
+
+- **Title** "Takavvattning för villan, ränna och stuprör", 43 tecken, börjar med Takavvattning och inte med "Hängrännor". **H1** "Hur stor hängränna behöver ditt tak?" delar inte orden med title eller med hängrännesidans H1. **Description** 150 tecken, lovar rännans och stuprörets dimension, antalet stuprör och fallet. **Alt** 111 tecken, med takavvattning och dimension.
+- **Kortsvaret** ger ränna och stuprör för 75, 125 och 200 m², fallet, högsta rännlängd per stuprör och källorna med år (RA Hus 21, Plannja 2026), som checklistan beställde.
+- **H2** "Tabellerna jag räknar efter" har RA Hus 21 och Plannja 2026 och Plannja 2010 som egen kolumn märkt äldre, och Lindabs gräns för sig.
+- **SS 82 40 31** står utan år, eftersom året inte är bekräftat i någon läst källa, och med förbehållet att räknaren följer RA Hus. Det uppfyller fällan.
+- **Bättre än ettan** 1 till 4 är uppfyllda. Takarean räknas längs lutningen i båda räknarna och i hängrännesidan, med den vågräta ytan som jämförelse i "Så räknar jag" (beslut 4).
+- **Länkar ut:** `/tak/hangrannor/` i spalten och i Läs vidare, `/rakna/takbyte/` i spalten (vid husets mått) och i Läs vidare. Ingen länk till Lindabs eller Plannjas verktyg. **In:** hängrännesidan (inbäddning) och takbytet.
+
+### Registerposterna
+
+Läggs i `src/lib/kalkyl/register.ts` i samma commit som respektive `UTKAST = false` (commit 1 och 2 i `tak.md`). Utan posten stoppar `kontrollera` kortet och inbäddningen, och räknaren saknas i sidfoten, på `/rakna/` och i hubbens grupp Räkna.
+
+```ts
+{
+  slug: 'takbyte',
+  namn: /* hantverkaren: läsarens fråga, med orden byta tak och kostnad eller kostar */,
+  rad: /* hantverkaren: en mening med verb, som till en granne */,
+  /* "byta tak kostnad" toppar i maj och september (SOKORDSANALYS 8.2).
+     Checklistan 1. */
+  sasong: [3, 10],
+  pelare: ['tak'],
+},
+{
+  slug: 'takavvattning',
+  namn: /* hantverkaren: med takavvattning eller hängränna och stuprör, får inte börja med "Hängrännor" */,
+  rad: /* hantverkaren: en mening med verb */,
+  /* Rännorna byts när det går att stå på stegen; "hängrännor" toppar
+     april till augusti. Checklistan 1. */
+  sasong: [4, 9],
+  pelare: ['tak'],
+},
+```
+
+Kraven på `namn`: det är ankartexten i kortet och i sidfoten, så det ska bära frasen. Takbytets namn ska innehålla "byta tak", och takavvattningens får inte börja med "Hängrännor", eftersom den titeln ägs av `/tak/hangrannor/`. Ingen av dem får vara samma som en title på sajten. Kategori sätts inte, eftersom räknarna inte pekar på produkter.
+
+**Godkänd av SEO och GEO** för båda räknarna, med registerposterna och publiceringsordningen i `tak.md` som villkor.

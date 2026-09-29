@@ -175,6 +175,8 @@ Utkastet `src/content/kunskap/badrum/tatskikt-badrum.mdx` läst mot punkt 1 till
 
 ### Publiceringen av badrumsklustret i en commit
 
+**Ersatt 2026-09-29** av den gemensamma listan "Publicering badrum och kök" sist i den här filen. Texten nedan står kvar som historik.
+
 Sidorna: `/badrum/tatskikt-badrum/`, `/badrum/vatrumsfarg/`, `/badrum/fogar-badrum/`, `/badrum/byta-toalettstol/`, `/kok/mala-kakel/` och `/rakna/badrum-kostnad/`. Med `/rakna/rotavdrag/`, som redan har `badrum` i registret, får hubben sex poster: fyra artiklar och två räknare. Ordningen inom committen, så att bygget är grönt vid varje steg som körs lokalt:
 
 1. **Räknaren först.** `badrum-kostnad` registreras i `src/lib/kalkyl/register.ts` med `pelare: ['badrum']`, och TEXT SAKNAS i `src/lib/kalkyl/renovering.ts` och `src/pages/rakna/badrum-kostnad.astro` är ersatt (i dag två fel i kontrollen), och BESKRIVNING är 120 till 155 tecken. Räknarens egen kontroll mot `raknare.md` ska vara godkänd.
@@ -511,3 +513,150 @@ Det ettan har som vi måste ha:
 - **Inget "ingen lag förbjuder" utan att försäkringsbeskedet står i samma stycke.**
 - **Inga sitsformer med mått** som påstås vara tillverkarens.
 - Clas Fixare nämns inte i publik text.
+
+---
+
+## Kontroll efter röstvarvet, 2026-09-29
+
+Läst mot punkt 1 till 12 per sida, de gemensamma punkterna överst och `raknare.md` för räknaren. Filerna är lästa som de ligger i arbetskatalogen i dag. Teckenantalen är räknade i Node. `npm run kontrollera` ger 0 fel och ingen varning för badrumsfilerna. Nio punkter ska rättas före publiceringen, och de står nedan med rad.
+
+### Besluten som koordinatorn bad om
+
+1. **Fogsidans vändning godkänns.** Checklistan beställde en gör det själv-guide med villkoren utskrivna (gemensam punkt 1, hubgrupp Gör det själv). Tätskiktstabellen (rad 190), räknaren och hubbens ingress säger redan ja. Hade fogsidan sagt nej hade sajten gett två svar på samma fråga. GVK:s rekommendation står först i avsnittet, och villkoret står både i kortsvaret och i avsnittet. Kortsvaret har rådet och villkoret tillsammans, och det är det stycket en AI citerar.
+2. **Tätskiktssidans description** (rad 4) blir: "Tätskikt i badrum ska följa BFS 2024:8, BBV 26:1 och GVK 2026. Se var våtzonerna går, om du får lägga tätskiktet själv och vad försäkringen kräver." (147 tecken.) Frasen och de tre regelkoderna står kvar först.
+3. **Våtrumsfärgens seoTitle** (rad 3) blir "Våtrumsfärg i badrummet, var den räcker" (39 tecken, så suffixet läggs på). Läsaren har rätt i att förkortningarna inte hjälper den som söker. Ingen fras med VA eller VT har uppmätt volym, och klasserna förklaras redan i description och kortsvaret. Ingen annan title börjar med "Våtrumsfärg", och H1 "Räcker det med färg i badrummet?" delar inte de tre första orden med titeln.
+4. **Greppet "du får, men organisationen rekommenderar en firma" skadar inte sökningen.** Det är samma besked på alla sidor, och det är just det som krävs för att en AI inte ska kunna ställa sidorna mot varandra. Det som hade skadat är om greppet öppnade varje kortsvar, eftersom kortsvaren då skulle se likadana ut och inte svara på sin egen fras. Så är det inte: fogsidan öppnar med möglet, tätskiktet med kravet, våtrumsfärgen med systemet och toalettstolen med rådet. Greppet ska inte in i fler title- eller description-rader än i dag. Hubbens description och toalettstolens börjar i dag med samma fem ord, och det rättas nedan. Hur rytmen låter över sidorna bedömer läsaren.
+5. **Rad 182 på fogsidan behöver ingen kontroll av underlag.** Faktabladet `guider-fogar-badrum.md` rad 200 citerar databladet ordagrant: "fogen fuktas 1-3 gånger under de första dagarna". Det står inte per dygn, så meningen stämmer. Ordet "lätt" finns inte i källan. Det är hantverkarens sak om det står kvar.
+
+### /badrum/fogar-badrum/
+
+seoTitle 43 tecken, börjar med "Fogar i badrum", och mögel står bland de sex första orden. Description 148 tecken, oförändrad sedan beslut 3. H1 delar inte de tre första orden med title. H2:orna bär fraserna: rengöra (rad 101), mögel i fogarna i duschen (rad 118), torktid (H3 rad 146), fogmassa (rad 160) och byta kakelfog (rad 178). Bättre än ettan 1 till 5 finns: ytmögel mot fukt i väggen, torktiden i en tabell med fabrikat och datum, Giftinformationscentralen, snittskissen (alt 114 tecken, med fog och badrum) och BBV § 1.4. Tolkningen om cementfogen är märkt som Christians egen. Länkarna ut går till tätskiktet, luftfuktigheten och måla kakel. Ättika utan källa, Totalbyggarna och fogfärg som råd finns inte med.
+
+1. **Rad 97 eller rad 136: namnge BBV 26:1 § 8.3** vid beskedet att fogmassan inte hör till tätskiktet. Beslut 1 efter utkastet krävde läsningen av § 8.3 i bytesavsnittet, och i dag står den bara i `kallor`. Paragrafen i samma mening som beskedet är det en AI kan citera och spåra (faktabladet rad 24: "Fogmassor ingår inte i det godkända tätskiktssystemet.").
+
+### /badrum/tatskikt-badrum/
+
+Rättelserna 1, 2, 3 och 5 från förra kontrollen är gjorda, och det är längdkapningarna också. Toalettraden (rad 193) och källraden (rad 202) stämmer med toalettsidan, och fograden (rad 190) stämmer med fogsidan. Skissen är inlagd, med alt på 119 tecken som innehåller orden tätskikt och våtzon. Bättre än ettan 1 till 6 finns.
+
+2. **Rad 4, description:** lydelsen i beslut 2 ovan.
+
+Rättelse 4 och 6 från förra kontrollen, alltså kortet och datumen, görs i publiceringscommiten.
+
+### /badrum/vatrumsfarg/
+
+Description 153 tecken. Kortsvaret har MVK med datum, systemet, VT och VA, underlaget och golvet. Tabellen per yta har källan på raden under. Golvet har MVK:s citat. Listan och datumet för godkända system och de utgångna produkterna finns. Verktygskortet för kvadratmeterräknaren finns. Alt 105 tecken, med ordet våtrumsfärgen. Inget butiksnamn, ingen Jotun-mening och ingen målningsguide.
+
+3. **Rad 3, seoTitle:** "Våtrumsfärg i badrummet, var den räcker", se beslut 3.
+4. **Rad 65: skriv "7 kap. 7 och 9 §§"** efter BFS 2024:8. Bättre än ettan punkt 4 kräver paragraferna som lagkravet bakom, och i dag står de bara i `kallor`. Tätskiktssidan citerar samma paragrafer, så sidorna ska ange dem på samma sätt.
+5. **Rad 57: ange sidan i MVK 2026 (s. 19)** vid regeln att kakel, våtrumstapet och väggmatta ska avlägsnas helt. Bättre än ettan punkt 5 kräver ommålningsregeln med sidnummer, och `/kok/mala-kakel/` anger s. 19 för samma regel.
+
+Inlänken på rad 78 till toalettstolen läggs i publiceringscommiten (steg 3 nedan).
+
+### /badrum/byta-toalettstol/
+
+seoTitle 42 tecken, börjar med "Byta toalettstol" och lovar ingen steg-för-steg-guide. Description 153 tecken och uppfyller punkt 4. H1 "Får jag byta toalettstolen själv?" delar inte de tre första orden med title. H2:orna bär "själv" (rad 81), "pris" (rad 123) och "sits" (rad 148). Bättre än ettan 1 till 5 finns: tabellen med tre bolag, sida och datum, montörslistan med källa per punkt och limning först, snittskissen i två fall (alt 119 tecken, med toalettstol och tätskikt), vägghängd stol med skälen, och sitsarna med Ifös mått och Gustavsbergs som butikens uppgift. 60 mm står som ett krav på golvet. Clas Fixare nämns inte. Länkarna ut går till tätskiktet och rotavdraget, och kortet läggs i publiceringscommiten.
+
+6. **Rad 11, kortsvaret, måste svara på H1:ns fråga.** H1 frågar om du får byta själv, men kortsvaret börjar med ett råd och säger aldrig om det är tillåtet. Ettan svarar ja utan förbehåll, och "ett rakt svar på frågan om man får byta själv" är ett krav i punkt 11. Kortsvaret ska säga att ingen lag förbjuder dig att byta stolen, och beskedet ska stå i samma stycke som försäkringsbeskedet, som punkt 6.0 och fällan kräver. Rådet om VVS-firman står kvar. Hantverkaren formulerar meningen.
+
+### /rakna/badrum-kostnad/
+
+Inget att ändra i texten. Title "Renovera badrum, kostnad med rotavdrag" har 38 tecken och börjar med "Renovera badrum, kostnad". H1 "Vad blir priset när du renoverar badrummet?" bär "renovera badrum pris" och delar inte de tre första orden med title. Description har 142 tecken, och `WebApplication` läser samma namn och beskrivning. Kortsvaret har 5 kvm i enkel och mellan standard, 4 kvm, andelen arbete, rotavdraget och källorna med datum. H2:orna bär sina fraser, och "badrumsrenovering" står i brödtexten. Länkarna ut går till tätskiktet och fogarna i H2 2 och till rotavdraget i H2 3, i spalten och i Läs vidare. Förmedlarna nämns bara i antagandetabellen. Bättre än ettan 1 till 5 finns. `skissAlt` håller sig under 125 tecken och innehåller renovera badrum och kostnaden.
+
+Skissen `src/assets/illustrationer-kallor/rakna/badrum-kostnad.svg` saknas och är ett krav (punkt 8). Den görs i publiceringsomgången enligt specen 9.2.
+
+### Hubben `src/content/pelare/badrum.mdx` och `src/lib/pelare.ts`
+
+Ingressen stämmer med sidorna efter fogsidans vändning. Hubben får sex poster: fyra artiklar, rotavdraget och badrumskostnaden.
+
+7. **Rad 3, description:** den börjar med samma fem ord som toalettstolens description ("Försäkringen kräver att branschreglerna följs"), och ordet badrum eller våtrum saknas. Krav: 120 till 155 tecken, inte samma början som någon annan description i pelaren, med badrummet eller våtrummet, tätskiktet, fogarna och gränsen för vad du gör själv. Ett exempel som hantverkaren får ändra: "Badrummet ska följa branschreglerna också när du gör jobbet själv. Se vad det betyder för tätskiktet, fogarna, våtrumsfärgen och toalettstolen." (143 tecken)
+8. **`src/lib/pelare.ts` rad 93, `rad`:** "Fogar, kakel och vad våtrumsreglerna kräver." Kakel flyttade till Kök (beslut 5), och badrumssidorna säger att kakel i våtrum är plattsättarens jobb. Byt kakel mot tätskikt eller färg. Hantverkaren formulerar.
+9. **`uppdaterad`** sätts till publiceringsdagen (steg 6 nedan).
+
+### Omläsning av de rättade raderna, 2026-09-29
+
+Läst i arbetskatalogen efter rättelserna. Teckenantalen är räknade i Node.
+
+- **Punkt 1, fogsidan:** rad 136 namnger BBV 26:1 § 8.3 i samma mening som beskedet att silikonen inte hör till tätskiktet, och rad 180 namnger § 1.4 för delreparationer, med tolkningen märkt som min. Beskedet att en plattsättare byter kakelfogen och att du byter silikonfogen själv stämmer med tätskiktstabellen, hubben och räknaren. "1 till 3 gånger sammanlagt" stämmer med databladet i faktabladet. Inget att ändra.
+- **Punkt 2, tätskiktet:** description är beslut 2 ordagrant, 147 tecken, med frasen och de tre regelkoderna först. Kortsvaret har lagkravet med paragraf, branschreglerna med datum, rätten att göra det själv tillsammans med rådet och kvalitetsdokumentet, och försäkringen. "Alla kaklade väggar" stämmer med rad 122 och faktabladet. Inget att ändra.
+- **Punkt 3 till 5, våtrumsfärgen:** seoTitle "Våtrumsfärg i badrummet, var den räcker" (39 tecken), rad 57 med s. 19, rad 65 med "7 kap. 7 och 9 §§". Att `kallor` säger "7 till 9 §§" får stå: texten anger de två paragrafer som klasserna bygger på (7 § vattentätt, 9 § vattenavvisande), källposten anger vad som lästes, och faktabladet bekräftar att 7 till 9 §§ är oförändrade. Tätskiktssidan anger paragraferna på samma sätt. Inget att ändra.
+- **Punkt 6, toalettstolen:** kortsvaret börjar med "Ja, ingen lag förbjuder dig", och försäkringsbeskedet med If och Folksam, procent, kronor och datum står i samma stycke. Inget att ändra. **Description:** förslaget i `texter-publicering-badrum-2026-09-29.md` lovar inte priset med rotavdrag, som punkt 4 kräver, och "vad den tar" säger inte att det är ett pris. Lydelsen som läggs in på rad 4 (153 tecken):
+  "Du får byta toalettstolen själv, men försäkringen vill se ett intyg som bara en VVS-firma kan skriva. Se vad firman gör, priset med rotavdrag och sitsen."
+  Den börjar inte som någon annan description i pelaren, och intyget har stöd i kortsvaret.
+- **Punkt 7, hubben:** description 155 tecken, med badrummet, tätskiktet, silikonfogen och gränsen för vad du gör själv, och den börjar inte som någon annan description i pelaren. Den lovar inget som en sida säger nej till. Inget att ändra.
+- **Punkt 8, `src/lib/pelare.ts` rad 93:** "Tätskikt, fogar, våtrumsfärg och toalettstol." Sex ord, inget kakel. Inget att ändra.
+- **Registerposten:** `namn` "Vad kostar det att renovera badrummet?" bär frasen, finns inte som title eller H1 någonstans i `src` och skiljer sig från räknarens egen title och H1. `rad` 150 tecken, i samma längd som övriga poster. Inget att ändra.
+
+Skissen `rakna/badrum-kostnad` väntar på UX och bygge-agentens granskning. Den är ett villkor för commiten enligt "Före commiten" nedan, men ingen sökfråga.
+
+**Godkänd av SEO och GEO**, med toalettstolens description enligt lydelsen ovan.
+
+---
+
+## Publicering badrum och kök
+
+Det här är den enda listan för badrum och kök. Den ersätter "Publiceringen av badrumsklustret i en commit" ovan och "Publiceringen" i `kok.md`. Kök och badrum går ut i **en och samma commit**, eftersom mala-kakel länkar till tre badrumssidor och tätskiktet länkar till toalettstolen. En länk till ett utkast stoppar bygget.
+
+**Datum:** D är den dag commiten driftsätts, och samma D gäller överallt nedan. Går den ut i dag är D 2026-09-29.
+
+### Före commiten
+
+- Punkt 1 till 9 i kontrollen ovan är rättade. Läsaren och korrekturen har sett de nya meningarna: fogsidans paragraf, toalettstolens kortsvar, hubbens description, `rad` i pelare.ts, den nya meningen på luftfuktighetssidan (steg 5) och registerpostens `namn` och `rad` (steg 1). Kökets punkter 1 och 3 till 7 i `kok.md` är gjorda och kontrollerade i dag.
+- Skissen till räknaren är specad av UX och bygge-agenten, med etiketter som hantverkaren har skrivit. Den är ritad i `src/assets/illustrationer-kallor/rakna/badrum-kostnad.svg` och godkänd (specen 9.2).
+
+### I commiten, i den här ordningen
+
+1. **Räknaren.** Lägg till posten i `src/lib/kalkyl/register.ts` och sätt `UTKAST = false` i `src/pages/rakna/badrum-kostnad.astro`. Kör `npm run illustrationer`.
+
+   ```ts
+   {
+     slug: 'badrum-kostnad',
+     namn: /* hantverkaren: läsarens fråga, med renovera badrum(met) och kostar eller kostnad.
+              Förslag: 'Vad kostar det att renovera badrummet?' */,
+     rad: /* hantverkaren: en mening med verb, som till en granne */,
+     /* "renovera badrum kostnad" toppar september till oktober (SOKORDSANALYS 8.2),
+        och badrummen planeras över vintern. raknare.md punkt 1. */
+     sasong: [9, 3],
+     pelare: ['badrum'],
+   },
+   ```
+
+   `namn` är ankartexten i kortet, i sidfoten och i hubbens grupp Räkna. Därför ska den bära frasen, och den får inte vara samma som någon title eller H1 på sajten, varken räknarens egen ("Vad blir priset när du renoverar badrummet?") eller någon annans. Ingen `kategori` sätts, eftersom räknaren inte pekar på produkter. Rotavdraget har redan `badrum` i registret.
+2. **Korten**, ett per sida. Det ger räknaren två inlänkar.
+   - `src/content/kunskap/badrum/tatskikt-badrum.mdx` rad 214: kommentaren byts mot `<Verktygskort kalkylator="badrum-kostnad" />`.
+   - `src/content/kunskap/badrum/byta-toalettstol.mdx` rad 146: kommentaren byts mot `<Verktygskort kalkylator="badrum-kostnad" />`.
+3. **Länken mellan badrumssidorna.** I `vatrumsfarg.mdx` rad 78, i tabellraden "Väggen bakom en vägghängd toalett", länkas orden **vägghängd toalett** till `/badrum/byta-toalettstol/`. Toalettstolen får då två inlänkar, från tätskiktet och våtrumsfärgen.
+4. **`utkast: false`** på alla nio filer samtidigt:
+   - badrum: `kunskap/badrum/tatskikt-badrum.mdx`, `kunskap/badrum/vatrumsfarg.mdx`, `kunskap/badrum/byta-toalettstol.mdx`, `guider/badrum/fogar-badrum.mdx` och `pelare/badrum.mdx`
+   - kök: `guider/kok/mala-kakel.mdx`, `guider/kok/mala-koksluckor.mdx`, `guider/kok/byta-koksluckor.mdx` och `pelare/kok.mdx`
+
+   Kökshubben går också ut. Kök har sex sidor: fyra guider och räknarna för rotavdrag och kvadratmeter. Meningen i badrumsavsnittet ovan om att kökshubben väntar gäller inte längre.
+5. **Inlänkarna från publicerade sidor:**
+   - `/inomhus/gipsskruv/` rad 170: ordet **Tätskiktet** i början av andra meningen länkas till `/badrum/tatskikt-badrum/`. Inget annat ändras.
+   - `/fukt/luftfuktighet-inomhus/` rad 155: en ny mening efter "det är frånluftens jobb att ta topparna", om att fukten efter duschen är det som ger mögel på fogarna. Ankaret ska vara **mögel på fogarna** eller **mögel på fogarna i badrummet**, och länken går till `/badrum/fogar-badrum/`. Hantverkaren skriver meningen.
+   - `/kok/slipa-bankskiva/` rad 167: länken till `/inomhus/` byts mot en länk till `/kok/byta-koksluckor/`, med ett ankare som säger vad läsaren hittar där (kok.md punkt 2).
+6. **Datumen:**
+   - `publicerad` och `uppdaterad` = D på de sju artiklarna i steg 4. I dag står fyra badrumssidor och mala-kakel på 2026-09-28.
+   - `uppdaterad` = D på båda hubbarna, på `slipa-bankskiva` och på `luftfuktighet-inomhus`, som får en ny mening.
+   - `gipsskruv` behåller sitt datum, eftersom bara en länk läggs till.
+7. **`src/lib/pelare.ts`**: den nya `rad` för badrum (kontrollpunkt 8).
+8. `npm run kontrollera` ska ge 0 fel och inga föräldralösa sidor i Badrum eller Kök. Därefter ska `npm run build` vara grönt, och bygget kör också delningsbilderna, så `public/og/rakna-badrum-kostnad.png` kommer med.
+
+### Står kvar som kommentarer
+
+Kostnadsräknaren för köket är inte byggd. Kommentarerna i `byta-koksluckor.mdx` rad 168 (blir `<Kalkylator namn="kok-kostnad" />`) och `mala-koksluckor.mdx` rad 161 (blir `<Verktygskort kalkylator="kok-kostnad" />`) byts i den commit där `/rakna/kok-kostnad/` publiceras, och inte förr.
+
+### Inlänkar efter publiceringen
+
+| Sida | Inlänkar från innehållsfiler |
+|---|---|
+| `/badrum/tatskikt-badrum/` | fogar, våtrumsfärg, toalettstol, måla kakel, gipsskruv |
+| `/badrum/fogar-badrum/` | tätskiktet, måla kakel, luftfuktigheten, räknaren |
+| `/badrum/vatrumsfarg/` | tätskiktet, måla kakel |
+| `/badrum/byta-toalettstol/` | tätskiktet, våtrumsfärg |
+| `/rakna/badrum-kostnad/` | tätskiktet och toalettstolen (kort) |
+| `/kok/mala-kakel/`, `/kok/mala-koksluckor/`, `/kok/byta-koksluckor/` | se `kok.md`: fyra, två och två |
+
+### Efter publiceringen
+
+- När Christian ber om det begärs indexering i Search Console för `/badrum/`, `/badrum/tatskikt-badrum/`, `/kok/`, `/kok/mala-koksluckor/` och `/kok/mala-kakel/`. Resten följer via sitemapen.
+- En vecka efter publiceringen frågar SEO och GEO-agenten en AI om "tätskikt badrum regler", "får man lägga tätskikt själv", "byta toalettstol själv", "våtrumsfärg i taket", "mögel i fogar badrum", "måla köksluckor", "måla kakel i badrummet" och "byta köksluckor på befintlig stomme". Om sajten nämns antecknas det i SOKORDSANALYS.md.

@@ -19,7 +19,9 @@ import {
   avvattningQuery,
   beskedVarden,
   delbarQuery,
+  harBelopp,
   KALLOR,
+  kallradRegel,
   kortsvarVarden,
   kronor,
   m2Text,
@@ -221,7 +223,7 @@ const huvudbild = varumarke ?? illustration;
         <p class="m-0 mt-1 text-brod">{besked.rad(bv)}</p>
 
         {
-          visat.utfall !== 'utanfor' ? (
+          harBelopp(visat) ? (
             <>
               <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
                 {TEXT.spalt['etikett-betala']}
@@ -232,11 +234,9 @@ const huvudbild = varumarke ?? illustration;
                 </span>
                 <span class="text-ingress lg:text-ingress-lg">{visat.ettTal ? 'kr' : TEXT.spalt.till(bv)}</span>
               </p>
-              {!visat.tillaggInraknat && <p class:list={[SPALTRAD_KLASS, 'mt-2']}>{TEXT.spalt['rad-tillagg'](bv)}</p>}
               <p class:list={[SPALTRAD_KLASS, 'mt-2']}>{TEXT.spalt['rad-takarea'](bv)}</p>
               <p class={SPALTRAD_KLASS}>{TEXT.spalt['rad-delning'](bv)}</p>
               <p class={SPALTRAD_KLASS}>{TEXT.spalt['rad-rot'](bv)}</p>
-              <p class={SPALTRAD_KLASS}>{TEXT.spalt['rad-kallor'](bv)}</p>
             </>
           ) : (
             <>
@@ -264,7 +264,7 @@ const huvudbild = varumarke ?? illustration;
           <a href="#sa-raknar-jag" class:list={SPALTLANK_KLASS}>{TEXT.spalt['lank-sa-raknar-jag']}</a>
         </p>
         {
-          visat.utfall !== 'utanfor' && (
+          harBelopp(visat) && (
             <p class="m-0">
               <a href={`/rakna/rotavdrag/?${rotavdragQuery(visat, visatIndata).toString()}`} class:list={SPALTLANK_KLASS}>
                 {TEXT.spalt['lank-rotavdrag']}
@@ -292,7 +292,7 @@ const huvudbild = varumarke ?? illustration;
     <section>
       <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
       {
-        visat.utfall !== 'utanfor' ? (
+        harBelopp(visat) ? (
           <>
             {visat.ettTal ? (
               <p class:list={[STYCKE_KLASS, 'tabular-nums']}>{TEXT.darfor['ett-tal'](bv)}</p>
@@ -333,32 +333,42 @@ const huvudbild = varumarke ?? illustration;
             </p>
           </>
         ) : (
-          <p class={STYCKE_KLASS}>{TEXT.darfor.utanfor(bv)}</p>
+          <p class={STYCKE_KLASS}>{visat.utfall === 'lutning' ? TEXT.darfor.lutning(bv) : TEXT.darfor.utanfor(bv)}</p>
         )
       }
       <ul class={REGEL_LISTA_KLASS}>
         {
-          visat.regler.map((nyckel) => {
-            /* Förmedlarna namnges bara i antagandetabellen (checklistans fälla). */
-            const namngivna = regelKallor(nyckel, visatIndata);
-            return (
-              <li>
-                <span>{TEXT.regel[nyckel].text(bv)}</span>
-                <span>
+          (() => {
+            /* Förmedlarna namnges bara i antagandetabellen (checklistans fälla).
+               Hänvisningen dit står högst en gång på sidan: i stycket ovanför när svaret
+               har belopp, annars under den sista regeln som vilar på en förmedlare. */
+            const kallor = visat.regler.map((nyckel) => regelKallor(nyckel, visatIndata));
+            const sistaFormedlare = kallradRegel(visat, visatIndata);
+            return visat.regler.map((nyckel, i) => {
+              const namngivna = kallor[i];
+              return (
+                <li>
+                  <span>{TEXT.regel[nyckel].text(bv)}</span>
                   {namngivna.length > 0 ? (
-                    namngivna.map((k, n) => (
-                      <>
-                        {n > 0 && '; '}
-                        <a href={k.url} rel="nofollow">{k.titel}</a>, {k.slag}, {k.datum}
-                      </>
-                    ))
+                    <span>
+                      {namngivna.map((k, n) => (
+                        <>
+                          {n > 0 && '; '}
+                          <a href={k.url} rel="nofollow">{k.titel}</a>, {k.slag}, {k.datum}
+                        </>
+                      ))}
+                    </span>
                   ) : (
-                    <a href="#vad-siffrorna-vilar-pa">{TEXT.darfor.kallrad}</a>
+                    i === sistaFormedlare && (
+                      <span>
+                        <a href="#vad-siffrorna-vilar-pa">{TEXT.darfor.kallrad}</a>
+                      </span>
+                    )
                   )}
-                </span>
-              </li>
-            );
-          })
+                </li>
+              );
+            });
+          })()
         }
       </ul>
     </section>
@@ -419,7 +429,7 @@ const huvudbild = varumarke ?? illustration;
         Ett takbyte är mer än nya pannor. Firman river det gamla taket, lagar eller byter underlaget, lägger ny underlagspapp och läkt och sedan pannorna eller plåten. Till det kommer plåtdetaljerna vid nocken, skorstenen och takfoten, en ställning runt huset och en container för det som rivs.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Allt det där ingår i priserna per kvadratmeter som räknaren använder, också ställningen och containern. Står de som egna rader i en offert är det samma kostnad, bara uppdelad. Det enda som kan ligga utanför är ett tillägg för resor och etablering, och i svaret ser du om det är inräknat. Jag delar arbetet och materialet efter källornas egen uppdelning.
+        Allt det där ingår i priserna per kvadratmeter som räknaren använder, också ställningen och containern. Står de som egna rader i en offert är det samma kostnad, bara uppdelad. Resor och etablering ligger i plåtpriserna, men källan till pannpriserna tar betalt för resor och etablering utöver kvadratmeterpriset, och därför läggs de till som en egen summa när du väljer pannor eller papp. Arbetet och materialet är uppdelade som källorna själva delar dem.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
         I källan som har både betong- och tegelpannor kostar de lika mycket att lägga, och hela skillnaden sitter i pannorna. Med plåt är det arbetet som skiljer. Takpanneplåt är billig både att köpa och att lägga, medan arbetet med en falsad bandtäckning kostar flera gånger mer per kvadratmeter. Vilken plåt som fungerar beror på hur brant taket är, och i <a href="/tak/plattak/">texten om plåttak</a> ser du vilka sorter som klarar din lutning.
@@ -433,10 +443,7 @@ const huvudbild = varumarke ?? illustration;
         Hur stort rotavdraget blir beror på hur mycket av fakturan som är arbete, och det skiljer sig mellan materialen. På betongpannor är arbetet drygt hälften av kostnaden i källan, och på takpanneplåt knappt en fjärdedel, så samma takyta ger väldigt olika avdrag.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Med ett dyrt material på ett stort tak tar avdraget slut för den som äger huset ensam. Står ni två på lagfarten och betalar båda en del av arbetet har ni en gräns var.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Rot och rut har dessutom en gemensam gräns, så den som har köpt städning eller trädgårdshjälp med rutavdrag i år kan ha mindre kvar än det verkar. Den räkningen gör <a href="/rakna/rotavdrag/">räknaren för rotavdrag</a>, och länken i svaret fyller i arbetet och materialet vid det högsta priset, där gränsen nås först.
+        Ett dyrt material på ett stort tak kan göra slut på avdraget, och därför frågar formuläret hur många ni är som äger huset och hur mycket rotavdrag som redan är använt i år. Har någon av er också köpt städning eller trädgårdshjälp med rutavdrag räcker gränsen inte lika långt, och det räknar <a href="/rakna/rotavdrag/">räknaren för rotavdrag</a> ut. Länken i svaret fyller i arbetet och materialet åt dig, vid det högsta priset när det finns ett spann.
       </p>
     </section>
 

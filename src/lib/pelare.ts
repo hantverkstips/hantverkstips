@@ -90,7 +90,7 @@ export const PELARE = [
     kort: 'Badrum',
     ikon: 'badrum',
     grupp: 'inne',
-    rad: 'Fogar, kakel och vad våtrumsreglerna kräver.',
+    rad: 'Tätskikt, fogar, våtrumsfärg och toalettstol.',
   },
   {
     slug: 'fukt',

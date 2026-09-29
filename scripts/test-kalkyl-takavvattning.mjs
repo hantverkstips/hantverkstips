@@ -304,3 +304,27 @@ test('ANTAGANDEN: varje rad av typen Källa har en källa med https', () => {
     for (const k of a.kallor) assert.ok(KALLOR[k].url.startsWith('https://'), `${a.nyckel}: ${k}`);
   }
 });
+
+test('retur 6: pulpettak med vinkeln angiven får vinkeln i beskedet och en varning', async () => {
+  const { beskedVarden } = await import('../src/lib/kalkyl/takavvattning.ts');
+  const varden = (over) => {
+    const i = { ...STANDARD, ...over };
+    return beskedVarden(raknaTakavvattning(i), i);
+  };
+  const pulpet = varden(A12);
+  assert.equal(pulpet.takform, 'pulpet');
+  assert.equal(pulpet.matt, 'vinkel');
+  assert.equal(pulpet.vinkel, '18');
+  /* 7 · tan 18° = 2,27 m. */
+  assert.equal(pulpet.nock, '2,27');
+  const varning = TEXT.varning['pulpet-vinkel'](pulpet);
+  assert.ok(varning.trim().length > 0);
+  assert.ok(TEXT.besked.ok.rad(pulpet).endsWith(varning));
+  /* Sadeltak, pulpettak med nockhöjden och satt = yta får ingen varning. */
+  for (const v of [varden({}), varden({ ...A12, matt: 'nock', nockM: 2.3 }), varden({ satt: 'yta', ytaM2: 90, rannaM: 10 })]) {
+    assert.ok(!TEXT.besked[v.utfall].rad(v).includes(TEXT.varning['pulpet-vinkel'](v)));
+  }
+  const yt = varden({ satt: 'yta', ytaM2: 90, rannaM: 10 });
+  assert.equal(yt.vinkel, null);
+  assert.equal(yt.takform, null);
+});

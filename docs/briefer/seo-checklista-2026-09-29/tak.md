@@ -463,3 +463,74 @@ Det ettan har som vi måste ha:
 - **EKS och BBR** får inte nämnas som gällande.
 - **Ingen egen dimensioneringstabell** för virke. Leverantören räknar, och det är sidans budskap.
 - Tillverkarnas räknare nämns inte som konkurrenter i publik text.
+
+---
+
+## Kontroll efter röstvarvet, 2026-09-29
+
+Lästa mot punkt 1 till 12 och besluten ovan: `snorasskydd.mdx` (publicerad), `plattak.mdx`, `hangrannor.mdx` och `takstolar.mdx`. Räknarna står i `raknare.md` under samma rubrik. Tecknen är räknade: seoTitle 39, 41, 37 och 44, description 151, 150, 151 och 148, alt 93, 106, 107 och 119. Ingen annan title på sajten börjar med Snörasskydd, Plåttak, Hängrännor eller Takstolar. `npm run kontrollera` ger 0 fel.
+
+Hantverkarens fyra punkter:
+
+- **Plåttakets description och tabellen:** tabellen (900 till 1 500) stämmer nu med räknaren. Descriptionen gör det inte, se rättning 1.
+- **Hängrännorna mot räknaren:** stämmer. Tabellen, kortsvaret och bildtexten gäller takyta till ett stuprör. Plannjas exempel på 90 m² ger 125-ränna och 90-rör, och räknaren ger samma. Lindabs gräns vid 50 m² står på båda sidorna.
+- **Plåttak äger rotavdragets gränser, takstolar EKS-historiken:** godkänt. Frasen rotavdrag ägs fortfarande av `/rakna/rotavdrag/`, och ankarna till plåttaket ("rotavdragets gränser för takjobb", "beloppsgränserna och vad två ägare får") är inte frasen, så de konkurrerar inte. Men länken på takstolar rad 132 gör att plåttak och takstolar länkar till varandra, se Publiceringen.
+- **Snörasskyddet med bara 30 procent och länk till rotavdragsräknaren:** godkänt. Bättre än ettan 5 kräver rotavdraget på monteringen, och det står där.
+
+### Rättningar före publicering (två)
+
+1. **`plattak.mdx` rad 4, description:** "950 till 1 300 kr" ska vara **"900 till 1 500 kr"**, som tabellen på rad 85 och räknaren. Resten av meningen står kvar. Ny längd 150 tecken.
+2. **`plattak.mdx` rad 128:** "142 500 till 195 000 kronor med Hantverkskollens pris per kvadratmeter" räknar på Hantverkskollens spann ensamt, medan tabellen och räknaren visar 900 till 1 500. Räknaren ger 135 000 till 225 000 kr för 150 m² takpanneplåt. Meningen ska räkna på tabellens spann, **135 000 till 225 000 kronor**, med tabellen som källa i stället för Hantverkskollen (beslut 3 i `raknare.md`: samma tal på båda sidorna). Hantverkaren formulerar. Rad 112 står kvar, eftersom den jämför källorna öppet.
+
+### Per sida
+
+**`/tak/snorasskydd/`:** inget att ändra. Kortsvaret går att citera utan resten av sidan och har paragrafen, datumet, villkoret och det gamla rådet märkt som äldre. Sju H2 och H3:n "Ansvaret du har ändå", som i beslutet. Sidofraserna står i H2 1, 3 och 4. Längden är 1 830 ord brödtext, samma som vid förra godkännandet, och röstvarvet har inte lagt till något. EKS står som upphörd (rad 162). Kvar till publiceringen: två kommentarer ska bytas mot länkar och ett mot verktygskortet (se nedan).
+
+**`/tak/plattak/`:** två rättningar, se ovan. I övrigt är allt uppfyllt. Title börjar med Plåttak, H1 delar inte orden, och sidofraserna står i H2:erna om kostnad, bygglov, takpapp och att lägga själv och i Faq:n om att måla. Bättre än ettan 1, 3, 4 och 5 är uppfyllda. Punkt 2, räknaren inbäddad, blir uppfylld när kommentaren på rad 136 byts mot `<Kalkylator namn="takbyte" />`, och sidan publiceras inte utan den. Längden är 1 860 ord, inom målet.
+
+**`/tak/hangrannor/`:** inget att ändra för sökningen. Sidofraserna står där de ska: takavvattning i H2 1, hängrännor och stuprör i H2 2, plast i H2 3, byta hängrännor i H2 4, kostnaden i H2 5 och utan att byta tak i Faq:n. Bättre än ettan 1, 3, 4 och 5 är uppfyllda, och punkt 2 blir uppfylld med inbäddningen. Längden är 1 820 ord, 120 över målet. Det godtas, eftersom inget tal och ingen tabell ska strykas för längdens skull.
+- Utlänken till plåttaket krävdes "där fotplåten och rännan möts". Rad 186 länkar redan till plåttaket, och någon sådan mening finns inte i materialavsnittet. Kommentaren på rad 142 **stryks** därför i stället för att aktiveras, och kravet räknas som uppfyllt av rad 186.
+- Inbäddningen: sätt `<Kalkylator namn="takavvattning" />` efter rad 106 (stycket om 190-rännan) i stället för på rad 104, så att allt om tabellerna står före räknaren. Ett råd, inget krav.
+
+**`/tak/takstolar/`:** inget att ändra. Kortsvaret har föreskriften, priset med två källor, datum och momsförbehåll, c 1 200 och ett räkneexempel. EKS står som upphörd, PBF 6 kap. 1 § 2 står i Faq:n och 5 § nämns inte. Sidofraserna står i H2 1, 3, 4 och 5. Bättre än ettan 1, 2, 3 och 5 är uppfyllda, och 4 blir uppfylld med verktygskortet. Längden är 1 310 ord, inom målet. Båda kommentarerna till plåttaket (rad 96 och 140) aktiveras. De står i var sin H2, och rad 96 är den länk checklistan kräver.
+
+**Alla tre utkasten:** `publicerad` och `uppdaterad` sätts till publiceringsdagen. `publicerad: 2026-09-28` på plåttak och takstolar stämmer inte med den dag de når läsaren, och datumet är en GEO-signal.
+
+### Publiceringen
+
+**Allt går i en push, med hubben sist.** Startlistans ordning (takbyte, plåttak, hängrännor och takavvattning, hubben, takstolar) går inte att följa sida för sida, av två skäl:
+
+- **Plåttak och takstolar länkar till varandra med aktiva länkar** (plåttak rad 150, takstolar rad 132). Publiceras den ena utan den andra stoppar `npm run kontrollera` bygget. Takstolarna kan alltså inte gå sist, utan går i samma commit som plåttaket.
+- **Räknarsidorna länkar hårt till utkast, och de länkarna kontrolleras inte.** `takbyte.astro` länkar till `/tak/plattak/`, `/tak/takstolar/` (resultatspalten) och `/rakna/takavvattning/` (spalten och Läs vidare), och `takavvattning.astro` länkar till `/tak/hangrannor/`. `kontrollera` läser bara `src/content/`, så en räknare som går ut före sina mål ger tysta 404 i stället för ett stopp. Ingen räknare får därför deployas före sidorna den länkar till.
+
+Tre commits i den här ordningen, pushade tillsammans. Varje commit klarar `kontrollera`, och det som deployas är den sista.
+
+**Commit 1, "Publicera plåttak, takstolar och räknaren för takbyte"**
+
+- `src/pages/rakna/takbyte.astro`: `UTKAST = false`.
+- `src/lib/kalkyl/register.ts`: registerposten för takbyte (se `raknare.md`). Den måste finnas innan kortet och inbäddningen aktiveras, annars stoppar `kontrollera`.
+- `plattak.mdx`: `utkast: false`, datumen, rättning 1 och 2, och rad 136 blir `<Kalkylator namn="takbyte" />`. Rad 185 (hängrännor) står kvar som kommentar till commit 2.
+- `takstolar.mdx`: `utkast: false`, datumen, rad 106 blir `<Verktygskort kalkylator="takbyte" />`, och rad 96 och 140 blir länkar till `/tak/plattak/` med ankare om plåttakets vikt respektive plåt för låg lutning.
+- `snorasskydd.mdx`: rad 244 blir `<Verktygskort kalkylator="takbyte" />`, och rad 116 blir en länk till `/tak/plattak/` om vad bytet till plåttak innebär. `uppdaterad` sätts till dagens datum.
+- `src/content/guider/el/tillaggsisolera-vind.mdx` rad 155: en länk till `/tak/takstolar/` i meningen som börjar "Takstolar, stödben som lyfter takstolen". Det är takstolarnas andra krävda inlänk, och den kan bara läggas i samma commit, eftersom vindsidan är publicerad.
+- `src/pages/rakna/fasadyta.astro`, `LAS_VIDARE`: en rad till `/rakna/takbyte/`. Underlaget bekräftade att fasadräknaren räknar gavelspetsarna med samma formler (`docs/briefer/faktablad/rakna-takbyte.md` rad 281). Hantverkaren skriver länktexten.
+
+**Commit 2, "Publicera hängrännorna och räknaren för takavvattning"**
+
+- `src/pages/rakna/takavvattning.astro`: `UTKAST = false`.
+- `register.ts`: registerposten för takavvattning.
+- `hangrannor.mdx`: `utkast: false`, datumen, `<Kalkylator namn="takavvattning" />` (efter rad 106 enligt rådet ovan) och kommentaren på rad 142 struken.
+- `plattak.mdx` rad 185: länken till `/tak/hangrannor/` i stycket om takfotsbeslaget, med ankaret hängrännor.
+- `snorasskydd.mdx` rad 96: länken till `/tak/hangrannor/` med ankaret hängrännor, i meningen om rännor eller där is och snö skadar rännan.
+- `src/content/guider/grund/dranera-hus.mdx` rad 103: meningen "De ska sluta i en ledning som för vattnet bort från huset, inte i en utkastare en halvmeter från sockeln" ska säga att stupröret slutar i en ledning **eller** i en utkastare med ränndal som för vattnet minst 2 till 3 meter ut, och aldrig vid sockeln. Samma mening får länken till `/tak/hangrannor/` med ett ankare om hängrännor och stuprör. Ystads kommun (uppdaterad 2026-04-21) eller Umeå kommun (2025-07-11) läggs i sidans `kallor` med samma adress som i `hangrannor.mdx`. Rättningen är kirurgisk, en mening, och Anticimex exempel med 3 000 liter står kvar. Länken är hängrännornas andra krävda inlänk.
+
+**Commit 3, "Publicera takhubben"**
+
+- `src/content/pelare/tak.mdx`: `utkast: false`, `uppdaterad` till dagens datum, ny `description` (120 till 155 tecken) och ny `ingress`. Descriptionen nämner inte vind och läckor, som saknar sidor, utan snörasskydd, plåttak, hängrännor, takstolar och vad ett takbyte kostar. Ingressen får inte påstå att det mesta som läcker sitter i genomföringar och rännor, eftersom det saknar källa och sida. Hantverkaren skriver båda. `title` står kvar.
+- `src/lib/pelare.ts`, posten `tak`, fältet `rad` ("Yttertak, hängrännor, vind och läckor."): samma skäl, och raden syns på startsidan. Den ska nämna det som finns. Hantverkaren skriver den.
+
+**Hubben når fem, och sex med takstolarna.** Hitta felet har snörasskyddet, Välj rätt plåttaket och takstolarna, Gör det själv hängrännorna, och Räkna takbytet och takavvattningen. Alla fyra grupperna har minst en sida. Rotavdragsräknaren står inte i tak (registerbeslutet 2026-09-20) och räknas inte.
+
+**Efter pushen:** bygget ska vara grönt, och ingen av sidorna får ha noindex (räknarna tappar det med `UTKAST = false`). När Christian ber om det begär jag indexering i Search Console av `/tak/`, `/tak/plattak/` och `/rakna/takbyte/`, och resten följer via sitemapen. En vecka efter publiceringen frågar jag en AI om snörasskydd, plåttak och takstolar och antecknar i SOKORDSANALYS.md om sajten nämns.
+
+**Godkänd av SEO och GEO** för snörasskydd, hängrännor och takstolar, med publiceringsstegen ovan som villkor. Plåttaket godkänns när rättning 1 och 2 är gjorda.
