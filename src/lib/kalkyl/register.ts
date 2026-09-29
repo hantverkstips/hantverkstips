@@ -185,6 +185,15 @@ export const KALKYLATORER: Kalkylator[] = [
     pelare: ['tak'],
   },
   {
+    slug: 'takavvattning',
+    /* Bär "takavvattning"; börjar inte med Hängrännor, som är guidens fras. */
+    namn: 'Räkna ut takavvattningen för ditt tak',
+    rad: 'Mät huset eller takfallet, så får du hängrännans bredd, stuprörets storlek och hur många rör och krokar som går åt.',
+    /* Rännor byts under den frostfria delen av året. SEO, raknare.md. */
+    sasong: [4, 9],
+    pelare: ['tak'],
+  },
+  {
     slug: 'fasadyta',
     /* Bär SEO:s fras; ankartext i guiden. */
     namn: 'Beräkna fasadyta och färg till huset',
