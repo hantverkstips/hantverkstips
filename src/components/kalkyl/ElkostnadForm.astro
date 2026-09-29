@@ -14,7 +14,7 @@
  * Alla props är valfria, eftersom det inbäddade formuläret inte har någon
  * uträkning att visa värden ur; då står standardvärdena i fälten.
  */
-import { GANGTIDER, PERIODER, STANDARD, type ElkostnadIndata } from '../../lib/kalkyl/elkostnad.ts';
+import { formVarden, GANGTIDER, PERIODER, STANDARD, type ElkostnadIndata, type ElTyp } from '../../lib/kalkyl/elkostnad.ts';
 import {
   ETIKETT_KLASS,
   FALT_KLASS,
@@ -36,6 +36,8 @@ interface Props {
   produktSlug?: string | null;
   /** Raden över formuläret: "Räknar på Wood's SW39FW, 320 W enligt butiken". */
   produktRad?: string | null;
+  /** Vad räkningen gäller. golvvarme följer med som dolt fält, så att sidan visar golvvärmens text. */
+  typ?: ElTyp;
   /** Inbäddad i en artikel: tätare fält, inga hjälprader. */
   kompakt?: boolean;
   /** Prefix på id-attributen, så att två formulär på samma sida inte krockar. */
@@ -43,20 +45,13 @@ interface Props {
   knappText?: string;
 }
 
-const komma = (n: number) => String(n).replace('.', ',');
-
 const {
   indata = STANDARD,
-  varden = {
-    effekt: komma(STANDARD.effektW),
-    timmar: komma(STANDARD.timmarPerDygn),
-    dagar: komma(STANDARD.dagar),
-    // Elpriset med två decimaler, som på fakturan och i sajtens eltabeller.
-    elpris: STANDARD.elprisKrPerKwh.toFixed(2).replace('.', ','),
-    liter: '',
-  },
+  // Elpriset med två decimaler, som på fakturan och i sajtens eltabeller.
+  varden = formVarden(indata),
   produktSlug = null,
   produktRad = null,
+  typ = 'maskin',
   fel = {},
   kompakt = false,
   idPrefix = '',
@@ -92,6 +87,7 @@ const talfalt = [
 
 <form method="get" action="/rakna/elkostnad/">
   {produktSlug && <input type="hidden" name="produkt" value={produktSlug} />}
+  {typ === 'golvvarme' && <input type="hidden" name="typ" value="golvvarme" />}
 
   {
     produktRad && (

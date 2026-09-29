@@ -1,11 +1,13 @@
 /**
- * Renovering: vad kostar badrummet, post för post, före och efter rotavdraget?
- * Ren modul utan importer från Astro, testbar utan bygge. Sidan
- * /rakna/badrum-kostnad/ skickar formuläret som GET och räknar på servern, så
- * ingen rad av den här filen når klienten.
+ * Renovering: vad kostar badrummet och köket, post för post, före och efter
+ * rotavdraget? Ren modul utan importer från Astro, testbar utan bygge. Sidorna
+ * /rakna/badrum-kostnad/ och /rakna/kok-kostnad/ skickar formuläret som GET och
+ * räknar på servern, så ingen rad av den här filen når klienten.
  *
- * Posterna är data (POSTER), så att köket kan få en egen lista senare med
- * samma räkning. Inget för köket är byggt än.
+ * Badrummet står först. Köket står sist i filen, under rubriken "Köket", med
+ * prefixet Kok/KOK_ och specen docs/briefer/spec-kalkyl-kok-kostnad-2026-09-29.md.
+ * De delar källorna (KALLOR), formateringen (krText, spannText, spannDelar,
+ * kvmText) och rotavdraget genom rotavdrag.ts.
  *
  * Konstanterna står överst, var och en med Källa eller ANTAGANDE. Underlaget
  * med adress och datum per rad ligger i
@@ -19,7 +21,8 @@
  * All text läsaren ser och som modulen äger står i TEXT och skrivs av
  * hantverkaren.
  *
- * Testas av scripts/test-kalkyl-badrum-kostnad.mjs.
+ * Testas av scripts/test-kalkyl-badrum-kostnad.mjs och
+ * scripts/test-kalkyl-kok-kostnad.mjs.
  */
 /* Ändelsen står med, så att node kan köra testskriptet utan bygge. */
 import {
@@ -43,12 +46,35 @@ export type Egen = 'rivning' | 'bortforsling';
 export type Agare = 1 | 2;
 
 export interface KallaRef {
-  kod: 'BE' | 'BS' | 'TB' | 'SF' | 'HK' | 'SKV-ROT' | 'SKV-RATT' | 'BBV' | 'SV' | 'ELSAK';
+  kod:
+    | 'BE'
+    | 'BS'
+    | 'TB'
+    | 'SF'
+    | 'HK'
+    | 'SKV-ROT'
+    | 'SKV-RATT'
+    | 'BBV'
+    | 'SV'
+    | 'ELSAK'
+    /* Köket, specen 2.1. */
+    | 'VED'
+    | 'IKEA'
+    | 'KIT'
+    | 'TB-LUCKOR'
+    | 'TB-BANK'
+    | 'TB-IKEA'
+    | 'HK-LUCKOR'
+    | 'HK-KOK'
+    | 'HK-NYTT'
+    | 'ELSAK-SJALV'
+    /* Brödtexten på /rakna/kok-kostnad/, stycket om Säker Vatten. */
+    | 'IF';
   /** Källans egen titel, ur underlaget. */
   titel: string;
   /** https. */
   url: string;
-  slag: 'förmedlare' | 'firma' | 'myndighet' | 'branschregel';
+  slag: 'förmedlare' | 'firma' | 'tillverkare' | 'myndighet' | 'branschregel' | 'försäkringsbolag';
   /** "senast ändrad 2024-04-06", "2026-03-30", "läst 2026-09-28". */
   datum: string;
 }
@@ -255,6 +281,92 @@ export const KALLOR: Record<KallKod, KallaRef> = {
     url: 'https://www.elsakerhetsverket.se/privatpersoner/din-elanlaggning/bygga-och-renovera/installation-av-golvvarme',
     slag: 'myndighet',
     datum: 'granskad 2026-02-03',
+  },
+
+  /*
+   * Köket, ur docs/briefer/faktablad/rakna-kok-kostnad.md avsnitt 2 och 3.
+   * TB-LUCKOR, TB-BANK och TB-IKEA är samma firma som TB och SF och räknas
+   * aldrig som flera källor i en text.
+   */
+  VED: {
+    kod: 'VED',
+    titel: 'Vedum, luckprislista 2026',
+    url: 'https://www.vedum.se/globalassets/dokument/kok/luckprislista/luckprislista_2026.pdf',
+    slag: 'tillverkare',
+    datum: 'läst 2026-09-28',
+  },
+  IKEA: {
+    kod: 'IKEA',
+    titel: 'Ikea, Metod bänkskåp och väggskåp, Veddinge lucka och Utrusta gångjärn',
+    url: 'https://www.ikea.com/se/sv/cat/luckor-23613/',
+    slag: 'tillverkare',
+    datum: 'läst 2026-09-28',
+  },
+  KIT: {
+    kod: 'KIT',
+    titel: 'Kitchens.se, vad kostar en bänkskiva',
+    url: 'https://kitchens.se/inspiration/vad-kostar-en-bankskiva-prisguide-sten-komposit-keramik/',
+    slag: 'firma',
+    datum: 'maj 2026',
+  },
+  'TB-LUCKOR': {
+    kod: 'TB-LUCKOR',
+    titel: 'Totalbyggarna, byta köksluckor på befintlig stomme',
+    url: 'https://www.totalbyggarna.se/smatjanster/byta-koksluckor-befintlig-stomme-pris/',
+    slag: 'firma',
+    /* Sidan är odaterad; datumet är dagen underlaget läste den. */
+    datum: 'läst 2026-09-28',
+  },
+  'TB-BANK': {
+    kod: 'TB-BANK',
+    titel: 'Totalbyggarna, bänkskiva i köket',
+    url: 'https://www.totalbyggarna.se/blogg/kok-bankskiva/',
+    slag: 'firma',
+    datum: '2026-03-30',
+  },
+  'TB-IKEA': {
+    kod: 'TB-IKEA',
+    titel: 'Totalbyggarna, vad kostar ett IKEA-kök',
+    url: 'https://www.totalbyggarna.se/blogg/ikea-kok-pris/',
+    slag: 'firma',
+    datum: 'uppdaterad 2026-06-29',
+  },
+  'HK-LUCKOR': {
+    kod: 'HK-LUCKOR',
+    titel: 'Hantverkskollen, byta köksluckor i stället för hela köket',
+    url: 'https://www.hantverkskollen.se/artiklar/snickare/snickare-koksluckor-byta-kostnad-vad-kostar-det-att-luckor-istallet-for-hela-koket',
+    slag: 'förmedlare',
+    datum: 'uppdaterad 2026-07-17',
+  },
+  'HK-KOK': {
+    kod: 'HK-KOK',
+    titel: 'Hantverkskollen, komplett guide till köksrenovering 2026',
+    url: 'https://www.hantverkskollen.se/artiklar/snickare/snickare-komplett-guide-koksrenovering-kostnad-priser-tips-och-rad-2026',
+    slag: 'förmedlare',
+    datum: 'uppdaterad 2026-07-17',
+  },
+  'HK-NYTT': {
+    kod: 'HK-NYTT',
+    titel: 'Hantverkskollen, nytt kök från grunden',
+    url: 'https://www.hantverkskollen.se/artiklar/snickare/snickare-nytt-kok-kostnad-vad-kostar-ett-helt-fran-grunden',
+    slag: 'förmedlare',
+    datum: 'uppdaterad 2026-07-17',
+  },
+  'ELSAK-SJALV': {
+    kod: 'ELSAK-SJALV',
+    titel: 'Elsäkerhetsverket, vad får jag göra själv med el',
+    url: 'https://www.elsakerhetsverket.se/privatpersoner/detta-far-du-gora-sjalv-med-el/vad-far-jag-gora-sjalv-med-el/',
+    slag: 'myndighet',
+    datum: 'granskad 2025-07-30',
+  },
+  /* docs/briefer/faktablad/guider-byta-toalettstol.md punkt 5: s. 8 kräver Säker
+     Vatten vid om- och tillbyggnad, s. 14 avdraget vid brott mot föreskriften. */
+  IF: {
+    kod: 'IF',
+    titel: 'If, Villaförsäkring, försäkringsvillkor december 2025, s. 8 och 14',
+    url: 'https://www.if.se/globalassets/se/dokument/privat/villaforsakring-villkor.pdf',
+    slag: 'försäkringsbolag',
+    datum: 'december 2025',
   },
 };
 
@@ -1383,5 +1495,1099 @@ export function antagandenFor(r: BadrumOk, i: BadrumIndata): AntagandeRad[] {
     varde: a.varde(i),
     typ: a.typ,
     kallor: a.nyckel === 'post-inredning' ? [i.niva === 'enkel' ? 'BE' : 'BS'] : a.kallor,
+  }));
+}
+
+/* ================================================================== *
+ * Köket
+ *
+ * /rakna/kok-kostnad/, specen docs/briefer/spec-kalkyl-kok-kostnad-2026-09-29.md.
+ * Underlaget är docs/briefer/faktablad/rakna-kok-kostnad.md, och SEO-besluten
+ * står i docs/briefer/seo-checklista-2026-09-29/raknare.md: en källa per post,
+ * nytt kök bara i enkel nivå, inga stommar i mellan- och högnivå, ingen
+ * container, ingen folie och inte Ikeas montering.
+ *
+ * Varje belopp räknas i två kanter, en nedre med alla nedre tal och en övre med
+ * alla övre (specen K4). Ingen post får ett medelvärde.
+ * ================================================================== */
+
+/* ------------------------------------------------------------------ *
+ * Typer
+ * ------------------------------------------------------------------ */
+
+export type KokVag = 'luckor' | 'bankskiva' | 'luckor-bankskiva' | 'nytt';
+export type KokNiva = 'enkel' | 'mellan' | 'hog';
+export type KokMaterial = 'laminat' | 'tra' | 'komposit';
+export type KokGangjarn = 'nya' | 'behall';
+export type KokFlytt = 'el' | 'diskbank';
+export type KokEgen = 'montering' | 'rivning';
+
+export interface KokIndata {
+  vag: KokVag;
+  antalLuckor: number;
+  /** Luckornas prisnivå. Ignoreras i väg nytt, som bara räknas i enkel nivå. */
+  niva: KokNiva;
+  gangjarn: KokGangjarn;
+  /** Bänkskivans längd i löpmeter, och i väg nytt också skåpradens längd. */
+  meter: number;
+  material: KokMaterial;
+  /** Unik, i ordningen i KOK_FLYTT_VAL. Gäller bara väg nytt. */
+  flytt: KokFlytt[];
+  /** Unik, i ordningen i KOK_EGEN_VAL. */
+  egen: KokEgen[];
+  /** Som BadrumIndata.agare: ett annat tal än 1 och 2 ger fel på fältet. */
+  agare: number;
+  /** Utnyttjat rot i år, alla ägare tillsammans. */
+  rotKr: number;
+}
+
+export type KokFelNyckel = 'luckor' | 'meter' | 'agare' | 'rot';
+
+export type KokPostNyckel = 'rivning' | 'stommar' | 'luckor' | 'gangjarn' | 'bankskiva' | 'vitvaror' | 'el' | 'vvs';
+
+export interface KokPostRad {
+  nyckel: KokPostNyckel;
+  /** 0 när arbete inte är 'belopp'. */
+  arbeteKr: number;
+  materialKr: number;
+  /**
+   * belopp: arbetet är talet. egen: läsaren gör det själv. ingar: arbetet ingår
+   * i en annan post. inget: arbetet räknas inte (vitvarornas installation).
+   */
+  arbete: 'belopp' | 'egen' | 'ingar' | 'inget';
+}
+
+export type KokUtfall = 'belopp' | 'tak';
+export type KokGorInte = 'rot-pa-allt' | 'verkstad-rot' | 'el-sjalv' | 'vvs-intyg' | 'riva-sjalv';
+export type KokRegelNyckel =
+  | 'luckor-pris'
+  | 'luckor-montering'
+  | 'gangjarn'
+  | 'bankskiva'
+  | 'nytt-enkel'
+  | 'flytt'
+  | 'spann'
+  | 'tillkommer'
+  | 'rot-arbete'
+  | 'rot-tak'
+  | 'rot-slog-i'
+  | 'egen-insats';
+
+/** Talen för en kant. */
+export interface KokSiffror {
+  /** I postordningen i specen 2.6, bara de poster vägen har. */
+  poster: KokPostRad[];
+  arbeteKr: number;
+  materialKr: number;
+  foreRotKr: number;
+  rotKr: number;
+  raktRotKr: number;
+  kapatKr: number;
+  attBetalaKr: number;
+  andelArbeteProcent: number;
+  begransad: boolean;
+}
+
+export type KokResultat =
+  | ({
+      status: 'ok';
+      /** tak när den övre kanten når rotavdragets gräns. */
+      utfall: KokUtfall;
+      /** Talen på översta nivån är den nedre kanten, hog den övre. */
+      hog: KokSiffror;
+      /** Sant när totalerna skiljer mellan kanterna. */
+      spann: boolean;
+      gorInteDetHar: KokGorInte[];
+      regler: KokRegelNyckel[];
+    } & KokSiffror)
+  | { status: 'ogiltig'; fel: Partial<Record<KokFelNyckel, string>> };
+
+export type KokOk = Extract<KokResultat, { status: 'ok' }>;
+
+/* ------------------------------------------------------------------ *
+ * Konstanter. Källa eller ANTAGANDE i kommentaren över varje. Alla belopp
+ * är i kronor inklusive moms.
+ * ------------------------------------------------------------------ */
+
+/**
+ * Pris per lucka, 696 × 596 mm, per prisnivå (specen K2).
+ * Källa: VED, Vedum, luckprislista 2026, s. 12, "inklusive moms", läst
+ * 2026-09-28: prisgrupp 1 390 kr, prisgrupp 5 1 444 kr, prisgrupp 10 3 673 kr.
+ * Gångjärn ingår inte i priset.
+ */
+export const KOK_LUCKA_KR: Record<KokNiva, number> = { enkel: 390, mellan: 1444, hog: 3673 };
+
+/** Vedums prisgrupp bakom varje nivå. Källa: VED, samma sida som KOK_LUCKA_KR. */
+export const KOK_LUCKA_PRISGRUPP: Record<KokNiva, number> = { enkel: 1, mellan: 5, hog: 10 };
+
+/** Gångjärn per styck. Källa: VED, Vedums gångjärn från Grass, 169 kr styck. */
+export const KOK_GANGJARN_KR = 169;
+
+/** Gångjärn per lucka. Källa: IKEA, luckorna: "Komplettera med 2 gångjärn". */
+export const KOK_GANGJARN_PER_LUCKA = 2;
+
+/**
+ * Monteringen av luckorna, fast pris före rotavdraget.
+ * Källa: TB-LUCKOR, Totalbyggarna, byta köksluckor på befintlig stomme, läst
+ * 2026-09-28: 5 250 kr efter rotavdraget för 15 debiterbara timmar, 350 kr/h.
+ * Före avdraget är egen räkning med ROT_PROCENT, 5 250 / (1 − ROT_PROCENT / 100).
+ */
+export const KOK_LUCKOR_MONTERING_KR = 7500;
+
+/**
+ * Hur många luckor det fasta priset räcker till. Över det växer monteringen i
+ * proportion till antalet luckor.
+ * ANTAGANDE. Grund: HK-LUCKOR, Hantverkskollen, "15–20 luckor" tar 6 till 10
+ * timmar, alltså ett vanligt kök. Under gränsen står det fasta priset kvar, så
+ * räknaren lovar inte för lite för ett litet kök.
+ */
+export const KOK_LUCKOR_FAST_MAX = 20;
+
+/**
+ * Bänkskivans material per löpmeter, 60 till 63 cm djup, nedre och övre kant.
+ * Källa: KIT, Kitchens.se, vad kostar en bänkskiva, maj 2026: laminat 500 till
+ * 1 500, massivt trä 1 200 till 3 500, kvartskomposit 2 000 till 5 000 kr.
+ * Samma tal ska stå på /kok/byta-bankskiva/ (checklistans tillägg 4).
+ */
+export const KOK_BANKSKIVA_KR_PER_LM: Record<KokMaterial, readonly [number, number]> = {
+  laminat: [500, 1500],
+  tra: [1200, 3500],
+  komposit: [2000, 5000],
+};
+
+/**
+ * Monteringen av bänkskivan per löpmeter, nedre och övre kant.
+ * Källa: TB-BANK, Totalbyggarna, bänkskiva i köket, 2026-03-30: "500–2 000 kr
+ * per löpmeter".
+ */
+export const KOK_BANKSKIVA_MONTERING_KR_PER_LM = [500, 2000] as const;
+
+/**
+ * Ikea Metod, delarna till en 60 cm bred modul. Källa: IKEA, priser på
+ * ikea.com 2026-09-28: bänkskåp 60 × 60 × 80 599 kr, väggskåp 60 × 37 × 80
+ * 509 kr, lucka Veddinge 60 × 80 439 kr (två per modul), Utrusta gångjärn
+ * 159 kr för två (två par per modul).
+ * ANTAGANDE: ett bänkskåp och ett väggskåp med två luckor per 60 cm, och
+ * väggskåpen är lika långa som bänkskåpen. Ben, sockel, täcksidor, lådor,
+ * upphängningsskena och handtag ingår inte.
+ */
+export const KOK_IKEA_BANKSKAP_KR = 599;
+export const KOK_IKEA_VAGGSKAP_KR = 509;
+export const KOK_IKEA_LUCKA_KR = 439;
+export const KOK_IKEA_GANGJARN_PAR_KR = 159;
+export const KOK_IKEA_MODUL_CM = 60;
+export const KOK_IKEA_MODUL_KR =
+  KOK_IKEA_BANKSKAP_KR + KOK_IKEA_VAGGSKAP_KR + 2 * KOK_IKEA_LUCKA_KR + 2 * KOK_IKEA_GANGJARN_PAR_KR;
+
+/** Stommar och luckor per meter kök, egen räkning ur KOK_IKEA_MODUL_KR: 3 840 kr. */
+export const KOK_STOMMAR_KR_PER_M = Math.round((KOK_IKEA_MODUL_KR * 100) / KOK_IKEA_MODUL_CM);
+
+/**
+ * Monteringen av ett nytt kök före rotavdraget, nedre och övre kant.
+ * Källa: TB-IKEA, Totalbyggarna, vad kostar ett IKEA-kök, uppdaterad
+ * 2026-06-29: litet kök 15 000–20 000, mellan 20 000–30 000, stort 25 000–40 000.
+ * ANTAGANDE: hela spannet, från det lägsta för ett litet kök till det högsta
+ * för ett stort, eftersom källan anger storleken utan mått (specen K5).
+ * Monteringen av bänkskivan ingår (underlagets formel för väg C).
+ */
+export const KOK_MONTERING_KR = [15000, 40000] as const;
+
+/**
+ * Vitvaror, budgetpaket, material.
+ * Källa: TB-IKEA, Totalbyggarna, vad kostar ett IKEA-kök, uppdaterad
+ * 2026-06-29: "15 000–25 000". Installationen räknas inte (specen K5).
+ */
+export const KOK_VITVAROR_KR = [15000, 25000] as const;
+
+/**
+ * Rivning av det gamla köket, arbete.
+ * Källa: HK-KOK, Hantverkskollen, komplett guide till köksrenovering 2026,
+ * uppdaterad 2026-07-17: rivning 8 000–18 000 kr, rotberättigad.
+ */
+export const KOK_RIVNING_KR = [8000, 18000] as const;
+
+/**
+ * Ny elgrupp när planlösningen ändras, arbete.
+ * Källa: HK-NYTT, Hantverkskollen, nytt kök från grunden, uppdaterad
+ * 2026-07-17: ny grupp 5 000–15 000 kr.
+ * ANTAGANDE: bara arbete (underlaget 3h).
+ */
+export const KOK_EL_KR = [5000, 15000] as const;
+
+/**
+ * Flytt av diskbänken, arbete.
+ * Källa: HK-NYTT, Hantverkskollen, nytt kök från grunden, uppdaterad
+ * 2026-07-17: flytt av diskbänk 5 000–20 000 kr.
+ * ANTAGANDE: bara arbete (underlaget 3h).
+ */
+export const KOK_VVS_KR = [5000, 20000] as const;
+
+/** Dagen underlaget läste källorna. */
+export const KOK_PRISER_HAMTADE = '2026-09-28';
+
+export const KOK_VAG_VAL: readonly KokVag[] = ['luckor', 'bankskiva', 'luckor-bankskiva', 'nytt'];
+export const KOK_NIVA_VAL: readonly KokNiva[] = ['enkel', 'mellan', 'hog'];
+export const KOK_MATERIAL_VAL: readonly KokMaterial[] = ['laminat', 'tra', 'komposit'];
+export const KOK_GANGJARN_VAL: readonly KokGangjarn[] = ['nya', 'behall'];
+export const KOK_FLYTT_VAL: readonly KokFlytt[] = ['el', 'diskbank'];
+/**
+ * Det läsaren kan göra själv (specen K7). El och VVS kan aldrig väljas
+ * (Elsäkerhetsverket; Säker Vatten 2026:1 för intyget).
+ */
+export const KOK_EGEN_VAL: readonly KokEgen[] = ['montering', 'rivning'];
+
+/**
+ * Standardvärdena: värdartikelns kök med 16 luckor (underlagets exempel 1) och
+ * en bänkskiva på 4 meter (exempel 3). En ägare, det försiktiga svaret.
+ * Standard ger 19 148 kr före rot, 2 250 kr i rotavdrag och 16 898 kr att
+ * betala, samma tal som tabellen i /kok/byta-koksluckor/.
+ */
+export const KOK_STANDARD: KokIndata = {
+  vag: 'luckor',
+  antalLuckor: 16,
+  niva: 'enkel',
+  gangjarn: 'nya',
+  meter: 4,
+  material: 'laminat',
+  flytt: [],
+  egen: [],
+  agare: 1,
+  rotKr: 0,
+};
+
+/**
+ * Gränserna, inklusive.
+ * antalLuckor och meter: ANTAGANDE, fältens rimlighet (underlaget avsnitt 6).
+ * rotKr: per ägare; gränsen i fältet är ROT_TAK_KR gånger antalet ägare.
+ */
+export const KOK_GRANSER = {
+  antalLuckor: [1, 60],
+  meter: [0.5, 15],
+  rotKr: [0, ROT_TAK_KR],
+} as const;
+
+/* ------------------------------------------------------------------ *
+ * Vad vägarna innehåller
+ * ------------------------------------------------------------------ */
+
+const harLuckor = (v: KokVag): boolean => v === 'luckor' || v === 'luckor-bankskiva';
+const harBankskiva = (v: KokVag): boolean => v !== 'luckor';
+
+/** Egen insats som ändrar något i den valda vägen. */
+function egenGaller(i: KokIndata): KokEgen[] {
+  return i.egen.filter((e) => e === 'montering' || i.vag === 'nytt');
+}
+
+/* ------------------------------------------------------------------ *
+ * Beskedets värden och texten
+ * ------------------------------------------------------------------ */
+
+/** Talen texterna får, som färdiga strängar. Spann skrivs "A till B". */
+export interface KokBeskedVarden {
+  utfall: KokUtfall;
+  vag: KokVag;
+  attBetala: string;
+  foreRot: string;
+  rot: string;
+  kapat: string;
+  /** krText(hog.kapatKr), för "upp till X kr". */
+  kapatMax: string;
+  arbete: string;
+  material: string;
+  andelArbete: string;
+  /** Antalet luckor som text. */
+  luckor: string;
+  /** Metrarna med decimalkomma, "4" eller "4,8". */
+  meter: string;
+  agare: number;
+  /** KOK_PRISER_HAMTADE som "28 september 2026". */
+  hamtat: string;
+  spann: boolean;
+}
+
+export interface KokKortsvarVarden {
+  /** 16 luckor i enkel nivå med nya gångjärn, standard. */
+  luckor: KortsvarBelopp;
+  /** Bänkskiva i laminat, 4 och 5 meter. */
+  bankskiva4: KortsvarBelopp;
+  bankskiva5: KortsvarBelopp;
+  /** Nytt kök med laminatskiva, 4 och 5 meter, utan flytt och egen insats. */
+  nytt4: KortsvarBelopp;
+  nytt5: KortsvarBelopp;
+  hamtat: string;
+}
+
+export interface KokRegelText {
+  text: (v: KokBeskedVarden) => string;
+  kallor: KallKod[];
+}
+
+/*
+ * All text läsaren ser och som köket äger. Hantverkaren skriver varje värde;
+ * textlistan är docs/briefer/texter-kok-kostnad-2026-09-29.md. Ett värde som
+ * är en funktion får talen som parametrar och ska aldrig ha ett tal skrivet för
+ * hand. Ordet "tak" står inte ensamt: rotavdragets gräns heter "gräns".
+ */
+export const KOK_TEXT = {
+  besked: {
+    belopp: {
+      /* Vad läsaren ska räkna med att betala. Bär attBetala. */
+      rubrik: (v: KokBeskedVarden): string => `Lägg ${v.attBetala} kr i budgeten för köket`,
+      /* Något annat än rubriken: vad läsaren gör härnäst, efter vägen. */
+      rad: (v: KokBeskedVarden): string =>
+        v.vag === 'luckor'
+          ? 'Jämför med att måla de luckor du har, om formen på dem duger.'
+          : v.vag === 'bankskiva'
+            ? 'Byt material i formuläret och räkna igen, så ser du hur mycket valet av skiva ändrar priset.'
+            : v.vag === 'luckor-bankskiva'
+              ? 'I ett vanligt kök ändrar luckornas prisnivå summan mer än skivans material, så bestäm nivån på luckorna först.'
+              : 'Ska spisen eller diskbänken byta plats, be elektrikern och rörmokaren om pris innan du beställer skåpen.',
+    },
+    tak: {
+      /* Samma sak som vid belopp. Bär attBetala. */
+      rubrik: (v: KokBeskedVarden): string =>
+        v.rot === '0'
+          ? `Räkna utan rotavdrag och lägg ${v.attBetala} kr i budgeten`
+          : `Räkna med ett mindre rotavdrag och lägg ${v.attBetala} kr i budgeten`,
+      /* Att gränsen stoppar kapat (kapatMax) kr, och vad två ägare eller betalning efter nyår gör. */
+      rad: (v: KokBeskedVarden): string =>
+        `Gränsen gör att ${v.agare === 2 ? 'ni' : 'du'} i år går miste om ${v.kapat.includes('till') ? 'upp till ' : ''}${v.kapatMax} kr av avdraget för köket. Betalar ${v.agare === 2 ? 'ni' : 'du'} en del efter nyår räknas den mot nästa års gräns.${v.agare === 1 ? ' Äger ni bostaden tillsammans, välj två ägare och räkna igen.' : ''}`,
+    },
+  } satisfies Record<KokUtfall, { rubrik: (v: KokBeskedVarden) => string; rad: (v: KokBeskedVarden) => string }>,
+
+  /* Formulärets legender, etiketter och hjälprader (specen avsnitt 3). */
+  form: {
+    'legend-vag': 'Vad ska bytas i köket?',
+    'legend-luckor': 'Luckorna',
+    luckor: 'Antal luckor',
+    /* Bara i fullt format. Räkna luckorna, inte lådfronterna. */
+    'luckor-hjalp': 'Räkna dörrarna på skåpen, både under och över bänken. Lådfronterna räknas inte med.',
+    'legend-niva': 'Luckornas prisnivå',
+    /* Bara i fullt format. Att nytt kök räknas i den enklaste nivån. */
+    'niva-hjalp':
+      'Priserna gäller en lucka till ett skåp som är 60 cm brett. Ett helt nytt kök räknas alltid med de billigaste luckorna.',
+    'legend-gangjarn': 'Gångjärnen',
+    'legend-bankskiva': 'Bänkskivan',
+    meter: 'Längd',
+    /* Bara i fullt format. Vid nytt kök är det skåpradens längd. */
+    'meter-hjalp':
+      'Mät skivan längs väggen, och lägg ihop båda sidorna om köket går runt ett hörn. För ett helt nytt kök räknar jag med lika många meter skåp.',
+    'legend-material': 'Material',
+    'legend-flytt': 'Flyttas något i köket?',
+    /* Alltid, också kompakt: valen gäller bara nytt kök. */
+    'flytt-hjalp': 'De här valen räknas bara när du har valt ett helt nytt kök.',
+    'legend-egen': 'Det du gör själv',
+    /* Alltid, också kompakt: el och VVS går inte att välja, och varför. Rivningen gäller bara nytt kök. */
+    'egen-hjalp':
+      'El och rör är inte med bland valen, för nya elledningar ska dras av en registrerad elfirma, och intyg på ett rörarbete kan bara en auktoriserad VVS-firma ge. Rivningen räknas bara när hela köket byts.',
+    'legend-agare': 'Ägare och rotavdrag',
+    'agare-1': 'En ägare',
+    'agare-2': 'Två ägare',
+    rot: 'Rotavdrag som redan är använt i år',
+    'rot-hjalp': 'Skriv summan av det rotavdrag som bostadens ägare redan har fått i år.',
+  },
+
+  /* Radioetiketterna för vägen. Frasen "byta köksluckor pris" ägs av värdartikeln. */
+  vag: {
+    luckor: 'Nya luckor på skåpen som sitter kvar',
+    bankskiva: 'Ny bänkskiva',
+    'luckor-bankskiva': 'Nya luckor och ny bänkskiva',
+    nytt: 'Helt nytt kök, med skåp och vitvaror',
+  } satisfies Record<KokVag, string>,
+
+  /* Radioetiketterna för luckornas nivå. Säger vad man får, inte bara "enkel". */
+  niva: {
+    enkel: `De billigaste, ${krText(KOK_LUCKA_KR.enkel)} kr per lucka`,
+    mellan: `Mellanklass, ${krText(KOK_LUCKA_KR.mellan)} kr per lucka`,
+    hog: `De dyraste, ${krText(KOK_LUCKA_KR.hog)} kr per lucka`,
+  } satisfies Record<KokNiva, string>,
+
+  gangjarn: {
+    nya: 'Nya gångjärn',
+    behall: 'Behåll de gamla gångjärnen',
+  } satisfies Record<KokGangjarn, string>,
+
+  material: {
+    laminat: 'Laminat',
+    tra: 'Massivt trä',
+    komposit: 'Kvartskomposit',
+  } satisfies Record<KokMaterial, string>,
+
+  flytt: {
+    el: 'Spisen flyttas, eller köket får en ny elgrupp från elcentralen',
+    diskbank: 'Diskbänken flyttas',
+  } satisfies Record<KokFlytt, string>,
+
+  egen: {
+    montering: 'Monteringen av luckorna, skivan eller köket',
+    rivning: 'Rivningen av det gamla köket',
+  } satisfies Record<KokEgen, string>,
+
+  /* Postens namn i posttabellen. */
+  post: {
+    rivning: 'Rivning av det gamla köket',
+    stommar: 'Skåp och luckor',
+    luckor: 'Luckor',
+    gangjarn: 'Gångjärn',
+    bankskiva: 'Bänkskiva',
+    vitvaror: 'Vitvaror',
+    el: 'Ny elgrupp',
+    vvs: 'Flytt av diskbänken',
+  } satisfies Record<KokPostNyckel, string>,
+
+  /* Arbetscellen: läsaren gör det själv, arbetet ingår i en annan post, eller räknas inte. Ett eller två ord. */
+  postEgen: '(du själv)',
+  postIngar: '(ingår ovan)',
+  postInget: '(ingår inte)',
+
+  /* Feltexterna under fälten. Gränserna kommer in som tal. */
+  fel: {
+    luckor: (min: number, max: number): string => `Skriv ett helt antal luckor, från ${min} till ${max}.`,
+    meter: (min: number, max: number): string =>
+      `Skriv en längd mellan ${kvmText(min)} och ${kvmText(max)} meter.`,
+    agare: 'Välj en eller två ägare.',
+    rot: (max: number): string =>
+      `Skriv hur mycket rotavdrag som redan är använt i år. Med det antal ägare du har valt kan det vara högst ${krText(max)} kr.`,
+  },
+
+  /* Resultatspalten. Högst 700 tecken synlig text vid standardvärdena. */
+  spalt: {
+    'etikett-betala': 'Ditt pris efter rotavdraget',
+    'rad-summa': (foreRot: string, rot: string): string =>
+      rot === '0' ? `Summan är ${foreRot} kr, och det blir inget rotavdrag.` : `Summan är ${foreRot} kr, och rotavdraget är ${rot} kr.`,
+    'rad-delning': (arbete: string, material: string): string =>
+      `Det är ${arbete} kr arbete och ${material} kr material.`,
+    /* Varifrån priserna kommer, att de hämtades hamtat och att köket kan avvika. Förmedlarna nämns inte. */
+    'rad-kallor': (hamtat: string): string =>
+      `Jag hämtade priserna den ${hamtat}. Det som inte ingår står längre ner, under tabellen över posterna.`,
+    pekrad: 'Se vad varje del av köket kostar',
+    'lank-rotavdrag': 'Se om avdraget räcker när årets andra jobb räknas in',
+    'lank-sa-raknar-jag': 'Hur jag räknar och vad jag har antagit',
+    /* Gränssnitt, samma som på badrum-kostnad och fasadyta. */
+    'dela-etikett': 'Länk till ditt svar',
+  },
+
+  /* "Därför blev svaret så". */
+  darfor: {
+    'tabell-post': 'Post',
+    'tabell-arbete': 'Arbete, kr',
+    'tabell-material': 'Material, kr',
+    summa: 'Summa',
+    /* Rotavdraget, ett kort stycke under tabellen. Vid tak räcker inte procentsatsen. */
+    rot: (v: KokBeskedVarden): string =>
+      v.utfall === 'tak'
+        ? v.rot === '0'
+          ? `Gränsen för i år är redan nådd, så det blir inget rotavdrag på arbetet på ${v.arbete} kr.`
+          : `Rotavdraget blir ${v.rot} kr av arbetet på ${v.arbete} kr. ${v.spann ? 'I den dyrare änden av spannet' : 'Här'} når det gränsen för i år och blir mindre än ${ROT_PROCENT} procent.`
+        : v.arbete === '0'
+          ? 'Du gör arbetet själv, så det blir inget rotavdrag.'
+          : `Avdraget är ${ROT_PROCENT} procent av arbetet på ${v.arbete} kr.`,
+    betala: (v: KokBeskedVarden): string =>
+      v.rot === '0' ? `Hela summan, ${v.attBetala} kr, är kvar att betala.` : `Av ${v.foreRot} kr blir ${v.attBetala} kr kvar att betala.`,
+    /* Länken under tabellen till "Vad siffrorna vilar på". */
+    kallrad: 'Var priserna kommer ifrån',
+  },
+
+  /* Reglerna i "Därför blev svaret så". Källorna är data; förmedlarna nämns inte vid namn. */
+  regel: {
+    'luckor-pris': {
+      text: (v: KokBeskedVarden): string =>
+        `${v.luckor === '1' ? 'Din lucka' : `Var och en av dina ${v.luckor} luckor`} kostar vad Vedum tar för en lucka till ett 60 cm brett skåp i den prisnivå du har valt, och gångjärnen ingår inte i det priset.`,
+      kallor: ['VED'],
+    },
+    'luckor-montering': {
+      text: (_v: KokBeskedVarden): string =>
+        `En byggfirma tar ett fast pris på ${krText(KOK_LUCKOR_MONTERING_KR)} kr före rotavdraget för att byta luckorna i ett vanligt kök. Jag låter det gälla för upp till ${KOK_LUCKOR_FAST_MAX} luckor och räknar upp det i samma takt som antalet när de är fler. Ett kök med få luckor får samma fasta pris, så svaret blir snarare för högt än för lågt.`,
+      kallor: ['TB-LUCKOR', 'HK-LUCKOR'],
+    },
+    gangjarn: {
+      text: (_v: KokBeskedVarden): string =>
+        'Varje lucka hänger på två gångjärn. Behåller du de gamla tas raden bort, men det går bara om de passar de nya luckorna.',
+      kallor: ['VED', 'IKEA'],
+    },
+    bankskiva: {
+      text: (v: KokBeskedVarden): string =>
+        v.vag === 'nytt'
+          ? `Bänkskivan räknas per löpmeter, och i ett nytt kök är den lika lång som skåpraden, ${v.meter} meter. Att lägga den på plats ingår i monteringen av köket. Priset gäller en skiva som är 60 till 63 cm djup.`
+          : `Bänkskivan räknas per löpmeter, en gång för materialet och en gång för monteringen, och din skiva är ${v.meter} meter. Priset gäller en skiva som är 60 till 63 cm djup.`,
+      kallor: ['KIT', 'TB-BANK'],
+    },
+    'nytt-enkel': {
+      text: (_v: KokBeskedVarden): string =>
+        'Det nya köket räknas med de billigaste skåpen och luckorna och ett paket vitvaror i budgetklass, vilken prisnivå du än har valt för luckorna. Dyrare skåp har jag inga priser per meter för.',
+      kallor: ['IKEA', 'TB-IKEA'],
+    },
+    flytt: {
+      text: (_v: KokBeskedVarden): string =>
+        'Kryssar du i att spisen eller diskbänken flyttas läggs elen och rören till som egna poster, och båda räknas som arbete utan material.',
+      kallor: ['HK-NYTT', 'ELSAK-SJALV'],
+    },
+    spann: {
+      text: (_v: KokBeskedVarden): string =>
+        'Flera av priserna anges med ett lägsta och ett högsta belopp, och svaret gör likadant. Ett medelvärde hade sett exakt ut men finns inte i någon prislista.',
+      kallor: ['KIT', 'TB-IKEA'],
+    },
+    tillkommer: {
+      text: (v: KokBeskedVarden): string =>
+        v.vag === 'nytt'
+          ? 'Lådor, lådfronter, ben, sockel, handtag, frakt, container och installationen av vitvarorna finns inte i tabellen. Fråga efter priserna på dem när du tar in offerter.'
+          : v.vag === 'bankskiva'
+            ? 'Frakten av skivan finns inte i tabellen, så fråga efter den när du beställer.'
+            : 'Handtag, lådfronter och frakt finns inte i tabellen. Be om pris på dem när du beställer luckorna.',
+      kallor: ['VED'],
+    },
+    'rot-arbete': {
+      text: (v: KokBeskedVarden): string =>
+        v.arbete === '0'
+          ? 'Du gör allt arbete själv, så inget i summan ger rotavdrag.'
+          : `Av summan är ${v.arbete} kr arbete, och det är bara den delen som ger rotavdrag. ${v.vag === 'luckor' ? 'Luckorna och gångjärnen' : v.vag === 'bankskiva' ? 'Själva skivan' : v.vag === 'luckor-bankskiva' ? 'Luckorna, gångjärnen och skivan' : 'Skåpen, skivan och vitvarorna'} ger inget.`,
+      kallor: ['SKV-ROT', 'SKV-RATT'],
+    },
+    'rot-tak': {
+      text: (_v: KokBeskedVarden): string =>
+        `Varje ägare har en gräns på ${krText(ROT_TAK_KR)} kr i rotavdrag per år, så två ägare kan tillsammans dra av dubbelt så mycket.`,
+      kallor: ['SKV-ROT'],
+    },
+    'rot-slog-i': {
+      text: (v: KokBeskedVarden): string =>
+        `Det rotavdrag som redan är använt i år gör att ${v.kapat.includes('till') ? 'upp till ' : ''}${v.kapatMax} kr av avdraget för köket inte ryms under gränsen.`,
+      kallor: ['SKV-ROT'],
+    },
+    'egen-insats': {
+      text: (_v: KokBeskedVarden): string =>
+        'Rotavdrag får du bara för arbete som du betalar någon för, så det du gör själv ger inget. El och rör kan inte väljas här, och varför det är så står under valen i formuläret.',
+      kallor: ['SKV-ROT', 'ELSAK-SJALV', 'SV'],
+    },
+  } satisfies Record<KokRegelNyckel, KokRegelText>,
+
+  /* "Gör inte det här", ett stycke per rad. */
+  gorInte: {
+    /* Rot bara på arbetet, aldrig på luckor, skiva och vitvaror. Andra meningar än badrummet och rotavdrag.ts. */
+    'rot-pa-allt': `Räkna inte ${ROT_PROCENT} procent på hela priset för köket. Då blir avdraget för stort, på ett luckbyte mer än dubbelt så stort som det du får. Leta upp raden för arbete i offerten och räkna procenten på den.`,
+    /* Lackering i verkstad ger inget rot (Skatteverket, "i företagets lokaler"). */
+    'verkstad-rot':
+      'Jämför du nya luckor med verkstadslackering av de gamla, räkna verkstadens pris utan rotavdrag och lägg till transporten av luckorna.',
+    /* Fast installation av ett registrerat elinstallationsföretag; hällen är vår slutsats och märks så. */
+    'el-sjalv':
+      'Koppla inte in hällen och dra inga nya uttag själv, även om du monterar skåpen. Boka elektrikern till samma vecka som köket monteras, så står det inte färdigt utan ström.',
+    /* Säker Vatten är branschregler, inget förbud; bara ett auktoriserat företag kan ge intyg. */
+    'vvs-intyg':
+      'Låt en auktoriserad VVS-firma flytta diskbänken och be om intyget om Säker Vatteninstallation när jobbet är klart. Spara intyget med kvittot. Blir det en vattenskada kan försäkringsbolaget fråga efter det.',
+    /* Riv skåpen, men lämna el och vatten åt firmorna. */
+    'riva-sjalv':
+      'Se till att elektrikern och rörmokaren kommer på rivningsdagen. När hällen är losskopplad och rören under diskbänken är avstängda och pluggade kan du skruva ner skåpen och bära ut dem själv. Elektrikerns och rörmokarens besök finns inte med i summan.',
+  } satisfies Record<KokGorInte, string>,
+
+  /* Kolumnen Vad i antagandetabellen, en per rad i KOK_ANTAGANDEN. */
+  antagande: {
+    'lucka-pris': 'Pris per lucka',
+    gangjarn: 'Gångjärn',
+    'luckor-montering': 'Montering av luckorna, före rotavdrag',
+    'luckor-fast-max': 'Hur långt det fasta priset räcker',
+    'bankskiva-material': 'Bänkskivans material',
+    'bankskiva-montering': 'Bänkskivans montering',
+    'bankskiva-i-kok': 'Bänkskivan i ett nytt kök',
+    stommar: 'Skåp och luckor i ett nytt kök',
+    'stommar-modul': 'Vad varje 60 cm av skåpraden innehåller',
+    'montering-kok': 'Montering av ett nytt kök, före rotavdrag',
+    'montering-storlek': 'Köksstorleken i monteringspriset',
+    vitvaror: 'Vitvaror',
+    rivning: 'Rivning',
+    el: 'Ny elgrupp',
+    vvs: 'Flytt av diskbänken',
+    'el-vvs-arbete': 'Elen och rören',
+    'ingen-dyr-niva': 'Dyrare kök än den enklaste nivån',
+    'ej-med': 'Det som inte är med',
+    'rot-procent': 'Rotavdragets procentsats',
+    'rot-grans': 'Rotavdragets gräns',
+    'rut-skatt': 'Rutavdrag och skatt',
+  } as Record<string, string>,
+
+  /*
+   * Kolumnen Värde där värdet är ord och inte tal ur konstanterna. En funktion
+   * får talen färdiga som strängar.
+   */
+  antagandeVarde: {
+    /* Kr per lucka och nivåns namn hos Vedum (prisgrupp). */
+    /* prisgrupp är Vedums nummer, "1", "5" eller "10". Hantverkaren väljer om och hur det står i texten. */
+    'lucka-pris': (kr: string, _prisgrupp: string): string => `${kr} kr för en lucka till ett 60 cm brett skåp`,
+    /* Kr styck och antal per lucka. */
+    gangjarn: (kr: string, antal: string): string => `${kr} kr styck, ${antal} per lucka`,
+    /* Fasta priset upp till max luckor, sedan i proportion. */
+    'luckor-fast-max': (max: string): string => `Högst ${max} luckor, sedan i proportion till antalet`,
+    /* Spannet per löpmeter för materialet. */
+    'bankskiva-material': (spann: string): string => `${spann} per löpmeter`,
+    'bankskiva-montering': (spann: string): string => `${spann} per löpmeter`,
+    'bankskiva-i-kok': 'Ingår i monteringen av köket, och skivan är lika lång som skåpraden',
+    stommar: (kr: string): string => `${kr} kr per meter`,
+    'stommar-modul':
+      'Ett bänkskåp och ett väggskåp per 60 cm, med en lucka på vardera, utan lådor, ben, sockel och handtag',
+    'montering-storlek': 'Hela spannet från litet till stort kök, eftersom källan inte säger hur många meter ett litet kök är',
+    'el-vvs-arbete': 'Allt räknas som arbete',
+    'ingen-dyr-niva': 'Räknas inte, eftersom priser per meter saknas',
+    'ej-med': 'Lådor, ben, sockel, handtag, lådfronter, frakt, installation av vitvaror och container',
+    'rot-grans': (kr: string): string => `${kr} kr per person och år`,
+    'rut-skatt': 'Ingår inte här. Rotavdraget delar gräns med rutavdraget och kan inte bli större än din skatt, och räknaren för rotavdrag tar med både rutavdraget och skatten.',
+  },
+
+  /* "Så räknar jag", en punkt per steg: posterna per väg, två kanter, summan, rotavdraget. */
+  steg: [
+    'Vilka poster som räknas beror på vad du valde överst. Väljer du luckor räknas luckorna och eventuellt nya gångjärn, väljer du bänkskiva räknas skivan, och ett helt nytt kök ger rivning, skåp, bänkskiva, vitvaror och den el och de rör du har kryssat i.',
+    'Har en post ett lägsta och ett högsta pris räknar jag hela köket två gånger, en gång med alla de lägsta priserna och en gång med alla de högsta.',
+    'Arbetet och materialet läggs ihop post för post till summan före rotavdraget. Det du gör själv står med noll kronor i arbete.',
+    'Sist räknar jag rotavdraget på arbetet, med hänsyn till det som redan är använt i år, och drar avdraget från summan.',
+  ] as string[],
+
+  /*
+   * Kortsvaret: tre till fem meningar ur kokKortsvarVarden(). Vad de tre vägarna
+   * kostar i ett kök med 4 till 5 meter skåp, vad rotavdraget blir, och
+   * källorna med datum. markering är talet som får <Markering>.
+   */
+  kortsvar: (v: KokKortsvarVarden): KortsvarDelar => {
+    /* Det lägsta talet i 4 meter och det högsta i 5 meter, så att ett spann täcker båda längderna. */
+    const lag = (s: string): string => s.split(/\s+till\s+/)[0] ?? s;
+    const hog = (s: string): string => s.split(/\s+till\s+/).pop() ?? s;
+    return {
+      fore: `Byter du bara luckorna i ett kök med ${KOK_STANDARD.antalLuckor} luckor, med nya gångjärn och en snickare som monterar dem, betalar du`,
+      markering: `${v.luckor.attBetala} kr`,
+      efter: ` efter ett rotavdrag på ${v.luckor.rot} kr, som är ${ROT_PROCENT} procent av monteringen. Efter avdraget kostar en ny bänkskiva i laminat ${lag(v.bankskiva4.attBetala)} till ${hog(v.bankskiva5.attBetala)} kr för 4 till 5 meter. Ett helt nytt kök i den enklaste nivån, med skåp för samma längd och ett paket vitvaror, kostar ${lag(v.nytt4.attBetala)} till ${hog(v.nytt5.attBetala)} kr efter avdraget. Luckornas och skåpens priser är tillverkarnas, och priset på arbetet kommer från byggfirmor och offertförmedlare. Jag hämtade alla priser den ${v.hamtat}.`,
+    };
+  },
+
+  /* Publiceringsomgången. Alt under 125 tecken med orden renovera kök och kostnad. */
+  skissAlt: `Blyertsskiss av en köksvägg på ${kvmText(KOK_STANDARD.meter)} meter där en lucka lyfts av, med kostnaden för att renovera köket med nya luckor`,
+  skissBildtext: `Skåpraden är ${kvmText(KOK_STANDARD.meter)} meter lång. Luckan som lyfts av visar vad som byts vid ett luckbyte. Stommen bakom sitter kvar, och luckan får nya gångjärn. Summan i gult gäller ${KOK_STANDARD.antalLuckor} nya luckor i den billigaste prisnivån, med gångjärn och montering, efter rotavdraget.`,
+};
+
+/* ------------------------------------------------------------------ *
+ * Adressen
+ * ------------------------------------------------------------------ */
+
+const KOK_NYCKLAR = ['vag', 'luckor', 'niva', 'gangjarn', 'meter', 'material', 'flytt', 'egen', 'agare', 'rot'] as const;
+
+/**
+ * Som tillTal, men tål också ett efterhängt st, m, lm eller meter. Tomt eller
+ * skräp ger NaN.
+ */
+function kokTillTal(v: string | null): number {
+  if (v === null) return NaN;
+  const rensad = v
+    .replace(/[\s  ]/g, '')
+    .replace(/(st|meter|lm|m|kr)$/i, '')
+    .replace(',', '.')
+    .replace('−', '-');
+  if (rensad === '') return NaN;
+  return Number(rensad);
+}
+
+/** Ett av valen, eller standard när värdet saknas eller är okänt. */
+function valEller<T extends string>(v: string | null, val: readonly T[], standard: T): T {
+  return val.find((x) => x === v) ?? standard;
+}
+
+/** Läser adressen enligt specen 2.5. */
+export function tolkaKokQuery(q: URLSearchParams): { indata: KokIndata; harIndata: boolean } {
+  const harIndata = KOK_NYCKLAR.some((n) => q.has(n));
+  const s = KOK_STANDARD;
+
+  const raLuckor = q.get('luckor');
+  const raMeter = q.get('meter');
+  const raAgare = q.get('agare');
+  const raRot = q.get('rot');
+  const flytt = new Set(q.getAll('flytt'));
+  const egen = new Set(q.getAll('egen'));
+
+  const agare =
+    raAgare === null || raAgare.trim() === ''
+      ? s.agare
+      : raAgare.trim() === '1'
+        ? 1
+        : raAgare.trim() === '2'
+          ? 2
+          : NaN;
+
+  return {
+    harIndata,
+    indata: {
+      vag: valEller(q.get('vag'), KOK_VAG_VAL, s.vag),
+      antalLuckor: raLuckor === null ? s.antalLuckor : kokTillTal(raLuckor),
+      niva: valEller(q.get('niva'), KOK_NIVA_VAL, s.niva),
+      gangjarn: valEller(q.get('gangjarn'), KOK_GANGJARN_VAL, s.gangjarn),
+      meter: raMeter === null ? s.meter : kokTillTal(raMeter),
+      material: valEller(q.get('material'), KOK_MATERIAL_VAL, s.material),
+      flytt: KOK_FLYTT_VAL.filter((f) => flytt.has(f)),
+      egen: KOK_EGEN_VAL.filter((e) => egen.has(e)),
+      agare,
+      rotKr: raRot === null ? s.rotKr : raRot.trim() === '' ? 0 : kokTillTal(raRot),
+    },
+  };
+}
+
+/** Den delbara adressen, nycklarna i ordningen i specen 2.5, tal med komma. */
+export function kokDelbarQuery(i: KokIndata): URLSearchParams {
+  const q = new URLSearchParams();
+  q.set('vag', i.vag);
+  q.set('luckor', komma(i.antalLuckor));
+  q.set('niva', i.niva);
+  q.set('gangjarn', i.gangjarn);
+  q.set('meter', komma(i.meter));
+  q.set('material', i.material);
+  for (const f of i.flytt) q.append('flytt', f);
+  for (const e of i.egen) q.append('egen', e);
+  q.set('agare', String(i.agare));
+  q.set('rot', komma(i.rotKr));
+  return q;
+}
+
+/**
+ * Adressen till rotavdragsräknaren med den övre kantens arbete och material,
+ * så att länken inte lovar för lite. Nycklarna är dem tolkaQuery i
+ * rotavdrag.ts läser.
+ */
+export function kokRotavdragQuery(r: KokOk, i: KokIndata): URLSearchParams {
+  const q = new URLSearchParams();
+  q.set('arbete', String(r.hog.arbeteKr));
+  q.set('material', String(r.hog.materialKr));
+  q.set('agare', String(i.agare));
+  q.set('rot', String(i.rotKr));
+  return q;
+}
+
+/* ------------------------------------------------------------------ *
+ * Räkningen
+ * ------------------------------------------------------------------ */
+
+/** Luckornas montering före rot: fast pris upp till KOK_LUCKOR_FAST_MAX, sedan i proportion. */
+export function kokLuckorMonteringKr(antal: number): number {
+  return antal <= KOK_LUCKOR_FAST_MAX
+    ? KOK_LUCKOR_MONTERING_KR
+    : Math.round((KOK_LUCKOR_MONTERING_KR * antal) / KOK_LUCKOR_FAST_MAX);
+}
+
+/** Posterna för en kant, k = 0 nedre och 1 övre (specen 2.6). */
+function kokPoster(i: KokIndata, k: 0 | 1): KokPostRad[] {
+  const egen = egenGaller(i);
+  const monteringEgen = egen.includes('montering');
+  const poster: KokPostRad[] = [];
+  const arbete = (kr: number, arEgen: boolean): Pick<KokPostRad, 'arbeteKr' | 'arbete'> =>
+    arEgen ? { arbeteKr: 0, arbete: 'egen' } : { arbeteKr: kr, arbete: 'belopp' };
+
+  if (i.vag === 'nytt') {
+    poster.push({ nyckel: 'rivning', materialKr: 0, ...arbete(KOK_RIVNING_KR[k], egen.includes('rivning')) });
+    poster.push({
+      nyckel: 'stommar',
+      materialKr: Math.round(KOK_STOMMAR_KR_PER_M * i.meter),
+      ...arbete(KOK_MONTERING_KR[k], monteringEgen),
+    });
+  }
+  if (harLuckor(i.vag)) {
+    poster.push({
+      nyckel: 'luckor',
+      materialKr: i.antalLuckor * KOK_LUCKA_KR[i.niva],
+      ...arbete(kokLuckorMonteringKr(i.antalLuckor), monteringEgen),
+    });
+    if (i.gangjarn === 'nya') {
+      poster.push({
+        nyckel: 'gangjarn',
+        materialKr: i.antalLuckor * KOK_GANGJARN_PER_LUCKA * KOK_GANGJARN_KR,
+        arbeteKr: 0,
+        arbete: 'ingar',
+      });
+    }
+  }
+  if (harBankskiva(i.vag)) {
+    const materialKr = Math.round(i.meter * KOK_BANKSKIVA_KR_PER_LM[i.material][k]);
+    poster.push(
+      i.vag === 'nytt'
+        ? { nyckel: 'bankskiva', materialKr, arbeteKr: 0, arbete: 'ingar' }
+        : {
+            nyckel: 'bankskiva',
+            materialKr,
+            ...arbete(Math.round(i.meter * KOK_BANKSKIVA_MONTERING_KR_PER_LM[k]), monteringEgen),
+          },
+    );
+  }
+  if (i.vag === 'nytt') {
+    poster.push({ nyckel: 'vitvaror', materialKr: KOK_VITVAROR_KR[k], arbeteKr: 0, arbete: 'inget' });
+    if (i.flytt.includes('el')) poster.push({ nyckel: 'el', materialKr: 0, arbeteKr: KOK_EL_KR[k], arbete: 'belopp' });
+    if (i.flytt.includes('diskbank')) {
+      poster.push({ nyckel: 'vvs', materialKr: 0, arbeteKr: KOK_VVS_KR[k], arbete: 'belopp' });
+    }
+  }
+  return poster;
+}
+
+/** En kant: posterna, summorna och rotavdraget genom rotavdrag.ts (specen K8). */
+function kokKant(i: KokIndata, k: 0 | 1): KokSiffror {
+  const poster = kokPoster(i, k);
+  const arbeteKr = poster.reduce((s, p) => s + p.arbeteKr, 0);
+  const materialKr = poster.reduce((s, p) => s + p.materialKr, 0);
+  const foreRotKr = arbeteKr + materialKr;
+  const rot = raknaRotavdrag({
+    arbetskostnadKr: arbeteKr,
+    materialkostnadKr: materialKr,
+    antalAgare: i.agare,
+    utnyttjatRotKr: i.rotKr,
+    utnyttjatRutKr: 0,
+    skattKr: null,
+  });
+  if (rot.status !== 'ok') throw new Error('[renovering] Rotavdraget för köket ska alltid gå att räkna på giltig indata');
+  return {
+    poster,
+    arbeteKr,
+    materialKr,
+    foreRotKr,
+    rotKr: rot.avdragKr,
+    raktRotKr: rot.raktAvdragKr,
+    kapatKr: rot.kapatKr,
+    attBetalaKr: foreRotKr - rot.avdragKr,
+    andelArbeteProcent: foreRotKr === 0 ? 0 : Math.round((arbeteKr / foreRotKr) * 100),
+    begransad: rot.begransatAv !== 'procent',
+  };
+}
+
+/** harArbete: något i svaret ger rotavdrag. Annars gäller rot-pa-allt inte. */
+function kokGorInte(i: KokIndata, harArbete: boolean): KokGorInte[] {
+  const ut: KokGorInte[] = harArbete ? ['rot-pa-allt'] : [];
+  if (harLuckor(i.vag)) ut.push('verkstad-rot');
+  if (i.vag === 'nytt') {
+    ut.push('el-sjalv');
+    if (i.flytt.includes('diskbank')) ut.push('vvs-intyg');
+    if (i.egen.includes('rivning')) ut.push('riva-sjalv');
+  }
+  return ut;
+}
+
+/** Posterna, båda kanterna, utfallet och reglerna utan validering. */
+export function raknaKokPoster(i: KokIndata): KokOk {
+  const lag = kokKant(i, 0);
+  const hog = kokKant(i, 1);
+  const utfall: KokUtfall = hog.begransad ? 'tak' : 'belopp';
+  const spann = lag.foreRotKr !== hog.foreRotKr;
+  /* Gör läsaren allt arbete själv finns inget att räkna rotavdrag på, och
+     reglerna om gränsen och procenten på hela priset visas inte. */
+  const harArbete = hog.arbeteKr > 0;
+
+  const regler: KokRegelNyckel[] = [];
+  if (harLuckor(i.vag)) regler.push('luckor-pris', 'luckor-montering', 'gangjarn');
+  if (harBankskiva(i.vag)) regler.push('bankskiva');
+  if (i.vag === 'nytt') regler.push('nytt-enkel', 'flytt');
+  if (spann) regler.push('spann');
+  regler.push('tillkommer', 'rot-arbete');
+  if (harArbete) regler.push('rot-tak');
+  if (utfall === 'tak') regler.push('rot-slog-i');
+  if (egenGaller(i).length > 0) regler.push('egen-insats');
+
+  return { status: 'ok', utfall, ...lag, hog, spann, gorInteDetHar: kokGorInte(i, harArbete), regler };
+}
+
+export function raknaKokKostnad(i: KokIndata): KokResultat {
+  const fel: Partial<Record<KokFelNyckel, string>> = {};
+  const g = KOK_GRANSER;
+  if (!(Number.isInteger(i.antalLuckor) && inom(i.antalLuckor, g.antalLuckor))) {
+    fel.luckor = KOK_TEXT.fel.luckor(g.antalLuckor[0], g.antalLuckor[1]);
+  }
+  if (!inom(i.meter, g.meter)) fel.meter = KOK_TEXT.fel.meter(g.meter[0], g.meter[1]);
+  const agareGiltig = i.agare === 1 || i.agare === 2;
+  if (!agareGiltig) fel.agare = KOK_TEXT.fel.agare;
+  const rotMax = g.rotKr[1] * (agareGiltig ? i.agare : 2);
+  if (!(Number.isFinite(i.rotKr) && i.rotKr >= g.rotKr[0] && i.rotKr <= rotMax)) fel.rot = KOK_TEXT.fel.rot(rotMax);
+  if (Object.keys(fel).length > 0) return { status: 'ogiltig', fel };
+  return raknaKokPoster(i);
+}
+
+/* ------------------------------------------------------------------ *
+ * Värdena till texterna
+ * ------------------------------------------------------------------ */
+
+export function kokBeskedVarden(r: KokOk, i: KokIndata): KokBeskedVarden {
+  const h = r.hog;
+  return {
+    utfall: r.utfall,
+    vag: i.vag,
+    attBetala: spannText(r.attBetalaKr, h.attBetalaKr),
+    foreRot: spannText(r.foreRotKr, h.foreRotKr),
+    rot: spannText(r.rotKr, h.rotKr),
+    kapat: spannText(r.kapatKr, h.kapatKr),
+    kapatMax: krText(h.kapatKr),
+    arbete: spannText(r.arbeteKr, h.arbeteKr),
+    material: spannText(r.materialKr, h.materialKr),
+    andelArbete: spannText(r.andelArbeteProcent, h.andelArbeteProcent, String),
+    luckor: String(i.antalLuckor),
+    meter: kvmText(i.meter),
+    agare: i.agare,
+    hamtat: datumText(KOK_PRISER_HAMTADE),
+    spann: r.spann,
+  };
+}
+
+/** Talen kortsvaret byggs av, räknade med KOK_STANDARD. Skrivs aldrig för hand. */
+export function kokKortsvarVarden(): KokKortsvarVarden {
+  const belopp = (andring: Partial<KokIndata>): KortsvarBelopp => {
+    const r = raknaKokPoster({ ...KOK_STANDARD, ...andring });
+    return {
+      foreRot: spannText(r.foreRotKr, r.hog.foreRotKr),
+      rot: spannText(r.rotKr, r.hog.rotKr),
+      attBetala: spannText(r.attBetalaKr, r.hog.attBetalaKr),
+    };
+  };
+  return {
+    luckor: belopp({}),
+    bankskiva4: belopp({ vag: 'bankskiva', meter: 4 }),
+    bankskiva5: belopp({ vag: 'bankskiva', meter: 5 }),
+    nytt4: belopp({ vag: 'nytt', meter: 4 }),
+    nytt5: belopp({ vag: 'nytt', meter: 5 }),
+    hamtat: datumText(KOK_PRISER_HAMTADE),
+  };
+}
+
+/**
+ * Källorna som står vid namn under en regel: allt utom förmedlarna, som bara
+ * namnges i antagandetabellen (checklistans fälla).
+ */
+export function kokRegelKallor(nyckel: KokRegelNyckel): KallaRef[] {
+  return KOK_TEXT.regel[nyckel].kallor.map((k) => KALLOR[k]).filter((k) => k.slag !== 'förmedlare');
+}
+
+/* ------------------------------------------------------------------ *
+ * Antagandetabellen (specen 2.9)
+ * ------------------------------------------------------------------ */
+
+export interface KokAntagandeDef {
+  nyckel: string;
+  /** Byggs av konstanterna, aldrig för hand. */
+  varde: (i: KokIndata) => string;
+  typ: 'Källa' | 'Antagande';
+  kallor: KallKod[];
+  /** När raden gäller svaret. */
+  galler: (i: KokIndata) => boolean;
+}
+
+const spannKr = (s: readonly [number, number]): string => `${spannText(s[0], s[1])} kr`;
+const alltid = (): boolean => true;
+const arNytt = (i: KokIndata): boolean => i.vag === 'nytt';
+
+export const KOK_ANTAGANDEN: KokAntagandeDef[] = [
+  {
+    nyckel: 'lucka-pris',
+    varde: (i) =>
+      KOK_TEXT.antagandeVarde['lucka-pris'](krText(KOK_LUCKA_KR[i.niva]), String(KOK_LUCKA_PRISGRUPP[i.niva])),
+    typ: 'Källa',
+    kallor: ['VED'],
+    galler: (i) => harLuckor(i.vag),
+  },
+  {
+    nyckel: 'gangjarn',
+    varde: () => KOK_TEXT.antagandeVarde.gangjarn(krText(KOK_GANGJARN_KR), String(KOK_GANGJARN_PER_LUCKA)),
+    typ: 'Källa',
+    kallor: ['VED', 'IKEA'],
+    galler: (i) => harLuckor(i.vag) && i.gangjarn === 'nya',
+  },
+  {
+    nyckel: 'luckor-montering',
+    varde: () => `${krText(KOK_LUCKOR_MONTERING_KR)} kr`,
+    typ: 'Källa',
+    kallor: ['TB-LUCKOR'],
+    galler: (i) => harLuckor(i.vag),
+  },
+  {
+    nyckel: 'luckor-fast-max',
+    varde: () => KOK_TEXT.antagandeVarde['luckor-fast-max'](String(KOK_LUCKOR_FAST_MAX)),
+    typ: 'Antagande',
+    kallor: ['HK-LUCKOR'],
+    galler: (i) => harLuckor(i.vag),
+  },
+  {
+    nyckel: 'bankskiva-material',
+    varde: (i) => KOK_TEXT.antagandeVarde['bankskiva-material'](spannKr(KOK_BANKSKIVA_KR_PER_LM[i.material])),
+    typ: 'Källa',
+    kallor: ['KIT'],
+    galler: (i) => harBankskiva(i.vag),
+  },
+  {
+    nyckel: 'bankskiva-montering',
+    varde: () => KOK_TEXT.antagandeVarde['bankskiva-montering'](spannKr(KOK_BANKSKIVA_MONTERING_KR_PER_LM)),
+    typ: 'Källa',
+    kallor: ['TB-BANK'],
+    galler: (i) => harBankskiva(i.vag) && !arNytt(i),
+  },
+  {
+    nyckel: 'bankskiva-i-kok',
+    varde: () => KOK_TEXT.antagandeVarde['bankskiva-i-kok'],
+    typ: 'Antagande',
+    kallor: [],
+    galler: arNytt,
+  },
+  {
+    nyckel: 'stommar',
+    varde: () => KOK_TEXT.antagandeVarde.stommar(krText(KOK_STOMMAR_KR_PER_M)),
+    typ: 'Källa',
+    kallor: ['IKEA'],
+    galler: arNytt,
+  },
+  {
+    nyckel: 'stommar-modul',
+    varde: () => KOK_TEXT.antagandeVarde['stommar-modul'],
+    typ: 'Antagande',
+    kallor: ['IKEA'],
+    galler: arNytt,
+  },
+  { nyckel: 'montering-kok', varde: () => spannKr(KOK_MONTERING_KR), typ: 'Källa', kallor: ['TB-IKEA'], galler: arNytt },
+  {
+    nyckel: 'montering-storlek',
+    varde: () => KOK_TEXT.antagandeVarde['montering-storlek'],
+    typ: 'Antagande',
+    kallor: ['TB-IKEA'],
+    galler: arNytt,
+  },
+  { nyckel: 'vitvaror', varde: () => spannKr(KOK_VITVAROR_KR), typ: 'Källa', kallor: ['TB-IKEA'], galler: arNytt },
+  { nyckel: 'rivning', varde: () => spannKr(KOK_RIVNING_KR), typ: 'Källa', kallor: ['HK-KOK'], galler: arNytt },
+  {
+    nyckel: 'el',
+    varde: () => spannKr(KOK_EL_KR),
+    typ: 'Källa',
+    kallor: ['HK-NYTT'],
+    galler: (i) => arNytt(i) && i.flytt.includes('el'),
+  },
+  {
+    nyckel: 'vvs',
+    varde: () => spannKr(KOK_VVS_KR),
+    typ: 'Källa',
+    kallor: ['HK-NYTT'],
+    galler: (i) => arNytt(i) && i.flytt.includes('diskbank'),
+  },
+  {
+    nyckel: 'el-vvs-arbete',
+    varde: () => KOK_TEXT.antagandeVarde['el-vvs-arbete'],
+    typ: 'Antagande',
+    kallor: [],
+    galler: (i) => arNytt(i) && i.flytt.length > 0,
+  },
+  {
+    nyckel: 'ingen-dyr-niva',
+    varde: () => KOK_TEXT.antagandeVarde['ingen-dyr-niva'],
+    typ: 'Antagande',
+    kallor: [],
+    galler: arNytt,
+  },
+  { nyckel: 'ej-med', varde: () => KOK_TEXT.antagandeVarde['ej-med'], typ: 'Antagande', kallor: [], galler: alltid },
+  { nyckel: 'rot-procent', varde: () => `${ROT_PROCENT} procent`, typ: 'Källa', kallor: ['SKV-ROT'], galler: alltid },
+  {
+    nyckel: 'rot-grans',
+    varde: () => KOK_TEXT.antagandeVarde['rot-grans'](krText(ROT_TAK_KR)),
+    typ: 'Källa',
+    kallor: ['SKV-ROT'],
+    galler: alltid,
+  },
+  { nyckel: 'rut-skatt', varde: () => KOK_TEXT.antagandeVarde['rut-skatt'], typ: 'Antagande', kallor: [], galler: alltid },
+];
+
+/** Raderna svaret vilar på, i tabellens ordning. */
+export function kokAntagandenFor(i: KokIndata): AntagandeRad[] {
+  return KOK_ANTAGANDEN.filter((a) => a.galler(i)).map((a) => ({
+    nyckel: a.nyckel,
+    varde: a.varde(i),
+    typ: a.typ,
+    kallor: a.kallor,
   }));
 }

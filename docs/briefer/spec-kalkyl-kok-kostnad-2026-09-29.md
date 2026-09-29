@@ -116,6 +116,8 @@ Köket läggs i `renovering.ts` efter badrummet, under en egen rubrik, med prefi
 | `HK-NYTT` | Hantverkskollen, nytt kök från grunden | hantverkskollen.se/artiklar/snickare/snickare-nytt-kok-kostnad-vad-kostar-ett-helt-fran-grunden | förmedlare | uppdaterad 2026-07-17 |
 | `ELSAK-SJALV` | Elsäkerhetsverket, vad får jag göra själv med el | elsakerhetsverket.se/privatpersoner/detta-far-du-gora-sjalv-med-el/vad-far-jag-gora-sjalv-med-el/ | myndighet | granskad 2025-07-30 |
 
+Tillagt 2026-09-29 efter hantverkarens not: `IF`, If, Villaförsäkring, försäkringsvillkor december 2025, s. 8 och 14, if.se/globalassets/se/dokument/privat/villaforsakring-villkor.pdf, slag `försäkringsbolag` (nytt värde), december 2025. Källan till brödtextens stycke om Säker Vatten (faktabladet `guider-byta-toalettstol.md` punkt 5). Sidan lägger `ELSAK-SJALV`, `SV` och `IF` sist i källistan under antagandetabellen (`BRODTEXT_KALLOR`), eftersom brödtexten citerar dem oavsett väg.
+
 Alla med `https://www.` eller `https://` som i underlaget. `slag` får värdet `tillverkare` tillagt. `SV`, `SKV-ROT` och `SKV-RATT` återanvänds. Totalbyggarna, TB och SF är samma firma; de räknas aldrig som flera källor i en text.
 
 ### 2.2 Typer
@@ -220,9 +222,9 @@ Decimalkomma och mellanslag (också hårda) tolkas. `flytt` och `egen` deduplice
 
 Summor, rot, `attBetalaKr = foreRot − rot`, `andelArbeteProcent`, `begransad` som badrummet. `utfall` följer den övre kanten.
 
-**gorInteDetHar:** `rot-pa-allt` alltid först. `verkstad-rot` när vägen har luckor. `el-sjalv` i nytt. `vvs-intyg` i nytt med `flytt` diskbank. `riva-sjalv` i nytt med egen `rivning`.
+**gorInteDetHar:** `rot-pa-allt` först när den övre kantens arbete är över 0 kr (ändrat 2026-09-29 efter hantverkarens not; utan arbete finns inget att räkna procenten på). `verkstad-rot` när vägen har luckor. `el-sjalv` i nytt. `vvs-intyg` i nytt med `flytt` diskbank. `riva-sjalv` i nytt med egen `rivning`.
 
-**regler**, i ordning: `luckor-pris`, `luckor-montering`, `gangjarn` (vägar med luckor); `bankskiva` (vägar med bänkskiva); `nytt-enkel`, `flytt` (nytt); `spann` (när `spann`); `tillkommer` alltid; `rot-arbete`, `rot-tak`; `rot-slog-i` vid tak; `egen-insats` när ett val i `egen` gäller vägen (`montering` alltid, `rivning` bara i nytt).
+**regler**, i ordning: `luckor-pris`, `luckor-montering`, `gangjarn` (vägar med luckor); `bankskiva` (vägar med bänkskiva); `nytt-enkel`, `flytt` (nytt); `spann` (när `spann`); `tillkommer` alltid; `rot-arbete`; `rot-tak` när den övre kantens arbete är över 0 kr (ändrat 2026-09-29); `rot-slog-i` vid tak; `egen-insats` när ett val i `egen` gäller vägen (`montering` alltid, `rivning` bara i nytt).
 
 ### 2.7 Hjälpfunktioner
 
@@ -238,7 +240,7 @@ Allt i `KOK_TEXT`, varje värde `'TEXT SAKNAS: <nyckel>'` tills hantverkaren skr
 
 | Nyckel | Värdet | Typ | Källor | Visas när |
 |---|---|---|---|---|
-| `lucka-pris` | kr per lucka för vald nivå | Källa | VED | luckor |
+| `lucka-pris` | kr per lucka för vald nivå; `antagandeVarde['lucka-pris'](kr, prisgrupp)` får Vedums prisgrupp ur `KOK_LUCKA_PRISGRUPP` (1, 5, 10) | Källa | VED | luckor |
 | `gangjarn` | 169 kr styck, 2 per lucka | Källa | VED, IKEA | luckor och `nya` |
 | `luckor-montering` | 7 500 kr före rotavdrag | Källa | TB-LUCKOR | luckor |
 | `luckor-fast-max` | upp till 20 luckor, sedan i proportion | Antagande | HK-LUCKOR | luckor |
@@ -315,7 +317,8 @@ Fel under fältet med `aria-describedby`, hjälpraden står kvar. Ingen tabell i
 Som `badrum-kostnad.astro`, rad för rad, med de här skillnaderna:
 
 - `SLUG = 'kok-kostnad'`, `UTKAST = true`, `VERKTYGSNAMN`, `BESKRIVNING`, `titel`, `H1`, `INGRESS`, `H2_VAGAR`, `H2_SJALV`, `H2_ROT` är `TEXT SAKNAS`.
-- Spalten: beskedet, `etikett-betala`, det stora talet (spann som "A till B" vid spann), `rad-summa(foreRot, rot)`, `rad-delning(arbete, material)`, `rad-kallor(hamtat)`, pekraden, länken till "Så räknar jag", länken till rotavdragsräknaren med `kokRotavdragQuery`, dela. **Högst 700 tecken synlig text vid standard.**
+- Spalten: beskedet, `etikett-betala`, det stora talet (spann som "A till B" vid spann), `rad-summa(foreRot, rot)` och `rad-delning(arbete, material)` i ett stycke, pekraden, länken till rotavdragsräknaren med `kokRotavdragQuery` (bara när den övre kantens arbete är över 0 kr), `rad-kallor(hamtat)`, länken till "Så räknar jag", dela. Ordningen skiljer sig från badrummets med avsikt (ändrad 2026-09-29): varje rad följs av länken som går vidare från den.
+- Källraderna under reglerna och i källistan: datumet i ett eget `<span>` med `whitespace-nowrap`, så att "2026-09-28" aldrig bryts vid bindestrecket. **Högst 700 tecken synlig text vid standard.**
 - "Därför blev svaret så": posttabellen med `arbete`-cellen som tal, `postEgen`, `postIngar` eller `postInget`; summaraden; `kallrad`; `rot(v)`, `betala(v)`; reglerna med `kokRegelKallor` och `kallradEfterRegel(kallor, false)`.
 - Tre H2 med brödtext (checklistan 6): vägarna, med länk till `/kok/byta-koksluckor/` och `/kok/mala-koksluckor/`; egen insats, bär "renovera kök billigt", länk till `/kok/mala-koksluckor/`; rotavdraget, länk till `/rakna/rotavdrag/`.
 - Läs vidare: `/kok/byta-koksluckor/`, `/kok/mala-koksluckor/`, `/rakna/rotavdrag/`. `/kok/byta-bankskiva/` läggs till först när den är publicerad (checklistans tillägg 3); en länk till ett utkast stoppar bygget.

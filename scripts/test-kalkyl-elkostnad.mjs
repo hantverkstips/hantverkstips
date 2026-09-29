@@ -218,3 +218,94 @@ test('produkten i adressen fyller i effekten, men aldrig litern', () => {
   naraNog(r.kwhPerLiter, 1.72, 'kWh per liter');
   naraNog(r.krPerLiter, 4.13, 'kr per liter');
 });
+
+/*
+ * Förvalet för <Kalkylator namn="elkostnad" forval="..." /> (svaret till SEO,
+ * docs/briefer/seo-checklista-2026-09-29/raknare.md, tillägget för startlista 4):
+ * golvvärmesidan och garagesidan bäddar in räknaren med sina egna värden.
+ */
+import {
+  formVarden,
+  forvalFranAdress,
+  GOR_INTE_DYGNET_RUNT_GOLVVARME,
+  gorInteText,
+  STANDARD as EL_STANDARD,
+  typFranQuery,
+} from '../src/lib/kalkyl/elkostnad.ts';
+import { readFileSync as lasFil } from 'node:fs';
+
+test('förval: golvvärme skrivs som hela golvets effekt i watt, med typen', () => {
+  // Faktabladet docs/briefer/faktablad/kunskap-golvvarme-badrum.md, avsnitt 1
+  // och 2d: DEVImat 150T, "150 W/m²", gånger 4 m² fri yta är 600 W. Talet och
+  // källan är artikelns; räknaren tar bara emot watten.
+  const f = forvalFranAdress('effekt=600&dagar=365&typ=golvvarme');
+  assert.equal(f.status, 'ok');
+  assert.equal(f.typ, 'golvvarme');
+  assert.equal(f.indata.effektW, 600);
+  assert.equal(f.indata.dagar, 365);
+  assert.equal(f.indata.timmarPerDygn, EL_STANDARD.timmarPerDygn);
+  assert.equal(f.indata.elprisKrPerKwh, EL_STANDARD.elprisKrPerKwh);
+  assert.equal(f.varden.effekt, '600');
+  assert.equal(f.varden.dagar, '365');
+  assert.equal(f.varden.liter, '');
+  assert.equal(forvalFranAdress('effekt=320').typ, 'maskin');
+  assert.equal(forvalFranAdress('effekt=600&typ=bastu').status, 'fel');
+});
+
+test('typ: golvvärme visar aldrig avfuktarens text vid 24 timmar', () => {
+  assert.equal(typFranQuery(new URLSearchParams('typ=golvvarme')), 'golvvarme');
+  assert.equal(typFranQuery(new URLSearchParams('typ=x')), 'maskin');
+  assert.equal(typFranQuery(new URLSearchParams('')), 'maskin');
+  const dygnet = raknaElkostnad({ ...EL_STANDARD, effektW: 600, timmarPerDygn: 24 });
+  assert.equal(dygnet.status, 'ok');
+  // Maskinen: avfuktarens text, som förut.
+  assert.equal(gorInteText(dygnet, 'maskin'), dygnet.gorInteDetHar);
+  assert.match(gorInteText(dygnet, 'maskin'), /avfuktare/);
+  // Golvvärmen: golvvärmens egen text, eller ingen alls tills hantverkaren skrivit den.
+  assert.equal(gorInteText(dygnet, 'golvvarme'), GOR_INTE_DYGNET_RUNT_GOLVVARME);
+  assert.doesNotMatch(gorInteText(dygnet, 'golvvarme') ?? '', /avfuktare|hygrostat/);
+  const atta = raknaElkostnad({ ...EL_STANDARD, effektW: 600 });
+  assert.equal(gorInteText(atta, 'golvvarme'), null);
+});
+
+test('sidan: typen följer med i formuläret och den delbara adressen', () => {
+  const sida = lasFil(new URL('../src/pages/rakna/elkostnad.astro', import.meta.url), 'utf8');
+  assert.match(sida, /typFranQuery\(q\)/);
+  assert.match(sida, /delaQuery\.set\('typ', typ\)/);
+  assert.match(sida, /gorInteText\(visat, typ\)/);
+  assert.doesNotMatch(sida, /\{visat\.gorInteDetHar\}/);
+  const form = lasFil(new URL('../src/components/kalkyl/ElkostnadForm.astro', import.meta.url), 'utf8');
+  assert.match(form, /name="typ" value="golvvarme"/);
+});
+
+test('förval: avfuktare med liter och decimalkomma', () => {
+  const f = forvalFranAdress('effekt=320&timmar=8,5&liter=6&dagar=365');
+  assert.equal(f.status, 'ok');
+  assert.equal(f.indata.timmarPerDygn, 8.5);
+  assert.equal(f.indata.literPerDygn, 6);
+  assert.equal(f.varden.timmar, '8,5');
+  assert.equal(f.varden.liter, '6');
+  assert.equal(f.varden.dagar, '365');
+});
+
+test('förval: okänd nyckel eller ogiltigt värde ger fel', () => {
+  assert.equal(forvalFranAdress('effekt=100&kvm=4').status, 'fel');
+  assert.equal(forvalFranAdress('effekt=abc').status, 'fel');
+  assert.equal(forvalFranAdress('timmar=25').status, 'fel');
+});
+
+test('formVarden(STANDARD) är formulärets standardvärden som förut', () => {
+  const v = formVarden(EL_STANDARD);
+  assert.equal(v.effekt, '320');
+  assert.equal(v.timmar, '8');
+  assert.equal(v.dagar, '30');
+  assert.equal(v.elpris, EL_STANDARD.elprisKrPerKwh.toFixed(2).replace('.', ','));
+  assert.equal(v.liter, '');
+});
+
+test('Kalkylator: förval för elkostnad går genom forvalFranAdress och fyller formuläret', () => {
+  const k = lasFil(new URL('../src/components/ui/Kalkylator.astro', import.meta.url), 'utf8');
+  assert.match(k, /namn !== 'grannemedgivande' && namn !== 'elkostnad'/);
+  assert.match(k, /elkostnadForval\(forval\)/);
+  assert.match(k, /<ElkostnadForm kompakt=\{true\} indata=\{elIndata\} varden=\{elVarden\} typ=\{elTyp\}/);
+});

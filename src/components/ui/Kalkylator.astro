@@ -13,6 +13,7 @@
  * Rubriken är ett <p> i H3-stil, inte en H3: komponenten kan stå var som helst i
  * en artikel och en riktig H3 skulle kunna ge fel rubrikordning.
  */
+import { forvalFranAdress as elkostnadForval } from '../../lib/kalkyl/elkostnad';
 import { tolkaQuery as tolkaGrannemedgivande } from '../../lib/kalkyl/grannemedgivande';
 import { hittaKalkylator } from '../../lib/kalkyl/register';
 import AltanForm from '../kalkyl/AltanForm.astro';
@@ -27,6 +28,7 @@ import GrannemedgivandeForm from '../kalkyl/GrannemedgivandeForm.astro';
 import GipsskruvForm from '../kalkyl/GipsskruvForm.astro';
 import InnervaggForm from '../kalkyl/InnervaggForm.astro';
 import KallareForm from '../kalkyl/KallareForm.astro';
+import KokKostnadForm from '../kalkyl/KokKostnadForm.astro';
 import KvadratmeterForm from '../kalkyl/KvadratmeterForm.astro';
 import MalaUteForm from '../kalkyl/MalaUteForm.astro';
 import RotavdragForm from '../kalkyl/RotavdragForm.astro';
@@ -42,11 +44,16 @@ interface Props {
   /** Kalkylatorns slug i src/lib/kalkyl/register.ts. */
   namn: string;
   /**
-   * Förval som en querysträng, till exempel "atgard=altan". Finns bara för
+   * Förval som en querysträng, till exempel "atgard=altan". Finns för
    * grannemedgivandet (docs/briefer/spec-kalkyl-grannemedgivande-2026-09-28.md
-   * 12.6); en annan slug med förval ger byggfel, så att ingen tror att det
-   * fungerar tyst. Skrivs efter namn, eftersom kontrollen i
-   * scripts/kontrollera-innehall.ts kräver att namn står först.
+   * 12.6) och elkostnaden, med samma nycklar som verktygets delbara adress
+   * plus typ=golvvarme (forvalFranAdress i src/lib/kalkyl/elkostnad.ts).
+   * Talen och deras källor är artikelns: golvvärmesidan skriver golvets hela
+   * effekt i watt, tillverkarens W/m² gånger den fria ytan.
+   * En annan slug med förval, en okänd nyckel eller ett värde som räknaren
+   * inte godtar ger byggfel, så att ingen tror att det fungerar tyst. Skrivs
+   * efter namn, eftersom kontrollen i scripts/kontrollera-innehall.ts kräver
+   * att namn står först.
    */
   forval?: string;
   /**
@@ -80,6 +87,7 @@ const MED_FORMULAR = [
   'kontrollplan',
   'takbyte',
   'takavvattning',
+  'kok-kostnad',
 ];
 
 const { namn, forval, forst } = Astro.props;
@@ -93,9 +101,17 @@ if (!MED_FORMULAR.includes(namn)) {
   );
 }
 
-if (forval !== undefined && namn !== 'grannemedgivande') {
-  throw new Error(`[Kalkylator] Förval finns bara för grannemedgivandet, inte för "${namn}".`);
+if (forval !== undefined && namn !== 'grannemedgivande' && namn !== 'elkostnad') {
+  throw new Error(`[Kalkylator] Förval finns bara för grannemedgivandet och elkostnaden, inte för "${namn}".`);
 }
+/** Elkostnadens förval, tolkat och prövat som adressen på verktygssidan. */
+const elForval = namn === 'elkostnad' && forval !== undefined ? elkostnadForval(forval) : undefined;
+if (elForval?.status === 'fel') {
+  throw new Error(`[Kalkylator] Förvalet "${forval}" till elkostnaden går inte att räkna: ${elForval.fel}`);
+}
+const elIndata = elForval?.status === 'ok' ? elForval.indata : undefined;
+const elVarden = elForval?.status === 'ok' ? elForval.varden : undefined;
+const elTyp = elForval?.status === 'ok' ? elForval.typ : undefined;
 /** Grannemedgivandets förval, tolkat som adressen på verktygssidan. */
 if (forst !== undefined && namn !== 'kontrollplan') {
   throw new Error(`[Kalkylator] forst finns bara för kontrollplanen, inte för "${namn}".`);
@@ -105,7 +121,8 @@ const forstAtgarder: Atgard[] = (forst ?? '').split(/\s+/).filter((o) => o !== '
   if (!a) throw new Error(`[Kalkylator] "${o}" i forst är ingen åtgärd i kontrollplanen.`);
   return a;
 });
-const forvalIndata = forval ? tolkaGrannemedgivande(new URLSearchParams(forval)).indata : undefined;
+const forvalIndata =
+  forval && namn === 'grannemedgivande' ? tolkaGrannemedgivande(new URLSearchParams(forval)).indata : undefined;
 
 /*
  * Fotraden under varje inbäddat verktyg. Ska vara sann för alla inbäddade
@@ -130,7 +147,7 @@ const prefix = `${k.slug}-inbaddad-`;
 
   {namn === 'daggpunkt' && <DaggpunktForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'avfuktare' && <AvfuktareForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
-  {namn === 'elkostnad' && <ElkostnadForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
+  {namn === 'elkostnad' && <ElkostnadForm kompakt={true} indata={elIndata} varden={elVarden} typ={elTyp} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'innervagg' && <InnervaggForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'bygglov-altan' && <BygglovAltanForm kompakt={true} idPrefix={prefix} knappText="Ge mig svaret" />}
   {namn === 'altan' && <AltanForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
@@ -148,6 +165,7 @@ const prefix = `${k.slug}-inbaddad-`;
   {namn === 'kontrollplan' && <KontrollplanForm kompakt={true} forst={forstAtgarder} idPrefix={prefix} knappText="Visa kontrollplanen" />}
   {namn === 'takbyte' && <TakbyteForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'takavvattning' && <TakavvattningForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
+  {namn === 'kok-kostnad' && <KokKostnadForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
 
   <p class="m-0 mt-4 text-liten text-blyerts-2">
     {FOTRAD}

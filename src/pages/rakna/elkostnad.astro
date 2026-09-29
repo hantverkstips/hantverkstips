@@ -21,11 +21,13 @@ import Bas from '../../layouts/Bas.astro';
 import { ELPRIS_KALLA, ELPRIS_KR_PER_KWH } from '../../lib/antaganden';
 import { formateraPris, formateraTal } from '../../lib/format';
 import {
+  gorInteText,
   produktForval,
   produktSlugFranQuery,
   raknaElkostnad,
   standardMedForval,
   tolkaQuery,
+  typFranQuery,
   type ElkostnadIndata,
   type ElkostnadResultat,
 } from '../../lib/kalkyl/elkostnad';
@@ -55,12 +57,16 @@ const forval = produktForval(produkt?.specs ?? null);
 const standard = standardMedForval(forval);
 
 const { indata } = tolkaQuery(q, forval);
+/* golvvarme från golvvärmesidans förval: samma räkning, golvvärmens texter. */
+const typ = typFranQuery(q);
 const resultat = raknaElkostnad(indata);
 
 const fel = resultat.status === 'ogiltig' ? resultat.fel : {};
 // Vid ogiltig indata visas standardvärdenas resultat, med en rad som säger det.
 const visat: ElkostnadResultat = resultat.status === 'ogiltig' ? raknaElkostnad(standard) : resultat;
 const visatIndata: ElkostnadIndata = resultat.status === 'ogiltig' ? standard : indata;
+/* Vid golvvärme aldrig avfuktarens text om hygrostaten (gorInteText). */
+const gorInte = visat.status === 'ok' ? gorInteText(visat, typ) : null;
 
 const komma = (n: number) => String(n).replace('.', ',');
 /** Tal i löptext: heltal utan decimal, annars en. "19 liter", "7,4 liter". */
@@ -124,6 +130,7 @@ const delaQuery = new URLSearchParams({
   elpris: komma(visatIndata.elprisKrPerKwh),
 });
 if (visatIndata.literPerDygn !== null) delaQuery.set('liter', komma(visatIndata.literPerDygn));
+if (typ === 'golvvarme') delaQuery.set('typ', typ);
 const delaLank = new URL(`/rakna/elkostnad/?${delaQuery.toString()}`, Astro.site ?? Astro.url).toString();
 
 /** Tal ur resultatet, färdigformaterade, så att markupen nedan blir läsbar. */
@@ -287,6 +294,7 @@ const huvudbild = varumarke ?? illustration;
         fel={fel}
         produktSlug={produktSlug}
         produktRad={produktRad}
+        typ={typ}
       />
 
       <div class="mt-8 border-t border-linje pt-6 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
@@ -394,12 +402,12 @@ const huvudbild = varumarke ?? illustration;
               </span>
             </li>
           </ul>
-          {visat.gorInteDetHar && (
+          {gorInte && (
             <>
               <h3 id="gor-inte-det-har" class="m-0 mt-6 font-sans text-h3 lg:text-h3-lg text-blyerts">
                 Gör inte det här
               </h3>
-              <p class="m-0 mt-2 text-brod lg:text-brod-lg">{visat.gorInteDetHar}</p>
+              <p class="m-0 mt-2 text-brod lg:text-brod-lg">{gorInte}</p>
             </>
           )}
         </section>

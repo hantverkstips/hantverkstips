@@ -1,0 +1,243 @@
+---
+/**
+ * Formuläret till köksräknaren. Sidan /rakna/kok-kostnad/ renderar det i fullt
+ * format, och <Kalkylator namn="kok-kostnad" /> i värdartikeln renderar samma
+ * fält kompakt (docs/briefer/spec-kalkyl-kok-kostnad-2026-09-29.md avsnitt 3).
+ *
+ * Ingen klient-JavaScript. Formuläret skickas som GET, och verktygssidan räknar.
+ * Namnen är query-nycklarna i tolkaKokQuery. Alla fält står alltid, eftersom
+ * formuläret inte kan dölja det som inte hör till vägen utan skript.
+ *
+ * Kompakt: inga hjälprader utom de under flytt och egen insats, som bär
+ * gränserna för vad valen gör.
+ */
+import {
+  KOK_EGEN_VAL,
+  KOK_FLYTT_VAL,
+  KOK_GANGJARN_VAL,
+  KOK_MATERIAL_VAL,
+  KOK_NIVA_VAL,
+  KOK_STANDARD,
+  KOK_TEXT,
+  KOK_VAG_VAL,
+  kvmText,
+  type KokFelNyckel,
+  type KokIndata,
+} from '../../lib/kalkyl/renovering.ts';
+import { ETIKETT_KLASS, FALT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, ramKlass, VAL_KLASS } from '../../lib/kalkyl/stil';
+
+interface Props {
+  /** Valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
+  indata?: KokIndata;
+  /** Talen som de skrevs i adressen, så att ett felskrivet värde går att rätta. */
+  varden?: { luckor: string; meter: string; rot: string };
+  fel?: Partial<Record<KokFelNyckel, string>>;
+  kompakt?: boolean;
+  /** Prefix på id-attributen, så att två formulär på samma sida inte krockar. */
+  idPrefix?: string;
+  knappText?: string;
+}
+
+const {
+  indata = KOK_STANDARD,
+  varden = {
+    luckor: String(KOK_STANDARD.antalLuckor),
+    meter: kvmText(KOK_STANDARD.meter),
+    rot: KOK_STANDARD.rotKr === 0 ? '' : String(KOK_STANDARD.rotKr),
+  },
+  fel = {},
+  kompakt = false,
+  idPrefix = '',
+  knappText = 'Räkna ut',
+} = Astro.props;
+
+const T = KOK_TEXT;
+const id = (namn: string) => `${idPrefix}${namn}`;
+
+/** aria-describedby med hjälpraden och felet när de finns. Hjälpraden står kvar vid fel. */
+function beskrivs(...delar: (string | false | undefined)[]): string | undefined {
+  const idn = delar.filter((d): d is string => typeof d === 'string');
+  return idn.length > 0 ? idn.join(' ') : undefined;
+}
+
+const LEGEND_KLASS = [ETIKETT_KLASS, 'p-0'];
+const FALTGRUPP_KLASS = 'm-0 mb-6 p-0 border-0';
+/** En nästlad grupp radioknappar inne i en fältgrupp. */
+const UNDERGRUPP_KLASS = 'm-0 mt-3 p-0 border-0';
+const UNDERLEGEND_KLASS = 'p-0 mb-1 text-liten text-blyerts-2';
+const ETIKETT_LITEN_KLASS = 'block mb-1 text-liten text-blyerts-2';
+const ENHET_KLASS = 'text-brod text-blyerts-2';
+---
+
+<form method="get" action="/rakna/kok-kostnad/">
+  <fieldset class={FALTGRUPP_KLASS}>
+    <legend class:list={LEGEND_KLASS}>{T.form['legend-vag']}</legend>
+    {
+      KOK_VAG_VAL.map((v) => (
+        <label class={VAL_KLASS}>
+          <input type="radio" name="vag" value={v} checked={indata.vag === v} />
+          {T.vag[v]}
+        </label>
+      ))
+    }
+  </fieldset>
+
+  <fieldset class={FALTGRUPP_KLASS}>
+    <legend class:list={LEGEND_KLASS}>{T.form['legend-luckor']}</legend>
+    <label for={id('luckor')} class={ETIKETT_LITEN_KLASS}>{T.form.luckor}</label>
+    <div class="flex items-center gap-2">
+      <input
+        id={id('luckor')}
+        name="luckor"
+        type="text"
+        inputmode="numeric"
+        value={varden.luckor}
+        aria-describedby={beskrivs(!kompakt && id('luckor-hjalp'), fel.luckor && id('luckor-fel'))}
+        class:list={[FALT_KLASS, 'max-w-40', ramKlass(Boolean(fel.luckor))]}
+      />
+      <span class={ENHET_KLASS}>st</span>
+    </div>
+    {fel.luckor && <p id={id('luckor-fel')} class={FEL_KLASS}>{fel.luckor}</p>}
+    {!kompakt && <p id={id('luckor-hjalp')} class={HJALP_KLASS}>{T.form['luckor-hjalp']}</p>}
+
+    <fieldset class={UNDERGRUPP_KLASS}>
+      <legend class={UNDERLEGEND_KLASS}>{T.form['legend-niva']}</legend>
+      {
+        KOK_NIVA_VAL.map((n) => (
+          <label class={VAL_KLASS}>
+            <input
+              type="radio"
+              name="niva"
+              value={n}
+              checked={indata.niva === n}
+              aria-describedby={!kompakt ? id('niva-hjalp') : undefined}
+            />
+            {T.niva[n]}
+          </label>
+        ))
+      }
+      {!kompakt && <p id={id('niva-hjalp')} class={HJALP_KLASS}>{T.form['niva-hjalp']}</p>}
+    </fieldset>
+
+    <fieldset class={UNDERGRUPP_KLASS}>
+      <legend class={UNDERLEGEND_KLASS}>{T.form['legend-gangjarn']}</legend>
+      {
+        KOK_GANGJARN_VAL.map((g) => (
+          <label class={VAL_KLASS}>
+            <input type="radio" name="gangjarn" value={g} checked={indata.gangjarn === g} />
+            {T.gangjarn[g]}
+          </label>
+        ))
+      }
+    </fieldset>
+  </fieldset>
+
+  <fieldset class={FALTGRUPP_KLASS}>
+    <legend class:list={LEGEND_KLASS}>{T.form['legend-bankskiva']}</legend>
+    <label for={id('meter')} class={ETIKETT_LITEN_KLASS}>{T.form.meter}</label>
+    <div class="flex items-center gap-2">
+      <input
+        id={id('meter')}
+        name="meter"
+        type="text"
+        inputmode="decimal"
+        value={varden.meter}
+        aria-describedby={beskrivs(!kompakt && id('meter-hjalp'), fel.meter && id('meter-fel'))}
+        class:list={[FALT_KLASS, 'max-w-40', ramKlass(Boolean(fel.meter))]}
+      />
+      <span class={ENHET_KLASS}>m</span>
+    </div>
+    {fel.meter && <p id={id('meter-fel')} class={FEL_KLASS}>{fel.meter}</p>}
+    {!kompakt && <p id={id('meter-hjalp')} class={HJALP_KLASS}>{T.form['meter-hjalp']}</p>}
+
+    <fieldset class={UNDERGRUPP_KLASS}>
+      <legend class={UNDERLEGEND_KLASS}>{T.form['legend-material']}</legend>
+      {
+        KOK_MATERIAL_VAL.map((m) => (
+          <label class={VAL_KLASS}>
+            <input type="radio" name="material" value={m} checked={indata.material === m} />
+            {T.material[m]}
+          </label>
+        ))
+      }
+    </fieldset>
+  </fieldset>
+
+  <fieldset class={FALTGRUPP_KLASS}>
+    <legend class:list={LEGEND_KLASS}>{T.form['legend-flytt']}</legend>
+    {
+      KOK_FLYTT_VAL.map((f) => (
+        <label class={VAL_KLASS}>
+          <input
+            type="checkbox"
+            name="flytt"
+            value={f}
+            checked={indata.flytt.includes(f)}
+            aria-describedby={id('flytt-hjalp')}
+          />
+          {T.flytt[f]}
+        </label>
+      ))
+    }
+    <p id={id('flytt-hjalp')} class={HJALP_KLASS}>{T.form['flytt-hjalp']}</p>
+  </fieldset>
+
+  <fieldset class={FALTGRUPP_KLASS}>
+    <legend class:list={LEGEND_KLASS}>{T.form['legend-egen']}</legend>
+    {
+      KOK_EGEN_VAL.map((e) => (
+        <label class={VAL_KLASS}>
+          <input
+            type="checkbox"
+            name="egen"
+            value={e}
+            checked={indata.egen.includes(e)}
+            aria-describedby={id('egen-hjalp')}
+          />
+          {T.egen[e]}
+        </label>
+      ))
+    }
+    <p id={id('egen-hjalp')} class={HJALP_KLASS}>{T.form['egen-hjalp']}</p>
+  </fieldset>
+
+  <fieldset class={FALTGRUPP_KLASS}>
+    <legend class:list={LEGEND_KLASS}>{T.form['legend-agare']}</legend>
+    <div class="flex flex-wrap gap-x-4">
+      {
+        ([1, 2] as const).map((a) => (
+          <label class={VAL_KLASS}>
+            <input
+              type="radio"
+              name="agare"
+              value={a}
+              checked={indata.agare === a}
+              aria-describedby={fel.agare ? id('agare-fel') : undefined}
+            />
+            {a === 1 ? T.form['agare-1'] : T.form['agare-2']}
+          </label>
+        ))
+      }
+    </div>
+    {fel.agare && <p id={id('agare-fel')} class={FEL_KLASS}>{fel.agare}</p>}
+
+    <label for={id('rot')} class:list={[ETIKETT_LITEN_KLASS, 'mt-3']}>{T.form.rot}</label>
+    <div class="flex items-center gap-2">
+      <input
+        id={id('rot')}
+        name="rot"
+        type="text"
+        inputmode="numeric"
+        value={varden.rot}
+        placeholder="0"
+        aria-describedby={beskrivs(!kompakt && id('rot-hjalp'), fel.rot && id('rot-fel'))}
+        class:list={[FALT_KLASS, 'max-w-40', ramKlass(Boolean(fel.rot))]}
+      />
+      <span class={ENHET_KLASS}>kr</span>
+    </div>
+    {fel.rot && <p id={id('rot-fel')} class={FEL_KLASS}>{fel.rot}</p>}
+    {!kompakt && <p id={id('rot-hjalp')} class={HJALP_KLASS}>{T.form['rot-hjalp']}</p>}
+  </fieldset>
+
+  <button type="submit" class={KNAPP_KLASS}>{knappText}</button>
+</form>

@@ -255,3 +255,82 @@ export function raknaElkostnad(i: ElkostnadIndata): ElkostnadResultat {
     gorInteDetHar: gardygnetRunt ? GOR_INTE_DYGNET_RUNT : null,
   };
 }
+
+/* ------------------------------------------------------------------ *
+ * Förval för en inbäddning
+ * ------------------------------------------------------------------ */
+
+/** Nycklarna ett förval får innehålla: samma som den delbara adressen. */
+export const FORVAL_NYCKLAR = ['effekt', 'timmar', 'dagar', 'elpris', 'liter', 'typ'] as const;
+
+/**
+ * Vad räkningen gäller. `golvvarme` kommer från golvvärmesidans förval
+ * (typ=golvvarme) och följer med i formuläret och den delbara adressen, så att
+ * sidan inte visar avfuktarens text för något som inte är en avfuktare.
+ * Räkningen är densamma; bara texterna skiljer.
+ */
+export type ElTyp = 'maskin' | 'golvvarme';
+
+/** typ ur adressen. Allt annat än golvvarme är en maskin, som förut. */
+export function typFranQuery(q: URLSearchParams): ElTyp {
+  return q.get('typ') === 'golvvarme' ? 'golvvarme' : 'maskin';
+}
+
+/**
+ * "Gör inte det här" vid 24 timmar för golvvärme. Hantverkarens text
+ * (docs/briefer/texter-kok-kostnad-2026-09-29.md, avsnittet om elkostnaden).
+ * null tills den finns: då visas ingen text alls, hellre än avfuktarens.
+ * Underlaget: docs/briefer/faktablad/kunskap-golvvarme-badrum.md avsnitt 2c
+ * (termostaten slår av och på; ingen källa för gångtiden).
+ */
+export const GOR_INTE_DYGNET_RUNT_GOLVVARME: string | null =
+  'Räkna inte golvvärmen med 24 timmar om dygnet. Termostaten bryter strömmen när golvet är varmt och slår på den igen när det har svalnat, så kabeln drar full effekt bara en del av dygnet. Räknar du med alla timmar blir årskostnaden för hög. Jag har inte hittat någon källa som anger hur många timmar det brukar bli, så skriv det antal du tror på och prova sedan ett lägre och ett högre tal för att se hur mycket kostnaden ändras.';
+
+/** Texten under "Gör inte det här" för resultatet och typen, eller null. */
+export function gorInteText(r: Extract<ElkostnadResultat, { status: 'ok' }>, typ: ElTyp): string | null {
+  if (typ === 'golvvarme') return r.gardygnetRunt ? GOR_INTE_DYGNET_RUNT_GOLVVARME : null;
+  return r.gorInteDetHar;
+}
+
+/** Fältens värden som de står i formuläret: decimalkomma, elpriset med två decimaler, tomt literfält vid null. */
+export function formVarden(i: ElkostnadIndata): {
+  effekt: string;
+  timmar: string;
+  dagar: string;
+  elpris: string;
+  liter: string;
+} {
+  const komma = (n: number): string => String(n).replace('.', ',');
+  return {
+    effekt: komma(i.effektW),
+    timmar: komma(i.timmarPerDygn),
+    dagar: komma(i.dagar),
+    elpris: i.elprisKrPerKwh.toFixed(2).replace('.', ','),
+    liter: i.literPerDygn === null ? '' : komma(i.literPerDygn),
+  };
+}
+
+/**
+ * Förvalet till <Kalkylator namn="elkostnad" forval="..." />, tolkat som
+ * adressen på verktygssidan. Talen och deras källor är artikelns, aldrig
+ * räknarens: golvvärmesidan skriver hela golvets effekt i watt, alltså
+ * tillverkarens W/m² gånger den fria golvytan, plus typ=golvvarme, och
+ * garagesidan avfuktarens effekt ur databladet.
+ * Ett förval med en okänd nyckel, en okänd typ eller ett värde som räknaren
+ * inte godtar ger fel, så att en artikel aldrig bäddar in ett formulär som
+ * svarar med ett fel.
+ */
+export function forvalFranAdress(
+  forval: string,
+):
+  | { status: 'ok'; indata: ElkostnadIndata; varden: ReturnType<typeof formVarden>; typ: ElTyp }
+  | { status: 'fel'; fel: string } {
+  const q = new URLSearchParams(forval);
+  const okanda = [...q.keys()].filter((k) => !(FORVAL_NYCKLAR as readonly string[]).includes(k));
+  if (okanda.length > 0) return { status: 'fel', fel: `okänd nyckel ${okanda.join(', ')}` };
+  if (q.has('typ') && q.get('typ') !== 'golvvarme') return { status: 'fel', fel: `okänd typ ${q.get('typ')}` };
+  const { indata } = tolkaQuery(q);
+  const r = raknaElkostnad(indata);
+  if (r.status !== 'ok') return { status: 'fel', fel: Object.values(r.fel).join(' ') };
+  return { status: 'ok', indata, varden: formVarden(indata), typ: typFranQuery(q) };
+}

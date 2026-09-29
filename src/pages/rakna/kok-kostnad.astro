@@ -1,0 +1,547 @@
+---
+/**
+ * Köksräknaren: vad köket kostar post för post, före och efter rotavdraget, i
+ * fyra vägar (luckor, bänkskiva, båda, nytt kök). Formuläret skickas som GET
+ * till samma sida och räkningen sker på servern, så sidan fungerar utan ett
+ * enda byte klient-JS. Se docs/SPEC-SIDMALLAR.md avsnitt 4.7 och
+ * docs/briefer/spec-kalkyl-kok-kostnad-2026-09-29.md.
+ *
+ * Formeln, konstanterna och all text som modulen äger ligger i
+ * src/lib/kalkyl/renovering.ts, som badrumsräknaren delar. Sidan räknar
+ * ingenting själv, den visar svaret och redovisar källan bakom varje rad.
+ *
+ * Inga produkter och inget reklamband (checklistan 1 och 12).
+ */
+export const prerender = false;
+
+import Bas from '../../layouts/Bas.astro';
+import {
+  KALLOR,
+  kokAntagandenFor,
+  kokBeskedVarden,
+  kokDelbarQuery,
+  kokKortsvarVarden,
+  kokRegelKallor,
+  kokRotavdragQuery,
+  KOK_STANDARD,
+  KOK_TEXT,
+  krText,
+  kvmText,
+  raknaKokKostnad,
+  spannDelar,
+  tolkaKokQuery,
+  type KallaRef,
+  type KallKod,
+  type KokIndata,
+  type KokPostRad,
+} from '../../lib/kalkyl/renovering.ts';
+import { kallradEfterRegel } from '../../lib/kalkyl/kallrad';
+import { ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
+import { verktyg } from '../../lib/strukturdata';
+import { verktygsDelningsbild, verktygsillustration, verktygsVarumarkesbild } from '../../lib/verktygsbild';
+import KokKostnadForm from '../../components/kalkyl/KokKostnadForm.astro';
+import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Faq from '../../components/ui/Faq.astro';
+import Illustration from '../../components/ui/Illustration.astro';
+import Markering from '../../components/ui/Markering.astro';
+import Pennstreck from '../../components/ui/Pennstreck.astro';
+import StrukturData from '../../components/ui/StrukturData.astro';
+import Tabellyta from '../../components/ui/Tabellyta.astro';
+
+Astro.locals.sidtyp = 'verktyg';
+
+Astro.response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+
+/** Slug, namn och beskrivning på ett ställe: brödsmulan, og:image och WebApplication läser samma. */
+const SLUG = 'kok-kostnad';
+/* Utkast: sidan svarar 404 i produktion och noindex i dev tills hantverkarens
+   text finns. Sätts till false i publiceringscommiten, samtidigt som
+   registerposten och inbäddningen i /kok/byta-koksluckor/ läggs till. */
+const UTKAST = true;
+const VERKTYGSNAMN = 'Räkna på kostnaden för att renovera köket';
+const BESKRIVNING = 'Välj nya luckor, ny bänkskiva eller ett helt nytt kök och få priset för varje del, med arbete och material var för sig, och se vad rotavdraget blir.'; // 120 till 155 tecken, checklistan 4
+const titel = 'Renovera kök, kostnad post för post'; // högst 44 tecken, checklistan 3
+const H1 = 'Vad kostar din köksrenovering?'; // checklistan 5
+const INGRESS =
+  'Välj om du byter luckorna, bänkskivan eller båda, eller om hela köket ska bytas. Skriv sedan antalet luckor och skivans längd, och kryssa i det du gör själv. Du får priset för varje del med arbete och material i var sin kolumn, och ser vad som återstår att betala efter rotavdraget.';
+
+/* Rubrikerna till hantverkarens tre H2 (checklistans H2 1 till 3), i den ordningen. */
+/* Tre vägar och vad de kostar. */
+const H2_VAGAR = 'Hur mycket av köket som ska bytas';
+/* Vad du kan göra själv. Bär "renovera kök billigt". */
+const H2_SJALV = 'Renovera köket billigt med färg och eget snickeri';
+/* Rotavdraget för köket. */
+const H2_ROT = 'Rotavdraget räknas bara på en del av kostnaden';
+
+/* Läs vidare: länktexterna skriver hantverkaren. /kok/byta-bankskiva/ läggs till
+   när den är publicerad, aldrig före (checklistans tillägg 3). */
+const LAS_VIDARE = [
+  { href: '/kok/byta-koksluckor/', text: 'Mät och beställ luckor som passar dina gamla skåp' },
+  { href: '/kok/mala-koksluckor/', text: 'Grund och färg när du målar om luckorna själv' },
+  { href: '/rakna/rotavdrag/', text: 'Fördela rotavdraget mellan två ägare' },
+];
+
+/* Tre till fem frågor. */
+const FRAGOR = [
+  {
+    fraga: 'Gäller priserna ett Ikeakök eller vilket kök som helst?',
+    svar: 'Ett helt nytt kök räknas med Ikeas billigaste skåp och luckor och med en byggfirmas pris för att montera ett Ikeakök. Ett annat märke eller en dyrare serie kostar mer, och vad ditt kök kostar får du veta när köksbutiken har ritat det och gett dig ett pris. Byter du bara luckorna kommer priserna i stället från Vedums prislista. Har du ett Ikeakök i serien Metod kan du köpa Ikeas egna luckor, och de billigaste av dem kostar mindre än Vedums, så räknarens svar blir då något för högt.',
+  },
+  {
+    fraga: 'Får vi rotavdrag för köket om huset är yngre än fem år?',
+    svar: 'I ett så nytt hus ger bara sådant arbete rotavdrag som återställer köket till det skick det hade. Att bygga om med en ny planlösning räknas inte dit, så då blir det inget avdrag alls. Att byta luckorna mot likvärdiga kan räknas dit, men är de nya luckorna av en dyrare sort än de gamla är det inte säkert, och då är det Skatteverket som kan svara.',
+  },
+  {
+    fraga: 'Ingår installationen av vitvarorna?',
+    svar: 'Nej. Räknaren tar med vad vitvarorna kostar att köpa men inte vad det kostar att ansluta dem, eftersom ingen av källorna anger vad installationen kostar för ett helt kök. Be firman som monterar köket att skriva installationen på en egen rad i offerten. När installationen görs i samband med en större renovering av köket ger den rotavdrag.',
+  },
+];
+
+/* Gränssnittstext, ordagrant ur skillen nytt-verktyg. */
+const STANDARDVARNING = 'Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.';
+const DELATEXT = 'Dina värden ligger i adressen. Markera den och kopiera, så får den du skickar länken till samma svar.';
+
+/* Utkastet svarar 404 i produktion. Dev visar sidan med noindex, så att den går att granska. */
+if (UTKAST && import.meta.env.PROD) {
+  return new Response(null, { status: 404, headers: { 'X-Robots-Tag': 'noindex' } });
+}
+
+const T = KOK_TEXT;
+const q = Astro.url.searchParams;
+const { indata } = tolkaKokQuery(q);
+const resultat = raknaKokKostnad(indata);
+const fel = resultat.status === 'ogiltig' ? resultat.fel : {};
+// Vid ogiltig indata visas standardvärdenas svar, med varningen överst.
+const visatIndata: KokIndata = resultat.status === 'ogiltig' ? KOK_STANDARD : indata;
+const visat = raknaKokKostnad(visatIndata);
+if (visat.status !== 'ok') throw new Error('[kok-kostnad] Standardvärdena ska alltid ge ett svar');
+
+/** Fältens värden som de skrevs i adressen, så att ett felskrivet värde går att rätta. */
+const varden = {
+  luckor: q.get('luckor') ?? String(KOK_STANDARD.antalLuckor),
+  meter: q.get('meter') ?? kvmText(KOK_STANDARD.meter),
+  rot: q.get('rot') ?? (KOK_STANDARD.rotKr === 0 ? '' : String(KOK_STANDARD.rotKr)),
+};
+
+/** Delbar länk, byggd av de tolkade värdena. */
+const delaLank = new URL(`/rakna/${SLUG}/?${kokDelbarQuery(visatIndata).toString()}`, Astro.site ?? Astro.url).toString();
+
+const bv = kokBeskedVarden(visat, visatIndata);
+const besked = T.besked[visat.utfall];
+
+const ks = T.kortsvar(kokKortsvarVarden());
+
+/**
+ * Cellklasserna en gång på <table>, som på badrum-kostnad. Ett spann står som
+ * två <span>, det lägre talet och "till" med det högre, och bara de får inte
+ * brytas: cellen bryts före "till" och aldrig inne i ett tal.
+ */
+const TABELL_KLASS =
+  'w-full border-collapse text-liten tabular-nums [&_th]:p-2 [&_td]:p-2 [&_th]:align-top [&_td]:align-top [&_th]:text-left [&_tbody_th]:[font-weight:inherit] [&_tr]:border-b [&_tr]:border-linje [&_th]:text-blyerts [&_td]:text-blyerts [&_thead_th]:text-etikett [&_thead_th]:uppercase [&_thead_th]:text-blyerts-2';
+const POST_TABELL_KLASS = `${TABELL_KLASS} [&_td]:text-right [&_td_span]:whitespace-nowrap [&_thead_th+th]:text-right [&_tfoot_th]:font-bold [&_tfoot_td]:font-bold`;
+/** Regellistan: klasserna på <ul>. Länkarnas utseende en gång här. */
+const REGEL_LISTA_KLASS =
+  'm-0 mt-6 p-0 list-none text-brod lg:text-brod-lg [&>li]:mb-4 [&>li]:border-l-2 [&>li]:border-blyerts-2 [&>li]:pl-4 [&>li>span]:block [&>li>span+span]:text-liten [&>li>span+span]:text-blyerts-2 [&_span_span]:whitespace-nowrap [&_a]:text-penna [&_a]:underline [&_a]:decoration-1 [&_a]:underline-offset-2 [&_a:hover]:decoration-2';
+/** Länkarnas utseende en gång på föräldern, samma som LANK_KLASS. */
+const LANKAR_KLASS = '[&_a]:text-penna [&_a]:underline [&_a]:decoration-1 [&_a]:underline-offset-2 [&_a:hover]:decoration-2';
+const STYCKE_KLASS = 'm-0 mt-4 text-brod lg:text-brod-lg';
+
+const kalla = (k: KallKod): KallaRef => KALLOR[k];
+
+/** Arbetscellen: talet som spann, eller ordet när arbetet inte är ett belopp. */
+const ARBETE_ORD: Record<Exclude<KokPostRad['arbete'], 'belopp'>, string> = {
+  egen: T.postEgen,
+  ingar: T.postIngar,
+  inget: T.postInget,
+};
+
+type Cell = string | ReturnType<typeof spannDelar>;
+const postRader: { namn: string; celler: Cell[] }[] = visat.poster.map((p, n) => {
+  const h = visat.hog.poster[n] ?? p;
+  return {
+    namn: T.post[p.nyckel],
+    celler: [
+      p.arbete === 'belopp' ? spannDelar(p.arbeteKr, h.arbeteKr) : `0 ${ARBETE_ORD[p.arbete]}`,
+      spannDelar(p.materialKr, h.materialKr),
+    ],
+  };
+});
+const summaRad = [
+  spannDelar(visat.arbeteKr, visat.hog.arbeteKr),
+  spannDelar(visat.materialKr, visat.hog.materialKr),
+];
+
+/** Antagandetabellen, och källorna en gång under den i den ordning de först förekommer. */
+const antaganden = kokAntagandenFor(visatIndata);
+const kallor: KallaRef[] = [];
+/* Brödtexten under H2_SJALV citerar Elsäkerhetsverket, Säker Vatten och Ifs villkor. */
+const BRODTEXT_KALLOR: KallKod[] = ['ELSAK-SJALV', 'SV', 'IF'];
+for (const k of [...antaganden.flatMap((a) => a.kallor), ...BRODTEXT_KALLOR]) {
+  if (!kallor.some((x) => x.kod === k)) kallor.push(kalla(k));
+}
+/** Något i svaret ger rotavdrag; annars pekar länken till rotavdragsräknaren på ingenting. */
+const harArbete = visat.hog.arbeteKr > 0;
+
+const illustration = verktygsillustration(SLUG);
+/** Varumärkesbilden i sidhuvudet (docs/DESIGN.md avsnitt 7). */
+const varumarke = verktygsVarumarkesbild(SLUG);
+const huvudbild = varumarke ?? illustration;
+---
+
+<Bas
+  title={titel}
+  description={BESKRIVNING}
+  reklam={false}
+  noindex={UTKAST}
+  brodsmulor={[
+    { namn: 'Hantverkstips', href: '/' },
+    { namn: 'Räkna själv', href: '/rakna/' },
+    { namn: VERKTYGSNAMN },
+  ]}
+  bred={true}
+  ogBild={verktygsDelningsbild(SLUG)}
+>
+  <StrukturData
+    slot="head"
+    data={verktyg({ url: `/rakna/${SLUG}/`, namn: VERKTYGSNAMN, beskrivning: BESKRIVNING })}
+  />
+
+  <div class="mx-auto w-full max-w-lasbredd">
+    {/* Sidhuvudet: rubrik och ingress i 7/12, bilden i 5/12 från lg, under ingressen på mobil. */}
+    <section class="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-8">
+      <div class="lg:col-span-7">
+        <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">{H1}</h1>
+        <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">{INGRESS}</p>
+      </div>
+
+      {
+        huvudbild && (
+          <div class="lg:col-span-5">
+            <img
+              src={huvudbild.src}
+              alt=""
+              width={huvudbild.width}
+              height={huvudbild.height}
+              fetchpriority="high"
+              decoding="async"
+              class:list={['block h-auto w-full', !varumarke && 'rounded-sm border border-linje']}
+            />
+          </div>
+        )
+      }
+    </section>
+
+    <Faktaruta variant="kortsvar">
+      <p class="m-0 leading-6">
+        {ks.fore}{' '}<Markering>{ks.markering}</Markering>{ks.efter}
+      </p>
+    </Faktaruta>
+
+    <div class="linjerat mt-8 lg:grid lg:grid-cols-2 lg:gap-8">
+      <KokKostnadForm indata={indata} varden={varden} fel={fel} />
+
+      <div class="mt-8 border-t border-linje pt-6 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
+        {resultat.status === 'ogiltig' && <p class="m-0 mb-2 text-liten text-varning">{STANDARDVARNING}</p>}
+
+        <p class="m-0 font-sans text-h3 lg:text-h3-lg font-bold text-blyerts">{besked.rubrik(bv)}</p>
+        <p class="m-0 mt-1 text-brod">{besked.rad(bv)}</p>
+
+        <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">{T.spalt['etikett-betala']}</p>
+        {/* Vid ett spann bryts raden vid "till", aldrig inne i ett tal. */}
+        <p class="m-0 mt-1 flex flex-wrap items-baseline gap-x-2 tabular-nums [&_span]:whitespace-nowrap">
+          <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
+            <Markering>{krText(visat.attBetalaKr)}</Markering>
+          </span>
+          {
+            visat.attBetalaKr !== visat.hog.attBetalaKr && (
+              <>
+                <span class="text-ingress lg:text-ingress-lg">till</span>
+                <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
+                  <Markering>{krText(visat.hog.attBetalaKr)}</Markering>
+                </span>
+              </>
+            )
+          }
+          <span class="text-ingress lg:text-ingress-lg">kr</span>
+        </p>
+        {/*
+          Raderna följs av länken som går vidare från dem, i stället för
+          badrummets tre rader och tre länkar i block: summan och delningen till
+          posterna, sedan rotavdragsräknaren, sist datumet till "Så räknar jag".
+          rad-delning börjar med "Det är" och står därför direkt efter rad-summa.
+        */}
+        <div class="mt-2 text-liten text-blyerts-2 tabular-nums">
+          <p class="m-0">
+            {T.spalt['rad-summa'](bv.foreRot, bv.rot)}{' '}{T.spalt['rad-delning'](bv.arbete, bv.material)}
+          </p>
+          <p class="m-0">
+            <a href="#darfor-blev-svaret-sa" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
+              {T.spalt.pekrad}
+            </a>
+          </p>
+          {
+            harArbete && (
+              <p class="m-0">
+                <a
+                  href={`/rakna/rotavdrag/?${kokRotavdragQuery(visat, visatIndata).toString()}`}
+                  class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}
+                >
+                  {T.spalt['lank-rotavdrag']}
+                </a>
+              </p>
+            )
+          }
+          <p class="m-0 mt-2">{T.spalt['rad-kallor'](bv.hamtat)}</p>
+          <p class="m-0">
+            <a href="#sa-raknar-jag" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
+              {T.spalt['lank-sa-raknar-jag']}
+            </a>
+          </p>
+        </div>
+
+        {/* Dela. Svaret står i adressen, så ett skrivskyddat fält räcker. */}
+        <div class="mt-4 border-t border-linje pt-4">
+          <label for="dela" class={ETIKETT_KLASS}>{T.spalt['dela-etikett']}</label>
+          <input id="dela" type="text" readonly value={delaLank} class:list={[FALT_KLASS, 'border-blyerts-2']} />
+          <p class="m-0 mt-1 text-liten text-blyerts-2">{DELATEXT}</p>
+        </div>
+      </div>
+    </div>
+
+    <section>
+      <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
+      <Tabellyta kolumner={3} class="mt-4">
+        <table class={POST_TABELL_KLASS}>
+          <thead>
+            <tr>
+              <th scope="col">{T.darfor['tabell-post']}</th>
+              <th scope="col">{T.darfor['tabell-arbete']}</th>
+              <th scope="col">{T.darfor['tabell-material']}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              postRader.map((r) => (
+                <tr>
+                  <th scope="row">{r.namn}</th>
+                  {r.celler.map((c) => (
+                    <td>
+                      {typeof c === 'string' ? (
+                        c
+                      ) : (
+                        <>
+                          <span>{c.lag}</span>
+                          {c.hog !== null && (
+                            <>
+                              {' '}
+                              <span>till {c.hog}</span>
+                            </>
+                          )}
+                        </>
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            }
+          </tbody>
+          <tfoot>
+            <tr>
+              <th scope="row">{T.darfor.summa}</th>
+              {
+                summaRad.map((c) => (
+                  <td>
+                    <span>{c.lag}</span>
+                    {c.hog !== null && (
+                      <>
+                        {' '}
+                        <span>till {c.hog}</span>
+                      </>
+                    )}
+                  </td>
+                ))
+              }
+            </tr>
+          </tfoot>
+        </table>
+      </Tabellyta>
+      <p class="m-0 mt-2 text-liten text-blyerts-2">
+        <a href="#vad-siffrorna-vilar-pa" class={LANK_KLASS}>{T.darfor.kallrad}</a>
+      </p>
+      <p class:list={[STYCKE_KLASS, 'tabular-nums']}>{T.darfor.rot(bv)}</p>
+      <p class:list={[STYCKE_KLASS, 'tabular-nums']}>{T.darfor.betala(bv)}</p>
+      <ul class={REGEL_LISTA_KLASS}>
+        {
+          (() => {
+            /* Förmedlarna namnges bara i antagandetabellen (checklistans fälla).
+               Hänvisningen dit står högst en gång: under den sista regeln som
+               vilar på en förmedlare. */
+            const regelkallor = visat.regler.map((nyckel) => kokRegelKallor(nyckel));
+            const sistaFormedlare = kallradEfterRegel(regelkallor, false);
+            return visat.regler.map((nyckel, r) => {
+              const namngivna = regelkallor[r] ?? [];
+              return (
+                <li>
+                  <span>{T.regel[nyckel].text(bv)}</span>
+                  {namngivna.length > 0 ? (
+                    <span>
+                      {namngivna.map((k, i) => (
+                        <>
+                          {i > 0 && '; '}
+                          <a href={k.url} rel="nofollow">{k.titel}</a>, {k.slag}, <span>{k.datum}</span>
+                        </>
+                      ))}
+                    </span>
+                  ) : (
+                    r === sistaFormedlare && (
+                      <span>
+                        <a href="#vad-siffrorna-vilar-pa">{T.darfor.kallrad}</a>
+                      </span>
+                    )
+                  )}
+                </li>
+              );
+            });
+          })()
+        }
+      </ul>
+    </section>
+
+    <section>
+      <Pennstreck id="gor-inte-det-har">Gör inte det här</Pennstreck>
+      {visat.gorInteDetHar.map((g, i) => <p class:list={['m-0 text-brod lg:text-brod-lg', i > 0 && 'mt-4']}>{T.gorInte[g]}</p>)}
+    </section>
+
+    {/*
+      Hantverkarens brödtext, checklistans H2 1 till 3. Länkarna skrivs som
+      vanliga <a> utan klass; utseendet står en gång på <section>.
+    */}
+    <section class={LANKAR_KLASS}>
+      {/*
+        Tre vägar och vad de kostar: luckor, bänkskiva, nytt kök, och varför el
+        och VVS blir den stora överraskningen när planlösningen ändras. Länkar
+        till /kok/byta-koksluckor/ och /kok/mala-koksluckor/.
+      */}
+      <Pennstreck>{H2_VAGAR}</Pennstreck>
+      <p class="m-0 text-brod lg:text-brod-lg">
+        Att renovera ett kök kan betyda att du <a href="/kok/mala-koksluckor/">målar om luckorna du har</a>, byter dem mot nya, byter bänkskivan eller river ut allt och börjar om. Nya luckor på de gamla skåpen, som kallas stommar, kostar en bråkdel av ett nytt kök, eftersom stommarna, skivan och vitvarorna får vara kvar. Det kräver att det finns luckor i rätt mått, och <a href="/kok/byta-koksluckor/">vilka luckor som passar skåpen du redan har</a> beror på vem som byggde köket.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        På bänkskivan är det materialet som gör den stora skillnaden i pris. En meter kvartskomposit kostar tre till fyra gånger så mycket som en meter laminat, medan monteringen i räknaren kostar lika mycket per meter för laminat, massivt trä och kvartskomposit, eftersom källan anger ett och samma spann för monteringen oavsett material.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Ett helt nytt kök är mer än skåp och vitvaror. Rivningen av det gamla och monteringen av det nya ingår också, och det är i monteringen som det lägsta och det högsta priset skiljer sig mest.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Den stora överraskningen kommer när planlösningen ändras. Flyttas spisen till en annan vägg kan den behöva en ny elgrupp från elcentralen, och flyttas diskbänken ska vatten och avlopp dras dit. Båda är firmornas arbete och syns inte i priset på skåpen och vitvarorna. Tillsammans lägger de till 10 000 till 35 000 kr före rotavdraget, och i den övre änden är det mer än hela luckbytet kostar.
+      </p>
+    </section>
+
+    <section class={LANKAR_KLASS}>
+      {/*
+        Vad du kan göra själv. Bär "renovera kök billigt". Montera stommar och
+        luckor, måla. El: fast installation av ett registrerat
+        elinstallationsföretag; att det gäller hällen är vår slutsats och märks
+        så. Vatten: Säker Vatten är branschregler, inget förbud; bara intyget.
+        Länk till /kok/mala-koksluckor/.
+      */}
+      <Pennstreck>{H2_SJALV}</Pennstreck>
+      <p class="m-0 text-brod lg:text-brod-lg">
+        Behåll luckorna och måla dem, om det bara är färgen du har tröttnat på. Färgen till ett helt kök kostar mindre än gångjärnen till nya luckor, men arbetet tar tid, och grunden ska väljas efter vad luckorna är gjorda av. Läs därför först <a href="/kok/mala-koksluckor/">hur du slipar, grundar och målar köksluckor</a>.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Ska något bytas kan du göra snickeriet själv, som att hänga luckorna, lägga bänkskivan på plats och skruva ihop och hänga skåpen. Då står arbetet på noll i tabellen. Du får inte heller något rotavdrag för det, så det du sparar är 70 procent av snickarens pris före avdraget.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Elen kan du inte ta på dig. Nya uttag och ledningar i väggen är ändringar i den fasta elinstallationen, och enligt myndigheten Elsäkerhetsverket ska ett registrerat elinstallationsföretag alltid göra dem. Hällen står inte bland myndighetens exempel, men den ansluts fast till elen på samma sätt, så jag räknar den dit och låter elektrikern koppla in den. Ett vanligt uttag eller en strömbrytare som redan sitter på plats får du däremot byta själv, om du kan det.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        För vattnet finns inget förbud. Säker Vatten är branschens egna regler för rör i kök och våtrum, och de säger till exempel att vattenledningen fram till diskbänksskåpet ska dras utan skarvar. Bara ett auktoriserat VVS-företag kan utfärda intyg på att reglerna är följda. Ska diskbänken flyttas är det intyget du vill ha. Försäkringsbolaget If skriver i sina villkor att reglerna ska följas när du bygger om, och har de inte följts kan ersättningen efter en vattenskada sättas ned.
+      </p>
+    </section>
+
+    <section class={LANKAR_KLASS}>
+      {/*
+        Rotavdraget för köket: två ägare, att material inte ger avdrag. Länk
+        till /rakna/rotavdrag/.
+      */}
+      <Pennstreck>{H2_ROT}</Pennstreck>
+      <p class="m-0 text-brod lg:text-brod-lg">
+        På ett luckbyte blir rotavdraget drygt en tiondel av priset, eftersom luckorna och gångjärnen kostar mer än monteringen som avdraget räknas på.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Med priserna här kommer du inte upp till gränsen för en person, inte ens med flyttad diskbänk och ny elgrupp, om du inte redan har använt en del av den i år. Äger ni bostaden tillsammans och den ena har använt mycket av sin gräns, till exempel på ett badrum, kan den andra betala en större del av köket. <a href="/rakna/rotavdrag/">Räknaren för rotavdrag</a> visar hur avdraget då delas mellan er.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Låter du en målare måla luckorna hemma hos dig får du rotavdrag på arbetet, men inte om en verkstad lackerar dem i sin egen lokal.
+      </p>
+    </section>
+
+    <section>
+      <Pennstreck id="sa-raknar-jag">Så räknar jag</Pennstreck>
+      {
+        varumarke && illustration && (
+          <Illustration namn={`rakna/${SLUG}`} alt={T.skissAlt} bildtext={T.skissBildtext} />
+        )
+      }
+      <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg [&>li]:mb-2">
+        {T.steg.map((s) => <li>{s}</li>)}
+      </ol>
+
+      <h3 id="vad-siffrorna-vilar-pa" class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">
+        Vad siffrorna vilar på
+      </h3>
+      <Tabellyta kolumner={3} class="mt-4">
+        <table class={TABELL_KLASS}>
+          <thead>
+            <tr>
+              <th scope="col">Vad</th>
+              <th scope="col">Värde</th>
+              <th scope="col">Källa eller antagande</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              antaganden.map((a) => (
+                <tr>
+                  <th scope="row">{T.antagande[a.nyckel]}</th>
+                  <td>{a.varde}</td>
+                  <td>
+                    {a.typ}.{a.kallor.length > 0 && ` ${a.kallor.map((k) => kalla(k).titel).join('; ')}`}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </Tabellyta>
+      <ul class:list={['m-0 mt-4 pl-6 text-liten [&_span]:whitespace-nowrap', LANKAR_KLASS]}>
+        {
+          kallor.map((k) => (
+            <li>
+              {/* Kommat på samma rad som </a>, annars blir radbrytningen ett mellanslag före kommat. */}
+              <a href={k.url} rel="nofollow">{k.titel}</a>, {k.slag}, <span>{k.datum}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section>
+      <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
+      <ul class="m-0 p-0 list-none">
+        {
+          LAS_VIDARE.map((l) => (
+            <li class="border-t border-linje">
+              <a href={l.href} class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
+                {l.text}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    {FRAGOR.length > 0 && <Faq fragor={FRAGOR} />}
+  </div>
+</Bas>
