@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Fyra plåttak sedda från gaveln, med minsta lutning för trapetsplåt, takpanneplåt, klickfals och falsad bandtäckning.">
+  <!-- Anteckningsboken. Blyerts 2 px för de fyra plåtprofilerna sedda från gaveln, blyerts-2 för läkten under plåten
+       och lutningstecknen (vinklarna i verklig grad: 5,7, 14 och 8), snickarpenna för ringen runt takpanneplåten
+       (enda pennsaken). Tumstock bakom 14°. Profilerna är inte skalenliga. Fyra rutor utan ramar.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2 1,5: läkten under plåten och lutningstecknen -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M74,79 Q180,80.2 286,79 M74,85 Q180,83.8 286,85 M74,78 L74,86 M286,78 L286,86 M350,79 Q456,80.2 562,79 M350,85 Q456,83.8 562,85 M350,78 L350,86 M562,78 L562,86 M74,251 Q180,252.2 286,251 M74,257 Q180,255.8 286,257 M74,250 L74,258 M286,250 L286,258 M350,251 Q456,252.2 562,251 M350,257 Q456,255.8 562,257 M350,250 L350,258 M562,250 L562,258"/>
+    <path d="M80,118 Q115,118.8 150,118 M80,118 L149.7,111 M124,118 A44,44 0 0 0 123.8,113.6 M356,118 Q391,118.8 426,118 M356,118 L423.9,101.1 M400,118 A44,44 0 0 0 398.7,107.4 M80,290 Q115,290.8 150,290 M80,290 L149.3,280.3 M124,290 A44,44 0 0 0 123.6,283.9"/>
+  </g>
+
+  <!-- Blyerts: trapetsplåt, takpanneplåt, klickfals, falsad bandtäckning -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M78,76 L86,76 L92,54 Q100,53.8 108,54 L114,76 L120,76 L126,76 L132,54 Q140,54.2 148,54 L154,76 L160,76 L166,76 L172,54 Q180,53.8 188,54 L194,76 L200,76 L206,76 L212,54 Q220,54.2 228,54 L234,76 L240,76 L246,76 L252,54 Q260,53.8 268,54 L274,76 L280,76 L282,76"/>
+    <path d="M354,76 L356,76 c8,0 11,-18 20,-18 c9,0 12,18 20,18 c8,0 11,-18 20,-18 c9,0 12,18 20,18 c8,0 11,-18 20,-18 c9,0 12,18 20,18 c8,0 11,-18 20,-18 c9,0 12,18 20,18 c8,0 11,-18 20,-18 c9,0 12,18 20,18 l2,0"/>
+    <path d="M78,248 Q99,248.5 120,248 L120,236 Q120,231 123,231 Q126,231 126,236 L126,248 Q153,247.4 180,248 L180,236 Q180,231 183,231 Q186,231 186,236 L186,248 Q213,248.6 240,248 L240,236 Q240,231 243,231 Q246,231 246,236 L246,248 Q264,247.6 282,248"/>
+    <path d="M354,248 Q375,248.5 396,248 L396,230 L408,230 L408,237 M402,234 L402,248 Q429,247.4 456,248 L456,230 L468,230 L468,237 M462,234 L462,248 Q489,248.6 516,248 L516,230 L528,230 L528,237 M522,234 L522,248 Q540,247.6 558,248"/>
+  </g>
+
+  <!-- Tumstock bakom 14° -->
+  <rect x="431" y="100" width="38" height="24" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 450 112)"/>
+
+  <!-- Snickarpenna: ringen runt takpanneplåten, öppen uppe till höger -->
+  <path d="M538,42 C500,28 400,30 366,40 C338,48 336,80 360,89 C400,97 520,96 558,87 C582,79 578,56 552,46" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="80" y="150">trapetsplåt</text>
+    <text x="158" y="118" fill="#625a50">5,7°</text>
+    <text x="356" y="150">takpanneplåt</text>
+    <text x="436" y="118">14°</text>
+    <text x="80" y="322">klickfals</text>
+    <text x="158" y="290" fill="#625a50">8°</text>
+    <text x="356" y="322">falsad bandtäckning</text>
+    <text x="356" y="290" fill="#625a50">läggs av plåtslagare</text>
+  </g>
+</svg>

@@ -76,3 +76,7 @@ Snedstrecket betyder ny rad. [L6] står på två rader i marginalen; ryms den in
 
 - `[ALT]`: Huset i genomskärning med rätt luftfuktighet inomhus för varje rum och en kall yttervägg bakom sovrummets garderob.
 - `[BILDTEXT]`: Riktvärdena gäller relativ luftfuktighet som medel över längre tid, och de är inga mätningar. Sovrummets tal kommer från Astma- och Allergiförbundet, vardagsrummets från Alingsås kommun och källarens från Villaägarna. Den röda biten är ytterväggen bakom garderoben, en kall yta där mögel börjar växa när luftfuktigheten går över 75 procent.
+
+## 8. Beslut vid granskningen 2026-09-29
+
+Publicerad fil 33 984 byte (13,2 kB gzip), 5,3 kB över gränsen i avsnitt 6. Godkänd som undantag för den här bilden: vikten sitter i hantverkarens sex etiketter (banor, en decimal), inte i ritningen, och ingen etikett går att stryka utan att bilden tappar årstiden eller badrummet som rubriken lovar. Bilden laddas som `<img>` och väger inget i HTML-budgeten; den hårda gränsen 40 kB i DESIGN.md avsnitt 7 håller. Nästa huvudbild med fler än fyra etiketter räknas mot cirka 5 kB per etikett på 20 tecken innan texten beställs.

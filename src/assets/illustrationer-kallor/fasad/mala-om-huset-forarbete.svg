@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Samma fasad i tre skick när du ska måla om huset, med målarens pris per kvadratmeter under varje skick.">
+  <!-- Anteckningsboken. Blyerts 2 px för panelen i fält 1 och 2 och sockeln, blyerts 1,25 för flagornas kant,
+       blyerts-2 för smuts, ådring, fält 3 och fältgränser, snickarpenna för pilen (enda pennsaken).
+       Tumstock bakom kring 600 kr. Stående panel utan lock framifrån. Inte skalenlig. Caveat 500 blir banor.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2: gränserna mellan fälten, smutsen, ådringen -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M232,20 V224 M408,20 V224" stroke-dasharray="6 5"/>
+    <path d="M64,178h1.5M86,178h1.5M112,178h1.5M130,178h1.5M154,178h1.5M176,178h1.5M202,178h1.5M220,178h1.5M142,187h1.5M67,196h1.5M91,196h1.5M113,196h1.5M139,196h1.5M157,196h1.5M181,196h1.5M203,196h1.5M74,205h1.5M100,205h1.5M118,205h1.5M142,205h1.5M164,205h1.5M190,205h1.5M208,205h1.5M70,214h1.5M96,214h1.5M114,214h1.5M138,214h1.5M160,214h1.5M186,214h1.5M204,214h1.5"/>
+    <path d="M250,62V76M258,58V82M266,66V78M336,108V128M344,106V132M352,114V128M360,116V120M292,174V194M300,174V196M386,56V62"/>
+    <path d="M419,30 Q416,125 419,214M430,30 Q433,125 430,214M441,30 Q438,125 441,214M463,30 Q466,125 463,214M474,30 Q471,125 474,214M485,30 Q488,125 485,214M507,30 Q504,125 507,214M518,30 Q521,125 518,214M529,30 Q526,125 529,214M551,30 Q554,125 551,214M562,30 Q559,125 562,214M573,30 Q576,125 573,214"/>
+  </g>
+
+  <!-- Blyerts-2 1,5: brädorna i fält 3, rent trä -->
+  <path d="M408,24 Q497,23 586,24 M450.5,24 Q449,122 450.5,220 M453.5,24 Q452,122 453.5,220 M494.5,24 Q496,122 494.5,220 M497.5,24 Q499,122 497.5,220 M538.5,24 Q537,122 538.5,220 M541.5,24 Q540,122 541.5,220 M584,22 Q585.5,122 584,222" fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Blyerts 1,25: flagornas färgkant -->
+  <path d="M244,56 L258,50 L270,57 L268,68 L276,76 L262,86 L250,80 L240,72 Z M326,104 L342,98 L352,106 L366,108 L362,124 L350,138 L334,134 L328,120 Z M284,172 L298,166 L310,174 L306,186 L312,196 L296,202 L286,194 Z M378,50 L392,48 L398,58 L390,68 L380,64 Z M270,57 q7,-7 11,-2 M352,106 q6,-9 11,-4 M306,186 q8,-4 10,2" fill="none" stroke="#2a2521" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Blyerts: panelen i fält 1 och 2, sockeln -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M53,24 Q230.5,25.5 408,24 M56,21 Q54.5,121.5 56,222 M98.5,24 Q97,122 98.5,220 M101.5,24 Q100,122 101.5,220 M142.5,24 Q144,122 142.5,220 M145.5,24 Q147,122 145.5,220 M186.5,24 Q185,122 186.5,220 M189.5,24 Q188,122 189.5,220 M274.5,24 Q273,122 274.5,220 M277.5,24 Q276,122 277.5,220 M318.5,24 Q320,122 318.5,220 M321.5,24 Q323,122 321.5,220 M362.5,24 Q361,122 362.5,220 M365.5,24 Q364,122 365.5,220"/>
+    <path d="M52,220 Q320,218.5 588,220 M52,236 Q320,237.5 588,236 M54,218 V238 M586,218 V238"/>
+  </g>
+
+  <!-- Tumstock bakom kring 600 kr -->
+  <rect x="440" y="274" width="112" height="24" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 496 286)"/>
+
+  <!-- Snickarpenna: pilen under prisraden, priset stiger -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M110,316 Q215,314 320,316 Q425,318 530,316"/>
+    <path d="M520,309 L530,316 L520,323"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521" text-anchor="middle">
+    <text x="144" y="262">tvätt</text>
+    <text x="320" y="262">skrapning</text>
+    <text x="496" y="262">rent trä</text>
+    <text x="144" y="292" fill="#625a50">200 till 260 kr</text>
+    <text x="320" y="292" fill="#625a50">300 till 420 kr</text>
+    <text x="496" y="292">kring 600 kr</text>
+    <text x="110" y="344" fill="#625a50" text-anchor="start">per kvm</text>
+    <text x="530" y="344" fill="#ad3519" text-anchor="end">tre gånger så dyrt</text>
+  </g>
+</svg>
