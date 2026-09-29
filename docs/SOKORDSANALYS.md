@@ -737,6 +737,21 @@ Sex stänkskyddsfraser är med för att avgöra om montering är en egen avsikt 
 
 Ingen av de fjorton delar de tre första orden i title med en befintlig sida. Tre gränser att hålla i checklistorna: `/fukt/avfuktare-garage/` får inte börja som `/fukt/avfuktare-krypgrund/` ("Avfuktare krypgrund, …"); `/kok/stankskydd/` äger valet av material och `/kok/kakla-kok/` utförandet, så "stänkskydd" står inte först i kaklets title; `/tak/taklackage/` äger bara trasiga och enstaka pannor, aldrig "byta takpannor" ensamt, som är ett takbyte.
 
+## 10. Indexeringsplan för Search Console, 2026-09-29
+
+Sitemapen `https://www.hantverkstips.se/sitemap-index.xml` svarade 200 och listade 128 adresser, alla publicerade sidor (kontrollerat mot `src/content/` utan utkast och räknarna under `src/pages/rakna/`). Ordningen: det som toppar oktober till januari och har störst volym först, hubbarna för de nyaste pelarna tidigt, vårbenen (tak, altan) i dag 5 så att de är indexerade före februari. Högst tio om dagen. Före varje begäran körs URL-inspektion; står det att adressen finns på Google hoppas den över.
+
+| Dag | Adresser (efter `https://www.hantverkstips.se`) |
+|---|---|
+| 1 | `/rakna/rotavdrag/`, `/fukt/luftfuktighet-inomhus/`, `/badrum/vatrumsmatta/`, `/kok/stankskydd/`, `/kok/mala-koksluckor/`, `/kok/mala-kakel/`, `/tak/snorasskydd/`, `/rakna/badrum-kostnad/`, `/badrum/`, `/kok/` |
+| 2 | `/badrum/tatskikt-badrum/`, `/badrum/vatrumsfarg/`, `/kok/byta-koksluckor/`, `/rakna/kok-kostnad/`, `/badrum/vatrumstapet/`, `/fukt/sorptionsavfuktare/`, `/luftavfuktare/`, `/rakna/daggpunkt/`, `/tak/`, `/rakna/` |
+| 3 | `/inomhus/gipsplugg/`, `/inomhus/gipsskruv/`, `/golv/slipa-parkettgolv/`, `/golv/lagga-klickgolv/`, `/el/jordfelsbrytare-loser-ut/`, `/badrum/golvvarme-badrum/`, `/badrum/fogar-badrum/`, `/badrum/byta-toalettstol/`, `/fukt/kondens-pa-fonster/`, `/fukt/avfuktare-garage/` |
+| 4 | `/el/tillaggsisolera-vind/`, `/el/u-varde/`, `/golv/bygga-trappa/`, `/golv/renovera-trappa/`, `/kok/kakla-kok/`, `/kok/byta-bankskiva/`, `/kok/slipa-bankskiva/`, `/fukt/avfuktare-kallare/`, `/fukt/avfuktare-krypgrund/`, `/golv/golv-i-kallare/` |
+| 5 | `/tak/plattak/`, `/tak/takstolar/`, `/tak/takfot/`, `/tak/hangrannor/`, `/tak/papptak/`, `/rakna/takbyte/`, `/tak/tvatta-tak/`, `/altan/trallskruv/`, `/altan/bygga-altan/`, `/altan/bygglov-altan/` |
+| 6 | De äldre hubbarna som inte redan är begärda: `/fukt/`, `/inomhus/`, `/golv/`, `/el/`, `/grund/`, `/fasad/`, `/altan/`, samt `/`, `/fasad/renovera-fonster/`, `/fasad/mala-om-huset/` |
+
+Resten följer via sitemapen: övriga räknare, grund-, fasad-, inomhus- och altansidor med mindre volym, testerna, jämförelsen, om-sidorna, författarsidan. Listsidorna under `/guider/` (typ, nivå, sida 2 och 3) och `/amnen/` begärs aldrig. Två veckor efter dag 6 läses rapporten Sidindexering; det som står som "Upptäckt, inte indexerad" begärs då.
+
 ## Källor
 
 Sökresultat och sidor lästa 2026-09-16. Volymer från `docs/data/keyword-stats-2026-09-16.csv` (Google Ads, Sverige, sep 2024 till aug 2026).
