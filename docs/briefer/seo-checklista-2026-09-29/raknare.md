@@ -235,6 +235,17 @@ Det ettan har som vi måste ha:
 - **Rätt rot-tak.** 50 000 kr för rot, 75 000 kr är det gemensamma taket.
 - Offertförmedlarna nämns inte i publik text.
 
+### Tillägg för startlista 4, 2026-09-29
+
+Räknaren är sida 1 i startlista 4 (SOKORDSANALYS 9.2) och byggs först i omgången. Kraven ovan gäller oförändrade, med fyra tillägg:
+
+1. **Värdartikeln finns.** `/kok/byta-koksluckor/` är publicerad och hubben `/kok/` likaså, så räknaren kan publiceras så snart den är godkänd. `<Kalkylator namn="kok-kostnad" />` läggs in i värdartikelns kostnadsavsnitt i samma commit.
+2. **Frasägarskapet ändras på en punkt.** "byta bänkskiva kök kostnad" (50) och "byta bänkskiva kostnad" (30) ägs från nu av `/kok/byta-bankskiva/` och bärs av dess kostnadsrubrik (`kok-4.md`). I räknaren är bänkskivan ett val i formuläret och en post i resultatet, inte en rubrik och inte ett ord i title.
+3. **Nya inlänkar** när sidorna publiceras: `/kok/byta-bankskiva/` med `<Verktygskort kalkylator="kok-kostnad" />` i kostnadsavsnittet, och `/kok/kakla-kok/` med länk i kostnadsavsnittet. "Läs vidare" i räknaren får `/kok/byta-bankskiva/` när den är publicerad, aldrig före (en länk till ett utkast stoppar bygget).
+4. **Samma tal på sidorna.** Bänkskivans pris per löpmeter och monteringen i räknaren är de tal `/kok/byta-bankskiva/` använder. Faktabladet till bänkskivan börjar med `docs/briefer/faktablad/rakna-kok-kostnad.md`. Skiljer sig en ny källa, ändras räknaren och sidan i samma commit.
+
+**Till UX och bygge, från badrum-4.md och fukt-4.md:** `/rakna/elkostnad/` bäddas in på `/badrum/golvvarme-badrum/` och används på `/fukt/avfuktare-garage/`. Kan räknaren ta ett förval via adressen (golvvärme med effekt per kvm, avfuktare med effekt), används det; annars bäddas den in utan förval. Ingen ny räknare byggs för golvvärmen.
+
 ---
 
 ## /rakna/takbyte/
