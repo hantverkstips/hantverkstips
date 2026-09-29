@@ -410,3 +410,69 @@ Faktabladen `docs/briefer/faktablad/kunskap-vatrumsmatta.md`, `kunskap-golvvarme
 4. **Golvvärmen: Elsäkerhetsverket gäller.** DEVI:s svenska Faq säger att mattan kan läggas själv; Elsäkerhetsverket (granskad 2026-02-03) säger att också läggningen är elinstallationsarbete, och DEVI:s egen installationsguide säger "authorized installer". Sidan återger inte DEVI:s mening som råd. Den får nämna att en tillverkare säger annat och att myndighetens besked är det som gäller.
 
 **Badrum-4.md är klar för hantverkaren.**
+
+---
+
+## Kontroll efter skrivningen, 2026-09-29
+
+De fyra filerna är lästa mot checklistan ovan och besluten efter faktabladen, och `npm run kontrollera` ger 0 fel och 0 varningar över 83 filer. Title, description, H1, H2 med sidofraser, utlänkar, Faq och "Bättre än ettan" stämmer på alla fyra. De enda kraven som inte är uppfyllda i texten är skisserna, som UX ritar som huvudbilder.
+
+| Sida | Punkter | Besked |
+|---|---|---|
+| `/badrum/golvvarme-badrum/` | 0 | Inget att ändra i texten |
+| `/badrum/montera-duschvagg/` | 0 | Inget att ändra i texten |
+| `/badrum/vatrumsmatta/` | 0 | Inget att ändra i texten |
+| `/badrum/vatrumstapet/` | 0 | Inget att ändra i texten |
+
+### Hantverkarnas frågor
+
+1. **DEVI vid namn på golvvärmen: godkänt.** DEVI och Ebeco är källor för effekten, som Tarkett på mattsidan. Inget kort, ingen länk till tillverkaren och ingen rekommendation, så checklistans "inget produktkort" håller.
+2. **Räknaren med timmar=8 märkt som antagande: godkänt.** Antagandet står i kortsvaret och i förvalet, så sidan och räknaren ger samma 4 205 kr.
+3. **Paragraferna i duschväggens källrad och inte i kortsvaret: godkänt.** Kortsvaret namnger Säker Vatteninstallation 2026:1 och Säkra Våtrum 2026 med datum, och det är vad en AI lyfter. Paragraferna 4.7, 4.7.1 och 4.7.3 står i brödtexten, och därmed är Bättre än ettan punkt 1 uppfylld.
+4. **Mattans livslängd, densamma som kakel enligt Länsförsäkringar, och "varmare" struket: godkänt.** Samma källa och samma tal står i tätskiktssidans Faq, så sajten säger en sak.
+5. **Tapetens tabell jämför bara tapet och kakel, med Hantverkskollens pris för matta: godkänt.** En egen kolumn för matta skulle upprepa samma tal. Att mattpriset används och varför står utskrivet, så punkt 3 är uppfylld.
+6. **Tapetens H1 som påstående: godkänt.** H1 är sidans löfte, och "Tapet i badrummet …" delar inte de tre första orden med title ("Våtrumstapet i duschen …").
+7. **Tätskiktet förklaras i första stycket på alla fem badrumssidor.** Det är ingen sökfråga och ger inget krav härifrån. Mönstret går till läsaren vid nästa genomläsning över sidorna.
+
+### Bilder
+
+Huvudbilden på varje sida ska vara skissen i punkt 8, eftersom tre sidor har skissen som krav i Bättre än ettan: tapetens skarvar, duschväggens hål genom tätskiktet och golvvärmens skikt. Mattans genomskärning är krav i punkt 8. Alt är högst 125 tecken och innehåller frasen: våtrumsmatta, golvvärme badrum, våtrumstapet och montera duschvägg. Måtten står i bildtexten.
+
+### Publiceringen
+
+**En commit för alla fyra**, eftersom mattan och tapeten länkar till varandra och en länk till ett utkast stoppar bygget. Ordningen inom commiten:
+
+1. Huvudbilderna läggs in och godkänns av UX.
+2. `utkast: false` sätts på alla fyra.
+3. `publicerad` och `uppdaterad` sätts till publiceringsdagen på alla fyra. Publiceras de inte 2026-09-29 byts båda datumen till den dag commiten görs.
+4. Inlänkarna nedan läggs in.
+5. `npm run build` ska vara grönt. Delningsbilderna `public/og/` genereras där.
+6. Commit: "Publicera våtrumsmattan, våtrumstapeten, golvvärmen och duschväggen".
+
+**Inlänkarna.** Ankartexten skriver hantverkaren. Den säger vart länken leder, och det blir högst en ny länk per H2:
+
+- **`/badrum/tatskikt-badrum/`**, tre länkar:
+  - Under "Folie, matta eller rollat tätskikt", där våtrumsmattan beskrivs som en plastmatta som svetsas i skarvarna → `/badrum/vatrumsmatta/`.
+  - I tabellen under "Vad som gäller för varje arbete i badrummet", raden "Sätta upp en duschvägg" → `/badrum/montera-duschvagg/`.
+  - Samma tabell, raden "Installera elgolvvärme" → `/badrum/golvvarme-badrum/`.
+  - Länkarna i tabellen står i första kolumnen. Två länkar under samma H2 godtas här, eftersom de står i var sin tabellrad och inte i löptext.
+- **`/badrum/vatrumsfarg/`**, en länk: under "Färg, tapet, matta eller kakel", meningen om att våtrumstapet och väggmatta följer GVK:s regler → `/badrum/vatrumstapet/`.
+- **`/badrum/fogar-badrum/`**, en länk: under "Mögel på fogen eller fukt i väggen", där bubblor i golvmattor och tapeter nämns som tecken på fukt → `/badrum/vatrumstapet/`. Tapetsidan har avsnittet om en tapet som har släppt.
+- **`/rakna/badrum-kostnad/`**, tre länkar:
+  - I stycket om att monteringen inte går att välja: "duschväggen skruvas ofta genom det" → `/badrum/montera-duschvagg/`. Den befintliga länken till tätskiktstabellen står kvar.
+  - "Läs vidare" får två nya rader, `/badrum/vatrumsmatta/` och `/badrum/golvvarme-badrum/`. Listan får då fem rader.
+
+Inlänkar per ny sida efter commiten:
+
+| Sida | Inlänkar från | Antal |
+|---|---|---|
+| våtrumsmatta | tätskikt, våtrumstapet, badrum-kostnad | 3 |
+| våtrumstapet | våtrumsmatta, våtrumsfärg, fogar | 3 |
+| golvvärme | tätskikt, badrum-kostnad | 2 |
+| duschvägg | tätskikt, badrum-kostnad | 2 |
+
+**Datum på de sidor som får länkarna.** `uppdaterad` ändras inte på tätskikt, våtrumsfärg eller fogar, eftersom en länk inte är en ändring i sak för läsaren. Ett nytt datum utan ny sak är en falsk signal.
+
+**Efter publiceringen:** fråga en AI om "våtrumsmatta pris" och "våtrumstapet i dusch" inom en vecka och anteckna i SOKORDSANALYS.md om sajten nämns. Indexering i Search Console begärs för `/badrum/vatrumsmatta/`, den största frasen utan sida på sajten, när Christian ber om det.
+
+**Godkänd av SEO och GEO** för publicering, när huvudbilderna finns och inlänkarna ovan är gjorda.

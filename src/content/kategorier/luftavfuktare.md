@@ -45,7 +45,7 @@ val:
     forVem: En källare under 10 grader med en vägg mot det fria för våtluftsslangen.
   - produkt: woods-mdk21
     etikett: Bäst för pengarna
-    forVem: En uppvärmd källare över 10 grader med golvbrunn.
+    forVem: En uppvärmd källare som håller 15 grader, med golvbrunn.
 kopguide: /fukt/avfuktare-kallare/
 kalkylator: avfuktare
 forfattare: christian
@@ -58,13 +58,13 @@ utkast: false
 
 Börja med temperaturen i utrymmet, och ta storleken efter det. Den bästa luftavfuktaren för dig är den som gör nytta vid den temperatur din källare faktiskt har i november.
 
-Håller källaren över 10 grader året om räcker en kondensavfuktare, som kyler fram vattnet ur luften. Där är Wood's SW39FW mitt förstaval för upp till 40 kvm vid 60 till 70 procent luftfuktighet. Vad de 19 literna på lådan blir i en källare på 15 grader står i [granskningen av Wood's SW39FW](/tester/woods-sw39fw/). Har du golvbrunn och en källare som håller 15 grader är Wood's MDK21 den billiga vägen.
+Håller källaren 15 grader eller mer året om räcker en kondensavfuktare, som kyler luften så att vattnet fälls ut. Mellan 10 och 15 grader tappar en kondensavfuktare det mesta av sin kapacitet, och det visar både Ljungby Fuktkontroll och tillverkarnas egna tal. I en källare som håller 15 grader är Wood's SW39FW mitt förstaval för upp till 40 kvm vid 60 till 70 procent luftfuktighet. Vad de 19 literna på lådan blir i en källare på 15 grader står i [granskningen av Wood's SW39FW](/tester/woods-sw39fw/). Har du golvbrunn och en källare som håller 15 grader är Wood's MDK21 den billiga vägen.
 
-Ligger utrymmet under 10 grader en längre period på vintern är det sorption som gäller, en maskin som fångar vattnet i ett fuktsugande hjul och därför klarar kyla som en kondensmaskin inte klarar. Då pekar jag på Acetec EvoDry 6H 2.0. Vad den kostar i drift och vad installationen kräver står i [granskningen av EvoDry 6H 2.0](/tester/acetec-evodry-6h-2/). Reservationen är att den drar 530 W och behöver ett hål i ytterväggen för våtluftsslangen. Varför gränsen går vid 10 grader, och vad tillverkarna själva anger vid 5, 10 och 20 grader, står i [sorptionsavfuktare, temperaturen avgör](/fukt/sorptionsavfuktare/).
+Ligger utrymmet under 10 grader en längre period på vintern är det sorption som gäller, en maskin som fångar vattnet i ett fuktsugande hjul och därför klarar kyla som en kondensmaskin inte klarar. Då pekar jag på Acetec EvoDry 6H 2.0. Vad den kostar i drift och vad installationen kräver står i [granskningen av EvoDry 6H 2.0](/tester/acetec-evodry-6h-2/). Reservationen är att den drar 530 W och behöver ett hål i ytterväggen för våtluftsslangen. Varför gränserna går vid 10 och 15 grader, och vad tillverkarna själva anger vid 5, 10 och 20 grader, står i [sorptionsavfuktare, temperaturen avgör](/fukt/sorptionsavfuktare/).
 
 Storleken räknar du ut från ytan, takhöjden och den luftfuktighet du mäter i dag. Ta en källare på 40 kvm med 2,2 meter i tak. Ligger den på 65 procent luftfuktighet i augusti landar den på 16 liter märkt kapacitet för en kondensmaskin, och märkt kapacitet är siffran på förpackningen. Ligger samma källare på 75 procent krävs 22 liter. Hela tabellen från 20 till 80 kvm, antagandena bakom den och maskinerna som klarar talen finns i [rätt avfuktare till källaren](/fukt/avfuktare-kallare/). Vill du ha talet för just ditt utrymme gör [kalkylatorn](/rakna/avfuktare/) räkningen med samma formel.
 
-Är utrymmet en krypgrund dimensionerar du efter golvytan och inte efter volymen. Tabellen för det står i [avfuktare till krypgrunden](/fukt/avfuktare-krypgrund/).
+Är utrymmet en krypgrund dimensionerar du efter golvytan och inte efter volymen. Tabellen för det står i [avfuktare till krypgrunden](/fukt/avfuktare-krypgrund/). Ett garage får dessutom fukt genom porten och med bilen, och om det värms eller inte spelar roll för valet av maskin. Läs [vilken maskin ett kallt eller ett uppvärmt garage behöver](/fukt/avfuktare-garage/).
 
 Siffran på lådan är mätt vid 30 grader och 80 procent luftfuktighet, ett klimat som ingen svensk källare har. Ingen kondensmaskin i tabellen har en uppgift om kapacitet vid 10 grader, och det är just den siffran som avgör vad du får ut i november. Tills jag mätt den själv ska du läsa tabellens kapacitet som det mesta maskinen kan ge under bästa tänkbara villkor. Vill du förstå fukten först, före maskinen, börjar du i [pelaren Fukt](/fukt/).
 

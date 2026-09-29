@@ -31,6 +31,36 @@ Fattade mot `underlag-avfuktare-garage-2026-09-29.md`, `underlag-sagar-bankskiva
 
 **Tvätta tak: inget kort, inget reklamband, ingen högtryckstvätt i "Det här behöver du".** Ingen taktillverkare godtar högtryck för tvätt eller anger tryck. Plannja skriver "Skölj utan högtryck", Benders låter regnet skölja, BMI skriver "spola av taket försiktigt" utan tal, och Arbetsmiljöverket förbjuder konventionell högtryckstvätt på asbestcement. Nilfisk CORE 125-5 länkas inte från sidan. Plannjas råd om högtryck före ommålning hör till en framtida sida om att måla takplåt och beslutas då.
 
+### Dubbelgaraget på /fukt/avfuktare-garage/, prövat mot utkastet 2026-09-29
+
+Utkastet `src/content/guider/fukt/avfuktare-garage.mdx` har två råd som hantverkaren lagt till: två Acetec EvoDry 6H 2.0 i ett kallt dubbelgarage (rad 108) och två Wood's MDK21 i ett uppvärmt (rad 124).
+
+**Kallt dubbelgarage, två EvoDry 6H 2.0: stryks och skrivs om.**
+
+- *Kapaciteten mot räknaren.* Tabellen på sidan (rad 79–80) kräver 9 till 11 liter för 35 kvm och 13 till 15 för 50 kvm, vid 20 °C och 60 %. Två maskiner ger 14,8 liter. Det räcker med marginal till 35 kvm, men till 50 kvm ligger det under det övre talet och bara 14 procent över det undre. Meningen "räcker … till 50 kvm med måttlig fukt" klarar inte regeln om marginal som räknaren och korten följer. Att två maskiner i samma rum ger summan av sina märkta liter är dessutom vårt antagande, inte en tillverkares uppgift.
+- *Köprekommendation utan kort.* Ja. "Det jag själv skulle göra är att ställa två EvoDry" är ett köpråd, och kortet för just den maskinen står fem rader ovanför. Rådet dubblar ordervärdet genom en knapp som redan finns, till 21 176 kr, för en storlek där sidan i samma stycke säger att ingen maskin är granskad. Det är en rekommendation som går runt regeln om produkter utan underlag i storleken, även om avsikten inte är den.
+- *Två mot en större.* Inte rimligt på det underlag vi har. Två 6H 2.0 kostar 21 176 kr, tar 1 060 W, kräver två hål i ytterväggen och enligt Acetec en egen 10 A-säkring var, och Acetec skriver att maskinen är avsedd för "mindre utrymmen". Acetec EvoDry RCF 20 G1 kostar 19 995 kr och anges till 17,7 liter vid 20 °C och 60 %, vilket skulle ge marginal även till 50 kvm med ett hål. Den uppgiften är butikens, inte Acetecs, och därför får den inte heller stå som råd i dag.
+
+Ny lydelse i sak, formuleras av hantverkaren: det finns ingen maskin jag granskat som klarar ett kallt dubbelgarage. Läsaren får kravet i klartext, en sorptionsavfuktare där *tillverkaren* anger minst 11 liter vid 20 °C och 60 % för 35 kvm och minst 15 för 50 kvm, och att maskinen till enkelgaraget inte räcker. Tätningen av porten kommer före. Inget produktnamn i stycket och ingen länk till butik.
+
+Nytt uppdrag till `underlag`, inte brådskande (sidan toppar i januari): Acetecs eget datablad för EvoDry RCF 20 G1 och RCF 12 G1 (kapacitet med villkor, effekt, tillåtna utrymmen, förbud, säkring, hål), Drybox datablad för X4 med villkor för de 19 litrarna, och Fresh D-1200 vid 20 °C om Fresh anger det. Bekräftar tillverkaren en maskin som klarar 15 liter vid 20 °C och 60 % och godtar garage, får den ett kort i stycket om kallt dubbelgarage, även om den kostar över 15 000 kr. Prisläget i SOKORDSANALYS 9.3 är en uppskattning, inte en gräns för meriter.
+
+**Uppvärmt dubbelgarage, två MDK21: står kvar med en rättelse.**
+
+- *Kapaciteten.* En MDK21 ger 20 liter vid 30 °C och 80 %, samma villkor som räknarens kolumn. Mot 15 till 20 för 35 kvm är "räcker till 35 kvm med måttlig fukt" riktigt. Två ger 40 liter mot 22 till 29 för 50 kvm, med marginal.
+- *Köprekommendation utan kort.* Ja, men på en maskin med datablad vid samma villkor som räknaren, som står i databasen och på `/luftavfuktare/`, och som klarar värdet med marginal. Det uppfyller regeln. Inget nytt kort; kortet ovanför gäller enkelgaraget och får stå.
+- *Två mot en större.* Meningen "Någon större kondensmaskin finns inte bland dem jag gått igenom" är fel. Wood's SW59FM står i databasen och på `/luftavfuktare/` med 41 liter vid 30 °C och 80 % och 25 liter vid 20 °C och 70 %, tank 11,4 liter, 690 W, 8 311 kr (16 sep, ska läsas om). Den omfattas av samma Wood's-manual (SW20–SW59) som underlaget redan läst. Två MDK21 kostar 6 236 kr och tar 550 W, alltså billigare och med lägre effekt för samma behov, och den billigare som klarar kravet står först. SW59FM ska ändå nämnas som alternativet med en maskin, en slang och en större tank. Rättelse på rad 124: ta bort påståendet om att ingen större finns, nämn SW59FM med länk till `/luftavfuktare/`, utan kort. R290-varningen på rad 116–118 gäller båda.
+
+### Byta bänkskiva, kontroll av utkastet
+
+`src/content/guider/kok/byta-bankskiva.mdx` följer beslutet på alla punkter utom en detalj:
+
+- Rad 154–156: hyra först, köp bara vid fler skivor, pris med datum, testresultat med källa, kortet efter resonemanget. Följer beslutet.
+- Rad 158, Ryobi: nämnd för massiv skiva utan laminat, utan kort och med svagheten ur testet. Följer beslutet.
+- Frontmatter rad 14–25: bara `makita-sp6000j` i `produkter`, skenan med `produkt` i behovslistan direkt under sågen, ingen fräs. Följer beslutet och regeln om tillbehör.
+- Rad 11, 168–172: hörnet beställs färdigfräst eller fogas med profil. Följer beslutet om att stryka överfräsen.
+- **Ändras:** rad 22 och 154 säger att sågen "tar 56 millimeter på djupet". Makitas 56 mm gäller utan skena. Med skenan blir kapdjupet mindre, och skenans tjocklek är inte hämtad. Skriv "56 millimeter utan skena enligt Makita" eller "mer än de 40 millimeter som de tjockaste skivorna har", inte 56 mm som om det gäller på skenan.
+
 **Tvätta tak, prövat igen för plåttak efter kompletteringen (faktabladet `guider-tvatta-tak.md`, "Komplettering 2026-09-29" avsnitt B): fortfarande inget kort.** Villkoret hade två delar, och båda måste vara uppfyllda:
 
 1. *Tillverkaren tillåter högtryck skriftligt.* Delvis. Plannjas broschyr från januari 2021, s. 7, som är ett tillägg till garantin, säger "mjuk borste och vatten eller högtrycksspola" och "högtrycksspola eventuellt". Samma tillverkares FAQ och blogg, som fortfarande nås från Plannjas webbplats, säger "Skölj utan högtryck". Broschyren väger tyngst som källa för vad garantin godtar, men den gör högtrycket till ett tillval och inte till metoden, och på samma sida står "Arbeta varsamt. Överdriven tvättning gör mer skada än nytta." Lindab nämner bara mjuk borste och vatten. Areco och Weckman är inte lästa.

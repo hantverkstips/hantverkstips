@@ -219,3 +219,82 @@ Faktabladen `guider-avfuktare-garage.md` och `guider-kondens-pa-fonster.md` gick
 3. **Kondens, tabellen över rutans temperatur.** Egen räkning godtas och märks så: "räknat av Hantverkstips ur U-värdet och innerytans värmemotstånd", med källan för U-värdena och motståndet i `kallor`, och formeln i en mening under tabellen. **Bättre än ettan punkt 4** lyder nu: tabellen med formel och källor för insatsvärdena, märkt som vår räkning.
 
 **fukt-4.md är klar för hantverkaren.**
+
+---
+
+## Kontroll efter skrivningen, 2026-09-29
+
+Gäller `/fukt/kondens-pa-fonster/`. `/fukt/avfuktare-garage/` är inte skriven än.
+
+**Kondens på fönster: 0 punkter, inget att ändra.** Title, description, H1, H2, utlänkar och Faq stämmer med checklistan. Utlänkarna går till `/el/u-varde/`, `/fukt/luftfuktighet-inomhus/`, `/fasad/renovera-fonster/` och `/fukt/avfuktare-kallare/`, och `/rakna/daggpunkt/` är inbäddad. Alla fem punkter i "Bättre än ettan" finns. Kortsvaret har talet och villkoret (8,6 grader vid 21 grader och 45 procent) och kan lyftas rakt av.
+
+### Hantverkarnas frågor
+
+- **Formlerna i källraden under tabellerna: godkänt.** Formeln, konstanterna (Lawrence 2005) och motståndet 0,13 ur SS-EN ISO 6946 står i klartext på sidan, och det uppfyller beslut 3.
+- **Tvåglas med U-värde 2,8 struket: godkänt.** Tabellen har tvåglas med 3,0, och `/el/u-varde/` säger "kring 2,8" för ett gammalt tvåglasfönster. "Kring" täcker skillnaden, och ingen av sidorna ändras.
+- **Mönster på syskonsidorna:** går till läsaren, se `tak-4.md`.
+
+### Bild
+
+Huvudbilden är skissen i punkt 8: fönstret i genomskärning med kall ruta och var kondensen bildas. Alt högst 125 tecken med orden kondens på fönster.
+
+### Publiceringen
+
+**En commit för kondenssidan och daggpunktsräknaren.** Den publicerade räknaren länkar nu till kondenssidan, och en länk till ett utkast stoppar bygget. Den kan gå före eller efter takcommiten, eftersom de inte länkar till varandra. Ordningen:
+
+1. Huvudbilden läggs in och godkänns av UX.
+2. `utkast: false` på `guider/fukt/kondens-pa-fonster.mdx`. `publicerad` och `uppdaterad` sätts till publiceringsdagen, eller till commitdagen om den inte är 2026-09-29.
+3. Rättelsen i `src/pages/rakna/daggpunkt.astro` följer med i samma commit. Ändrade den ett tal eller ett besked, sätts räknarens uppdateringsdatum till commitdagen. Är det bara länken, ändras inget datum.
+4. Inlänkarna nedan läggs in.
+5. `npm run build` ska vara grönt.
+6. Commit: "Publicera kondens på fönster och länka dit från daggpunktsräknaren".
+
+**Inlänkar.** Ankartexten skriver hantverkaren:
+
+- **`/fukt/luftfuktighet-inomhus/`**: under "Vid daggpunkten blir den kallaste ytan våt", räkneexemplet med sovrummet och det gamla fönstret → `/fukt/kondens-pa-fonster/`.
+- **`/el/u-varde/`**: under "Vad talet betyder en kall natt", meningen om det gamla tvåglasfönstret på 2,8 → `/fukt/kondens-pa-fonster/`.
+- **`/rakna/daggpunkt/`**: länken finns redan i rättelsen.
+- **`/fasad/renovera-fonster/`**: ingen länk nu. Sidan har ingen mening om kondens, och en ny mening i sak lönar sig inte för en tredje inlänk.
+
+Kondenssidan får tre inlänkar: luftfuktighet, U-värde och daggpunktsräknaren.
+
+**Datum.** `uppdaterad` ändras inte på luftfuktighetssidan eller U-värdessidan, eftersom en länk inte är en ändring i sak.
+
+**Efter publiceringen:** fråga en AI om "kondens på fönster insida" inom en vecka och anteckna i SOKORDSANALYS.md om sajten nämns.
+
+**Godkänd av SEO och GEO** när huvudbilden finns och inlänkarna är gjorda.
+
+
+## Kontroll efter skrivningen, avfuktare i garaget, 2026-09-29
+
+**`/fukt/avfuktare-garage/`: 0 punkter, inget att ändra.**
+
+- Title, description, H1 och H2 stämmer med checklistan.
+- Kortsvaret har typen efter temperatur, 60 procent RF och elkostnaden (530 W, 8 timmar, 2,40 kr, cirka 3 700 kr om året, räknat och kontrollerat). Det kan lyftas rakt av.
+- Temperaturgränserna stämmer med sorptionssidan: under 10 grader bara sorption, 15 grader och uppåt kondens.
+- `/rakna/avfuktare/` är inbäddad och `/rakna/elkostnad/` står som verktygskort, ett verktygskort per sida.
+- Utlänkarna går till sorptionssidan, båda granskningarna och `/luftavfuktare/`.
+- Produktkorten (Acetec EvoDry 6H 2.0 och Wood's MDK21) står i avsnitten om kallt och uppvärmt garage och länkar till granskningar, inte till tester.
+- Länken till `/fukt/avfuktare-kallare/` var villkorad av att källaren nämns som jämförelse. Det gör den inte, så den saknas med rätta.
+
+### Hantverkarnas fråga
+
+**Bilden visar avfuktaren på väggen.** Det är ingen sökfråga, och alten är rätt: den har "avfuktare i garaget" och är under 125 tecken. Bildtexten säger att avfuktaren sitter på ytterväggen. Hantverkaren stämmer av mot databladen att de två modellerna på sidan kan väggmonteras eller står nära väggen. Om de inte kan det, ändras bildtexten till "vid ytterväggen" utan omritning.
+
+### Publiceringen
+
+**En egen commit för garaget**, oberoende av köket. Ordningen:
+
+1. `utkast: false`. `publicerad` och `uppdaterad` sätts till commitdagen.
+2. Inlänkarna nedan läggs in. Ankartexten skriver hantverkaren.
+   - **`/fukt/sorptionsavfuktare/`**: under "Krypgrunden, garaget, kallvinden och källaren var för sig", meningen "En avfuktare till garage som är kallt året runt blir också sorption …" → `/fukt/avfuktare-garage/`.
+   - **`/rakna/avfuktare/`**: "Läs vidare" får `/fukt/avfuktare-garage/`, eftersom räknaren har garaget som val.
+   - **`/luftavfuktare/`**: kategorisidan länkar till köpguiderna (`seo-och-geo` avsnitt 4). Länken läggs där källaren och krypgrunden redan länkas, eller där garaget eller kyla nämns.
+3. `npm run build` ska vara grönt. Reklambandet står ovanför första produktkortet, och affiliate har godkänt korten.
+4. Commit: "Publicera avfuktare i garaget".
+
+Garaget får tre inlänkar: sorptionssidan, avfuktarräknaren och kategorisidan. `uppdaterad` ändras inte på dem, eftersom en länk inte är en ändring i sak.
+
+**Efter publiceringen:** fråga en AI om "avfuktare garage" i januari, när frasen toppar, och anteckna i SOKORDSANALYS.md om sajten nämns.
+
+**Godkänd av SEO och GEO.**

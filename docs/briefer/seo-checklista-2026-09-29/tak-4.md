@@ -449,3 +449,70 @@ Kompletteringarna sist i `guider-taklackage.md`, `guider-tvatta-tak.md` och `kun
 ## Koordinatorns notering om produkten, 2026-09-29
 
 Produktbeslut ägs av affiliate. Affiliate har efter SEO:s beslut ovan prövat plåttaket och står fast vid att /tak/tvatta-tak/ får inget kort för högtryckstvätt och inget reklamband (docs/briefer/affiliate-startlista-4-2026-09-29.md, "Slutliga beslut efter underlaget"). Skälet är att Plannja 2021 nämner högtryck bara som tillval, att Plannjas FAQ fortfarande säger "Skölj utan högtryck" och att inget tryck eller munstycke anges. Sidans text om plåt följer SEO: högtryck nämns som Plannjas tillval med båda källorna, och borste och vatten som metod. Ingen högtryckstvätt står med `produkt` i "Det här behöver du".
+
+---
+
+## Kontroll efter skrivningen, 2026-09-29
+
+De fyra filerna är lästa mot checklistan och de tre beslutsavsnitten ovan. Title, description, H1, H2 med sidofraser, Faq, utlänkar och "Bättre än ettan" i de reviderade formerna stämmer. `npm run kontrollera` körs igen i publiceringscommiten.
+
+| Sida | Punkter |
+|---|---|
+| `/tak/takfot/` | 1 |
+| `/tak/taklackage/` | 0, inget att ändra |
+| `/tak/tvatta-tak/` | 2 |
+| `/tak/papptak/` | 1 |
+
+**Punkterna**, rättas före publicering:
+
+1. **`guider/tak/takfot.mdx` rad 132** (rotavdraget under "Vad en firma tar per meter"): länken går i dag till `/tak/plattak/` med ankaret "plåttakets genomgång av rotavdraget". Den ska gå till `/rakna/rotavdrag/`, som äger rotfrågan, med ett ankare som säger att det är räknaren, till exempel "räkna ut vad du har kvar av avdraget i år". Då försvinner också mönstret med samma ankare som på hängrännorna. Länken till `/tak/plattak/` under takfotsplåten står kvar.
+2. **`guider/tak/tvatta-tak.mdx` rad 85:** stycket "Benders eget algmedel späds med fyra delar vatten …" stryks. Beslut 5 säger inga produktnamn på medel, och medlet finns inte i Kemikalieinspektionens register (0 träffar 2026-09-29). Med tillverkare, spädning och åtgång blir stycket en produktrekommendation. Metodråden får stå kvar med Benders som källa (mossan bort först, lågtryck eller borste, 12 timmar utan regn, resultat efter månader, ny behandling efter ett år), alltså rad 82, tabellen och Faq-svaren på rad 151 och 152.
+3. **`guider/tak/tvatta-tak.mdx` Faq rad 153:** meningen "Benders kallar sitt medel biologiskt nedbrytbart men vill ändå att växterna täcks" stryks av samma skäl. Rådet att täcka växterna står kvar.
+4. **`kunskap/tak/papptak.mdx` rad 13, kortsvaret:** "ungefär **767 kronor per kvadratmeter**" blir "cirka **770 kronor per kvadratmeter**". Talet är räknat ur Takexperters exempel på 150 kvm, inte en offert, och "ungefär" med en exakt krona säger två saker. Tabellen på rad 137 och räknaren behåller 767, som är källans tal.
+
+### Hantverkarnas frågor
+
+- **Ordmålen underskrids på alla fyra: godkänt.** Målen var motiverade av vad som rankar och var inget krav. Alla punkter i "Bättre än ettan" finns, och ettorna är korta (en definition, ett forum, en förmedlare, en navsida). Fyll inte ut.
+- **"Benders eget algmedel": för nära.** Stryks, punkt 2 och 3.
+- **Papptakets 767 kr:** punkt 4.
+- **Mönster på syskonsidorna.** Rotankaret till plåttaket löses av punkt 1. "följ anvisningen till det du köper" finns inte ordagrant i något innehåll i dag. Varianterna är röst och går till läsaren, inte till sökningen.
+
+### Bilder
+
+Huvudbilden är skissen i punkt 8 på varje sida: takfoten i genomskärning med delarna namngivna, vattnets väg från pannan till fläcken, taket med mossans platser och papptakets skikt. Alt högst 125 tecken med frasen, mått i bildtexten.
+
+### Publiceringen
+
+**En commit för de fyra taksidorna.** Takläckage, tvätta tak och papptak länkar till takfoten, och en länk till ett utkast stoppar bygget. Kondenssidan går i en egen commit före eller efter (`fukt-4.md`). Ordningen:
+
+1. Punkterna 1 till 4 rättas.
+2. Huvudbilderna läggs in och godkänns av UX.
+3. `utkast: false` på alla fyra.
+4. `publicerad` och `uppdaterad` sätts till publiceringsdagen. Sker den inte 2026-09-29 byts båda till commitdagen.
+5. Inlänkarna nedan läggs in.
+6. `npm run build` ska vara grönt.
+7. Commit: "Publicera takfoten, takläckaget, taktvätten och papptaket".
+
+**Inlänkar.** Ankartexten skriver hantverkaren, och det blir högst en ny länk per H2:
+
+- **`/tak/plattak/`**:
+  - Under "Lutningen på ditt tak begränsar valet av plåttak", meningen om att taket hålls rent från mossa och smuts → `/tak/tvatta-tak/`.
+  - Under "Plåttaket ligger på takpapp och två lager läkt", där underlagspappen beskrivs → `/tak/papptak/`.
+- **`/tak/snorasskydd/`**: under "Så fästs snörasskydd på plåttak", vid infästningen genom plåten → `/tak/taklackage/`. Finns ingen mening om att tätningen hålls tät, lägger hantverkaren till en kort mening med tillverkarens anvisning, som redan står i `kallor`.
+- **`/fasad/tvatta-fasad/`**: under "En eternitfasad ska inte högtryckstvättas", Arbetsmiljöverkets mening om tak och fasader → `/tak/tvatta-tak/`.
+- **`/tak/hangrannor/`**: under "Byta hängrännor och stuprör i rätt ordning", där krokarna och takfoten nämns → `/tak/takfot/`.
+- **`/el/tillaggsisolera-vind/`**: under "En kallare vind är en fuktigare vind, och det är väntat", meningen om tätningen och ventilationen → `/tak/takfot/`.
+- **`/rakna/takbyte/`**: "Läs vidare" får raderna `/tak/taklackage/` och `/tak/papptak/`.
+
+| Ny sida | Inlänkar från | Antal |
+|---|---|---|
+| takfot | takläckage, tvätta tak, papptak, hängrännor, tilläggsisolera vind | 5 |
+| takläckage | snörasskydd, takbyte | 2 |
+| tvätta tak | plåttak, tvätta fasad | 2 |
+| papptak | plåttak, takbyte | 2 |
+
+**Datum.** `uppdaterad` ändras inte på plåttak, snörasskydd, tvätta fasad, hängrännor eller tilläggsisolera vind, eftersom en länk inte är en ändring i sak. Lägger hantverkaren till en mening i sak på snörasskyddet, sätts dess `uppdaterad` till commitdagen.
+
+**Efter publiceringen:** fråga en AI om "takläckage försäkring" och "tvätta tak mossa" inom en vecka och anteckna i SOKORDSANALYS.md om sajten nämns.
+
+**Godkänd av SEO och GEO** när punkterna 1 till 4 är rättade, huvudbilderna finns och inlänkarna är gjorda.
