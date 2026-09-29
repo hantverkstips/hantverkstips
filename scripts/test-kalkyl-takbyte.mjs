@@ -37,6 +37,8 @@ import {
   inomIntervall,
   KALLOR,
   kortsvarVarden,
+  LUTNING_KALLOR,
+  MINSTA_LUTNING,
   MATERIAL,
   MATERIAL_VAL,
   raknaTakbyte,
@@ -424,9 +426,9 @@ test('retur 1: takpanneplåt under 14 grader ger utfallet lutning, utan belopp',
   assert.deepEqual(r.regler, ['takarea', 'vinkel', 'takstolar']);
   assert.deepEqual(r.gorInteDetHar, ['bottenyta', 'bestall-takstolar']);
   assert.equal(r.takstolar, 11);
-  /* Precis 14 grader går, och andra material har ingen gräns. */
+  /* Precis 14 grader går. Papp har ingen gräns inom räknarens vinklar (underlaget 12.3). */
   assert.equal(rakna({ material: 'takpanneplat', vinkelGrader: 14 }).utfall, 'belopp');
-  assert.equal(rakna({ material: 'betong', vinkelGrader: 10 }).utfall, 'belopp');
+  assert.equal(rakna({ material: 'papp', vinkelGrader: 5 }).utfall, 'belopp');
   /* Vinkeln ur nockhöjden räknas också: 9 m bred, nock 1,1 m ger 13,7 grader. */
   assert.equal(rakna({ material: 'takpanneplat', matt: 'nock', nockM: 1.1 }).utfall, 'lutning');
   /* Utanför intervallet vinner, som förut. */
@@ -487,7 +489,7 @@ test('retur 7: spalt har ingen rad-tillagg', () => {
 /* UX retur 2 på /rakna/takbyte/: de 14 graderna har källa i antagandetabellen. */
 test('UX retur 2: minsta-lutning står med Plannja och Lindab vid utfallet lutning, bara där', () => {
   const lut = { ...STANDARD, material: 'takpanneplat', vinkelGrader: 10 };
-  const rad = antagandenFor(raknaTakbyte(lut), lut).find((a) => a.nyckel === 'minsta-lutning');
+  const rad = antagandenFor(raknaTakbyte(lut), lut).find((a) => a.nyckel === 'minsta-lutning-takpanneplat');
   assert.ok(rad, 'raden finns vid lutning');
   assert.equal(rad.typ, 'Källa');
   assert.deepEqual(rad.kallor, ['PL-ROYAL', 'LB-PANNA']);
@@ -498,6 +500,104 @@ test('UX retur 2: minsta-lutning står med Plannja och Lindab vid utfallet lutni
   assert.equal(KALLOR['LB-PANNA'].datum, '2024-09-20');
   /* Inte vid belopp eller utanför. */
   for (const i of [STANDARD, { ...STANDARD, material: 'takpanneplat', vinkelGrader: 14 }, { ...STANDARD, ...F10 }]) {
-    assert.ok(!antagandenFor(raknaTakbyte(i), i).some((a) => a.nyckel === 'minsta-lutning'), JSON.stringify(i));
+    assert.ok(!antagandenFor(raknaTakbyte(i), i).some((a) => a.nyckel.startsWith('minsta-lutning')), JSON.stringify(i));
+  }
+});
+
+/*
+ * Minsta lutning per material, 2026-09-29 (takbytesunderlaget 12, beställningen
+ * från koordinatorn): betong 14° (Benders 2023-07, Monier/BMI 2019-08-27),
+ * tegel 14° (Monier/BMI), bandtäckt plåt 5,7° (Plannja, januari 2020), papp
+ * ingen gräns (TopSafe 3°, räknarens lägsta vinkel).
+ */
+const GRANS = [
+  ['takpanneplat', 14, 13.9, 14.1, ['PL-ROYAL', 'LB-PANNA'], '14'],
+  ['betong', 14, 13.9, 14.1, ['BENDERS-BETONG', 'BMI-PANNOR'], '14'],
+  ['tegel', 14, 13.9, 14.1, ['BMI-PANNOR'], '14'],
+  ['bandplat', 5.7, 5.6, 5.8, ['PL-BAND'], '5,7'],
+];
+const medBelopp = (u) => u === 'belopp' || u === 'tak';
+
+test('minsta lutning: konstanterna och källorna mot underlaget 12', () => {
+  assert.deepEqual(MINSTA_LUTNING, { takpanneplat: 14, betong: 14, tegel: 14, bandplat: 5.7 });
+  assert.equal(MINSTA_LUTNING.papp, undefined);
+  assert.deepEqual(Object.keys(LUTNING_KALLOR).sort(), Object.keys(MINSTA_LUTNING).sort());
+  assert.match(KALLOR['BENDERS-BETONG'].url, /^https:\/\/www\.benders\.se\/.*Monteringsanvisning-BETONG-1o2kupig--2023-07/);
+  assert.match(KALLOR['BENDERS-BETONG'].datum, /^2023-07/);
+  assert.match(KALLOR['BMI-PANNOR'].url, /^https:\/\/hemmatema\.se\/.*190827\.pdf$/);
+  assert.equal(KALLOR['BMI-PANNOR'].datum, '2019-08-27');
+  assert.match(KALLOR['PL-BAND'].url, /^https:\/\/www\.plannja\.se\/.*handbok-2020-1\.pdf/);
+  assert.match(KALLOR['PL-BAND'].datum, /^januari 2020/);
+  for (const k of ['BENDERS-BETONG', 'BMI-PANNOR', 'PL-BAND']) assert.equal(KALLOR[k].slag, 'tillverkare', k);
+});
+
+for (const [material, grans, under, over, kallor, gransText] of GRANS) {
+  test(`minsta lutning, ${material}: under ${grans} grader lutning, på och över gränsen belopp`, () => {
+    assert.equal(rakna({ material, vinkelGrader: under }).utfall, 'lutning');
+    assert.ok(medBelopp(rakna({ material, vinkelGrader: grans }).utfall), 'på gränsen');
+    assert.ok(medBelopp(rakna({ material, vinkelGrader: over }).utfall), 'över gränsen');
+    /* Pulpettak har samma gräns. */
+    assert.equal(rakna({ material, takform: 'pulpet', vinkelGrader: under }).utfall, 'lutning');
+
+    const i = { ...STANDARD, material, vinkelGrader: under };
+    const r = raknaTakbyte(i);
+    assert.equal('lag' in r, false);
+    assert.deepEqual(r.regler, ['takarea', 'vinkel', 'takstolar']);
+    const v = beskedVarden(r, i);
+    assert.equal(v.minLutning, gransText);
+    assert.equal(v.materialNyckel, material);
+    assert.equal(v.attBetalaLag, null);
+    const materialText = TEXT.material[material];
+    assert.ok(plan(TEXT.besked.lutning.rubrik(v)).includes(materialText.toLowerCase()), 'rubriken bär materialet');
+    assert.doesNotMatch(TEXT.besked.lutning.rubrik(v), /\d{3}/, 'rubriken bär inget belopp');
+    assert.ok(plan(TEXT.besked.lutning.rad(v)).startsWith(`${materialText} kräver minst ${gransText} grader`));
+    const darfor = plan(TEXT.darfor.lutning(v));
+    assert.ok(darfor.startsWith(`${materialText} ska ligga på ett tak som lutar minst ${gransText} grader`), darfor);
+    assert.ok(darfor.includes(`${plan(TEXT['lutning-kalla'][material])}, och därför blir det inget belopp.`), darfor);
+
+    /* Antagandetabellen: bara det valda materialets rad, med dess källor. */
+    const rader = antagandenFor(r, i).filter((a) => a.nyckel.startsWith('minsta-lutning'));
+    assert.deepEqual(rader.map((a) => a.nyckel), [`minsta-lutning-${material}`]);
+    assert.equal(rader[0].typ, 'Källa');
+    assert.deepEqual(rader[0].kallor, kallor);
+    assert.ok(harText(TEXT.antagande[`minsta-lutning-${material}`]));
+    assert.ok(rader[0].varde.trim().length > 0);
+  });
+}
+
+test('minsta lutning, papp: ingen gräns, belopp på räknarens lägsta vinklar', () => {
+  assert.equal(rakna({ material: 'papp', vinkelGrader: 5 }).utfall, 'belopp');
+  assert.equal(rakna({ material: 'papp', takform: 'pulpet', vinkelGrader: 3 }).utfall, 'belopp');
+  const i = { ...STANDARD, material: 'papp' };
+  assert.equal(beskedVarden(raknaTakbyte(i), i).minLutning, null);
+  assert.ok(!ANTAGANDEN.some((a) => a.nyckel === 'minsta-lutning-papp'));
+});
+
+test('regeln om takytan börjar inte med priset vid lutning och utanfor (UX 2026-09-29)', () => {
+  const text = (over) => {
+    const i = { ...STANDARD, ...over };
+    return plan(TEXT.regel.takarea.text(beskedVarden(raknaTakbyte(i), i)));
+  };
+  assert.ok(text({}).startsWith('Priset räknas på takytan'));
+  for (const over of [{ material: 'betong', vinkelGrader: 10 }, { material: 'bandplat', vinkelGrader: 5 }, F10]) {
+    const t = text(over);
+    assert.ok(!t.startsWith('Priset'), t);
+    const i = { ...STANDARD, ...over };
+    assert.equal(t, plan(TEXT.regel.takarea.utanPris(beskedVarden(raknaTakbyte(i), i))));
+  }
+});
+
+test('minsta lutning jämförs med den visade vinkeln, avrundad till en decimal (koordinatorn 2026-09-29)', () => {
+  /* 13,96° visas som 14 och 5,66° som 5,7: på gränsen, alltså belopp. */
+  assert.equal(rakna({ material: 'betong', vinkelGrader: 13.96 }).utfall, 'belopp');
+  assert.equal(rakna({ material: 'bandplat', vinkelGrader: 5.66 }).utfall, 'belopp');
+  /* 13,94° visas som 13,9 och 5,64° som 5,6: under gränsen. */
+  for (const [material, vinkelGrader, visad] of [['betong', 13.94, '13,9'], ['bandplat', 5.64, '5,6']]) {
+    const i = { ...STANDARD, material, vinkelGrader };
+    const r = raknaTakbyte(i);
+    assert.equal(r.utfall, 'lutning');
+    const v = beskedVarden(r, i);
+    assert.equal(v.vinkel, visad);
+    assert.notEqual(v.vinkel, v.minLutning);
   }
 });

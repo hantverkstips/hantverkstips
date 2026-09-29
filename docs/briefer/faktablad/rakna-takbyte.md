@@ -331,3 +331,76 @@ Inte kontrollerat: lagerstatus per produkt, om kampanjpriserna gäller efter i d
 - Om valmtak ska med: beslut för UX och bygge-agenten.
 - Linjär skalning av priset med ytan: antagande, källorna säger att den inte håller.
 - Skatteverkets sidor saknar datum. Rotkonstanterna byts varje december och tas ur `rotavdrag.ts`.
+
+---
+
+## 12. Minsta lutning per material, 2026-09-29
+
+Beställt av koordinatorn för `/rakna/takbyte/`. Allt hämtat och läst 2026-09-29. Citaten är ordagranna. Sidnumret är det tryckta; det stämmer med PDF-sidan i alla tre PDF:erna.
+
+### 12.1 Tabell
+
+| Material | Tillverkare, produkt | Minsta lutning | Villkor enligt källan | Källa | Adress | Dokumentets datum |
+|---|---|---|---|---|---|---|
+| Betongpannor | Benders (betongtakpannor 1- och 2-kupig: Palema, Exklusiv) | **14°** | Under 22°: underlagspappen skarvklistrad och tätare läktavstånd, 310–340 mm | Benders, Monteringsanvisning betong 1- och 2-kupig, s. 4 och 5 | https://www.benders.se/globalassets/c4-assets/document/Monteringsanvisning-BETONG-1o2kupig--2023-07-LU-2.pdf | "BENDERS / SE / 2023 - 07" (s. 12) |
+| Betongpannor | Monier (BMI): Jönåker Protector, Jönåker Ytbehandlad | **14°** | Inget villkor i tabellen. Läktavståndet anges per lutningsintervall i läggtabellen s. 15 | Monier/BMI, Monteringsanvisning Tegel- och betongtak, s. 5, "Tabell Taklutning" | https://hemmatema.se/userfiles/files/BMI_Monteringsanvisningtegel-%20och%20betongtak%202019_SWE_190827.pdf (återförsäljarens kopia) | "Monier Roofing AB / BMI Group Sverige 190827_01SWE", 2019-08-27 |
+| Betongpannor | Monier (BMI): Minster | **18°** | Inget villkor i tabellen | samma, s. 5 | samma | 2019-08-27 |
+| Tegelpannor (lertegel) | Monier (BMI): KDN, Turmalin, Hollander, Nortegel, Nova | **14°** | Inget villkor i tabellen | samma, s. 5 | samma | 2019-08-27 |
+| Tegelpannor (lertegel) | Monier (BMI): Vittinge T11, Vittinge E13 | **22°** | Inget villkor i tabellen | samma, s. 5 | samma | 2019-08-27 |
+| Takpapp | Icopal (BMI): TopSafe 3° | **3°** | "ju lägre lutning, desto högre blir kvalitetskraven" | BMI Sverige, produktsida TopSafe | https://bmisverige.se/produkter/yttertak/takpapp/top-safe | inget datum på sidan, läst 2026-09-29 |
+| Takpapp | Icopal (BMI): TopSafe 14° | **14°** | "avsedd att användas på brantare tak" | samma | samma | läst 2026-09-29 |
+| Bandtäckt plåt (planplåt, falsad) | Plannja | **5,7° (1:10)** | Under 11,3° (1:5): falserna tätas med falskitt | Plannja, Handbok för band- och skivtäckning i stål och aluminium, s. 5 och s. 16 | https://www.plannja.se/docs/default-source/documents-se/montering-uppdelade-2020/se-plannja-planpl%C3%A5tst%C3%A4ckning-handbok-2020-1.pdf?sfvrsn=4637394718963370000 | "PLANNJA 2020 JANUARI" (s. 32) |
+| Bandtäckt plåt, klickfalsad profil | Lindab SRP25N Båstad | **8°** ("rekommenderade") | Inget villkor på sidan | Lindab, produktsida SRP25N Båstad | https://www.lindab.se/produkter/byggprodukter/tak/takprofiler/takplat/srp25n-bastad/ | inget datum på sidan, läst 2026-09-29 |
+| Takpanneplåt | Plannja Royal/Regent, Lindab Torekov och Norrviken | 14° | se tidigare underlag | redan hämtat | | Plannja 2026-2, Lindab 2024-09-20 |
+
+Vilka Monier-pannor som är betong och vilka som är lertegel står inte i monteringsanvisningen. Indelningen är hämtad ur BMI:s produktkatalog "Din guide till rätt tak" 2021, innehållsförteckningen s. 3: under "Taktegel" står Vittinge, KDN VH, Hollander V, Nortegl, Nova; under "Betongpannor" står Aerlox, Jönåker Elegant, Jönåker Protector 2.0, Jönåker Polar, Minster, Zanda Protector 2.0, Zanda Arktis. Adress: https://bmisverige.se/sites/default/files/2021-09/Din_guide_till_ratt_tak_2021.pdf. Turmalin står inte i katalogen 2021; den räknas som tegel på grund av BMI:s egen adress (`/produkter/yttertak/taktegel/turmalin`, sidan gav 403 och lästes inte). Rustilkk (14° i samma tabell) står inte i katalogen och dess material är **okänt**; den står därför inte i tabellen ovan.
+
+### 12.2 Citat
+
+**Benders, 2023-07**
+- s. 4: "Benders takpannor kan läggas på taklutningar ned till 14°."
+- s. 4: "Papp av godkänd kvalitet ex Benders BTS eller likvärdig krävs alltid. Vid taklutningar under 22° skall underlagspappen vara skarvklistrad."
+- s. 5: "Min avstånd för Benders betongtakpannor är 310 mm, max 375 mm. Vid lägre taklutning än 22° skall tätare läktavstånd användas, 310-340 mm, se tabell 3."
+- s. 5, Tabell 3 börjar på raden "14 - 17" för Palema 2-kupig och Exklusiv 1-kupig.
+
+**Monier/BMI, 2019-08-27**
+- s. 5: "Taklutningen är avgörande för vilka takpannor som kan användas. Kontrollera att taklutningen på ditt tak ligger inom spannet av vad som är möjligt med den panna du valt. Se tabell."
+- s. 5, "Tabell Taklutning", kolumnerna Min och Max: KDN 14 85; Turmalin 14 85; Hollander 14 85; Nortegel 14 85; Nova 14 85; Vittinge T11 22 85; Vittinge E13 22 85; Minster 18 85; Rustilkk 14 85; Jönåker Protector 14 85; Jönåker Ytbehandlad 14 85.
+- s. 5: "Det bör påpekas att risken för fuktinträngning ökar vid lägen med mycket vind och nederbörd, låg taklutning samt vid anslutningar och övergångar i takytan."
+- Tabellen anger ingen enhet. Att det är grader framgår av läggtabellen s. 15 (kolumnen "Taklutning") och av "taklutning över 45°" s. 26.
+- Samma tabell med samma tal står i den äldre utgåvan "121030_04SE" (Monier Roofing AB), s. 5, med "Jönåker Elegant" i stället för "Jönåker Ytbehandlad": https://www.beijerbygg.se/wcsstore/BeijerCAS/HPMAssets/d220001/medias/docus/2/002459890_7652789_249060318_MA1.pdf
+
+**BMI, TopSafe (produktsidan, läst 2026-09-29)**
+- "Icopal TopSafe 3° är originalet inom takpapp och ligger på många svenska tak. Tack vare de exceptionellt starka klisterkanterna klarar den ända ned till 3° lutning, något som ger extra trygghet, ju lägre lutning, desto högre blir kvalitetskraven."
+- "TopSafe 14° är en klassisk ytpapp [...] Modellen är avsedd att användas på brantare tak, dvs från 14° och uppåt"
+- Samma text om TopSafe 3° står i katalogen "Din guide till rätt tak" 2021, s. 36.
+
+**Plannja, januari 2020**
+- s. 5: "I princip kan alla byggnader täckas med planplåt. En av de begränsningar som förekommer är takets lutning som ska vara minst 1:10 eller 5,7°."
+- s. 16: "Vid taklutning under 1:5 (11.3°) och i ränndalar ska falser tätas med falskitt."
+
+**Lindab SRP25N Båstad (produktsidan, läst 2026-09-29)**
+- "Minsta rekommenderade taklutning 8 grader."
+
+### 12.3 Mot räknarens vinklar (egen jämförelse)
+
+Förslaget i avsnitt 1: sadel 5–60°, pulpet 3–30°.
+
+- **Papp** (TopSafe 3°): gränsen 3° är lika med räknarens lägsta pulpetvinkel. Ingen gräns inom räknarens vinklar. TopSafe 14° har gränsen 14°.
+- **Bandtäckt plåt har en gräns inom räknarens vinklar**: 5,7° enligt Plannja, 8° för Lindabs klickfalsade profil. Pulpet 3–5,6° och sadel 5–5,6° ligger under Plannjas gräns. Beställningens antagande att bandtäckt plåt saknar gräns stämmer inte.
+- **Betong och tegel**: 14° för de flesta pannor, 18° för Minster, 22° för Vittinge.
+
+### 12.4 Är tillverkarna oense?
+
+- **Betong, Benders och Monier: nej om talet.** Båda säger 14°. De skiljer sig i villkoren: Benders kräver skarvklistrad underlagspapp och tätare läkt under 22°; Monier sätter inget villkor i tabellen, bara läktavstånd per lutning i läggtabellen. Monier har en betongpanna med högre gräns (Minster 18°).
+- **Tegel**: bara en tillverkare läst (Monier). Inom den skiljer sig modellerna: 14° för de falsade pannorna, 22° för Vittinge.
+- **Bandtäckt plåt, Plannja och Lindab**: 5,7° och 8°. De gäller olika saker: Plannjas tal gäller bandtäckning med planplåt som metod, Lindabs en bestämd klickfalsad profil och är skrivet som rekommendation. För en allmän gräns väger Plannjas handbok tyngst; Lindabs tal gäller bara den profilen.
+
+### 12.5 Osäkert och ej läst
+
+- Moniers anvisning är från 2019-08-27 och säger själv: "Aktuell version av monteringsanvisningen finns på www.bmigroup.com/se." BMI listar en utgåva 2021 (https://store.bmigroup.com/medias/BMI-Monteringsanvisningtegel-och-betongtak-2021-SWE-2100127-print.pdf) som gav HTTP 400 och inte gick att läsa. Talen i utgåvorna 2012 och 2019 är desamma.
+- bmisverige.se gav 403 för produktsidorna Zanda Protector 2.0 och Turmalin. experthjalp.bmisverige.se ("Taklutning för betongpannor") gav 404. docplayer.se gick inte att nå.
+- Zanda (betong) saknas i min/max-tabellen. Läggtabellen s. 15 i utgåvan 2012 börjar på "14 - 17" för Zanda, men i utgåvan 2019 är tabellen sönderfallen i textutdraget. Zandas minsta lutning är **inte bekräftad**.
+- Rustilkk: material okänt.
+- Plannjas handbok är från januari 2020. Ingen senare utgåva hittad.
+- Ingen annan tegeltillverkare än Monier läst.
