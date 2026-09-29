@@ -34,7 +34,7 @@ export const PELARE = [
     kort: 'Tak',
     ikon: 'tak',
     grupp: 'ute',
-    rad: 'Yttertak, hängrännor, vind och läckor.',
+    rad: 'Plåttak, hängrännor, takstolar och snörasskydd.',
   },
   {
     slug: 'fasad',

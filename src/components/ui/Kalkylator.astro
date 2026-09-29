@@ -33,6 +33,8 @@ import RotavdragForm from '../kalkyl/RotavdragForm.astro';
 import TrappaForm from '../kalkyl/TrappaForm.astro';
 import UVardeForm from '../kalkyl/UVardeForm.astro';
 import KontrollplanForm from '../kalkyl/KontrollplanForm.astro';
+import TakbyteForm from '../kalkyl/TakbyteForm.astro';
+import TakavvattningForm from '../kalkyl/TakavvattningForm.astro';
 import { ATGARD_ORDNING, type Atgard } from '../../lib/kalkyl/kontrollplan';
 import Ikon from './Ikon.astro';
 
@@ -76,6 +78,8 @@ const MED_FORMULAR = [
   'fasadyta',
   'grannemedgivande',
   'kontrollplan',
+  'takbyte',
+  'takavvattning',
 ];
 
 const { namn, forval, forst } = Astro.props;
@@ -142,6 +146,8 @@ const prefix = `${k.slug}-inbaddad-`;
   {namn === 'fasadyta' && <FasadytaForm kompakt={true} idPrefix={prefix} knappText="Räkna ut ytan och färgen" />}
   {namn === 'grannemedgivande' && <GrannemedgivandeForm kompakt={true} indata={forvalIndata} idPrefix={prefix} knappText="Se om grannen ska skriva under" />}
   {namn === 'kontrollplan' && <KontrollplanForm kompakt={true} forst={forstAtgarder} idPrefix={prefix} knappText="Visa kontrollplanen" />}
+  {namn === 'takbyte' && <TakbyteForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
+  {namn === 'takavvattning' && <TakavvattningForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
 
   <p class="m-0 mt-4 text-liten text-blyerts-2">
     {FOTRAD}
