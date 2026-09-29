@@ -67,3 +67,23 @@ Står [M2] för trångt i 176 enheter vid 24 px får det gå på två rader; sä
 ## 6. Budget
 
 Publicerad fil **under 28 kB**, huvudbild med `fetchpriority="high"`. Resten som fogspecen avsnitt 7, med `fasad/mala-om-huset-forarbete`. Vid granskningen på 343 px: syns tre olika skick utan att etiketterna läses, är flagorna i fält 2 flagor och inte fläckar, och är pilen det enda röda?
+
+## 7. Hantverkarens text, ifylld 2026-09-29
+
+Etiketterna under fälten är korta, så att de ryms i 176 enheter på en rad. Det fullständiga namnet på varje nivå står i bildtexten och i tabellen på sidan.
+
+| Nr | Text |
+|---|---|
+| [M1] | tvätt |
+| [M2] | skrapning |
+| [M3] | rent trä |
+| [M4] | 200 till 260 kr |
+| [M5] | 300 till 420 kr |
+| [M6] | kring 600 kr |
+| [M7] | per kvm |
+| [M8] | tre gånger så dyrt |
+
+Priserna skrivs med "till", som på sidan, och inte med streck.
+
+- `[ALT]`: Samma fasad i tre skick när du ska måla om huset, med målarens pris per kvadratmeter under varje skick.
+- `[BILDTEXT]`: Samma stående panel där färgen sitter kvar och tvättas, där färgen flagar och skrapas och träet grundas, och där all färg ska bort till rent trä. Priserna är målarens arbete per kvadratmeter med moms, före rotavdraget och utan färg. De två första kommer från Hantverkskollens prisindex i juli 2026, och de 600 kronorna för rent trä har jag räknat fram utifrån infravärmarens tempo och målarens timpris.

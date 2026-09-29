@@ -72,3 +72,22 @@ Caveat 500, 24 px. Namnet står till vänster under lutningstecknet, lutningen t
 ## 6. Budget
 
 Publicerad fil **under 28 kB**: den blir huvudbild och laddas med `fetchpriority="high"` ovanför vecket. Resten som fogspecen avsnitt 7, med `tak/plattak-profiler`. Vid granskningen på 343 px: går de fyra profilerna att skilja, framför allt klickfals mot bandtäckning, syns skillnaden mellan 5,7° och 8°, och är det bara ringen som är röd?
+
+## 7. Hantverkarens text, ifylld 2026-09-29
+
+| Nr | Text |
+|---|---|
+| [A1] | trapetsplåt |
+| [A2] | 5,7° |
+| [A3] | takpanneplåt |
+| [A4] | 14° |
+| [A5] | klickfals |
+| [A6] | 8° |
+| [A7] | falsad bandtäckning |
+| [A8] | läggs av plåtslagare |
+| [A9] | minsta lutning |
+
+Blir [A7] för bred i rutan står bara "bandtäckning".
+
+- `[ALT]`: Fyra plåttak sedda från gaveln, med minsta lutning för trapetsplåt, takpanneplåt, klickfals och falsad bandtäckning.
+- `[BILDTEXT]`: De fyra plåtarna sedda från gaveln. Profilerna är inte skalenliga, men vinklarna är ritade med rätt gradtal. Trapetsplåt klarar tak ned till 5,7 grader, klickfals ned till 8 och takpanneplåt ned till 14, enligt Plannjas och Lindabs monteringsanvisningar. Den falsade bandtäckningen läggs av en plåtslagare.

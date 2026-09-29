@@ -60,3 +60,19 @@ Sex etiketter är taket, och [L5] stryks först. Ryms [L6] inte i vänstermargin
 ## 6. Budget
 
 Publicerad fil **under 28 kB**, huvudbild med `fetchpriority="high"`. Mallen `hus-rf-per-rum` väger 38,8 kB publicerad med tjugo korta etiketter; den här har sex, så gränsen håller om etiketterna hålls korta. Resten som fogspecen avsnitt 7, med `fukt/luftfuktighet-rum`. Vid granskningen på 343 px: syns garderoben som en garderob och glipan bakom den, går rummens tal att läsa, och är väggbiten det enda röda?
+
+## 7. Hantverkarens text, ifylld 2026-09-29
+
+| Nr | Text |
+|---|---|
+| [L1] | sovrum / under 45 % på vintern |
+| [L2] | vardagsrum / runt 50 % |
+| [L3] | badrum / inget riktvärde |
+| [L4] | källare / under 75 % |
+| [L5] | 30 till 70 % går bra |
+| [L6] | mögel växer här / över 75 % |
+
+Snedstrecket betyder ny rad. [L6] står på två rader i marginalen; ryms den inte där, går den ovanför takfallet som specen säger.
+
+- `[ALT]`: Huset i genomskärning med rätt luftfuktighet inomhus för varje rum och en kall yttervägg bakom sovrummets garderob.
+- `[BILDTEXT]`: Riktvärdena gäller relativ luftfuktighet som medel över längre tid, och de är inga mätningar. Sovrummets tal kommer från Astma- och Allergiförbundet, vardagsrummets från Alingsås kommun och källarens från Villaägarna. Den röda biten är ytterväggen bakom garderoben, en kall yta där mögel börjar växa när luftfuktigheten går över 75 procent.
