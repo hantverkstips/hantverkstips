@@ -97,6 +97,9 @@ Prioriterade kategorier, i ordning. Sökvolym är min uppskattning tills SEO-str
 | 7 | Kompressorer och spikpistoler | 2 500 till 15 000 kr | vår, sommar | Medel | Låg | Altan, panel, tak (som par, spikpistolen kräver kompressorn eller batteri) |
 | 8 | Borrhammare | 1 500 till 6 000 kr | året runt | Medel | Medel | Grund, källare, betong |
 | 9 | Fuktmätare | 500 till 3 000 kr | aug till nov | Medel | Låg | Diagnos i fuktguider. Lågt ordervärde men bästa ingången till avfuktarklustret |
+| 10 | Överfräsar (produkttyp utan kategorisida, beslut 2026-09-29) | 1 800 till 6 000 kr för de som tar en bänkskivemall | året runt | Ej mätt | Ej läst | Hörnfog i bänkskiva, senare trappa och snickeri. Kategorisida först när volymen är hämtad, se `docs/briefer/affiliate-startlista-4-2026-09-29.md` |
+
+Kakelskärare är ingen kategori (beslut 2026-09-29): ett kök kaklas med en enkel skärare som kostar en bråkdel av butikens billigaste på 2 118 kr, och att länka proffsskäraren där vore val på provision.
 
 Bekräftat i sortimentet: avfuktare (39 maskiner, Wood's, Mitsubishi Electric, Master, Acetec, El-Björn), kap- och gersågar (DeWalt, Bosch, Makita, Metabo, Milwaukee, HiKOKI), skruvdragare (429), laserinstrument (460), kompressorer, spikpistoler, borrhammare (262). **Verifierad** (källa 15, 16, 17).
 
