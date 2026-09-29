@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Snitt genom ett badrumsgolv med golvvärme, där värmekabeln och golvgivaren ligger i avjämningsmassan under tätskiktet.">
+  <!-- Anteckningsboken. Blyerts 2 px för klinkern, betongens ovansida, värmekabeln och golvgivaren, blyerts-2 för
+       skraffering, fästmassans prickar, cementfogarnas streck, givarens inre cirkel och ledare, snickarpenna för
+       tätskiktet ovanför värmen (enda pennsaken). Tumstock bakom 27 grader. Inte skalenlig: skikten är förstorade.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Papperslappar bakom etiketterna i betongen, tumstock bakom 27 grader -->
+  <g fill="#f5efe3">
+    <rect x="56" y="280" width="99" height="25"/>
+    <rect x="286" y="280" width="86" height="29"/>
+    <rect x="396" y="326" width="149" height="27"/>
+  </g>
+  <rect x="334" y="58" width="144" height="32" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 406 74)"/>
+
+  <!-- Blyerts-2: betongen skrafferad, en rad per path -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M48,256l10,10m12,-10l10,10m12,-10l10,10m34,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m34,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m34,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10"/>
+    <path d="M169,278l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m122,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m34,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10"/>
+    <path d="M180,300l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m100,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10"/>
+    <path d="M59,322l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m188,-10l10,10"/>
+    <path d="M48,344l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m166,-10l10,10m12,-10l10,10"/>
+  </g>
+
+  <!-- Blyerts-2: fästmassans prickar, cementfogarnas tvärstreck, givarens inre cirkel -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M50,181h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m26.5,0h1.5m12.5,0h1.5m40.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m40.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5M57,187h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m26.5,0h1.5m12.5,0h1.5m26.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m26.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5m12.5,0h1.5"/>
+    <path d="M252,157l6,-1M252,163l6,-1M252,169l6,-1M502,157l6,-1M502,163l6,-1M502,169l6,-1"/>
+    <circle cx="345" cy="226" r="3" stroke-width="1.5"/>
+  </g>
+
+  <!-- Blyerts: klinkern med cementfogar, betongens ovansida, värmekabeln i tvärsnitt och golvgivarens slang -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M44,150Q147,151 250,150M260,150Q380,149 500,150M510,150H594M44,176Q147,175 250,176M260,176Q380,177 500,176M510,176H594M250,148V178M260,148V178M500,148V178M510,148V178"/>
+    <path d="M44,250Q319,251 594,250"/>
+    <circle cx="70" cy="226" r="5"/>
+    <circle cx="120" cy="226" r="5"/>
+    <circle cx="170" cy="226" r="5"/>
+    <circle cx="220" cy="226" r="5"/>
+    <circle cx="270" cy="226" r="5"/>
+    <circle cx="420" cy="226" r="5"/>
+    <circle cx="470" cy="226" r="5"/>
+    <circle cx="520" cy="226" r="5"/>
+    <circle cx="570" cy="226" r="5"/>
+    <circle cx="345" cy="226" r="9"/>
+  </g>
+
+  <!-- Blyerts-2: ledare -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M92,129L110,164"/>
+    <path d="M397,94L400,149"/>
+    <path d="M112,280L120,232"/>
+    <path d="M340,280L345,236"/>
+    <path d="M482,326L490,241"/>
+  </g>
+
+  <!-- Snickarpenna: tätskiktet ovanför värmen och ledaren till det -->
+  <g fill="none" stroke="#ad3519" stroke-linecap="round">
+    <path d="M44,190Q319,191 594,190M44,198Q319,197 594,198" stroke-width="2.5"/>
+    <path d="M198,76L210,194" stroke-width="1.25"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#625a50">
+    <text x="60" y="124">klinker</text>
+    <text x="170" y="70" fill="#ad3519">tätskikt</text>
+    <text x="340" y="80" fill="#2a2521">högst 27 grader</text>
+    <text x="60" y="300">värmekabel</text>
+    <text x="290" y="300">golvgivare</text>
+    <text x="400" y="344">avjämningsmassa</text>
+  </g>
+</svg>

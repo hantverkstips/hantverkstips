@@ -146,3 +146,235 @@ Inga tankstreck, inga meningar utan verb utöver listinledningar ("I duschen och
 - Våtrumsmatta: 3
 - Våtrumstapet: 2
 - Medelbetyg: 2,5
+
+## Andra läsningen
+
+Jag har läst om båda sidorna i följd som en husägare som kommer från Google, och sedan tatskikt-badrum, vatrumsfarg och fogar-badrum. Jag bedömer inte huvudbilderna. Räkningarna nedan är antal rader där ordet eller frasen förekommer.
+
+### Våtrumsmatta, punkt för punkt mot förra rapporten
+
+| # | Förra anmärkningen | Status |
+|---|---|---|
+| 1 | "i ... priser" i kortsvaret | Rättad: "Priserna kommer från offertförmedlaren Hantverkskollen 2026." |
+| 2 | "skriver av", åldersavdrag oförklarat | Rättad. Åldersavdraget förklaras först under jämförelsen, och kortsvaret säger "drar av mer för mattans ålder". |
+| 3 | GVK-meningen med två relativsatser | Delvis. Meningen är kortare och går att läsa, men GVK står oförklarat i kortsvaret och förklaras först under andra H2 ("GVK, som ger ut branschreglerna för våtrumsmattor"). Förkortningen skrivs aldrig ut. |
+| 4 | "Golvbranschen" läses som hela branschen | Rättad: "Branschorganisationen Golvbranschen". |
+| 5 | Tabellen, "godkänd för det" och "tätskiktsleverantör" | Rättad: "Bara om tillverkaren av tätskiktet godkänner det". |
+| 6 | Paragrafnummer i källraden | Rättad. |
+| 7 | "klarar sig bättre i försäkringen" | Rättad, meningen är borta. |
+| 8 | "också hos Länsförsäkringar" | Rättad. |
+| 9 | Skor och stolsben | Rättad, meningen är borta. |
+| 10 | "Det är bara mattan som är räknad." | Rättad: "Då är bara mattan medräknad." |
+| 11 | "kostar mer" | Delvis. Nu står det "kostar extra", men läsaren får fortfarande ingen summa för rivning, avjämning och golvbrunn. |
+| 12 | Matta dyrare med kakel på väggarna | Rättad, meningen är borta. |
+| 13 | "Räknaren räknar", räknaren passar inte | Delvis. Språket är rättat och skälet står nu ut ("priset för kakelalternativet, att ställa mot offerten med matta"), men sidan bäddar fortfarande in ett verktyg och förklarar i samma stycke att det inte räknar på matta. |
+| 14 | 80 mm mot 130 mm | Rättad: "Mattan är uppvikt minst 130 mm, och kaklet börjar en bit upp och täcker resten." |
+| 15 | "glipa" | Rättad: "remsa". |
+| 16 | "i både ... och i" | Rättad. |
+| 17 | "ska läggas av" mot "får lägga själv" | Rättad: "Du har rätt att lägga mattan själv, men du får inget intyg". |
+| 18 | "pekar på försäkringen som skälet" | Rättad, meningen är borta. |
+| 19 | Källarstycket på fel plats, hur ser jag det | Rättad. Stycket står under ställningstagandet, och sidan hänvisar till en fuktutredning. |
+| 20 | Gips i duschen, våtzonerna | Flyttad till tapetsidan och där bara delvis rättad (se tapet, ny punkt 5). |
+| 21 | "Hos Tarkett är", 2 m mot 2,5 m | Rättad. |
+| 22 | Faq, tätskiktsleverantören | Rättad. |
+| 23 | Faq, matta som tätskikt under kakel | Rättad. |
+| 24 | R9 oförklarat | Delvis. Skalan förklaras ("ett högre tal betyder bättre fäste"), men sidan säger inte att R9 är den lägsta klassen. Då vet jag fortfarande inte om min matta är halt. |
+| 25 | Klämringen | Rättad. |
+
+Frågor läsaren hade kvar:
+
+- Titelfrågan: rättad. "Välj matta om pengarna ska räcka till mer än golvet" och "Därför tycker jag att mattan räcker" är det bästa tillskottet på de två sidorna. När jag ska välja kakel står bara indirekt (källare utan kapillärbrytande skikt).
+- Tecken på en uttjänt matta: rättad (hål, öppen skarv, uppvik som släppt).
+- Golvbrunn före 1990: rättad ("be VVS-firman titta på den").
+- Golvvärme: rättad (faq, 27 grader).
+- Laga en skadad del, hur och vad det kostar: **kvar**. Tabellen säger "Går, mattan är gjord för det", och mer får jag inte veta.
+- Pris för ett helt badrum med matta: **kvar**. Tapetsidan ger 35 000 till 50 000 kr för matta och tapet, men mattsidan nämner inte summan.
+- Hur jag ser om min gamla matta är VT-godkänd och om det finns ett intyg: **kvar**.
+
+### Våtrumsmatta, nya meningar som inte går fram vid första läsningen
+
+1. "Välj matta om pengarna ska räcka till mer än golvet." Jag läste den först som "om budgeten ska täcka hela badrummet". Det som menas är "om du vill ha pengar över till resten".
+2. H2 "Jämförelsen med kakel och klinker" börjar med "Försäkringsbolagen gör ett åldersavdrag när de ersätter en vattenskada ..." Jag väntar mig en jämförelse och får en försäkringsdefinition. Meningen "Åldersavdraget är den enda raden i tabellen där kaklet vinner" står före tabellen, innan jag har sett någon rad.
+3. "Hos Folksam och If betalar du då själv 80 procent av en ny matta" Räkneexemplet utgår från att försäkringen betalar resten. Tatskikt-badrum, som mattsidan länkar till tre gånger, säger att "Hos inget av bolagen ersätter grundförsäkringen själva tätskiktet som läckt", och på mattsidan är mattan tätskiktet. Den som läser båda sidorna ser en motsägelse, och exemplet nämner varken självrisk eller tilläggsförsäkring.
+4. "GVK, som ger ut branschreglerna för våtrumsmattor, räknar mattan som rätt val där golvet ska gå att laga i en del av rummet." Det är stelt ("räknar mattan som rätt val där"), och "där" kan betyda både plats och situation.
+5. "Den har inget val för matta, så det du får är priset för kakelalternativet, att ställa mot offerten med matta." Infinitivet i slutet hänger löst.
+6. "Du har rätt att lägga mattan själv, men du får inget intyg, och bolagen behandlar ett badrum utan intyg olika." "Olika" hur? Svaret står bara bakom länken. Ett halvt led om vad som kan hända (högre självrisk eller ingen ersättning) hade räckt.
+7. Faq: "De vanliga våtrumsmattorna uppfyller branschens krav" Vilket krav? Meningen säger ingenting, och direkt efter kommer R9 utan att det framgår att R9 är den lägsta klassen.
+
+### Våtrumstapet, punkt för punkt mot förra rapporten
+
+| # | Förra anmärkningen | Status |
+|---|---|---|
+| 1 | Description, "hur länge den håller mot kakel" | Rättad. |
+| 2 | Kortsvarets mening med fyra led, GVK, "sätts upp av ett företag" | Delvis. Kravet på företag är borta och meningen är kortare, men GVK står oförklarat: "sätts upp enligt GVK:s branschregler för plastmattor". |
+| 3 | "det" syftar bakåt, våtzon 1 oförklarad | **Kvar:** "På resten av väggarna får våderna läggas omlott och tätas med tätningsmassa, och i våtzon 1, närmast duschen, är det tillåtet sedan **1 januari 2026**." Omlott och våtzon 1 förklaras först längre ner. "Närmast duschen" direkt efter "I duschen och vid badkaret ska skarven ... svetsas" gör att jag läser det som att omlott nu är tillåtet i duschen. |
+| 4 | "svetsas med tråd" | Rättad: "smälts ihop med en svetstråd av plast". |
+| 5 | Fyra namn på samma sak | Rättad i stort sett. Nu används våtrumstapet, plastmatta för väggar och väggmatta. Men vatrumsfarg skriver fortfarande "Kakel, våtrumstapet och väggmatta ska bort", som om det vore två saker. |
+| 6 | "armering" | Rättad: "förstärkning". |
+| 7 | Tom priscell | Delvis. Cellen har nu "Omkring 800 till 1 500 kr per kvm", men det är mattans pris. Det framgår i en bisats i källraden och, tydligt, först 35 rader ner: "därför är tabellens tal Hantverkskollens pris för våtrumsmatta". Den som bara läser tabellen tror att det är ett tapetpris. |
+| 8 | Golv och vägg i samma tabell | Rättad. |
+| 9 | Åldersavdrag oförklarat | **Kvar.** Ordet står i "när frågan om åldersavdraget kommer upp", och "som skrivs av mycket fortare" är samma försäkringsjargong som jag anmärkte på mattsidan förra gången. Tapetsidan förklarar det aldrig. |
+| 10 | Försäkringsresonemanget sa emot sig självt | Rättad: "Be därför om svetsade skarvar överallt, och fråga ditt bolag om du är osäker." Rådet borde stå i kortsvaret, som i stället säger att omlott är tillåtet. |
+| 11 | Omlott mot golvmatta som motsägelse | Rättad med "vågrät". |
+| 12 | Dekorvägg | **Kvar**, i ny form: "Tarkett tillåter inte skarvar mot en vägg med annat mönster i våtzon 1, fast GVK numera tillåter omlottskarv där." Är det alla skarvar eller bara omlott? Är "en vägg med annat mönster" en våd med annat mönster på samma vägg? |
+| 13 | Myten om fogmassa, tredje upprepningen | Rättad, nu en punkt i listan. |
+| 14 | Rören 60 mm, "krängas" | Rättad (borttagen), men ersättningen är tvetydig (se ny punkt 5). |
+| 15 | Inget pris hittat | Delvis, se 7. |
+| 16 | 7 till 9 kvm golv eller vägg, 2023 | Delvis. Åldern är nu utskriven ("Det priset är tre år gammalt"), men det står fortfarande inte om 7 till 9 kvm är golvyta. |
+| 17 | "skriver de", matta på tapetsidan | Rättad. |
+| 18 | 2023 mot räknarens 2026 | Rättad. |
+
+Frågor läsaren hade kvar:
+
+- Kan jag sätta upp den själv: rättad (egen H2).
+- Min gamla tapet släpper: rättad (egen H2). Det är den bästa nya delen på tapetsidan.
+- Vad den får sitta på: rättad (gips).
+- Min tapet är från 2008: rättad (faq, "behöver den inte rivas i morgon").
+- Rengöring: rättad (faq).
+- Varför välja tapet: rättad ("Jag tycker ändå att tapeten är ett bra val när badrummet ska bli klart fort och för lite pengar").
+- Hur river jag den gamla, och vad händer med gipset under: **kvar**. Sidan säger fyra gånger att den ska rivas men aldrig hur.
+- Hur jag ser om min tapet är svetsad eller omlott: **kvar**. Sidan säger bara att intyget visar det.
+
+### Våtrumstapet, nya meningar som inte går fram vid första läsningen
+
+1. "Reglerna för skarvarna skiljer sig mellan platsen för bad eller dusch och resten av rummet." "Platsen för bad eller dusch" är regelspråk. Kortsvaret säger "I duschen och vid badkaret", och här måste jag översätta mellan två uttryck för samma sak.
+2. "Tänk på försäkringen när du beställer. Folksam och If har en rad i villkoren för trådsvetsad golv- och väggmatta, och en annan för övrigt material och målning, som skrivs av mycket fortare." Jag vet inte vad en "rad i villkoren" är eller vad "skrivs av" betyder i kronor. Mattsidan förklarar det, men den här sidan gör det inte.
+3. "Intyget är det enda som visar att skarvarna i duschen är svetsade, och det är också det du visar bolaget när frågan om åldersavdraget kommer upp." Kopplingen mellan intyget och vilken rad i avdragstabellen tapeten hamnar på står bara underförstådd, 20 rader längre upp.
+4. "försäkringsbolagen gör olika med ett badrum utan intyg" "Göra olika med" är inte idiomatisk svenska. Det heter "gör olika när" eller "behandlar ... olika".
+5. "Tapeten får sättas på en vanlig kartongklädd gipsskiva i våtzon 1 och våtzon 2. I duschen får bara rören till blandaren och duschen gå igenom den" Får gips sitta i själva duschen eller inte, när bara zon 1 och 2 räknas upp? Och syftar "den" på skivan eller tapeten?
+6. "Plastmatta går att laga i en del av rummet" Mitt i stycket om tapet byter sidan ord till plastmatta, och uttrycket "i en del av rummet" är ordagrant samma som på mattsidan.
+7. "Materialet till ett sådant kostar omkring 500 kr per kvadratmeter enligt Badrumsexperter, och så mycket sparar du på varje kvadratmeter vägg innan arbetet ens är räknat." Tapeten ersätter både tätskikt och kakel, så besparingen är inte "så mycket". Tabellen ovanför visar en skillnad på 1 000 till 2 000 kr per kvadratmeter. Siffran är dessutom från 2023.
+8. Faq: "Kalk tar du bort med ett milt alkaliskt medel först och sedan ett kalklösande" Varför alkaliskt först mot kalk? Det låter bakvänt när det står utan förklaring.
+9. "Är tapeten äldre än 10 till 15 år är ett byte oftast det rimliga." "Äldre än 10 till 15 år" är ett intervall där det borde stå en gräns. "Äldre än 15 år" eller "närmar sig 15 år" hade räckt.
+
+### Mönster mellan de två sidorna och mot syskonen
+
+**Borta eller klart svagare sedan förra läsningen:** "heter den" (0, var 4), "pekar på" (0, var 2), § 8.2.4 i brödtexten (0 på båda), teasern från matta till tapet, ja/nej-svaret i kortsvaret. Tapetens titel är nu ett påstående, och båda sidorna tar ställning i jag-form. Paragrafnummer i brödtexten finns bara kvar på ett ställe ("säger på s. 19", tapet).
+
+**Kvar:**
+
+1. **Kortsvaret är byggt på samma sätt på alla fem sidorna:** två stycken och exakt en fetning. Tapet och tatskikt-badrum fetar samma sak, **1 januari 2026**.
+2. **"Firma som är auktoriserad av GVK"**, ordagrant på 3 rader (matta, kortsvaret och H2 "Firman som lägger mattan"; tapet, "Att sätta upp tapeten själv"). Slutklämmen om papperet går igen: "Det är det papperet försäkringsbolaget vill se" (matta), "det är också det du visar bolaget" (tapet), "och spara papperet" (vatrumsfarg).
+3. **Livslängden upprepas.** "25 till 30" står på 4 rader på mattsidan (5 förekomster, med två i tabellen). "10 till 15" står på 5 rader på tapetsidan: kortsvar, tabell, stycket under tabellen, "När den gamla tapeten släpper" och faq.
+4. **Rivning av den gamla tapeten** står på 4 rader på tapetsidan (kortsvar, H2-stycket, faq om att måla och faq om att kakla). De två faq-svaren upprepar stycket ovanför. Faq-frågan "Kan man måla på våtrumstapet?" står fortfarande nästan ordagrant som "Går det att måla på våtrumstapet?" på vatrumsfarg, och "Kan man lägga våtrumsmatta på gammalt kakel?" motsvarar "Kan man lägga nytt tätskikt ovanpå gammalt kakel?" på tatskikt-badrum.
+5. **Tre organisationer i rad** i tapetsidans rivningsstycke: "Byggkeramikrådets regler för kakel räknar upp ... Måleribranschens regler för våtrum säger på s. 19 ... Och GVK tillåter inte ..." Det är samma mall som den gamla listan, nu omskriven till prosa.
+6. **Samma sak står på båda sidorna:** "branschorganisationen Golvbranschen" provar och VT-märker (1 + 1), två tätskikt på varandra (1 + 1), "i en del av rummet" (1 + 1).
+7. **Räknaren med förbehåll.** Båda sidorna bäddar in `badrum-kostnad` och förklarar att den räknar på kakel. Mattsidan förklarar det i tre meningar, tapetsidan i en.
+8. **"Också"**: tapet 6 rader, vatrumsfarg 6, tatskikt-badrum 4, matta 2. "Också i duschen" står två gånger på tapetsidan.
+
+**Tillkommit:**
+
+1. **"Du har rätt att ... själv, men"** står på 3 av 5 sidor, och alla tre fortsätter med intyget och försäkringen. Matta: "Du har rätt att lägga mattan själv, men du får inget intyg". Tapet: "Du har rätt att sätta upp den själv, men då får du inget våtrumsintyg". Tatskikt-badrum: "Du har rätt att lägga tätskiktet själv, men låt en behörig firma göra det". Direkt efter kommer på både matta och tapet en länk med nästan samma text till samma sida: "bolagen behandlar ett badrum utan intyg olika" och "försäkringsbolagen gör olika med ett badrum utan intyg". Tatskikt-badrum har "de gör olika när det inte är det". "Olika" om försäkringsbolag står alltså på 3 sidor.
+2. **Exakt ett "jag tycker" per sida:** matta 1 (H2 "Därför tycker jag att mattan räcker"), tapet 1, tatskikt-badrum 1 ("Därför tycker jag att en behörig firma ..."), vatrumsfarg 1, fogar-badrum 0 (där står "mitt val"). "Därför tycker jag att" står ordagrant på både matta och tatskikt-badrum. Ställningstagandet är bra, men läser man flera sidor i rad låter det som en kvot. Varje sida har också ett andra råd i samma form: "Jag skulle låta en firma göra det" (matta), "Mitt råd är att ta in en firma" (tapet), "Anlita därför en auktoriserad målare" (vatrumsfarg). Alla fem sidor landar i "anlita en firma".
+3. **Jämförelsetabellerna är tvillingar.** Båda har kolumnen "Jämförelse" och tre likadana rader: "Pris lagt/uppsatt, material och arbete", "Livslängd ... 25 till 30 år för tätskiktet" och "Tätskikt | Mattan/Tapeten är tätskiktet | Ett eget lager under/bakom plattorna". Båda källraderna börjar "Källa: Hantverkskollen (17 juli 2026)". Tapetsidans prisrad är dessutom mattsidans pris.
+4. **En förklaring till priset** i samma form: "Tiden förklarar priset." (matta) och "Det som gör tapeten billigare är att väggen inte behöver något tätskikt under." (tapet).
+5. **Rubriker med "När"** på båda sidorna: "När en gammal matta ska bytas" och "När den gamla tapeten släpper". Rubriker som är bisatser ("Vad det kostar ...", "Var skarvarna ska svetsas", "Vad som gäller för ...", "Varför golvet inte får ...", "Vem som får måla ...") står på 4 av 5 sidor, sammanlagt 7.
+6. **"X har förklarat för/varför"** som källform: "GVK:s Sara Salomonsson har förklarat för Vi i Villa" (matta) och "Beckers kundtjänst har förklarat varför" (fogar-badrum).
+
+Inga tankstreck på någon av sidorna. Jag hittade inga anglicismer.
+
+### Röst
+
+Mattsidan låter nu som en människa. Den börjar med vad golvet gör, tar ställning, räknar på åldersavdraget i kronor och säger rakt ut "Jag skulle låta en firma göra det." Tapetsidan har fått de avsnitt läsaren saknade, och öppningen ("låter som något som borde lossna") och faq-svaret "behöver den inte rivas i morgon" är bra. Mellanpartiet om zoner och skarvar är fortfarande en regelgenomgång, och försäkringen förklaras med ord som sidan själv inte förklarar.
+
+### Betyg
+
+- **Våtrumsmatta: 4** (var 3). Titelfrågan besvaras med ett tydligt råd och ett räkneexempel som håller. Nästan alla meningar från förra läsningen är rättade. Det som drar ner: räkneexemplet krockar med tatskikt-badrum om vad grundförsäkringen betalar, det saknas ett pris för ett helt badrum med matta, och jag vet fortfarande inte om R9 är halt.
+- **Våtrumstapet: 3** (var 2). Sidan svarar nu på själv, släpper, underlag, rengöring och varför tapet. Det som drar ner: kortsvaret är fortfarande rörigt om omlott och våtzon 1, åldersavdraget förklaras inte, tabellens pris är mattans pris, Tarkettmeningen och gipsmeningen är tvetydiga, "gör olika med" är fel, och två av fyra faq-svar upprepar brödtexten.
+- Medelbetyg: 3,5 (var 2,5).
+
+## Tredje läsningen
+
+Jag har läst båda sidorna i följd som en husägare från Google, och sedan tatskikt-badrum, vatrumsfarg och fogar-badrum. Huvudbilderna bedöms inte. Räkningarna är antal rader.
+
+### Våtrumsmatta, punkterna från andra läsningen
+
+| Punkt | Status |
+|---|---|
+| Gamla 3, GVK oförklarat i kortsvaret | **Delvis.** Kortsvaret säger fortfarande bara "Låt en firma som är auktoriserad av GVK lägga den". Vad GVK är står först i andra stycket under andra H2 ("GVK, som ger ut branschreglerna för våtrumsmattor"). |
+| Gamla 11, rivning och avjämning utan summa | **Delvis.** "Rivningen finns som en egen post i kostnadsräknaren längre ner" hjälper, men avjämning och golvbrunn har fortfarande inget pris. |
+| Gamla 13, räknaren räknar inte på matta | **Kvar:** "Den har inget val för matta, så den ger dig priset med kakel, och det kan du ställa mot offerten med matta." Meningen är bättre svenska, men verktyget passar fortfarande inte sidan. |
+| Gamla 24, R9 | **Delvis.** "rekommenderar golv med R10 där det behövs mer halkskydd" och rådet om R10 och barfotaklass B för barn och äldre går att handla efter. Att R9 är den lägsta klassen står inte, och om B är bra eller dåligt vet jag inte. |
+| Ny 1, "pengarna ska räcka till mer än golvet" | Rättad: "Välj matta om du vill ha pengar över till resten av badrummet." |
+| Ny 2, H2 börjar med en försäkringsdefinition | Rättad. Tabellen kommer först och åldersavdraget förklaras under den. |
+| Ny 3, räkneexemplet mot grundförsäkringen | **Delvis.** Motsägelsen mot tatskikt-badrum är löst i sak, men meningarna står nu i fel ordning, se nya meningar punkt 1. |
+| Ny 4, "räknar mattan som rätt val där" | Rättad: "nämner mattan särskilt för golv som ska kunna lagas bit för bit". |
+| Ny 5, lös infinitiv | Rättad. |
+| Ny 6, "behandlar ... olika" | Rättad: "kan självrisken bli högre eller ersättningen utebli efter en läcka". |
+| Ny 7, "branschens krav" i faq | Rättad, borta. |
+| Fråga: laga en skadad bit, hur och kostnad | **Kvar.** Tabellen säger "Går, mattan är gjord för det", brödtexten "kunna lagas bit för bit". Hur det går till och vad det kostar står inte. |
+| Fråga: pris för ett helt badrum med matta | Rättad: 35 000 till 50 000 kr, Badrumsexperter 2023, med åldern utskriven. Men "räknat på 7 till 9 kvm" säger fortfarande inte om det är golvyta. |
+| Fråga: är min gamla matta godkänd, finns intyg | **Delvis.** "Finns det inget våtrumsintyg ... vet du inte säkert om den är godkänd och rätt lagd". Hur jag ser VT-märkningen på en lagd matta står inte. |
+
+### Våtrumsmatta, nya meningar som inte går fram vid första läsningen
+
+1. "Har mattan själv, eller tätskiktet under kaklet, läckt betalar grundförsäkringen inte för ett nytt, och då spelar åldersavdraget ingen roll. Hos Folksam och If betalar du då själv 80 procent av en ny matta" Det andra "då" syftar på meningen närmast före, alltså fallet där försäkringen inte betalar alls, och då blir 80 procent obegripligt. Undantaget om mattan själv måste komma efter räkningen, eller "då" bytas mot "när röret har läckt". Det är sidans viktigaste stycke. Det saknas också ett komma efter "läckt".
+2. "Tiden förklarar priset." Stycket står efter stycket om åldersavdraget och hoppar tillbaka till priset i tabellens första rad. Jag fick läsa om för att förstå vilket pris.
+3. "Rotavdraget är 30 procent av arbetskostnaden under 2026" och tre stycken ner "Rotavdraget gäller arbetskostnaden." Samma sak sägs två gånger i samma H2, och det andra stycket borde stå före räkningen.
+4. "Ligger golvbrunnen kvar från före 1990 ska den också bytas" "Ligger kvar från" låter översatt. "Är golvbrunnen från före 1990" räcker.
+5. Länktexten "det jobbet gör en VVS-firma" leder till sidan om tätskikt. Jag väntar mig en sida om att byta golvbrunn.
+6. "Efter 25 till 30 år är den i slutet av sin livslängd, och då ersätter försäkringen nästan ingenting av en ny." Räkneexemplet ovanför visar att Folksam och If drar av 80 procent redan vid 15 år, och med tabellens tal blir avdraget 100 procent efter 17 till 18 år. Då undrar jag varför sidan väntar till 25 år.
+7. "och då väger åldern ännu tyngre" Abstrakt. Menar du att jag ska byta tidigare? Säg det.
+8. "Både GVK och Byggkeramikrådet, som skriver reglerna för kakel i våtrum, anger det måttet." Vid första läsningen syftar "som skriver" på båda.
+9. "upp mot taket fylls det på med en bård" Jag förstår det, men "fylls det på" låter som en vätska.
+
+### Våtrumstapet, punkterna från andra läsningen
+
+| Punkt | Status |
+|---|---|
+| Gamla 2, GVK i kortsvaret | Rättad i sak: "enligt de branschregler för mattor i våtrum som GVK ger ut". Vad GVK är står aldrig på sidan, men sammanhanget räcker. |
+| Gamla 3, omlott och våtzon 1 i kortsvaret | **Delvis.** Omlott förklaras nu ("med den ena över kanten på den andra"). Kvar: "Närmast duschplatsen har det varit tillåtet först sedan 1 januari 2026." "Närmast duschplatsen" direkt efter "Utanför duschen" läser jag fortfarande som i eller precis vid duschen; "inom en meter från duschen" hade varit tydligt. "Har det varit tillåtet först sedan" är en krånglig tempusform; det heter "är det tillåtet först sedan" eller "har det bara varit tillåtet sedan". |
+| Gamla 5, fyra namn | Rättad på tapetsidan. Vatrumsfarg skriver fortfarande "Kakel, våtrumstapet och väggmatta" på tre rader, som om det vore två saker. |
+| Gamla 7, mattans pris i tapetens cell | Rättad: "800 till 1 500 kr, samma som för våtrumsmatta". |
+| Gamla 9, åldersavdraget | Rättad: "Efter en vattenskada minskar bolaget ersättningen för varje år materialet har suttit". Ordet "trådsvetsad" kommer dock sex rader innan svetstråden förklaras. |
+| Gamla 10, rådet om svetsat överallt borde stå i kortsvaret | **Kvar.** Kortsvaret säger fortfarande att omlott är tillåtet utanför duschen, och rådet "Be därför om svetsade skarvar överallt" står bara i brödtexten. |
+| Gamla 12, Tarkett och dekorväggen | **Kvar:** "Tarkett skriver till exempel att en vägg med ett annat mönster än resten av rummet inte får ha sina skarvar i våtzon 1, fast GVK numera tillåter omlottskarvar där." Alla skarvar eller bara omlott? Och vad gör jag då, sätter jag den väggen i ett stycke? |
+| Gamla 16, 7 till 9 kvm | Flyttat till mattsidan, där fortfarande oklart. |
+| Ny 1, "platsen för bad eller dusch" | Rättad: "Duschplatsen är golvet där du står och väggarna bakom, upp till 2,0 meter över golvet". Den bästa definitionen på sidan. |
+| Ny 2, "rad i villkoren", "skrivs av" | Rättad. |
+| Ny 3, intyget och avdraget | Rättad: "det är de svetsade skarvarna som bör ge tapeten det långsammare avdraget". |
+| Ny 4, "gör olika med" | Rättad. |
+| Ny 5, gips i duschen | **Delvis.** "den" är rättat. Men "GVK godkänner det i våtzon 1 och våtzon 2" säger fortfarande inte om gips får sitta på duschplatsen, som sidan nu själv har definierat som en egen zon. |
+| Ny 6, "Plastmatta går att laga i en del av rummet" | Rättad. |
+| Ny 7, 500 kr i besparing | Rättad: "En del av skillnaden mot kakel ... och till det kommer arbetet". |
+| Ny 8, alkaliskt före kalk | Rättad. |
+| Ny 9, "äldre än 10 till 15 år" | Rättad: "Närmar sig tapeten 15 år". |
+| Fråga: hur river jag, vad händer med gipset | **Kvar.** "ska den gamla rivas tillsammans med limmet" står, men inte hur, och inte om skivan under klarar det. |
+| Fråga: svetsad eller omlott på min vägg | Rättad: "En omlottskarv har en kant där den ena våden ligger över den andra". Bra. |
+
+### Våtrumstapet, nya meningar som inte går fram vid första läsningen
+
+1. "Därför är en firma som är auktoriserad av GVK värd pengarna här, och då för hela rummet." "och då för hela rummet" är hoppressat. Jag förstår till slut att firman ska göra hela rummet och inte bara duschen, men det måste sägas.
+2. "En skarv eller ett hörn som har släppt på duschplatsen släpper in vatten bakom tapeten" "släppt ... släpper" i samma mening låter klumpigt.
+3. H2 "Priset för ett badrum med tapet" börjar med "Ett aktuellt pris per kvadratmeter för just våtrumstapet har jag inte hittat" och slutar med "Kostnadsräknaren visar vad ett helt badrum kostar med kakel i dag." Rubriken lovar ett pris och avsnittet ger inget. Summan 35 000 till 50 000 kr står bara bakom länken "vad ett helt badrum med matta och tapet har kostat". Skriv den här också, eller byt rubrik.
+4. "Folksam och If minskar den långsammare för trådsvetsad golv- och väggmatta än för övrigt material och målning." Ingen siffra. Mattsidan ger 8 mot 10 procent per år; här vet jag inte hur stor skillnaden är.
+
+### Mönster som finns kvar eller har tillkommit
+
+**Borta eller svagare sedan andra läsningen:** "Du har rätt att ... själv, men" (0 på de två sidorna, var 2), "Därför tycker jag att" (0 på mattsidan, finns nu bara på tatskikt-badrum), "gör olika/behandlar olika" (0, var 2), "När"-rubriker (1, var 2), bisatsrubriker (matta 2, tapet 1). Tapetens kortsvar har ingen fetning längre, så kortsvaren är inte likadana på alla fem sidor. "Också": matta 2, tapet 3 (var 6). Tabellernas kolumnrubriker skiljer sig nu ("Golvet", "På väggen"). Inga tankstreck, inga anglicismer.
+
+**Kvar:**
+
+1. **Själv-stycket har samma skelett på tre sidor**, fast orden är nya: tillåtet, men inget intyg, länk till tatskikt-badrum om försäkringen, råd om firma. Matta: "Att lägga mattan själv är tillåtet, men då får du inget intyg, och utan det kan självrisken bli högre eller ersättningen utebli efter en läcka". Tapet: "Ingen regel hindrar dig från att sätta upp tapeten själv. Det du förlorar är våtrumsintyget, och utan det kan försäkringen ge mindre eller ingenting efter en läcka". Tatskikt-badrum, kortsvaret: "så självrisken kan bli högre eller ersättningen utebli". Mattans länktext är nästan ordagrant tatskikt-badrums kortsvar.
+2. **"Firma som är auktoriserad av GVK"** ordagrant på 3 rader (matta kortsvaret och "Firman som lägger mattan", tapet "Att sätta upp tapeten själv"), plus "auktoriserad firma" en gång (tapet "En tapet som har släppt"). "Det är det papperet försäkringsbolaget vill se" (matta) och "spara papperet" (vatrumsfarg) står kvar.
+3. **Räknaren med förbehåll** på båda sidorna: matta "Den har inget val för matta, så den ger dig priset med kakel", tapet "Kostnadsräknaren visar vad ett helt badrum kostar med kakel i dag." Två sidor om plastmatta bäddar in en kakelräknare och ber om ursäkt för den.
+4. **Rivningen av tapeten** står på 4 rader på tapetsidan: kortsvaret, "När tapeten byts ska den gamla rivas", faq om att måla ("tapeten ska rivas helt") och faq om att kakla ("limmet ska bort med dem"). Faq-frågan "Kan man måla på våtrumstapet?" motsvarar "Går det att måla på våtrumstapet?" på vatrumsfarg, och svaret "med grundfärg, täckfärg och ofta en väv från samma tillverkare" är nästan ordagrant vatrumsfargs kortsvar.
+5. **Samma förklaring ordagrant på båda sidorna:** "svetsas ihop med en svetstråd av plast" (matta, första stycket) och "smälts ihop med en svetstråd av plast" (tapet, "Var skarvarna ska svetsas"); "branschorganisationen Golvbranschen" och VT (matta och tapet, båda i inledningen); cellen "25 till 30 år för tätskiktet" i båda tabellerna.
+6. **"X har förklarat för"** som källform: "GVK:s Sara Salomonsson har förklarat för Vi i Villa" (matta) och "Beckers kundtjänst har förklarat varför" (fogar-badrum).
+7. **"Först sedan 1 januari 2026"** två gånger på tapetsidan (kortsvaret och "Var skarvarna ska svetsas").
+
+**Tillkommit:**
+
+1. **Rengöringsfrågan är en tvilling.** "Hur rengör man en våtrumsmatta?" och "Hur rengör man en våtrumstapet?" är samma fråga, båda svaren nämner handdiskmedel och båda slutar likadant: "låt inte rakan eller något annat av gummi stå mot mattan, för gummi kan missfärga den för gott" mot "Låt inte en duschraka, en duschslang eller ett färgat duschdraperi ligga an mot tapeten, för de kan missfärga den så att det inte går bort."
+2. **"X kommer från" som källform:** matta "Priserna kommer från offertförmedlaren Hantverkskollen 2026", tapet "Priset kommer från Hantverkskollen" och "Livslängden kommer från Länsförsäkringar".
+3. **Länkarna till tatskikt-badrum:** tre på mattsidan och två på tapetsidan, med olika ankartexter, och en av dem ("det jobbet gör en VVS-firma") lovar något annat än sidan den leder till.
+
+### Röst
+
+Mattsidan låter som en människa som har räknat själv. Öppningen om två lager som gör var sitt jobb, rubriken "Mattan är det bättre köpet" och "Det är det enda helpriset för ett mattat badrum som jag har hittat, och det är tre år gammalt" är ärliga och bra. Tapetsidan har blivit tydlig: duschplatsen definieras, jag kan se skillnad på omlott och svetsat på min egen vägg, och "Bolaget skriver inte varför" är precis så ärligt som det ska vara. Mellanpartiet om skarvarna är fortfarande regler i tur och ordning, men nu går det att följa.
+
+### Betyg
+
+- **Våtrumsmatta: 4** (var 4). Nästan allt från andra läsningen är rättat och helpriset har kommit på plats. Sidan stannar på 4 eftersom räkneexemplet, sidans viktigaste stycke, har fått ett "då" som pekar på fel fall. Dessutom står rotavdraget två gånger, räknaren passar inte och det står inte hur en lagning går till. Rättas "då"-meningen och rotavdraget är en 5 inom räckhåll.
+- **Våtrumstapet: 4** (var 3). Försäkringen förklaras nu med vanliga ord, duschplatsen är definierad och sidan visar hur jag ser om min skarv är svetsad. Det som drar ner: kortsvaret är fortfarande oklart om var omlott är tillåtet, Tarkett- och gipsmeningen är tvetydiga, prisrubriken har inget pris och rivningen upprepas i två faq-svar.
+- Medelbetyg: 4,0 (var 3,5).

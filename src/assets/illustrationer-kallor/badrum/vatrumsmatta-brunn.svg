@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Snitt genom hörnet vid golvbrunnen, där våtrumsmattan är uppvikt på väggen under kaklet och hålls fast av klämringen.">
+  <!-- Anteckningsboken. Väggen till vänster, golvbrunnen till höger, rummet ovanför. Blyerts 2 px för väggens insida,
+       kaklet, brunnens fläns och kropp och klämringen, blyerts-2 för skraffering, fästmassans prickar, fogens streck,
+       väggens tätskikt, ringens bro, byglarna och ledare, snickarpenna för mattan med svetsvulsten, dess etikett och
+       ledare (enda pennsaken). Golvets ovansida ligger under mattan och ritas av den. Tumstock bakom ca 80 mm.
+       Inte skalenlig; de lodräta måtten 0,8 enheter per mm. Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Papperslapp bakom etiketten i väggen, tumstock bakom ca 80 mm -->
+  <rect x="46" y="178" width="73" height="49" fill="#f5efe3"/>
+  <rect x="208" y="188" width="87" height="24" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 251 200)"/>
+
+  <!-- Blyerts-2: väggen och underlaget skrafferade, en rad per path, uppehåll runt bygeln, lappen och brunnen -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M48,-2l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10"/>
+    <path d="M59,20l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10"/>
+    <path d="M48,42l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10"/>
+    <path d="M59,64l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10"/>
+    <path d="M48,86l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10"/>
+    <path d="M59,108l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10"/>
+    <path d="M48,130l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10"/>
+    <path d="M59,152l10,10m12,-10l10,10m12,-10l10,10"/>
+    <path d="M59,240l10,10m12,-10l10,10"/>
+    <path d="M48,262l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10"/>
+    <path d="M59,284l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m78,-10l10,10m12,-10l10,10"/>
+    <path d="M48,306l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m100,-10l10,10"/>
+    <path d="M59,328l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m78,-10l10,10m12,-10l10,10"/>
+    <path d="M48,350l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m100,-10l10,10"/>
+  </g>
+
+  <!-- Blyerts-2: fästmassans prickar, cementfogens tvärstreck, ringens bro -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M152,6h1.5M159,18h1.5M152,30h1.5M159,42h1.5M152,54h1.5M159,66h1.5M152,78h1.5M159,90h1.5M152,102h1.5M159,114h1.5M152,126h1.5M159,138h1.5M152,150h1.5M159,162h1.5M152,174h1.5"/>
+    <path d="M169,77l-1,6M174,77l-1,6M179,77l-1,6"/>
+    <path d="M488,253H562"/>
+  </g>
+
+  <!-- Blyerts-2 1,5: väggens tätskikt, an mot uppvikningens övre del -->
+  <path d="M147,-2Q148,85 147,172" fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Blyerts: väggens insida ovanför mattan, kaklet med cementfogen, brunnens fläns och kropp, klämringen -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M140,-2Q141,72 140,146"/>
+    <path d="M164,-2Q165,37 164,75M162,75H186M184,77Q185,37 184,-2"/>
+    <path d="M162,85H186M184,83Q185,134 184,186H164M164,188Q163,136 164,85"/>
+    <path d="M468,264H502M470,264V272M468,270H500M500,262Q501,301 504,340"/>
+    <path d="M558,264H582M580,262V272M560,270H582M560,262Q559,301 556,340"/>
+    <path d="M476,248H488V258H476ZM562,248H574V258H562Z"/>
+  </g>
+
+  <!-- Blyerts-2 1,5: måttbyglarna, 130 mm och 80 mm från golvets yta, 500 mm från klämringens ytterkant -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M116,146H138M116,250H138M124,146Q125,198 124,250M121,149l6,-6M121,253l6,-6"/>
+    <path d="M198,186H208M204,186Q205,218 204,250M201,189l6,-6M201,253l6,-6"/>
+    <path d="M300,226Q388,227 476,226M297,229l6,-6M473,229l6,-6M476,220V246"/>
+  </g>
+
+  <!-- Blyerts-2: ledare. Skarvens ledare är också 500-bygelns hjälplinje -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M218,56L176,58"/>
+    <path d="M300,127V243"/>
+    <path d="M500,160L484,246"/>
+  </g>
+
+  <!-- Snickarpenna: mattan obruten från uppvikningen till klämringen, bruten bara vid den svetsade skarven,
+       svetsvulsten, andra sidan av brunnen, och ledaren från etiketten -->
+  <g fill="none" stroke="#ad3519" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M297.8,250Q226,249 154,250Q146,250 146,242Q145,194 146,146H140Q141,200 140,253Q140,256 143,256Q220,257 297.8,256M302.2,250Q361,251 420,250C445,250 450,258 470,258H492V264H470C450,264 445,256 420,256Q361,255 302.2,256M560,264V258H580Q592,258 602,254M560,264H580Q592,264 602,260M296,250A4,4 0 0 1 304,250" stroke-width="2.5"/>
+    <path d="M236,163L148,209" stroke-width="1.25"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#625a50">
+    <text x="236" y="156" fill="#ad3519">matta</text>
+    <text x="220" y="60">kakel</text>
+    <text x="48" y="196">minst</text>
+    <text x="48" y="222">130 mm</text>
+    <text x="211" y="206" fill="#2a2521">ca 80 mm</text>
+    <text x="388" y="216" text-anchor="middle">minst 500 mm</text>
+    <text x="300" y="120" text-anchor="middle">svetsad skarv</text>
+    <text x="492" y="150">klämring</text>
+  </g>
+</svg>

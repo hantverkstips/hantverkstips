@@ -416,3 +416,7 @@ De tre värsta mönstren nu:
 1. Källan bär meningen i ungefär var tredje mening på båda sidorna, och på varje badrumssida finns en mening om att organisationerna är överens ("som GVK och båda tillverkarna kräver", "Alla tre säger", "där är ... överens", "säger samma sak").
 2. Ordagranna förklaringar går igen mellan sidor: "från mitten av en regel till mitten av nästa" på sex sidor, "En kortling är en ..." på fyra, "fast i ytan men fortfarande mjuk längre in" på två, och rotavdraget med 30 procent, 50 000 kr och räknarlänken på tre.
 3. Tätskiktet förklaras med en inskjuten bisats i första stycket på alla fem badrumssidor, och de två nya sidorna har nu samma nya ordalydelse, "duk eller massa som stoppar vattnet".
+
+## Godkännande
+
+Godkänd av hantverkaren 2026-09-29. Efter omläsningen (4 och 4) rättade jag de meningar som var svåra att förstå: 160 W gäller per kvm för Ebecos kabel, samrådet enligt GVK, termostaten, kravet på plattorna och tätskiktets bisats på duschväggssidan. "Därför" före limmet blev "Det betyder ändå inte". Den dubblerade härdningsmeningen från fogsidan är struken. Sedan rättade jag korrekturens 21 och 4 rader med den lydelse korrekturen föreslog, men utan "alltså" på rotraden. Tredje korrekturvarvet gav 0 fel på båda sidorna.

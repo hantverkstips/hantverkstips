@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Två snitt som visar hur du monterar en duschvägg med skruv i träregel eller betong, med tätningsmassa i hålet.">
+  <!-- Anteckningsboken. Två väggar i ett duschhörn i snitt uppifrån, rummet i mitten. Blyerts 2 px för skikten,
+       profilerna, skruvarna, pluggen och hålen, blyerts-2 för regelns ådring, betongens skraffering, fästmassans
+       prickar, fogarnas och gängornas streck, pluggens räfflor och ledare, blyerts 1,5 för tätningsmassans täta prickar,
+       snickarpenna för ringarna runt massan vid tätskiktet, etiketten och dess ledare (enda pennsaken).
+       Inte skalenlig: skikten är förstorade. Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2: betongen skrafferad, en rad per path, uppehåll runt hålet och lappen -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M486,48l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10"/>
+    <path d="M497,70l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10"/>
+    <path d="M486,92l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10"/>
+    <path d="M497,114l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10"/>
+    <path d="M574,136l10,10"/>
+    <path d="M486,180l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10"/>
+    <path d="M497,202l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10"/>
+    <path d="M486,224l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10"/>
+    <path d="M497,246l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10"/>
+    <path d="M486,268l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10"/>
+    <path d="M497,290l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10"/>
+    <path d="M486,312l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10"/>
+    <path d="M497,334l10,10m12,-10l10,10m12,-10l10,10m12,-10l10,10"/>
+  </g>
+
+  <!-- Blyerts-2: regelns ådring, fästmassans prickar, cementfogarnas tvärstreck, gängorna, pluggens räfflor -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M56,42Q53,110 57,180Q60,260 55,360M72,42Q75,95 71,144M71,156Q68,240 73,360M88,42Q85,100 89,144M89,156Q92,250 87,360"/>
+    <path d="M129,4v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,26.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5M135,11v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,26.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5M465,4v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,26.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5M471,11v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,26.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5m0,12.5v1.5"/>
+    <path d="M145,251l-1,8M150,251l-1,8M155,251l-1,8M446,251l-1,8M451,251l-1,8M456,251l-1,8"/>
+    <path d="M71,153l2,-6M76,153l2,-6M81,153l2,-6M86,153l2,-6M91,153l2,-6M96,153l2,-6M101,153l2,-6M106,153l2,-6M111,153l2,-6M116,153l2,-6M121,153l2,-6M126,153l2,-6M131,153l2,-6M136,153l2,-6M141,153l2,-6M146,153l2,-6M151,153l2,-6M156,153l2,-6M161,153l2,-6M166,153l2,-6M171,153l2,-6M428,153l2,-6M433,153l2,-6M438,153l2,-6M443,153l2,-6M448,153l2,-6M453,153l2,-6M458,153l2,-6M463,153l2,-6M468,153l2,-6M473,153l2,-6M478,153l2,-6M483,153l2,-6M488,153l2,-6M493,153l2,-6M498,153l2,-6M503,153l2,-6M508,153l2,-6M513,153l2,-6M518,153l2,-6M523,153l2,-6M528,153l2,-6M533,153l2,-6"/>
+    <path d="M496,143v-4M496,157v4M504,143v-4M504,157v4M512,143v-4M512,157v4M520,143v-4M520,157v4M528,143v-4M528,157v4M536,143v-4M536,157v4"/>
+  </g>
+
+  <!-- Blyerts: skikten, profilerna, hålen, skruvarna och pluggen -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M100,0Q101,73.5 100,147M100,153Q99,256.5 100,360M118,0Q117,73.5 118,147M118,153Q119,256.5 118,360M124,0Q125,71 124,142M124,158Q123,259 124,360"/>
+    <path d="M140,0Q139,71 140,142M140,158Q141,204 140,250M140,260Q139,310 140,360M160,0Q161,71 160,142M160,158Q159,204 160,250M160,260Q161,310 160,360M138,250H162M138,260H162"/>
+    <path d="M157,40H185M182,37Q183,185 182,333M157,330H185"/>
+    <path d="M116,142Q139,143 162,142M116,158Q139,157 162,158"/>
+    <path d="M182,142L175,147M182,158L175,153M175,147H70L64,150L70,153H175"/>
+    <path d="M440,0Q439,71.5 440,143M440,157Q441,203.5 440,250M440,260Q439,310 440,360M460,0Q461,71.5 460,143M460,157Q459,203.5 460,250M460,260Q461,310 460,360M438,250H462M438,260H462"/>
+    <path d="M476,0Q475,71.5 476,143M476,157Q477,258.5 476,360M482,0Q483,71.5 482,143M482,157Q481,258.5 482,360"/>
+    <path d="M443,40H415M418,37Q417,185 418,333M443,330H415"/>
+    <path d="M438,143Q500,142 562,143M438,157Q500,158 562,157M560,141V159M490,143V157M546,143V157"/>
+    <path d="M418,142L425,147M418,158L425,153M425,147H536L542,150L536,153H425"/>
+  </g>
+
+  <!-- Blyerts: tätningsmassans täta prickar, i hålet runt skruven och i pluggens botten -->
+  <path d="M120,144.5h1m6,0h1m6,0h1m6,0h1m6,0h1m6,0h1M123,155.5h1m6,0h1m6,0h1m6,0h1m6,0h1m6,0h1M443,145.2h1m6,0h1m6,0h1m6,0h1m6,0h1m6,0h1m6,0h1M446,154.8h1m6,0h1m6,0h1m6,0h1m6,0h1m6,0h1m6,0h1M549,145.5h1m6,0h1M552,149h1M549,152h1m6,0h1M552,155.2h1" fill="none" stroke="#2a2521" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Papperslappar bakom etiketterna över regeln och i betongen -->
+  <g fill="#f5efe3">
+    <rect x="44" y="0" width="73" height="40"/>
+    <rect x="498" y="10" width="62" height="29"/>
+  </g>
+
+  <!-- Blyerts-2: ledare -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M198,72L109,90"/>
+    <path d="M197,284L150,300"/>
+    <path d="M391,74L479,90"/>
+    <path d="M384,283L515,157"/>
+  </g>
+
+  <!-- Snickarpenna: öppna ringar runt massan vid tätskiktet i båda väggarna, och ledarna från etiketten -->
+  <g fill="none" stroke="#ad3519" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M127,132Q111,130 104,142Q100,157 113,166Q127,172 137,161Q142,148 134,136M473,132Q489,130 496,142Q500,157 487,166Q473,172 463,161Q458,148 466,136" stroke-width="2.5"/>
+    <path d="M234,201L135,162M362,201L465,162" stroke-width="1.25"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#625a50">
+    <text x="46" y="30" fill="#2a2521">träregel</text>
+    <text x="500" y="30" fill="#2a2521">betong</text>
+    <text x="200" y="80">skiva</text>
+    <text x="200" y="290">kakel</text>
+    <text x="320" y="80">tätskikt</text>
+    <text x="340" y="290">plugg</text>
+    <text x="236" y="206" fill="#ad3519">tätningsmassa</text>
+  </g>
+</svg>
