@@ -145,11 +145,22 @@ const OM_SAJTEN = [
 ];
 
 /**
- * Ordmärket står inline två gånger per sida, i sidhuvudet och i sidfoten.
  * Källfilens kommentar och indrag skalas bort här i bygget, inte i filen
  * (docs/briefer/spec-skal-budget-2026-09-28.md steg 2).
  */
 const ordmarkeRen = ordmarke.replace(/<!--[\s\S]*?-->/g, '').replace(/>\s+</g, '><').trim();
+
+/**
+ * Sedan 2026-09-29 står ordmärket inline bara i sidhuvudet, med innehållet i
+ * <g id="ordmarke">. Sidfoten ritar samma grupp med <use>. Gruppen ligger kvar i
+ * dokumentet, så Zilla Slab och omfärgningen med --color-blyerts ärvs in i
+ * skuggträdet som förut (docs/briefer/spec-skal-budget-2-2026-09-29.md punkt 1).
+ */
+const ordmarkeDelar = /^(<svg[^>]*>)([\s\S]*)<\/svg>$/.exec(ordmarkeRen);
+if (!ordmarkeDelar) throw new Error('ordmarke-inline.svg: rotelementet hittas inte');
+const [, ordmarkeRot, ordmarkeInnehall] = ordmarkeDelar;
+const ordmarkeHuvud = `${ordmarkeRot}<g id="ordmarke">${ordmarkeInnehall}</g></svg>`;
+const ordmarkeFot = `${ordmarkeRot}<use href="#ordmarke"/></svg>`;
 
 const ar = new Date().getFullYear();
 ---
@@ -205,12 +216,12 @@ const ar = new Date().getFullYear();
     <header class="relative border-b border-linje print:hidden">
       <div class="mx-auto max-w-sidbredd px-4 sm:px-6 lg:px-8 h-14 lg:h-16 flex items-center justify-between">
         <a href="/" class="ordmarke" aria-label="Hantverkstips, till startsidan">
-          <Fragment set:html={ordmarkeRen} />
+          <Fragment set:html={ordmarkeHuvud} />
         </a>
 
         <nav
           aria-label="Sajtens sidor"
-          class="huvudmeny hidden lg:flex items-center gap-6 [&_a]:text-blyerts [&_a]:no-underline [&_a]:hover:underline [&_a]:hover:decoration-penna"
+          class="huvudmeny sajtmeny hidden lg:flex items-center gap-6"
         >
           {
             FASTA.map((m) => (
@@ -225,7 +236,7 @@ const ar = new Date().getFullYear();
             Meny
           </summary>
           <div
-            class="absolute left-0 right-0 top-full z-50 border-b border-linje bg-papper shadow-lyft px-4 sm:px-6 pb-2 [&_li]:border-b [&_li]:border-linje [&_a]:flex [&_a]:h-12 [&_a]:items-center [&_a]:gap-3 [&_a]:text-blyerts [&_a]:no-underline"
+            class="menypanel absolute left-0 right-0 top-full z-50 border-b border-linje bg-papper shadow-lyft px-4 sm:px-6 pb-2"
           >
             {
               MOBIL_GRUPPER.map((g) => (
@@ -235,7 +246,7 @@ const ar = new Date().getFullYear();
                     {g.poster.map((m) => (
                       <li>
                         <a href={m.href}>
-                          {m.ikon && <Ikon namn={m.ikon} storlek={24} />}
+                          {m.ikon && <Ikon namn={m.ikon} storlek={null} />}
                           {m.namn}
                         </a>
                       </li>
@@ -254,7 +265,7 @@ const ar = new Date().getFullYear();
                 FASTA.map((m) => (
                   <li class="last:border-b-0">
                     <a href={m.href}>
-                      {m.ikon && <Ikon namn={m.ikon} storlek={24} />}
+                      {m.ikon && <Ikon namn={m.ikon} storlek={null} />}
                       {m.namn}
                     </a>
                   </li>
@@ -268,13 +279,13 @@ const ar = new Date().getFullYear();
       {/* Ämnesraden. Bara på desktop; mobilen har ämnena i menyn. Raden bryts när hubbarna inte ryms, aldrig sidledsrullning. */}
       <nav aria-label="Ämnen" class="amnesrad hidden lg:block border-t border-linje bg-papper-2">
         <ul
-          class="mx-auto max-w-sidbredd px-8 m-0 p-0 list-none flex items-center gap-1 flex-wrap [&_li:not(.ml-auto)_a]:flex [&_li:not(.ml-auto)_a]:h-11 [&_li:not(.ml-auto)_a]:items-center [&_li:not(.ml-auto)_a]:gap-2 [&_li:not(.ml-auto)_a]:whitespace-nowrap [&_li:not(.ml-auto)_a]:px-3 [&_li:not(.ml-auto)_a]:text-liten [&_li:not(.ml-auto)_a]:text-blyerts [&_li:not(.ml-auto)_a]:no-underline [&_li:not(.ml-auto)_a]:hover:underline [&_li:not(.ml-auto)_a]:hover:decoration-penna"
+          class="mx-auto max-w-sidbredd px-8 m-0 p-0 list-none flex items-center gap-1 flex-wrap"
         >
           {
             AMNESRAD.map((m) => (
               <li>
                 <a href={m.href}>
-                  {m.ikon && <Ikon namn={m.ikon} storlek={20} />}
+                  {m.ikon && <Ikon namn={m.ikon} storlek={null} />}
                   {m.namn}
                 </a>
               </li>
@@ -312,10 +323,10 @@ const ar = new Date().getFullYear();
 
     <footer class="mt-12 lg:mt-24 bg-blyerts text-papper text-liten print:hidden">
       <div
-        class="mx-auto max-w-sidbredd px-4 sm:px-6 lg:px-8 py-8 lg:py-12 [&_li]:mb-2 [&_a]:text-papper [&_a]:underline [&_a]:decoration-1 [&_a]:underline-offset-2 [&_a]:hover:decoration-2"
+        class="sidfot mx-auto max-w-sidbredd px-4 sm:px-6 lg:px-8 py-8 lg:py-12"
       >
         <div class="ordmarke" style="--color-blyerts: var(--color-papper)">
-          <Fragment set:html={ordmarkeRen} />
+          <Fragment set:html={ordmarkeFot} />
         </div>
 
         <div class="mt-8 grid gap-8 lg:grid-cols-4">

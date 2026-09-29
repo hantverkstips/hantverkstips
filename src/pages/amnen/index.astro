@@ -151,16 +151,13 @@ const strukturdata = lista({
             {a.typgrupper.map((g) => (
               <div class="mt-4 first:mt-0">
                 <p class="m-0 text-etikett uppercase text-blyerts-2">{g.rubrik}</p>
-                <ul class="m-0 list-none p-0">
+                <ul class="amnesrader m-0 list-none p-0">
                   {g.rader.map((r) => (
-                    <li class="flex items-baseline justify-between gap-x-4 border-t border-linje">
-                      <a
-                        href={r.href}
-                        class="flex min-h-11 min-w-0 flex-1 items-center lank"
-                      >
+                    <li>
+                      <a href={r.href} class="lank">
                         {r.titel}
                       </a>
-                      <span class="shrink-0 text-etikett uppercase text-blyerts-2">{nivaEtikett(r.niva)}</span>
+                      <span>{nivaEtikett(r.niva)}</span>
                     </li>
                   ))}
                 </ul>

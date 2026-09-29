@@ -395,6 +395,111 @@ body {
   }
 
   /*
+    Skalets menyer och sidfot. Förut [&_a]:…-varianter på föräldern, som stod i
+    varje sidas HTML och växte med varje hub; nu en gång här, med samma värden
+    som Tailwind gav (docs/briefer/spec-skal-budget-2-2026-09-29.md punkt 2).
+    Hover ligger inom (hover: hover) som Tailwinds hover:-variant. Ett verktyg
+    på elementet (font-bold, last:border-b-0) vinner, eftersom verktygen ligger
+    i ett senare lager.
+  */
+  .sajtmeny a {
+    color: var(--color-blyerts);
+    text-decoration-line: none;
+  }
+  @media (hover: hover) {
+    .sajtmeny a:hover {
+      text-decoration-line: underline;
+      text-decoration-color: var(--color-penna);
+    }
+  }
+
+  /* Ämnesraden. "Alla ämnen" (li.ml-auto) har egna verktyg och .lank. */
+  .amnesrad li:not(.ml-auto) a {
+    display: flex;
+    height: calc(var(--spacing) * 11);
+    align-items: center;
+    gap: calc(var(--spacing) * 2);
+    white-space: nowrap;
+    padding-inline: calc(var(--spacing) * 3);
+    font-size: var(--text-liten);
+    line-height: var(--text-liten--line-height);
+    color: var(--color-blyerts);
+    text-decoration-line: none;
+  }
+  @media (hover: hover) {
+    .amnesrad li:not(.ml-auto) a:hover {
+      text-decoration-line: underline;
+      text-decoration-color: var(--color-penna);
+    }
+  }
+  .amnesrad svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Mobilmenyns panel. */
+  .menypanel li {
+    border-bottom: 1px solid var(--color-linje);
+  }
+  .menypanel a {
+    display: flex;
+    height: calc(var(--spacing) * 12);
+    align-items: center;
+    gap: calc(var(--spacing) * 3);
+    color: var(--color-blyerts);
+    text-decoration-line: none;
+  }
+  .menypanel svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  /*
+    Raderna i /amnen/: titel till vänster, nivå till höger, linje ovanför.
+    Förut tre klassattribut på varje rad (cirka 186 byte gånger 46 rader);
+    samma värden som verktygen gav. Länken behåller .lank på elementet.
+  */
+  .amnesrader > li {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    column-gap: calc(var(--spacing) * 4);
+    border-top: 1px solid var(--color-linje);
+  }
+  .amnesrader > li > a {
+    display: flex;
+    min-height: calc(var(--spacing) * 11);
+    min-width: 0;
+    flex: 1;
+    align-items: center;
+  }
+  .amnesrader > li > span {
+    flex-shrink: 0;
+    font-size: var(--text-etikett);
+    line-height: var(--text-etikett--line-height);
+    letter-spacing: var(--text-etikett--letter-spacing);
+    font-weight: var(--text-etikett--font-weight);
+    text-transform: uppercase;
+    color: var(--color-blyerts-2);
+  }
+
+  /* Sidfotens listor och länkar. Ordmärket är ingen länk här. */
+  .sidfot li {
+    margin-bottom: calc(var(--spacing) * 2);
+  }
+  .sidfot a {
+    color: var(--color-papper);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+  @media (hover: hover) {
+    .sidfot a:hover {
+      text-decoration-thickness: 2px;
+    }
+  }
+
+  /*
     Tvåspaltsmallen: brödtext i läsbredd med innehållsförteckningen i höger spalt.
     Blocket är 63 rem (44 + 3 gap + 16) och centreras i sidbredden, så att
     brödsmulor, rubrik, tabeller och produktavsnitt får samma vänsterkant.

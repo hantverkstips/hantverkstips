@@ -31,14 +31,20 @@ export type IkonNamn =
 
 interface Props {
   namn: IkonNamn;
-  /** Px. Standard 24. */
-  storlek?: number;
+  /**
+   * Px. Standard 24. null skriver inga width och height: storleken kommer då
+   * från förälderns komponentklass (.amnesrad och .menypanel i global.css), så
+   * att skalet inte bär samma två attribut på varje menypost
+   * (docs/briefer/spec-skal-budget-2-2026-09-29.md punkt 3).
+   */
+  storlek?: number | null;
   class?: string;
 }
 
 const { namn, storlek = 24, class: klass } = Astro.props;
+const matt = storlek ?? undefined;
 ---
 
-<svg width={storlek} height={storlek} aria-hidden="true" class:list={[klass]}>
+<svg width={matt} height={matt} aria-hidden="true" class:list={[klass]}>
   <use href={`${sprite}#ikon-${namn}`} />
 </svg>
