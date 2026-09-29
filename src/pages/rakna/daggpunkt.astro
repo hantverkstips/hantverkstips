@@ -183,7 +183,7 @@ const FRAGOR = [
   },
   {
     fraga: 'Hjälper en avfuktare mot kondens på fönster?',
-    svar: 'Ja, om kondensen beror på att luften inne är fuktig. Avfuktaren tar bort vatten ur luften, och då sjunker daggpunkten under rutans temperatur. Men ett gammalt tvåglasfönster kan bli så kallt att luften skulle behöva vara obehagligt torr, och då är det rutan som ska bytas. På vintern gör en kort vädring med genomdrag morgon och kväll ofta samma nytta som maskinen.',
+    svar: 'Sällan på vintern. En avfuktare tar visserligen vatten ur luften och sänker daggpunkten, men uteluften i januari är så torr att några minuters vädring med genomdrag morgon och kväll gör samma sak utan att kosta något. Immar ett gammalt tvåglasfönster ändå, är det glaset som är för kallt, och då hjälper varken maskinen eller vädringen helt. En avfuktare gör nytta där luften är fuktig också på sommaren, som i en källare, och det är bara där räknaren föreslår en.',
   },
 ];
 
@@ -473,8 +473,12 @@ const huvudbild = varumarke ?? illustration;
       <Pennstreck id="sovrummet-i-januari" niva={3}>Sovrummet i januari</Pennstreck>
       <p class="m-0 text-brod lg:text-brod-lg">
         Två personer sover i ett rum på 20 grader, och hygrometern visar 50 procent. Då ligger daggpunkten på 9,3
-        grader. Rutan i ett gammalt tvåglasfönster kommer inte ens upp i hälften av det en kall natt, så kondensen
-        på insidan av fönstret är given. Nästa kandidat är ytterväggen bakom garderoben, för där står luften stilla
+        grader. Mitt på glaset i ett gammalt tvåglasfönster är det bara omkring 5 grader en natt med 20
+        minusgrader, så kondensen på insidan av fönstret är given. De 5 graderna har jag räknat fram utifrån
+        Energimyndighetens U-värde för ett vanligt tvåglasfönster och standardformeln för glasets temperatur, med
+        21 grader inne. I sovrummet på 20 grader blir glaset lite kallare än så.
+        <a href="/fukt/kondens-pa-fonster/" class={LANK_KLASS}>Tabellen med fler fönster och utetemperaturer</a>
+        visar hela uträkningen. Nästa kandidat är ytterväggen bakom garderoben, för där står luften stilla
         och väggen är några grader kallare än rummet. Det du ska göra är att vädra kort med genomdrag morgon och
         kväll. Uteluft på några minusgrader bär nästan inget vatten alls, och när den värmts upp inne är den torrare
         än luften den bytte ut. Dra ut garderoben några centimeter från väggen medan du ändå håller på.
