@@ -148,6 +148,8 @@ const tester = defineCollection({
     artikel(ctx)
       .omit({ pelare: true })
       .extend({
+        // `bild` ärvs från artikel men renderas inte av testmallen: här är den bara
+        // kortets bild och pekar på en skiss som står kvar i texten (DESIGN.md 6).
         // Slug på produkten testet handlar om. Måste finnas i databasen.
         produkt: z.string(),
         // Brödsmulan går via kategorin, inte pelaren. Krävs här.
@@ -194,6 +196,7 @@ const jamforelser = defineCollection({
     artikel(ctx)
       .omit({ pelare: true })
       .extend({
+        // `bild` är bara kortets bild, som i tester.
         kategori: z.string(),
         produkter: z.array(produktRef).min(2),
       }),

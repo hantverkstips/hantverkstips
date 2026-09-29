@@ -22,8 +22,9 @@
  * Vilken bild som hamnar till höger, i tur och ordning:
  *   1. frontmatterfältet `bild`, när det pekar på en SVG under
  *      src/assets/illustrationer/ (alltså den konverterade filen, utan <text>)
- *   2. den första <Illustration namn="..." /> i brödtexten. Tester, jämförelser
- *      och pelarhubbar har ingen bild i frontmatter och får sin bild härifrån
+ *   2. den första <Illustration namn="..." /> i brödtexten. Pelarhubbar har
+ *      ingen bild i frontmatter och får sin bild härifrån. Tester och jämförelser
+ *      kan ha en, som då är en av skisserna i texten (bara kortets bild)
  *   3. ingen bild alls: då sätts titeln större och tumstockssymbolen står till
  *      höger i stället
  *

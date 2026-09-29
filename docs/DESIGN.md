@@ -702,6 +702,8 @@ Sedan 2026-09-16 visas nivån på **alla artikelkort**, även på startsidan: et
 
 **Utan illustration.** Bildytan fylls av ett blankt blad ur samma block som skisserna: `papper-2` med linjer i `linje` var 24:e px och marginallinje i penna vid 35 procent, och pelarens ikon i 40 px `blyerts-2` mitt på. Aldrig en grå ruta, aldrig ett stockfoto, aldrig en packshot.
 
+**Tester och jämförelser** (beslut 2026-09-29). Kortets bild är frontmatterns `bild`, som för artiklar, och pekar på en av sidans egna skisser. Test- och jämförelsemallen renderar inte `bild`, så skissen står kvar som `<Illustration>` i texten och syns bara en gång på sidan; `bildAlt` och `bildtext` behövs inte. Produktbilden är leverantörens och blir aldrig kortets bild. Saknar sidan skiss visas det blanka bladet.
+
 **Kategorikort.** Ingen egen komponent: Artikelkort med etiketten "Bäst i test", kategorins namn som rubrik och kategorins `description` som beskrivning. Bildytan är det blanka bladet med två rader satta som kalkylatorns resultat: "Vårt val" i etikett-stil med produktnamnet i kortrubrik, och antalet granskade som ett stort tal i Zilla Slab med ordet "granskade" efter. Ingen packshot, aldrig. Utan databas visas bladet utan tal.
 
 **Hover, fokus, klickyta.** Hela kortet är klickbart genom att rubrikens länk får en `::after` som täcker kortet, men bara rubriken är länk för skärmläsaren (regeln "rubriken är länken"). Hover lyfter ingenting: rubriken får 2 px understrykning i penna, `transition: text-decoration-color 150ms`, avstängd vid `prefers-reduced-motion`. Fokus ger hela kortet `outline: 3px solid penna` via `:has`. Klickytan är alltid över 44 px hög.
