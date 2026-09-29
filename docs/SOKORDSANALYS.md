@@ -655,6 +655,88 @@ Faktabladen `docs/briefer/faktablad/guider-mala-kakel.md` och `kunskap-vatrumsfa
 
 Checklistorna i `docs/briefer/seo-checklista-2026-09-29/` är uppdaterade: kakelsidan står i `kok.md`, toalettstolen i `badrum.md`, och länkarna på alla sidor pekar till `/kok/mala-kakel/`.
 
+## 9. Startlista 4, 2026-09-29
+
+Frågan från Christian var om vi har data för fler artiklar. Startlista 3 är publicerad utom `/rakna/kok-kostnad/`, och hubbarna för Tak, Badrum och Kök är ute. Underlaget är de tre exporterna i `docs/data/` (2026-09-16, 2026-09-20 och 2026-09-28), lästa om rad för rad mot de sidor som finns i `src/content/` och räknarna i `src/lib/kalkyl/register.ts`. Ingen ny Keyword Planner-körning och ingen ny SERP-läsning ligger bakom avsnittet; vinnbarheten är den från 7.2 och 8.2, och där frasen aldrig lästes står det.
+
+### 9.1 Räcker datan
+
+**Ja.** Körning 3 har kvar ungefär 45 000 sökningar i månaden på avsikter som inte har någon sida, och körning 1 och 2 har kvar fyra fuktfraser som redan står i registret i `INNEHALLSARKITEKTUR.md`. Det räcker till fjorton sidor utan en enda ny hämtning. Det som saknas är data till nästa lista, inte till den här (9.5).
+
+Vad som finns kvar per pelare, och vad som inte blir något nu:
+
+| Pelare | Fraser med volym utan sida | Besked |
+|---|---|---|
+| Badrum | våtrumsmatta 6 810, renovera badrum 3 770, våtrumsskiva 2 400, våtrumstapet 2 400, golvvärme badrum 1 050, våtrumsspackel 1 000, byta golvbrunn 510, montera duschvägg 350, byta handfat 200 | Fyra tas (9.2). Kakla badrum och golvbrunn görs inte som guide (8.3) |
+| Kök | stänkskydd kök 5 660, kakla kök 780, byta bänkskiva 730, ikea kök montering 660, byta blandare och diskbänk 360, montera köksfläkt 200, plus räknaren 2 140 | Fyra tas. IKEA äger sin egen fras |
+| Tak | takfot 4 120, papptak 2 660, vindskivor 2 260, betongpannor 2 210, tvätta tak 1 520, shingeltak 1 500, isolera tak 1 040, måla takpannor 900, takläckage 330 | Fyra tas. Isolera tak hör till El |
+| Fukt | avfuktare garage 320, fukt i krypgrund 260 plus mögel i krypgrund 110, mögel i källaren 260, kondens på fönster insida 110 | Två tas, de med vintertopp |
+| Grund | sättningar hus 210, dränera källare 320, renovera källare 320 | Väntar. Sättningar byggs när Search Console visar att sprickorsidan rankar utan att svara (7.3); källarfraserna ligger nära `/grund/dranera-hus/` och `/grund/inreda-kallare/` |
+| Fasad | byta fönster kostnad 1 000 (vinn 2), byta fönster själv 260, tilläggsisolera fasad 140 | Väntar till våren |
+| Golv, Inomhus, El, Altan | lägga klinker själv 90, isolera vägg inifrån 170, golvvärme el kostnad 50, dra el själv 70; altanens fraser toppar april | Inget som bär en sida i vinter. Altanen är redan byggd för sin säsong |
+| Verktyg | fuktmätare 7 690, kap och gersåg 7 490, lasermätare 4 010, krysslaser 4 150, skruvautomat 900 | Utanför listan. Laser skrivs som granskning när den är klar, sågarna och fuktmätaren kräver affiliateagentens beslut om granskning mot test |
+
+### 9.2 Listan
+
+Tre ordningsregler. Badrum och kök toppar september till oktober och januari till mars, så de går först. Fuktens vinterben toppar november till januari och går i november. Takets utvändiga jobb toppar mars till september och ska vara indexerade i februari, så de skrivs i december och januari. Inom varje omgång går den sida som bär produkter eller en räknare före.
+
+Ingen ny hub behövs. Alla fyra pelare i listan har en publicerad hub, och sidorna går in i den grupp som står i kolumnen Typ.
+
+| # | Fras (URL) | Volym | Vinn | Typ | Pelare | Toppmånad | Produkter | Motiv |
+|---|---|---|---|---|---|---|---|---|
+| 1 | renovera kök kostnad (`/rakna/kok-kostnad/`) | 2 140 | 4 | kalkylator | Kök | sep | nej | Kvar från startlista 3. Samma formelmodul som `/rakna/badrum-kostnad/`, alltså kortast väg till en ny sida. Clas Fixare har fortfarande 75 000 kr som rot-tak |
+| 2 | byta bänkskiva (`/kok/byta-bankskiva/`) | 730 | 4 | projektguide | Kök | sep, kostnad feb | sänksåg, överfräs | Äger byta bänkskiva kök, montera bänkskiva och kostnadsvarianterna (+200 %). Ingen i topp 5 nämner överfräsen till hörnfogen, ingen har priser. Bästa produktkopplingen i listan, och verktyget avgör resultatet |
+| 3 | våtrumsmatta (`/badrum/vatrumsmatta/`) | 6 810 | 3 | kunskap | Badrum | sep | nej | Största frasen utan sida på hela sajten. Tarkett har tre av fem och saknar pris, livslängd, datum och GVK. Skrivs som kunskap om kostnad, val och regler, inte som läggning (8.3) |
+| 4 | golvvärme badrum (`/badrum/golvvarme-badrum/`) | 1 050 | 3 | kunskap | Badrum | okt och jan | nej | El mot vattenburen, W per kvm och driftkostnad med källa, som ingen i topp 5 har. Installationen är elinstallatörens (Elsäkerhetsverket). `/rakna/elkostnad/` bäddas in med förval för golvvärme i stället för en ny räknare |
+| 5 | kakla kök (`/kok/kakla-kok/`) | 780 | ej läst | projektguide | Kök | sep | krysslaser, kakelskärare | Äger byta kakel kök (210, +91 % tre månader) och kakla kök själv. Köket har ingen branschregel för tätskikt, så här går det att lära ut det som badrummet inte får. `/rakna/kvadratmeter/` bäddas in för åtgången |
+| 6 | stänkskydd kök (`/kok/stankskydd/`) | 5 660 | 3 | kunskap med köpråd | Kök | sep | nej | Topp 5 är inspiration och produkt utan mått, pris eller källa för glasets värmetålighet bakom hällen. Välj material och mått här; kaklet som utförande länkas till 5 |
+| 7 | våtrumstapet (`/badrum/vatrumstapet/`) | 2 400 | 4 | kunskap | Badrum | sep | nej | Badrumsportalen säger att skarven i duschen tätas med fogmassa, vilket strider mot GVK, och ingen nämner att tapeten rivs före nytt tätskikt (BBV, MVK s. 19) |
+| 8 | montera duschvägg (`/badrum/montera-duschvagg/`) | 350 | ej läst | projektguide med villkor | Badrum | okt | nej | Ett av få badrumsjobb som får skrivas som gör det själv (8.3): skruv i massiv konstruktion eller regel, hålen tätade, lim där tillverkaren tillåter (GVK, Säker Vatten 4.7.3). Äger utan att borra (+75 % tre månader) |
+| 9 | avfuktare garage (`/fukt/avfuktare-garage/`) | 320 | 3 | köpguide | Fukt | jan | luftavfuktare | Står i registret sedan 2026-09-16. Dyraste produkten sajten har, 3 000 till 15 000 kr, och kylan i ett garage är exakt där kondensavfuktaren tappar, så sidan bygger på det vi redan skrivit. `/rakna/avfuktare/` och `/rakna/elkostnad/` bäddas in |
+| 10 | kondens på fönster insida (`/fukt/kondens-pa-fonster/`) | 110, +50 % | ej läst | problemguide | Fukt | nov | nej | Växer och toppar i november. Fuktens vinterben, och den naturliga platsen för `/rakna/daggpunkt/` (880). Liten fras, men en ren GEO-fråga med ett tal som svar |
+| 11 | takläckage (`/tak/taklackage/`) | 330 | 4 | problemguide | Tak | feb | nej | Äger läckande tak, takläckage försäkring och byta trasiga eller enstaka takpannor. Nästan bara lokala takfirmor i topp 5; ingen förklarar hur fläcken inne spåras till taket ute, eller gränsen mellan plötslig skada och långsam läcka som avgör försäkringen. Takpelarens första Hitta felet-sida |
+| 12 | takfot (`/tak/takfot/`) | 4 120 | 4 | kunskap och projektguide | Tak | apr, takfotsplåt jul | nej | Äger takfotsplåt (1 300), montering och takfotsventilation (+24 %). "takfot" ensamt är en definitionsfråga vid husköp, så sidan svarar på den först och går sedan till renoveringen, som ingen har. En konkurrent påstår utan källa att ventilationen ökar fukten på vinden |
+| 13 | tvätta tak (`/tak/tvatta-tak/`) | 1 520 | 4 | projektguide | Tak | mar och sep | högtryckstvätt, villkorat | Äger mossa på taket och tvätta takpannor. Ingen säger om medlet är ett godkänt biocid hos Kemikalieinspektionen eller om högtryck skadar pannan. Kortet står bara om sidan kommer fram till att högtryck går på den taktyp det gäller (8.6) |
+| 14 | papptak (`/tak/papptak/`) | 2 660 | 4 | kunskap och projektguide | Tak | sep, lägga takpapp jul | nej | Äger lägga takpapp, livslängd, pris, pulpettak och förråd. Livslängden spretar mellan 15 och 50 år utan källa, och ingen skiljer ettlags från tvålags eller underlagspapp från ytpapp. `/rakna/takbyte/` bäddas in |
+
+Summa ungefär 29 000 sökningar i månaden. Efter listan har Kök, Badrum och Tak tio sidor var och Fukt tolv, delade räknare inräknade.
+
+**Omgångar.** Oktober: 1 till 8. November: 9 och 10. December till januari: 11 till 14, så att takets vårben är indexerat i februari. Varje sida får sin checklista i `docs/briefer/seo-checklista-[datum]/` före skrivningen, och de tre som står som ej lästa (5, 8 och 10) får sin SERP läst av underlagsarbetaren innan checklistan skrivs. Blir vinnbarheten 2 eller lägre byts sidan mot första raden i 9.4.
+
+### 9.3 Sidor som bär produkter
+
+Till affiliateagenten. Fyra av fjorton, och ingen utan att verktyget avgör resultatet. Prisläge och sortiment hos Proffsmagasinet kontrolleras av affiliateagenten innan kortet specas.
+
+| Sida | Produkt | Prisläge | Villkor |
+|---|---|---|---|
+| `/kok/byta-bankskiva/` | sänksåg med styrskena, överfräs | 2 000 till 8 000 kr (kategori 3 i AFFILIATE.md) | Sänksågen är kategori 3; överfräsen finns inte i kategorilistan och behöver ett beslut |
+| `/kok/kakla-kok/` | krysslaser, kakelskärare | krysslaser 1 500 till 4 000 kr | Krysslasern pekar på `/krysslaser/` först när kategorisidan är publicerad som granskning. Kakelskäraren finns inte i kategorilistan |
+| `/fukt/avfuktare-garage/` | luftavfuktare | 3 000 till 15 000 kr (kategori 1) | Köpguide, kort mot `/luftavfuktare/` och produkter som klarar garagets temperatur |
+| `/tak/tvatta-tak/` | högtryckstvätt | över 1 500 kr i proffssegmentet | Bara om sidan säger att högtryck går på taktypen. Annars inget kort (8.6) |
+
+Övriga tio bär inga produkter. Badrumssidorna ska inte göra det (8.6), golvvärmen installeras av elinstallatör, och stänkskyddets och papptakets dyra del är materialet, som Proffsmagasinet inte säljer.
+
+### 9.4 Väntar och görs inte
+
+**Direkt efter**, i den här ordningen: isolera tak (1 040, El, SERP oläst, isolera tak inifrån backar 64 procent), fukt i krypgrund med mögel i krypgrund (370, Fukt, oläst, binder `/fukt/avfuktare-krypgrund/`), måla takpannor (900, oläst, till våren), shingeltak (1 500, 4, topp augusti), renovera badrum (3 770, 3; kräver en egen vinkel som inte upprepar tätskiktets tabell och kostnadsräknaren).
+
+**Väntar:** vindskivor (gds är stark och färsk), betongpannor (tillverkaren äger), våtrumsskiva (delad intention), våtrumsspackel (oläst, produktfråga), byta blandare och diskbänk (360; Säker Vatten gör det till kunskap, inte guide, och ingen produkt), montera köksfläkt (200; fast anslutning är elinstallatörens), byta golvbrunn (510, −47 %, kunskap möjlig senare), byta takpannor utan "trasiga" (250, hör till en framtida guide om att byta tak, som `/rakna/takbyte/` och `/tak/plattak/` täcker i dag).
+
+**Görs inte:** kakla badrum och golvbrunn som guide (8.3), ikea kök montering (IKEA på plats ett till fem), takstege (utanför sortimentet), byggfläkt (7.5).
+
+### 9.5 Vad som ska hämtas
+
+Inget för startlista 4. Två frågor till nästa lista kan inte besvaras med det vi har, och fraserna står i `docs/briefer/sokord-att-hamta-2026-09-29.md`:
+
+1. **Fuktens vinterben utöver kondensen.** Vi har mätt en enda kondensfras och ingenting om vinden, fast mögel och fukt på kallvinden är det största vinterproblemet i ett hus med nyisolerat bjälklag, och `/el/tillaggsisolera-vind/` redan leder dit.
+2. **Vilken verktygskategori som följer efter laser.** Köksidorna i listan bär sänksåg, överfräs, kakelskärare, excenterslip och färgspruta, men bara sänksåg eller cirkelsåg (170) är mätt. Utan volym på produktorden kan affiliateagenten inte välja nästa granskning.
+
+Sex stänkskyddsfraser är med för att avgöra om montering är en egen avsikt eller en H2 i sida 6. De ändrar inte ordningen.
+
+### 9.6 Kontroll av kannibalisering
+
+Ingen av de fjorton delar de tre första orden i title med en befintlig sida. Tre gränser att hålla i checklistorna: `/fukt/avfuktare-garage/` får inte börja som `/fukt/avfuktare-krypgrund/` ("Avfuktare krypgrund, …"); `/kok/stankskydd/` äger valet av material och `/kok/kakla-kok/` utförandet, så "stänkskydd" står inte först i kaklets title; `/tak/taklackage/` äger bara trasiga och enstaka pannor, aldrig "byta takpannor" ensamt, som är ett takbyte.
+
 ## Källor
 
 Sökresultat och sidor lästa 2026-09-16. Volymer från `docs/data/keyword-stats-2026-09-16.csv` (Google Ads, Sverige, sep 2024 till aug 2026).
