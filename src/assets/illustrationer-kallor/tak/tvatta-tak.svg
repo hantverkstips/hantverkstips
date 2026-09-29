@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Ett hus sett från gaveln, med mossa på den skuggiga norrsidan, och bredvid huset de tre stegen för att tvätta tak.">
+  <!-- Anteckningsboken. Blyerts 2 px för marken, gavelns väggar, sadeltaket (två linjer, 10 tjockt) och trädets stam,
+       blyerts-2 1,25 för pannraderna, blyerts-2 1,5 för trädkronan och solen, snickarpenna för mossans tuvor på
+       norrsidan (enda pennsaken) och ledaren till mossa. Huset från gaveln, norr till vänster, söder till höger.
+       Inte skalenlig. Ingen ordning från nock mot takfot, ingen skuggning, inget nyckeltal.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2 1,25: pannraderna, vinkelrätt mot takfallen -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M149.2,199.4 L141.8,190 M176.7,176.1 L169.3,166.7 M204.2,152.9 L196.7,143.5 M233.2,128.3 L225.7,118.9 M259.1,106.3 L251.7,96.9"/>
+    <path d="M387.7,196.8 L395.2,187.4 M360.2,173.6 L367.7,164.1 M332.8,150.3 L340.2,140.9 M305.3,127 L312.7,117.6 M279.4,105 L286.8,95.6"/>
+  </g>
+
+  <!-- Blyerts: marken, gavelns väggar, taket med takfotens kanter, stammen med grenarna -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M44,300 Q319,301.8 594,299.6"/>
+    <path d="M150,302 Q151.6,250 150,196.5 M390,302 Q388.5,250 390,196.5"/>
+    <path d="M126,206 Q196.3,143 272.3,82.1"/>
+    <path d="M414,206 Q343.2,143.6 267.7,82.1"/>
+    <path d="M132.5,213.6 Q205.8,154.2 271.1,96.2"/>
+    <path d="M407.5,213.6 Q336.7,151.3 268.9,96.2"/>
+    <path d="M124.7,204.5 L134,215"/>
+    <path d="M415.3,204.5 L406,215"/>
+    <path d="M78,302 Q76.4,251 79,200 M92,302 Q93.2,252 91,200 M79,202 Q72,190 68,178 M91,202 Q98,188 104,176 M85,200 Q84,186 86,170"/>
+  </g>
+
+  <!-- Blyerts-2 1,5: kronan och solen -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M80,198 Q63.7,201.6 58,186 Q42.1,181.4 46,160 Q37.8,147.3 47,130 Q40.9,113.1 56,102 Q57.3,79.3 76,76 Q88.1,59.7 104,61 Q120.4,52.8 132,66 Q149.1,66.5 151,88 Q163.5,98.9 160,118 Q170.5,133.6 159,148 Q164.8,165.5 148,170 Q141.1,185.4 124,186 Q111.3,201.9 96,196"/>
+    <path d="M479,42.4 A18,18 0 1 0 460.8,73.9 A18,18 0 0 0 481.6,45.1"/>
+    <path d="M495,59.3 L504,59.8 M486.7,76.6 L490.7,81 M468.7,83 L468.2,92 M451.4,74.7 L447,78.7 M445,56.7 L436,56.2 M453.3,39.4 L449.3,35 M471.3,33 L471.8,24 M488.6,41.3 L493,37.3"/>
+  </g>
+
+  <!-- Snickarpenna: mossans tuvor på norrsidan, tätast nedtill under kronan och vid takfoten; ledaren till mossa -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M130.8,211.1 Q123,212.5 121.8,205.7 Q121.5,202.6 124.2,202 Q122.4,197.1 126.7,199.4 Q125.7,195.4 129.4,197 Q127.9,192.5 132.4,195 Q134,194.7 135.4,197.5 M137.9,195.4 Q135,193.1 135.6,191.6 Q133.6,186 138.5,188.5 Q137.4,183.9 141.8,185.7 Q140.1,180.4 145.3,183.3 Q146.9,183 148.6,186.3 M150.2,185 Q147.4,183 148,181.5 Q145.8,176.5 150.1,179.1 Q148.8,175.1 152.6,177 Q150.7,172.3 155,174.9 Q153.7,170.9 157.7,173.2 Q159.3,172.9 160.8,176 M163.1,174 Q160.2,171.8 160.7,170.3 Q158.9,164.5 163.9,166.9 Q163,162.3 167.5,164 Q165.9,158.6 171.3,161.4 Q172.9,161.1 174.6,164.3 M178.4,161.1 Q175.6,159.1 176.2,157.6 Q174.4,152.2 179.2,154.5 Q178.3,150.1 182.4,151.7 Q180.9,146.7 186,149.3 Q187.5,149 189.1,152 M197.5,144.9 Q194.5,142.7 195.1,141.2 Q192.7,135.9 197.2,138.8 Q195.7,134.5 199.6,136.7 Q197.6,131.7 202.1,134.6 Q200.6,130.4 204.8,132.9 Q206.4,132.6 208.1,135.9 M220.4,125.5 Q217.7,123.7 218.4,122.3 Q216.8,117.1 221.3,119.2 Q220.6,115 224.6,116.4 Q223.3,111.6 228.1,114 Q229.6,113.6 231,116.5 M246.3,103.6 Q243.8,101.9 244.5,100.5 Q243,95.8 247.2,97.7 Q246.6,93.8 250.2,95.1 Q249,90.7 253.5,92.9 Q255,92.5 256.2,95.2"/>
+  </g>
+  <path d="M196,70 L195.9,130.5" fill="none" stroke="#ad3519" stroke-width="1.25" stroke-linecap="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="160" y="236">norr</text>
+    <text x="334" y="236">söder</text>
+    <text x="170" y="62" fill="#ad3519">mossa</text>
+    <text x="436" y="232">1 borsta</text>
+    <text x="436" y="258">2 algmedel</text>
+    <text x="436" y="284">3 låt det vara</text>
+  </g>
+</svg>

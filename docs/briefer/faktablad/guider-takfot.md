@@ -80,7 +80,7 @@ Namn som tillverkarna använder, med källa:
 
 | Post | Belopp | Källa | Före/efter rot | Datum |
 |---|---|---|---|---|
-| Fotplåt Areco, svart, 2 000 × 145 × 50 mm | 169 kr per 2 m; **84,50 kr/m** (egen räkning 169 / 2) | Bauhaus, kategorin plåtdetaljer, https://www.bauhaus.se/bygg/tak/platdetaljer | butikspris inkl. moms | 2026-09-29 |
+| Fotplåt Areco, svart, 2 000 × 145 × 50 mm, Bauhaus art.nr 1244739 | 169 kr per 2 m; **84,50 kr/m** (egen räkning 169 / 2) | Bauhaus produktsida, https://www.bauhaus.se/fotplat-svart-2000x145x50mm (kontrollerad 2026-09-29 ur sidans kod: "SKU":"1244739", "Price":"169.00", "brand":"ARECO", Längd: 2000 mm); först läst i kategorin plåtdetaljer, https://www.bauhaus.se/bygg/tak/platdetaljer | butikspris inkl. moms | 2026-09-29 |
 | Ommålning takfot | 200–400 kr/m | Totalbyggarna (ovan) | anges inte; moms anges inte | 2026-03-30 |
 | Byte av enstaka brädor | 500–1 000 kr/m | Totalbyggarna | anges inte | 2026-03-30 |
 | Komplett panelbyte | 800–1 500 kr/m | Totalbyggarna | anges inte | 2026-03-30 |

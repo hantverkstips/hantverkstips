@@ -228,3 +228,47 @@ Det vår sida kan ha som ettan saknar:
 - Kvadratmeterräknaren: spill 10/15 % finns, men om kakel räknas på väggyta är inte kontrollerat.
 - Materialpris per kvm för kakel: två källor, ingen butik läst direkt.
 - Moms i Hantverkskollens och Golonkas priser: inte angiven.
+
+## Komplettering 2026-09-29
+
+Fyra påståenden i `src/content/guider/kok/kakla-kok.mdx` som saknade källa. Alla sidor hämtade 2026-09-29.
+
+### 2. Väggkakel suger mer än 3 procent vatten, granitkeramik mindre
+
+- **Står i:** kakla-kok.mdx rad 98: "En platta som suger vatten är vanligt väggkakel med glasyr bara på framsidan. Casco kräver att den tar upp mer än 3 procent vatten, och granitkeramik, som är mycket tät, klarar inte det." (Samma villkor i utrustningslistan rad 94: "Ja, men bara med plattor som suger vatten".)
+- **Källa, Casco (tillverkare):** Casco Easy Pro, produktblad januari 2021, version 01.01, sida 1, rubrik "vägg (på icke absorberande underlag)": "▪ kakel absorpsionförmåga > 3%", "▪ granitkeramiksmosaik (max 10 cm x 10 cm)", "▪ på befintligt underlag av keramik". https://www.casco.se/dms/getdocument.get/c08737f5-154f-4642-aefa-cc9328b149b8/casco-easy-pro.pdf
+- **Källa, Golvbranschen GBR (branschorganisation), senast uppdaterad 2025-05-12:** "Kakelplattor är torrpressade plattor med hög vattenabsorption, vanligen 10-20 %, avsedda framförallt för installation på vägg inomhus." och "Granitkeramik är tätsintrade torrpressade klinkerplattor som genom tillverkningstekniken får en låg vattenabsorption ≤ 0,5 %." Sidan hänvisar till "14411 Keramiska plattor". https://www.golvbranschen.se/teknik--material/kakel-och-klinker/om-keramik-pa-golv-och-vagg/
+- **Avvikelse att rätta:** Casco utesluter inte all granitkeramik på gammalt kakel. Granitkeramik i mosaik upp till 10 × 10 cm är tillåten. Hela plattor av granitkeramik står inte i listan för icke absorberande underlag. "granitkeramik klarar inte det" stämmer alltså bara för hela plattor, inte för mosaik.
+- **Ingen källa:** "glasyr bara på framsidan". Byggipedia (2013-06-11) säger bara "Glasering innebär att en man låter en glasmassa flyta ut över plattornas yta", inget om baksidan. Stryk ledet eller skriv utan det.
+- **Inte läst:** SS-EN 14411 själv (standarden är avgiftsbelagd). Byggkeramikrådet har ingen öppen sida med gränserna som jag hittade. Sökutdrag nämner grupperna BIa ≤ 0,5 % och BIII > 10 % (**utdrag**, tilesamples.eu, inte läst).
+
+### 3. Knacktestet för plattor som har släppt
+
+- **Står i:** kakla-kok.mdx rad 100: "Knacka på dem med skaftet på en skruvmejsel: en platta som låter ihålig har släppt från väggen."
+- **Källa, Byggkeramikrådet BKR (branschorganisation), "Kakel direkt på kakel", publicerad 2024-03-05, ändrad 2024-03-14:** "Knacka försiktigt och kolla att varje enskild platta sitter ordentligt innan du börjar, säger Robert." https://www.bkr.se/kunskapsbanken/teknik/kakel-direkt-pa-kakel
+- **Källa, BKR, "Vad är: Bomljud", publicerad 2022-02-09, ändrad 2023-02-02:** "Ljud som uppfattas som en avvikande klang i en platta när man knackar lätt med ett fast föremål, såsom till exempel en stålkula, på ett flertal ställen på en platta." "Det indikerar att det finns ett hålrum någonstans under den keramiska plattan." "Hålrumsljud innebär att en del av plattan har ett annat ljud när man knackar på den. Bom när keramiken är helt eller delvis lös eller att fogen är helt eller delvis skadad eller lös." https://www.bkr.se/kunskapsbanken/teknik/bomljud
+- **Källa, Gör det själv (tidning), "Sätt kakel på kakel", Jann Wagner, publicerad 2026-06-30:** "Kolla efter lösa plattor genom att knacka på dem t ex med änden av en skruvmejsel. Ett ihåligt ljud avslöjar om det finns lösa plattor, så kallade "bomplattor", som måste limmas fast innan du fortsätter." https://gds.se/kok/kakel-kok/satt-kakel-paa-kakel
+- **Källorna säger olika, BKR väger tyngst:** GDS säger att ihåligt ljud betyder lös platta. BKR säger att det betyder ett hålrum under plattan och skiljer hålrumsljud från bom, alltså en platta som helt eller delvis har släppt. "en platta som låter ihålig har släppt från väggen" är starkare än BKR. Enligt BKR tyder ljudet på ett hålrum, och plattan kan ha släppt.
+- Skruvmejseln har källa i GDS ("änden av en skruvmejsel"), inte hos BKR (stålkula, "fast föremål").
+
+### 4. En ribba bär första raden kakel
+
+- **Står i:** kakla-kok.mdx rad 26 ("Ribban bär den första raden med hela plattor medan fixet är vått."), rad 106 ("Den första raden med hela plattor vilar på en rak ribba som du skruvar fast i väggen, så att plattorna inte glider medan fixet är vått."), rad 129 och 132 (skruva fast ribban, ta bort den när fixet har torkat).
+- **Ingen källa från tillverkare eller branschorganisation.** Hornbach, Så sätter du kakel (dateModified 2026-04-30), nämner ingen ribba, bara snöre och kakelkryss. Casco Easy Pro-bladet nämner ingen. BKR: ingen sida hittad. Weber gick inte att läsa (403 på "Innan du börjar kakla", "Sätta kakel i kök" och "10 proffstips till effektiv kakelsättning i köket").
+- **Sökutdrag, Weber "Innan du börjar kakla" (utdrag, inte läst):** för att få första raden vågrät kan man lägga plattor under en rätskiva på väggen eller ställa en justerbar rätskiva på golvet. Inte ordagrant, går inte att citera.
+- **Andra hand, Gör det själv (tidning), "Sätt kakel på kakel och slipp besväret!", Redaktionen, publicerad 2026-02-09, ändrad 2026-06-04:** "Palla upp en rak, hyvlad list så att ovankanten på den hamnar precis där den andra plattraden ska börja. Avståndet till listens ovankant ska vara en platthöjd plus den undre fogen och fogen mellan första och andra raden." https://gds.se/badrum/kakel-badrum/kakla-om-utan-besvar
+- **Andra hand, Byggfabriken (butik), "Att sätta kakel", publicerad 2023-05-22, ändrad 2024-10-14:** "Har du använt en stödbräda tar du bort den efter ett par timmar när fixet torkat, och sätter den undre raden på plats." https://www.byggfabriken.se/kunskap/renoveringshjalpen/satta-kakel
+- **Bedömning:** Metoden finns hos en tidning och en butik, inte hos någon tillverkare. GDS pallar upp listen, Byggfabriken nämner inte skruv. **Att ribban skruvas fast i väggen har ingen källa** (bara alltomrenovering.se, som är en offertsida och inte räknas). "så att plattorna inte glider" har ingen ordagrann källa.
+
+### 5. Tejpen tas bort innan silikonet bildar hinna
+
+- **Står i:** kakla-kok.mdx rad 133: "Spruta silikon mellan tejpremsorna och dra av tejpen innan silikonet har bildat hinna."
+- **Källa, Sika (tillverkaren bakom Casco), Sikasil C, produktdatablad juli 2026, version 05.04, sida 4, rubrik "Maskering":** "Rekommenderas att använda maskeringstejp där snygga eller exakta foglinjer krävs. Maskeringstejpen måste avlägsnas innan skinnbildning sker." https://swe.sika.com/dam/dms/se01/z/sikasil-c.pdf
+- Casco Silikon, produktblad april 2023, version 03.01: säger inget om tejp. Skinntid "10-35 minuter (23°C/50%RH)". https://swe.sika.com/content/dam/dms/se01/y/casco-silikon.pdf
+- Bostik, "Allt du behöver veta om fogning i våtutrymmen" (odaterad): tejp är valfri, säger inget om när den tas bort. Skinnbildning "inom 8 minuter". https://www.bostik.com/sweden/sv_SE/knowledge-list/knowledge/how-to-seal-sanitary-joints/
+- Soudal: sidan om spillt fogmassa säger inget tydligt om när tejpen tas bort. Används inte.
+- Påståendet har källa för sanitetssilikon i allmänhet (Sikasil C är en bygg- och sanitetssilikon). Det har ingen källa för det silikon som faktiskt står i materiallistan, om det inte är Sikasil C.
+
+### Sidor som inte gick att läsa
+
+- se.weber: tre sidor gav 403, både med WebFetch och curl.

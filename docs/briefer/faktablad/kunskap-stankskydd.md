@@ -151,3 +151,16 @@ Det vår sida kan ha som ettan saknar:
 - Totalbyggarnas och Golonkas priser: moms inte angiven; Totalbyggarnas utan källa.
 - Oberoende källa om vilket material som är lättast att hålla rent: saknas.
 - Bauhaus, IKEA, K-Bygg i topp 5: inte lästa.
+
+## Komplettering 2026-09-29
+
+Ett påstående i `src/content/kunskap/kok/stankskydd.mdx` som saknade källa. Alla sidor hämtade 2026-09-29.
+
+### 1. Härdat glas går inte att borra eller kapa efter härdningen
+
+- **Står i:** stankskydd.mdx rad 70: "Hålen för eluttagen måste finnas i glaset när du får det, eftersom härdat glas inte går att borra eller kapa i efterhand."
+- **Källa, Press Glass (glastillverkare), "Härdat glas (ESG)", odaterad:** "Innan hårdningen startas – beroende på kraven – kan glaset genomgå mekanisk bearbetning, såsom skärning, hålborrning, slipning eller slipning och polering." och "Säkerhetsglaset som tillverkas av PRESS GLASS kan inte utsättas för ytterligare mekanisk bearbetning." Sidan anger att glaset kontrolleras enligt "PN-EN 12150-1". https://www.pressglass.com/sv/erbjudande/specialglas/hardat-glas-esg/
+- **Källa, Skellefteglas (namngiven glasfirma), "Härdat glas", odaterad:** "Ett härdat glas kan inte skäras eller borras i efter att det har lämnat härdugnen." och "Alla mått och håltagningar måste därför vara exakta vid beställning." https://www.skellefteglas.se/mattanpassade-glas/hardat-glas/
+- **Påståendet har källa.** Press Glass är tillverkare och väger tyngst. Båda säger samma sak.
+- **Inte hos de nämnda leverantörerna:** Glashandlaren (stänkskyddssidan) säger bara att glaset splittras i små bitar. Fibo (glasplattor till kök) säger inget om bearbetning efter härdning. HTH:s produktsida gick att hämta, men texten innehöll bara navigeringen.
+- **Inte läst:** SS-EN 12150-1 själv (standarden är avgiftsbelagd).

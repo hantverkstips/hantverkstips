@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Takfoten i genomskärning, där uteluften kommer in vid väggen och går upp genom en öppen spalt till vinden.">
+  <!-- Anteckningsboken. Blyerts 2 px för råsponten med papp, ströläkten, läkten, pannorna, fågelbandet, takfotsplåten,
+       takfotsbrädan, rännan med krok, väggen, bjälklaget, vindavledaren och panelen, blyerts-2 för
+       isoleringens skraffering, måttbygeln och ledare, snickarpenna för luftens väg från glipan vid väggen upp genom
+       spalten till vinden (enda pennsaken). Tumstock bakom ca 50 mm. Snitt genom ett fack mellan två takstolar,
+       sett från gaveln. Inte skalenlig: skikten är förstorade. Råspontens undersida är R(x) = 88 + 0,4x.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2 1,25: isoleringens skraffering -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M48,164 l10,10 M70,164 l10,10 M92,164 l10,10 M114,164 l10,10"/>
+    <path d="M59,186 l10,10 M81,186 l10,10 M103,186 l10,10 M125,186 l10,10 M147,186 l10,10 M169,186 l10,10"/>
+  </g>
+
+  <!-- Blyerts: råsponten med papp, ströläkten, bärläkten och takfotsläkten, pannorna, fågelbandet, takfotsplåten,
+       takfotsbrädan, rännan med krok, väggen med hammarband, bjälklaget, vindavledaren, panelen -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M42,104.8 Q289.1,200.4 534,301.6 M42,93.8 Q286.9,195 534,290.6 M532,288.8 Q532.5,295.3 532,301.8"/>
+    <path d="M42,85.8 Q280.9,184.6 522,277.8 M520,276 Q520.5,281 520,286"/>
+    <path d="M494,266.6 L494,246.6 L506,251.4 L506,271.4 M384,222.6 L384,212.6 L396,217.4 L396,227.4 M274,178.6 L274,168.6 L286,173.4 L286,183.4 M164,134.6 L164,124.6 L176,129.4 L176,139.4 M54,90.6 L54,80.6 L66,85.4 L66,95.4"/>
+    <path d="M380,206.8 Q464.7,226.7 550,243.9 L550,254.9 L545,253.8 L545,248.8 Q462.2,232.1 380,212.8 Z M383,213.5 L383,220.5 M270,162.1 Q352.1,187.3 435,210 L435,220 L430,218.5 L430,214.5 Q349.6,192.6 270,168.1 Z M273,169 L273,176 M160,118.1 Q242.1,143.3 325,166 L325,177 L320,175.5 L320,170.5 Q239.6,148.6 160,124.1 Z M163,125 L163,132 M50,74.1 Q132.1,99.3 215,122 L215,133 L210,131.5 L210,126.5 Q129.6,104.6 50,80.1 Z M53,81 L53,88 M44,60.3 Q74.4,69.6 105,77.9 L105,88.9 L100,87.5 L100,82.5 Q71.9,74.9 44,66.3"/>
+    <path d="M499,248.6 L501.5,240.3 L504,250.6 L506.5,241.4 L509,251.4 L511.5,242.5"/>
+    <path d="M470,268.5 Q502.8,282.2 536,294.9 L536,294.9 Q536.5,299.5 536,304 L545,312"/>
+    <path d="M520,296 Q519.5,310 520,324 M518,322 Q527,321.5 536,322 M534,324 Q534.5,312.8 534,301.6"/>
+    <path d="M540,311 L540,318 A20,20 0 0 0 580,318 l3,-3 M534,313 L538,316 A23,23 0 0 0 584,318 l1,-5"/>
+    <path d="M184,362 Q182.7,280 184,198 M220,362 Q221.3,280 220,198 M42,200 Q132,198.6 222,200 M42,214 Q132,215.4 222,214"/>
+    <path d="M110,156 Q161.3,175.6 212,196.8 M110,159 Q160.7,180.2 212,199.8 M110,155 L110,160 M212,195.8 L212,200.8"/>
+    <path d="M518,322 Q375,324.3 232,322 M518,330 Q375,327.7 232,330 M232,321 Q232.5,326 232,331"/>
+  </g>
+
+  <!-- Blyerts-2 1,5: måttbygeln för spalten, vinkelrätt mot taket -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M160,176 L168.3,155.3 M156,180 l8,-8 M164.3,159.3 l8,-8"/>
+  </g>
+
+  <!-- Tumstock -->
+  <rect x="95" y="38" width="89.3" height="30" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 139.6 53)"/>
+
+  <!-- Blyerts-2: ledare -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M130,68 L167.3,153.3"/>
+    <path d="M440,125 L506,245"/>
+    <path d="M541.2,159 L536,290"/>
+    <path d="M519.3,333 L527,318"/>
+    <path d="M340,332.5 L334,326"/>
+  </g>
+
+  <!-- Snickarpenna: luftens väg, in genom glipan, upp längs väggen, genom spalten och ut på vinden; ledaren till luftspalt -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M226,350 Q227,281 226,222 Q226,197 210,184 Q160,165 110,144 Q97,138.3 86,133.4"/>
+    <path d="M92.2,141.3 L86,133.4 L95.9,132"/>
+  </g>
+  <path d="M260,77 L190,170" fill="none" stroke="#ad3519" stroke-width="1.25" stroke-linecap="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#625a50">
+    <text x="100" y="60" fill="#2a2521">ca 50 mm</text>
+    <text x="250" y="70" fill="#ad3519">luftspalt</text>
+    <text x="432" y="118">fågelband</text>
+    <text x="462" y="150">takfotsplåt</text>
+    <text x="300" y="348.5">panel</text>
+    <text x="430" y="351">takfotsbräda</text>
+  </g>
+</svg>

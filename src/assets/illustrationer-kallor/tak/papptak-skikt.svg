@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Ett papptak i genomskärning, med råspont, underlagspapp och våder av ytpapp som spikas i kanten som nästa våd täcker.">
+  <!-- Anteckningsboken. Blyerts 2 px för råsponten med spontmarkeringar, underlagspappen, fotplåten, ytpappens tre våder
+       och pappspikarna, blyerts-2 för hjälplinjen som visar lutningen och ledare, snickarpenna för ringen kring den högra
+       skarven med spikarna (enda pennsaken). Tumstock bakom minst 3°. Snitt längs takfallet från nocken till vänster
+       ner till takfoten till höger. Inte skalenlig i tjocklek: skikten är förstorade, men lutningen är sann, 3°.
+       Råspontens undersida är S(x) = 200 + 0,0524(x - 44). Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2 1,5: vågrät hjälplinje under råsponten, kilen öppnar sig åt vänster -->
+  <path d="M540,226 L120,226" fill="none" stroke="#625a50" stroke-width="1.5" stroke-dasharray="6 5" stroke-linecap="round"/>
+
+  <!-- Blyerts: råsponten med spontmarkeringar, underlagspappen, fotplåten, ytpappens våder 1 till 3, pappspikarna -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M42,199.9 Q292,212.2 542,226.1 M42,175.9 Q291,188.1 540,202 M540,200 Q540.6,214 540,228"/>
+    <path d="M89,182.4 L95,198.7 M185,187.4 L191,203.7 M281,192.4 L287,208.7 M473,202.5 L479,218.8"/>
+    <path d="M42,169.9 Q293,182.2 544,196.2 M540,202 L544,202.2 L544,196.2"/>
+    <path d="M468,189.7 Q508,191 548,193.9 L548,262 L554,267"/>
+    <path d="M330,185 L466,192.1 Q470,187.3 476,187.6 L551,191.6 L551,183.6 L474,179.5 Q468,179.2 462,183.9 L330,177 Z"/>
+    <path d="M324,184.7 Q330,172 338,172.4 L382,174.7 L382,166.7 L334,164.2 Q326,163.8 320,176.5 L112,165.6 L112,173.6"/>
+    <path d="M106,173.2 Q112,160.6 120,161 L164,163.3 L164,155.3 L116,152.8 Q108,152.4 102,165 L42,161.9"/>
+    <path d="M340,175.5 L348,175.9 M344,175.7 L344,205.7 M362,176.7 L370,177.1 M366,176.9 L366,206.9 M122,164.1 L130,164.5 M126,164.3 L126,194.3 M144,165.2 L152,165.7 M148,165.4 L148,195.4"/>
+  </g>
+
+  <!-- Tumstock -->
+  <rect x="124" y="250" width="86" height="30" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 167 265)"/>
+
+  <!-- Blyerts-2: ledare -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M92,128 L90,175.4"/>
+    <path d="M244,156 L240,176.3"/>
+    <path d="M302,270 L302,205"/>
+    <path d="M528,281 L547,252"/>
+    <path d="M152,252 L150,214"/>
+  </g>
+
+  <!-- Snickarpenna: öppen ring kring den högra skarven med spikarna; ledaren till spik i skarven -->
+  <path d="M387,166 C389,171 395,182 394,190 C393,198 383,208 374,212 C365,216 348,216 338,212 C328,208 318,197 316,189 C314,181 320,169 328,163 C336,158 359,157 365,156" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M410,138 L388,161" fill="none" stroke="#ad3519" stroke-width="1.25" stroke-linecap="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#625a50">
+    <text x="222" y="150">ytpapp</text>
+    <text x="60" y="120">underlagspapp</text>
+    <text x="300" y="290">råspont</text>
+    <text x="480" y="300">fotplåt</text>
+    <text x="400" y="130" fill="#ad3519">spik i skarven</text>
+    <text x="130" y="272" fill="#2a2521">minst 3°</text>
+  </g>
+</svg>

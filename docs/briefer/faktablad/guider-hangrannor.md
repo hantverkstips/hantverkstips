@@ -231,6 +231,7 @@ P26 s. 13, "Rännkrokar, modellöversikt", ordagrant:
 | Stuprör ARECO 90 mm 2,5 m svart, stål | Bauhaus | 239 kr | https://www.bauhaus.se/stupror-areco-90mm-2-5-meter-svart |
 | Rännkrok kompakt ARECO Ø125 mm silver, stål | Bauhaus | 89 kr | https://www.bauhaus.se/rannkrok-kompakt-areco-o125mm-silver-metallic |
 
+- **Kontroll 2026-09-29:** Hängränna ARECO 125 mm 2,5 m vit, Bauhaus art.nr 1513049, 169 kr, material stål (sidans kod: "SKU":"1513049", "Price":"169.00", "Material: Stål"), https://www.bauhaus.se/hangranna-areco-125mm-2-5-m-vit. Priset står fast. Arecos fotplåt 2 000 mm (art.nr 1244739) kostar också 169 kr; se `guider-takfot.md`. Samma belopp, två olika varor.
 - Bauhaus-priserna och materialet är lästa ur sidans kod (`"Price"`, "Material: Stål"/"Material: PVC"). WebFetch angav felaktigt Areco som PVC; koden säger stål. Hornbach via WebFetch.
 - Plaststuprör: inget pris hämtat. Biltema svarade 403. **Saknas.**
 - Byggmax och Beijer: sidorna renderas med skript, inget pris gick att läsa.
