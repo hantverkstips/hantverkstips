@@ -419,3 +419,77 @@ Det ettan har som vi måste ha:
 - **Luckleverantörerna får inte bli en topplista.** De står i `kallor` och i tabellfoten, inte som rekommendationer.
 - **Inga mått utan tillverkarkälla.**
 - Clas Fixares fel rot-tak nämns inte.
+
+---
+
+## Kontroll efter röstvarvet, 2026-09-29
+
+Läst mot punkt 1 till 12 för varje sida. Teckenantalen är räknade i Node, och `npm run kontrollera` ger 0 fel och inga varningar för köksfilerna. Radnumren gäller filerna som de ligger nu. Sju punkter ska rättas, och två av dem ändrar krav i den här checklistan (se under byta-koksluckor och publiceringen).
+
+### /kok/slipa-bankskiva/
+
+seoTitle 41 tecken och börjar med "Olja bänkskiva", description 154 tecken med olja före slipa, H1 oförändrad. Rubriken om ek (rad 117) bär "olja bänkskiva ek" och svarar också på "mörkare", så någon Faq behövs inte. Kolumnen heter "Torktid, timmar". MSB och Brandskyddsföreningen står i varningen och i `kallor`. Bättre än ettan 1 till 4 finns. Inlänkar finns från renovera-trappa och bygga-innervagg och från byta-koksluckor (Faq).
+
+1. **Rad 12, kortSvar.** "slutar på **korn 150**, inte finare" saknar villkoret. Kortsvaret är det stycke en AI lyfter, och där ska talet och villkoret stå tillsammans (skillen avsnitt 5). Med Herdins olja stämmer inte 150, och det står först på rad 93. Lägg till en bisats om att burken går före, och att det för Herdins är 120. Description (rad 4) får stå kvar som den är, eftersom den är ett löfte och inte ett svar.
+2. **Rad 167, vid publiceringen av köket.** Länken till `/inomhus/` i sista meningen byts mot en länk till `/kok/byta-koksluckor/`, med ett ankare som säger vad läsaren hittar där. Sidan hör nu till Kök men länkar inte till någon av syskonsidorna, och bytessidan behöver en andra inlänk (se nedan). Länken läggs i samma commit som bytessidan publiceras, eftersom en länk till ett utkast stoppar bygget.
+
+### /kok/mala-koksluckor/
+
+seoTitle "Måla köksluckor i trä, MDF eller laminat" (40 tecken), description 154 tecken och lovar material, slipning, två strykningar, härdning och kostnad mot lackering. H1 "Nästan alla köksluckor går att måla om själv" delar inga tre första ord med någon title. "Måla köksluckor själv" står i kortsvaret och i H2:n om arbetsgången, och H2:orna om roller, färg och kostnad bär sina sidofraser. Alt 104 tecken. Bättre än ettan 1 till 5 finns: materialtabellen, härdningen med fabrikat och utan "innan köket kan användas", kostnadstabellen med rätt rotregel för verkstad, beskedet om roller och skissen. Länkar ut till byta-koksluckor, slipa-bankskiva och mala-kakel. Inlänkar från byta-koksluckor och mala-kakel. Från slipa-bankskiva krävs ingen, eftersom luckorna inte nämns där.
+
+3. **Rad 107 (steg 3) eller rad 29 (materiallistan).** Korn 240 står utan källa i löptexten och är Caparols enligt bildtexten. Punkt 11.2 kräver att kornet anges som Caparols. Namnge Caparol vid 240 på ett av de två ställena.
+
+Verktygskortet för kostnadsräknaren (rad 161) står som kommentar tills räknaren finns i registret. Se byta-koksluckor för varför sidan ändå publiceras.
+
+### /kok/mala-kakel/
+
+Inget att ändra. seoTitle 42 tecken, description 141, bildAlt 97, H1 oförändrad sedan förra kontrollen. Alla fem punkter i Bättre än ettan finns kvar efter omskrivningen: tabellen per yta, s. 19 och datumet för MVK:s regler (rad 90 och 153), fyra tillverkare som avråder (rad 151), 60 till 70 grader och en månad (rad 121 och 141), och alternativen med 30 mm och länkar (rad 159 till 166). Raden om gasspis (rad 145) säger bara att avståndet saknas i databladen, och det tillåter punkt 6.3. Försäkringskopplingen står som Christians slutsats. Proffsmagasinet och Folksams självrisk finns inte med. Inlänkar finns från mala-koksluckor, vatrumsfarg, tatskikt-badrum och fogar-badrum.
+
+### /kok/byta-koksluckor/
+
+seoTitle "Byta köksluckor på befintlig stomme" (35 tecken), description 139, H1 "Nya luckor på köksstommarna du redan har". "Befintlig stomme" står i title och i H2:n om kostnaden, och rotavdraget med taket och två ägare står på rad 164 till 166. Alt 115 tecken. Bättre än ettan 1, 2 och 5 finns. Tabellen per märke har inte gångjärnssystemet i en egen kolumn, men systemen står i löptexten för Ikea, Vedum och Blum, och det räcker.
+
+4. **Rad 170 till 172, fråga 1 och 2.** Nej, en mening med länk räcker inte. Punkt 11.3 i Bättre än ettan är ett krav, och "renovera köksluckor" (390) ägs av den här sidan. Den som söker frasen vill se alternativen mot varandra i kronor, och en mening med bara målarfärgen besvarar inte det. Under H2:n ska det stå en jämförelse för samma kök med 16 luckor, som tabell eller kort lista, med källorna på en rad under:
+   - byta: 16 898 kr efter rot med Vedums billigaste luckor, nya gångjärn och fast monteringspris (från tabellen på rad 154)
+   - måla själv: cirka 1 700 kr i färg
+   - målare hemma: 4 800 till 8 000 kr före rot
+   - sprutlackering i verkstad: 5 280 till 11 200 kr, utan rot, plus transport och montering (Kungslack)
+
+   Talen ska vara exakt desamma som i tabellen på mala-koksluckor, och källorna finns redan i `kallor`. Det är ingen kannibalisering. "Måla köksluckor pris" ägs av målningssidan genom dess title och H2, och här blir talen en jämförelse som länkar dit för detaljerna. Folie får utebli (punkt 11, faktabladet). Med tabellen på plats har H2:n också innehåll nog, och fråga 2 är löst. Lägg gärna till en mening om när ett byte slår målning: annan form på luckan eller skadade luckor, som redan står på rad 172.
+5. **Rad 13, kortSvar.** Punkt 6.0 kräver priset jämfört med att måla. Lägg till en mening om vad det kostar att måla samma 16 luckor själv. Det är jämförelsen som AI-svar på "byta eller måla köksluckor" bygger på.
+6. **Rad 4, description.** Punkt 4 kräver "vad byte kostar mot att måla", och de sista orden saknas. Det finns 16 tecken kvar till 155.
+
+**Punkt 11.4, räknaren inbäddad: kravet ändras.** `/rakna/kok-kostnad/` är inte byggd, och underlaget till den är inte beställt. Kostnadstabellen på rad 154 till 160 ger redan det kravet gällde, alltså arbete och material för sig och rotavdraget rätt, och ingen i topp 5 har något liknande. Både "måla köksluckor" och "byta köksluckor" har sin topp i september och oktober. Sidan publiceras därför utan räknaren. Kommentaren på rad 168 ersätts med `<Kalkylator namn="kok-kostnad" />`, och kommentaren på rad 161 i mala-koksluckor med `<Verktygskort kalkylator="kok-kostnad" />`, i samma commit som räknaren publiceras. Det kravet flyttas till räknarens checklista i `raknare.md`.
+
+**Inlänkar.** I dag länkar bara mala-koksluckor hit. Den andra inlänken kommer från slipa-bankskiva, punkt 2 ovan.
+
+### Hubben, `src/content/pelare/kok.mdx`
+
+7. **Rad 3, description: 162 tecken, gränsen är 155.** Den ska kortas med minst 7 tecken. Innehållet stämmer och lovar inget om våtrum, så det räcker att stryka ord. Ingressen och title "Kök" stämmer med beslut 1 i 8.9.
+
+Hubben får sex sidor, inte fem: slipa-bankskiva, mala-kakel, mala-koksluckor och byta-koksluckor under Gör det själv, och rotavdrag och kvadratmeter under Räkna. Båda räknarna har `kok` i registret. Med kostnadsräknaren blir det sju.
+
+### Hantverkarens fråga 4: "enligt X" och "skriver X"
+
+För GEO är det inget problem, utan tvärtom. Ett tal med tillverkarens namn i samma mening är just det en AI kan citera och spåra (skillen avsnitt 5, "tal med källa och datum i texten"). Faran är bara om meningarna blir så lika att sidorna ser genererade ut, och det bedömer läsaren med örat. Varierar hantverkaren formen ska källans namn stå kvar i samma mening som talet. Det får inte flyttas till en egen mening, till en fotnot eller bara till `kallor`. Kortsvaren ska behålla sina källor: Flügger på mala-koksluckor och Beckers och MVK på mala-kakel.
+
+### Publiceringen
+
+**Köket kan inte gå före badrummet.** Länkarna binder ihop sidorna. Mala-kakel länkar till vatrumsfarg och tatskikt-badrum, och det är krav (Bättre än ettan 5), och även till fogar-badrum. Tatskikt-badrum länkar i sin tur till byta-toalettstol. Mala-koksluckor länkar till mala-kakel och byta-koksluckor, och byta-koksluckor länkar till mala-koksluckor. Hubben når inte fem sidor utan mala-kakel. Att stryka badrumslänkarna i mala-kakel bryter ett krav. Köket publiceras därför i samma commit som badrumssidorna vatrumsfarg, tatskikt-badrum, fogar-badrum och byta-toalettstol, när de är godkända i sin egen kedja (fogar-badrum har 3 från läsaren i dag). Badrumshubben följer sin egen kontroll.
+
+Undantaget är slipa-bankskiva. Den är publicerad och länkar inte till något utkast, så punkt 1 kan gå ut nu, med `uppdaterad` satt till den dag ändringen driftsätts.
+
+Ordningen, i en och samma commit:
+
+1. Punkt 1 och 3 till 7 är rättade, och läsaren och korrekturen har sett de nya meningarna.
+2. `utkast: false` på `guider/kok/mala-kakel.mdx`, `guider/kok/mala-koksluckor.mdx`, `guider/kok/byta-koksluckor.mdx` och `pelare/kok.mdx`, tillsammans med de fyra badrumssidorna.
+3. `publicerad` och `uppdaterad` sätts till publiceringsdagen på de tre nya köksidorna. Mala-kakel står i dag på 2026-09-28. Hubben får samma `uppdaterad`.
+4. Punkt 2: slipa-bankskiva rad 167 länkar till `/kok/byta-koksluckor/` i stället för `/inomhus/`, och sidans `uppdaterad` sätts till samma dag.
+5. `npm run kontrollera` med 0 fel och inga föräldralösa sidor, och `npm run build` grönt.
+
+Efter publiceringen:
+
+- Varje ny köksida har då minst två inlänkar från innehållsfiler. Mala-kakel har fyra, mala-koksluckor två och byta-koksluckor två.
+- När Christian ber om det begärs indexering i Search Console för `/kok/`, `/kok/mala-koksluckor/` och `/kok/mala-kakel/`. Resten följer via sitemapen.
+- När `/rakna/kok-kostnad/` publiceras byts de två kommentarerna mot räknaren (se byta-koksluckor) i samma commit.
+- En vecka efter publiceringen ställs frågor till en AI om "måla köksluckor", "måla kakel i badrummet" och "byta köksluckor på befintlig stomme". Om sajten nämns antecknas det i SOKORDSANALYS.md.

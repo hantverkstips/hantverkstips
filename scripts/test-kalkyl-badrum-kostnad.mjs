@@ -751,3 +751,15 @@ test('sidan: posttabellens celler bryts före "till", aldrig inne i ett tal', ()
   assert.match(sida, /\[&_td_span\]:whitespace-nowrap/);
   assert.match(sida, /<span>till \{c\.hog\}<\/span>/);
 });
+
+test('källraden står högst en gång: i stycket ovanför vid intervall, annars under sista förmedlarregeln', async () => {
+  const { kallradEfterRegel } = await import('../src/lib/kalkyl/kallrad.ts');
+  const kallor = [[{}], [], [{}], [], [{}]];
+  assert.equal(kallradEfterRegel(kallor, true), -1);
+  assert.equal(kallradEfterRegel(kallor, false), 3);
+  assert.equal(kallradEfterRegel([[{}], [{}]], false), -1);
+  assert.equal(kallradEfterRegel([], false), -1);
+  const sida = readFileSync(join(ROT, 'src', 'pages', 'rakna', 'badrum-kostnad.astro'), 'utf8');
+  assert.match(sida, /kallradEfterRegel\(kallor, visat\.utfall !== 'utanfor'\)/);
+  assert.equal(sida.split('TEXT.darfor.kallrad').length - 1, 2, 'raden finns i stycket ovanför och under reglerna, inget mer');
+});

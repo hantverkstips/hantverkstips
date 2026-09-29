@@ -34,6 +34,7 @@ import {
   type KallaRef,
   type KallKod,
 } from '../../lib/kalkyl/renovering.ts';
+import { kallradEfterRegel } from '../../lib/kalkyl/kallrad';
 import { ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
 import { verktyg } from '../../lib/strukturdata';
 import { verktygsDelningsbild, verktygsillustration, verktygsVarumarkesbild } from '../../lib/verktygsbild';
@@ -82,15 +83,15 @@ const LAS_VIDARE = [
 const FRAGOR = [
   {
     fraga: 'Varför skiljer sig offerterna för badrummet så mycket?',
-    svar: 'Oftast beror det på att de inte innehåller samma saker. En offert har rivningen och containern med, en annan inte, och en tredje räknar med att du köper porslin och blandare själv. Timpriset skiljer sig också, och byggstädningen står ibland med och ibland inte. Be varje firma dela upp priset på samma poster som i räknaren. Då syns det direkt var skillnaden sitter.',
+    svar: 'Oftast beror det på att de inte innehåller samma saker. En offert har rivningen och containern med, en annan inte, och en tredje räknar med att du köper porslin och blandare själv. Timpriset skiljer sig också åt, och byggstädningen står ibland med och ibland inte. Be varje firma dela upp priset på samma poster som i räknaren. Då syns det direkt var skillnaden sitter.',
   },
   {
     fraga: `Är ${krText(STANDARD.timprisKr)} kr i timmen ett rimligt timpris i dag?`,
-    svar: `Det är timpriset i den kalkyl som räknaren bygger på, och jag har inte räknat upp det till dagens nivå. En byggfirma jag har jämfört med tar mer i timmen för badrum, el och VVS och mindre för snickeri. Har du en offert är ditt eget timpris alltid bättre än mitt, så skriv in det i fältet.`,
+    svar: `För ett badrum ligger det i underkant. En byggfirma jag har jämfört med tar mer i timmen för badrum, el och VVS och mindre för snickeri, och timpriset här kommer från en kalkyl som inte är uppräknad till dagens nivå. Har du en offert är ditt eget timpris bättre än mitt, så skriv in det i fältet.`,
   },
   {
     fraga: 'Ingår byggstädningen i priset?',
-    svar: 'Nej, den får du lägga till själv. Jag har inte hittat något pris på byggstädning i källorna, och därför står den inte med. Fråga firman vad den tar för städningen.',
+    svar: 'Nej, den kommer till. Byggstädningen ger rotavdrag på samma sätt som resten av arbetet, så dra av rotavdraget för den också när du lägger den på summan.',
   },
 ];
 
@@ -394,28 +395,38 @@ const huvudbild = varumarke ?? illustration;
       }
       <ul class={REGEL_LISTA_KLASS}>
         {
-          visat.regler.map((nyckel) => {
-            const regel = TEXT.regel[nyckel];
-            /* Förmedlarna namnges bara i antagandetabellen (checklistans fälla). */
-            const namngivna = regelKallor(nyckel);
-            return (
-              <li>
-                <span>{regel.text(bv)}</span>
-                <span>
+          (() => {
+            /* Förmedlarna namnges bara i antagandetabellen (checklistans fälla).
+               Hänvisningen dit står högst en gång på sidan: i stycket ovanför när svaret
+               når intervallet, annars under den sista regeln som vilar på en förmedlare. */
+            const kallor = visat.regler.map((nyckel) => regelKallor(nyckel));
+            const sistaFormedlare = kallradEfterRegel(kallor, visat.utfall !== 'utanfor');
+            return visat.regler.map((nyckel, r) => {
+              const regel = TEXT.regel[nyckel];
+              const namngivna = kallor[r];
+              return (
+                <li>
+                  <span>{regel.text(bv)}</span>
                   {namngivna.length > 0 ? (
-                    namngivna.map((k, i) => (
-                      <>
-                        {i > 0 && '; '}
-                        <a href={k.url} rel="nofollow">{k.titel}</a>, {k.slag}, {k.datum}
-                      </>
-                    ))
+                    <span>
+                      {namngivna.map((k, i) => (
+                        <>
+                          {i > 0 && '; '}
+                          <a href={k.url} rel="nofollow">{k.titel}</a>, {k.slag}, {k.datum}
+                        </>
+                      ))}
+                    </span>
                   ) : (
-                    <a href="#vad-siffrorna-vilar-pa">{TEXT.darfor.kallrad}</a>
+                    r === sistaFormedlare && (
+                      <span>
+                        <a href="#vad-siffrorna-vilar-pa">{TEXT.darfor.kallrad}</a>
+                      </span>
+                    )
                   )}
-                </span>
-              </li>
-            );
-          })
+                </li>
+              );
+            });
+          })()
         }
       </ul>
     </section>
@@ -433,10 +444,10 @@ const huvudbild = varumarke ?? illustration;
       {/* Vad som gör priset: posterna, vilka som är arbete och vilka som är material. */}
       <Pennstreck>{H2_PRISET}</Pennstreck>
       <p class="m-0 text-brod lg:text-brod-lg">
-        Kostnaden för en badrumsrenovering ligger mest i förarbetena, tätskiktet och kaklet, både i timmar och i material, eftersom underlaget ska byggas upp, tätas och kaklas innan något annat kan monteras. Rivningen är nästan bara arbete. VVS och el är ungefär hälften arbete och hälften material, och målningen görs av en målare med ett godkänt system av våtrumsfärg.
+        Kostnaden för en badrumsrenovering ligger mest i förarbetena, tätskiktet och kaklet, både i timmar och i material, eftersom underlaget ska byggas upp, tätas och kaklas innan något annat kan monteras. Rivningen är nästan bara arbete. VVS och el är ungefär hälften arbete och hälften material.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Inredningen är tvärtom. Toaletten, handfatet, blandarna och möblerna kostar mycket mer att köpa än att sätta upp. Där väljer du själv hur dyrt det blir.
+        Med inredningen är det tvärtom. Toaletten, handfatet, blandarna och möblerna kostar mycket mer att köpa än att sätta upp. Där väljer du själv hur dyrt det blir.
       </p>
     </section>
 
@@ -451,13 +462,13 @@ const huvudbild = varumarke ?? illustration;
         Det du kan ta på dig i räknaren är rivningen och att forsla bort det gamla. Jag har jobbat som rivare en kort period, och av allt i ett badrum är rivningen det jobb där dina egna timmar gör mest nytta. Du behöver mest verktyg för att bila, en rygg som håller och tid.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Bortforslingen är det som lönar sig bäst att göra själv, eftersom den inte ger något rotavdrag ens när en firma gör den. Rivningen ger däremot rotavdrag när firman gör den, som jag läser Skatteverkets lista, så det du sparar där är arbetet minus avdraget.
+        Rivningen ger rotavdrag när firman gör den, så det du sparar på att riva själv är arbetet minus avdraget. Bortforslingen kan du också ta på dig, men i räknaren sparar den ingenting.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Allt som rör tätskiktet ska en behörig firma göra. I <a href="/badrum/tatskikt-badrum/">genomgången av reglerna för tätskiktet</a> finns en tabell över vad som gäller för varje arbete i badrummet, och där ser du att till och med en golvstående toalett och en duschvägg skruvas genom tätskiktet och ska tätas mot det. Därför räknar jag inte monteringen av inredningen som något du gör själv, även om en del av den är tillåten.
+        Monteringen av inredningen går inte att välja, även om du får göra en del av den själv. Toalettstolen sitter fast i tätskiktet och duschväggen skruvas ofta genom det, och <a href="/badrum/tatskikt-badrum/">tabellen över vad du får göra själv i ett badrum</a> visar var gränsen går för varje arbete.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Vill du bara fräscha upp och inte renovera alls är fogarna det billigaste stället att börja på. Mögel på ytan går att tvätta bort, och en silikonfog som är slut kan bytas, som jag visar i <a href="/badrum/fogar-badrum/">guiden om fogarna i badrummet</a>.
+        Vill du bara fräscha upp och inte renovera alls är fogarna det billigaste stället att börja på. Mögel på ytan går att tvätta bort, och <a href="/badrum/fogar-badrum/">en silikonfog som är slut kan bytas</a> utan att resten av badrummet rörs.
       </p>
     </section>
 
@@ -468,10 +479,10 @@ const huvudbild = varumarke ?? illustration;
       */}
       <Pennstreck>{H2_ROT}</Pennstreck>
       <p class="m-0 text-brod lg:text-brod-lg">
-        Med källornas priser ryms rotavdraget för ett vanligt badrum inom en persons gräns. Det är när timpriset är högt, när badrummet är stort eller när ni redan har anlitat hantverkare under året som gränsen nås. Är ni två som äger huset kan ni dela avdraget, och då får var och en dra av upp till sin egen gräns. Villkoret är att ni båda står som ägare när jobbet görs, bor där och är med och betalar.
+        Med priserna här ryms rotavdraget för ett vanligt badrum inom en persons gräns. Gränsen nås när timpriset är högt, när badrummet är stort eller när du redan har anlitat hantverkare under året. Äger ni huset tillsammans kan ni dela avdraget, och då får var och en dra av upp till sin egen gräns, om ni båda står som ägare när jobbet görs, bor där och är med och betalar.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Rotavdrag som ni redan har fått för något annat i år hör hemma i fältet för det som redan är använt, och jag räknar bara med det som finns kvar av gränsen. Rutavdrag och skatt tar jag inte med. De vägs in i <a href="/rakna/rotavdrag/">räknaren för rotavdrag</a>, och dit kan ni gå om ni har haft rutavdrag i år eller är osäkra på om skatten räcker till hela avdraget.
+        Rotavdrag som du redan har fått för något annat i år skriver du i fältet för det som redan är använt, så räknas bara det som finns kvar av gränsen. Rutavdrag och skatt ingår inte här. Har du haft rutavdrag i år, eller är du osäker på om skatten räcker till hela avdraget, väger <a href="/rakna/rotavdrag/">räknaren för rotavdrag</a> in båda.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
         Att köpa kaklet och porslinet själv ändrar inte avdraget. Materialet ger aldrig något avdrag, vem som än köper det.

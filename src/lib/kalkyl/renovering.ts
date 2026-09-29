@@ -611,7 +611,7 @@ export const TEXT = {
      * och varför. Räknaren får inte antyda att läsaren lägger tätskiktet själv.
      */
     'egen-hjalp':
-      'Tätskikt, kakel och VVS går inte att välja, eftersom du inte får något intyg när du gör dem själv. Målningen räknar jag som ett jobb där en målare lägger ett godkänt våtrumssystem, och elarbetet måste göras av en registrerad elfirma.',
+      'Tätskikt, kakel och VVS går inte att välja, eftersom en firma inte kan intyga det du har gjort själv. Målningen gör en målare med ett godkänt våtrumssystem, och elen ska göras av en registrerad elfirma.',
     'legend-agare': 'Ägare och rotavdrag',
     'agare-1': 'En ägare',
     'agare-2': 'Två ägare',
@@ -680,9 +680,9 @@ export const TEXT = {
      * vid namn.
      */
     'rad-kallor': (hamtat: string): string =>
-      `Priserna hämtade jag den ${hamtat} från offertförmedlare och en byggfirma, men kalkylen som de flesta kommer från ändrades senast den ${datumText(KALLOR.BE.datum.replace(/^\D*/, ''))}. Byggstädningen tillkommer, och ditt badrum kan avvika.`,
+      `Priserna hämtades den ${hamtat}, men de flesta vilar på en kalkyl från ${datumText(KALLOR.BE.datum.replace(/^\D*/, ''))} som inte är uppräknad. Byggstädningen tillkommer, och priset för ditt badrum kan avvika.`,
     pekrad: 'Så delar sig summan, post för post',
-    'lank-rotavdrag': 'Väg in rutavdrag och skatt i räknaren för rotavdrag',
+    'lank-rotavdrag': 'Räkna rotavdraget tillsammans med allt annat du har köpt i år',
     'lank-sa-raknar-jag': 'Källorna och det jag har antagit',
     /* Samma som på fasadyta och grannemedgivande. */
     'dela-etikett': 'Länk till ditt svar',
@@ -718,22 +718,22 @@ export const TEXT = {
   regel: {
     poster: {
       text: (_v: BeskedVarden): string =>
-        `Priserna per post kommer från en offertförmedlares kalkyl för ett badrum med ${kvmText(REFERENSYTA_KVM)} kvm golv, där varje post har sina timmar och sitt material. Tätskiktet har ingen egen rad i kalkylen. Det ligger i förarbetena och plattsättningen, och därför står det ihop med kaklet här.`,
+        `Varje post har sina timmar och sitt material i en offertförmedlares kalkyl för ett badrum med ${kvmText(REFERENSYTA_KVM)} kvm golv. Tätskiktet har ingen egen rad där utan ligger i förarbetena och plattsättningen, och därför står det ihop med kaklet i tabellen.`,
       kallor: ['BE'],
     },
     skalning: {
       text: (_v: BeskedVarden): string =>
-        `Rivningen, tätskiktet med kaklet och målningen blir dyrare ju större golvet är. Under ${kvmText(REFERENSYTA_KVM)} kvm räknar jag ned dem i samma takt som golvet krymper. Det är mitt eget antagande. Över ${kvmText(REFERENSYTA_KVM)} kvm lägger jag i stället till det som en av förmedlarna anger för varje extra kvadratmeter. VVS, el och inredning kostar lika mycket oavsett storlek.`,
+        `Rivningen, tätskiktet med kaklet och målningen blir dyrare ju större golvet är. Under ${kvmText(REFERENSYTA_KVM)} kvm minskar de i samma takt som golvytan, och det är mitt antagande. Över ${kvmText(REFERENSYTA_KVM)} kvm tillkommer i stället det pris per extra kvadratmeter som en av förmedlarna anger, och det är lägre än vad varje kvadratmeter kostar i badrummet på ${kvmText(REFERENSYTA_KVM)} kvm. Därför sparar du mer på en kvadratmeter mindre än vad en kvadratmeter till kostar. VVS, el och inredning kostar lika mycket oavsett storlek.`,
       kallor: ['BE', 'BS'],
     },
     niva: {
       text: (_v: BeskedVarden): string =>
-        `Valet av inredning ändrar bara vad den kostar att köpa, ${krText(INREDNING_KR.enkel)} eller ${krText(INREDNING_KR.mellan)} kr. Arbetet och de andra posterna är desamma. Dyrare inredning än så räknar jag inte på, för där har jag inga priser med källa.`,
+        `Valet av inredning ändrar bara vad den kostar att köpa, ${krText(INREDNING_KR.enkel)} eller ${krText(INREDNING_KR.mellan)} kr. Arbetet och de andra posterna är desamma. För dyrare inredning än så finns inga priser med källa, så räknaren tar inte med den.`,
       kallor: ['BE', 'BS'],
     },
     container: {
       text: (_v: BeskedVarden): string =>
-        `Containern och bortforslingen har jag satt till ${krText(CONTAINER_KR)} kr, det högsta som en byggfirma anger för att köra bort avfallet. Det är den enda källa jag har, så beloppet är en uppskattning. Kör du bort avfallet själv står beloppet kvar, eftersom det kostar pengar även då, men jag har ingen källa för hur mycket. Bortforsling ger inget rotavdrag enligt Skatteverket.`,
+        `Containern och bortforslingen kostar här ${krText(CONTAINER_KR)} kr, det högsta som en byggfirma anger för att köra bort avfallet, och beloppet är en uppskattning. Kör du bort avfallet själv står beloppet kvar, eftersom containern kostar lika mycket vem som än fyller den. Bortforsling ger inget rotavdrag.`,
       kallor: ['TB', 'SKV-RATT'],
     },
     stad: {
@@ -748,7 +748,7 @@ export const TEXT = {
     },
     'rot-tak': {
       text: (_v: BeskedVarden): string =>
-        `Skatteverket låter firman dra av ${ROT_PROCENT} procent av arbetet, och gränsen är ${krText(ROT_TAK_KR)} kr i rotavdrag per person och år.`,
+        `Gränsen är ${krText(ROT_TAK_KR)} kr i rotavdrag per person och år, och äger ni huset tillsammans har ni var sin.`,
       kallor: ['SKV-ROT'],
     },
     'rot-slog-i': {
@@ -758,12 +758,12 @@ export const TEXT = {
     },
     'egen-insats': {
       text: (_v: BeskedVarden): string =>
-        'Det du gör själv ger inget rotavdrag, för avdraget gäller bara arbete som du köper. Tätskiktet och kaklet går inte att välja, eftersom ingen firma kan intyga ett arbete som du har gjort, och elen ska göras av ett registrerat elinstallationsföretag.',
+        'Det du gör själv ger inget rotavdrag, eftersom avdraget bara gäller arbete som du köper. Tätskiktet, kaklet och elen står kvar som firmans arbete.',
       kallor: ['SKV-ROT', 'BBV', 'ELSAK'],
     },
     intervall: {
       text: (v: BeskedVarden): string =>
-        `Belopp visar jag för golv på ${v.min} till ${v.max} kvm. Under ${kvmText(REFERENSYTA_KVM)} kvm räknar jag ned källornas priser i samma takt som golvet krymper, vilket är mitt eget antagande. Över ${kvmText(REFERENSYTA_KVM)} kvm lägger jag till det pris per extra kvadratmeter som en offertförmedlare anger. Förmedlaren säger inte upp till vilken storlek priset gäller, så gränsen vid ${v.max} kvm har jag satt själv.`,
+        `Belopp får du för golv på ${v.min} till ${v.max} kvm. Förmedlaren som anger priset per extra kvadratmeter säger inte upp till vilken storlek det gäller, så gränsen vid ${v.max} kvm är min egen.`,
       kallor: ['BE', 'BS'],
     },
   } satisfies Record<RegelNyckel, RegelText>,
@@ -772,12 +772,12 @@ export const TEXT = {
   gorInte: {
     /* BBV 26:1 § 1.5: kvalitetsdokument kan inte utfärdas för eget arbete. */
     'tatskikt-sjalv':
-      'Tätskiktet ingår i den största posten, så det är lätt att vilja spara just där. Gör det inte. Enligt BBV, Byggkeramikrådets branschregler för våtrum, finns det inget kvalitetsdokument att få för arbete som du gör själv, och försäkringsbolagen vill se ett sådant efter en vattenskada.',
+      'Tätskiktet ingår i den största posten, så det är lätt att vilja spara just där. Gör det inte. Lägger du det själv får du inget kvalitetsdokument, och efter en vattenskada vill försäkringsbolaget se ett sådant.',
     /* Rot bara på arbete, inte på material eller container. Andra meningar än rotavdrag.ts. */
     'rot-pa-allt': `Offerten för ett badrum består till stor del av kakel, porslin, blandare och annat material, och den delen ger inget rotavdrag. Drar du ${ROT_PROCENT} procent av hela summan i huvudet räknar du med ett för stort avdrag och ett för lågt pris.`,
     /* Säker Vatten 4.4.5 och Elsäkerhetsverket. Visas när rivningen är egen insats. */
     'riva-sjalv':
-      'Riv gärna kakel, klinker, matta och porslin själv, men låt golvbrunnen, rören och elen sitta kvar. Säker Vatten kräver en ny golvbrunn om den gamla är tillverkad före 1990, och det bytet gör VVS-firman. En registrerad elfirma kopplar bort elen.',
+      'Riv gärna kakel, klinker, matta och porslin själv, men låt golvbrunnen, rören och elen sitta kvar. En golvbrunn som är tillverkad före 1990 ska bytas vid renoveringen, och det gör VVS-firman. Elen kopplas bort av en registrerad elfirma.',
   } satisfies Record<GorInte, string>,
 
   /* Kolumnen Vad i antagandetabellen, en per rad i ANTAGANDEN (specen 4.5). */
@@ -844,10 +844,10 @@ export const TEXT = {
    * som byggs av konstanterna. Steg 1 är skrivet efter SEO-beslutet 2026-09-29.
    */
   steg: [
-    `Först jämför jag din golvyta med ${kvmText(REFERENSYTA_KVM)} kvm, som är golvet i källornas exempel. Är golvet mindre räknar jag ned de poster som följer ytan, och är det större lägger jag till ett belopp för varje extra kvadratmeter.`,
-    `För varje post tar jag timmarna gånger timpriset, ${krText(TIMPRIS_KR)} kr om du inte har skrivit in ett eget. Materialet läggs till för sig, och det du gör själv får noll timmar.`,
+    `Först jämför jag din golvyta med ${kvmText(REFERENSYTA_KVM)} kvm, som är golvet i det badrum som priserna är räknade för. Är golvet mindre räknar jag ned de poster som följer ytan, och är det större lägger jag till ett belopp för varje extra kvadratmeter.`,
+    `Varje post får sina timmar gånger timpriset, ${krText(TIMPRIS_KR)} kr om du inte har skrivit in ett eget. Materialet läggs till för sig, och det du gör själv får noll timmar.`,
     'Arbetet, materialet och containern blir tillsammans summan före rotavdraget. Containern räknas med också när du kör bort avfallet själv.',
-    'Till sist drar jag av rotavdraget så långt gränsen räcker, och det som blir kvar är vad du betalar.',
+    'Rotavdraget dras av så långt gränsen räcker, och det som blir kvar är vad du betalar.',
   ] as string[],
 
   /*
@@ -859,7 +859,7 @@ export const TEXT = {
   kortsvar: (v: KortsvarVarden): KortsvarDelar => ({
     fore: `Ett badrum med ${kvmText(REFERENSYTA_KVM)} kvm golv och inredning i standardutförande kostar ${v.enkel5.foreRot} kr att renovera, och när rotavdraget på ${v.enkel5.rot} kr har dragits av betalar du`,
     markering: `${v.enkel5.attBetala} kr`,
-    efter: `. Med dyrare blandare, badkar och möbler betalar du ${v.mellan5.attBetala} kr, och med 4 kvm golv blir det ${v.enkel4.attBetala} respektive ${v.mellan4.attBetala} kr efter avdraget. Arbetet är ${v.andelArbete5} procent av summan, och det är bara arbetet som ger rotavdrag. Talen kommer från offertförmedlare och en byggfirma, och kalkylen som de flesta posterna kommer från ändrades senast den ${datumText(KALLOR.BE.datum.replace(/^\D*/, ''))} och är inte uppräknad till dagens priser.`,
+    efter: `. Med dyrare blandare, badkar och möbler betalar du ${v.mellan5.attBetala} kr, och med 4 kvm golv blir det ${v.enkel4.attBetala} kr med den enklare inredningen och ${v.mellan4.attBetala} kr med den dyrare, efter avdraget. Arbetet är ${v.andelArbete5} procent av summan. Priserna är offertförmedlarnas och en byggfirmas, och kalkylen bakom de flesta posterna ändrades senast den ${datumText(KALLOR.BE.datum.replace(/^\D*/, ''))}. Den är inte uppräknad till dagens nivå, så ett badrum i dag kan kosta mer.`,
   }),
 
   /* Publiceringsomgången (specen 9.2). Alt under 125 tecken. Skissen finns inte än. */

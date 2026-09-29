@@ -20,6 +20,27 @@ All publik text skrivs av Christian, i jag-form, enligt `docs/ROST.md`. Läs det
 
 Kort svar (`kortSvar` i frontmatter): tre till fem hela meningar som svarar på frågan i rubriken, blockstil `|` med blankrad mellan stycken, högst en `**markering**` runt nyckeltalet. Ingressen och beskrivningen (`description`) är meningar, inte uppräkningar.
 
+### Källan står kvar men bär inte meningen
+
+Tillagt 2026-09-29 efter startlista 3. Läsaren gav sidorna 4 var för sig men hörde en dialekt när de lästes i följd, och den kom inte ur förbjudna ord utan ur gester som är rätt en gång och upprepades på varje sida. Kravet på källa för varje tal står kvar. Så här gör du:
+
+- Saken först, källan efter. Meningen börjar med vad som gäller eller vad läsaren gör. Källan nämns en gång per stycke, efter saken, eller i raden under tabellen. Säger tre källor samma sak räcker en mening om att de är överens. Räkna på din egen sida hur många meningar som har en tillverkare eller myndighet som subjekt eller slutar med "enligt X"; är det fler än några stycken skriver du om dem.
+- Egen bedömning märks en gång, där den ändrar vad läsaren gör, och sägs som ett råd med skäl. "Trappan är min" låter som en person; "Omräkningen är min", "som jag läser det" och "mitt råd och ingen regel" som slutkläm låter som en friskrivning. En uträkning ur källans tal behöver ingen märkning i löptexten; behövs den står den i källraden.
+- Det källorna inte säger skrivs bara när läsaren annars skulle leta efter talet eller gissa fel, och då följt av vad hon gör i stället. Annars stryks meningen, och i en tabell får cellen vara tom eller raden gå bort i stället för "anges inte".
+- När källorna är oense tar du upp det bara om skillnaden ändrar vad läsaren köper eller gör. Då väljer du en och säger vad som händer med huset om man väljer fel. Skälet "det är den strängare gränsen" räcker inte, och "säger olika ... jag väljer X, eftersom" ska inte gå att hitta på två syskonsidor.
+- Det som redan står på en syskonsida skrivs inte om: rotavdragets tal, c-förklaringen, EKS-historiken, pristabellen, friskrivningen om att köket inte är renoverat. Skriv det som gäller för just det här jobbet i en mening och länka. c förklaras med delen på den här sidan och i egna ord; regelhistoria står bara där regeln är frågan.
+- Normal ordföljd. "Takytan multiplicerar jag" och "Rännan delar jag" blir meningar där saken eller du är subjekt. När den omvända ordföljden rättas får inte "Jag tar, jag delar, jag multiplicerar" ta dess plats; växla mellan saken, du och jag.
+- Länktexten säger vad läsaren hittar där, med nya ord varje gång. Inte "det går jag igenom i [...]", inte "står i guiden om".
+- I räknarna står hänvisningen till källtabellen en gång, eller inte alls om tabellen syns under rubriken, aldrig efter varje regel. Beskedet och spalten skrivs ur räknarens eget jobb: lägg syskonräknarens spalt bredvid din och bygg om varje rad som följer samma ordning och form.
+
+Före och efter, ur sidorna:
+
+- Före: "Rännan ska luta mot stupröret med minst 2,5 mm per meter. Det skriver Plannja, Lindab och Teknikhandboken, och både standarden och AMA Hus, som beskriver hur byggarbeten ska utföras, räknar med det fallet." Efter: "Låt rännan luta minst 2,5 mm per meter mot stupröret, så sjunker den 25 millimeter på tio meter. Plannja, Lindab och Teknikhandboken anger samma fall." (hängrännor)
+- Före: "Totalbyggarna tar 350 kronor i timmen efter rotavdraget för att byta luckor, och före avdraget blir det 500 kronor. Omräkningen är min." Efter: "Totalbyggarna tar 500 kronor i timmen för att byta luckor, och efter rotavdraget betalar du 350." (byta köksluckor)
+- Före: "Kilowatten multiplicerar jag med gångtiden per dygn och får kilowattimmar per dygn." Efter: "Effekten i kilowatt gånger timmarna maskinen går per dygn ger kilowattimmar per dygn." (elkostnad)
+
+Granska alltid tre sidor i följd, inte en: räkna källsubjekten, förbehållen och tystnaderna, och läs de stycken som handlar om samma sak på syskonsidorna bredvid varandra.
+
 ## 2. Designsystemet
 
 Allt byggs av tokens i `src/styles/global.css`. Ingen komponent uppfinner en färg, en storlek eller en radie.
