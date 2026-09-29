@@ -166,6 +166,16 @@ export const KALKYLATORER: Kalkylator[] = [
     pelare: ['fasad', 'altan'],
   },
   {
+    slug: 'badrum-kostnad',
+    /* Bär "renovera badrum" och "kostar"; ankartext i korten och hubben. */
+    namn: 'Vad kostar det att renovera badrummet?',
+    rad: 'Skriv in golvytan och hur påkostat det ska bli, så får du priset post för post, med arbete och material för sig, och vad du betalar efter rotavdraget.',
+    /* "renovera badrum kostnad" toppar september till oktober (SOKORDSANALYS 8.2),
+       och badrummen planeras över vintern. raknare.md punkt 1. */
+    sasong: [9, 3],
+    pelare: ['badrum'],
+  },
+  {
     slug: 'fasadyta',
     /* Bär SEO:s fras; ankartext i guiden. */
     namn: 'Beräkna fasadyta och färg till huset',

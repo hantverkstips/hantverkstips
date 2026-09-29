@@ -21,11 +21,6 @@
       "source": "/inomhus/slipa-bankskiva/",
       "destination": "/kok/slipa-bankskiva/",
       "statusCode": 301
-    },
-    {
-      "source": "/kok/",
-      "destination": "/amnen/",
-      "statusCode": 302
     }
   ]
 }

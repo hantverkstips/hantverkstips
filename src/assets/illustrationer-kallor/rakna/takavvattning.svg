@@ -11,8 +11,7 @@
        Blyerts 2 px för taket, nocken, rännorna och stuprören, blyerts-2 1,5 px för måttbygeln,
        1,25 px för ledarna, snickarpenna 2,5 px för pilarna längs den övre rännan från mitten mot
        stuprören i båda ändar och deras mått (det enda som pekar). Tumstock bara bakom "100 mm".
-       Etiketterna är ord ur TEXT i takavvattning.ts (spalt.etikett-ranna, spalt.rad-fall och
-       skissAlt) tills hantverkaren har skrivit skissens etiketter.
+       Etiketterna är hantverkarens, godkända 2026-09-29.
        Handskrift i Caveat 500, 24 px, konverteras till banor vid bygget.
        Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
   <defs>

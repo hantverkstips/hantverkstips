@@ -12,8 +12,7 @@
        bruten där handfatet, toaletten och dörren står. Tumstock bara bakom "178 160 kr", som är
        att betala efter rotavdraget med räknarens standardvärden (raknaBadrumKostnad(STANDARD)).
        Ändras konstanterna där ändras talet här.
-       Etiketterna är ord ur TEXT i renovering.ts (skissBildtext och niva.enkel) tills hantverkaren
-       har skrivit skissens etiketter.
+       Etiketterna är hantverkarens, godkända 2026-09-29.
        Handskrift i Caveat 500, 24 px, konverteras till banor vid bygget.
        Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
   <defs>
