@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="En köksvägg rakt framifrån med väggskåp, bänkskåp och en gul bänkskiva med diskho och blandare.">
+  <!-- Varumärkesillustration för /rakna/kok-kostnad/, riktning 1. Samma hand som symbolen,
+       startsidans hero och badrum-kostnad.svg: konturer i blyerts 2 px med runda ändar,
+       tumstock som den enda fyllda färgen, ingen linjering, ingen skraffering, transparent
+       bakgrund, ett rött pennstreck som signatur.
+       Motivet är köket: en köksvägg rakt framifrån med tre bänkskåp och två väggskåp, två
+       luckor per skåp med ett lodrätt handtag var, inget väggskåp över diskhon. Bänkskivan är
+       den enda fyllda formen, i tumstock; diskhon är en grund skål i skivans överkant och det
+       gula klipps bort inuti skålen med en clipPath, ingen pappersfylld yta. Blandaren står på
+       skivan bakom hon. Sockeln löper under skåpen ner till golvet, som är en rak linje på
+       y=298 utan skraffering. Inga kastruller, häll, fläkt, kakel, lådor eller fönster.
+       Ingen text-nod och inga läsbara tal: npm run illustrationer rör inte filen och den har
+       ingen källa under illustrationer-kallor. Skala 600 × 360 som räknarnas skisser.
+       Motivet är ritat i sin egen skala, bbox x −1 till 561 och y −2 till 322,3 med
+       linjebredderna, kvot 1,73, och läggs ut med transform="translate(24.98 22.71)
+       scale(0.9822)" i yttre g:et: 552 px brett (92,0 procent) och 318,5 px högt (88,5
+       procent), 24 px marginal i sidled och 20,8 px i höjdled.
+       Tokens: tumstock #e8b830, blyerts #2a2521, penna #ad3519. -->
+
+  <g transform="translate(24.98 22.71) scale(0.9822)">
+    <defs>
+      <!-- Bänkskivan utom hons skål: det gula slutar exakt mot skålens kontur -->
+      <clipPath id="utanfor-hon">
+        <path d="M-10,140 H236 Q238,164 250,164 L310,164 Q322,164 324,140 H570 V180 H-10 Z"/>
+      </clipPath>
+    </defs>
+
+    <!-- Bänkskivan i tumstock, klippt mot hon -->
+    <rect x="0" y="150" width="560" height="20" fill="#e8b830" clip-path="url(#utanfor-hon)"/>
+
+    <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <!-- Bänkskivans kontur, överkanten bruten av hon -->
+      <path d="M236,150 Q118,149 0,150 Q-1,160 0,170 Q280,171 560,170 Q561,160 560,150 Q442,149 324,150"/>
+      <!-- Diskhon -->
+      <path d="M236,150 Q238,164 250,164 L310,164 Q322,164 324,150"/>
+      <!-- Blandaren: pelare, pip och spak -->
+      <path d="M296,150 L296,118 Q296,106 284,106 L270,106 Q264,106 264,114 L264,122"/>
+      <path d="M296,124 L308,116"/>
+
+      <!-- Bänkskåpen: stommarna och delningarna -->
+      <path d="M10,170 Q9,228 10,286 M190,170 Q191,228 190,286 M370,170 Q369,228 370,286 M550,170 Q551,228 550,286"/>
+      <!-- Sockeln med ändar ner till golvet -->
+      <path d="M10,286 Q280,287 550,286 M16,286 L16,298 M544,286 L544,298"/>
+      <!-- Bänkskåpens luckor -->
+      <path d="M13,174 H98 V282 H13 Z M102,174 H187 V282 H102 Z M193,174 H278 V282 H193 Z M282,174 H367 V282 H282 Z M373,174 H458 V282 H373 Z M462,174 H547 V282 H462 Z"/>
+      <!-- Handtagen, bänkskåp -->
+      <path d="M90,186 V208 M110,186 V208 M270,186 V208 M290,186 V208 M450,186 V208 M470,186 V208"/>
+
+      <!-- Väggskåpen -->
+      <path d="M10,0 Q100,-2 190,0 Q191,52 190,104 Q100,105 10,104 Q9,52 10,0 Z"/>
+      <path d="M370,0 Q460,-2 550,0 Q551,52 550,104 Q460,105 370,104 Q369,52 370,0 Z"/>
+      <!-- Väggskåpens luckor -->
+      <path d="M13,4 H98 V100 H13 Z M102,4 H187 V100 H102 Z M373,4 H458 V100 H373 Z M462,4 H547 V100 H462 Z"/>
+      <!-- Handtagen, väggskåp -->
+      <path d="M90,74 V96 M110,74 V96 M450,74 V96 M470,74 V96"/>
+    </g>
+
+    <!-- Golvet: en rak linje under sockeln -->
+    <path d="M0,298 Q280,300 560,298" fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Snickarpennans signatur under motivet -->
+    <path d="M170,316 Q260,321 350,314 Q440,311 520,316" fill="none" stroke="#ad3519" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+</svg>

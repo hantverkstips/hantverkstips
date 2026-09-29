@@ -202,3 +202,59 @@ Golvvärmesidan bäddar in `/rakna/elkostnad/` med `typ=golvvarme` i förvalet. 
 | Nyckel | Vad den ska säga |
 |---|---|
 | `GOR_INTE_DYGNET_RUNT_GOLVVARME` | "Gör inte det här" när golvvärmen räknas med 24 timmar per dygn: att termostaten slår av och på, så 24 timmar med full effekt ger ett för högt tal, och vad läsaren skriver i stället. Underlaget är `docs/briefer/faktablad/kunskap-golvvarme-badrum.md` avsnitt 2c. I dag `null`, och då står ingen text alls |
+
+---
+
+## 12. Rotavdraget som villkor på luckor och bänkskiva (M = `src/lib/kalkyl/renovering.ts`, S = sidan), 2026-09-29
+
+SEO:s kontroll (`seo-checklista-2026-09-29/kok-4.md`, räknaren punkt 1) och specen K10. På vägarna nya luckor, ny bänkskiva och båda är priset utan rotavdrag svaret, eftersom Skatteverket nämner montering av fast köksinredning bara i samband med en omfattande renovering. Ett helt nytt kök räknas som förut. Räknaren ska säga samma sak som `/kok/byta-koksluckor/` och `/kok/byta-bankskiva/`. Talen kommer in som parametrar och skrivs aldrig för hand. Varje värde står som `TEXT SAKNAS` tills det är skrivet.
+
+| Nyckel | Var | Vad den ska säga |
+|---|---|---|
+| `beskedVillkor.rubrik(v)` | M, spaltens rubrik | Vad läsaren lägger i budgeten, utan rotavdrag. Bär `v.foreRot` (spann "A till B" på bänkskivan). Inte samma form som `besked.belopp.rubrik`. |
+| `beskedVillkor.rad(v)` | M, raden under rubriken | Vad läsaren gör härnäst, efter vägen (`v.vag`). Inte om rotavdraget, det står i `spalt.rad-villkor`. Får bygga på de tre raderna i `besked.belopp.rad`, men bara om de fortfarande stämmer utan avdrag. |
+| `spalt['etikett-villkor']` | M, över det stora talet | Två till fyra ord, att talet är priset utan rotavdrag. |
+| `spalt['rad-villkor'](v)` | M, spalten efter pekraden | Om bytet ingår i en större renovering av köket blir avdraget `v.rot` kr och priset `v.attBetala` kr, och att det är Skatteverket som avgör. En eller två meningar. Testet (todo) kräver `v.rot`, `v.attBetala` och ordet Skatteverket. |
+| `darfor['rot-villkor'](v)` | M, under posttabellen | Ersätter `darfor.rot` och `darfor.betala` på de tre vägarna: summan i tabellen är priset utan avdrag. Arbetet (`v.arbete`) ger 30 procent i avdrag bara om det ingår i en större renovering, och då blir priset `v.attBetala`. |
+| `regel['rot-villkor'].text(v)` | M, "Därför blev svaret så" | Ersätter `rot-arbete`: Skatteverket nämner montering av fast köksinredning bara i samband med en omfattande renovering, och bara arbetet ger avdrag, aldrig luckorna, gångjärnen eller skivan. Källraden (Skatteverket två gånger) sätts av sidan. |
+| `gorInte['rot-villkor']` | M, "Gör inte det här" | Ersätter `rot-pa-allt` på de tre vägarna: räkna inte med rotavdraget i budgeten för ett luckbyte eller skivbyte förrän det är klart att det gäller, och hur läsaren tar reda på det (fråga firman, Skatteverket). |
+| `las-vidare.byta-bankskiva` | S, `LAS_VIDARE` i `src/pages/rakna/kok-kostnad.astro` | Länktext till `/kok/byta-bankskiva/`, med nya ord och inte samma form som de tre andra. |
+
+Texter som redan finns och som räknar med avdraget på luckorna. Jag har inte rört dem, men de säger emot det nya beskedet, och det är hantverkarens att avgöra om de ska skrivas om:
+- `kortsvar`: "betalar du 16 898 kr efter ett rotavdrag på 2 250 kr" och bänkskivans pris "efter avdraget"
+- `gorInte['verkstad-rot']`, som jämför med nya luckor med avdrag
+- H2_ROT:s första stycke: "På ett luckbyte blir rotavdraget drygt en tiondel av priset"
+- `skissBildtext`: "efter rotavdraget"
+- skissens nyckeltal "16 898 kr"
+
+Blir svaret 19 148 kr ritas skissen om när bildtexten är ändrad.
+
+### 12b. Rättelse samma dag: luckorna ger avdrag, och luckor med bänkskiva delas (specen K10, rättad)
+
+Skatteverket ger avdrag för att "byta och reparera köksluckor …" utan villkor. Villkoret "i samband med omfattande byggarbete eller renovering" gäller bara montering av fast köksinredning, och bänkskivan räknas dit. Räknaren gör nu så här:
+- **Nya luckor:** avdrag som före K10, och svaret är efter avdraget (16 898 kr).
+- **Ny bänkskiva:** priset utan avdrag, och villkoret på en egen rad. Det är texterna i avsnitt 12, som redan är skrivna.
+- **Luckor och bänkskiva:** arbetet delas. Luckornas montering får avdrag i svaret, och bänkskivans montering får villkoret. Huvudbeskedet, etiketten, raden om summan och `darfor.betala` är de vanliga (`besked`, `etikett-betala`, `rad-summa`). Tre texter är nya:
+
+| Nyckel | Var | Vad den ska säga |
+|---|---|---|
+| `spalt['rad-villkor-delat'](v)` | M, spalten efter pekraden | Avdraget i svaret (`v.rot`) gäller luckornas montering (`v.arbeteSakert`). Bänkskivans montering (`v.arbeteVillkor`) ger avdrag bara om bytet ingår i en större renovering, och då blir avdraget `v.villkorRot` och priset `v.villkorAttBetala`. Skatteverket avgör. En eller två meningar. |
+| `darfor['rot-delat'](v)` | M, under posttabellen, före `darfor.betala` | Ersätter `darfor.rot` på den här vägen: avdraget `v.rot` är 30 procent av luckornas montering `v.arbeteSakert`. Skivans montering `v.arbeteVillkor` är inte med, och vad avdraget blir om den räknas in. |
+| `regel['rot-delat'].text(v)` | M, "Därför blev svaret så", före `rot-villkor` | Att Skatteverket nämner byte av köksluckor bland arbetena som ger avdrag, medan montering av fast inredning bara gör det vid en större renovering. Därför räknas avdraget på luckorna men inte på skivan. Källraden sätts av sidan. |
+
+Två små saker till:
+- I avsnitt 12 gällde `beskedVillkor`, `rad-villkor`, `darfor['rot-villkor']` och `gorInte['rot-villkor']` först också luckorna. Nu visas de bara för bänkskivan, och grenen för luckor i `beskedVillkor.rad` visas aldrig och kan strykas.
+- I `rad-villkor` och `darfor['rot-villkor']` heter talen nu `v.villkorRot` och `v.villkorAttBetala`. Orden är desamma.
+
+### 12c. Granskningen av gränssnittet, 2026-09-29 (UX och bygge)
+
+Ändrat i koden, ingen ny text:
+- Länken till rotavdragsräknaren visas inte på bänkskivan, där svaret är utan avdrag.
+- Skissen med luckbytet och 16 898 kr står bara på vägen luckor.
+- Regeln `tillkommer` har en källa per väg: Vedum för luckorna, Ikea för nytt kök och ingen för bänkskivan.
+- Regeln `rot-luckor` visas på vägen luckor, med källan Skatteverket, ger arbetet rätt till rotavdrag. Texten är redan skriven.
+
+Till hantverkaren:
+- **Kontrollera före publicering:** `regel['rot-luckor']` säger "både i småhus och i bostadsrätt". Faktabladet (`faktablad/rakna-kok-kostnad.md` rad 22) citerar byte av köksluckor bara ur Skatteverkets avsnitt om småhus. Stryk bostadsrätten, eller be underlagsarbetaren om citatet.
+- **Kan vänta, önskemål och ingen TEXT SAKNAS:** `spalt['rad-summa']` kan säga att summan är före avdraget, till exempel "Före avdraget är summan …". `form['rot-hjalp']` och den tredje raden i `besked.tak.rad` kan säga tydligare vad två ägare betyder: var och en har sin egen gräns.
+- **Ingen ändring:** kortsvaret räknar 4 till 5 meter, och formulärets 4 meter ger ett tal inom det spannet (86 960 kr ligger inom 48 460 till 92 300 kr).

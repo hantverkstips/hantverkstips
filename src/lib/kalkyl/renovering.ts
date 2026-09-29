@@ -1558,7 +1558,7 @@ export interface KokPostRad {
 }
 
 export type KokUtfall = 'belopp' | 'tak';
-export type KokGorInte = 'rot-pa-allt' | 'verkstad-rot' | 'el-sjalv' | 'vvs-intyg' | 'riva-sjalv';
+export type KokGorInte = 'rot-pa-allt' | 'rot-villkor' | 'verkstad-rot' | 'el-sjalv' | 'vvs-intyg' | 'riva-sjalv';
 export type KokRegelNyckel =
   | 'luckor-pris'
   | 'luckor-montering'
@@ -1569,9 +1569,26 @@ export type KokRegelNyckel =
   | 'spann'
   | 'tillkommer'
   | 'rot-arbete'
+  | 'rot-luckor'
+  | 'rot-villkor'
+  | 'rot-delat'
   | 'rot-tak'
   | 'rot-slog-i'
   | 'egen-insats';
+
+/**
+ * Rotavdraget i svaret (specen K10). saker: allt arbete ger avdrag. villkor:
+ * bara villkorat arbete, bänkskivans montering. delat: luckornas montering ger
+ * avdrag, bänkskivans är villkorad.
+ */
+export type KokRotLage = 'saker' | 'villkor' | 'delat';
+
+/** Vad det blir om också det villkorade arbetet ger avdrag (specen K10). */
+export interface KokVillkorSiffror {
+  rotKr: number;
+  kapatKr: number;
+  attBetalaKr: number;
+}
 
 /** Talen för en kant. */
 export interface KokSiffror {
@@ -1580,12 +1597,19 @@ export interface KokSiffror {
   arbeteKr: number;
   materialKr: number;
   foreRotKr: number;
+  /** Arbete som ger rotavdrag i svaret. arbeteSakertKr + arbeteVillkorKr = arbeteKr. */
+  arbeteSakertKr: number;
+  /** Bänkskivans montering i vägarna bankskiva och luckor-bankskiva (specen K10). */
+  arbeteVillkorKr: number;
+  /** Svaret: rotavdraget räknat på arbeteSakertKr. */
   rotKr: number;
   raktRotKr: number;
   kapatKr: number;
   attBetalaKr: number;
   andelArbeteProcent: number;
   begransad: boolean;
+  /** Rotavdraget på allt arbete. null när arbeteVillkorKr är 0. */
+  villkor: KokVillkorSiffror | null;
 }
 
 export type KokResultat =
@@ -1597,6 +1621,11 @@ export type KokResultat =
       hog: KokSiffror;
       /** Sant när totalerna skiljer mellan kanterna. */
       spann: boolean;
+      /**
+       * Satt ur den övre kanten (specen K10): villkor när bara villkorat
+       * arbete finns, delat när både säkert och villkorat finns, annars saker.
+       */
+      rotLage: KokRotLage;
       gorInteDetHar: KokGorInte[];
       regler: KokRegelNyckel[];
     } & KokSiffror)
@@ -1793,6 +1822,14 @@ export interface KokBeskedVarden {
   /** krText(hog.kapatKr), för "upp till X kr". */
   kapatMax: string;
   arbete: string;
+  /** Arbetet som ger avdrag i svaret (specen K10). */
+  arbeteSakert: string;
+  /** Bänkskivans montering, villkorad (specen K10). */
+  arbeteVillkor: string;
+  /** Rotavdraget på allt arbete, om villkoret gäller. Tom sträng när villkoret saknas. */
+  villkorRot: string;
+  /** Att betala om villkoret gäller. Tom sträng när villkoret saknas. */
+  villkorAttBetala: string;
   material: string;
   andelArbete: string;
   /** Antalet luckor som text. */
@@ -1854,6 +1891,18 @@ export const KOK_TEXT = {
         `Gränsen gör att ${v.agare === 2 ? 'ni' : 'du'} i år går miste om ${v.kapat.includes('till') ? 'upp till ' : ''}${v.kapatMax} kr av avdraget för köket. Betalar ${v.agare === 2 ? 'ni' : 'du'} en del efter nyår räknas den mot nästa års gräns.${v.agare === 1 ? ' Äger ni bostaden tillsammans, välj två ägare och räkna igen.' : ''}`,
     },
   } satisfies Record<KokUtfall, { rubrik: (v: KokBeskedVarden) => string; rad: (v: KokBeskedVarden) => string }>,
+
+  /*
+   * Specen K10: läget villkor, alltså bänkskivan med arbete över 0 kr. Priset
+   * före rotavdrag är svaret. Textlistan avsnitt 12.
+   */
+  beskedVillkor: {
+    /* Vad läsaren ska lägga i budgeten, utan rotavdrag. Bär foreRot. */
+    rubrik: (v: KokBeskedVarden): string => `Lägg ${v.foreRot} kr i budgeten, utan rotavdrag`,
+    /* Vad läsaren gör härnäst, efter vägen. Inte om rotavdraget; det står i spalt['rad-villkor']. */
+    rad: (_v: KokBeskedVarden): string =>
+      'Byt material i formuläret och räkna igen, så ser du hur mycket valet av skiva ändrar priset.',
+  },
 
   /* Formulärets legender, etiketter och hjälprader (specen avsnitt 3). */
   form: {
@@ -1953,6 +2002,26 @@ export const KOK_TEXT = {
   /* Resultatspalten. Högst 700 tecken synlig text vid standardvärdena. */
   spalt: {
     'etikett-betala': 'Ditt pris efter rotavdraget',
+    /* K10: etiketten över det stora talet när det är priset utan rotavdrag. Två till fyra ord. */
+    'etikett-villkor': 'Priset utan rotavdrag',
+    /*
+     * K10: vad avdraget blir (rot) och vad som återstår (attBetala) om arbetet
+     * ingår i en större renovering av köket, med Skatteverket som källa. Spann
+     * som "A till B" vid bänkskivan.
+     */
+    'rad-villkor': (v: KokBeskedVarden): string =>
+      `Ingår bytet i en omfattande renovering av köket blir rotavdraget ${v.villkorRot} kr och priset efter avdraget ${v.villkorAttBetala} kr. Firman som begär avdraget åt dig kan säga hur den bedömer ditt jobb, men det är Skatteverket som avgör.`,
+    /*
+     * K10, läget delat (luckor och bänkskiva): står efter pekraden. Att
+     * luckornas montering ger avdraget i svaret och att bänkskivans montering
+     * ger avdrag bara om bytet ingår i en större renovering, med Skatteverket
+     * som källa. Talen den får: v.arbeteSakert (luckornas montering),
+     * v.arbeteVillkor (bänkskivans montering), v.rot och v.attBetala (svaret),
+     * v.villkorRot och v.villkorAttBetala (om också skivans montering ger
+     * avdrag). Spann som "A till B".
+     */
+    'rad-villkor-delat': (v: KokBeskedVarden): string =>
+      `Avdraget på ${v.rot} kr är räknat på de ${v.arbeteSakert} kr som monteringen av luckorna kostar. Ingår bytet av skivan i en omfattande renovering av köket ger också monteringen av skivan avdrag, och då blir priset ${v.villkorAttBetala} kr. Det är Skatteverket som avgör, så räkna inte med den delen i budgeten.`,
     'rad-summa': (foreRot: string, rot: string): string =>
       rot === '0' ? `Summan är ${foreRot} kr, och det blir inget rotavdrag.` : `Summan är ${foreRot} kr, och rotavdraget är ${rot} kr.`,
     'rad-delning': (arbete: string, material: string): string =>
@@ -1984,6 +2053,22 @@ export const KOK_TEXT = {
           : `Avdraget är ${ROT_PROCENT} procent av arbetet på ${v.arbete} kr.`,
     betala: (v: KokBeskedVarden): string =>
       v.rot === '0' ? `Hela summan, ${v.attBetala} kr, är kvar att betala.` : `Av ${v.foreRot} kr blir ${v.attBetala} kr kvar att betala.`,
+    /*
+     * K10: ersätter rot(v) och betala(v) under posttabellen. Att summan är
+     * priset utan avdrag, och vad avdraget (rot) och priset efter det
+     * (attBetala) blir vid en större renovering. Arbetet står i arbete.
+     */
+    'rot-villkor': (v: KokBeskedVarden): string =>
+      `Summan i tabellen är priset utan rotavdrag. Av den är ${v.arbete} kr arbete, och det är bara den delen som kan ge avdrag. Ingår bytet i en omfattande renovering blir avdraget ${v.villkorRot} kr och priset ${v.villkorAttBetala} kr.`,
+    /*
+     * K10, läget delat: ersätter rot(v) under posttabellen och följs av
+     * betala(v). Att avdraget i svaret är räknat på luckornas montering, och
+     * vad avdraget och priset blir om också bänkskivans montering ger avdrag.
+     * Talen den får: v.arbeteSakert, v.arbeteVillkor, v.rot, v.attBetala,
+     * v.villkorRot och v.villkorAttBetala.
+     */
+    'rot-delat': (v: KokBeskedVarden): string =>
+      `Monteringen av bänkskivan står med i arbetet i tabellen men ingår inte i avdraget.`,
     /* Länken under tabellen till "Vad siffrorna vilar på". */
     kallrad: 'Var priserna kommer ifrån',
   },
@@ -2032,7 +2117,7 @@ export const KOK_TEXT = {
         v.vag === 'nytt'
           ? 'Lådor, lådfronter, ben, sockel, handtag, frakt, container och installationen av vitvarorna finns inte i tabellen. Fråga efter priserna på dem när du tar in offerter.'
           : v.vag === 'bankskiva'
-            ? 'Frakten av skivan finns inte i tabellen, så fråga efter den när du beställer.'
+            ? 'Frakten av skivan och elektrikern som kopplar ur och ansluter hällen finns inte i tabellen, så fråga efter priserna på dem.'
             : 'Handtag, lådfronter och frakt finns inte i tabellen. Be om pris på dem när du beställer luckorna.',
       kallor: ['VED'],
     },
@@ -2042,6 +2127,37 @@ export const KOK_TEXT = {
           ? 'Du gör allt arbete själv, så inget i summan ger rotavdrag.'
           : `Av summan är ${v.arbete} kr arbete, och det är bara den delen som ger rotavdrag. ${v.vag === 'luckor' ? 'Luckorna och gångjärnen' : v.vag === 'bankskiva' ? 'Själva skivan' : v.vag === 'luckor-bankskiva' ? 'Luckorna, gångjärnen och skivan' : 'Skåpen, skivan och vitvarorna'} ger inget.`,
       kallor: ['SKV-ROT', 'SKV-RATT'],
+    },
+    /*
+     * K10: ersätter rot-arbete i vägarna utan nytt kök. Skatteverket nämner
+     * montering av fast köksinredning bara i samband med en omfattande
+     * renovering, och bara arbetet ger avdrag.
+     */
+    /*
+     * Granskningen 2026-09-29, vägen luckor: Skatteverket räknar "byta och
+     * reparera köksluckor" till arbetena som ger rotavdrag, utan villkoret om
+     * en större renovering som gäller bänkskivan. Bara arbetet ger avdrag.
+     */
+    'rot-luckor': {
+      text: (_v: KokBeskedVarden): string => 'Att byta köksluckor står med i Skatteverkets lista över arbeten som ger rotavdrag, både i småhus och i bostadsrätt, och bytet behöver inte ingå i en omfattande renovering.',
+      kallor: ['SKV-RATT'],
+    },
+    'rot-villkor': {
+      text: (_v: KokBeskedVarden): string =>
+        'Skatteverket ger rotavdrag för att montera fast köksinredning bara i samband med omfattande byggarbete eller renovering. Montering av en bänkskiva nämns inte för sig, och avdraget gäller i vilket fall bara arbetet, aldrig själva skivan.',
+      kallor: ['SKV-ROT', 'SKV-RATT'],
+    },
+    /*
+     * K10, läget delat: står före rot-villkor. Att Skatteverket ger avdrag för
+     * att byta köksluckor utan villkor, så luckornas montering ger avdrag i
+     * svaret, medan bänkskivans montering står under rot-villkor. Talen den
+     * får: v.arbeteSakert, v.arbeteVillkor, v.rot, v.attBetala, v.villkorRot
+     * och v.villkorAttBetala.
+     */
+    'rot-delat': {
+      text: (_v: KokBeskedVarden): string =>
+        'Att byta köksluckor står med i Skatteverkets lista över arbeten som ger rotavdrag, utan krav på en omfattande renovering. Därför räknar jag avdraget på monteringen av luckorna i svaret, men inte på monteringen av bänkskivan.',
+      kallor: ['SKV-RATT', 'SKV-ROT'],
     },
     'rot-tak': {
       text: (_v: KokBeskedVarden): string =>
@@ -2063,7 +2179,10 @@ export const KOK_TEXT = {
   /* "Gör inte det här", ett stycke per rad. */
   gorInte: {
     /* Rot bara på arbetet, aldrig på luckor, skiva och vitvaror. Andra meningar än badrummet och rotavdrag.ts. */
-    'rot-pa-allt': `Räkna inte ${ROT_PROCENT} procent på hela priset för köket. Då blir avdraget för stort, på ett luckbyte mer än dubbelt så stort som det du får. Leta upp raden för arbete i offerten och räkna procenten på den.`,
+    'rot-pa-allt': `Räkna inte ${ROT_PROCENT} procent på hela priset för köket. Då blir avdraget för stort, eftersom materialet inte ger något avdrag. Leta upp raden för arbete i offerten och räkna procenten på den.`,
+    /* K10: ersätter rot-pa-allt på luckor och bänkskiva. Räkna inte med avdraget förrän det är klart att det gäller, och hur läsaren tar reda på det. */
+    'rot-villkor':
+      'Räkna inte med rotavdrag på ett byte av bara bänkskivan. Lägg hela summan i budgeten, så blir ett avdrag som går igenom en besparing i stället för ett hål i kalkylen.',
     /* Lackering i verkstad ger inget rot (Skatteverket, "i företagets lokaler"). */
     'verkstad-rot':
       'Jämför du nya luckor med verkstadslackering av de gamla, räkna verkstadens pris utan rotavdrag och lägg till transporten av luckorna.',
@@ -2110,7 +2229,8 @@ export const KOK_TEXT = {
   antagandeVarde: {
     /* Kr per lucka och nivåns namn hos Vedum (prisgrupp). */
     /* prisgrupp är Vedums nummer, "1", "5" eller "10". Hantverkaren väljer om och hur det står i texten. */
-    'lucka-pris': (kr: string, _prisgrupp: string): string => `${kr} kr för en lucka till ett 60 cm brett skåp`,
+    'lucka-pris': (kr: string, prisgrupp: string): string =>
+      `${kr} kr för en lucka till ett 60 cm brett skåp, i Vedums prisgrupp ${prisgrupp}`,
     /* Kr styck och antal per lucka. */
     gangjarn: (kr: string, antal: string): string => `${kr} kr styck, ${antal} per lucka`,
     /* Fasta priset upp till max luckor, sedan i proportion. */
@@ -2150,7 +2270,7 @@ export const KOK_TEXT = {
     return {
       fore: `Byter du bara luckorna i ett kök med ${KOK_STANDARD.antalLuckor} luckor, med nya gångjärn och en snickare som monterar dem, betalar du`,
       markering: `${v.luckor.attBetala} kr`,
-      efter: ` efter ett rotavdrag på ${v.luckor.rot} kr, som är ${ROT_PROCENT} procent av monteringen. Efter avdraget kostar en ny bänkskiva i laminat ${lag(v.bankskiva4.attBetala)} till ${hog(v.bankskiva5.attBetala)} kr för 4 till 5 meter. Ett helt nytt kök i den enklaste nivån, med skåp för samma längd och ett paket vitvaror, kostar ${lag(v.nytt4.attBetala)} till ${hog(v.nytt5.attBetala)} kr efter avdraget. Luckornas och skåpens priser är tillverkarnas, och priset på arbetet kommer från byggfirmor och offertförmedlare. Jag hämtade alla priser den ${v.hamtat}.`,
+      efter: ` efter ett rotavdrag på ${v.luckor.rot} kr, som är ${ROT_PROCENT} procent av monteringen. En ny bänkskiva i laminat kostar ${lag(v.bankskiva4.foreRot)} till ${hog(v.bankskiva5.foreRot)} kr för 4 till 5 meter, och där räknar jag utan rotavdrag, eftersom Skatteverket inte nämner ett byte av bara skivan. Ett helt nytt kök i den enklaste nivån, med skåp för samma längd och ett paket vitvaror, kostar ${lag(v.nytt4.attBetala)} till ${hog(v.nytt5.attBetala)} kr efter avdraget. Luckornas och skåpens priser är tillverkarnas, och priset på arbetet kommer från byggfirmor och offertförmedlare. Jag hämtade alla priser den ${v.hamtat}.`,
     };
   },
 
@@ -2317,38 +2437,68 @@ function kokPoster(i: KokIndata, k: 0 | 1): KokPostRad[] {
   return poster;
 }
 
-/** En kant: posterna, summorna och rotavdraget genom rotavdrag.ts (specen K8). */
-function kokKant(i: KokIndata, k: 0 | 1): KokSiffror {
-  const poster = kokPoster(i, k);
-  const arbeteKr = poster.reduce((s, p) => s + p.arbeteKr, 0);
-  const materialKr = poster.reduce((s, p) => s + p.materialKr, 0);
-  const foreRotKr = arbeteKr + materialKr;
+/**
+ * Arbete som bara ger rotavdrag under Skatteverkets villkor: bänkskivans
+ * montering utanför nytt kök (specen K10). I nytt kök ingår skivan i
+ * köksmonteringen, som räknas som en omfattande renovering.
+ */
+const arVillkorat = (i: KokIndata, p: KokPostRad): boolean => p.nyckel === 'bankskiva' && i.vag !== 'nytt';
+
+/** Rotavdraget genom rotavdrag.ts (specen K8) på arbetet, resten av priset som material. */
+function kokRot(i: KokIndata, arbetskostnadKr: number, foreRotKr: number) {
   const rot = raknaRotavdrag({
-    arbetskostnadKr: arbeteKr,
-    materialkostnadKr: materialKr,
+    arbetskostnadKr,
+    materialkostnadKr: foreRotKr - arbetskostnadKr,
     antalAgare: i.agare,
     utnyttjatRotKr: i.rotKr,
     utnyttjatRutKr: 0,
     skattKr: null,
   });
   if (rot.status !== 'ok') throw new Error('[renovering] Rotavdraget för köket ska alltid gå att räkna på giltig indata');
+  return rot;
+}
+
+/** En kant: posterna, summorna och rotavdraget, svaret och villkoret (specen K8 och K10). */
+function kokKant(i: KokIndata, k: 0 | 1): KokSiffror {
+  const poster = kokPoster(i, k);
+  const arbeteKr = poster.reduce((s, p) => s + p.arbeteKr, 0);
+  const materialKr = poster.reduce((s, p) => s + p.materialKr, 0);
+  const foreRotKr = arbeteKr + materialKr;
+  const arbeteVillkorKr = poster.filter((p) => arVillkorat(i, p)).reduce((s, p) => s + p.arbeteKr, 0);
+  const arbeteSakertKr = arbeteKr - arbeteVillkorKr;
+  const rot = kokRot(i, arbeteSakertKr, foreRotKr);
+  const allt = arbeteVillkorKr > 0 ? kokRot(i, arbeteKr, foreRotKr) : null;
   return {
     poster,
     arbeteKr,
     materialKr,
     foreRotKr,
+    arbeteSakertKr,
+    arbeteVillkorKr,
     rotKr: rot.avdragKr,
     raktRotKr: rot.raktAvdragKr,
     kapatKr: rot.kapatKr,
     attBetalaKr: foreRotKr - rot.avdragKr,
     andelArbeteProcent: foreRotKr === 0 ? 0 : Math.round((arbeteKr / foreRotKr) * 100),
     begransad: rot.begransatAv !== 'procent',
+    villkor:
+      allt === null ? null : { rotKr: allt.avdragKr, kapatKr: allt.kapatKr, attBetalaKr: foreRotKr - allt.avdragKr },
   };
 }
 
-/** harArbete: något i svaret ger rotavdrag. Annars gäller rot-pa-allt inte. */
-function kokGorInte(i: KokIndata, harArbete: boolean): KokGorInte[] {
-  const ut: KokGorInte[] = harArbete ? ['rot-pa-allt'] : [];
+/** Läget ur den övre kanten (specen K10). */
+function kokRotLage(hog: KokSiffror): KokRotLage {
+  if (hog.arbeteVillkorKr > 0 && hog.arbeteSakertKr === 0) return 'villkor';
+  if (hog.arbeteVillkorKr > 0 && hog.arbeteSakertKr > 0) return 'delat';
+  return 'saker';
+}
+
+/**
+ * harArbete: något arbete ger eller kan ge rotavdrag. Annars gäller varken
+ * rot-pa-allt eller rot-villkor.
+ */
+function kokGorInte(i: KokIndata, harArbete: boolean, rotLage: KokRotLage): KokGorInte[] {
+  const ut: KokGorInte[] = !harArbete ? [] : rotLage === 'villkor' ? ['rot-villkor'] : ['rot-pa-allt'];
   if (harLuckor(i.vag)) ut.push('verkstad-rot');
   if (i.vag === 'nytt') {
     ut.push('el-sjalv');
@@ -2367,18 +2517,29 @@ export function raknaKokPoster(i: KokIndata): KokOk {
   /* Gör läsaren allt arbete själv finns inget att räkna rotavdrag på, och
      reglerna om gränsen och procenten på hela priset visas inte. */
   const harArbete = hog.arbeteKr > 0;
+  /* Specen K10: luckbytet ger avdrag, bänkskivans montering bara när den
+     ingår i en omfattande renovering. */
+  const rotLage = kokRotLage(hog);
 
   const regler: KokRegelNyckel[] = [];
   if (harLuckor(i.vag)) regler.push('luckor-pris', 'luckor-montering', 'gangjarn');
   if (harBankskiva(i.vag)) regler.push('bankskiva');
   if (i.vag === 'nytt') regler.push('nytt-enkel', 'flytt');
   if (spann) regler.push('spann');
-  regler.push('tillkommer', 'rot-arbete');
+  regler.push('tillkommer');
+  if (rotLage === 'villkor') regler.push('rot-villkor');
+  else if (rotLage === 'delat') regler.push('rot-delat', 'rot-villkor');
+  else {
+    /* Granskningen 2026-09-29: vägen luckor säger varför luckbytet ger avdrag,
+       som bänkskivan säger varför den inte gör det. */
+    if (i.vag === 'luckor' && harArbete) regler.push('rot-luckor');
+    regler.push('rot-arbete');
+  }
   if (harArbete) regler.push('rot-tak');
   if (utfall === 'tak') regler.push('rot-slog-i');
   if (egenGaller(i).length > 0) regler.push('egen-insats');
 
-  return { status: 'ok', utfall, ...lag, hog, spann, gorInteDetHar: kokGorInte(i, harArbete), regler };
+  return { status: 'ok', utfall, ...lag, hog, spann, rotLage, gorInteDetHar: kokGorInte(i, harArbete, rotLage), regler };
 }
 
 export function raknaKokKostnad(i: KokIndata): KokResultat {
@@ -2411,6 +2572,10 @@ export function kokBeskedVarden(r: KokOk, i: KokIndata): KokBeskedVarden {
     kapat: spannText(r.kapatKr, h.kapatKr),
     kapatMax: krText(h.kapatKr),
     arbete: spannText(r.arbeteKr, h.arbeteKr),
+    arbeteSakert: spannText(r.arbeteSakertKr, h.arbeteSakertKr),
+    arbeteVillkor: spannText(r.arbeteVillkorKr, h.arbeteVillkorKr),
+    villkorRot: r.villkor && h.villkor ? spannText(r.villkor.rotKr, h.villkor.rotKr) : '',
+    villkorAttBetala: r.villkor && h.villkor ? spannText(r.villkor.attBetalaKr, h.villkor.attBetalaKr) : '',
     material: spannText(r.materialKr, h.materialKr),
     andelArbete: spannText(r.andelArbeteProcent, h.andelArbeteProcent, String),
     luckor: String(i.antalLuckor),
@@ -2445,9 +2610,24 @@ export function kokKortsvarVarden(): KokKortsvarVarden {
  * Källorna som står vid namn under en regel: allt utom förmedlarna, som bara
  * namnges i antagandetabellen (checklistans fälla).
  */
-export function kokRegelKallor(nyckel: KokRegelNyckel): KallaRef[] {
-  return KOK_TEXT.regel[nyckel].kallor.map((k) => KALLOR[k]).filter((k) => k.slag !== 'förmedlare');
+export function kokRegelKallor(nyckel: KokRegelNyckel, vag?: KokVag): KallaRef[] {
+  const koder: readonly KallKod[] =
+    nyckel === 'tillkommer' && vag !== undefined ? KOK_TILLKOMMER_KALLOR[vag] : KOK_TEXT.regel[nyckel].kallor;
+  return koder.map((k) => KALLOR[k]).filter((k) => k.slag !== 'förmedlare');
 }
+
+/**
+ * Källan under regeln tillkommer, per väg. Vedums luckpris är utan handtag och
+ * lådfronter, Ikeas stommar utan ben, sockel och lådor (K5). För bänkskivan
+ * säger regeln bara vad räknaren inte tar med (frakten), och ingen källa står
+ * under den (granskningen 2026-09-29: Vedum var fel källa där).
+ */
+const KOK_TILLKOMMER_KALLOR: Record<KokVag, readonly KallKod[]> = {
+  luckor: ['VED'],
+  'luckor-bankskiva': ['VED'],
+  bankskiva: [],
+  nytt: ['IKEA'],
+};
 
 /* ------------------------------------------------------------------ *
  * Antagandetabellen (specen 2.9)

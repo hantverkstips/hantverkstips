@@ -182,8 +182,12 @@ test('K5: bänkskiva 4 m laminat, underlagets exempel 3', () => {
   assert.equal(r.spann, true);
   assert.deepEqual(kanter(r, 'materialKr'), [2000, 6000]);
   assert.deepEqual(kanter(r, 'arbeteKr'), [2000, 8000]);
-  assert.deepEqual(kanter(r, 'rotKr'), [600, 2400]);
-  assert.deepEqual(kanter(r, 'attBetalaKr'), [3400, 11600]);
+  // Specen K10: svaret utan avdrag, villkoret med.
+  assert.deepEqual(kanter(r, 'rotKr'), [0, 0]);
+  assert.deepEqual(kanter(r, 'attBetalaKr'), [4000, 14000]);
+  assert.deepEqual(kanter(r, 'attBetalaKr'), kanter(r, 'foreRotKr'));
+  assert.deepEqual([r.villkor.rotKr, r.hog.villkor.rotKr], [600, 2400]);
+  assert.deepEqual([r.villkor.attBetalaKr, r.hog.villkor.attBetalaKr], [3400, 11600]);
   assert.deepEqual(
     r.poster.map((p) => p.nyckel),
     ['bankskiva'],
@@ -194,7 +198,9 @@ test('K6: bänkskiva 3,5 m komposit', () => {
   const r = ok(K6);
   assert.deepEqual(kanter(r, 'materialKr'), [7000, 17500]);
   assert.deepEqual(kanter(r, 'arbeteKr'), [1750, 7000]);
-  assert.deepEqual(kanter(r, 'attBetalaKr'), [8225, 22400]);
+  assert.deepEqual(kanter(r, 'rotKr'), [0, 0]);
+  assert.deepEqual(kanter(r, 'attBetalaKr'), kanter(r, 'foreRotKr'));
+  assert.deepEqual([r.villkor.attBetalaKr, r.hog.villkor.attBetalaKr], [8225, 22400]);
 });
 
 test('K7: luckor och bänkskiva summeras', () => {
@@ -204,7 +210,11 @@ test('K7: luckor och bänkskiva summeras', () => {
     ['luckor', 'gangjarn', 'bankskiva'],
   );
   assert.deepEqual(kanter(r, 'foreRotKr'), [23148, 33148]);
-  assert.deepEqual(kanter(r, 'attBetalaKr'), [20298, 28498]);
+  // Specen K10: rot 2 250 på luckornas 7 500, bänkskivans montering villkorad.
+  assert.deepEqual(kanter(r, 'arbeteSakertKr'), [7500, 7500]);
+  assert.deepEqual(kanter(r, 'rotKr'), [2250, 2250]);
+  assert.deepEqual(kanter(r, 'attBetalaKr'), [23148 - 2250, 33148 - 2250]);
+  assert.deepEqual([r.villkor.attBetalaKr, r.hog.villkor.attBetalaKr], [20298, 28498]);
 });
 
 /* ------------------------------------------------------------------ *
@@ -441,7 +451,9 @@ test('kokRotavdragQuery: övre kanten, och rotavdragsräknaren läser samma tal'
 test('kokKortsvarVarden: talen för de tre vägarna', () => {
   const v = kokKortsvarVarden();
   assert.equal(v.luckor.attBetala, nb('16 898'));
-  assert.equal(v.bankskiva4.attBetala, nb('3 400 till 11 600'));
+  // Specen K10: bänkskivans svar är priset före rot.
+  assert.equal(v.bankskiva4.attBetala, nb('4 000 till 14 000'));
+  assert.equal(v.bankskiva4.attBetala, v.bankskiva4.foreRot);
   assert.equal(v.nytt4.attBetala, nb('48 460 till 86 960'));
   assert.equal(v.nytt5.foreRot, spannText(ok({ ...K9, meter: 5 }).foreRotKr, ok({ ...K9, meter: 5 }).hog.foreRotKr));
   assert.equal(v.hamtat, '28 september 2026');
@@ -482,6 +494,8 @@ test('KOK_TEXT: varje nyckel har en icke-tom sträng', () => {
     textOk(KOK_TEXT.post[n], `post.${n}`);
   }
   for (const n of ['postEgen', 'postIngar', 'postInget', 'skissAlt', 'skissBildtext']) textOk(KOK_TEXT[n], n);
+  textOk(KOK_TEXT.beskedVillkor.rubrik, 'beskedVillkor.rubrik');
+  textOk(KOK_TEXT.beskedVillkor.rad, 'beskedVillkor.rad');
   for (const [k, v] of Object.entries(KOK_TEXT.fel)) textOk(v, `fel.${k}`);
   for (const [k, v] of Object.entries(KOK_TEXT.spalt)) textOk(v, `spalt.${k}`);
   for (const [k, v] of Object.entries(KOK_TEXT.darfor)) textOk(v, `darfor.${k}`);
@@ -523,15 +537,27 @@ test('KOK_TEXT: kortsvaret markerar ett tal ur kokKortsvarVarden', () => {
  * ------------------------------------------------------------------ */
 
 test('regler per väg', () => {
-  assert.deepEqual(ok(K1).regler, ['luckor-pris', 'luckor-montering', 'gangjarn', 'tillkommer', 'rot-arbete', 'rot-tak']);
-  assert.deepEqual(ok(K5).regler, ['bankskiva', 'spann', 'tillkommer', 'rot-arbete', 'rot-tak']);
+  assert.deepEqual(ok(K1).regler, ['luckor-pris', 'luckor-montering', 'gangjarn', 'tillkommer', 'rot-luckor', 'rot-arbete', 'rot-tak']);
+  assert.deepEqual(ok(K5).regler, ['bankskiva', 'spann', 'tillkommer', 'rot-villkor', 'rot-tak']);
+  assert.deepEqual(ok(K7).regler, [
+    'luckor-pris',
+    'luckor-montering',
+    'gangjarn',
+    'bankskiva',
+    'spann',
+    'tillkommer',
+    'rot-delat',
+    'rot-villkor',
+    'rot-tak',
+  ]);
   assert.deepEqual(ok(K9).regler, ['bankskiva', 'nytt-enkel', 'flytt', 'spann', 'tillkommer', 'rot-arbete', 'rot-tak']);
   assert.ok(ok(K8).regler.includes('egen-insats'));
 });
 
 test('gör inte det här per väg', () => {
   assert.deepEqual(ok(K1).gorInteDetHar, ['rot-pa-allt', 'verkstad-rot']);
-  assert.deepEqual(ok(K5).gorInteDetHar, ['rot-pa-allt']);
+  assert.deepEqual(ok(K5).gorInteDetHar, ['rot-villkor']);
+  assert.deepEqual(ok(K7).gorInteDetHar, ['rot-pa-allt', 'verkstad-rot']);
   assert.deepEqual(ok(K9).gorInteDetHar, ['rot-pa-allt', 'el-sjalv']);
   assert.deepEqual(ok(K10).gorInteDetHar, ['rot-pa-allt', 'el-sjalv', 'vvs-intyg']);
   assert.deepEqual(ok(K8).gorInteDetHar, ['rot-pa-allt', 'el-sjalv', 'riva-sjalv']);
@@ -596,13 +622,13 @@ test('lucka-pris får prisgruppen som parameter', () => {
 test('sidan: brödtextens källor står i listan, rotavdragslänken bara när arbetet ger avdrag', () => {
   const sida = readFileSync(SIDA, 'utf8');
   assert.match(sida, /BRODTEXT_KALLOR: KallKod\[\] = \['ELSAK-SJALV', 'SV', 'IF'\]/);
-  assert.match(sida, /harArbete && \(/);
+  assert.ok(sida.includes("harArbete && lage !== 'villkor' && ("));
 });
 
-test('sidan: källorna under reglerna går genom kokRegelKallor, UTKAST är true', () => {
+test('sidan: källorna under reglerna går genom kokRegelKallor, UTKAST är false', () => {
   const sida = readFileSync(SIDA, 'utf8');
-  assert.match(sida, /kokRegelKallor\(nyckel\)/);
-  assert.match(sida, /const UTKAST = true;/);
+  assert.ok(sida.includes('kokRegelKallor(nyckel, visatIndata.vag)'));
+  assert.match(sida, /const UTKAST = false;/);
   assert.match(sida, /\[&_td_span\]:whitespace-nowrap/);
 });
 
@@ -616,4 +642,179 @@ test('bänkskivans pris per löpmeter och montering står på /kok/byta-bankskiv
   for (const s of [...Object.values(KOK_BANKSKIVA_KR_PER_LM), KOK_BANKSKIVA_MONTERING_KR_PER_LM]) {
     assert.ok(text.includes(spann(s)), `${spann(s)} saknas på /kok/byta-bankskiva/`);
   }
+});
+
+/* ------------------------------------------------------------------ *
+ * K10: rotavdraget per post, säkert för luckorna och ett villkor för
+ * bänkskivan (checklistan kok-4, SEO:s kontroll punkt 1, och raknare.md
+ * tillägg 2; specen K10, rättad 2026-09-29)
+ * ------------------------------------------------------------------ */
+
+const NOLLFALL = [
+  { ...KOK_STANDARD, egen: ['montering'] },
+  { ...KOK_STANDARD, vag: 'bankskiva', egen: ['montering'] },
+  { ...KOK_STANDARD, vag: 'luckor-bankskiva', egen: ['montering'] },
+  { ...KOK_STANDARD, vag: 'nytt', egen: ['montering', 'rivning'] },
+];
+
+test('K10: rotLage per väg', () => {
+  for (const i of [K1, K2, K3, K3b, K4, K13, ...NOLLFALL]) assert.equal(ok(i).rotLage, 'saker', JSON.stringify(i));
+  for (const i of [K5, K6]) assert.equal(ok(i).rotLage, 'villkor', JSON.stringify(i));
+  assert.equal(ok(K7).rotLage, 'delat');
+  for (const i of [K8, K9, K10, K11, K12, K15]) assert.equal(ok(i).rotLage, 'saker', JSON.stringify(i));
+});
+
+test('K10: säkert och villkorat arbete är tillsammans hela arbetet', () => {
+  for (const i of [K1, K5, K7, K9, K13]) {
+    const r = ok(i);
+    for (const s of [r, r.hog]) assert.equal(s.arbeteSakertKr + s.arbeteVillkorKr, s.arbeteKr, JSON.stringify(i));
+  }
+  // Villkorat är bara bänkskivans montering utanför nytt kök.
+  assert.deepEqual(kanter(ok(K5), 'arbeteVillkorKr'), [2000, 8000]);
+  assert.deepEqual(kanter(ok(K7), 'arbeteVillkorKr'), [2000, 8000]);
+  assert.deepEqual(kanter(ok(K9), 'arbeteVillkorKr'), [0, 0]);
+});
+
+test('K10: villkor är null när det villkorade arbetet är 0', () => {
+  for (const i of [K1, K9, K10, K11, K12, K13, ...NOLLFALL]) {
+    const r = ok(i);
+    assert.equal(r.villkor, null, JSON.stringify(i));
+    assert.equal(r.hog.villkor, null, JSON.stringify(i));
+    const v = kokBeskedVarden(r, i);
+    assert.equal(v.villkorRot, '');
+    assert.equal(v.villkorAttBetala, '');
+  }
+  for (const i of [K5, K6, K7]) assert.notEqual(ok(i).villkor, null, JSON.stringify(i));
+});
+
+test('K10: svaret för luckor och nytt kök är som förut', () => {
+  const r = ok(K1);
+  assert.equal(r.foreRotKr, 19148);
+  assert.equal(r.rotKr, 2250);
+  assert.equal(r.attBetalaKr, 16898);
+  for (const i of [K9, K10, K11, K12]) {
+    const n = ok(i);
+    assert.ok(n.regler.includes('rot-arbete') && !n.regler.includes('rot-villkor') && !n.regler.includes('rot-delat'));
+    assert.equal(n.gorInteDetHar[0], 'rot-pa-allt');
+  }
+  assert.deepEqual(kanter(ok(K9), 'attBetalaKr'), [48460, 86960]);
+});
+
+test('K10: beskedvärdena för villkoret', () => {
+  const v5 = kokBeskedVarden(ok(K5), K5);
+  assert.equal(v5.rot, '0');
+  assert.equal(v5.attBetala, v5.foreRot);
+  assert.equal(v5.villkorRot, nb('600 till 2 400'));
+  assert.equal(v5.villkorAttBetala, nb('3 400 till 11 600'));
+  assert.equal(v5.arbeteSakert, '0');
+  assert.equal(v5.arbeteVillkor, nb('2 000 till 8 000'));
+  const v7 = kokBeskedVarden(ok(K7), K7);
+  assert.equal(v7.rot, nb('2 250'));
+  assert.equal(v7.attBetala, nb('20 898 till 30 898'));
+  assert.equal(v7.arbeteSakert, nb('7 500'));
+  assert.equal(v7.villkorAttBetala, nb('20 298 till 28 498'));
+});
+
+test('K10: regler och gör inte per läge, som tabellen', () => {
+  const rot = (r) => r.regler.filter((n) => n.startsWith('rot-') && n !== 'rot-tak' && n !== 'rot-slog-i');
+  assert.deepEqual(rot(ok(K1)), ['rot-luckor', 'rot-arbete']);
+  assert.deepEqual(rot(ok(K5)), ['rot-villkor']);
+  assert.deepEqual(rot(ok(K7)), ['rot-delat', 'rot-villkor']);
+  assert.ok(ok(K1).gorInteDetHar.includes('rot-pa-allt'));
+  assert.deepEqual(ok(K5).gorInteDetHar, ['rot-villkor']);
+  assert.ok(ok(K7).gorInteDetHar.includes('rot-pa-allt') && !ok(K7).gorInteDetHar.includes('rot-villkor'));
+  // rot-tak när något arbete finns, också bara villkorat.
+  for (const i of [K1, K5, K7]) assert.ok(ok(i).regler.includes('rot-tak'), JSON.stringify(i));
+  // Nollfallen: inget om rotavdraget under Gör inte.
+  for (const i of NOLLFALL) {
+    const g = ok(i).gorInteDetHar;
+    assert.ok(!g.includes('rot-pa-allt') && !g.includes('rot-villkor'), JSON.stringify(i));
+  }
+});
+
+test('K10: utfallet följer svarets rot', () => {
+  // Bänkskivan med gränsen redan nådd: svaret har inget avdrag att begränsa.
+  const r = ok({ ...K5, rotKr: KOK_GRANSER.rotKr[1] });
+  assert.equal(r.utfall, 'belopp');
+  assert.equal(r.hog.villkor.rotKr, 0);
+  // Luckor och bänkskiva med gränsen nådd: luckornas avdrag begränsas.
+  assert.equal(ok({ ...K7, rotKr: KOK_GRANSER.rotKr[1] }).utfall, 'tak');
+});
+
+test('K10: reglerna rot-villkor och rot-delat har Skatteverket som källa', () => {
+  assert.deepEqual(KOK_TEXT.regel['rot-villkor'].kallor, ['SKV-ROT', 'SKV-RATT']);
+  assert.deepEqual(KOK_TEXT.regel['rot-delat'].kallor, ['SKV-RATT', 'SKV-ROT']);
+  for (const n of ['rot-villkor', 'rot-delat']) {
+    for (const k of kokRegelKallor(n)) assert.equal(k.slag, 'myndighet');
+  }
+});
+
+test('K10: texterna finns som strängar (TEXT SAKNAS tills hantverkaren skrivit dem)', () => {
+  const v = kokBeskedVarden(ok(K7), K7);
+  for (const [namn, t] of [
+    ['beskedVillkor.rubrik', KOK_TEXT.beskedVillkor.rubrik(v)],
+    ['beskedVillkor.rad', KOK_TEXT.beskedVillkor.rad(v)],
+    ['spalt.etikett-villkor', KOK_TEXT.spalt['etikett-villkor']],
+    ['spalt.rad-villkor', KOK_TEXT.spalt['rad-villkor'](v)],
+    ['spalt.rad-villkor-delat', KOK_TEXT.spalt['rad-villkor-delat'](v)],
+    ['darfor.rot-villkor', KOK_TEXT.darfor['rot-villkor'](v)],
+    ['darfor.rot-delat', KOK_TEXT.darfor['rot-delat'](v)],
+    ['regel.rot-villkor', KOK_TEXT.regel['rot-villkor'].text(v)],
+    ['regel.rot-delat', KOK_TEXT.regel['rot-delat'].text(v)],
+    ['gorInte.rot-villkor', KOK_TEXT.gorInte['rot-villkor']],
+  ]) {
+    assert.equal(typeof t, 'string', namn);
+    assert.ok(t.length > 0, namn);
+  }
+});
+
+test('K10: beskedVillkor.rubrik bär foreRot och spalt.rad-villkor bär villkorRot och villkorAttBetala', () => {
+  const v = kokBeskedVarden(ok(K5), K5);
+  assert.ok(KOK_TEXT.beskedVillkor.rubrik(v).includes(v.foreRot));
+  const rad = KOK_TEXT.spalt['rad-villkor'](v);
+  assert.ok(rad.includes(v.villkorRot) && rad.includes(v.villkorAttBetala));
+  assert.match(rad, /Skatteverket/);
+  const darfor = KOK_TEXT.darfor['rot-villkor'](v);
+  assert.ok(darfor.includes(v.villkorRot) && darfor.includes(v.villkorAttBetala));
+});
+
+test('K10: sidan visar lägena och länkar till /kok/byta-bankskiva/', () => {
+  const sida = readFileSync(SIDA, 'utf8');
+  for (const s of [
+    'visat.rotLage',
+    'T.beskedVillkor',
+    "T.spalt['etikett-villkor']",
+    "T.spalt['rad-villkor'](bv)",
+    "T.spalt['rad-villkor-delat'](bv)",
+    "T.darfor['rot-villkor'](bv)",
+    "T.darfor['rot-delat'](bv)",
+    "href: '/kok/byta-bankskiva/'",
+  ]) {
+    assert.ok(sida.includes(s), s);
+  }
+  assert.ok(!sida.includes('rotVillkor'), 'rotVillkor');
+});
+
+/* ------------------------------------------------------------------ *
+ * Granskningen 2026-09-29: länken, skissen, källan och regeln för luckorna
+ * ------------------------------------------------------------------ */
+
+test('granskningen: rot-luckor bara på vägen luckor med arbete, med Skatteverket som källa', () => {
+  assert.ok(ok(K1).regler.includes('rot-luckor'));
+  for (const i of [K5, K7, K9, K13]) assert.ok(!ok(i).regler.includes('rot-luckor'), JSON.stringify(i));
+  assert.deepEqual(KOK_TEXT.regel['rot-luckor'].kallor, ['SKV-RATT']);
+  assert.ok(KOK_TEXT.regel['rot-luckor'].text(kokBeskedVarden(ok(K1), K1)).length > 0);
+});
+
+test('granskningen: tillkommer har rätt källa per väg, ingen för bänkskivan', () => {
+  const koder = (vag) => kokRegelKallor('tillkommer', vag).map((k) => k.kod);
+  assert.deepEqual(koder('luckor'), ['VED']);
+  assert.deepEqual(koder('luckor-bankskiva'), ['VED']);
+  assert.deepEqual(koder('bankskiva'), []);
+  assert.deepEqual(koder('nytt'), ['IKEA']);
+});
+
+test('granskningen: skissen bara på vägen luckor', () => {
+  const sida = readFileSync(SIDA, 'utf8');
+  assert.match(sida, /varumarke && illustration && visatIndata\.vag === 'luckor' && \(/);
 });

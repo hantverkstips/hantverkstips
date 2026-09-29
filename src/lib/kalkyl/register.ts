@@ -176,6 +176,16 @@ export const KALKYLATORER: Kalkylator[] = [
     pelare: ['badrum'],
   },
   {
+    slug: 'kok-kostnad',
+    /* Bär "renovera kök" och "kostar"; ankartext i korten och hubben. */
+    namn: 'Vad kostar det att renovera köket?',
+    rad: 'Välj om luckorna, bänkskivan eller hela köket ska bytas, så får du priset med arbete och material för sig och ser vad rotavdraget drar av.',
+    /* "renovera kök kostnad" toppar i september (SOKORDSANALYS 8.2),
+       och köken planeras över vintern. kok-4.md, Publiceringen. */
+    sasong: [9, 3],
+    pelare: ['kok'],
+  },
+  {
     slug: 'takbyte',
     /* Bär "byta tak" och "kostar"; ankartext i korten och hubben. */
     namn: 'Räkna ut vad det kostar att byta tak',

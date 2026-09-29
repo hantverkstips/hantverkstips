@@ -57,7 +57,7 @@ const SLUG = 'kok-kostnad';
 /* Utkast: sidan svarar 404 i produktion och noindex i dev tills hantverkarens
    text finns. Sätts till false i publiceringscommiten, samtidigt som
    registerposten och inbäddningen i /kok/byta-koksluckor/ läggs till. */
-const UTKAST = true;
+const UTKAST = false;
 const VERKTYGSNAMN = 'Räkna på kostnaden för att renovera köket';
 const BESKRIVNING = 'Välj nya luckor, ny bänkskiva eller ett helt nytt kök och få priset för varje del, med arbete och material var för sig, och se vad rotavdraget blir.'; // 120 till 155 tecken, checklistan 4
 const titel = 'Renovera kök, kostnad post för post'; // högst 44 tecken, checklistan 3
@@ -73,12 +73,15 @@ const H2_SJALV = 'Renovera köket billigt med färg och eget snickeri';
 /* Rotavdraget för köket. */
 const H2_ROT = 'Rotavdraget räknas bara på en del av kostnaden';
 
-/* Läs vidare: länktexterna skriver hantverkaren. /kok/byta-bankskiva/ läggs till
-   när den är publicerad, aldrig före (checklistans tillägg 3). */
+/* Läs vidare: länktexterna skriver hantverkaren. /kok/byta-bankskiva/ står med
+   sedan 2026-09-29 (koordinatorn), eftersom sidan och räknaren publiceras i
+   samma commit och räknaren är utkast (404 i produktion) till dess. */
 const LAS_VIDARE = [
   { href: '/kok/byta-koksluckor/', text: 'Mät och beställ luckor som passar dina gamla skåp' },
   { href: '/kok/mala-koksluckor/', text: 'Grund och färg när du målar om luckorna själv' },
   { href: '/rakna/rotavdrag/', text: 'Fördela rotavdraget mellan två ägare' },
+  /* Checklistan kok-4, publiceringen punkt 6. Sidan och räknaren publiceras i samma commit. */
+  { href: '/kok/byta-bankskiva/', text: 'Kapa, foga och fäst en ny bänkskiva själv' },
 ];
 
 /* Tre till fem frågor. */
@@ -93,7 +96,7 @@ const FRAGOR = [
   },
   {
     fraga: 'Ingår installationen av vitvarorna?',
-    svar: 'Nej. Räknaren tar med vad vitvarorna kostar att köpa men inte vad det kostar att ansluta dem, eftersom ingen av källorna anger vad installationen kostar för ett helt kök. Be firman som monterar köket att skriva installationen på en egen rad i offerten. När installationen görs i samband med en större renovering av köket ger den rotavdrag.',
+    svar: 'Nej. Räknaren tar med vad vitvarorna kostar att köpa men inte vad det kostar att ansluta dem, eftersom ingen av källorna anger vad installationen kostar för ett helt kök. Be firman som monterar köket att skriva installationen på en egen rad i offerten. När installationen görs i samband med en omfattande renovering av köket kan den ge rotavdrag.',
   },
 ];
 
@@ -127,7 +130,17 @@ const varden = {
 const delaLank = new URL(`/rakna/${SLUG}/?${kokDelbarQuery(visatIndata).toString()}`, Astro.site ?? Astro.url).toString();
 
 const bv = kokBeskedVarden(visat, visatIndata);
-const besked = T.besked[visat.utfall];
+/* Specen K10, tabellen per läge: på bänkskivan (villkor) är priset före
+   rotavdrag svaret och avdraget ett villkor på en egen rad. Luckor och nytt kök
+   (saker) räknas som förut. Luckor och bänkskiva (delat) visar svaret med
+   luckornas avdrag och en rad om skivans villkor. */
+const lage = visat.rotLage;
+const villkor = lage === 'villkor';
+const besked = villkor ? T.beskedVillkor : T.besked[visat.utfall];
+/** Det stora talet: före rot vid villkor, annars att betala efter rot. */
+const stort = villkor
+  ? { lag: visat.foreRotKr, hog: visat.hog.foreRotKr }
+  : { lag: visat.attBetalaKr, hog: visat.hog.attBetalaKr };
 
 const ks = T.kortsvar(kokKortsvarVarden());
 
@@ -246,18 +259,18 @@ const huvudbild = varumarke ?? illustration;
         <p class="m-0 font-sans text-h3 lg:text-h3-lg font-bold text-blyerts">{besked.rubrik(bv)}</p>
         <p class="m-0 mt-1 text-brod">{besked.rad(bv)}</p>
 
-        <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">{T.spalt['etikett-betala']}</p>
+        <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">{villkor ? T.spalt['etikett-villkor'] : T.spalt['etikett-betala']}</p>
         {/* Vid ett spann bryts raden vid "till", aldrig inne i ett tal. */}
         <p class="m-0 mt-1 flex flex-wrap items-baseline gap-x-2 tabular-nums [&_span]:whitespace-nowrap">
           <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
-            <Markering>{krText(visat.attBetalaKr)}</Markering>
+            <Markering>{krText(stort.lag)}</Markering>
           </span>
           {
-            visat.attBetalaKr !== visat.hog.attBetalaKr && (
+            stort.lag !== stort.hog && (
               <>
                 <span class="text-ingress lg:text-ingress-lg">till</span>
                 <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
-                  <Markering>{krText(visat.hog.attBetalaKr)}</Markering>
+                  <Markering>{krText(stort.hog)}</Markering>
                 </span>
               </>
             )
@@ -268,19 +281,24 @@ const huvudbild = varumarke ?? illustration;
           Raderna följs av länken som går vidare från dem, i stället för
           badrummets tre rader och tre länkar i block: summan och delningen till
           posterna, sedan rotavdragsräknaren, sist datumet till "Så räknar jag".
-          rad-delning börjar med "Det är" och står därför direkt efter rad-summa.
+          rad-delning börjar med "Det är" och står därför direkt efter rad-summa,
+          eller vid villkor (K10) direkt efter det stora talet, som då är summan.
+          rad-villkor, vad avdraget blir vid en större renovering, står före
+          länken till rotavdragsräknaren.
         */}
         <div class="mt-2 text-liten text-blyerts-2 tabular-nums">
           <p class="m-0">
-            {T.spalt['rad-summa'](bv.foreRot, bv.rot)}{' '}{T.spalt['rad-delning'](bv.arbete, bv.material)}
+            {!villkor && <>{T.spalt['rad-summa'](bv.foreRot, bv.rot)}{' '}</>}{T.spalt['rad-delning'](bv.arbete, bv.material)}
           </p>
           <p class="m-0">
             <a href="#darfor-blev-svaret-sa" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
               {T.spalt.pekrad}
             </a>
           </p>
+          {villkor && <p class="m-0 mt-2">{T.spalt['rad-villkor'](bv)}</p>}
+          {lage === 'delat' && <p class="m-0 mt-2">{T.spalt['rad-villkor-delat'](bv)}</p>}
           {
-            harArbete && (
+            harArbete && lage !== 'villkor' && (
               <p class="m-0">
                 <a
                   href={`/rakna/rotavdrag/?${kokRotavdragQuery(visat, visatIndata).toString()}`}
@@ -368,15 +386,25 @@ const huvudbild = varumarke ?? illustration;
       <p class="m-0 mt-2 text-liten text-blyerts-2">
         <a href="#vad-siffrorna-vilar-pa" class={LANK_KLASS}>{T.darfor.kallrad}</a>
       </p>
-      <p class:list={[STYCKE_KLASS, 'tabular-nums']}>{T.darfor.rot(bv)}</p>
-      <p class:list={[STYCKE_KLASS, 'tabular-nums']}>{T.darfor.betala(bv)}</p>
+      {
+        villkor ? (
+          <p class:list={[STYCKE_KLASS, 'tabular-nums']}>{T.darfor['rot-villkor'](bv)}</p>
+        ) : (
+          <>
+            <p class:list={[STYCKE_KLASS, 'tabular-nums']}>
+              {lage === 'delat' ? T.darfor['rot-delat'](bv) : T.darfor.rot(bv)}
+            </p>
+            <p class:list={[STYCKE_KLASS, 'tabular-nums']}>{T.darfor.betala(bv)}</p>
+          </>
+        )
+      }
       <ul class={REGEL_LISTA_KLASS}>
         {
           (() => {
             /* Förmedlarna namnges bara i antagandetabellen (checklistans fälla).
                Hänvisningen dit står högst en gång: under den sista regeln som
                vilar på en förmedlare. */
-            const regelkallor = visat.regler.map((nyckel) => kokRegelKallor(nyckel));
+            const regelkallor = visat.regler.map((nyckel) => kokRegelKallor(nyckel, visatIndata.vag));
             const sistaFormedlare = kallradEfterRegel(regelkallor, false);
             return visat.regler.map((nyckel, r) => {
               const namngivna = regelkallor[r] ?? [];
@@ -450,7 +478,7 @@ const huvudbild = varumarke ?? illustration;
         Behåll luckorna och måla dem, om det bara är färgen du har tröttnat på. Färgen till ett helt kök kostar mindre än gångjärnen till nya luckor, men arbetet tar tid, och grunden ska väljas efter vad luckorna är gjorda av. Läs därför först <a href="/kok/mala-koksluckor/">hur du slipar, grundar och målar köksluckor</a>.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Ska något bytas kan du göra snickeriet själv, som att hänga luckorna, lägga bänkskivan på plats och skruva ihop och hänga skåpen. Då står arbetet på noll i tabellen. Du får inte heller något rotavdrag för det, så det du sparar är 70 procent av snickarens pris före avdraget.
+        Ska något bytas kan du göra snickeriet själv, som att hänga luckorna, lägga bänkskivan på plats och skruva ihop och hänga skåpen. Då står arbetet på noll i tabellen. Det du gör själv ger inget rotavdrag. Monterar du luckorna själv sparar du därför 70 procent av snickarens pris, och monterar du bänkskivan själv sparar du hela hans pris.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
         Elen kan du inte ta på dig. Nya uttag och ledningar i väggen är ändringar i den fasta elinstallationen, och enligt myndigheten Elsäkerhetsverket ska ett registrerat elinstallationsföretag alltid göra dem. Hällen står inte bland myndighetens exempel, men den ansluts fast till elen på samma sätt, så jag räknar den dit och låter elektrikern koppla in den. Ett vanligt uttag eller en strömbrytare som redan sitter på plats får du däremot byta själv, om du kan det.
@@ -467,7 +495,7 @@ const huvudbild = varumarke ?? illustration;
       */}
       <Pennstreck>{H2_ROT}</Pennstreck>
       <p class="m-0 text-brod lg:text-brod-lg">
-        På ett luckbyte blir rotavdraget drygt en tiondel av priset, eftersom luckorna och gångjärnen kostar mer än monteringen som avdraget räknas på.
+        På ett luckbyte blir rotavdraget drygt en tiondel av priset, eftersom luckorna och gångjärnen kostar mer än monteringen som avdraget räknas på. Byter du bara bänkskivan räknar jag utan avdrag, eftersom Skatteverket inte nämner det bytet.
       </p>
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
         Med priserna här kommer du inte upp till gränsen för en person, inte ens med flyttad diskbänk och ny elgrupp, om du inte redan har använt en del av den i år. Äger ni bostaden tillsammans och den ena har använt mycket av sin gräns, till exempel på ett badrum, kan den andra betala en större del av köket. <a href="/rakna/rotavdrag/">Räknaren för rotavdrag</a> visar hur avdraget då delas mellan er.
@@ -480,7 +508,9 @@ const huvudbild = varumarke ?? illustration;
     <section>
       <Pennstreck id="sa-raknar-jag">Så räknar jag</Pennstreck>
       {
-        varumarke && illustration && (
+        /* Skissen visar luckbytet och 16 898 kr, så den står bara på vägen luckor
+           (granskningen 2026-09-29). */
+        varumarke && illustration && visatIndata.vag === 'luckor' && (
           <Illustration namn={`rakna/${SLUG}`} alt={T.skissAlt} bildtext={T.skissBildtext} />
         )
       }

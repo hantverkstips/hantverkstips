@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Hörnet i ett L-kök ovanifrån när du ska byta bänkskiva, där två skivor möts i en skarv med kex och tre beslag.">
+  <!-- Anteckningsboken. Blyerts 2 px för väggarnas insida och skivornas framkanter, blyerts-2 för väggarnas
+       skraffering, de dolda delarna och ledare, snickarpenna för skarven mellan skivorna (enda pennsaken).
+       Hörnet sett rakt uppifrån: väggarna uppe och till vänster, rummet nere till höger. Skiva A går in i hörnet,
+       skiva B möter dess kant. Kex och kopplingsbeslag sitter i skivorna eller under dem och ritas streckade,
+       utan mått eftersom anvisningarna inte ger lägena. Inte skalenlig.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+
+  <!-- Blyerts-2 1,25: väggarnas skraffering, övre väggen och vänstra väggen -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M68,24 l10,10 M90,24 l10,10 M112,24 l10,10 M134,24 l10,10 M156,24 l10,10 M178,24 l10,10 M200,24 l10,10 M222,24 l10,10 M244,24 l10,10 M266,24 l10,10 M288,24 l10,10 M310,24 l10,10 M332,24 l10,10 M354,24 l10,10 M376,24 l10,10 M398,24 l10,10 M420,24 l10,10 M442,24 l10,10 M464,24 l10,10 M486,24 l10,10 M508,24 l10,10 M530,24 l10,10 M552,24 l10,10 M574,24 l10,10"/>
+    <path d="M46,24 l10,10 M46,46 l10,10 M46,68 l10,10 M46,90 l10,10 M46,112 l10,10 M46,134 l10,10 M46,156 l10,10 M46,178 l10,10 M46,200 l10,10 M46,222 l10,10 M46,244 l10,10 M46,266 l10,10 M46,288 l10,10 M46,310 l10,10 M46,332 l10,10"/>
+  </g>
+
+  <!-- Blyerts: väggarnas insida, skiva A:s framkant, skiva B:s framkant -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M60,362 Q59,200 60,37 M57,40 Q326,41.5 594,40"/>
+    <path d="M240,217 Q241.5,289 240,362"/>
+    <path d="M237,220 Q416,221.5 594,220"/>
+  </g>
+
+  <!-- Blyerts: diskhon på skiva B, ytterkant, inre kontur 8 innanför och avloppet -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="404" y="74" width="136" height="116" rx="10"/>
+    <rect x="412" y="82" width="120" height="100" rx="4"/>
+    <circle cx="472" cy="150" r="7"/>
+  </g>
+
+  <!-- Blyerts-2 1,5 streckat: dolda delar. Kopplingsbeslagen, två ringar och en stång tvärs skarven,
+       främre y 190, mittersta y 130, innersta y 70; kexen tvärs skarven vid y 50, 100, 160 och 210 -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="5 4">
+    <circle cx="216" cy="190" r="10"/>
+    <circle cx="264" cy="190" r="10"/>
+    <path d="M226,187.5 H254 M226,192.5 H254"/>
+    <circle cx="216" cy="130" r="10"/>
+    <circle cx="264" cy="130" r="10"/>
+    <path d="M226,127.5 H254 M226,132.5 H254"/>
+    <circle cx="216" cy="70" r="10"/>
+    <circle cx="264" cy="70" r="10"/>
+    <path d="M226,67.5 H254 M226,72.5 H254"/>
+    <ellipse cx="240" cy="50" rx="17" ry="6"/>
+    <ellipse cx="240" cy="100" rx="17" ry="6"/>
+    <ellipse cx="240" cy="160" rx="17" ry="6"/>
+    <ellipse cx="240" cy="210" rx="17" ry="6"/>
+  </g>
+
+  <!-- Blyerts-2: ledare till kexet vid y 100 och till det främre beslaget -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M300,103 L259,100"/>
+    <path d="M326,238 L272,197"/>
+  </g>
+
+  <!-- Snickarpenna: skarven från väggen till innerhörnet; ledaren till skarv -->
+  <path d="M240,40 Q241.5,130 240,220" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M298,276 L243,218.5" fill="none" stroke="#ad3519" stroke-width="1.25" stroke-linecap="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#625a50">
+    <text x="282" y="198" fill="#2a2521">1</text>
+    <text x="282" y="138" fill="#2a2521">2</text>
+    <text x="282" y="78" fill="#2a2521">3</text>
+    <text x="300" y="290" fill="#ad3519">skarv</text>
+    <text x="304" y="110">kex</text>
+    <text x="330" y="252">beslag underifrån</text>
+  </g>
+</svg>

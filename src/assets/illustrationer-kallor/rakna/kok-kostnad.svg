@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Blyertsskiss av en köksvägg på 4 meter där en lucka lyfts av, med kostnaden för att renovera köket med nya luckor">
+  <!-- Anteckningsboken, verktygsskiss för /rakna/kok-kostnad/: skåpraden i elevation, 4 meter
+       som räknarens standardvärde (KOK_STANDARD.meter i src/lib/kalkyl/renovering.ts), ritad
+       360 px lång, x 60–420. Fyra bänkskåp och fyra väggskåp med två luckor vardera, 16 luckor
+       som standardvärdet KOK_STANDARD.antalLuckor. Den högra luckan i det högra bänkskåpet är
+       lyft av: stommen syns där med sidans insida och ett hyllplan.
+       Blyerts 2 px för skåp, skiva, sockel och golv, blyerts-2 1,5 px för måttbygeln och
+       1,25 px för ledarna. Det enda i snickarpenna, 2,5 px, är den avlyfta luckan med sina
+       två gångjärnskoppar och pilen från stommen till den (det enda som pekar).
+       Tumstock bara bakom "16 898 kr", som är att betala efter rotavdraget för nya luckor
+       med räknarens standardvärden (kokKortsvarVarden().luckor.attBetala).
+       Ändras konstanterna där ändras talet här.
+       Etiketterna är ord ur hantverkarens texter på sidan, 2026-09-29.
+       Handskrift i Caveat 500, 24 px, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="464" y="313" width="93" height="30" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 510.5 328)"/>
+
+  <!-- Blyerts: skåpraden -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- golvet och sockeln -->
+    <path d="M50,312 Q245,313 440,312"/>
+    <path d="M64,298 Q240,299 416,298 M64,298 V312 M416,298 V312"/>
+    <!-- bänkskivan -->
+    <path d="M56,214 Q240,213 424,214 Q425,220 424,226 Q240,227 56,226 Q55,220 56,214 Z"/>
+    <!-- bänkskåpen -->
+    <path d="M60,226 Q59,262 60,298 M150,226 Q151,262 150,298 M240,226 Q239,262 240,298 M330,226 Q331,262 330,298 M420,226 Q421,262 420,298"/>
+    <path d="M61,228 H104 V296 H61 Z M106,228 H149 V296 H106 Z M151,228 H194 V296 H151 Z M196,228 H239 V296 H196 Z M241,228 H284 V296 H241 Z M286,228 H329 V296 H286 Z M331,228 H374 V296 H331 Z"/>
+    <path d="M98,234 V248 M112,234 V248 M188,234 V248 M202,234 V248 M278,234 V248 M292,234 V248 M368,234 V248"/>
+    <!-- stommen där luckan saknas -->
+    <path d="M414,226 Q415,262 414,298 M376,262 Q395,263 414,262"/>
+    <!-- väggskåpen -->
+    <path d="M60,104 Q240,103 420,104 Q421,136 420,168 Q240,169 60,168 Q59,136 60,104 Z M150,104 Q151,136 150,168 M240,104 Q239,136 240,168 M330,104 Q331,136 330,168"/>
+    <path d="M61,106 H104 V166 H61 Z M106,106 H149 V166 H106 Z M151,106 H194 V166 H151 Z M196,106 H239 V166 H196 Z M241,106 H284 V166 H241 Z M286,106 H329 V166 H286 Z M331,106 H374 V166 H331 Z M376,106 H419 V166 H376 Z"/>
+    <path d="M98,146 V160 M112,146 V160 M188,146 V160 M202,146 V160 M278,146 V160 M292,146 V160 M368,146 V160 M382,146 V160"/>
+  </g>
+
+  <!-- Blyerts-2: måttbygeln, bruten för måttet -->
+  <path d="M60,84 Q141,83 222,84 M258,84 Q339,85 420,84 M60,76 V104 M420,76 V104" fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Snickarpenna: den avlyfta luckan med gångjärnskopparna, och pilen från stommen -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <g transform="rotate(10 486 262)">
+      <rect x="464.5" y="228" width="43" height="68"/>
+      <circle cx="473.5" cy="240" r="5"/>
+      <circle cx="473.5" cy="284" r="5"/>
+    </g>
+    <path d="M424,276 Q446,296 458,282 M448.6,285.3 L458,282 L456.2,291.8"/>
+  </g>
+
+  <!-- Blyerts-2: ledarna från etiketterna -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M390,326 L398,290"/>
+    <path d="M500,210 L481.9,232.7"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="222" y="90" fill="#625a50">4 m</text>
+    <text x="72" y="206">bänkskiva</text>
+    <text x="344" y="344">stomme</text>
+    <text x="488" y="204">gångjärn</text>
+    <text x="530" y="268" fill="#ad3519">lucka</text>
+    <text x="466" y="336">16 898 kr</text>
+  </g>
+</svg>

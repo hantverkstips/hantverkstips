@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Köksbänken i genomskärning, där måtten visar hur långt hällen ska sitta från stänkskyddet i köket och från fläkten.">
+  <!-- Anteckningsboken. Blyerts 2 px för väggens framsida, stänkskyddet av laminat, bänkskivan med urtaget, hällens
+       glasskiva och kropp och fläktens kåpa med skorsten, blyerts-2 för väggens skraffering, underskåpet med sockel,
+       måttbygeln för 760 mm och ledare, snickarpenna för måttpilen för 50 mm från stänkskyddets framsida till urtaget
+       (enda pennsaken). Tumstock bakom minst 50 mm. Snitt genom bänken och hällen, sett från sidan, väggen till vänster.
+       Inte skalenlig: 50 mm är förstorat och 760 mm förkortat.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2 1,25: väggens skraffering, x 96 till 130 -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M97,4 l10,10 M119,4 l10,10"/>
+    <path d="M108,26 l10,10"/>
+    <path d="M97,48 l10,10 M119,48 l10,10"/>
+    <path d="M108,70 l10,10"/>
+    <path d="M97,92 l10,10 M119,92 l10,10"/>
+    <path d="M108,114 l10,10"/>
+    <path d="M97,136 l10,10 M119,136 l10,10"/>
+    <path d="M108,158 l10,10"/>
+    <path d="M97,180 l10,10 M119,180 l10,10"/>
+    <path d="M108,202 l10,10"/>
+    <path d="M97,224 l10,10 M119,224 l10,10"/>
+    <path d="M108,246 l10,10"/>
+    <path d="M97,268 l10,10 M119,268 l10,10"/>
+    <path d="M108,290 l10,10"/>
+    <path d="M97,312 l10,10 M119,312 l10,10"/>
+    <path d="M108,334 l10,10"/>
+  </g>
+
+  <!-- Blyerts: väggens framsida, stänkskyddet, bänkskivan i två delar kring urtaget, hällens glasskiva och kropp,
+       fläktens kåpa och skorsten -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M130,-2 Q131,180 130,362"/>
+    <path d="M128,100 Q133,99.5 140,100 M138,98 Q139,165 138,232"/>
+    <path d="M136,230 Q158,229.5 180,230 M130,250 Q159,250.8 190,250 M188,228 Q188.5,240 188,252"/>
+    <path d="M478,230 Q520,229.5 562,230 M468,250 Q515,250.8 562,250 M560,228 Q560.5,240 560,252 M470,228 Q469.5,240 470,252"/>
+    <path d="M178,222 Q329,221 480,222 M178,230 Q329,230.8 480,230 M180,220 Q180.5,226 180,232 M478,220 Q477.5,226 478,232"/>
+    <path d="M196,230 Q195.5,258 196,286 M462,230 Q462.5,258 462,286 M194,284 Q329,284.8 464,284"/>
+    <path d="M136,76 Q284,77 432,76 M138,78 L138,58 Q187,41 236,24 Q235.5,11 236,-2 M430,78 L430,58 Q371,41 312,24 Q312.5,11 312,-2"/>
+  </g>
+
+  <!-- Blyerts-2 1,5: underskåpets front och sockel, måttbygeln för 760 mm från hällens ovansida till fläktens underkant -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M548,250 Q549,293 548,336 L536,336 L536,362"/>
+    <path d="M404,222 Q405,149 404,76 M396,76 H412 M396,222 H412 M400,80 l8,-8 M400,226 l8,-8"/>
+  </g>
+
+  <!-- Tumstock -->
+  <rect x="146" y="168" width="114" height="26" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 203 181)"/>
+
+  <!-- Blyerts-2: ledare -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M150,128 L134,140"/>
+    <path d="M479,287 L459,270"/>
+    <path d="M534,217 L538,238"/>
+  </g>
+
+  <!-- Snickarpenna: måttpilen för 50 mm från stänkskyddets framsida till urtagets kant, med hjälplinjer -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M139,206 Q163,205.5 187,206"/>
+    <path d="M146,200 L139,206 L146,212 M180,200 L187,206 L180,212"/>
+  </g>
+  <path d="M138,198 V230 M188,198 V230" fill="none" stroke="#ad3519" stroke-width="1.25" stroke-linecap="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#625a50">
+    <text x="150" y="188" fill="#2a2521">minst 50 mm</text>
+    <text x="414" y="154">minst 760 mm</text>
+    <text x="150" y="130">laminat</text>
+    <text x="480" y="300">häll</text>
+    <text x="446" y="64">fläkt</text>
+    <text x="486" y="214">bänkskiva</text>
+  </g>
+</svg>

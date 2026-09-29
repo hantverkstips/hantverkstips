@@ -79,6 +79,72 @@ Genom `raknaRotavdrag()` i `rotavdrag.ts`, som i badrummet (badrumsspecen B7), p
 
 Alla poster har ett pris per styck, per meter eller för hela köket, så ingen längd inom fältets gränser ligger utanför källorna. Utfallen är `belopp` och `tak`.
 
+### K10. Rotavdraget per post: säkert för luckorna, ett villkor för bänkskivan (tillagt 2026-09-29, rättat samma dag)
+
+**Källan.** Skatteverket, Ger arbetet rätt till rotavdrag (`faktablad/rakna-kok-kostnad.md` rad 22–23):
+- "byta och reparera köksluckor …" ger avdrag utan villkor.
+- "montera fast köks- och badrumsinredning … i samband med omfattande byggarbete eller renovering" ger avdrag bara under villkoret.
+
+Bänkskivan nämns inte för sig. Den första versionen av K10 lade villkoret också på luckorna, och det var fel: luckbytet ger avdrag. Kraven kommer från SEO:s kontroll i `seo-checklista-2026-09-29/kok-4.md` (räknaren punkt 1) och tillägg 2 i `raknare.md`.
+
+**Beslut för luckor-bankskiva: arbetet delas.** Modellen har arbetet per post, så delningen kostar en summering och ingen ny källa. Luckornas montering får avdraget i svaret. Bänkskivans montering får villkoret. Alternativet, att räkna avdrag på allt och låta en rad säga att skivans del är osäker, ger ett svar som lovar ett avdrag Skatteverket inte nämner. Det är samma fel som SEO stoppade. Med delningen säger räknaren samma sak som `/kok/byta-koksluckor/` och `/kok/byta-bankskiva/` på varje väg.
+
+**Vilket arbete som är villkorat.** `arbeteVillkorKr` är bänkskivans montering i vägarna `bankskiva` och `luckor-bankskiva`. Allt annat arbete är säkert (`arbeteSakertKr`): luckornas montering, och i väg `nytt` allt arbete som förut. Skillnaden i `nytt` är att bänkskivans montering ingår i köksmonteringen, som räknas som en omfattande renovering.
+
+**Per kant i `KokSiffror`:**
+- `arbeteKr`, `materialKr` och `foreRotKr` som förut.
+- `arbeteSakertKr` och `arbeteVillkorKr`, där summan är `arbeteKr`.
+- `rotKr`, `raktRotKr`, `kapatKr`, `attBetalaKr` och `begransad`: svaret. `raknaRotavdrag` med `arbetskostnadKr = arbeteSakertKr` och `materialkostnadKr = foreRotKr − arbeteSakertKr`, alltså allt som inte ger avdrag.
+- `villkor: { rotKr, kapatKr, attBetalaKr } | null`: vad det blir om också det villkorade arbetet ger avdrag. `raknaRotavdrag` med allt arbete, som i dag. `null` när `arbeteVillkorKr` är 0.
+
+**`rotLage` i `KokOk`** ersätter `rotVillkor`. Värdet sätts ur den övre kanten:
+- `'villkor'` när arbeteVillkor > 0 och arbeteSakert = 0. Det gäller bänkskivan och luckor-bankskiva med egen montering av luckorna, vilket inte kan väljas separat men hålls generellt.
+- `'delat'` när båda är > 0 (luckor-bankskiva).
+- `'saker'` annars: luckor, nytt och alla nollfall.
+
+`utfall` följer svarets rot (`hog.begransad`).
+
+**`KokBeskedVarden` får tre fält:**
+- `arbeteSakert`
+- `arbeteVillkor`
+- `villkorRot` och `villkorAttBetala`: spannText av `villkor`, tom sträng när `villkor` är null.
+
+`rot` och `attBetala` är svarets. Hantverkarens befintliga villkorstexter (`spalt['rad-villkor']` och `darfor['rot-villkor']`) byter `v.rot` till `v.villkorRot` och `v.attBetala` till `v.villkorAttBetala`. Orden ändras inte. Det är ett namnbyte, eftersom betydelsen var "om avdraget gäller".
+
+**Sidan och reglerna per läge:**
+
+| | `saker` | `villkor` (bänkskiva) | `delat` (luckor-bankskiva) |
+|---|---|---|---|
+| Besked | `besked[utfall]` | `beskedVillkor` | `besked[utfall]` |
+| Etikett | `etikett-betala` | `etikett-villkor` | `etikett-betala` |
+| Stora talet | attBetala | foreRot | attBetala |
+| Spalten | rad-summa + rad-delning | rad-delning | rad-summa + rad-delning |
+| Rad efter pekraden | ingen | `rad-villkor` | `rad-villkor-delat` (ny) |
+| Under posttabellen | `rot`, `betala` | `darfor['rot-villkor']` | `darfor['rot-delat']` (ny), `betala` |
+| Regel om rot | `rot-arbete` | `rot-villkor` | `rot-delat` (ny) och `rot-villkor` |
+| Gör inte | `rot-pa-allt` | `gorInte['rot-villkor']` | `rot-pa-allt` |
+
+Regeln `rot-delat` har källorna SKV-RATT och SKV-ROT. `rot-tak` står när svarets arbete eller det villkorade arbetet är över 0. `rot-slog-i` står vid tak. Länken till rotavdragsräknaren står när arbeteKr > 0 och får `kokRotavdragQuery`, som i dag, med all arbetskostnad.
+
+**Nya texter, TEXT SAKNAS tills hantverkaren skrivit dem** (textlistan avsnitt 12, tillägget):
+- `spalt['rad-villkor-delat'](v)`
+- `darfor['rot-delat'](v)`
+- `regel['rot-delat'].text(v)`
+
+**Facit i testet.** Talen är räknade med formlerna ovan och ur underlaget:
+
+| Fall | Svaret | Villkoret |
+|---|---|---|
+| K1, luckor | attBetala 16 898, rot 2 250, som förut | null |
+| K5, bänkskiva 4 m laminat | rot 0, attBetala = foreRot 4 000 till 14 000 | rot 600 till 2 400, attBetala 3 400 till 11 600 (underlaget ex 3) |
+| K6, bänkskiva 3,5 m komposit | rot 0, attBetala = foreRot | attBetala 8 225 till 22 400 |
+| K7, luckor-bankskiva | rot 2 250 på luckornas 7 500, attBetala = foreRot − 2 250 | attBetala 20 298 till 28 498 |
+| K9 till K12, nytt kök | som förut | null |
+
+`kokKortsvarVarden().bankskiva4.attBetala` blir foreRot. Kortsvaret läser redan `foreRot` för bänkskivan.
+
+Nollfallen: med egen montering är arbetet 0, `rotLage` blir `saker` och sidan visas som förut.
+
 ---
 
 ## 1. Filer

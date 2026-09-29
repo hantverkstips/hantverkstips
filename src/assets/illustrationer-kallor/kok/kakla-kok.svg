@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="En köksvägg framifrån med två steg för att kakla kök, först hela plattor på en list och sedan silikon mot bänkskivan.">
+  <!-- Anteckningsboken. Blyerts 2 px för överskåpen, bänkskivan, plattorna, den kapade raden, eluttaget och
+       silikonsträngen, blyerts-2 för underskåpen, delningslinjen, bågarna i silikonet och ledare, snickarpenna för
+       listen med kilarna (enda pennsaken). Vänster halva under arbetet, höger halva klar. Inte skalenlig: plattorna
+       är 44 med 3 i fog, glipan förstorad till 10. Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2 1,25: delningslinjen och bågarna i silikonet -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M320,70V282" stroke-dasharray="6 5"/>
+    <path d="M372,275.5q15,2.5 30,0M522,275.5q15,2.5 30,0"/>
+  </g>
+
+  <!-- Blyerts-2 1,5: underskåpens luckor med skarven -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M48,362V306Q48,304 50,304Q319,305 588,304Q590,304 590,306V362M320,304V362"/>
+  </g>
+
+  <!-- Blyerts: överskåpen med handtag, bänkskivans framkant, plattorna rad för rad, den kapade raden,
+       eluttaget med urtaget i plattorna, silikonsträngen -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M44,-2V72M42,70Q180,71 318,70M316,-2V72M324,-2V72M322,70Q459,69 596,70M594,-2V72M170,60h22M448,60h22"/>
+    <path d="M42,282Q319,281 596,282M42,300Q319,301 596,300M44,280V302M594,280V302"/>
+    <path d="M46,228Q181,227 316,228M46,272Q181,273 316,272M325,228Q458.5,229 592,228M325,272Q458.5,271 592,272M46,181Q181,182 316,181M46,225Q181,224 316,225M325,181Q458.5,180 592,181M325,225Q458.5,226 592,225M46,134Q181,133 316,134M46,178Q181,179 316,178M325,134Q458.5,135 592,134M325,178Q458.5,177 592,178M46,87Q181,88 316,87M46,131Q181,130 316,131M325,87Q458.5,86 592,87M325,131Q458.5,132 592,131M325,84Q458.5,85 592,84"/>
+    <path d="M48,228v44M92,228v44M95,228v44M139,228v44M142,228v44M186,228v44M189,228v44M233,228v44M236,228v44M280,228v44M283,228v44M327,228v44M371,228v44M374,228v44M418,228v44M421,228v44M465,228v44M468,228v44M512,228v44M515,228v44M559,228v44M562,228v44M590,228v44M48,181v44M92,181v44M95,181v44M139,181v44M142,181v44M186,181v44M189,181v44M233,181v44M236,181v44M280,181v44M283,181v44M327,181v44M371,181v44M374,181v44M418,181v44M421,181v44M512,181v44M515,181v44M559,181v44M562,181v44M590,181v44M48,134v44M92,134v44M95,134v44M139,134v44M142,134v44M186,134v44M189,134v44M233,134v44M236,134v44M280,134v44M283,134v44M327,134v44M371,134v44M374,134v44M418,134v44M421,134v44M465,134v44M468,134v44M512,134v44M515,134v44M559,134v44M562,134v44M590,134v44M48,87v44M92,87v44M95,87v44M139,87v44M142,87v44M186,87v44M189,87v44M233,87v44M236,87v44M280,87v44M283,87v44M327,87v44M371,87v44M374,87v44M418,87v44M421,87v44M465,87v44M468,87v44M512,87v44M515,87v44M559,87v44M562,87v44M590,87v44M327,71V84M371,71V84M374,71V84M418,71V84M421,71V84M465,71V84M468,71V84M512,71V84M515,71V84M559,71V84M562,71V84M590,71V84"/>
+    <path d="M438,184Q470,183.5 502,184V222Q470,222.5 438,222Z"/>
+    <path d="M446,188H494Q498,188 498,192V214Q498,218 494,218H446Q442,218 442,214V192Q442,188 446,188ZM465,203a9,9 0 1 0 -18,0a9,9 0 1 0 18,0ZM493,203a9,9 0 1 0 -18,0a9,9 0 1 0 18,0Z"/>
+    <path d="M327,272Q329,279 337,279.5Q458,280.5 580,279.5Q588,279 590,272"/>
+  </g>
+
+  <!-- Papperslappar bakom etiketterna på plattorna -->
+  <g fill="#f5efe3">
+    <rect x="148" y="230" width="33" height="24"/>
+    <rect x="68" y="140" width="105" height="30"/>
+    <rect x="348" y="96" width="92" height="30"/>
+    <rect x="338" y="236" width="136" height="30"/>
+  </g>
+
+  <!-- Blyerts-2: ledare -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M384,96L381,80"/>
+    <path d="M432,266L424,278"/>
+    <path d="M452,317L446,301"/>
+  </g>
+
+  <!-- Snickarpenna: listen på tre kilar, och ledaren till den -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M46,272Q182,271.5 318,272M46,278Q182,278.5 318,278M48,270.5V279.5M316,270.5V279.5"/>
+    <path d="M71,282L89,278V282ZM191,282L209,278V282ZM291,282L309,278V282Z"/>
+  </g>
+  <path d="M166,254L170,273" fill="none" stroke="#ad3519" stroke-width="1.25" stroke-linecap="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#625a50">
+    <text x="150" y="250" fill="#ad3519">list</text>
+    <text x="70" y="160">hela plattor</text>
+    <text x="350" y="116">kapad rad</text>
+    <text x="340" y="256">glipa med silikon</text>
+    <text x="440" y="336">bänkskiva</text>
+  </g>
+</svg>

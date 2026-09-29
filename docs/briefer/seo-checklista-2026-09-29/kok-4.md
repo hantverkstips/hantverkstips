@@ -325,3 +325,82 @@ Faktabladen `guider-byta-bankskiva.md`, `guider-kakla-kok.md` och `kunskap-stank
 6. **Byta bänkskiva, rotavdraget.** Skatteverket nämner inte bänkskivebyte. Sidan lovar inget avdrag. Den återger Skatteverkets villkor (montering av fast köksinredning i samband med renovering, arbetet och inte materialet) och länkar till `/rakna/rotavdrag/`. **Bättre än ettan punkt 3** lyder nu: pris per löpmeter i tre material och montering med källa och datum, och rotreglerna återgivna utan löfte. Samma villkorsrad ska stå i kostnadsräknaren när valet är bara bänkskiva (tillägg i `raknare.md`).
 
 **kok-4.md är klar för hantverkaren.**
+
+---
+
+## Kontroll efter skrivningen, 2026-09-29
+
+Lästa mot checklistan, besluten efter faktabladen och kök-kostnads avsnitt med tillägg i `raknare.md`: `guider/kok/kakla-kok.mdx`, `kunskap/kok/stankskydd.mdx`, `guider/kok/byta-bankskiva.mdx`, `src/pages/rakna/kok-kostnad.astro` och `KOK_TEXT` i `src/lib/kalkyl/renovering.ts`.
+
+| Sida | Punkter |
+|---|---|
+| `/kok/kakla-kok/` | 0, inget att ändra |
+| `/kok/stankskydd/` | 0, inget att ändra |
+| `/kok/byta-bankskiva/` | 0 i texten; verktygskortet läggs in vid publiceringen |
+| `/rakna/kok-kostnad/` | 2 |
+
+**Punkterna på räknaren**, rättas före publicering:
+
+1. **Rotavdraget säger emot artiklarna.** `/kok/byta-koksluckor/` och `/kok/byta-bankskiva/` säger "räkna utan avdrag" när bara luckorna eller skivan byts, eftersom Skatteverket bara nämner montering av fast köksinredning i samband med omfattande byggarbete eller renovering. Räknaren drar ändå av rot på vägarna luckor, bänkskiva och luckor med bänkskiva (`rot-arbete` i `KOK_TEXT`), och den bäddas in i den artikel som säger motsatsen. Tillägg 2 i `raknare.md` är alltså inte genomfört. Krav: på de tre vägarna visar räknaren priset utan rotavdrag som huvudbesked, med en rad som säger vad avdraget blir om arbetet ingår i en större renovering, och Skatteverket som källa. Vägen nytt kök räknas som i dag. UX och bygge specar, och hantverkaren skriver raden. Sajten ska säga samma sak på alla tre sidorna.
+2. **"Läs vidare" får `/kok/byta-bankskiva/`** (tillägg 1 punkt 3 i `raknare.md`). Raden läggs i samma commit som bänkskivesidan publiceras.
+
+**Rättelse av punkt 1, 2026-09-29.** Punkt 1 byggde på en felläsning. Skatteverket (faktabladet `rakna-kok-kostnad.md` rad 22–23) ger avdrag för "byta och reparera köksluckor" utan villkor. Villkoret om omfattande byggarbete eller renovering gäller bara "montera fast köks- och badrumsinredning", alltså bänkskivan. Kravet på pris utan avdrag på luckvägen stryks. Det som gäller är UX:s K10 (`spec-kalkyl-kok-kostnad-2026-09-29.md`):
+
+- Luckor: avdraget i svaret (16 898 kr för standardköket), samma som artikelns "ungefär 17 000 kronor efter rotavdraget".
+- Bänkskiva: priset utan avdrag som svar, villkoret på en egen rad (`rad-villkor`, `rot-villkor`), Skatteverket som källa.
+- Luckor med bänkskiva: arbetet delas, bara luckmonteringen ger avdrag i svaret, skivans montering står som villkor (`rad-villkor-delat`, `rot-delat`).
+
+Kontrollerat mot `KOK_TEXT`, `kok-kostnad.astro` (avsnittet om rotavdraget rad 498, Faq, "Så räknar jag"), `byta-koksluckor.mdx` rad 13 och 167 och `byta-bankskiva.mdx` rad 13 och 227. Sajten säger samma sak på alla tre sidorna: luckbytet ger avdrag på monteringen, bänkskivan räknas utan avdrag med villkoret återgivet. Punkt 2 är genomförd: "Läs vidare" har `/kok/byta-bankskiva/` ("Kapa, foga och fäst en ny bänkskiva själv"). **Räknaren: 0 punkter.**
+
+**Registerposten godkänd:** `namn: 'Vad kostar det att renovera köket?'` (bär "renovera", "kök" och "kostar", börjar inte som räknarens title "Renovera kök, kostnad …"), `rad: 'Välj om luckorna, bänkskivan eller hela köket ska bytas, så får du priset med arbete och material för sig och ser vad rotavdraget drar av.'`, `sasong: [9, 3]`, `pelare: ['kok']`.
+
+### Hantverkarnas frågor
+
+- **Kakla kök, 1 770 ord: godkänt.** Längden kom av innehållet och inte av utfyllnad.
+- **Kakla kök följer Hornbach om första raden: godkänt.** Metoden med hela plattor på en list ovanför bänken och den kapade raden sist mot silikonet har källa. Checklistan beskrev ett avsnitt, inte en metod. Skissen visar den, och Bättre än ettan punkt 1 är uppfylld.
+- **Stänkskyddet med Picky Living för 50 till 60 cm: godkänt.** Det är en köksleverantör som anger måttet själv, och det är det beslut 3 kräver. Källan står som företagets.
+- **Byta bänkskiva, 1 900 ord: godkänt.**
+- **Räknarens H2 "Renovera köket billigt …" och H1 utan "pris": godkänt.** Frasen står i naturlig böjning, och H1 har "köksrenovering" medan beskrivningen har "priset för varje del". Checklistan krävde inget exakt.
+- **Kondensbildens alt i bestämd form, "kondens på fönstret": godkänt** (gäller `fukt-4.md`).
+
+### Publiceringen
+
+**En commit för köket.** Kakla kök och stänkskydd länkar till varandra, och bänkskivan och räknaren länkar till varandra. Ordningen:
+
+1. Punkt 1 och 2 på räknaren rättas och godkänns av UX.
+2. **Registerposten** i `src/lib/kalkyl/register.ts`, efter `badrum-kostnad`:
+   - `slug: 'kok-kostnad'`
+   - `namn`: hantverkaren skriver. Namnet är ankartext i korten och hubben, så det ska bära "renovera" och "kök" och ordet kostar, som badrummets "Vad kostar det att renovera badrummet?". Det får inte börja med räknarens title ("Renovera kök, kostnad …").
+   - `rad`: hantverkaren skriver en mening med verb, som till en granne, om att välja luckor, bänkskiva eller nytt kök och få priset per del med rotavdraget. Samma form som badrummets rad.
+   - `sasong: [9, 3]` och `pelare: ['kok']`, med kommentaren om att frasen toppar i september och att köken planeras över vintern (SOKORDSANALYS 8.2).
+   - Räknaren läggs i `MED_FORMULAR` om inbäddningen kräver det.
+3. `UTKAST = false` i `src/pages/rakna/kok-kostnad.astro`.
+4. **Kommentarerna byts:**
+   - `src/content/guider/kok/byta-koksluckor.mdx`, rad 168: `{/* KOSTNADSRÄKNAREN FÖR KÖKET STÅR HÄR … */}` blir `<Kalkylator namn="kok-kostnad" />`. Sidan är värdartikeln, så formuläret bäddas in.
+   - `src/content/guider/kok/mala-koksluckor.mdx`, rad 161: `{/* Verktygskort för kostnadsräknaren kök … */}` blir `<Verktygskort kalkylator="kok-kostnad" />`.
+   - `src/content/guider/kok/byta-bankskiva.mdx`, rad 229: kommentaren blir `<Verktygskort kalkylator="kok-kostnad" />`.
+5. `utkast: false` på kakla kök, stänkskydd och byta bänkskiva. `publicerad` och `uppdaterad` sätts till commitdagen.
+6. **Inlänkarna** läggs in. Ankartexten skriver hantverkaren, och det blir högst en ny länk per H2:
+   - **`/kok/mala-kakel/`**:
+     - Under "I vilka rum kaklet går att måla", eller i ingressen där alternativet till målning i köket är nytt kakel → `/kok/kakla-kok/`. Inte i badrumsavsnittet, eftersom kakelsidan bara gäller köket.
+     - Under "Hur varmt kaklet bakom spisen får bli" → `/kok/stankskydd/`, där avståndet bakom hällen står.
+   - **`/kok/byta-koksluckor/`**: under "Byta eller renovera köksluckorna" → `/kok/byta-bankskiva/`. Renderar Faq-komponenten länkar, får länken i stället stå i svaret på "Kan man byta köksluckor och bänkskiva samtidigt?".
+   - **`/kok/slipa-bankskiva/`**: under "Massiv eller fanerad bänkskiva syns i urtaget för diskhon", där en fanerad eller genomsliten skiva inte tål slipning → `/kok/byta-bankskiva/`.
+   - **`/rakna/kok-kostnad/`**: "Läs vidare" får `/kok/byta-bankskiva/` (punkt 2).
+7. `npm run build` ska vara grönt.
+8. Commit: "Publicera kakla kök, stänkskydd, byta bänkskiva och kostnadsräknaren för köket".
+
+| Ny sida | Inlänkar från | Antal |
+|---|---|---|
+| kakla kök | stänkskydd, måla kakel | 2 |
+| stänkskydd | kakla kök, måla kakel | 2 |
+| byta bänkskiva | byta köksluckor, slipa bänkskiva, kök-kostnad | 3 |
+| kök-kostnad | byta köksluckor (inbäddad), måla köksluckor, byta bänkskiva | 3 |
+
+**Datum.** `uppdaterad` sätts till commitdagen på `/kok/byta-koksluckor/`, eftersom sidan får räknaren inbäddad och därmed något nytt för läsaren. Måla köksluckor, måla kakel och slipa bänkskiva behåller sitt datum, eftersom de bara får ett kort eller en länk.
+
+**Efter publiceringen:** fråga en AI om "renovera kök kostnad" och "stänkskydd kök" inom en vecka och anteckna i SOKORDSANALYS.md om sajten nämns.
+
+**Godkänd av SEO och GEO** för kakla kök, stänkskydd och byta bänkskiva nu. Räknaren godkänns när punkt 1 är genomförd. Commiten väntar på räknaren, eftersom bänkskivan har verktygskortet.
+
+**Godkänd av SEO och GEO**, `/rakna/kok-kostnad/`, 2026-09-29, efter rättelsen av punkt 1 ovan. Publiceringen följer ordningen ovan från steg 2.
