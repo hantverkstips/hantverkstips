@@ -207,3 +207,15 @@ Det ettan har som vi måste ha:
 - **Samma tal som luftfuktighetssidan och räknaren** (gemensamt 1).
 - **Ingen avfuktare som första råd.** Vädring och ventilation går först; avfuktaren nämns med länk till köpguiden bara om RF är hög året runt.
 - Fönsterbyte skrivs inte som lösning utan kostnad och källa. "byta fönster kostnad" väntar i Fasad (9.1).
+
+---
+
+## Beslut efter faktabladen, 2026-09-29
+
+Faktabladen `guider-avfuktare-garage.md` och `guider-kondens-pa-fonster.md` gick emot checklistan på tre punkter. Besluten gäller före texten ovan där de krockar.
+
+1. **Garaget, rostgränsen.** Ingen myndighet anger den. Sidan använder Stålbyggnadsinstitutets 60 procent RF ("praktiskt taget ingen korrosion under"), med SBI:s namn och att det är en branschorganisation. ISO 9223 och dess 80 procent förklaras som standardens gräns för när ytan räknas som våt, inte som gränsen för rost; ingen medelvärdering. Villaägarnas 40 till 60 procent används inte som rostgräns. **Bättre än ettan punkt 4** lyder nu: RF-gränsen med SBI som namngiven källa och ISO 9223 förklarad, i stället för ettans tal utan källa.
+2. **Garaget, temperaturen.** Sajtens gräns är 10 grader, som på `/fukt/sorptionsavfuktare/` och i `/rakna/avfuktare/`. Inget nytt tal. Tillverkarnas lägsta driftstemperaturer (Wood's +2 och +5, Acetec −20) står i tabellen som start, inte som kapacitet. Räknaren räknar kallt garage på 10 grader och ger inget svar under 5; sidan säger det vid inbäddningen och låter tabellen svara för det kalla garaget. Ingen ändring av räknaren nu; en beräkning vid 5 grader kräver kapacitetsdata vid 5 grader från tillverkarna, och underlaget finns inte.
+3. **Kondens, tabellen över rutans temperatur.** Egen räkning godtas och märks så: "räknat av Hantverkstips ur U-värdet och innerytans värmemotstånd", med källan för U-värdena och motståndet i `kallor`, och formeln i en mening under tabellen. **Bättre än ettan punkt 4** lyder nu: tabellen med formel och källor för insatsvärdena, märkt som vår räkning.
+
+**fukt-4.md är klar för hantverkaren.**

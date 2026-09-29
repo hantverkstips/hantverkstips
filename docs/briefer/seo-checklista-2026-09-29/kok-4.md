@@ -310,3 +310,18 @@ Det ettan har som vi måste ha:
 ## Koordinatorns notering 2026-09-29
 
 Affiliate har beslutat (docs/briefer/affiliate-startlista-4-2026-09-29.md): /kok/kakla-kok/ får ingen produkt och inget reklamband i första versionen. Kakelskärare blir ingen kategori. Krysslaser och kakelskärare står som textrader i "Det här behöver du". Produktbeslut ägs av affiliate, och den här noteringen gäller före checklistans punkt 1 och 12 för sidan.
+
+---
+
+## Beslut efter faktabladen, 2026-09-29
+
+Faktabladen `guider-byta-bankskiva.md`, `guider-kakla-kok.md` och `kunskap-stankskydd.md` gick emot checklistan på fyra punkter. Besluten gäller före texten ovan där de krockar.
+
+1. **Weber och Hornbach.** Weber räknas som oläst och kravet att läsa den stryks; Webers datablad får ersättas av två andra fixtillverkare. Hornbach läst med curl räknas som läst. Kravet "i webbläsare" är uppfyllt för köket.
+2. **Stänkskydd, värmen bakom hällen.** Ingen glastillverkare anger temperatur eller avstånd, så sidan skriver ingen temperatur för glas. Den säger att det är hällens installationsanvisning som styr avståndet, med Miele som exempel för induktion (50 mm till bakkant, brännbart och icke brännbart material, minst 760 mm uppåt utan annan uppgift) och Energigas Sveriges anvisning för gas (200 mm till brännbar vägg eller tändskyddande beklädnad som kakel, 500 mm till brännbart ovanför, 650 mm till fläkt; anvisningen från 2016, med året utskrivet). Att glaset inte nämns av någon av dem sägs rakt ut. **Bättre än ettan punkt 2** lyder nu: avståndsreglerna bakom hällen ur hällens anvisning och Energigas, med besked om vilka material som räknas som icke brännbara.
+3. **Stänkskydd, måtten.** Marbodals mått i andra hand används inte. Avsnitt 3 blir "avstånd och höjd bakom hällen" med talen i punkt 2, och standardmåttet mellan bänk och skåp står bara om en köksleverantör anger det i första hand. **Bättre än ettan punkt 3** lyder nu: måtten bakom hällen med källa.
+4. **Kakla kök, tid till silikon.** Ingen fix eller fog anger den. Sidan skriver inget eget tal; den säger att silikonet läggs när fogen härdat enligt fogens datablad, och anger fogens härdningstid. **Bättre än ettan punkt 3** gäller fix och fog, inte silikon.
+5. **Byta bänkskiva, montering.** En källa räcker (samma regel som räknaren, `raknare.md` gemensamt 3). Totalbyggarnas pris står som firmans, med datum, och är samma tal som i `/rakna/kok-kostnad/`.
+6. **Byta bänkskiva, rotavdraget.** Skatteverket nämner inte bänkskivebyte. Sidan lovar inget avdrag. Den återger Skatteverkets villkor (montering av fast köksinredning i samband med renovering, arbetet och inte materialet) och länkar till `/rakna/rotavdrag/`. **Bättre än ettan punkt 3** lyder nu: pris per löpmeter i tre material och montering med källa och datum, och rotreglerna återgivna utan löfte. Samma villkorsrad ska stå i kostnadsräknaren när valet är bara bänkskiva (tillägg i `raknare.md`).
+
+**kok-4.md är klar för hantverkaren.**

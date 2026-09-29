@@ -56,7 +56,7 @@ Krav: läsarens fråga eller löftet. Delar inte de tre första orden med title.
 
 0. **Kortsvaret**: en våtrumsmatta är både ytskikt och tätskikt, läggs av behörig golvläggare enligt GVK, kostar X kr per kvm lagd (källa och datum) och håller Y år enligt tillverkare eller branschorgan. Mot kakel: billigare, varmare, kortare livslängd.
 1. **Matta eller kakel.** Tabell: pris lagd per kvm, livslängd, underhåll, åldersavdrag i försäkringen, med källa per rad.
-2. **Vad det kostar.** Material och arbete per kvm, ett räkneexempel för 5 kvm, rotavdraget, `<Verktygskort kalkylator="badrum-kostnad" />`. **Bär renovera badrum våtrumsmatta.**
+2. **Vad det kostar.** Pris per kvm för matta och för kakel ur samma källa (tabellen i avsnitt 1), ett räkneexempel för ett golv på 5 kvm räknat ur kvm-priset, rotavdraget. Därefter `<Verktygskort kalkylator="badrum-kostnad" />` med en mening om att räknaren räknar hela badrummet med rivning, tätskikt och kakel, och att den inte har matta som val. **Bär renovera badrum våtrumsmatta.**
 3. **Hur länge den håller och när den ska bytas.** Tecken på en uttjänt matta (skarvar, genomföringar, brunnen), åldersavdrag med länk till tätskiktssidan.
 4. **Vem som får lägga den.** GVK-auktoriserat företag, kvalitetsdokument, vad som händer vid egen läggning (8.3). Kort, länk till tätskiktssidan för detaljerna.
 5. **Matta på väggen.** Våtrumsmatta på vägg mot våtrumstapet, med länk till tapetsidan.
@@ -97,7 +97,7 @@ Det ettan har som vi måste ha:
 
 **Bättre än ettan** (krav):
 
-1. **Pris per kvm lagd, med källa och datum**, och ett räkneexempel med rotavdraget.
+1. **Pris per kvm lagd, matta och kakel ur samma källa med datum**, ett räkneexempel för golvet med rotavdraget, och räknarens roll förklarad (beslut 3 nedan).
 2. **Livslängden med källa** och åldersavdraget i försäkringen, via tätskiktssidan.
 3. **Tabellen matta mot kakel**, med källa per rad.
 4. **GVK och kvalitetsdokumentet** med namn och datum (Säkra Våtrum 2026).
@@ -156,7 +156,7 @@ Krav: läsarens fråga. Delar inte de tre första orden med title.
 1. **El eller vattenburen.** Tabell: förutsättning, installationskostnad, drift, regleringstid, med källa. **Bär golvvärme badrum vattenburen.**
 2. **Vad den drar och kostar per år.** Effekt per kvm ur datablad, gångtid, elpris, `<Kalkylator namn="elkostnad" />` med förval för golvvärme om bygget tillåter det, annars verktygskort. **Bär golvvärme badrum kostnad** och **golvvärme el kostnad**.
 3. **Rätt temperatur.** Golvtemperatur enligt tillverkare, termostat med golvgivare, vad som sparar. **Bär golvvärme badrum temperatur.**
-4. **Vem som får installera.** Elsäkerhetsverket: elinstallation i badrum görs av registrerat elinstallationsföretag, även inkopplingen. Golvvärmens plats i tätskiktet, med länk. **Bär golvvärme badrum regler.**
+4. **Vem som får installera.** Elsäkerhetsverket (granskad 2026-02-03): elinstallation i badrum görs av registrerat elinstallationsföretag, även läggningen av kabel eller matta, inte bara inkopplingen. Sidan säger att en tillverkare skriver att mattan kan läggas själv och att myndigheten säger nej, och att myndigheten gäller. Golvvärmens plats i tätskiktet, med länk. **Bär golvvärme badrum regler.**
 
 Faq: stänga av på sommaren, går det att lägga golvvärme under befintligt kakel, varför golvet inte blir varmt.
 
@@ -241,9 +241,9 @@ Krav: läsarens fråga. Delar inte de tre första orden med title.
 
 ### 6. H2-struktur
 
-0. **Kortsvaret**: våtrumstapet är ett tätskiktssystem som får sättas i våtzon 1 om det är godkänt och sätts upp av behörigt företag enligt GVK, med skarvar som svetsas eller tätas enligt systemet, inte med fogmassa. En gammal tapet rivs innan nytt tätskikt (BBV, MVK s. 19). Pris mot kakel.
+0. **Kortsvaret**: det butikerna kallar våtrumstapet är i GVK:s regler en väggmatta av plast, tätskikt och ytskikt i ett. Den får sitta i våtzon 1 och 2 om den är VT-godkänd och sätts upp av GVK-auktoriserat företag. I duschen och vid badkaret trådsvetsas skarvarna och överlapp mellan två väggmattor är inte tillåtet; i resten av rummet får skarven överlappas och förseglas med tätningsmassa (GVK 2026 § 8.2.4). En gammal tapet rivs innan nytt tätskikt (BBV, MVK s. 19). Pris mot kakel.
 1. **Tapet, matta eller kakel på väggen.** Tabell: pris per kvm uppsatt, livslängd, skarvar, källa.
-2. **Skarvar och hörn.** Vad GVK kräver i duschen, och varför fogmassa i skarven inte är tätning. Rättelsen mot konkurrenten skrivs som det som gäller, utan namn.
+2. **Skarvar och hörn.** GVK 2026 § 8.2.4: i plats för bad eller dusch trådsvetsade skarvar minst 100 mm från hörn och inget överlapp väggmatta mot väggmatta; i övriga våtzon 1 och 2 godkänd överlappsskarv förseglad med tätningsmassa, i våtzon 1 ny från 2026 (§ 1.2). Påståenden i fältet att tapeten bara får sitta i våtzon 2, eller att skarven i duschen kan tätas med fogmassa, rättas genom att sidan skriver vad som gäller, utan namn.
 3. **Riva den gamla.** Varför tapeten inte får sitta kvar under nytt tätskikt eller färg, med regelhänvisning.
 4. **Vad det kostar.** Per kvm och för ett badrum, `<Verktygskort kalkylator="badrum-kostnad" />`.
 
@@ -274,7 +274,7 @@ Mål **1 000 till 1 300 ord** plus Faq.
 
 ### 11. Ettan och Bättre än ettan
 
-Topp 5 (8.2): bygg.se (oläst), viivilla.se, comfort.se, stuvbutiken.com, bygghemma.se. **Ettan efter innehåll: viivilla.se** (bygg.se är oläst). Badrumsportalen längre ner säger att en överlappad skarv i duschen tätas med fogmassa, vilket strider mot GVK. Ingen nämner att BBV kräver att tapeten rivs innan nytt tätskikt.
+Topp 5 (8.2): bygg.se (oläst), viivilla.se, comfort.se, stuvbutiken.com, bygghemma.se. **Ettan efter innehåll: viivilla.se** (bygg.se är oläst). Badrumsportalen längre ner säger att en överlappad skarv i duschen tätas med fogmassa, vilket strider mot GVK 2026 § 8.2.4 i plats för bad eller dusch (utanför den är överlapp med tätningsmassa godkänt). Totalbyggarna (2026-03-30) skriver att våtrumstapet bara får användas i våtzon 2, vilket inte stämmer med GVK 2026. Ingen nämner att BBV kräver att tapeten rivs innan nytt tätskikt.
 
 Det ettan har som vi måste ha:
 
@@ -283,7 +283,7 @@ Det ettan har som vi måste ha:
 
 **Bättre än ettan** (krav):
 
-1. **Skarvregeln i duschen ur GVK**, med skiss.
+1. **Skarvregeln ur GVK 2026 § 8.2.4 med zonerna isär**: trådsvets och inget överlapp i plats för bad eller dusch, överlapp med tätningsmassa i övriga våtzon 1 och 2 (nytt 2026), med skiss.
 2. **Rivningsregeln** med BBV och MVK s. 19 som källa.
 3. **Tabellen tapet, matta och kakel** med pris och livslängd och källa per rad.
 4. **Gällande regler med namn och datum** (gemensamt 2 i `badrum.md`).
@@ -300,6 +300,8 @@ Det ettan har som vi måste ha:
 - **Ingen uppsättningsguide** (8.3).
 - Konkurrentens fel skrivs som vad som gäller, aldrig med namn.
 - MVK:s zoner skiljer sig från GVK:s (gemensamt 6 i `badrum.md`). Sidan säger vems zon den använder.
+- **Frasen och begreppet (beslut 2026-09-29):** title, H1 och brödtext använder läsarens ord "våtrumstapet". Första gången ordet står förklaras att GVK kallar samma sak väggmatta av plast, och därefter används båda där reglerna citeras. Tapeten under en målad yta i MVK:s system (väv eller tapet som armering) är en annan sak och får en mening, så att läsaren inte blandar ihop dem med länk till `/badrum/vatrumsfarg/`.
+- **"Inte med fogmassa" gäller bara i plats för bad eller dusch.** Sidan skriver aldrig att överlapp är förbjudet i hela badrummet.
 
 ---
 
@@ -334,7 +336,7 @@ Krav: löftet. Delar inte de tre första orden med title.
 
 ### 6. H2-struktur
 
-0. **Kortsvaret**: en duschvägg får du montera själv. Skruva bara där det finns massiv vägg eller regel bakom, borra med kakelborr, fyll hålen med tätmassa enligt duschväggstillverkarens och tätskiktssystemets anvisning, och täta skenan. Limma bara om tillverkaren tillåter det. Källa: GVK:s regler för infästning och Säker Vatten 2026:1 punkt 4.7.3.
+0. **Kortsvaret**: en duschvägg får du montera själv. Skruva bara där det finns massiv vägg eller regel bakom, borra med kakelborr, fyll hålen med tätmassa enligt duschväggstillverkarens och tätskiktssystemets anvisning, och täta skenan. Limma bara om tillverkaren tillåter det. Källa: GVK:s regler för infästning och Säker Vatten 2026:1 § 4.7 (tätning mot tätskiktet), § 4.7.1 (skruv i massiv konstruktion, regel, kortling eller provad skiva) och § 4.7.3 (lim enligt leverantörens anvisning).
 1. **Borra eller limma.** Beslutstabell: vägg (betong, lättbetong, regelvägg med skiva), vad som finns bakom, borra eller limma, tillverkarens villkor. Kärnan.
 2. **Så monterar du, steg för steg.** Märk, hitta regel, borra i plattan eller fogen (med källa), täta hålet, skruva profilen, silikon utvändigt enligt anvisning. **Bär montera duschvägg själv.**
 3. **Utan att borra.** Lim och tejp: vilka tillverkare som tillåter det, på vilket underlag, och vad det bär. **Bär montera duschvägg utan att borra.**
@@ -376,7 +378,7 @@ Det ettan har som vi måste ha:
 
 **Bättre än ettan** (krav):
 
-1. **Villkoren med beteckning**: GVK infästning och Säker Vatten 2026:1 punkt 4.7.3.
+1. **Villkoren med beteckning**: GVK 2026 kap. 10 och Säker Vatten 2026:1 § 4.7, 4.7.1 och 4.7.3, var och en för det den reglerar (tätning, skruv, lim).
 2. **Beslutstabellen** borra, limma eller låt någon annan göra det.
 3. **Skiss av hålet genom tätskiktet** med tätningen.
 4. **Svaret på fog eller platta**, med källa.
@@ -384,7 +386,7 @@ Det ettan har som vi måste ha:
 
 **Krav på faktabladet** (`docs/briefer/faktablad/guider-montera-duschvagg.md`):
 
-- GVK:s regler för infästning i våtrum, med adress och datum (adressen står i SOKORDSANALYS, källor avsnitt 8), och Säker Vatten 2026:1 punkt 4.7.3 i ordalydelse.
+- GVK:s regler för infästning i våtrum, med adress och datum (adressen står i SOKORDSANALYS, källor avsnitt 8), och Säker Vatten 2026:1 § 4.7, 4.7.1 och 4.7.3 i ordalydelse (klart i faktabladet 2026-09-29).
 - Monteringsanvisning från två duschväggstillverkare: borrning, tätmassa, lim, silikon.
 - En tätskiktstillverkares anvisning för håltagning i färdig vägg.
 - Källa för fog eller platta. Finns ingen, skriver sidan att källorna inte säger något.
@@ -395,3 +397,16 @@ Det ettan har som vi måste ha:
 - **Inga råd som kräver att tätskiktet öppnas** mer än för skruvhålet.
 - **Lim bara med tillverkarens tillstånd.** Sidan rekommenderar inget lim som tillverkaren inte nämner.
 - Priset för montör ska ha källa och datum; Clas Fixares tal får stå som firmans.
+
+---
+
+## Beslut 2026-09-29, efter faktabladen
+
+Faktabladen `docs/briefer/faktablad/kunskap-vatrumsmatta.md`, `kunskap-golvvarme-badrum.md`, `kunskap-vatrumstapet.md` och `guider-montera-duschvagg.md` gick emot checklistan på fyra punkter. Rättat ovan; här är besluten samlade.
+
+1. **Duschväggen hänvisar till Säker Vatten 2026:1 § 4.7, 4.7.1 och 4.7.3**, var och en för sitt: § 4.7 tätningen mot tätskiktet, § 4.7.1 var skruven får sitta, § 4.7.3 lim enligt leverantörens anvisning. Checklistans "4.7.3" för skruvvillkoren var fel paragraf.
+2. **Våtrumstapeten behåller läsarens ord och får reglernas.** Title och H1 säger våtrumstapet, eftersom det är vad som söks (2 400) och vad Tarkett själv kallar produkten. Sidan förklarar att GVK kallar den väggmatta av plast och citerar GVK med GVK:s ord. Skarvregeln skrivs med zonerna isär: trådsvets och inget överlapp mellan väggmattor i plats för bad eller dusch, överlapp förseglat med tätningsmassa godkänt i övriga våtzon 1 och 2, i våtzon 1 nytt från 2026 (GVK 2026 § 1.2 och 8.2.4). Att överlapp i våtzon 1 är nytt 2026 är en aktualitetsfördel som ska stå i texten med datum.
+3. **Våtrumsmattan stryker Hantverkskollens totalbelopp för kakel (25 000 till 45 000 kr för 5 kvm)**, eftersom källan inte säger vad som ingår och talet inte går att ställa bredvid `/rakna/badrum-kostnad/`. Sidan använder Hantverkskollens pris per kvm för matta och kakel i tabellen, räknar exemplet för golvet ur kvm-priset och säger att räknaren räknar hela badrummet med rivning, tätskikt och kakel och inte har matta som val. **Räknaren får inget val för matta eller tapet nu.** Frasen "renovera badrum våtrumsmatta" ägs av artikeln, och ett mattval kräver egna poster med källa (rivning, avjämning, matta på golv och vägg, brunn). Det tas upp igen när underlaget finns, som ändring i `raknare.md`.
+4. **Golvvärmen: Elsäkerhetsverket gäller.** DEVI:s svenska Faq säger att mattan kan läggas själv; Elsäkerhetsverket (granskad 2026-02-03) säger att också läggningen är elinstallationsarbete, och DEVI:s egen installationsguide säger "authorized installer". Sidan återger inte DEVI:s mening som råd. Den får nämna att en tillverkare säger annat och att myndighetens besked är det som gäller.
+
+**Badrum-4.md är klar för hantverkaren.**

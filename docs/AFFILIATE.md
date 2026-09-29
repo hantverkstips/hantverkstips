@@ -40,6 +40,8 @@ Resultatet följs av två till tre produkter som klarar det uträknade värdet, 
 
 Undantaget från regeln om ordervärde över 1 500 kr: en förbrukningsvara får ett eget kort när räkningens utdata *är* den varan, alltså när verktyget räknar fram antal och dimension och kortet svarar på just de talen. Bandad gipsskruv på /rakna/innervagg/ och /rakna/gipsskruv/ är det enda fallet i september 2026. Villkoret är att kortet försvinner när svaret inte längre passar produkten: visas 45 eller 51 mm i resultatet får inget 41-millimeterskort stå kvar. En förbrukningsvara som texten bara nämner i förbifarten får inget kort.
 
+Tillbehör under 1 500 kr (fastställt 2026-09-29): när huvudprodukten inte klarar sidans krav utan ett tillbehör som säljs separat, till exempel styrskenan till en sänksåg, får tillbehöret en knapp i "Det här behöver du" direkt under huvudprodukten. Aldrig ett eget kort, aldrig utan huvudprodukten på samma sida. Är ett paket med tillbehöret dyrare än delarna var för sig länkas delarna.
+
 ### Förväntad klickfrekvens
 
 Det finns inga publicerade svenska siffror per modultyp, och de internationella sammanställningarna jag hittat (wecantrack, Partnero) anger 0,5 till 1 procent som "bra" för affiliatelänkar generellt, utan urval eller metod redovisad, och utan uppdelning per placering. **Verifierad att siffrorna saknas** (källa 3). Vi sätter därför egna riktvärden efter första kvartalet med data och räknar tills dess med att bäst i test-sidor och kalkylatorer klickar tio gånger oftare än projektguider, vilket är ett antagande.
@@ -97,7 +99,7 @@ Prioriterade kategorier, i ordning. Sökvolym är min uppskattning tills SEO-str
 | 7 | Kompressorer och spikpistoler | 2 500 till 15 000 kr | vår, sommar | Medel | Låg | Altan, panel, tak (som par, spikpistolen kräver kompressorn eller batteri) |
 | 8 | Borrhammare | 1 500 till 6 000 kr | året runt | Medel | Medel | Grund, källare, betong |
 | 9 | Fuktmätare | 500 till 3 000 kr | aug till nov | Medel | Låg | Diagnos i fuktguider. Lågt ordervärde men bästa ingången till avfuktarklustret |
-| 10 | Överfräsar (produkttyp utan kategorisida, beslut 2026-09-29) | 1 800 till 6 000 kr för de som tar en bänkskivemall | året runt | Ej mätt | Ej läst | Hörnfog i bänkskiva, senare trappa och snickeri. Kategorisida först när volymen är hämtad, se `docs/briefer/affiliate-startlista-4-2026-09-29.md` |
+| 10 | Överfräsar (kandidat, ingen produkt i dag) | 1 800 till 6 000 kr | året runt | Ej mätt | Ej läst | Struken från byta bänkskiva 2026-09-29: skivtillverkarna levererar hörnet färdigfräst eller med profil, och ingen fräs hos Proffsmagasinet har bekräftad 1/2" spännhylsa. Se `docs/briefer/affiliate-startlista-4-2026-09-29.md` |
 
 Kakelskärare är ingen kategori (beslut 2026-09-29): ett kök kaklas med en enkel skärare som kostar en bråkdel av butikens billigaste på 2 118 kr, och att länka proffsskäraren där vore val på provision.
 

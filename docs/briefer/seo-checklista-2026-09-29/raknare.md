@@ -507,3 +507,7 @@ Läggs i `src/lib/kalkyl/register.ts` i samma commit som respektive `UTKAST = fa
 Kraven på `namn`: det är ankartexten i kortet och i sidfoten, så det ska bära frasen. Takbytets namn ska innehålla "byta tak", och takavvattningens får inte börja med "Hängrännor", eftersom den titeln ägs av `/tak/hangrannor/`. Ingen av dem får vara samma som en title på sajten. Kategori sätts inte, eftersom räknarna inte pekar på produkter.
 
 **Godkänd av SEO och GEO** för båda räknarna, med registerposterna och publiceringsordningen i `tak.md` som villkor.
+
+### Tillägg 2, kök-kostnad, 2026-09-29
+
+Efter faktabladet `guider-byta-bankskiva.md`: Skatteverket nämner inte bänkskivebyte med namn. När valet i räknaren är bara bänkskiva visas rotavdraget med en kort villkorsrad (arbete med fast köksinredning i samband med renovering, enligt Skatteverket), inte som ett säkert avdrag. UX och bygge specar raden.

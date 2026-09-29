@@ -4,7 +4,56 @@ Beslut från affiliateagenten om de fyra sidor som SOKORDSANALYS 9.3 pekar ut, o
 
 Ingen av sidorna i "Butikens uppgifter vi inte följer" berörs: tabellen gäller våtrumsfärg och kakelfärg, och ingen av de fyra sidorna får kort för färg eller tätskikt. Kakla kök får därmed inte heller länka kakelfärg eller använda butikens kakelguide som källa.
 
-## Sammanfattning
+## Slutliga beslut efter underlaget, 2026-09-29
+
+Fattade mot `underlag-avfuktare-garage-2026-09-29.md`, `underlag-sagar-bankskiva-2026-09-29.md`, `underlag-overfras-bankskiva-2026-09-29.md` och `underlag-hogtryck-tak-2026-09-29.md`. Går före de villkorade besluten längre ner, som står kvar som motivering. SQL: `supabase/seed-produkter-2026-09-29.sql`, inte körd.
+
+| Sida | Kort, med slug | Var | Reklamband |
+|---|---|---|---|
+| `/kok/byta-bankskiva/` | `makita-sp6000j` | kompakt kort i H2 om kapningen; i "Det här behöver du" sågen och `makita-199141-8` (skenan) med knapp | ja |
+| `/kok/kakla-kok/` | inget | | nej |
+| `/fukt/avfuktare-garage/` | `acetec-evodry-6h-2` (kallt enkelgarage), `woods-mdk21` (uppvärmt enkelgarage) | ett kompakt kort i vart och ett av de två H2 om temperaturen, "Produkterna vi nämner" sist | ja |
+| `/tak/tvatta-tak/` | inget | | nej |
+
+**Bänkskivan, sågen: `makita-sp6000j`.** Makita SP6000 fick 9,3 och är testvinnare hos Gör Det Själv (2026-03-17), 48 tänder på klingan, kapdjup 56 mm mot skivor på högst 40 mm. Såg och skena var för sig kostar 4 285 kr (3 501 + 784), mindre än Makitas paket för 5 991 kr, så kortet pekar på sågen utan skena, aldrig på paketet. De billigare föll på meriter, inte på pris: Ryobi RCS1600-KSR (2 099 kr med skena, 8,0 och Bästa köp hos GDS) har plastskena som GDS kallar mindre exakt och en klinga med 24 tänder, och exakthet och flisfri kant är just kravet för en laminatskiva. Makita HS7601J fick 5,3 och är trög på skenan. DeWalt DWE576K (4 022 kr med skena) saknar oberoende test och har 24 tänder. Står det i texten att Ryobin räcker för en massiv träskiva där flisning inte är problemet, får den nämnas utan kort. Texten ska säga före kortet att skivan kan kapas i butiken (Hornbach bjuder på det första snittet) och att sågen hyrs för 225 kr per dygn med skena.
+
+**Skenan, `makita-199141-8` (784 kr).** Den ligger under 1 500 kr men sågen klarar inte sidans krav utan den. Beslut: ett tillbehör som krävs för att huvudprodukten ska klara kravet får en knapp i "Det här behöver du", direkt under huvudprodukten, aldrig ett eget kort. Regeln förs in i AFFILIATE.md avsnitt 1.
+
+**Bänkskivan, överfräsen: struken.** Ingen skivtillverkare skriver att läsaren ska fräsa hörnet själv: LG fogar med aluminiumprofil, Vedum och DFI-Geisler levererar skarven färdigfräst. En hörnfog på beställning kostar 625 till 780 kr hos Agelito, mindre än den billigaste fräsen. Trend-mallen kräver 1/2" spännhylsa, och ingen fräs hos Proffsmagasinet har det bekräftat hos tillverkaren. Ryobi RRT1600-K tar CMT-mallens 12 mm men fick 5,2 hos GDS. Sidan säger: beställ skarven färdigfräst eller använd profil. Fräsen står varken som kort, knapp eller textrad med `produkt`. Kategoriraden `overfrasar` läggs inte in. Omprövas bara om en sida längre fram visar att läsaren själv ska fräsa, och då först när 1/2" spännhylsa och 30 mm kopieringshylsa är bekräftade hos tillverkaren.
+
+**Avfuktare i garage.**
+
+- Kallt enkelgarage: `acetec-evodry-6h-2`. Räknaren kräver 5 till 6 liter vid 20 °C och 60 % för 18 kvm, 7 till 8 för 25 kvm. 6H 2.0 ger 7,4, alltså med marginal upp till omkring 20 kvm och inte mer. Kortets etikett och texten ska säga enkelgarage. Fresh D-800 (7 250 kr) är billigare men har 6 liter vid 27 °C, varmare än räknarens villkor, och klarar inte kravet på papperet. Priset är 10 588 kr och maskinen är restnoterad med 7 till 9 dagars leverans; kortet står ändå, lagerstatusen visas.
+- Uppvärmt enkelgarage: `woods-mdk21`, 3 118 kr, 20 liter vid 30 °C och 80 % mot räknarens 8 till 15, lägsta rekommenderade temperatur +5 °C. Den är billigare än SW39FW och har samma märkta villkor, så den står först och ensam. SW39FW får inget kort här: dess egen bruksanvisning är inte hittad och uppgifterna kommer från systermodellen SW38F. Den får nämnas i texten med länk till granskningen.
+- Dubbelgarage, kallt eller uppvärmt: inget kort. Ingen sorptionsmaskin under 15 000 kr klarar räknarens 9 till 15 liter vid 20 °C och 60 %; Drybox anger 19 liter utan villkor och Fresh D-1200 anger sina 10 liter vid 27 °C. För uppvärmt dubbelgarage kräver räknaren upp till 29 liter, och MDK21 klarar inte det med marginal. Sidan skriver "jag har inte granskat någon i den storleken".
+- Brandfarligt: ingen bruksanvisning utesluter garage, så inget kort faller på det. Texten ska återge Wood's villkor för R290 (inga ständigt använda tändkällor i rummet, inga brännbara ämnen nära maskinen, golvyta över 4 m²) och Acetecs förbud mot explosiva gaser, och säga att Wood's rekommenderar värmefläkt i samma häfte som förbjuder ständigt använda elektriska värmare i rummet.
+- Kapacitet vid 5 °C: räknaren räknar inte under 5 grader, och ingen tillverkare anger den. Sidan skriver inget tal för 5 grader.
+
+**Tvätta tak: inget kort, inget reklamband, ingen högtryckstvätt i "Det här behöver du".** Ingen taktillverkare godtar högtryck för tvätt eller anger tryck. Plannja skriver "Skölj utan högtryck", Benders låter regnet skölja, BMI skriver "spola av taket försiktigt" utan tal, och Arbetsmiljöverket förbjuder konventionell högtryckstvätt på asbestcement. Nilfisk CORE 125-5 länkas inte från sidan. Plannjas råd om högtryck före ommålning hör till en framtida sida om att måla takplåt och beslutas då.
+
+**Tvätta tak, prövat igen för plåttak efter kompletteringen (faktabladet `guider-tvatta-tak.md`, "Komplettering 2026-09-29" avsnitt B): fortfarande inget kort.** Villkoret hade två delar, och båda måste vara uppfyllda:
+
+1. *Tillverkaren tillåter högtryck skriftligt.* Delvis. Plannjas broschyr från januari 2021, s. 7, som är ett tillägg till garantin, säger "mjuk borste och vatten eller högtrycksspola" och "högtrycksspola eventuellt". Samma tillverkares FAQ och blogg, som fortfarande nås från Plannjas webbplats, säger "Skölj utan högtryck". Broschyren väger tyngst som källa för vad garantin godtar, men den gör högtrycket till ett tillval och inte till metoden, och på samma sida står "Arbeta varsamt. Överdriven tvättning gör mer skada än nytta." Lindab nämner bara mjuk borste och vatten. Areco och Weckman är inte lästa.
+2. *Maskinen klarar tillverkarens tryck och munstycke.* Nej, för det finns inget krav att pröva mot. Plannja anger inget tryck i bar, inget avstånd och inget munstycke. Utan det kan jag inte visa att Nilfisk CORE 125-5 eller någon annan maskin klarar kravet med marginal, och då står inget kort. Det är samma regel som räknarna följer.
+
+Utöver villkoret: huvudmetoden hos Plannja är borste och vatten, och tillverkarens egen FAQ avråder från högtryck. Ett kort skulle göra tillvalet till det enda sidan säljer, i ett avsnitt om arbete på tak där fallrisken redan är det största skälet att inte stå med en maskin. Det är att välja för provisionens skull.
+
+Följd för sidan: plåtavsnittet får återge båda Plannja-källorna och säga att de säger olika, med borste och vatten som metod. Ingen högtryckstvätt med `produkt`, inget reklamband. Nilfisk länkas inte. Betong- och tegelpannor: oförändrat, ingen tillverkare godtar högtryck. Tegelbruk.se:s "max 140 bar" gäller nedtagna pannor på marken, är ingen tillverkare och bär inget kort.
+
+Omprövas om Plannja, eller en annan plåttillverkare, skriftligt anger tryck eller munstycke för tvätt av monterat tak, och den anvisningen inte motsägs av tillverkarens egen aktuella FAQ. Då läggs ett kompakt kort i plåtavsnittet för den billigaste maskin som klarar kravet med marginal, och reklambandet slås på. Frågan kan ställas till Plannjas kundtjänst av `underlag`. Beställs inte nu, eftersom sidan skrivs i december till januari.
+
+**Kakla kök: oförändrat.** Inget kort, inget reklamband.
+
+### Acetec-granskningen och sidorna som visar priset
+
+Priset har gått från 9 995 till 10 588 kr (29 sep) och maskinen är restnoterad, 7 till 9 dagar. Beslut, till hantverkaren genom koordinatorn:
+
+- `src/content/tester/luftavfuktare/acetec-evodry-6h-2.mdx` rad 96 (rubriken "En plåtlåda för 9 995 kronor") och rad 98 ("Så mycket kostade den … 16 september 2026"): nytt pris och datum. Rad 67 och 159, 171: läsdatum för butikens sida till 29 september 2026. Rad 161 säger att SW39FW "kostar hälften"; 5 948 mot 10 588 är 56 procent, och formuleringen ska prövas av hantverkaren. `uppdaterad` i frontmatter sätts till 2026-09-29.
+- Samma pris står på `src/content/jamforelser/luftavfuktare/woods-sw39fw-vs-acetec-evodry-6h-2.mdx` rad 48 och i tabellen rad 118, och på `src/content/guider/fukt/avfuktare-krypgrund.mdx` rad 232 och 235. De uppdateras i samma omgång, för annars visar kortet 10 588 och texten 9 995 på samma sida. Summan i jämförelsens tabell räknas om.
+- Omdömet ändras inte: restnoteringen är lagerstatus, inte en merit. Blir den "ej beställningsbar" står jag för ett nytt beslut.
+- Kortet och knappen hämtar priset ur databasen när SQL-filen är körd.
+
+## Sammanfattning av de villkorade besluten (före underlaget)
 
 | Sida | Produkt i första versionen | Reklamband | Kräver granskning först |
 |---|---|---|---|
@@ -118,7 +167,7 @@ Kakelskärare och krysslaser beställs inte nu.
 
 ## Till UX och bygge-agenten
 
-Kategorirader i databasen: `sanksagar` (Sänksågar och cirkelsågar) och `overfrasar` (Överfräsar), utan kategorisida. Produktrader och erbjudanden läggs in från underlaget ovan när jag godkänt det. Inga nya komponenter behövs.
+Ändrat efter underlaget: bara kategoriraden `sanksagar`, utan kategorisida; `overfrasar` utgår. Rader, erbjudanden och prisuppdateringen står i `supabase/seed-produkter-2026-09-29.sql`, som inte är körd. Inga nya komponenter behövs. En fråga till UX och bygge-agenten: `lagerlage()` visar "restnoterad" som slut, men butiken tar emot beställningar med 7 till 9 dagars leverans.
 
 ## Källor, lästa 2026-09-29
 
