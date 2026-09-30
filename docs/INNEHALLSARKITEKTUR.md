@@ -1,6 +1,6 @@
 # Innehållsarkitektur
 
-Beslutad 2026-09-15 av SEO-strategen, uppdaterad 2026-09-16 efter sökordsanalysen (`docs/SOKORDSANALYS.md`) och Christians beslut samma dag: ny pelare Inomhus och montering, nivå på artiklar, kategorisida för krysslaser, lättad Grund-regel och ny startlista (avsnitt 8). Styr navigation, URL-struktur och vilka sidor som byggs de första sex månaderna. Designansvarig ritar menyer och startsida mot det här dokumentet, utvecklaren bygger rutter mot avsnitt 3. Ändringar i URL-regler kräver uppdatering här och i `docs/ARKITEKTUR.md`.
+Beslutad 2026-09-15 av SEO-strategen, uppdaterad 2026-09-16 efter sökordsanalysen och 2026-09-30 med klusterplanen för Fukt (avsnitt 2 och 9) (`docs/SOKORDSANALYS.md`) och Christians beslut samma dag: ny pelare Inomhus och montering, nivå på artiklar, kategorisida för krysslaser, lättad Grund-regel och ny startlista (avsnitt 8). Styr navigation, URL-struktur och vilka sidor som byggs de första sex månaderna. Designansvarig ritar menyer och startsida mot det här dokumentet, utvecklaren bygger rutter mot avsnitt 3. Ändringar i URL-regler kräver uppdatering här och i `docs/ARKITEKTUR.md`.
 
 Volymerna i avsnitt 2 och 8 kommer från Google Ads (`docs/data/keyword-stats-2026-09-16.csv`, Sverige, september 2024 till augusti 2026) och är genomsnitt per månad. När Search Console har tre månaders data prioriterar vi om.
 
@@ -53,24 +53,51 @@ Prioritet 1 byggs inom tre månader, 2 inom sex, 3 när data motiverar. "Affilia
 
 ### Fukt och inomhusklimat
 
-Hub är `/fukt/`. Den äger ingen stor sökfras, den är diagnosstart och länknav. Pelaren har två säsonger: avfuktare juli till september (sommarkondensen), luftfuktighet november till januari (vinterbenet, som är större). Klustret krympte från tio till sju avfuktarsidor 2026-09-16.
+Hub är `/fukt/`. Den äger ingen stor sökfras, den är diagnosstart och länknav, och från 2026-09-30 ordnas den efter plats i huset (avsnitt 9). Pelaren har tre säsonger: vinterbenet november till februari (luftfuktare, kondens, kallras, vinden), som är störst, höstbenet september till oktober (avfuktare, mögel, badrummet) och vårbenet mars till april (radonsug, fuktskada, dränering). Registret nedan är omgjort efter körning 4 (`docs/SOKORDSANALYS.md` avsnitt 12). "Omgång" är startlista 6 (12.7); sidor som redan finns står som publicerade. Arbetstiteln är en beskrivning för teamet, inte H1.
 
-| URL | Arbetstitel | Typ | Huvudfras | Volym | Intention | Prio | Affiliate |
+| URL | Arbetstitel | Typ | Huvudfras | Volym | Intention | Omgång | Affiliate |
 |---|---|---|---|---|---|---|---|
-| `/fukt/` | Fukt i huset, hitta orsaken innan du köper något | hub, kunskap | fuktproblem hus | ingen fras | informativ | 1 | nej, länkar till kategorier |
-| `/fukt/luftfuktighet-inomhus/` | Vad är normal luftfuktighet inomhus, och när blir det fel | kunskap | luftfuktighet inomhus (äger även normal luftfuktighet inomhus) | 4 320 | informativ | 1 | nej |
-| `/fukt/avfuktare-kallare/` | Rätt avfuktare till källaren, och hur stor den behöver vara | köpguide | avfuktare källare | 3 490 | kommersiell | 1 | ja |
-| `/fukt/sorptionsavfuktare/` | Sorption eller kondens, temperaturen avgör | kunskap med köpråd | sorptionsavfuktare | 1 910 | informativ | 1 | en produkt per typ, sist |
-| `/rakna/avfuktare/` | Hur stor avfuktare behöver du? | kalkylator | hur stor avfuktare | ingen data | kommersiell | 1 | ja, produkter som klarar resultatet |
-| `/fukt/avfuktare-krypgrund/` | Avfuktare i krypgrund, varför kondensavfuktaren inte räcker | köpguide | avfuktare krypgrund (äger även krypgrundsavfuktare) | 2 600 | kommersiell | 1 | ja |
-| `/luftavfuktare/` | Bästa luftavfuktaren för källare, krypgrund och garage | bäst i test | avfuktare bäst i test | 1 650 | kommersiell | 1 | ja |
-| `/fukt/fukt-i-kallaren/` | Fukt i källaren, så tar du reda på varifrån den kommer | problemguide | fukt i källaren | 480 | informativ | 1 | sist, en produkt |
-| `/fukt/avfuktare-garage/` | Avfuktare i garaget, kallt och stort är en egen klass | köpguide | avfuktare garage | 320 | kommersiell | 2 | ja |
-| `/fukt/mogel-i-kallaren/` | Mögel i källaren, sanera själv eller ringa någon | problemguide | mögel i källaren | 260 | informativ | 2 | nej |
-| `/fukt/vad-drar-en-avfuktare-i-el/` | Vad kostar en avfuktare i drift | kunskap | hur mycket el drar en avfuktare | 30 | informativ | 3 | nej, länk till kalkylator |
-| `/rakna/elkostnad/` | Elkostnad för avfuktare och byggfläkt | kalkylator | elkostnad avfuktare | | informativ | 3 | nej |
-| `/fukt/kondens-pa-fonster/` | Kondens på insidan av fönstret | problemguide | kondens på fönster insida | ej hämtad | informativ | 3 | nej |
-| `/fukt/fukt-i-krypgrund/` | Fukt i krypgrund, mät själv och välj åtgärd | problemguide | fukt i krypgrund (äger även mögel i krypgrund) | 370 | informativ | 1 | nej, länk till köpguiden (2026-09-30) |
+| `/fukt/` | Fukt i huset, efter plats | hub | ingen fras | | informativ | publicerad; platsordning i A till B | nej, länkar till kategorier |
+| `/fukt/luftfuktighet-inomhus/` | Normal luftfuktighet, rum för rum och årstid | kunskap | luftfuktighet inomhus (äger normal, vinter, sommar, relativ och absolut fuktighet) | 5 880 | informativ | publicerad, utbyggnad A5 | nej |
+| `/fukt/kondens-pa-fonster/` | Kondens på fönster, insida, utsida och mellan glasen | problemguide | kondens på fönster (äger insida, utsida, imma på fönster, sovrum, mögel i fönsterkarmen; bytt 2026-09-30 från "kondens på fönster insida") | 1 760 | informativ | publicerad, utbyggnad A1 | nej |
+| `/rakna/daggpunkt/` | Blir väggen våt? | räknare | daggpunkt (äger daggpunkt tabell och kalkylator) | 1 050 | informativ | publicerad, förval A0 | nej |
+| `/fukt/kallras/` | Kallras från fönster och element | problemguide | kallras (äger kallras fönster) | 830 | informativ | A4 | nej |
+| `/fukt/sjalvdrag/` | Självdrag, frånluft och FTX i äldre hus | kunskap | självdragsventilation (äger självdrag, spaltventil, frånluftsventilation, ftx ventilation, ventilation i hus) | 6 360 | informativ | D3 | nej |
+| `/fukt/badrumsflakt/` | Badrumsfläkt som klarar kravet på luftflöde | köpguide | badrumsfläkt (äger fuktstyrd, ventilation badrum, avfuktare badrum, kallrasskydd) | 6 920 | kommersiell | D2 | ja, badrumsfläkt |
+| `/luftfuktare/` | Luftfuktare jämförda på datablad | bäst i test, granskning | luftfuktare (äger luftfuktare bäst i test, låg luftfuktighet inomhus) | 21 110 | kommersiell | B1, **affiliatebeslut senast 15 oktober** | ja |
+| `/fukt/lag-luftfuktighet/` | Torr luft på vintern och om du behöver en luftfuktare | kunskap med köpråd | låg luftfuktighet inomhus, och luftfuktare om kategorisidan inte byggs | 110 till 21 110 | informativ | B1, bara om `/luftfuktare/` faller | sist, om affiliate säger ja |
+| `/fukt/svartmogel/` | Svartmögel, vad det är och när det är farligt | kunskap | svartmögel (äger svartmögel farligt, vitmögel, mögel ättika) | 5 880 | informativ, YMYL | C3 | nej |
+| `/fukt/svartmogel-badrum/` | Svartmögel i badrummet, fogen eller fukten bakom | problemguide | svartmögel badrum (äger mögel badrum, svartmögel i duschen) | 3 270 | informativ | D1 | nej |
+| `/fukt/mogel-i-huset/` | Mögel i huset, symptom, test och sanering | problemguide | mögel i hus (äger mögel symptom, mögeltest, mögelsanering, mögelhund, mögelbesiktning) | 2 390 | informativ, YMYL | C4 | nej |
+| `/fukt/mogellukt/` | Vad lukten i huset säger om var fukten är | problemguide | hur luktar mögel (äger mögellukt, unken lukt i hus, luktsanering) | 750 | informativ | C5 | nej |
+| `/fukt/hussvamp/` | Äkta hussvamp och rötsvamp | kunskap | äkta hussvamp (äger rötsvamp) | 880 | informativ | B5 | nej |
+| `/fukt/fukt-i-kallaren/` | Fukt i källaren, hitta orsaken själv | problemguide | fukt i källaren (äger fuktig källare, mögel i källaren, mögellukt i källare, luftfuktighet källare, ventilera källare) | 2 210 | informativ | publicerad, utbyggnad F3 | sist, en produkt |
+| `/fukt/fukt-i-krypgrund/` | Fukt i krypgrund, mät själv och välj åtgärd | problemguide | fukt i krypgrund (äger fuktig krypgrund, mögel i krypgrund, luftfuktighet krypgrund, fuktmätare och hygrometer krypgrund) | 1 220 | informativ | startlista 5, sidofraser före publicering | nej, länk till köpguiden |
+| `/fukt/torpargrund/` | Fukt i torpargrunden | problemguide | torpargrund fukt (äger avfuktare torpargrund, ventilera torpargrund) | 370 | informativ | D5 | nej, länk till köpguiden |
+| `/fukt/fukt-pa-vinden/` | Fukt på vinden, varifrån den kommer | problemguide | fukt på vinden (äger ventilation på vinden, kondens på vinden) | 570 | informativ | B3 | nej |
+| `/fukt/mogel-pa-vinden/` | Mögel på råsponten, sanera eller vänta | problemguide | mögel på vinden (äger svartmögel på vinden, mögelsanering vind, mögel på råspont) | 460 | informativ | E2 | nej |
+| `/fuktmatare/` | Fuktmätare för trä, betong och vägg | bäst i test | fuktmätare (äger fuktmätare trä, fuktkvotsmätare, fuktmätare bäst i test, ved) | 8 430 | kommersiell | C1, **affiliatebeslut** | ja |
+| `/fukt/hygrometer/` | Hygrometern, hur exakt den är och hur du kontrollerar den | kunskap med köpråd | hygrometer (äger luftfuktighetsmätare, mäta luftfuktighet, hygrometer bäst i test, kalibrering) | 5 920 | informativ | A2 | affiliatebeslut, högst sist |
+| `/fukt/fuktkvot/` | Fuktkvot i trä, gränserna för mögel, röta och målning | kunskap | fuktkvot trä (äger kritiskt fukttillstånd) | 210 | informativ | C2 | nej |
+| `/rakna/fuktkvot/` | Räkna ut fuktkvoten | räknare | fuktkvot trä formel (ingen data) | | informativ | C0 | nej |
+| `/fukt/fuktmatning-betong/` | Fuktmätning i betong före golv och tätskikt | kunskap, expert | fuktmätare betong (äger fuktspärr golv, fuktmätning betongplatta, fukt i betongplatta, byggfukt) | 1 020 | informativ | E5 | nej |
+| `/luftavfuktare/` | Avfuktare och luftavfuktare jämförda | bäst i test, granskning | avfuktare (äger luftavfuktare, avfuktare och luftavfuktare bäst i test och test; bytt 2026-09-30 från "avfuktare bäst i test") | 18 380 | kommersiell | publicerad, metadata i A | ja |
+| `/fukt/avfuktare-kallare/` | Avfuktare till källaren, hur stor och vilken typ | köpguide | avfuktare källare (äger luftavfuktare källare, avfuktare källare bäst i test) | 4 090 | kommersiell | publicerad | ja |
+| `/fukt/avfuktare-krypgrund/` | Avfuktare i krypgrund | köpguide | avfuktare krypgrund (äger krypgrundsavfuktare, sorptionsavfuktare krypgrund, pris) | 3 500 | kommersiell | publicerad | ja |
+| `/fukt/avfuktare-garage/` | Avfuktare i garaget, förrådet och sommarstugan | köpguide | avfuktare garage (äger förråd, sommarstuga, jordkällare) | 740 | kommersiell | publicerad, utbyggnad F5 | ja |
+| `/fukt/avfuktare-vind/` | Avfuktare på kallvinden | köpguide | avfuktare vind (äger vindsavfuktare) | 780 | kommersiell | B4 | ja |
+| `/fukt/avfuktare-tvattstuga/` | Avfuktare i tvättstugan, mot torktumlaren i kronor | köpguide | avfuktare tvättstuga (äger torkrum, torka tvätt, avfuktare eller torktumlare) | 1 660 | kommersiell | D4 | ja |
+| `/fukt/sorptionsavfuktare/` | Sorption eller kondens, temperaturen avgör | kunskap med köpråd | sorptionsavfuktare (äger kondensavfuktare, byggavfuktare) | 2 400 | informativ | publicerad | en produkt per typ, sist |
+| `/fukt/fuktslukare/` | Hur mycket vatten en fuktslukare tar | kunskap | fuktslukare (äger fuktabsorberare) | 1 770 | informativ | A3 | nej, länk till köpguiderna |
+| `/rakna/avfuktare/` | Hur stor avfuktare behöver du? | räknare | hur stor avfuktare | ingen data | kommersiell | publicerad, kWh i resultatet | ja |
+| `/rakna/elkostnad/` | Vad kostar maskinen i el? | räknare | elkostnad avfuktare (äger hur mycket el drar en avfuktare) | 70 | informativ | publicerad, förval B0 | nej |
+| `/rakna/kallare/` | Besiktiga källaren själv | räknare | ingen fras | | informativ | publicerad | nej |
+| `/fukt/fuktskada/` | Fuktskada, tecknen per yta och vad försäkringen tar | kunskap | fuktskada (äger fuktskada vägg, golv, tak, fuktkontroll, fuktbesiktning, fuktsanering) | 1 600 | informativ | E3 | nej |
+| `/fukt/vattenskada/` | Efter vattenläckan, torka ut och anmäl | kunskap | vattenskada försäkring (äger hyra avfuktare, fuktskada parkett, vattenskada golv) | 960 | informativ | E4 | nej |
+| `/fukt/radon/` | Radon i huset, gränsvärdet, mätningen och kostnaden | kunskap | radon (äger radon gränsvärde, radon i hus, radonmätare, radonmätning villa) | 15 340 | informativ, YMYL | B2 | affiliatebeslut om radonmätare |
+| `/fukt/radonsug/` | Radonsug, när den behövs och vad den kostar | kunskap | radonsug (äger radonsanering, radon åtgärder, radon ventilation) | 1 150 | informativ | E1 | nej |
+
+Struket 2026-09-30: `/fukt/mogel-i-kallaren/` (frasen går till `/fukt/fukt-i-kallaren/`) och `/fukt/vad-drar-en-avfuktare-i-el/` (frasen går till `/rakna/elkostnad/`). Väntar: `/fukt/lackagebrytare/` (760), `/badrum/fuktskada-badrum/` (450), `/fukt/ftx-ventilation/`. Görs inte: husvagn och båt. Grund får `/grund/draneringsror/` (3 660, omgång F1) och utbyggnader av `/grund/dranera-hus/` och `/grund/isolera-krypgrund/`.
 
 ### Inomhus och montering
 
@@ -264,10 +291,68 @@ Ersatt 2026-09-16 med startlistan från `docs/SOKORDSANALYS.md` avsnitt 2, efter
 
 Direkt efter, i mars: `/rakna/trall/`, `/altan/verktyg-for-altanbygge/`, `/altan/plintar-eller-markskruv/`, `/kap-och-gersagar/` (kräver sågarna), `/verktyg/valja-lasermatare/` (stöd till 17), `/fukt/avfuktare-garage/`, `/verktyg/` och `/grund/isolera-krypgrund/` (när Fukt har sju sidor). Skruvdragare och spikpistol väntar på fas 2. Slipa bänkskiva och hitta regel i vägg läggs i Inomhus när huben finns.
 
+## 9. Klusterplan Fukt, 2026-09-30
+
+Beslutad av SEO och GEO-agenten efter körning 4 (`docs/SOKORDSANALYS.md` avsnitt 12, där data, konkurrentkarta, alla sidor med sidofraser och startlista 6 står). Christians mål är att sajten ska vara den svenska källan om fukt i huset. Planen ger Fukt 23 nya sidor, varav två kategorisidor, en ny räknare och tio utbyggnader av sidor och räknare som finns. Pelaren växer från åtta artiklar till tjugonio, publicerade i sex omgångar om fem från oktober till mars. Registret över vem som äger vilken fras är tabellen i avsnitt 2.
+
+**Hur klustret hänger ihop.** Hubben `/fukt/` visar sju platser i huset i ordningen Källare, Krypgrund och grund, Vind, Garage och förråd, Badrum och tvättstuga, Fönster och väggar, Luften inomhus, och sist Hela huset för mögel, mätning, fuktskada och radon. Inga delhubbar, eftersom ingen plats har en egen fras som bär en sida. Mätningen är en egen gren med kategorisidan `/fuktmatare/` som nav. Avfuktarna har kategorisidan `/luftavfuktare/` och en köpguide per plats. Tjänsterna (besiktning, sanering, fuktkontroll) och försäkringen är avsnitt på kunskapssidorna, inte egna sidor. Radon är med med två sidor. Husvagn och båt är inte med. Gränsen mot Grund, El, Tak och Badrum ligger kvar, och hubben länkar till deras fuktsidor under rätt plats.
+
+**Rotnamnrymden** får två kategorier, `fuktmatare` och `luftfuktare`, om affiliateagenten säger ja. Ingen av dem krockar med en pelare, en befintlig kategori eller `RESERVERADE_ROTSLUGS`.
+
+**Omgångarna** (detaljerna i avsnitt 12.7 i sökordsanalysen):
+
+| Omgång | Klar | Verktyg först | Sidor |
+|---|---|---|---|
+| A | 31 oktober | daggpunkt, förval per rum | kondens på fönster (utbyggnad), hygrometer, fuktslukare, kallras, luftfuktighet inomhus (utbyggnad); plus metadata på `/luftavfuktare/` |
+| B | 30 november | elkostnad, förval per maskin | luftfuktare, radon, fukt på vinden, avfuktare vind, hussvamp |
+| C | 20 december | fuktkvot, ny | fuktmätare, fuktkvot, svartmögel, mögel i huset, mögellukt |
+| D | 31 januari | | svartmögel badrum, badrumsfläkt, självdrag, avfuktare tvättstuga, torpargrund |
+| E | 28 februari | | radonsug, mögel på vinden, fuktskada, vattenskada, fuktmätning betong |
+| F | 31 mars | | dräneringsrör, dränera hus (utbyggnad), fukt i källaren (utbyggnad), isolera krypgrund (utbyggnad), avfuktare garage (utbyggnad) |
+
+`/fukt/fukt-i-krypgrund/` ligger i startlista 5 och går ut i oktober med sidofraserna från avsnitt 12.4 inlagda.
+
+### Vad hantverkaren behöver veta
+
+Varje omgång får sin checklista i `docs/briefer/seo-checklista-[datum]/fukt-6-[omgång].md` innan du börjar, med minst tre punkter på vad sidan ska ha som ettan saknar. Sidor som står "ej läst" får sin SERP läst först. Faktabladen beställs av underlagsarbetaren som vanligt.
+
+Före omgång A tar underlagsarbetaren fram ett gemensamt faktablad för klustret, `docs/briefer/faktablad/fukt-gemensamma-tal.md`: luftfuktighet per rum och årstid som den står på `/fukt/luftfuktighet-inomhus/`, kritiskt fukttillstånd med gällande föreskrift och paragraf, fuktkvotens gränser för mögel, röta och målning med källa, referensnivån och gränsvärdet för radon enligt SSM med författning, och mätregeln för radon. Alla sidor i klustret använder de talen och inga andra, på samma sätt som gipsklustret har sin 20-kilosgräns. Konkurrenterna ger tre olika tal för rätt luftfuktighet och tre olika år för blåbetongen, så ett tal som skiljer sig mellan två av våra sidor är det första en läsare och en AI ser.
+
+Mögel och radon är hälsofrågor. Allt om hälsa, symptom och risk står med Folkhälsomyndigheten, SSM, Boverket eller 1177 som källa, och ingenting annat. Svartmögel är ett samlingsnamn för flera släkten, och ordet "cancerframkallande" står inte på någon sida utan en myndighet bakom.
+
+Tjänsterna skrivs som ett avsnitt med tre delar: vad det kostar med källa och datum, när det behövs, och vad läsaren kan mäta själv först. Ingen firma nämns i brödtexten.
+
+Egna mätningar står på en sida bara om de är gjorda. Två sidor kan få en som ingen konkurrent har: fuktslukaren (burken vägd varje dag i ett rum med loggad luftfuktighet) och hygrometern (flera instrument i samma rum och koksaltprovet). Om de inte görs bygger sidorna på datablad och säkerhetsdatablad, och det står så.
+
+Utbyggnaderna är tillägg, inte omskrivningar. Kondens på fönster får huvudfrasen "kondens på fönster" först i seoTitle och ett avsnitt om utsidan och mellan glasen. Luftfuktighet inomhus får vinter och sommar som egna H2 och en kortare koksalt-H2 som länkar till hygrometern. Fukt i källaren får mögel och mögellukt i källaren och normal luftfuktighet i källaren sommar och vinter. Checklistan säger exakt vilken rad.
+
+### Vad affiliateagenten behöver veta
+
+Sex beslut, i den ordning omgångarna behöver dem:
+
+1. **`/luftfuktare/`, besked senast 15 oktober.** 21 110 i månaden, 40 500 i februari, och ettan på "luftfuktare bäst i test" är Proffsmagasinets kundtest av tre modeller från 395 kr. Frågan är om Proffsmagasinet har ett sortiment som bär en granskning över prisgränsen. Blir svaret nej byggs `/fukt/lag-luftfuktighet/` som kunskapssida i stället, och "luftfuktare bäst i test" lämnas.
+2. **Hygrometern, före omgång A.** Kunskapssida med köpråd. Priserna ligger på 100 till 1 000 kr, under gränsen i CLAUDE.md, så mitt förslag är inget kort, bara textlänkar. Ditt beslut.
+3. **Radonmätare, före omgång B.** "radonmätare" är 1 000 i månaden. Kort eller inte, och om Proffsmagasinet säljer dem.
+4. **`/fuktmatare/`, granskning eller test, före 15 november.** 8 430 i månaden. Körning 2 visade att ett test är ovanligt enkelt att göra (samma bräda mätt med flera instrument mot torrviktsmetoden) men kräver instrument. Köp av instrument är en pengafråga till Christian. Styr mot proffssegmentet över ordervärdesgränsen.
+5. **Badrumsfläkten, före omgång D.** Köpguide med produkter. Proffsmagasinets eget "bäst i test" ligger fyra och bygger på Trustpilot; modellerna i topp 5 är Fresh Intellivent Sky, PAX Calima och PAX Levante 40, alla under 2 000 kr. Vilka och om de bär ett kort. Fast anslutning i badrum är elinstallatörens jobb, och sidan säger det.
+6. **Köpguiderna för vinden och tvättstugan, före omgång B respektive D.** Produkter ur `/luftavfuktare/`, sorption för kallvinden.
+
+Utöver besluten: `/luftavfuktare/` tar det nakna ordet "avfuktare" som huvudfras i omgång A. Märkesnamnen är 12 850 i månaden och går bara att nå med tester. Wood's (2 900 på märket) och Drybox X4 (+50 %) är kandidater för nästa test när det finns mätutrustning. Kunskapssidorna om mögel, radon, fuktskada och vattenskada har inga produktkort.
+
+### Vad UX och bygge behöver veta
+
+1. **Hubben efter plats, före omgång B.** Hubben byggs i dag av `PelarHub.astro` i fyra grupper efter typ. Fukt behöver en platsnivå ovanför grupperna: ett valfritt frontmatterfält, till exempel `plats` med värdena kallare, krypgrund, vind, garage, badrum, fonster, luften och hela-huset, och en lista i `src/content/pelare/fukt.mdx` över sidor i andra pelare som ska visas under en plats (`/grund/dranera-hus/`, `/grund/isolera-krypgrund/`, `/grund/isolera-kallarvagg/`, `/el/tillaggsisolera-vind/`, `/tak/takfot/`, `/badrum/fogar-badrum/`, `/golv/golv-i-kallare/`). Hur det byggs är ditt beslut. Övriga hubbar ska se ut som i dag. Hubben ska gå att läsa vid 375 px med trettio sidor.
+2. **`/rakna/daggpunkt/`, före omgång A.** Förval för källare, krypgrund, kallvind, garage, badrum och sovrum med rummets normala intervall i resultatet, fönstret som kall yta ur U-värdet, och en statisk tabell under formuläret (luftens temperatur mot RF, daggpunkten i cellen) för "daggpunkt tabell".
+3. **`/rakna/elkostnad/`, före omgång B.** Förval för avfuktare i källare, krypgrund, garage och på vinden, radonsug och luftfuktare, med effekt ur datablad, och ett tvättläge med kWh per kg ur Energimyndighetens test 2017 så att avfuktare och torktumlare jämförs i kronor per maskin. `/rakna/avfuktare/` visar kWh per år i resultatet och länkar till elkostnaden med förvalet ifyllt.
+4. **`/rakna/fuktkvot/`, ny, före omgång C.** Två lägen: fuktkvot ur vikt före och efter torkning, och jämviktsfuktkvot ur luftens RF och temperatur. Utfall mot gränserna för ved, målning, golvläggning, mögel och röta, gränserna ur det gemensamma faktabladet. Delbart resultat i adressen, förhandsvisningsbild, egen sökfras "fuktkvot trä". Formel och konstanter tas fram av underlagsarbetaren med källa innan specen skrivs. Registret: `pelare: ['fukt']`, säsong september.
+5. **Kategorisidorna `/fuktmatare/` och `/luftfuktare/`** byggs i samlingen `kategorier` när affiliateagenten sagt ja. Rotnamnrymden är kontrollerad.
+6. **Illustrationer där de hjälper:** kallras vid fönster och element, självdrag med tilluft och frånluft, vinden med fuktig inneluft genom bjälklaget och takfotens ventilation, badrumsfläktens flöde och spjäll, radonsugens sugpunkt under plattan, kondens på fönstrets utsida. Hantverkaren säger i checklistan vilka som behövs på varje sida.
+
 ## Ändringar som gjorts i andra dokument
 
 - 2026-09-15: `ARKITEKTUR.md` (kalkylatorer på `/rakna/`, guider och kunskap på `/[pelare]/[slug]/`, fältet `pelare`, rutter för `/om/` och `/forfattare/`), `DESIGN.md` (huvudmenyn, startsidans block 3 och 5, exempeladresser), `content.config.ts` (`pelare`, etikett `test` eller `granskning`).
 - 2026-09-16: `ARKITEKTUR.md` (pelaren `inomhus`, kategorin `krysslaser`, fältet `niva`, undermappar, byggkontroll, illustrationer), `DESIGN.md` (menyposter i avsnitt 5, nivåetiketten i avsnitt 6), `content.config.ts` (`niva`, loader med id från filnamnet), `src/lib/pelare.ts` (inomhus, max hubbar i menyn), `supabase/seed.sql` (kategoriraden krysslaser).
+- 2026-09-30: avsnitt 2, Fukt, omgjort och avsnitt 9 tillagt efter körning 4 (`SOKORDSANALYS.md` avsnitt 12). Inga andra dokument ändrade. Kodändringarna (platsfält i hubben, räknarna, kategorierna) specas av UX och bygge-agenten enligt avsnitt 9.
 
 ## Källor
 

@@ -1,0 +1,582 @@
+grupp	delgrupp	avsikt	fras	volym	tre_man	yoy	toppmanad	topp	botten	sammanslagen_med	agare
+1. Källare	1.1	problem	mögellukt i källare	170	21%	-56%	topp sep	390	90		/fukt/fukt-i-kallaren/
+1. Källare	1.1	problem	översvämning källare	50	40%	-22%	topp sep	90	20		/fukt/fukt-i-kallaren/
+1. Källare	1.1	problem	vatten i källaren	40	-25%	-40%	topp sep	70	20		/fukt/fukt-i-kallaren/
+1. Källare	1.1	problem	fukt i källarvägg	30	50%	-57%	topp sep, mar	50	20		/fukt/fukt-i-kallaren/
+1. Källare	1.1	problem	mögel på källarvägg	20	200%	50%	topp sep, aug	30	10		/fukt/fukt-i-kallaren/
+1. Källare	1.1	problem	fukt i källare dolt fel	10	∞	0%	jämn	10	0		/fukt/fukt-i-kallaren/
+1. Källare	1.1	problem	fukt i källare efter regn	10	0%	-75%	topp sep, okt	30	10		/fukt/fukt-i-kallaren/
+1. Källare	1.1	problem	fukt i källare farligt	10	∞	-50%	jämn	10	0		/fukt/fukt-i-kallaren/
+1. Källare	1.1	problem	fukt i källare trots dränering	10	0%	0%	topp sep	20	10		/fukt/fukt-i-kallaren/
+1. Källare	1.1	problem	fukt i källaren efter dränering	10	0%	-75%	topp sep	20	10		/fukt/fukt-i-kallaren/
+1. Källare	1.1	problem	fukt i källaren försäkring	10	0%	-50%	jämn	10	0		/fukt/fukt-i-kallaren/
+1. Källare	1.1	problem	fukt i källaren på sommaren	10	0%	100%	topp jun, jul, aug	20	0		/fukt/fukt-i-kallaren/
+1. Källare	1.1	problem	fukt i källaren vad göra	10	0%	-75%	topp sep, okt	20	10		/fukt/fukt-i-kallaren/
+1. Källare	1.1	problem	fuktig källare på sommaren	10	-50%	-67%	topp jul	30	0		/fukt/fukt-i-kallaren/
+1. Källare	1.1	problem	fuktproblem i källare	10	0%	0%	jämn	10	0		/fukt/fukt-i-kallaren/
+1. Källare	1.1	problem	kondens i källare	10	-50%	0%	topp jun	20	0		/fukt/fukt-i-kallaren/
+1. Källare	1.1	problem	kondens vattenrör källare	10	-50%	0%	topp jun	20	0		/fukt/fukt-i-kallaren/
+1. Källare	1.1	problem	luktar fukt i källaren	10	0%	-67%	topp sep	70	10		/fukt/fukt-i-kallaren/
+1. Källare	1.1	problem	mögel i källare symptom	10	0%	-50%	jämn	10	10		/fukt/fukt-i-kallaren/
+1. Källare	1.1	problem	mögel i källaren farligt	10	0%	0%	jämn	10	0		/fukt/fukt-i-kallaren/
+1. Källare	1.1	problem	fukt i golvet i källaren								
+1. Källare	1.1	problem	fukt mellan golv och vägg källare								
+1. Källare	1.1	problem	fuktig källarvägg								
+1. Källare	1.1	problem	hur ser mögel i källare ut								
+1. Källare	1.1	problem	köpa hus med mögel i källaren								
+1. Källare	1.1	problem	luktar jord i källaren								
+1. Källare	1.1	problem	luktar mögel i källaren								
+1. Källare	1.1	problem	mögel i källaren försäkring								
+1. Källare	1.1	problem	svartmögel i källaren								
+1. Källare	1.1	problem	tecken på fukt i källaren								
+1. Källare	1.2	projekt	dränering hus med källare	260	0%	-46%	topp sep	590	170		/grund/dranera-hus/
+1. Källare	1.2	projekt	ventilera källare	260	24%	-46%	topp sep	480	140		/fukt/fukt-i-kallaren/
+1. Källare	1.2	projekt	isolera källare utvändigt	30	0%	0%	topp jan	50	10		/grund/isolera-kallarvagg/
+1. Källare	1.2	projekt	fuktspärr golv källare	20	0%	-67%	topp jan	30	10		/fukt/fuktmatning-betong/
+1. Källare	1.2	projekt	få bort fukt i källaren	20	200%	-67%	topp sep	50	10		/fukt/fukt-i-kallaren/
+1. Källare	1.2	projekt	mögelsanering källare	20	0%	-50%	topp sep	110	10		/fukt/fukt-i-kallaren/
+1. Källare	1.2	projekt	åtgärda fukt i källare	20	200%	50%	topp okt, aug	30	10		/fukt/fukt-i-kallaren/
+1. Källare	1.2	projekt	avfukta källare	10	0%	-50%	topp sep	30	10		/fukt/fukt-i-kallaren/
+1. Källare	1.2	projekt	källargolv fukt	10	0%	0%	jämn	10	10		/fukt/fukt-i-kallaren/
+1. Källare	1.2	projekt	källarvägg puts	10	∞	0%	jämn	10	0		/fukt/fukt-i-kallaren/
+1. Källare	1.2	projekt	renovera fuktig källare	10	0%	0%	jämn	10	10		/fukt/fukt-i-kallaren/
+1. Källare	1.2	projekt	ventilation källare sommaren	10	-33%	-50%	topp jun	30	10		/fukt/fukt-i-kallaren/
+1. Källare	1.2	projekt	diffusionsöppen puts källarvägg								
+1. Källare	1.2	projekt	dränering och isolering av källare								
+1. Källare	1.2	projekt	fuktkontroll källare								
+1. Källare	1.2	projekt	få bort mögel i källaren								
+1. Källare	1.2	projekt	isolera källare utvändigt kostnad								
+1. Källare	1.2	projekt	minska fukt i källaren								
+1. Källare	1.2	projekt	mögelsanering källare pris								
+1. Källare	1.3	mätning	luftfuktighet källare	320	-19%	-56%	topp sep	720	110		/fukt/fukt-i-kallaren/
+1. Källare	1.3	mätning	fuktmätning källare	90	56%	0%	topp sep	260	50		/fukt/fukt-i-kallaren/
+1. Källare	1.3	mätning	luftfuktighet källare sommar	70	-35%	-48%	topp jun, jul	170	10		/fukt/fukt-i-kallaren/
+1. Källare	1.3	mätning	hygrometer källare	30	67%	-44%	topp sep, okt, aug	50	10		/fukt/fukt-i-kallaren/
+1. Källare	1.3	mätning	luftfuktighet källare vinter	30	0%	-33%	topp feb	50	10		/fukt/fukt-i-kallaren/
+1. Källare	1.3	mätning	fuktkvot källare	10	0%	-50%	topp sep	20	10		/fukt/fukt-i-kallaren/
+1. Källare	1.3	mätning	hög luftfuktighet källare	10	0%	-50%	topp sep	30	0		/fukt/fukt-i-kallaren/
+1. Källare	1.3	mätning	relativ fuktighet källare	10	0%	-67%	topp sep, okt	20	0		/fukt/fukt-i-kallaren/
+1. Källare	1.3	mätning	vad är normal luftfuktighet i källare	10	50%	-25%	topp sep, aug	30	10		/fukt/fukt-i-kallaren/
+1. Källare	1.3	mätning	mäta fukt i källaren								
+1. Källare	1.4	produkt	avfuktare källare bäst i test	320	0%	0%	topp sep	720	110		/fukt/avfuktare-kallare/
+1. Källare	1.4	produkt	avfuktare tvättstuga källare	50	29%	29%	topp aug	90	20		/fukt/avfuktare-tvattstuga/
+1. Källare	1.4	produkt	sorptionsavfuktare källare	40	0%	133%	topp jun, jul, aug	70	20		/fukt/avfuktare-kallare/
+1. Källare	1.4	produkt	avfuktare källare woods	20	0%	-71%	topp sep	70	10		/fukt/avfuktare-kallare/
+1. Källare	1.4	produkt	kondensavfuktare källare	10	100%	300%	topp aug	40	10		/fukt/avfuktare-kallare/
+1. Källare	1.4	produkt	avfuktare källare inställning								
+2. Krypgrund och torpargrund	2.1	problem	fuktig krypgrund	260	24%	-33%	topp sep	390	140		/fukt/fukt-i-krypgrund/
+2. Krypgrund och torpargrund	2.1	problem	köpa hus med fukt i krypgrund	40	0%	-86%	topp sep	110	20		/fukt/fukt-i-krypgrund/
+2. Krypgrund och torpargrund	2.1	problem	fukt i krypgrund försäkring	10	0%	0%	jämn	10	10		/fukt/fukt-i-krypgrund/
+2. Krypgrund och torpargrund	2.1	problem	hussvamp krypgrund	10	0%	-50%	topp mar, jul	20	10		/fukt/hussvamp/
+2. Krypgrund och torpargrund	2.1	problem	krypgrund lukt	10	0%	0%	topp jul	20	0		/fukt/fukt-i-krypgrund/
+2. Krypgrund och torpargrund	2.1	problem	krypgrund problem	10	0%	0%	jämn	10	10		/fukt/fukt-i-krypgrund/
+2. Krypgrund och torpargrund	2.1	problem	krypgrund riskkonstruktion	10	0%	0%	topp sep, okt	20	10		/fukt/fukt-i-krypgrund/
+2. Krypgrund och torpargrund	2.1	problem	fukt i krypgrund sommartid								
+2. Krypgrund och torpargrund	2.1	problem	fukt krypgrund vinter								
+2. Krypgrund och torpargrund	2.1	problem	kondens i krypgrund								
+2. Krypgrund och torpargrund	2.1	problem	krypgrund dolda fel								
+2. Krypgrund och torpargrund	2.1	problem	lukt från krypgrunden								
+2. Krypgrund och torpargrund	2.1	problem	tecken på fuktproblem i krypgrunden								
+2. Krypgrund och torpargrund	2.1	problem	varför är krypgrund en riskkonstruktion								
+2. Krypgrund och torpargrund	2.2	projekt	dränering krypgrund	170	-18%	-46%	topp sep, mar, apr	260	90		/grund/dranera-hus/
+2. Krypgrund och torpargrund	2.2	projekt	isolera krypgrund underifrån	110	80%	-36%	topp feb	260	50		/grund/isolera-krypgrund/
+2. Krypgrund och torpargrund	2.2	projekt	krypgrund besiktning	50	75%	0%	topp sep, nov, aug	70	20		/fukt/fukt-i-krypgrund/
+2. Krypgrund och torpargrund	2.2	projekt	krypgrund ventilation	50	-20%	-43%	topp sep	90	30		/fukt/fukt-i-krypgrund/
+2. Krypgrund och torpargrund	2.2	projekt	ventilera krypgrund	50	0%	-44%	topp sep	90	30		/fukt/fukt-i-krypgrund/
+2. Krypgrund och torpargrund	2.2	projekt	dränera krypgrund själv	20	0%	-33%	topp mar	50	10		/grund/dranera-hus/
+2. Krypgrund och torpargrund	2.2	projekt	isolering krypgrund cellplast	20	0%	-67%	topp okt	40	10		/grund/isolera-krypgrund/
+2. Krypgrund och torpargrund	2.2	projekt	konvertera krypgrund till platta pris	20	100%	0%	topp nov, jan, feb	30	10		/fukt/fukt-i-krypgrund/
+2. Krypgrund och torpargrund	2.2	projekt	krypgrund plastfolie	20	-33%	-33%	topp mar, jun	30	10		/fukt/fukt-i-krypgrund/
+2. Krypgrund och torpargrund	2.2	projekt	åtgärda fukt i krypgrund	20	-33%	0%	topp sep, mar, jun	30	10		/fukt/fukt-i-krypgrund/
+2. Krypgrund och torpargrund	2.2	projekt	krypgrund plast på marken	10	100%	0%	jämn	20	10		/fukt/fukt-i-krypgrund/
+2. Krypgrund och torpargrund	2.2	projekt	mögelsanering krypgrund	10	100%	0%	topp nov, dec, aug	20	10		/fukt/fukt-i-krypgrund/
+2. Krypgrund och torpargrund	2.2	projekt	styrd ventilation krypgrund	10	0%	0%	jämn	10	0		/fukt/fukt-i-krypgrund/
+2. Krypgrund och torpargrund	2.2	projekt	fukt i krypgrund billiga åtgärder								
+2. Krypgrund och torpargrund	2.2	projekt	fukt under plast i krypgrund								
+2. Krypgrund och torpargrund	2.2	projekt	få bort fukt i krypgrund								
+2. Krypgrund och torpargrund	2.2	projekt	förhindra fukt i krypgrund								
+2. Krypgrund och torpargrund	2.2	projekt	krypgrund inspektionslucka								
+2. Krypgrund och torpargrund	2.2	projekt	krypgrund stänga ventiler								
+2. Krypgrund och torpargrund	2.2	projekt	krypgrund till platta								
+2. Krypgrund och torpargrund	2.2	projekt	krypgrund undertryck								
+2. Krypgrund och torpargrund	2.2	projekt	krypgrund utan ventilation								
+2. Krypgrund och torpargrund	2.2	projekt	krypgrund ventilation sommar								
+2. Krypgrund och torpargrund	2.2	projekt	mögel i krypgrund vad göra								
+2. Krypgrund och torpargrund	2.2	projekt	åtgärda krypgrund kostnad								
+2. Krypgrund och torpargrund	2.3	regel och kunskap	uteluftsventilerad krypgrund	90	40%	-36%	topp sep	140	50		/grund/isolera-krypgrund/
+2. Krypgrund och torpargrund	2.3	regel och kunskap	krypgrund vs torpargrund	20	33%	100%	topp aug	40	10		/fukt/torpargrund/
+2. Krypgrund och torpargrund	2.3	regel och kunskap	krypgrund eller platta på mark	10	100%	100%	topp sep, aug	20	10		/fukt/fukt-i-krypgrund/
+2. Krypgrund och torpargrund	2.3	regel och kunskap	krypgrund för och nackdelar	10	0%	0%	jämn	10	10		/fukt/fukt-i-krypgrund/
+2. Krypgrund och torpargrund	2.3	regel och kunskap	krypgrund inneluftsventilerad								
+2. Krypgrund och torpargrund	2.3	regel och kunskap	krypgrund vad är det								
+2. Krypgrund och torpargrund	2.4	mätning	luftfuktighet krypgrund	170	-19%	-35%	topp sep, jun	210	110		/fukt/fukt-i-krypgrund/
+2. Krypgrund och torpargrund	2.4	mätning	fuktmätare krypgrund	110	50%	24%	topp aug	210	70		/fukt/fukt-i-krypgrund/
+2. Krypgrund och torpargrund	2.4	mätning	hygrometer krypgrund	90	89%	0%	topp aug	170	50		/fukt/fukt-i-krypgrund/
+2. Krypgrund och torpargrund	2.4	mätning	fukt i krypgrund gränsvärde	40	67%	-29%	topp sep	70	10		/fukt/fukt-i-krypgrund/
+2. Krypgrund och torpargrund	2.4	mätning	fuktkvot krypgrund	30	0%	-64%	topp sep	70	10		/fukt/fukt-i-krypgrund/
+2. Krypgrund och torpargrund	2.4	mätning	luftfuktighet krypgrund vinter	30	50%	-25%	jämn	30	10		/fukt/fukt-i-krypgrund/
+2. Krypgrund och torpargrund	2.4	mätning	mäta fukt i krypgrund	20	50%	50%	topp aug	30	10		/fukt/fukt-i-krypgrund/
+2. Krypgrund och torpargrund	2.4	mätning	relativ fuktighet krypgrund	20	0%	-33%	jämn	20	10		/fukt/fukt-i-krypgrund/
+2. Krypgrund och torpargrund	2.4	mätning	fukt i krypgrund procent								
+2. Krypgrund och torpargrund	2.4	mätning	normal fukt i krypgrund								
+2. Krypgrund och torpargrund	2.5	produkt	sorptionsavfuktare krypgrund	390	23%	50%	topp aug	480	210		/fukt/avfuktare-krypgrund/
+2. Krypgrund och torpargrund	2.5	produkt	trygghetsvakten krypgrund	110	-36%	-50%	topp okt	210	70		/fukt/avfuktare-krypgrund/
+2. Krypgrund och torpargrund	2.5	produkt	krypgrundsavfuktare pris	90	0%	56%	topp mar, jun, aug	140	50		/fukt/avfuktare-krypgrund/
+2. Krypgrund och torpargrund	2.5	produkt	avfuktare krypgrund pris	70	57%	0%	topp sep, aug	110	40		/fukt/avfuktare-krypgrund/
+2. Krypgrund och torpargrund	2.5	produkt	kondensavfuktare krypgrund	40	-40%	-57%	topp sep, nov	70	30		/fukt/avfuktare-krypgrund/
+2. Krypgrund och torpargrund	2.5	produkt	krypgrundsavfuktare bäst i test	40	80%	200%	topp aug	90	10		/fukt/avfuktare-krypgrund/
+2. Krypgrund och torpargrund	2.5	produkt	krypgrundsavfuktare anticimex	30	-20%	0%	topp sep, jun	50	10		/fukt/avfuktare-krypgrund/
+2. Krypgrund och torpargrund	2.5	produkt	krypgrundsavfuktare installation	30	0%	-25%	topp mar	50	10		/fukt/avfuktare-krypgrund/
+2. Krypgrund och torpargrund	2.5	produkt	krypgrundsavfuktare corroventa	10	0%	100%	jämn	20	10		/fukt/avfuktare-krypgrund/
+2. Krypgrund och torpargrund	2.5	produkt	krypgrundsavfuktare elförbrukning	10	0%	0%	jämn	10	10		/rakna/elkostnad/ (förval)
+2. Krypgrund och torpargrund	2.5	produkt	krypgrundsavfuktare installation pris	10	0%	0%	jämn	10	10		/fukt/avfuktare-krypgrund/
+2. Krypgrund och torpargrund	2.5	produkt	krypgrundsavfuktare woods	10	0%	0%	topp sep	20	10		/fukt/avfuktare-krypgrund/
+2. Krypgrund och torpargrund	2.5	produkt	avfuktare krypgrund utan plast								
+2. Krypgrund och torpargrund	2.5	produkt	installera krypgrundsavfuktare själv								
+2. Krypgrund och torpargrund	2.5	produkt	krypgrundsavfuktare livslängd								
+2. Krypgrund och torpargrund	2.5	produkt	krypgrundsavfuktare radon								
+2. Krypgrund och torpargrund	2.5	produkt	krypgrundsavfuktare service								
+2. Krypgrund och torpargrund	2.5	produkt	vilken avfuktare krypgrund								
+2. Krypgrund och torpargrund	2.6	problem	avfuktare torpargrund	140	27%	-18%	topp sep, nov, mar	170	90		/fukt/torpargrund/
+2. Krypgrund och torpargrund	2.6	problem	fuktig torpargrund	110	89%	0%	topp sep, aug	170	50		/fukt/torpargrund/
+2. Krypgrund och torpargrund	2.6	problem	torpargrund fukt	110	89%	0%	topp sep, aug	170	50	fuktig torpargrund	/fukt/torpargrund/
+2. Krypgrund och torpargrund	2.6	problem	ventilera torpargrund	90	0%	-36%	topp sep, okt	110	50		/fukt/torpargrund/
+2. Krypgrund och torpargrund	2.6	problem	torpargrund problem	10	0%	-50%	topp sep	20	0		/fukt/torpargrund/
+2. Krypgrund och torpargrund	2.6	problem	luftfuktighet i torpargrund								
+3. Platta på mark, grund och betong	3.1	problem	fukt i betongplatta	50	0%	-29%	topp okt	110	30		/fukt/fuktmatning-betong/
+3. Platta på mark, grund och betong	3.1	problem	fukt i grunden	40	33%	-20%	topp mar	70	20		/fukt/fuktmatning-betong/
+3. Platta på mark, grund och betong	3.1	problem	fuktig grund	40	33%	-20%	topp mar	70	20	fukt i grunden	/fukt/fuktmatning-betong/
+3. Platta på mark, grund och betong	3.1	problem	fukt i betongplatta vad göra	20	100%	-33%	topp okt, mar	40	10		/fukt/fuktmatning-betong/
+3. Platta på mark, grund och betong	3.1	problem	platta på mark fukt	20	-50%	-50%	topp sep, maj	30	10		/fukt/fuktmatning-betong/
+3. Platta på mark, grund och betong	3.1	problem	fukt i betongplatta försäkring	10	0%	0%	jämn	10	0		/fukt/fuktmatning-betong/
+3. Platta på mark, grund och betong	3.1	problem	fukt i grunden försäkring								
+3. Platta på mark, grund och betong	3.1	problem	fuktskada husgrund								
+3. Platta på mark, grund och betong	3.1	problem	fuktskador platta på mark								
+3. Platta på mark, grund och betong	3.2	projekt	fuktspärr betongplatta	40	-25%	-40%	topp nov, jan, apr	50	20		/fukt/fuktmatning-betong/
+3. Platta på mark, grund och betong	3.2	projekt	fuktskydd grundmur								
+3. Platta på mark, grund och betong	3.2	projekt	åtgärda fukt i betongplatta								
+3. Platta på mark, grund och betong	3.3	mätning	fuktmätare betong	390	50%	0%	topp sep, okt	590	320		/fukt/fuktmatning-betong/
+3. Platta på mark, grund och betong	3.3	mätning	fuktmätning betongplatta	70	80%	29%	topp mar	110	50		/fukt/fuktmatning-betong/
+3. Platta på mark, grund och betong	3.3	mätning	fukt i betong gränsvärden	40	50%	-57%	topp sep	70	20		/fukt/fuktmatning-betong/
+3. Platta på mark, grund och betong	3.3	mätning	uttorkning betong	30	-50%	-50%	topp okt	90	10		/fukt/fuktmatning-betong/
+3. Platta på mark, grund och betong	3.3	mätning	fukt i betong innan tätskikt	10	0%	0%	topp nov	20	10		/fukt/fuktmatning-betong/
+3. Platta på mark, grund och betong	3.3	mätning	relativ fuktighet betong	10	-50%	0%	topp mar, jun	20	10		/fukt/fuktmatning-betong/
+4. Dränering	4.1	projekt	dräneringsrör	2900	0%	-18%	topp apr, maj	5400	1300		/grund/draneringsror/
+4. Dränering	4.1	projekt	dräneringsbrunn	720	0%	-28%	topp sep, apr	1000	390		/grund/draneringsror/
+4. Dränering	4.1	projekt	dränering platta på mark	210	0%	-35%	topp mar, apr	320	110		/grund/dranera-hus/
+4. Dränering	4.1	projekt	dränering hus utan källare	50	75%	-22%	topp sep	90	40		/grund/dranera-hus/
+4. Dränering	4.1	projekt	dränering stuprör	40	75%	0%	topp sep, maj, aug	70	10		/grund/dranera-hus/
+4. Dränering	4.1	projekt	isodränskivor	40	25%	0%	topp sep, feb, aug	50	30		/grund/draneringsror/
+4. Dränering	4.1	projekt	dränering steg för steg	30	33%	0%	topp okt	50	10		/grund/dranera-hus/
+4. Dränering	4.1	projekt	dränering stenkista	30	0%	-60%	jämn	30	10		/grund/dranera-hus/
+4. Dränering	4.1	projekt	dränering lutning	20	0%	0%	jämn	30	10		/grund/dranera-hus/
+4. Dränering	4.1	projekt	dränering djup	10	0%	-67%	topp sep	30	10		/grund/dranera-hus/
+4. Dränering	4.1	projekt	dränering spolbrunn	10	0%	0%	jämn	10	10		/grund/dranera-hus/
+4. Dränering	4.1	projekt	dränering till dagvatten	10	0%	-50%	jämn	10	10		/grund/dranera-hus/
+4. Dränering	4.2	regel och kunskap	dränering hus hur ofta	110	27%	-33%	topp sep	170	70		/grund/dranera-hus/
+4. Dränering	4.2	regel och kunskap	dränering livslängd	40	25%	-29%	topp sep	70	20		/grund/dranera-hus/
+4. Dränering	4.2	regel och kunskap	dränering rotavdrag	20	100%	-50%	topp sep	40	10		/grund/dranera-hus/
+4. Dränering	4.2	regel och kunskap	dränering dolt fel	10	0%	-50%	topp okt	30	10		/grund/dranera-hus/
+4. Dränering	4.2	regel och kunskap	dränering försäkring								
+4. Dränering	4.2	regel och kunskap	är dränering avdragsgill								
+5. Vind och kallvind	5.1	problem	fukt på vinden	110	25%	-44%	topp nov, jan, mar	210	20		/fukt/fukt-pa-vinden/
+5. Vind och kallvind	5.1	problem	mögel på vinden	90	0%	0%	topp mar	170	70		/fukt/mogel-pa-vinden/
+5. Vind och kallvind	5.1	problem	svartmögel på vinden	90	0%	-18%	topp apr	140	70		/fukt/mogel-pa-vinden/
+5. Vind och kallvind	5.1	problem	kondens på vinden	30	0%	0%	topp nov	90	10		/fukt/fukt-pa-vinden/
+5. Vind och kallvind	5.1	problem	köpa hus med mögel på vinden	30	0%	-80%	topp okt	70	10		/fukt/fukt-pa-vinden/
+5. Vind och kallvind	5.1	problem	mögel på kallvind	30	-67%	-67%	topp nov, jan	70	10		/fukt/mogel-pa-vinden/
+5. Vind och kallvind	5.1	problem	mögel på råspont	30	250%	250%	topp aug	70	10		/fukt/mogel-pa-vinden/
+5. Vind och kallvind	5.1	problem	fukt på vinden försäkring	10	0%	∞	topp mar	30	0		/fukt/fukt-pa-vinden/
+5. Vind och kallvind	5.1	problem	fukt på vinden vad göra	10	0%	0%	topp feb	20	0		/fukt/fukt-pa-vinden/
+5. Vind och kallvind	5.1	problem	fukt vind vinter	10	0%	0%	topp jan	20	0		/fukt/fukt-pa-vinden/
+5. Vind och kallvind	5.1	problem	fuktskada vind	10	0%	0%	topp nov, mar	20	10		/fukt/fukt-pa-vinden/
+5. Vind och kallvind	5.1	problem	kallvind fukt	10	0%	0%	topp feb	40	10		/fukt/fukt-pa-vinden/
+5. Vind och kallvind	5.1	problem	kondens råspont								
+5. Vind och kallvind	5.1	problem	orsaker till fukt på vinden	0	0%	0%					/fukt/fukt-pa-vinden/
+5. Vind och kallvind	5.2	projekt	ventilation på vinden	260	24%	-19%	topp sep, nov	320	170		/fukt/fukt-pa-vinden/
+5. Vind och kallvind	5.2	projekt	mögelsanering vind	110	-22%	0%	topp mar, maj	140	70		/fukt/mogel-pa-vinden/
+5. Vind och kallvind	5.2	projekt	mögelsanering vind pris	90	0%	29%	topp mar	110	50		/fukt/mogel-pa-vinden/
+5. Vind och kallvind	5.2	projekt	få bort fukt på vinden	10	-100%	-100%	jämn	10	0		/fukt/fukt-pa-vinden/
+5. Vind och kallvind	5.2	projekt	kallvind till varmvind	10	-50%	0%	topp feb, jun	20	10		/fukt/fukt-pa-vinden/
+5. Vind och kallvind	5.2	projekt	mögel kallvind åtgärd	10	0%	0%	jämn	10	0		/fukt/mogel-pa-vinden/
+5. Vind och kallvind	5.2	projekt	mögel råspont åtgärd	10	0%	-50%	topp nov, dec	20	10		/fukt/mogel-pa-vinden/
+5. Vind och kallvind	5.2	projekt	vad är kallvind	10	0%	0%	topp maj	20	10		/fukt/fukt-pa-vinden/
+5. Vind och kallvind	5.2	projekt	ventilera kallvind	10	100%	0%	jämn	20	10		/fukt/fukt-pa-vinden/
+5. Vind och kallvind	5.2	projekt	fläkt kallvind								
+5. Vind och kallvind	5.2	projekt	kallvind riskkonstruktion								
+5. Vind och kallvind	5.2	projekt	kallvind utan ventilation								
+5. Vind och kallvind	5.2	projekt	kallvind ångspärr								
+5. Vind och kallvind	5.2	projekt	ventilationsgaller kallvind								
+5. Vind och kallvind	5.2	projekt	ångbroms kallvind								
+5. Vind och kallvind	5.3	mätning	fuktmätare vind	40	33%	0%	jämn	50	20		/fukt/fukt-pa-vinden/
+5. Vind och kallvind	5.3	mätning	hygrometer vind	10	0%	0%	jämn	20	10		/fukt/fukt-pa-vinden/
+5. Vind och kallvind	5.3	mätning	fuktkvot kallvind								
+5. Vind och kallvind	5.3	mätning	kallvind luftfuktighet								
+5. Vind och kallvind	5.3	mätning	luftfuktighet kallvind vinter								
+5. Vind och kallvind	5.3	mätning	mäta fukt på vinden								
+5. Vind och kallvind	5.3	mätning	normal luftfuktighet kallvind								
+5. Vind och kallvind	5.4	produkt	avfuktare vind	390	-19%	-34%	topp nov, dec	590	170		/fukt/avfuktare-vind/
+5. Vind och kallvind	5.4	produkt	vindsavfuktare	210	21%	21%	topp jan, feb, mar	260	140		/fukt/avfuktare-vind/
+5. Vind och kallvind	5.4	produkt	trygghetsvakten vind	140	-18%	-36%	topp nov	210	90		/fukt/avfuktare-vind/
+5. Vind och kallvind	5.4	produkt	avfuktare vind pris	30	50%	50%	topp nov	50	10		/fukt/avfuktare-vind/
+5. Vind och kallvind	5.4	produkt	avfuktare vind installation	10	0%	-50%	topp nov, jan	20	10		/fukt/avfuktare-vind/
+5. Vind och kallvind	5.4	produkt	kondensavfuktare vind								
+5. Vind och kallvind	5.4	produkt	sorptionsavfuktare kallvind								
+6. Garage, förråd, sommarstuga och jordkällare	6.1	problem	fukt i garaget	20	-50%	-67%	topp nov, dec	40	10		/fukt/avfuktare-garage/
+6. Garage, förråd, sommarstuga och jordkällare	6.1	problem	fukt i kallförråd	10	-100%	-100%	jämn	10	0		/fukt/avfuktare-garage/
+6. Garage, förråd, sommarstuga och jordkällare	6.1	problem	fukt i sommarstuga	10	0%	0%	jämn	10	0		/fukt/avfuktare-garage/
+6. Garage, förråd, sommarstuga och jordkällare	6.1	problem	fuktigt garage	10	0%	0%	topp nov, dec	20	10		/fukt/avfuktare-garage/
+6. Garage, förråd, sommarstuga och jordkällare	6.1	problem	kondens garage	10	-100%	-100%	jämn	10	0		/fukt/avfuktare-garage/
+6. Garage, förråd, sommarstuga och jordkällare	6.1	problem	mögel garage	10	0%	0%	topp jul	20	10		/fukt/avfuktare-garage/
+6. Garage, förråd, sommarstuga och jordkällare	6.1	problem	unken lukt i sommarstuga	10	0%	0%	topp maj	20	0		/fukt/avfuktare-garage/
+6. Garage, förråd, sommarstuga och jordkällare	6.1	problem	fukt jordkällare								
+6. Garage, förråd, sommarstuga och jordkällare	6.1	problem	fuktig sommarstuga								
+6. Garage, förråd, sommarstuga och jordkällare	6.1	problem	krypgrund sommarstuga								
+6. Garage, förråd, sommarstuga och jordkällare	6.2	projekt	ventilation i garage	70	80%	0%	jämn	90	40		/fukt/avfuktare-garage/
+6. Garage, förråd, sommarstuga och jordkällare	6.2	projekt	ventilation jordkällare	70	80%	-36%	topp sep, okt, jul	110	30		/fukt/avfuktare-garage/
+6. Garage, förråd, sommarstuga och jordkällare	6.2	projekt	luftfuktighet garage	40	0%	-80%	topp okt, nov	70	10		/fukt/avfuktare-garage/
+6. Garage, förråd, sommarstuga och jordkällare	6.2	projekt	luftfuktighet jordkällare	10	0%	-67%	topp sep, okt	30	10		/fukt/avfuktare-garage/
+6. Garage, förråd, sommarstuga och jordkällare	6.2	projekt	få bort fukt i garaget								
+6. Garage, förråd, sommarstuga och jordkällare	6.2	projekt	vad är normal luftfuktighet i ett garage								
+6. Garage, förråd, sommarstuga och jordkällare	6.3	produkt	sorptionsavfuktare garage	50	67%	67%	topp sep, jan	90	20		/fukt/avfuktare-garage/
+6. Garage, förråd, sommarstuga och jordkällare	6.3	produkt	avfuktare förråd	30	100%	-20%	topp okt	50	20		/fukt/avfuktare-garage/
+6. Garage, förråd, sommarstuga och jordkällare	6.3	produkt	avfuktare garage bäst i test	30	25%	∞	topp nov	70	0		/fukt/avfuktare-garage/
+6. Garage, förråd, sommarstuga och jordkällare	6.3	produkt	avfuktare jordkällare	20	100%	33%	topp aug	40	10		/fukt/avfuktare-garage/
+6. Garage, förråd, sommarstuga och jordkällare	6.3	produkt	avfuktare sommarstuga	20	0%	-50%	topp sep, okt	30	10		/fukt/avfuktare-garage/
+6. Garage, förråd, sommarstuga och jordkällare	6.3	produkt	avfuktare garage vinter								
+6. Garage, förråd, sommarstuga och jordkällare	6.3	produkt	kondensavfuktare garage								
+6. Garage, förråd, sommarstuga och jordkällare	6.3	produkt	sorptionsavfuktare förråd								
+7. Badrum, tvättstuga och kök	7.1	problem	svartmögel badrum	1900	23%	-45%	topp okt	3600	1300		/fukt/svartmogel-badrum/
+7. Badrum, tvättstuga och kök	7.1	problem	mögel badrum	1000	49%	-45%	topp sep, okt, nov	1900	590		/fukt/svartmogel-badrum/
+7. Badrum, tvättstuga och kök	7.1	problem	svartmögel i duschen	320	86%	22%	topp okt, dec	480	170		/fukt/svartmogel-badrum/
+7. Badrum, tvättstuga och kök	7.1	problem	fuktskada badrum	210	21%	-35%	topp sep	320	110		(väntar) /badrum/fuktskada-badrum/
+7. Badrum, tvättstuga och kök	7.1	problem	fuktskada badrum tecken	90	75%	-36%	topp okt	140	40		(väntar) /badrum/fuktskada-badrum/
+7. Badrum, tvättstuga och kök	7.1	problem	fuktskada under kylskåp	40	75%	0%	topp jul, aug	70	10		(väntar) /fukt/lackagebrytare/
+7. Badrum, tvättstuga och kök	7.1	problem	luftfuktighet badrum	20	50%	-25%	topp sep	50	10		/fukt/badrumsflakt/
+7. Badrum, tvättstuga och kök	7.1	problem	luktar mögel i badrum	20	0%	-50%	topp sep	40	10		/fukt/svartmogel-badrum/
+7. Badrum, tvättstuga och kök	7.1	problem	fukt bakom kakel	10	0%	0%	topp nov	30	10		(väntar) /badrum/fuktskada-badrum/
+7. Badrum, tvättstuga och kök	7.1	problem	fukt i badrummet	10	0%	0%	topp sep	30	10		/fukt/svartmogel-badrum/
+7. Badrum, tvättstuga och kök	7.1	problem	luktar fukt i badrummet	10	0%	-50%	jämn	10	10		/fukt/svartmogel-badrum/
+7. Badrum, tvättstuga och kök	7.1	problem	unken lukt badrum	10	0%	-67%	jämn	20	10		/fukt/svartmogel-badrum/
+7. Badrum, tvättstuga och kök	7.1	problem	fukt i taket badrum								
+7. Badrum, tvättstuga och kök	7.1	problem	fukt runt golvbrunn								
+7. Badrum, tvättstuga och kök	7.1	problem	fuktig tvättstuga								
+7. Badrum, tvättstuga och kök	7.1	problem	fuktskada under diskbänk								
+7. Badrum, tvättstuga och kök	7.1	problem	hög luftfuktighet i badrummet								/fukt/badrumsflakt/
+7. Badrum, tvättstuga och kök	7.1	problem	kondens badrum								/fukt/badrumsflakt/
+7. Badrum, tvättstuga och kök	7.1	problem	luktar fukt i tvättstugan								
+7. Badrum, tvättstuga och kök	7.1	problem	återkommande mögel i duschen								/fukt/svartmogel-badrum/
+7. Badrum, tvättstuga och kök	7.2	produkt	badrumsfläkt	4400	22%	-19%	topp sep, okt, nov	5400	2900		/fukt/badrumsflakt/
+7. Badrum, tvättstuga och kök	7.2	produkt	badrumsfläkt fuktstyrd	590	22%	83%	topp aug	880	480		/fukt/badrumsflakt/
+7. Badrum, tvättstuga och kök	7.2	produkt	ventilation badrum	480	50%	0%	topp okt	720	320		/fukt/badrumsflakt/
+7. Badrum, tvättstuga och kök	7.2	produkt	avfuktare badrum	320	50%	0%	topp sep	720	170		/fukt/badrumsflakt/
+7. Badrum, tvättstuga och kök	7.2	produkt	fuktskydd under diskbänk	140	55%	143%	topp mar	210	50		(väntar) /fukt/lackagebrytare/
+7. Badrum, tvättstuga och kök	7.2	produkt	avfuktare torkrum	70	0%	-22%	topp nov	110	40		/fukt/avfuktare-tvattstuga/
+7. Badrum, tvättstuga och kök	7.2	produkt	frånluft badrum	70	25%	-44%	topp sep	110	30		/fukt/badrumsflakt/
+7. Badrum, tvättstuga och kök	7.2	produkt	ventilation badrum regler	70	-20%	-43%	jämn	90	40		/fukt/badrumsflakt/
+7. Badrum, tvättstuga och kök	7.2	produkt	avfuktare badrum bäst i test	50	25%	25%	topp sep	90	20		/fukt/badrumsflakt/
+7. Badrum, tvättstuga och kök	7.2	produkt	avfuktare torka tvätt	50	67%	-29%	topp sep	140	20		/fukt/avfuktare-tvattstuga/
+7. Badrum, tvättstuga och kök	7.2	produkt	ventilation tvättstuga	50	75%	-22%	topp nov, mar	90	40		/fukt/avfuktare-tvattstuga/
+7. Badrum, tvättstuga och kök	7.2	produkt	ventilation badrum självdrag	40	-33%	-78%	topp sep, okt, nov	90	20		/fukt/badrumsflakt/
+7. Badrum, tvättstuga och kök	7.2	produkt	luftfuktighet tvättstuga	20	0%	-60%	topp sep	40	10		/fukt/avfuktare-tvattstuga/
+7. Badrum, tvättstuga och kök	7.2	produkt	avfuktare eller torktumlare	10	-100%	-100%	jämn	10	0		/fukt/avfuktare-tvattstuga/
+7. Badrum, tvättstuga och kök	7.3	regel och kunskap	fuktmätning badrum	90	0%	-22%	topp okt	110	70		(väntar) /badrum/fuktskada-badrum/
+7. Badrum, tvättstuga och kök	7.3	regel och kunskap	fuktskada badrum försäkring	40	50%	-40%	topp sep, okt	70	20		(väntar) /badrum/fuktskada-badrum/
+7. Badrum, tvättstuga och kök	7.3	regel och kunskap	fuktbesiktning badrum	10	-100%	-100%	jämn	10	0		(väntar) /badrum/fuktskada-badrum/
+7. Badrum, tvättstuga och kök	7.3	regel och kunskap	fuktkontroll badrum								
+7. Badrum, tvättstuga och kök	7.3	regel och kunskap	fuktmätning gränsvärden badrum								
+7. Badrum, tvättstuga och kök	7.3	regel och kunskap	fuktskada gammalt badrum försäkring								
+8. Väggar, golv, tak, syll och fasad	8.1	problem	fuktskada vägg	140	50%	91%	topp aug	210	70		/fukt/fuktskada/
+8. Väggar, golv, tak, syll och fasad	8.1	problem	fukt i väggen	50	33%	-43%	topp sep	140	20		/fukt/fuktskada/
+8. Väggar, golv, tak, syll och fasad	8.1	problem	fuktmätare vägg	50	133%	-22%	topp sep, maj, aug	70	30		/fuktmatare/
+8. Väggar, golv, tak, syll och fasad	8.1	problem	mögel vägg inomhus	50	67%	-29%	topp nov	90	30		/fukt/fuktskada/
+8. Väggar, golv, tak, syll och fasad	8.1	problem	fuktfläckar på vägg	10	-100%	-100%	jämn	10	0		/fukt/fuktskada/
+8. Väggar, golv, tak, syll och fasad	8.1	problem	fuktskada gipsvägg								
+8. Väggar, golv, tak, syll och fasad	8.1	problem	mäta fukt i väggen								
+8. Väggar, golv, tak, syll och fasad	8.2	problem	fuktskada parkett	170	-64%	-81%	topp sep	390	50		/fukt/vattenskada/
+8. Väggar, golv, tak, syll och fasad	8.2	problem	fuktspärr golv	170	21%	-47%	topp sep	320	140		/fukt/fuktmatning-betong/
+8. Väggar, golv, tak, syll och fasad	8.2	problem	fuktskada golv	90	22%	0%	topp feb, aug	110	70		/fukt/fuktskada/
+8. Väggar, golv, tak, syll och fasad	8.2	problem	fuktskada trägolv	40	33%	-43%	topp sep, okt	50	20		/fukt/fuktskada/
+8. Väggar, golv, tak, syll och fasad	8.2	problem	mögel under golv	30	200%	-25%	topp okt	50	10		/fukt/fuktskada/
+8. Väggar, golv, tak, syll och fasad	8.2	problem	fukt i golvet	20	0%	-33%	topp okt, maj	30	10		/fukt/fuktskada/
+8. Väggar, golv, tak, syll och fasad	8.2	problem	fukt under golv	10	0%	0%	topp nov	20	10		/fukt/fuktskada/
+8. Väggar, golv, tak, syll och fasad	8.2	problem	fukt under klinker	10	0%	0%	topp sep	20	10		/fukt/fuktskada/
+8. Väggar, golv, tak, syll och fasad	8.2	problem	fuktkvot trägolv								
+8. Väggar, golv, tak, syll och fasad	8.3	problem	fuktskada tak	70	0%	-64%	topp sep, feb, mar	110	50		/fukt/fuktskada/
+8. Väggar, golv, tak, syll och fasad	8.3	problem	fuktskada innertak	40	0%	-40%	topp dec, jan	70	20		/fukt/fuktskada/
+8. Väggar, golv, tak, syll och fasad	8.3	problem	fukt i taket	30	-40%	0%	topp jun	50	10		/fukt/fuktskada/
+8. Väggar, golv, tak, syll och fasad	8.3	problem	fuktfläck i taket								
+8. Väggar, golv, tak, syll och fasad	8.3	problem	kondens på ångspärr								
+8. Väggar, golv, tak, syll och fasad	8.3	problem	vattenfläckar i taket								
+8. Väggar, golv, tak, syll och fasad	8.4	problem	äkta hussvamp	720	23%	-33%	topp nov	1000	390		/fukt/hussvamp/
+8. Väggar, golv, tak, syll och fasad	8.4	problem	rötsvamp	140	0%	-18%	topp sep, okt, nov	210	140		/fukt/hussvamp/
+8. Väggar, golv, tak, syll och fasad	8.4	problem	mögel fasad	70	80%	29%	topp sep	140	20		/fukt/fuktskada/
+8. Väggar, golv, tak, syll och fasad	8.4	problem	enstegstätning	10	0%	0%	topp sep, dec, maj	20	10		
+8. Väggar, golv, tak, syll och fasad	8.4	problem	fuktkvot syll	10	0%	0%	jämn	10	10		/fukt/hussvamp/
+8. Väggar, golv, tak, syll och fasad	8.4	problem	fuktig syll								/fukt/hussvamp/
+8. Väggar, golv, tak, syll och fasad	8.4	problem	fuktskada syll								/fukt/hussvamp/
+8. Väggar, golv, tak, syll och fasad	8.4	problem	fuktskador fasad								
+8. Väggar, golv, tak, syll och fasad	8.4	problem	röta i syll								/fukt/hussvamp/
+9. Fönster och kondens	9	problem	kondens på fönster	880	85%	177%	topp nov	2900	260		/fukt/kondens-pa-fonster/
+9. Fönster och kondens	9	problem	kallras	720	-19%	-56%	topp jan	1600	260		/fukt/kallras/
+9. Fönster och kondens	9	problem	imma på fönster	260	89%	-35%	topp sep	720	70		/fukt/kondens-pa-fonster/
+9. Fönster och kondens	9	problem	kallras fönster	110	33%	0%	topp jan	320	20		/fukt/kallras/
+9. Fönster och kondens	9	problem	kondens insida fönster sovrum	110	0%	-67%	topp nov	480	10		/fukt/kondens-pa-fonster/
+9. Fönster och kondens	9	problem	vad är kondens	110	-22%	40%	topp feb	170	70		/fukt/kondens-pa-fonster/
+9. Fönster och kondens	9	problem	varför blir det imma på utsidan av fönstret	110	467%	89%	topp sep	390	10		/fukt/kondens-pa-fonster/
+9. Fönster och kondens	9	problem	mögel fönsterkarm	50	100%	33%	topp jan	90	20		/fukt/kondens-pa-fonster/
+9. Fönster och kondens	9	problem	kondens på fönster utsida	40	300%	0%	topp sep	170	10		/fukt/kondens-pa-fonster/
+9. Fönster och kondens	9	problem	mögel runt fönster	40	150%	400%	topp nov, jul	70	10		/fukt/kondens-pa-fonster/
+9. Fönster och kondens	9	problem	fuktskada fönsterkarm	10	0%	0%	topp jul	20	10		/fukt/kondens-pa-fonster/
+9. Fönster och kondens	9	problem	kondens längst ner på fönstren	10	0%	-100%	topp nov	20	0		/fukt/kondens-pa-fonster/
+9. Fönster och kondens	9	problem	kondens mellan glasen	10	0%	∞	jämn	10	0		/fukt/kondens-pa-fonster/
+9. Fönster och kondens	9	problem	kondens mellan kopplade fönster	10	0%	∞	topp nov	30	10		/fukt/kondens-pa-fonster/
+9. Fönster och kondens	9	problem	kondens nya fönster	10	0%	0%	topp okt	30	10		/fukt/kondens-pa-fonster/
+9. Fönster och kondens	9	problem	kondens på rör	10	-50%	0%	topp jun	20	10		/fukt/fukt-i-kallaren/
+9. Fönster och kondens	9	problem	fuktskada under fönster								/fukt/kondens-pa-fonster/
+10. Luftfuktighet inomhus	10.1	problem	hög luftfuktighet inomhus	110	0%	0%	topp sep	260	20		/fukt/luftfuktighet-inomhus/
+10. Luftfuktighet inomhus	10.1	problem	låg luftfuktighet inomhus	90	0%	0%	topp jan	390	10		/luftfuktare/ eller /fukt/lag-luftfuktighet/
+10. Luftfuktighet inomhus	10.1	problem	fuktig luft inomhus	30	-60%	-50%	topp sep	90	10		/fukt/luftfuktighet-inomhus/
+10. Luftfuktighet inomhus	10.1	problem	hög luftfuktighet inomhus sommar	20	-67%	-93%	topp sep	170	10		/fukt/luftfuktighet-inomhus/
+10. Luftfuktighet inomhus	10.1	problem	fuktig lägenhet	10	0%	0%	topp sep	30	0		/fukt/luftfuktighet-inomhus/
+10. Luftfuktighet inomhus	10.1	problem	låg luftfuktighet inomhus vinter	10	0%	0%	topp jan, feb	50	0		/luftfuktare/ eller /fukt/lag-luftfuktighet/
+10. Luftfuktighet inomhus	10.1	problem	låg luftfuktighet symptom	10	0%	0%	jämn	10	0		/luftfuktare/ eller /fukt/lag-luftfuktighet/
+10. Luftfuktighet inomhus	10.1	problem	tecken på för hög luftfuktighet								/fukt/luftfuktighet-inomhus/
+10. Luftfuktighet inomhus	10.2	regel och kunskap	luftfuktighet inomhus vinter	590	0%	-67%	topp jan, feb	1900	70		/fukt/luftfuktighet-inomhus/
+10. Luftfuktighet inomhus	10.2	regel och kunskap	luftfuktighet inomhus sommar	210	-19%	-64%	topp sep	590	70		/fukt/luftfuktighet-inomhus/
+10. Luftfuktighet inomhus	10.2	regel och kunskap	relativ fuktighet	170	-21%	-35%	jämn	210	90		/fukt/luftfuktighet-inomhus/
+10. Luftfuktighet inomhus	10.2	regel och kunskap	daggpunkt tabell	110	-47%	-57%	topp sep	210	90		/rakna/daggpunkt/
+10. Luftfuktighet inomhus	10.2	regel och kunskap	luftfuktighet hus	90	0%	-44%	topp sep, okt	140	40		/fukt/luftfuktighet-inomhus/
+10. Luftfuktighet inomhus	10.2	regel och kunskap	absolut fuktighet	70	-40%	-57%	topp jan	110	20		/fukt/luftfuktighet-inomhus/
+10. Luftfuktighet inomhus	10.2	regel och kunskap	luftfuktighet sovrum	70	0%	-20%	topp jan	170	20		/fukt/luftfuktighet-inomhus/
+10. Luftfuktighet inomhus	10.2	regel och kunskap	luftfuktighet i lägenhet	50	-33%	-50%	topp feb	110	10		/fukt/luftfuktighet-inomhus/
+10. Luftfuktighet inomhus	10.2	regel och kunskap	luftfuktighet mögel	50	-40%	-67%	topp sep	110	20		/fukt/luftfuktighet-inomhus/
+10. Luftfuktighet inomhus	10.2	regel och kunskap	relativ fuktighet inomhus	50	33%	-20%	topp sep, nov	90	20		/fukt/luftfuktighet-inomhus/
+10. Luftfuktighet inomhus	10.2	regel och kunskap	daggpunkt kalkylator	40	-50%	-60%	topp sep, nov	70	20		/rakna/daggpunkt/
+10. Luftfuktighet inomhus	10.2	regel och kunskap	luftfuktighet inomhus folkhälsomyndigheten	30	-29%	∞	topp jun	70	0		/fukt/luftfuktighet-inomhus/
+10. Luftfuktighet inomhus	10.2	regel och kunskap	luftfuktighet procent	10	0%	0%	jämn	10	10		/fukt/luftfuktighet-inomhus/
+10. Luftfuktighet inomhus	10.2	regel och kunskap	absolut och relativ fuktighet								/fukt/luftfuktighet-inomhus/
+10. Luftfuktighet inomhus	10.2	regel och kunskap	när börjar mögel växa								/fukt/luftfuktighet-inomhus/
+10. Luftfuktighet inomhus	10.3	produkt	luftfuktare	18100	0%	-19%	topp feb	40500	5400		/luftfuktare/ eller /fukt/lag-luftfuktighet/
+10. Luftfuktighet inomhus	10.3	produkt	luftfuktare bäst i test	2900	0%	0%	topp jan, feb	6600	880		/luftfuktare/ eller /fukt/lag-luftfuktighet/
+11. Mögel, allmänt	11.1	problem	svartmögel	4400	24%	-45%	topp sep, okt	6600	2900		/fukt/svartmogel/
+11. Mögel, allmänt	11.1	problem	svartmögel farligt	720	23%	-41%	jämn	880	480		/fukt/svartmogel/
+11. Mögel, allmänt	11.1	problem	vitmögel	590	23%	-41%	topp sep, okt, nov	880	390		/fukt/svartmogel/
+11. Mögel, allmänt	11.1	problem	hur luktar mögel	390	22%	-34%	topp sep	590	260		/fukt/mogellukt/
+11. Mögel, allmänt	11.1	problem	mögel symptom	390	-19%	-56%	topp sep, nov, jan	590	260		/fukt/mogel-i-huset/
+11. Mögel, allmänt	11.1	problem	mögel i hus symptom	260	24%	-34%	topp okt	390	170		/fukt/mogel-i-huset/
+11. Mögel, allmänt	11.1	problem	mögel i hus	210	55%	-47%	topp sep	390	110		/fukt/mogel-i-huset/
+11. Mögel, allmänt	11.1	problem	mögellukt	70	0%	-22%	topp sep	110	50		/fukt/mogellukt/
+11. Mögel, allmänt	11.1	problem	mögel farligt	50	67%	0%	topp okt, jul	70	30		/fukt/svartmogel/
+11. Mögel, allmänt	11.1	problem	luktar mögel i huset	20	100%	0%	topp okt	40	10		/fukt/mogellukt/
+11. Mögel, allmänt	11.1	problem	mögel efter vattenskada	10	0%	0%	jämn	10	10		/fukt/mogel-i-huset/
+11. Mögel, allmänt	11.1	problem	symptom mögel i lägenhet	10	0%	0%	jämn	10	10		/fukt/mogel-i-huset/
+11. Mögel, allmänt	11.1	problem	mögel utan fukt								/fukt/svartmogel/
+11. Mögel, allmänt	11.1	problem	är fukt och mögel samma sak								/fukt/svartmogel/
+11. Mögel, allmänt	11.2	projekt	mögelsanering	390	52%	-46%	topp sep	880	210		/fukt/mogel-i-huset/
+11. Mögel, allmänt	11.2	projekt	mögel ättika	110	-22%	-50%	topp sep	170	70		/fukt/svartmogel/
+11. Mögel, allmänt	11.2	projekt	mögelsanering pris	20	0%	100%	topp mar, maj	40	10		/fukt/mogel-i-huset/
+11. Mögel, allmänt	11.2	projekt	ta bort svartmögel från trä	10	0%	0%	jämn	10	10		/fukt/svartmogel/
+11. Mögel, allmänt	11.2	projekt	mögel medel trä								/fukt/svartmogel/
+11. Mögel, allmänt	11.2	projekt	åtgärda mögel i hus								/fukt/mogel-i-huset/
+11. Mögel, allmänt	11.3	mätning	mögeltest	390	86%	-34%	topp sep, okt	590	210		/fukt/mogel-i-huset/
+11. Mögel, allmänt	11.3	mätning	mögeltest hemma	260	24%	-34%	topp okt, nov	390	170		/fukt/mogel-i-huset/
+11. Mögel, allmänt	11.3	mätning	mögelhund	170	-18%	-18%	topp apr	480	90		/fukt/mogel-i-huset/
+11. Mögel, allmänt	11.3	mätning	mögelbesiktning	90	0%	-43%	topp dec	170	30		/fukt/mogel-i-huset/
+11. Mögel, allmänt	11.3	mätning	mögeltest bäst i test	90	0%	-22%	topp okt	110	70		/fukt/mogel-i-huset/
+11. Mögel, allmänt	11.3	mätning	mögel försäkring	40	200%	-57%	topp mar	70	10		/fukt/mogel-i-huset/
+11. Mögel, allmänt	11.3	mätning	mögel hemförsäkring	10	0%	-50%	topp sep, okt	20	10		/fukt/mogel-i-huset/
+11. Mögel, allmänt	11.3	mätning	mögel lägenhet hyresrätt								/fukt/mogel-i-huset/
+12. Lukt i huset	12	problem	luktar unket i huset	90	0%	-36%	topp sep	170	50		/fukt/mogellukt/
+12. Lukt i huset	12	problem	luktsanering	90	0%	-50%	topp sep	170	50		/fukt/mogellukt/
+12. Lukt i huset	12	problem	unken lukt i hus	90	0%	-36%	topp sep	170	50	luktar unket i huset	/fukt/mogellukt/
+12. Lukt i huset	12	problem	dålig lukt inomhus	30	0%	-50%	topp sep	90	10		/fukt/mogellukt/
+12. Lukt i huset	12	problem	luktar fukt i huset	20	-50%	-75%	topp sep	40	10		/fukt/mogellukt/
+12. Lukt i huset	12	problem	konstig lukt i huset	10	0%	-75%	jämn	20	10		/fukt/mogellukt/
+12. Lukt i huset	12	problem	luktar jord i huset	10	0%	-75%	topp sep	30	10		/fukt/mogellukt/
+12. Lukt i huset	12	problem	luktar källare i huset	10	0%	-50%	topp okt	20	10		/fukt/mogellukt/
+12. Lukt i huset	12	problem	luktar potatiskällare i huset	10	0%	0%	jämn	10	0		/fukt/mogellukt/
+12. Lukt i huset	12	problem	hur luktar fuktig isolering								/fukt/mogellukt/
+12. Lukt i huset	12	problem	ta bort fuktig lukt								/fukt/mogellukt/
+13. Fuktskada, försäkring, besiktning och husköp	13.1	regel och kunskap	fuktskada	480	-19%	-33%	topp apr	1300	260		/fukt/fuktskada/
+13. Fuktskada, försäkring, besiktning och husköp	13.1	regel och kunskap	vattenskada försäkring	260	0%	-34%	topp sep	480	170		/fukt/vattenskada/
+13. Fuktskada, försäkring, besiktning och husköp	13.1	regel och kunskap	vattenskada golv	110	0%	-67%	topp sep	260	70		/fukt/vattenskada/
+13. Fuktskada, försäkring, besiktning och husköp	13.1	regel och kunskap	fuktskada hus	50	100%	0%	topp sep	210	10		/fukt/fuktskada/
+13. Fuktskada, försäkring, besiktning och husköp	13.1	regel och kunskap	vattenläcka försäkring	50	0%	-57%	topp sep, okt	90	20		/fukt/vattenskada/
+13. Fuktskada, försäkring, besiktning och husköp	13.1	regel och kunskap	fuktskada bostadsrätt	30	0%	-67%	topp sep	50	10		/fukt/fuktskada/
+13. Fuktskada, försäkring, besiktning och husköp	13.1	regel och kunskap	fuktskada försäkring	30	0%	-60%	topp okt	70	10		/fukt/fuktskada/
+13. Fuktskada, försäkring, besiktning och husköp	13.1	regel och kunskap	fuktskada hemförsäkring	10	0%	0%	topp sep	20	10		/fukt/fuktskada/
+13. Fuktskada, försäkring, besiktning och husköp	13.1	regel och kunskap	fuktskada lägenhet hyresrätt	10	0%	0%	jämn	10	0		/fukt/fuktskada/
+13. Fuktskada, försäkring, besiktning och husköp	13.1	regel och kunskap	riskkonstruktioner hus	10	0%	-67%	topp sep, maj	20	10		/fukt/fuktskada/
+13. Fuktskada, försäkring, besiktning och husköp	13.1	regel och kunskap	tecken på fuktskada	10	100%	0%	jämn	20	10		/fukt/fuktskada/
+13. Fuktskada, försäkring, besiktning och husköp	13.1	regel och kunskap	fuktskada efter husköp								
+13. Fuktskada, försäkring, besiktning och husköp	13.1	regel och kunskap	fuktskada villaförsäkring								
+13. Fuktskada, försäkring, besiktning och husköp	13.1	regel och kunskap	fuktskada åtgärd								
+13. Fuktskada, försäkring, besiktning och husköp	13.1	regel och kunskap	fuktskador i äldre hus								
+13. Fuktskada, försäkring, besiktning och husköp	13.1	regel och kunskap	är fuktskada ett dolt fel								
+13. Fuktskada, försäkring, besiktning och husköp	13.1	regel och kunskap	åldersavdrag vattenskada								
+13. Fuktskada, försäkring, besiktning och husköp	13.2	projekt	hyra avfuktare	260	0%	-46%	topp sep	480	170	avfuktare hyra	/fukt/vattenskada/
+13. Fuktskada, försäkring, besiktning och husköp	13.2	projekt	fuktkontroll	140	0%	56%	topp sep	260	90		/fukt/fuktskada/
+13. Fuktskada, försäkring, besiktning och husköp	13.2	projekt	avfuktare vattenskada	90	0%	-50%	topp sep	210	50		/fukt/vattenskada/
+13. Fuktskada, försäkring, besiktning och husköp	13.2	projekt	fuktbesiktning	70	-29%	-44%	topp sep, mar	110	50		/fukt/fuktskada/
+13. Fuktskada, försäkring, besiktning och husköp	13.2	projekt	fuktsanering	50	-25%	-67%	topp sep	170	20		/fukt/fuktskada/
+13. Fuktskada, försäkring, besiktning och husköp	13.2	projekt	fuktkontroll hus	20	0%	-75%	topp sep	90	10		/fukt/fuktskada/
+13. Fuktskada, försäkring, besiktning och husköp	13.2	projekt	byggavfuktare hyra	10	0%	0%	topp nov	20	10		/fukt/vattenskada/
+13. Fuktskada, försäkring, besiktning och husköp	13.2	projekt	fuktbesiktning hus	10	0%	100%	jämn	20	10		/fukt/fuktskada/
+13. Fuktskada, försäkring, besiktning och husköp	13.2	projekt	fuktbesiktning pris	10	0%	0%	topp sep	90	10		/fukt/fuktskada/
+13. Fuktskada, försäkring, besiktning och husköp	13.2	projekt	torka vattenskada	10	0%	0%	jämn	20	10		/fukt/vattenskada/
+13. Fuktskada, försäkring, besiktning och husköp	13.2	projekt	utredning fuktskada	10	0%	0%	jämn	10	10		/fukt/fuktskada/
+13. Fuktskada, försäkring, besiktning och husköp	13.2	projekt	fuktsanering pris								
+13. Fuktskada, försäkring, besiktning och husköp	13.2	projekt	överlåtelsebesiktning fukt								
+14. Ventilation	14	regel och kunskap	ftx ventilation	3600	24%	0%	jämn	4400	2400		/fukt/sjalvdrag/
+14. Ventilation	14	regel och kunskap	spaltventil	1300	0%	-23%	topp sep, okt, nov	1600	720		/fukt/sjalvdrag/
+14. Ventilation	14	regel och kunskap	kallrasskydd	880	0%	-19%	topp nov, jan	1600	480		/fukt/badrumsflakt/
+14. Ventilation	14	regel och kunskap	självdragsventilation	590	0%	-33%	topp sep, okt	880	390		/fukt/sjalvdrag/
+14. Ventilation	14	regel och kunskap	frånluftsventilation	320	0%	-19%	topp sep	480	210		/fukt/sjalvdrag/
+14. Ventilation	14	regel och kunskap	självdrag	210	21%	-19%	jämn	260	110		/fukt/sjalvdrag/
+14. Ventilation	14	regel och kunskap	ventilation i hus	110	0%	-21%	topp nov	170	70		/fukt/sjalvdrag/
+14. Ventilation	14	regel och kunskap	självdragsventil	90	-22%	-22%	jämn	110	70		/fukt/sjalvdrag/
+14. Ventilation	14	regel och kunskap	ventilation ovanför fönster	70	40%	40%	topp jan	110	40		/fukt/sjalvdrag/
+14. Ventilation	14	regel och kunskap	ventilation rum utan fönster	20	-67%	-67%	topp okt	40	10		/fukt/sjalvdrag/
+14. Ventilation	14	regel och kunskap	ventilation äldre hus	20	0%	0%	topp nov	40	10		/fukt/sjalvdrag/
+14. Ventilation	14	regel och kunskap	mekanisk ventilation hus	10	0%	0%	topp okt	20	10		/fukt/sjalvdrag/
+14. Ventilation	14	regel och kunskap	självdrag i gamla hus	10	∞	0%	jämn	10	0		/fukt/sjalvdrag/
+14. Ventilation	14	regel och kunskap	ventilation till sovrum	10	∞	∞	topp aug	40	0		/fukt/sjalvdrag/
+14. Ventilation	14	regel och kunskap	ventilation hus krav								/fukt/sjalvdrag/
+15. Mätning och instrument	15.1	mätning	fuktmätare bäst i test	210	23%	52%	topp aug	320	170		/fuktmatare/
+15. Mätning och instrument	15.1	mätning	fuktmätare ved	210	86%	53%	topp okt	320	140		/fuktmatare/
+15. Mätning och instrument	15.1	mätning	fuktmätare test	90	29%	-36%	topp sep, okt	140	40		/fuktmatare/
+15. Mätning och instrument	15.1	mätning	fuktmätare trä bäst i test	70	22%	-21%	topp sep	140	40		/fuktmatare/
+15. Mätning och instrument	15.1	mätning	fuktmätare hus	30	100%	-20%	topp sep, okt	50	20		/fuktmatare/
+15. Mätning och instrument	15.1	mätning	fuktmätare protimeter	30	-33%	-50%	topp nov	50	20		/fuktmatare/
+15. Mätning och instrument	15.1	mätning	fuktmätare trådlös	20	0%	-60%	topp sep, okt	40	10		/fuktmatare/
+15. Mätning och instrument	15.1	mätning	fuktmätare värden	20	-50%	-67%	jämn	20	10		/fuktmatare/
+15. Mätning och instrument	15.1	mätning	fuktmätare mögel	10	0%	0%	topp feb, apr	20	10		/fuktmatare/
+15. Mätning och instrument	15.1	mätning	fuktmätare med app								
+15. Mätning och instrument	15.1	mätning	fuktmätare stift								
+15. Mätning och instrument	15.1	mätning	fuktmätare stiftlös								
+15. Mätning och instrument	15.2	mätning	fuktkvot trä	110	0%	-47%	topp sep	170	70		/fukt/fuktkvot/
+15. Mätning och instrument	15.2	mätning	fuktkvot trä mögel	40	0%	-67%	topp sep, okt, nov	70	10		/fukt/fuktkvot/
+15. Mätning och instrument	15.2	mätning	fuktkvot trä målning	20	100%	-60%	topp sep	50	10		/fukt/fuktkvot/
+15. Mätning och instrument	15.2	mätning	fuktkvot ved	20	100%	-33%	topp okt, nov	30	10		/fukt/fuktkvot/
+15. Mätning och instrument	15.2	mätning	fuktkvot trä inomhus	10	0%	0%	jämn	10	10		/fukt/fuktkvot/
+15. Mätning och instrument	15.2	mätning	fuktkvot och relativ fuktighet								
+15. Mätning och instrument	15.2	mätning	fuktkvot trä formel								
+15. Mätning och instrument	15.2	mätning	fuktkvot trä röta								
+15. Mätning och instrument	15.2	mätning	kritiskt fukttillstånd trä								
+15. Mätning och instrument	15.3	mätning	hygrometer	4400	22%	0%	jämn	5400	2900		/fukt/hygrometer/
+15. Mätning och instrument	15.3	mätning	luftfuktighetsmätare	480	0%	-34%	jämn	720	320		/fukt/hygrometer/
+15. Mätning och instrument	15.3	mätning	läckagebrytare	260	0%	136%	jämn	390	170		(väntar) /fukt/lackagebrytare/
+15. Mätning och instrument	15.3	mätning	fuktlarm	210	-19%	0%	topp jan, mar, maj	260	140		(väntar) /fukt/lackagebrytare/
+15. Mätning och instrument	15.3	mätning	mäta luftfuktighet	210	53%	0%	jämn	260	110		/fukt/hygrometer/
+15. Mätning och instrument	15.3	mätning	hygrometer wifi	140	22%	-35%	topp okt, nov	210	70		/fukt/hygrometer/
+15. Mätning och instrument	15.3	mätning	fuktgivare	110	0%	0%	topp sep	170	50		(väntar) /fukt/lackagebrytare/
+15. Mätning och instrument	15.3	mätning	hygrometer analog	110	29%	-18%	topp sep, jan, feb	140	70		/fukt/hygrometer/
+15. Mätning och instrument	15.3	mätning	hygrometer digital	110	27%	56%	topp feb, aug	140	70		/fukt/hygrometer/
+15. Mätning och instrument	15.3	mätning	hygrometer trådlös	70	80%	29%	topp okt, jan, aug	90	40		/fukt/hygrometer/
+15. Mätning och instrument	15.3	mätning	fuktmätning hus	30	-25%	-25%	topp mar	70	20		/fukt/hygrometer/
+15. Mätning och instrument	15.3	mätning	hygrometer kalibrering	10	0%	0%	jämn	10	0		/fukt/hygrometer/
+15. Mätning och instrument	15.3	mätning	hygrometer med app	10	0%	0%	topp dec	30	10		/fukt/hygrometer/
+15. Mätning och instrument	15.3	mätning	fukt och temperaturmätare wifi								
+15. Mätning och instrument	15.3	mätning	hygrometer badrum								
+15. Mätning och instrument	15.3	mätning	hygrometer noggrannhet								
+15. Mätning och instrument	15.3	mätning	mäta fukt i huset								
+15. Mätning och instrument	15.3	mätning	vilken hygrometer är bäst								
+16. Avfuktare, allmänt och per typ	16.1	produkt	avfuktare	9900	0%	-18%	topp sep	18100	5400		/luftavfuktare/
+16. Avfuktare, allmänt och per typ	16.1	produkt	luftavfuktare	5400	0%	-33%	topp sep	12100	2400		/luftavfuktare/
+16. Avfuktare, allmänt och per typ	16.1	produkt	fuktslukare	1600	14%	0%	topp nov	3600	720		/fukt/fuktslukare/
+16. Avfuktare, allmänt och per typ	16.1	produkt	avfuktare liten	480	23%	0%	topp sep	1000	260		/luftavfuktare/
+16. Avfuktare, allmänt och per typ	16.1	produkt	avfuktare hyra	260	0%	-46%	topp sep	480	170		/fukt/vattenskada/
+16. Avfuktare, allmänt och per typ	16.1	produkt	fuktabsorberare	170	0%	-18%	topp nov	320	140		/fukt/fuktslukare/
+16. Avfuktare, allmänt och per typ	16.1	produkt	avfuktare test	110	0%	-48%	topp sep	260	40		/luftavfuktare/
+16. Avfuktare, allmänt och per typ	16.1	produkt	avfuktare med slang	90	27%	-18%	topp sep	170	40		/luftavfuktare/
+16. Avfuktare, allmänt och per typ	16.1	produkt	avfuktare vägghängd	70	80%	-18%	topp sep	140	20		/luftavfuktare/
+16. Avfuktare, allmänt och per typ	16.1	produkt	luftavfuktare test	70	-29%	-55%	topp sep	170	20		/luftavfuktare/
+16. Avfuktare, allmänt och per typ	16.1	produkt	luftvärmepump som avfuktare	70	-55%	-64%	topp sep	140	20		/luftavfuktare/
+16. Avfuktare, allmänt och per typ	16.1	produkt	tyst avfuktare	50	0%	-44%	topp sep, nov	110	20		/luftavfuktare/
+16. Avfuktare, allmänt och per typ	16.1	produkt	avfuktare och luftrenare	40	-20%	-20%	topp sep	70	10		/luftavfuktare/
+16. Avfuktare, allmänt och per typ	16.1	produkt	avfuktare lägenhet	30	-40%	-40%	topp sep	90	10		/luftavfuktare/
+16. Avfuktare, allmänt och per typ	16.1	produkt	avfuktare pris	30	0%	-25%	topp sep	40	10		/luftavfuktare/
+16. Avfuktare, allmänt och per typ	16.1	produkt	avfuktare för kalla utrymmen	20	100%	-33%	topp nov	50	10		/fukt/sorptionsavfuktare/
+16. Avfuktare, allmänt och per typ	16.1	produkt	avfuktare med pump	20	150%	25%	topp aug	50	10		/luftavfuktare/
+16. Avfuktare, allmänt och per typ	16.1	produkt	avfuktning luftvärmepump	20	-25%	-57%	topp sep	50	10		/luftavfuktare/
+16. Avfuktare, allmänt och per typ	16.1	produkt	avfuktare går hela tiden	10	0%	0%	jämn	10	0		/luftavfuktare/
+16. Avfuktare, allmänt och per typ	16.1	produkt	avfuktare hur fungerar den	10	0%	0%	topp okt	20	10		/luftavfuktare/
+16. Avfuktare, allmänt och per typ	16.1	produkt	avfuktare hur länge	10	0%	0%	jämn	10	10		/luftavfuktare/
+16. Avfuktare, allmänt och per typ	16.1	produkt	luftavfuktare pris	10	0%	0%	jämn	10	0		/luftavfuktare/
+16. Avfuktare, allmänt och per typ	16.1	produkt	vilken avfuktare är bäst	10	100%	100%	jämn	20	10		/luftavfuktare/
+16. Avfuktare, allmänt och per typ	16.1	produkt	avfuktare låga temperaturer								
+16. Avfuktare, allmänt och per typ	16.1	produkt	avfuktare på vintern								
+16. Avfuktare, allmänt och per typ	16.1	produkt	avfuktare radon								
+16. Avfuktare, allmänt och per typ	16.1	produkt	avfuktare som klarar minusgrader								
+16. Avfuktare, allmänt och per typ	16.1	produkt	avfuktare sommar								
+16. Avfuktare, allmänt och per typ	16.1	produkt	är avfuktare bra								
+16. Avfuktare, allmänt och per typ	16.2	produkt	kondensavfuktare	210	0%	0%	jämn	260	110		/fukt/sorptionsavfuktare/
+16. Avfuktare, allmänt och per typ	16.2	produkt	sorptionsavfuktare bäst i test	110	91%	-19%	topp sep	260	50		/fukt/sorptionsavfuktare/
+16. Avfuktare, allmänt och per typ	16.2	produkt	sorptionsavfuktare pris	20	100%	0%	topp sep, okt	40	10		/fukt/sorptionsavfuktare/
+16. Avfuktare, allmänt och per typ	16.2	produkt	byggavfuktare pris	10	0%	0%	topp nov, apr	10	0		/fukt/sorptionsavfuktare/
+16. Avfuktare, allmänt och per typ	16.2	produkt	kondensavfuktare bäst i test	10	-50%	-50%	topp sep	30	10		/fukt/sorptionsavfuktare/
+16. Avfuktare, allmänt och per typ	16.2	produkt	sorptionsavfuktare elförbrukning	10	0%	0%	jämn	10	10		/rakna/elkostnad/ (förval)
+16. Avfuktare, allmänt och per typ	16.2	produkt	kondensavfuktare temperatur								
+16. Avfuktare, allmänt och per typ	16.2	produkt	sorptionsavfuktare hur fungerar								
+16. Avfuktare, allmänt och per typ	16.2	produkt	sorptionsavfuktare livslängd								
+16. Avfuktare, allmänt och per typ	16.2	produkt	sorptionsavfuktare med slang								
+16. Avfuktare, allmänt och per typ	16.2	produkt	sorptionsavfuktare minusgrader								
+16. Avfuktare, allmänt och per typ	16.3	produkt	avfuktare filter	20	0%	0%	jämn	20	10		/luftavfuktare/
+16. Avfuktare, allmänt och per typ	16.3	produkt	avfuktare isar igen	20	0%	0%	topp okt	40	10		/fukt/sorptionsavfuktare/
+16. Avfuktare, allmänt och per typ	16.3	produkt	avfuktare mögel	10	0%	-67%	topp sep	30	10		/luftavfuktare/
+16. Avfuktare, allmänt och per typ	16.3	produkt	avfuktare luktar illa								
+16. Avfuktare, allmänt och per typ	16.3	produkt	avfuktare läcker vatten								
+16. Avfuktare, allmänt och per typ	16.3	produkt	luftavfuktare fungerar inte								
+16. Avfuktare, allmänt och per typ	16.4	produkt	avfuktare tvättstuga	1300	46%	19%	topp sep	2900	590		/fukt/avfuktare-tvattstuga/
+16. Avfuktare, allmänt och per typ	16.4	produkt	avfuktare husvagn	110	27%	-18%	topp sep	260	30		/luftavfuktare/
+16. Avfuktare, allmänt och per typ	16.4	produkt	avfuktare båt	90	29%	-36%	topp sep	210	20		/luftavfuktare/
+16. Avfuktare, allmänt och per typ	16.4	produkt	avfuktare sovrum	70	-22%	-22%	topp nov	140	20		/luftavfuktare/
+16. Avfuktare, allmänt och per typ	16.4	produkt	tyst avfuktare sovrum								
+17. Avfuktare, märken och modeller	17	märke	ozoneair	6600	23%	-33%	topp sep, nov	9900	4400		(märken, inga sidor)
+17. Avfuktare, märken och modeller	17	märke	woods avfuktare	2900	22%	0%	topp sep	5400	1300		(märken, inga sidor)
+17. Avfuktare, märken och modeller	17	märke	acetec	1000	14%	-38%	topp sep	1600	590		(märken, inga sidor)
+17. Avfuktare, märken och modeller	17	märke	corroventa	720	0%	0%	topp sep, okt, mar	880	480		(märken, inga sidor)
+17. Avfuktare, märken och modeller	17	märke	trygghetsvakten	590	0%	-19%	topp sep, okt, nov	720	390		(märken, inga sidor)
+17. Avfuktare, märken och modeller	17	märke	drybox	390	22%	-19%	topp sep, okt, nov	480	260		(märken, inga sidor)
+17. Avfuktare, märken och modeller	17	märke	drybox x4	260	22%	50%	topp sep, aug	390	170		(märken, inga sidor)
+17. Avfuktare, märken och modeller	17	märke	woods avfuktare källare	210	85%	23%	topp aug	480	50		/fukt/avfuktare-kallare/
+17. Avfuktare, märken och modeller	17	märke	woods avfuktare tvättstuga	110	56%	0%	topp sep	260	30		/fukt/avfuktare-tvattstuga/
+17. Avfuktare, märken och modeller	17	märke	corroventa ctr 300tt2	90	80%	-57%	topp okt	170	40		(märken, inga sidor)
+17. Avfuktare, märken och modeller	17	märke	fresh d 800	90	57%	-21%	topp jul	170	50		(märken, inga sidor)
+17. Avfuktare, märken och modeller	17	märke	woods avfuktare krypgrund	70	55%	55%	topp aug	170	30		/fukt/avfuktare-krypgrund/
+17. Avfuktare, märken och modeller	17	märke	meaco avfuktare	50	50%	-57%	topp sep	90	20		(märken, inga sidor)
+17. Avfuktare, märken och modeller	17	märke	acetec evodry	40	175%	175%	topp aug	110	20		(märken, inga sidor)
+17. Avfuktare, märken och modeller	17	märke	dantherm avfuktare	30	-50%	-50%	topp nov	70	10		(märken, inga sidor)
+17. Avfuktare, märken och modeller	17	märke	woods avfuktare mrd10	30	-25%	0%	topp nov	50	10		(märken, inga sidor)
+17. Avfuktare, märken och modeller	17	märke	corroventa avfuktare pris	20	50%	200%	topp aug	30	10		(märken, inga sidor)
+17. Avfuktare, märken och modeller	17	märke	evodry 6h	20	0%	-33%	topp okt	40	10		(märken, inga sidor)
+17. Avfuktare, märken och modeller	17	märke	fresh avfuktare	20	100%	0%	topp sep	40	10		(märken, inga sidor)
+18. Regler, gränsvärden och myndigheter	18	regel och kunskap	fuktsäkerhetsprojektering	70	0%	0%	topp mar	140	30		/fukt/fuktmatning-betong/
+18. Regler, gränsvärden och myndigheter	18	regel och kunskap	mögel hyresrätt	50	-33%	-71%	topp okt, nov	90	10		/fukt/mogel-i-huset/
+18. Regler, gränsvärden och myndigheter	18	regel och kunskap	byggfukt	30	0%	0%	topp nov	50	10		/fukt/fuktmatning-betong/
+18. Regler, gränsvärden och myndigheter	18	regel och kunskap	kritiskt fukttillstånd	10	0%	0%	topp sep, feb, mar	20	10		/fukt/fuktkvot/
+18. Regler, gränsvärden och myndigheter	18	regel och kunskap	fukt och mikroorganismer								
+18. Regler, gränsvärden och myndigheter	18	regel och kunskap	fuktsäkerhet bbr								
+18. Regler, gränsvärden och myndigheter	18	regel och kunskap	högsta tillåtna fukttillstånd								
+19. Radon (kant, gränsar till fukt genom grunden och ventilationen)	19	radon	radon	12100	22%	-33%	topp okt	14800	8100		/fukt/radon/
+19. Radon (kant, gränsar till fukt genom grunden och ventilationen)	19	radon	radonmätare	1000	22%	-12%	jämn	1600	590		/fukt/radon/
+19. Radon (kant, gränsar till fukt genom grunden och ventilationen)	19	radon	radon gränsvärde	880	22%	-45%	topp sep	1300	480		/fukt/radon/
+19. Radon (kant, gränsar till fukt genom grunden och ventilationen)	19	radon	radon i hus	720	23%	-18%	topp okt, nov	1000	390		/fukt/radon/
+19. Radon (kant, gränsar till fukt genom grunden och ventilationen)	19	radon	radonsug	720	22%	0%	topp mar	1000	390		/fukt/radonsug/
+19. Radon (kant, gränsar till fukt genom grunden och ventilationen)	19	radon	radonmätning villa	210	24%	50%	topp nov, jan	320	140		/fukt/radon/
+19. Radon (kant, gränsar till fukt genom grunden och ventilationen)	19	radon	radonsanering	210	0%	-35%	topp sep, okt, mar	320	110		/fukt/radonsug/
+19. Radon (kant, gränsar till fukt genom grunden och ventilationen)	19	radon	vad kostar en radonmätning	140	21%	21%	jämn	170	90		/fukt/radon/
+19. Radon (kant, gränsar till fukt genom grunden och ventilationen)	19	radon	radon hur farligt	110	0%	-22%	topp mar	170	70		/fukt/radon/
+19. Radon (kant, gränsar till fukt genom grunden och ventilationen)	19	radon	radon åtgärder	110	0%	-36%	topp okt	170	40		/fukt/radonsug/
+19. Radon (kant, gränsar till fukt genom grunden och ventilationen)	19	radon	radon ventilation	90	-22%	-22%	topp nov	140	40		/fukt/radonsug/
+19. Radon (kant, gränsar till fukt genom grunden och ventilationen)	19	radon	radonmätning hur ofta	90	0%	-29%	topp okt, nov	170	20		/fukt/radon/
+19. Radon (kant, gränsar till fukt genom grunden och ventilationen)	19	radon	radon lukt	50	0%	-20%	topp sep, okt	70	40		/fukt/radon/
+19. Radon (kant, gränsar till fukt genom grunden och ventilationen)	19	radon	radon källare	30	0%	-40%	topp sep	50	10		/fukt/radon/
+19. Radon (kant, gränsar till fukt genom grunden och ventilationen)	19	radon	ventilera bort radon	20	50%	200%	topp jan, aug	30	10		/fukt/radonsug/
+19. Radon (kant, gränsar till fukt genom grunden och ventilationen)	19	radon	radon dolt fel	10	0%	-50%	jämn	20	10		/fukt/radon/
+20. Husvagn och båt (kant, samma produkter)	20	husvagn och båt	fukt i husvagn	90	-18%	-18%	topp maj, jul	140	20		(görs inte) husvagn och båt
+20. Husvagn och båt (kant, samma produkter)	20	husvagn och båt	fuktskada husvagn	50	0%	-22%	topp jul	90	10		(görs inte) husvagn och båt
+20. Husvagn och båt (kant, samma produkter)	20	husvagn och båt	fukt test husvagn	10	0%	100%	topp jul	30	0		(görs inte) husvagn och båt
+20. Husvagn och båt (kant, samma produkter)	20	husvagn och båt	fukt i båten								
+20. Husvagn och båt (kant, samma produkter)	20	husvagn och båt	unken lukt i båt								
