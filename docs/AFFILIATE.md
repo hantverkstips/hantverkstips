@@ -98,7 +98,7 @@ Prioriterade kategorier, i ordning. Sökvolym är min uppskattning tills SEO-str
 | 6 | Byggfläktar och byggtorkar | 1 500 till 20 000 kr | nov till mars | Medel | Låg | Uttorkning efter vattenskada, garage, bygge på vintern |
 | 7 | Kompressorer och spikpistoler | 2 500 till 15 000 kr | vår, sommar | Medel | Låg | Altan, panel, tak (som par, spikpistolen kräver kompressorn eller batteri) |
 | 8 | Borrhammare | 1 500 till 6 000 kr | året runt | Medel | Medel | Grund, källare, betong |
-| 9 | Fuktmätare | 500 till 3 000 kr | aug till nov | Medel | Låg | Diagnos i fuktguider. Lågt ordervärde men bästa ingången till avfuktarklustret |
+| 9 | Fuktmätare | 1 600 till 25 000 kr hos Proffsmagasinet (43 modeller för trä och bygg från 1 500 kr, 3 under), **verifierad** 2026-09-30 | aug till nov | Medel | Låg | Kategorisida `/fuktmatare/`, granskning (beslut 2026-09-30, `docs/briefer/affiliate-fukt-2026-09-30.md`). Luftfuktare, hygrometrar och radonmätare är inga kategorier |
 | 10 | Överfräsar (kandidat, ingen produkt i dag) | 1 800 till 6 000 kr | året runt | Ej mätt | Ej läst | Struken från byta bänkskiva 2026-09-29: skivtillverkarna levererar hörnet färdigfräst eller med profil, och ingen fräs hos Proffsmagasinet har bekräftad 1/2" spännhylsa. Se `docs/briefer/affiliate-startlista-4-2026-09-29.md` |
 
 Kakelskärare är ingen kategori (beslut 2026-09-29): ett kök kaklas med en enkel skärare som kostar en bråkdel av butikens billigaste på 2 118 kr, och att länka proffsskäraren där vore val på provision.
@@ -114,6 +114,7 @@ Proffsmagasinets produktsidor är källa för pris, lagerstatus och artikelnumme
 | Beckers Våtrumstäck | Produktsidan: ingår i Beckers system "som är godkänt av Måleribranschens Våtrumskontroll" | MVK: "Beckers Våtrumstäck utgick januari 2025". Utgångna system "kan fortsätta att användas under färgens hållbarhetstid" men står inte på den aktuella listan | Länkas aldrig som våtrumsfärg, inget kort, ingen knapp. Texten säger att systemet saknas på MVK:s aktuella lista, inte att butiken har fel | 2026-09-28, `docs/briefer/faktablad/kunskap-vatrumsfarg.md` rad 101–103, 329 |
 | Alcro Tät | Om butiken säljer den är inte kontrollerat | MVK: "Alcro Tät utgick januari 2025" | Samma som ovan | 2026-09-28, samma faktablad |
 | Kakelfärg, råd i butikens guide | Proffsmagasinets guide om att måla kakel: 48 h innan vattenstänk, klarlack i duschen | Går emot MVK 2026 och tillverkarnas datablad | Guiden används inte som källa, kakelfärg får inget kort | 2026-09-28, `docs/briefer/faktablad/guider-mala-kakel.md` rad 118, 233 |
+| HACE PCMH45 luftfuktare | Produktsidan: "Kraftfull ultrasonisk luftfuktare" | Bruksanvisningen PCMH45-DW: förångning genom fuktade mattor | Typen tas ur bruksanvisningen. Ingen produkt; kategorin luftfuktare görs inte (2026-09-30) | 2026-09-30, `docs/briefer/underlag-fukt-sortiment-2026-09-30.md` del 1c |
 
 Källa för MVK: https://www.vatrumsmalning.se/godkanda-system/tidigare-mvk-godknda-system-som-utgtt
 
