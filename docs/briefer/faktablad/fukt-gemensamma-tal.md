@@ -531,3 +531,119 @@ kallor:
   - titel: Lawrence 2005, The relationship between relative humidity and the dewpoint temperature, BAMS 86(2)
     url: https://journals.ametsoc.org/view/journals/bams/86/2/bams-86-2-225.xml
 ```
+
+---
+
+## 13. Tillägg 2026-09-30: badrum och kallvind (förval i `/rakna/daggpunkt/`)
+
+Beställt av koordinatorn för UX-agentens spec `docs/briefer/spec-daggpunkt-rum-2026-09-30.md` avsnitt 0. Allt läst 2026-09-30. **M** = mätserie, **T** = tumregel eller allmänt påstående utan redovisad mätning, **R** = regel eller myndighetsuttalande, **ER** = egen räkning. Avsnitten ovan rörs inte; "Saknas" i 11 kompletteras här, ersätts inte.
+
+### 13.1 Badrummet
+
+| # | Uppgift | Tal | Typ | Källa |
+|---|---|---|---|---|
+| B1 | Luftfuktigheten efter dusch | "I ett badrum eller annat våtrum kan det lätt ibland bli hög luftfuktighet så att fukten kondenserar på ytorna." Inget tal | R | Boverket, BBR avsnitt 6, vägledning från PBL kunskapsbanken (före 1 december 2025), s. 62, "Vattenavvisande ytskikt". Arkiverad, "kommer inte att uppdateras" |
+| B2 | Fukttillskott tillfälligt i våtrum | "Tillfälligt kan skillnaden vara över 3 g/kubikmeter, till exempel i våtutrymmen eller kök" (riktvärdet är 3 g/m³ över uteluften) | R | Folkhälsomyndigheten, vägledning om ventilation, FoHMFS 2014:18 |
+| B3 | Frånluftsflöde i badrum, myndighet | "Folkhälsomyndigheten har inga riktvärden för frånluftsflöden i våtutrymmen som badrum, toalett och tvättrum" | R | samma |
+| B4 | Frånluftsflöde i badrum, föreskrift | BFS 2024:8 3 kap. 5 §: 0,35 l/s per m² golvarea, 4,0 l/s per person. 6 §: "möjlighet till ökad luftväxling om det inte är obehövligt". **Inget flöde för badrum** | R | BFS 2024:8, 3 kap. 5–6 §§ |
+| B5 | Kondens och ytskikt | 7 kap. 9 §: ytor som kan utsättas för kondensvatten ska ha vattenavvisande ytskikt. 10 §: funktioner som begränsar kondens i skadlig omfattning | R | BFS 2024:8, 7 kap. 9–10 §§ |
+| B6 | Badrummet i vila, vinter, nya lägenheter med FTX | Median-RF i badrummet 15–25 % i alla lägenheter utom två. 90:e percentilen av fukttillskottet 2,6 g/m³ i badrum (under 2 g/m³ i övriga rum). Medelfukttillskott i badrum högst 1,36 g/m³, högsta värde 9,13 g/m³. Högsta medeltemperatur i ett badrum 38,99 °C (en lägenhet, "hot and long showering") | M | Coskuntuna, Kraniotis, Barnoshian, Holøs, Thunshelle, "Mostly dry", CLIMA 2022. 10 hushåll i Oslo, 14 feb–22 apr 2021, var 5:e minut i 7 dygn, sensor 150–170 cm över golv och minst 1 m från yttervägg och fönster |
+| B7 | Frånluft i badrummet, norskt mål | Projekteringsmål 54 m³/h (TEK 17); uppmätt 25 och 100 m³/h i två lägenheter | M/R | samma, tabell 3. Norsk regel, inte svensk |
+| B8 | Våtrumsskivor | "Upp till cirka 75 % RF" normal, "upp till cirka 85 % RF" hög fuktbelastning. Gäller skivan bakom tätskiktet, **inte rumsluften** | R (bransch) | GVK, Branschregler, Skivmaterial (2022-09-27) |
+| B9 | RF under dusch, tumregel | "Relative humidity can temporarily rise to 100% in the bathroom"; "Suitable temperature in a bathroom is usually around 23-24 °C"; lämplig RF 30–60 % | T | Ruuvi (sensortillverkare), "Bathroom", odaterad. Allmänna råd, ingen mätning redovisad |
+| B10 | Hur länge toppen varar | "shower raises the humidity for 5-15 minutes" | M, ej överförbar | Pandey m.fl., LoRIS, arXiv 2608.17467 (18 aug 2026). Hotellrum i Queensland, sensor i duschkabinen. Säger inget om ett svenskt badrum med frånluft |
+
+**Saknas, badrum:**
+
+- Lufttemperaturen i ett svenskt badrum under och direkt efter dusch. Bara B9 (tumregel från tillverkare) och B6 (ett extremvärde).
+- RF direkt efter duschen som mätserie. "Nära 100 procent" finns bara som tumregel (B9) och på lead- och hantverkarsidor.
+- **Hur snabbt RF sjunker med fungerande frånluft.** Ingen svensk eller nordisk mätserie hittad. "Under 60 procent inom 30 minuter" och "imman borta inom 15 minuter enligt Boverkets riktlinjer" (ventilation.se, totalbyggarna.se m.fl.) har ingen källa, och Boverket säger det inte i BFS 2024:8 eller i den arkiverade vägledningen. **Upprepas inte.**
+- "BBR kräver 15 l/s i badrum" (lead-sidor) står inte i BFS 2024:8. **Upprepas inte** som svensk regel.
+- Tillverkarnas mätdata: Fresh Intellivent-produktbladet (via Bevego) har fuktstyrning med två fartlägen och eftergång 5, 15 eller 30 minuter, men inga RF-gränser och ingen mätning. PAX: bara butikstext ("60–70 %", "15–30 minuter"), ingen tillverkarmätning hittad.
+- Säker Vatten: inga tal om rumsluft eller ventilation hittade.
+- Kakel mot yttervägg som kallaste yta: ingen källa. Fönstret och ytterväggen finns redan i klustret: glaset räknas med `glasTemperatur` (spec avsnitt 2), ytterväggen i ett äldre hus 12–15 °C (`TYPISKA_YTOR`, ANTAGANDE, redan publicerat).
+- Normal RF i badrummet i vila i äldre hus med självdrag eller frånluft: **saknas**. B6 gäller nya norska FTX-lägenheter vintertid.
+
+### 13.2 Kallvinden vintertid
+
+| # | Uppgift | Tal | Typ | Källa |
+|---|---|---|---|---|
+| K1 | Vad en kall vind är | "ett vindsutrymme där hela eller delar av konstruktionen har en temperatur som ligger nära eller under uteluftens temperatur" | R | Boverket, Kalla vindar (ändrad 22 mars 2023) |
+| K2 | Nattutstrålning | "Vid kall klar väderlek kan ytor som vetter mot natthimlen kylas ned kraftigt"; kondens när ytan "hamnar under daggpunkten för luften i utrymmet". Inget gradtal | R | Boverket, Risker med nattutstrålning (ändrad 22 mars 2023) |
+| K3 | Uteluften vintertid, södra Sverige | "Om uteluftens temperatur är 0 ºC och har en relativ fuktighet på 95 procent, vilket är det normala"; 0 °C och 95 % "ofta förekommer i södra Sverige under vinterhalvåret" | T (SP) | Samuelson och Hägerhed Engman, SP, "Kalla vindar – problem och förbättringar", Bygg & teknik 4/06 s. 22–26 |
+| K4 | Vinden över välisolerat bjälklag | "I vindsutrymmet över ett välisolerat bjälklag blir klimatet som utomhus"; "under klara nätter är det vanligt att kondens uppstår på underlagstaket" | T (SP) | samma |
+| K5 | RF på vinden när den är varmare än ute (ute 0 °C, 95 %) | +1 °C 89 %, +2 °C 83 %, +3 °C 78 %, +4 °C 73 %, +5 °C 68 % | ER (SP:s) | samma, tabell 2 |
+| K6 | Äldre vind med varm murstock | "inte ovanligt att temperaturen är 5 °C högre än ute. I normalfallet klarar sig dessa vindar från fuktskador" | T (SP) | samma |
+| K7 | Uppmätt november 1991, SP | Ute 2,4 °C / 87 %. Referensvind (plywood, ventilerad) 3,0 °C / 82 %. Underlagstak isolerat 10 mm 3,5 / 78; 30 mm 3,7 / 78; oventilerad med 30 mm 4,4 / 74 | M | samma, tabell 3. Anges som "två olika perioder", inte som månadsmedel |
+| K8 | Uppmätt, Stockholm (Gubbängen), flerbostadshus, reducerad ventilation, 400 mm isolering på betongbjälklag | Vinden "på vintern cirka 0,5 till 2 grader varmare" än ute. Oktober–februari: månadsmedel-RF 79–88 %, månadsmedeltemperatur −0,6 till +10,8 °C. Mars–september alltid under 75 %. Fuktkvoten "långt under de kritiska"; råsponten "nästan alltid något högre" än takstolarna | M | Harderup och Arfvidsson, LTH, "Resultat och slutsatser från mätningar i kalla vindsutrymmen", Bygg & teknik 4/07 s. 12–17 |
+| K9 | Uppmätt, Molkom norr om Karlstad, villa, januari 2018 | RF 84,8–97,5 %, temperatur −7,7 till 3,8 °C. December 82,4–96,7 %, ned till −7,4 °C. Februari −11,2 till 1,2 °C. 158 dagar över 75 % sept–feb. Fuktkvot i takstolen december 14,2–16,2 %, aldrig över 20 % | M | Zetterström, "Utomhusklimatets påverkan på kallvindskonstruktion", examensarbete, Karlstads universitet VT 2018. **Studentarbete**, en vind, ett år |
+| K10 | Uteluften i januari | "Den relativa fuktigheten är under januari månad ca 85-95%" (SMHI 2013) | T, andrahand | Zetterström 2018 s. 2, citerar SMHI. SMHI:s sida **inte läst** |
+| K11 | Uppmätt, Huddinge, fyra småhus, aug 2008–mars 2009 | Styrd ventilation: i medel 7,4 procentenheter lägre RF än vanlig vind (hus 11 mot 12), temperaturskillnad −0,13 °C. Fuktkvot i råspont 1 april 2009: 11,1–13,5 %; vid installation 13 feb 2008: 19–19,9 %. Mögelpotential i medel 0,82 (styrd) mot 0,88–0,90 (vanlig); 1,0 = gränsen där mögel kan växa | M | Hagentoft (Chalmers), SBUF 11871/11955, "Effekter på funktion och kostnad av styrd ventilation av kallvindar", slutrapport (tryckår saknas i texten) |
+| K12 | Vindsluften torrare än ute | "luftens fuktinnehåll på kallvindarna är i genomsnitt lägre än ute": −0,5 till −0,8 g/m³ (styrd), −0,2 till −0,3 g/m³ (vanlig ventilation) | M | samma. Samuelson 2006: −0,7 till +0,6 g/m³ i 21 skånska vindar, januari 2001 |
+| K13 | Göteborg, flerbostadshus, styrd ventilation | "max RF på strax lite drygt 80% under kort tid på vintern" | M | Hagentoft, sammanfattningen |
+| K14 | 75 % på en kallvind | "Det schablon krav som ställs i nya BBR säger att RF inte får överstiga 75%. Detta är ett mycket tufft, för att inte säga, ett omöjligt krav att uppfylla på ett traditionellt byggnadstekniskt sätt" | T (forskare) | Hagentoft s. 10 |
+| K15 | Råspontens undersida | Nattutstrålningen kan ge "temperaturen på undersidan av undertaket … en lägre temperatur än utomhus, vilket ökar risken för kondens, speciellt intill den takfot där inströmningen av uteluft sker". Inget gradtal | T (forskare) | Harderup, LTH, "Fallstudie i provhus med uteluftventilerat vindsutrymme", SBUF 11765, januari 2021, s. 2–3 |
+| K16 | Vinter och mögelrisk | Månadsmedel-RF "större än 80 % under perioden oktober till och med februari under samtliga tre vintersäsongerna. Under dessa perioder är dock temperaturen ganska låg varför mögelrisken måste betraktas som liten" | M | samma, s. 46. Gäller spalten mellan underlagspapp och takpannor, **inte vindsluften** |
+| K17 | Dansk vind, januari–februari | Högsta fuktkvot cirka 20 % på norra sidan i januari och februari; ingen mögelrisk eftersom det var kallt | M, andrahand | Nielsen och Morelli 2017, refererad i Harderup 2021 s. 25 |
+| K18 | Risk enligt firmor | "(75%RF / 17%FK) under mer än tillfälligt kortare perioder" | T, **utdrag** | Anticimex via sökmotorn; Anticimex vindsida lästes och har inga RF- eller fuktkvotstal. Ljungby Fuktkontroll: "Överstiger sedan värdet på hygrometern periodvis 75%" och "Redan vid en grads temperaturförlust kan den relativa fuktigheten … öka med upp till 6%" (T) |
+| K19 | Hur vanligt | 28 % av 41 514 besiktigade vindar 2020 hade fukt- eller mögelskada; 35 % i hus byggda 1921–1970, 14 % i hus från 2000-talet | M (besiktning) | Anticimex, pressmeddelande 18 mars 2021 (Cision) |
+| K20 | Daggpunkt för K3 | 0 °C och 95 % ger −0,7 °C | ER | γ = ln(0,95) + 17,625 × 0 / (243,04 + 0) = −0,0513; Td = 243,04 × γ / (17,625 − γ) = −0,71 °C. Magnus med Lawrence 2005 (T18). Under 0 °C blir det rimfrost; formeln räknar mot vatten |
+
+**Normalt och risk, så långt källorna räcker:**
+
+- Normalt vintertid på en uteluftsventilerad vind: klimatet som ute (K1, K4), vinden 0,5–2 °C varmare än ute (K8, en mätning), månadsmedel-RF ungefär 80–90 % (K8 79–88 %, K9 84,8–97,5 % i januari). Över 75 % hela vintern är vanligt i mätningarna och inte i sig ett tecken på skada (K14, K16, K17).
+- Risk: i kyla växer mögel långsamt (K16, K17; Harderup och Arfvidsson 2007 kallar mögelvärdena för låga temperaturer "mycket osäkra"). Risken ligger i långa perioder över 75 % när det är varmare, höst och vår (K4; Hagentoft räknar veckor med 5–15 °C och över 80 % RF, och över 15 °C och över 70 % RF), i kondens på underlagstaket klara nätter (K2, K4, K15) och i fuktig inneluft som läcker upp (K1, Samuelson 2006).
+- Föreskriftens gräns: 75 % RF när materialets gräns inte är känd (avsnitt 1 ovan).
+
+**Saknas, kallvind:**
+
+- **Hur många grader råspontens undersida blir kallare än uteluften en klar natt.** Ingen läst rapport ger ett tal. "Tre till sex grader kallare" finns bara på lead- och firmasidor (trygghetsvakten.se m.fl.) utan källa. **Upprepas inte.**
+- Råspontens yttemperatur i januari som mätserie. SBUF 11765 har den i diagram (figur 3.32 och framåt), inte i text; värdena går inte att läsa ur PDF:en.
+- Vindsklimat i januari i Norrland. Mätningarna är från Skåne, Borås, Lund, Stockholm och Värmland.
+- TräGuiden, "Fuktskydd för tak" (uppdaterad 2020-03-27): "Kondens eller rimfrost kan uppstå på undersidan av ett oisolerat yttertak vid till exempel kraftig utstrålning nattetid". Inga tal. Ingen TräGuiden-sida med vindsklimat hittad.
+- RISE (efter SP): ingen nyare rapport med vinterklimat hittad. SP-talen är från 1991 och 2006.
+
+### 13.3 Lästa och inte nådda
+
+- Lästa i dag: Boverket kalla vindar och nattutstrålning (curl, WebFetch gav bara menyn); Boverkets arkiverade BBR 6-vägledning (PDF); BFS 2024:8 (PDF); FoHM ventilation (curl); Bygg & teknik 4/04, 4/06, 4/07 via Fuktcentrum (PDF); SBUF 11765 och 11955 (PDF, pdftotext); Zetterström 2018; CLIMA 2022; GVK skivmaterial; Anticimex vindsida och pressmeddelande; Ljungby Fuktkontroll vind; Ruuvi; Fresh-produktbladet (PDF via Bevego); LoRIS (arXiv); TräGuiden fuktskydd för tak.
+- Inte nådda: Boverket PBL kunskapsbanken "Badrum och andra våtrum" och "Högsta tillåtna fukttillstånd" (404 efter regelbytet); Geving och Holme 2012 (sagepub, 403); ResearchGate (403); docplayer.se och energy.extweb.sp.se (finns inte i DNS); Geving m.fl. 2008 på Zenodo (bara sammanfattning).
+
+### 13.4 Källor (kallor-format)
+
+```yaml
+kallor:
+  - titel: Boverket, Kalla vindar (ändrad 22 mars 2023)
+    url: https://www.boverket.se/sv/byggande/forebygg-fel-brister-skador/risker-byggande/risker-fuktskador/fuktrisker-yttertak/kalla-vindar/
+  - titel: Boverket, Risker med nattutstrålning (ändrad 22 mars 2023)
+    url: https://www.boverket.se/sv/byggande/forebygg-fel-brister-skador/risker-byggande/risker-fuktskador/fuktrisker-yttertak/kalla-vindar/risker-med-nattutstralning/
+  - titel: Boverket, BBR avsnitt 6, vägledning från PBL kunskapsbanken (före 1 december 2025), december 2025
+    url: https://www.boverket.se/globalassets/publikationer/dokument/2026/boverkets-byggregler-bbr-avsnitt-6---hygien-halsa-och-miljo-vagledning-fran-pbl-kunskapsbanken-fore-1-december-2025.pdf
+  - titel: Boverket, BFS 2024:8, 3 kap. 5–6 §§ och 7 kap. 9–10 §§
+    url: https://rinfo.boverket.se/BFS2024-8/pdf/BFS2024-8.pdf
+  - titel: Folkhälsomyndigheten, vägledning om ventilation, FoHMFS 2014:18
+    url: https://www.folkhalsomyndigheten.se/regler-och-tillsyn/tillsynsvagledning-och-stod/halsoskydd-vagledning-och-tillsyn/vagledning-om-ventilation/
+  - titel: Samuelson och Hägerhed Engman, SP, Kalla vindar – problem och förbättringar, Bygg & teknik 4/06
+    url: https://www.fuktcentrum.lth.se/fileadmin/fuktcentrum/Publikationer/Bygg-Teknik/4_06_22.pdf
+  - titel: Harderup och Arfvidsson, LTH, Resultat och slutsatser från mätningar i kalla vindsutrymmen, Bygg & teknik 4/07
+    url: https://www.fuktcentrum.lth.se/fileadmin/fuktcentrum/Publikationer/Bygg-Teknik/4_07_12.pdf
+  - titel: Tobin och Samuelson, Hur ska vindar ventileras?, Bygg & teknik 4/04
+    url: https://www.fuktcentrum.lth.se/fileadmin/fuktcentrum/Publikationer/Bygg-Teknik/4_04_17.pdf
+  - titel: Harderup, LTH, Fallstudie i provhus med uteluftventilerat vindsutrymme, SBUF 11765, januari 2021
+    url: https://vpp.sbuf.se/Public/Documents/ProjectDocuments/2D3B9D57-7824-47A6-8367-F9E28F05C508/FinalReport/SBUF%2011765%20Slutrapport%20-%20Fallstudie%20i%20provhus%20med%20uteluftventilerat%20vindsutrymme.pdf
+  - titel: Hagentoft, Chalmers, Effekter på funktion och kostnad av styrd ventilation av kallvindar, SBUF 11871/11955
+    url: https://vpp.sbuf.se/Public/Documents/ProjectDocuments/9902CCAA-602D-4F8B-B137-FAB36A2F3A07/FinalReport/SBUF%2011955%20Slutrapport%20Kalla%20Vindar%20EtappI%20II.pdf
+  - titel: Zetterström, Utomhusklimatets påverkan på kallvindskonstruktion, examensarbete, Karlstads universitet 2018
+    url: https://www.diva-portal.org/smash/get/diva2:1229384/FULLTEXT01.pdf
+  - titel: Coskuntuna m.fl., Mostly dry, CLIMA 2022
+    url: https://proceedings.open.tudelft.nl/clima2022/article/download/293/457/467
+  - titel: GVK, Branschregler, Skivmaterial (2022-09-27)
+    url: https://www.gvk.se/branschregler/vagg/skivmaterial/
+  - titel: Anticimex, Mer än var fjärde vind är fuktskadad (18 mars 2021)
+    url: https://news.cision.com/se/anticimex-ab/r/anticimex--mer-an-var-fjarde-vind-ar-fuktskadad,c3309167
+  - titel: Ljungby Fuktkontroll, Vind
+    url: https://www.lfs-web.se/vind/
+  - titel: TräGuiden, Fuktskydd för tak (uppdaterad 2020-03-27)
+    url: https://www.traguiden.se/konstruktion/konstruktiv-utformning/stomkomplettering/tak/fuktskydd-for-tak/
+  - titel: Ruuvi, Bathroom
+    url: https://ruuvi.com/bathroom/
+```
