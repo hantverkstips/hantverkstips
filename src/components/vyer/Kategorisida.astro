@@ -63,16 +63,25 @@ const forfattareNamn = forfattare?.data.namn ?? 'Christian';
 const valSlugs = d.val.map((v) => v.produkt);
 const etiketter: Record<string, string> = Object.fromEntries(d.val.map((v) => [v.produkt, v.etikett]));
 
+/**
+ * Bara produkter med test eller i `val` får en egen sektion med fullt kort;
+ * övriga står i jämförelsetabellen. Tabellens ordning behålls.
+ * Se docs/briefer/spec-kategorisida-produkter-2026-09-30.md.
+ */
+const medSektion = produkter.filter((p) => testPerProdukt.has(p.slug) || valSlugs.includes(p.slug));
+const sektionSlugs = new Set(medSektion.map((p) => p.slug));
+
 const rubriker = [
   { slug: slugify('Jämförelse'), text: 'Jämförelse' },
-  ...produkter.map((p) => ({ slug: slugify(produktNamn(p)), text: produktNamn(p) })),
+  ...medSektion.map((p) => ({ slug: slugify(produktNamn(p)), text: produktNamn(p) })),
   ...headings.filter((h) => h.depth === 2).map((h) => ({ slug: h.slug, text: h.text })),
 ];
 
 /**
  * ItemList med ett Product per post, i tabellens ordning. Adressen är
  * produktens testsida när den finns, annars kategorisidan med ankare till
- * produktens egen H2. Priset och lagerstatusen bygger komponenten inte själv:
+ * produktens egen H2, och till jämförelsen när produkten bara står i
+ * tabellen. Priset och lagerstatusen bygger komponenten inte själv:
  * kategori() läser samma funktioner som Kopknapp nedan.
  */
 const strukturdata = kategoriData({
@@ -82,7 +91,9 @@ const strukturdata = kategoriData({
     const t = testPerProdukt.get(p.slug);
     return {
       produkt: p,
-      url: t ? testUrl(t) : `${kategoriUrl(entry.id)}#${slugify(produktNamn(p))}`,
+      url: t
+        ? testUrl(t)
+        : `${kategoriUrl(entry.id)}#${slugify(sektionSlugs.has(p.slug) ? produktNamn(p) : 'Jämförelse')}`,
     };
   }),
 });
@@ -156,7 +167,7 @@ const strukturdata = kategoriData({
     <div class="tvaspalt-rad">
       <div class="min-w-0">
       {
-        produkter.map((p, i) => {
+        medSektion.map((p, i) => {
           const test = testPerProdukt.get(p.slug);
           const e = billigasteErbjudande(p);
           return (
