@@ -133,3 +133,20 @@ Det ettan har som vi måste behålla eller överträffa:
 - "Linjeavvikelse på 10 m" och "synlighet i lux" får stå som planerad mätning i metoddelen, aldrig som något sidan visar.
 - Proffsmagasinets kundtest är ingen källa för kvalitet; deras produktsidor används för pris och datablad.
 - `/verktyg/valja-lasermatare/` (planerad) får inte börja med "Bästa", och ingen annan sida tar "krysslaser" först i title.
+
+---
+
+## Kontroll efter skrivningen, 2026-09-30
+
+SEO och GEO-agenten har läst `src/content/kategorier/krysslaser.md` (utkast, cirka 1 600 ord brödtext) mot punkt 1 till 12. **Godkänd av SEO och GEO**, med ett beslut som redan är infört och två villkor för publicering.
+
+1. **seoTitle** "Bästa krysslasern enligt databladen" (35 tecken) är godkänd. Den börjar med huvudfrasen, säger datablad och har inget ord om mätning. De tre första orden skiljer sig från `/luftavfuktare/` ("Bästa luftavfuktaren, jämförd") och från H1 ("Krysslasrar för kök"). Description (147 tecken) och H1: inget att ändra.
+2. **Pelare `[inomhus, kok]`** bekräftas.
+3. **Sidofraserna räcker.** "bäst i test" står i klartext i första stycket som något sidan inte är. "krysslaser test" (70) behöver inte stå ordagrant, eftersom metoddelen har "test" och "granskning" i samma avsikt. "Grön eller röd krysslaser" bär en H2, och "krysslaser med mottagare" finns i brödtexten. Stryks rotationslaserstycket försvinner sidofrasen "krysslaser eller rotationslaser" och länken till `/inomhus/`. Det stoppar inte publiceringen, eftersom tre länkar ut står kvar (`/kok/kakla-kok/`, `/inomhus/bygga-innervagg/`, `/om/sa-testar-vi/`).
+4. **`bast: hogst` på `sjalvnivellering_grader` är struken** (ändrat i frontmatter). Ett större område för självnivellering är ingen fördel för läsaren, och en markering på nio av tio rader säger ingenting.
+5. **Bättre än ettan 1 till 5 är uppfyllda.** Tabellen har alla kolumnerna. Omräkningen till 4 och 10 m står med formeln och är märkt som egen räkning. Båda prisnivåerna finns, från cirka 1 250 till knappt 8 000 kr, med en utskriven gräns. Metoden är ärlig, och "I lådan" plus meningen om mottagaren täcker punkt 5. Ingen kannibalisering mot `/luftavfuktare/`.
+
+**Villkor för `utkast: false`:**
+
+- Produkterna i `supabase/seed-produkter-2026-09-30.sql` ska vara inlästa i databasen som bygget läser. Annars blir tabellen och ItemList tomma.
+- Inom en vecka efter publicering: länken hit från `kakla-kok.mdx` rad 146 och `bygga-innervagg.mdx` rad 107 (punkt 9).
