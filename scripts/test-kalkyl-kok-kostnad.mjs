@@ -141,10 +141,11 @@ test('K1: standard är värdartikelns kök, rad för rad', () => {
   assert.equal(cell('Montering före rotavdraget'), r.arbeteKr);
   assert.equal(cell('Rotavdrag'), r.rotKr);
   assert.equal(cell('Att betala'), r.attBetalaKr);
-  // Jämförelsetabellen: nya luckor från Vedum med gångjärn och montering, före rot.
-  const jamforelse = /Nya luckor från Vedum[^|]*\|\s*([\d  ]+)\s*\|/.exec(artikel);
-  assert.ok(jamforelse, 'jämförelsens rad saknas i artikeln');
-  assert.equal(Number(jamforelse[1].replace(/\D/g, '')), r.foreRotKr);
+  // Stycket om när ett byte är värt pengarna: priset före rot och avdraget, samma kök.
+  const stycke = /kostar nya luckor ([\d  ]+) kronor före rotavdraget.*?avdraget på monteringen är ([\d  ]+) kronor/.exec(artikel);
+  assert.ok(stycke, 'meningen om nya luckor före rotavdraget saknas i artikeln');
+  assert.equal(Number(stycke[1].replace(/\D/g, '')), r.foreRotKr);
+  assert.equal(Number(stycke[2].replace(/\D/g, '')), r.rotKr);
 });
 
 test('K2: behåll gångjärnen, 5 408 kr mindre som artikeln säger', () => {
