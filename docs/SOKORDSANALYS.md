@@ -751,8 +751,10 @@ Sitemapen `https://www.hantverkstips.se/sitemap-index.xml` svarade 200 och lista
 | 4 | `/el/tillaggsisolera-vind/`, `/el/u-varde/`, `/golv/bygga-trappa/`, `/golv/renovera-trappa/`, `/kok/kakla-kok/`, `/kok/byta-bankskiva/`, `/kok/slipa-bankskiva/`, `/fukt/avfuktare-kallare/`, `/fukt/avfuktare-krypgrund/`, `/golv/golv-i-kallare/` |
 | 5 | `/tak/plattak/`, `/tak/takstolar/`, `/tak/takfot/`, `/tak/hangrannor/`, `/tak/papptak/`, `/rakna/takbyte/`, `/tak/tvatta-tak/`, `/altan/trallskruv/`, `/altan/bygga-altan/`, `/altan/bygglov-altan/` |
 | 6 | De äldre hubbarna som inte redan är begärda: `/fukt/`, `/inomhus/`, `/golv/`, `/el/`, `/grund/`, `/fasad/`, `/altan/`, samt `/`, `/fasad/renovera-fonster/`, `/fasad/mala-om-huset/` |
+| 7 | Tillagd 2026-09-30 för sidorna i startlista 5 och fuktomgångarna A och B, i prioritetsordning: `/fukt/lag-luftfuktighet/` (luftfuktare 18 100, topp i februari), `/fukt/radon/` (12 100, topp i oktober, mätsäsongen har börjat), `/fukt/hygrometer/` (4 400), `/krysslaser/` (3 600), `/fukt/fuktslukare/` (topp i november), `/fukt/kondens-pa-fonster/` (ny huvudfras, topp i november, begärs om), `/luftavfuktare/` (ny huvudfras "avfuktare" 9 900, begärs om), `/fukt/luftfuktighet-inomhus/` (utbyggd med vintern, topp i januari, begärs om), `/fukt/hussvamp/` (topp i november), `/fukt/kallras/` (topp i januari) |
+| 8 | `/fukt/avfuktare-vind/` (topp i november och december), `/fukt/fukt-pa-vinden/`, `/fukt/fukt-i-krypgrund/`, `/el/isolera-tak/`, `/rakna/daggpunkt/` (förval och tabell, begärs om), `/rakna/elkostnad/` (förval och tvättläge, begärs om), `/fukt/` (hubben ordnad efter plats, begärs om) |
 
-Resten följer via sitemapen: övriga räknare, grund-, fasad-, inomhus- och altansidor med mindre volym, testerna, jämförelsen, om-sidorna, författarsidan. Listsidorna under `/guider/` (typ, nivå, sida 2 och 3) och `/amnen/` begärs aldrig. Två veckor efter dag 6 läses rapporten Sidindexering; det som står som "Upptäckt, inte indexerad" begärs då.
+Resten följer via sitemapen: övriga räknare, grund-, fasad-, inomhus- och altansidor med mindre volym, testerna, jämförelsen, om-sidorna, författarsidan. Listsidorna under `/guider/` (typ, nivå, sida 2 och 3) och `/amnen/` begärs aldrig. Två veckor efter dag 6 läses rapporten Sidindexering; det som står som "Upptäckt, inte indexerad" begärs då. Dag 7 och 8 körs direkt efter dag 6, eller samma dag om kvoten räcker. "Begärs om" gäller sidor som redan är begärda men har fått ny huvudfras eller nytt innehåll, och den begäran görs även om URL-inspektionen säger att adressen finns på Google. Alla sidor i startlista 5 och i omgång A och B står i dag 7 och 8. Två veckor efter dag 8 läses rapporten Sidindexering för fuktsidorna.
 
 ## 11. Startlista 5 och krysslasern, 2026-09-30
 
@@ -1061,6 +1063,44 @@ Säsongsordning: vinterbenet först, och det som toppar i november ska vara inde
 **Utanför omgångarna, direkt:** `/luftavfuktare/` byter huvudfras och seoTitle i omgång A (bara metadata och en H2), och `/fukt/fukt-i-krypgrund/`, som står i startlista 5, får sidofraserna i 12.4 innan den publiceras i oktober.
 
 Summa per omgång i sökningar per månad: A 16 160, B 38 680, C 17 660, D 18 580, E 5 190, F 10 430. Efter F har Fukt tjugonio artiklar, tre kategorisidor, två tester, en jämförelse och sex räknare.
+
+#### Status 2026-09-30, omgång A och B publicerade
+
+Båda omgångarna publicerades 2026-09-30, en månad före deadline för A och två månader före deadline för B. Varje sida gick igenom checklistan, läsaren (minst 4), korrekturen (0 fel) och SEO-kontrollen. Checklistor och beslut står i `docs/briefer/seo-checklista-2026-09-30/`.
+
+| # | Sida | Publicerad | Commit |
+|---|---|---|---|
+| A0 | `/rakna/daggpunkt/`, förval per rum (sovrum, fönster, källare, krypgrund, kallvind, garage), glastemperatur ur U-värdet och tabell | 2026-09-30 | b747940, 2dbda10 |
+| A1 | `/fukt/kondens-pa-fonster/`, utbyggd, huvudfras "kondens på fönster" | 2026-09-30 | 0bc863d |
+| A2 | `/fukt/hygrometer/` | 2026-09-30 | 0bc863d |
+| A3 | `/fukt/fuktslukare/` | 2026-09-30 | 0bc863d |
+| A4 | `/fukt/kallras/` | 2026-09-30 | 0bc863d |
+| A5 | `/fukt/luftfuktighet-inomhus/`, utbyggd med vinter och sommar | 2026-09-30 | 0bc863d |
+| A, utanför | `/luftavfuktare/`, huvudfras "avfuktare", konkreta etiketter, mätlöftena strukna | 2026-09-30 | fe16cc6 |
+| B0 | `/rakna/elkostnad/`, förval per plats (källare, krypgrund, vind, garage), eltabell och tvättläge | 2026-09-30 | d0104df |
+| B1 | `/fukt/lag-luftfuktighet/`, kunskapssida som tar "luftfuktare" | 2026-09-30 | 9c5d1a4 |
+| B2 | `/fukt/radon/` | 2026-09-30 | 9c5d1a4 |
+| B3 | `/fukt/fukt-pa-vinden/` | 2026-09-30 | 9c5d1a4 |
+| B4 | `/fukt/avfuktare-vind/`, köpguide med fem kort | 2026-09-30 | 9c5d1a4 |
+| B5 | `/fukt/hussvamp/` | 2026-09-30 | 9c5d1a4 |
+
+Startlista 5 gick ut samma dag: `/krysslaser/`, `/el/isolera-tak/` och `/fukt/fukt-i-krypgrund/`.
+
+**Byggt utöver planen:**
+
+- **Kallvindens förval i daggpunktsräknaren fick ett eget råd.** Det byggdes efter nytt underlag om kallvindens temperatur.
+- **Elkostnadsräknaren** fick förval per plats med `?plats=`, en eltabell och ett tvättläge som jämför avfuktare och torktumlare med Energimyndighetens test från 2017. Den tar också en produkt som förval (`?produkt=`), även inbäddad.
+- **DryAttic-kortet** på vindguiden, affiliates beslut.
+- **Regeln om butikslänkar i `kallor`.** Butiksdomäner varnas i kontrollen, med undantag för tillverkardokument.
+- **`/fuktmatare/` blir en granskning på datablad.** Christian sa nej till inköp av instrument 2026-09-30. Affiliatebeslut och frö är klara. Sidan byggs i omgång C.
+
+**Struket eller väntar:**
+
+- **`/luftfuktare/` som kategorisida är struken** (affiliate: två köpbara modeller, en under ordervärdesgränsen). Frasen "luftfuktare" ägs nu av `/fukt/lag-luftfuktighet/`, och "luftfuktare bäst i test" lämnas. Omprövas i augusti 2027.
+- **Badrumsförvalet i daggpunktsräknaren är strukket.** Ingen källa ger ett riktvärde för badrummet (gemensamma faktabladet avsnitt 11). "luftfuktighet badrum" ägs fortsatt av `/fukt/badrumsflakt/` (D2).
+- **Elkostnadens förval för luftfuktare och radonsug väntar på underlag med effekt ur datablad.** Luftfuktaren väntar till en uppdatering av B1, radonsugen till E1.
+
+**Omgång C, publiceras senast 20 december:** C0 `/rakna/fuktkvot/` (ny räknare, formel och konstanter med källa före specen), C1 `/fuktmatare/` (kategorisida, granskning på datablad, åtta modeller och tre val enligt affiliatebeslutet), C2 `/fukt/fuktkvot/`, C3 `/fukt/svartmogel/`, C4 `/fukt/mogel-i-huset/` och C5 `/fukt/mogellukt/`. SERP är oläst för C0, C2, C4 och C5 och läses innan checklistan skrivs. Mögel är YMYL: hälsan bygger bara på Folkhälsomyndigheten, Boverket och 1177. När C publiceras läggs de länkar in som väntar på C: hygrometern och hussvampen till `/fuktmatare/`, och hussvampen och luftfuktighetssidans snickartabell till `/fukt/fuktkvot/`.
 
 ### 12.8 Kontroll av kannibalisering
 

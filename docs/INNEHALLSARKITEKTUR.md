@@ -348,11 +348,30 @@ Utöver besluten: `/luftavfuktare/` tar det nakna ordet "avfuktare" som huvudfra
 5. **Kategorisidorna `/fuktmatare/` och `/luftfuktare/`** byggs i samlingen `kategorier` när affiliateagenten sagt ja. Rotnamnrymden är kontrollerad.
 6. **Illustrationer där de hjälper:** kallras vid fönster och element, självdrag med tilluft och frånluft, vinden med fuktig inneluft genom bjälklaget och takfotens ventilation, badrumsfläktens flöde och spjäll, radonsugens sugpunkt under plattan, kondens på fönstrets utsida. Hantverkaren säger i checklistan vilka som behövs på varje sida.
 
+### Status 2026-09-30
+
+**Omgång A och B är publicerade 2026-09-30.** Detaljerna, med sida för sida och commit, står i `SOKORDSANALYS.md` 12.7 under "Status 2026-09-30".
+
+- A: daggpunktens förval, kondens på fönster (utbyggd), hygrometer, fuktslukare, kallras och luftfuktighet inomhus (utbyggd), plus `/luftavfuktare/` med ny huvudfras och konkreta etiketter.
+- B: elkostnadens förval per plats och tvättläget, låg luftfuktighet, radon, fukt på vinden, avfuktare på vinden och hussvamp.
+- Hubben `/fukt/` är ordnad efter plats (UX punkt 1). Pelaren har nu sexton artiklar (sju kunskapssidor och nio guider) och en kategorisida, `/luftavfuktare/`.
+
+Ändringar mot planen i avsnitt 2 och ovan:
+
+- **`/luftfuktare/` byggs inte** (affiliatebeslut 1). `/fukt/lag-luftfuktighet/` är byggd och äger "luftfuktare" och "låg luftfuktighet inomhus". Rotnamnrymden `luftfuktare` används inte.
+- **`/fuktmatare/` blir en granskning på datablad.** Christian har bestämt att vi inte köper instrument. Den byggs i omgång C med affiliates åtta modeller och tre val.
+- **Daggpunktsräknaren har inget badrumsförval**, eftersom ingen källa ger ett riktvärde för badrummet. Kallvinden fick ett förval med eget råd.
+- **Elkostnadens förval för luftfuktare och radonsug väntar** på underlag. Tvättläget är byggt.
+- **Vindguiden är köpguide med kort, med DryAttic som ett av dem.** Trygghetsvakten beskrivs som styrd ventilation utan kort.
+
+**Nästa: omgång C, senast 20 december.** Den omfattar `/rakna/fuktkvot/`, `/fuktmatare/`, `/fukt/fuktkvot/`, `/fukt/svartmogel/`, `/fukt/mogel-i-huset/` och `/fukt/mogellukt/`. Checklistorna skrivs när SERP är läst för de sidor som står som olästa.
+
 ## Ändringar som gjorts i andra dokument
 
 - 2026-09-15: `ARKITEKTUR.md` (kalkylatorer på `/rakna/`, guider och kunskap på `/[pelare]/[slug]/`, fältet `pelare`, rutter för `/om/` och `/forfattare/`), `DESIGN.md` (huvudmenyn, startsidans block 3 och 5, exempeladresser), `content.config.ts` (`pelare`, etikett `test` eller `granskning`).
 - 2026-09-16: `ARKITEKTUR.md` (pelaren `inomhus`, kategorin `krysslaser`, fältet `niva`, undermappar, byggkontroll, illustrationer), `DESIGN.md` (menyposter i avsnitt 5, nivåetiketten i avsnitt 6), `content.config.ts` (`niva`, loader med id från filnamnet), `src/lib/pelare.ts` (inomhus, max hubbar i menyn), `supabase/seed.sql` (kategoriraden krysslaser).
 - 2026-09-30: avsnitt 2, Fukt, omgjort och avsnitt 9 tillagt efter körning 4 (`SOKORDSANALYS.md` avsnitt 12). Inga andra dokument ändrade. Kodändringarna (platsfält i hubben, räknarna, kategorierna) specas av UX och bygge-agenten enligt avsnitt 9.
+- 2026-09-30, kväll: avsnitt 9 fick en status efter att omgång A och B publicerats. `SOKORDSANALYS.md` 12.7 fick samma status, och avsnitt 10 fick dag 7 och 8.
 
 ## Källor
 
