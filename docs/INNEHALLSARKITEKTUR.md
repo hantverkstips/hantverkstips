@@ -70,6 +70,7 @@ Hub är `/fukt/`. Den äger ingen stor sökfras, den är diagnosstart och länkn
 | `/fukt/vad-drar-en-avfuktare-i-el/` | Vad kostar en avfuktare i drift | kunskap | hur mycket el drar en avfuktare | 30 | informativ | 3 | nej, länk till kalkylator |
 | `/rakna/elkostnad/` | Elkostnad för avfuktare och byggfläkt | kalkylator | elkostnad avfuktare | | informativ | 3 | nej |
 | `/fukt/kondens-pa-fonster/` | Kondens på insidan av fönstret | problemguide | kondens på fönster insida | ej hämtad | informativ | 3 | nej |
+| `/fukt/fukt-i-krypgrund/` | Fukt i krypgrund, mät själv och välj åtgärd | problemguide | fukt i krypgrund (äger även mögel i krypgrund) | 370 | informativ | 1 | nej, länk till köpguiden (2026-09-30) |
 
 ### Inomhus och montering
 
@@ -114,7 +115,7 @@ Hub är `/verktyg/`. Huben listar produktkategorierna och guiderna om att välja
 |---|---|---|---|---|---|---|---|
 | `/verktyg/` | Maskinerna som är värda pengarna, och de som inte är det | hub, kunskap | verktyg husägare | ingen fras | informativ | 1 | nej, länkar till kategorier |
 | `/lasermatare/` | Bästa lasermätaren, testad på fem uppmätta avstånd | bäst i test | avståndsmätare laser (äger även lasermätare bäst i test, lasermätare test) | 1 140 | kommersiell | 1 | ja |
-| `/krysslaser/` | Bästa krysslasern, linjeavvikelse mätt på 10 meter | bäst i test | krysslaser bäst i test (äger även krysslaser test) | 550 | kommersiell | 1 | ja |
+| `/krysslaser/` | Bästa krysslasern, jämförd på datablad (granskning; pelare inomhus och kök tills `/verktyg/` publiceras, 2026-09-30) | bäst i test | krysslaser (äger även krysslaser bäst i test och krysslaser test) | 4 150 | kommersiell | 1 | ja |
 | `/tester/[marke-modell]/` | Tester av lasermätare och avfuktare | test | [modell] test | liten | kommersiell | 1 | ja |
 | `/verktyg/borrhammare-eller-slagborr/` | Borrhammare eller slagborr, borrtid i betong med tre maskiner | undersökning (kunskap) | borrhammare bäst i test (äger även borrhammare eller slagborr) | 310 | kommersiell | 1 | ja. Länkmagnet |
 | `/verktyg/valja-lasermatare/` | Vilken lasermätare, räckvidd och noggrannhet du faktiskt behöver | köpguide | lasermätare avståndsmätare välja | ingen mätbar | kommersiell | 2 | ja. Stöd till kategorisidan |

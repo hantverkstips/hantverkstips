@@ -752,6 +752,21 @@ Sitemapen `https://www.hantverkstips.se/sitemap-index.xml` svarade 200 och lista
 
 Resten följer via sitemapen: övriga räknare, grund-, fasad-, inomhus- och altansidor med mindre volym, testerna, jämförelsen, om-sidorna, författarsidan. Listsidorna under `/guider/` (typ, nivå, sida 2 och 3) och `/amnen/` begärs aldrig. Två veckor efter dag 6 läses rapporten Sidindexering; det som står som "Upptäckt, inte indexerad" begärs då.
 
+## 11. Startlista 5 och krysslasern, 2026-09-30
+
+Startlista 4 är publicerad. Ingen ny Keyword Planner-körning; SERP för krysslaser, isolera tak och fukt i krypgrund lästes av underlagsarbetaren 2026-09-30 (sökverktyget svarar från USA, så ordningen i topp 5 är osäker). Checklistorna står i `docs/briefer/seo-checklista-2026-09-30/`.
+
+**Krysslaser (`/krysslaser/`), granskning på datablad.** Huvudfrasen byts från "krysslaser bäst i test" (550) till det nakna ordet **krysslaser (3 600, +24 %)**, och sidan äger hela avsikten, 4 150. Ettan är nu Proffsmagasinets kundtest, fyra modeller utan tabell och utan mm-noggrannhet; guiden "krysslaser eller rotationslaser" har gått från ett till fyra, och gds och bygghemma har gått in i topp tre på "bäst i test". Vinnbarheten står kvar på 4. Pelaren byts från `verktyg` (hub utkast, kategorin vore ensam) till `inomhus` och `kok`. Inga `/tester/[modell]/` förrän lasrarna mätts: en granskning per laser på datablad blir tunnare än kategorins tabell. Affiliate väljer produkterna före texten.
+
+**Startlista 5, de två första:**
+
+| # | Fras (URL) | Volym | Vinn | Typ | Pelare | Toppmånad | Produkter | Motiv |
+|---|---|---|---|---|---|---|---|---|
+| 1 | isolera tak (`/el/isolera-tak/`) | 1 040 med varianterna; isolera tak 320 (0 %), inifrån 320 (−64 %) | 4 | projektguide | El | sep | nej | Ettan (clasfixare) har inte ett tal. Blandad avsikt på huvudfrasen: bjälklaget rankar också, så sidan tar snedtak och yttertak och lämnar bjälklaget till `/el/tillaggsisolera-vind/` |
+| 2 | fukt i krypgrund (`/fukt/fukt-i-krypgrund/`) | 370; fukt i krypgrund 260 (−33 %), mögel i krypgrund 110 (−59 %) | 4 | problemguide | Fukt | sep, mars | nej | Ettan (Anticimex) säljer besiktning, har inget gränsvärde, ingen mätning, inga priser. Binder ihop avfuktar- och isoleringssidorna för krypgrunden. Husköp och försäkring är delavsikter |
+
+Båda toppar i september och ska ut i oktober. Resten av 9.4 står kvar i samma ordning: måla takpannor, shingeltak, renovera badrum.
+
 ## Källor
 
 Sökresultat och sidor lästa 2026-09-16. Volymer från `docs/data/keyword-stats-2026-09-16.csv` (Google Ads, Sverige, sep 2024 till aug 2026).
