@@ -64,6 +64,15 @@ Rapporter i gränssnittet: transaktioner, klick och statistik per EPI, vilket r�
 
 **Källhänvisningar till butiken (regel 2026-09-30).** Ingen länk på sajten går direkt till en butik vi har program med, inte heller i `kallor`. Butiken är källa bara för pris, lager och artikelnummer; då står posten i `kallor` utan `url`, med produkt och läsdatum, till exempel "Proffsmagasinet, Drybox X4, pris och lager 30 september 2026". Prestanda hänvisas till tillverkarens datablad. Tillverkarens dokument som bara finns som bilaga hos butiken (`pm-asset.azureedge.net`) får länkas, eftersom de är tillverkarens och inte en butikssida; finns samma dokument hos tillverkaren länkas det dit.
 
+**Beslut om kontrollen av butiksdomäner i `kallor` (2026-09-30).** Kontrollen fångade 72 källor i 36 filer.
+
+1. **Tillverkarens dokument på en butiks server undantas.** Undantaget avgörs av länkens form, inte av titeln: en allowlist med dokumentvägar, i dag `pm-asset.azureedge.net/api/asset-download`, `media.hornbach.se` och `img.bygghemma.se`, och bara för länkar som slutar på `.pdf` eller går via `asset-download`. Titeln ska namnge tillverkaren som avsändare. En produktsida, kategorisida eller guide på en butiksdomän undantas aldrig. Nya vägar läggs till av UX efter mitt besked.
+2. **Alla butikssidor rättas i ett svep innan kontrollen blir ett fel.** Regeln gäller alla butiker, inte bara Proffsmagasinet: ingen butikssida länkas utanför `/go/`. En arbetare går igenom UX:s lista och sorterar varje källa i tre grupper:
+   - dokument som omfattas av undantaget: står kvar;
+   - butikssida som källa för pris, lager eller artikelnummer: `url` tas bort och titeln får butik, produkt och läsdatum;
+   - butikssida som källa för något annat (prestanda, specifikationer, råd): `url` tas **inte** bara bort. Påståendet får tillverkarens källa av underlagsarbetaren, eller stryks av hantverkaren. En butik är aldrig källa för prestanda.
+   Svepet ändrar bara `kallor`; texten ändras bara i tredje gruppen och bara av hantverkaren. När svepet är klart och kontrollen visar noll träffar utanför undantaget blir den ett fel.
+
 Rutten finns i `src/pages/go/[slug].ts` och gör 302 till `erbjudanden.affiliate_url`. Två ändringar krävs.
 
 Först lagras inte feedens `TrackingUrl` som primär länk. Vi lagrar `ProductUrl` som `butik_url` och bygger spårningslänken vid anropet från `butiker.lankmall`, till exempel `https://track.adtraction.com/t/t?a=A&as=AS&t=2&tk=1&epi={epi}&url={url}`. Skälet är EPI: feedens länk har inget EPI, och utan EPI kan vi inte koppla en konvertering till en sida. `url`-värdet URL-kodas och ligger sist, som dokumentationen kräver.
