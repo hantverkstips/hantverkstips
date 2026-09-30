@@ -598,7 +598,7 @@ export function bedomKallare(i: KallareIndata): KallareResultat {
     });
     atgarda.push({
       steg: 'atgarda',
-      text: 'Håller källaren över 10 grader året om räcker en kondensavfuktare. Går den under 10 grader en längre period på vintern avfrostar kylslingan i stället för att fälla ut vatten, och då ska du ha en sorptionsavfuktare. Den torkar luften med ett fuktsugande hjul i stället för med kyla.',
+      text: 'Håller källaren 15 grader eller mer i augusti och september räcker en kondensavfuktare. Mellan 10 och 15 grader tappar maskinen det mesta av sin kapacitet, och går källaren under 10 grader en längre period avfrostar kylslingan i stället för att fälla ut vatten. Då ska du ha en sorptionsavfuktare, som torkar luften med ett fuktsugande hjul i stället för med kyla.',
       kalla: 'Guiden om fukt i källaren, och sidan om sorptionsavfuktare',
     });
   }
