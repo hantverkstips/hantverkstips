@@ -94,21 +94,29 @@ Källa: tillverkarnas produktsidor och anvisningar, hämtade 16 september 2026. 
 | Ljusa ringar | Hett kärl på skivan | Slipa från 80, olja om |
 | Grått spån i ytan | Slipat igenom faneret | Byt skiva |
 
-Källa: möbelsnickeriet Sven Snickare (järn och värme), Herdins (överskott), Ballingslöv (vatten). Resten är egen erfarenhet.
+Källa: möbelsnickeriet Sven Snickare (järn och värme), Herdins (överskott), Ballingslöv (vatten). Raden om repor bygger på Svenskt Träs regel att slipa längs fibrerna, raden om faneret på Ikeas uppgift om 3 mm faner; nästa steg i de två raderna är egen slutsats. (Uppdaterat 2026-09-30 efter den publicerade sidan, commit 8bfaeb0.)
 
 - Torka upp vatten vid diskhon varje dag, underlägg för heta kärl.
 - Järn reagerar med syran i eken (Sven Snickare); en konservburk över natten på en blöt fläck räcker. Ballingslöv: rengöringsmedel med ammoniumklorid missfärgar massivt trä, läs på flaskan.
 
 ## Avslutning
 
-- Bänkskivan är en av få saker i köket du gör som ny själv utan en skruv. Länk /inomhus/ (projekten inomhus handlar mest om väggarna). Länk /golv/slipa-parkettgolv/ (samma korn och ordning på golvet, hyrd maskin, kortare marginal i träet).
+- Slipningen gör skivan som ny utan att en skruv lossas. Länk /golv/slipa-parkettgolv/ (samma korn och ordning på golvet, hyrd maskin, mindre trä att ta av; ta reda på slitskiktet först). Länk /kok/byta-koksluckor/ (mått och priser för nya luckor på befintliga stommar).
+- Länktexten säger vad läsaren hittar där. Inte "det går jag igenom i [...]", inte "står i guiden om".
+
+## Byta skivan (uppdaterat 2026-09-30)
+
+- /kok/byta-bankskiva/ är publicerad och äger allt om att byta skivan: pris på ny skiva, snickarens pris per meter och rotavdraget. Den sidan räknar utan rotavdrag, eftersom Skatteverket inte nämner ett byte av enbart skivan.
+- Slipsidan skriver därför inga priser för en ny skiva och ingenting om rotavdrag. Där faneret är genomslipat (avsnittet om fanerad skiva och raden "Grått spån i ytan") länkar den till /kok/byta-bankskiva/ i stället.
 
 ## Interna länkar (alla ska vara kvar)
 
+- /kok/byta-bankskiva/ (genomslipat faner, byt skivan)
 - /fukt/luftfuktighet-inomhus/ (skivan slår sig om bara ovansidan oljas)
-- /inomhus/ (hubb)
 - /golv/slipa-parkettgolv/
+- /kok/byta-koksluckor/
 - /om/sa-testar-vi/ (under oljetabellen)
+- /inomhus/ (hubb) stod i underlaget 2026-09-20 men finns inte på den publicerade sidan; togs bort vid omskrivningen i commit cb3fd25.
 
 ## Inlänkar (rörs inte av mig)
 

@@ -180,7 +180,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Året',
     varde: '365 dagar',
     grund: 'Antagande',
-    stod: 'Skottår räknar jag inte med. Skillnaden är under tre promille och drunknar i osäkerheten på gångtiden',
+    stod: 'Jag bortser från skottår. Skillnaden är under tre promille och drunknar i osäkerheten i gångtiden',
   },
 ];
 
@@ -370,7 +370,7 @@ const huvudbild = varumarke ?? illustration;
             <li class="mb-4 border-l-2 border-linje pl-4">
               <span class="block">
                 {tal.effekt} W i {tal.timmar} timmar ger {tal.kwhPerDygn} kWh per dygn, och med ditt elpris kostar
-                varje dygn {tal.krPerDygn} kr. Låter du maskinen gå lika mycket hela året blir det {tal.kwhPerAr}{' '}
+                det {tal.krPerDygn} kr per dygn. Låter du maskinen gå lika mycket hela året blir det {tal.kwhPerAr}{' '}
                 kWh och {tal.krPerAr}.
               </span>
               <span class="block text-liten text-blyerts-2">
@@ -381,8 +381,8 @@ const huvudbild = varumarke ?? illustration;
             {tal.krPerLiter && tal.kwhPerLiter && (
               <li class="mb-4 border-l-2 border-linje pl-4">
                 <span class="block">
-                  Delar jag dygnets kilowattimmar med litrarna du fyllde i går det åt {tal.kwhPerLiter} kWh per liter
-                  vatten, och varje liter kostar {tal.krPerLiter} kr. Det är det enda tal som går att jämföra rakt
+                  Dygnets kilowattimmar delat med antalet liter du fyllde i ger {tal.kwhPerLiter} kWh per liter vatten,
+                  och varje liter kostar {tal.krPerLiter} kr. Det är det enda tal som går att jämföra rakt
                   av mellan en kondensmaskin och en sorptionsmaskin.
                 </span>
                 <span class="block text-liten text-blyerts-2">
@@ -398,7 +398,7 @@ const huvudbild = varumarke ?? illustration;
                 det verkliga talet ligger under svaret här.
               </span>
               <span class="block text-liten text-blyerts-2">
-                Mitt antagande är märkeffekt hela gångtiden. Ingen uppmätt drifttid ligger bakom.
+                Jag antar att maskinen drar märkeffekt hela gångtiden. Ingen uppmätt drifttid ligger bakom.
               </span>
             </li>
           </ul>
@@ -474,9 +474,9 @@ const huvudbild = varumarke ?? illustration;
       </p>
       <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg">
         <li class="mb-2">Jag delar effekten i watt med 1 000 och får kilowatt.</li>
-        <li class="mb-2">Kilowatten multiplicerar jag med gångtiden per dygn och får kilowattimmar per dygn.</li>
-        <li class="mb-2">Kilowattimmarna per dygn multiplicerar jag med antalet dagar och får periodens förbrukning.</li>
-        <li class="mb-2">Förbrukningen multiplicerar jag med elpriset och får kronor.</li>
+        <li class="mb-2">Effekten i kilowatt gånger timmarna maskinen går per dygn ger kilowattimmar per dygn.</li>
+        <li class="mb-2">För hela perioden tar jag kilowattimmarna per dygn gånger antalet dagar, och det är förbrukningen.</li>
+        <li class="mb-2">Förbrukningen gånger ditt elpris blir det du betalar i kronor.</li>
         <li class="mb-2">Året är samma räkning med 365 dagar, vid den gångtid du fyllt i.</li>
         <li>
           Har du fyllt i liter vatten per dygn delar jag kilowattimmarna per dygn med det talet, så får du energin

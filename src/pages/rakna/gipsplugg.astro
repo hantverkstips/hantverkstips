@@ -261,7 +261,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Infästningar i tak',
     varde: 'bara de som viker ut sig',
     grund: 'Antagande',
-    stod: 'Mitt urval, utöver Norgips besked om stift och X-krok. En plugg som bara gängar sig i skivan räknar jag inte i tak',
+    stod: 'Mitt urval, utöver Norgips besked om stift och X-krok. I tak räknar jag inte med en plugg som bara gängar sig i skivan',
   },
   {
     storhet: 'Min egen mätning',
@@ -597,14 +597,14 @@ const huvudbild = varumarke ?? illustration;
         )
       }
       <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg">
-        <li class="mb-2">Vikten delar jag på de infästningspunkter som faktiskt bär lasten.</li>
+        <li class="mb-2">Lasten fördelas på de infästningspunkter som faktiskt bär den.</li>
         <li class="mb-2">
-          En hylla och ett skåp får hela lasten på den övre raden, eftersom de vrider sig ut från väggen. Den raden
-          räknar jag som halva antalet punkter, avrundat nedåt.
+          En hylla och ett skåp får hela lasten på den övre raden, eftersom de vrider sig ut från väggen. Den övre
+          raden räknas som halva antalet punkter, avrundat nedåt.
         </li>
         <li class="mb-2">
-          Ett tv-fäste med svängarm multiplicerar jag dessutom med {komma(SVANGARM_FAKTOR)} innan lasten delas. Det är
-          min hävarmsregel, inte en tillverkares.
+          På ett tv-fäste med svängarm multiplicerar jag dessutom vikten med {komma(SVANGARM_FAKTOR)} innan jag fördelar den.
+          Jag har satt den faktorn själv, eftersom ingen tillverkare anger någon.
         </li>
         <li class="mb-2">
           Väger saken mer än {GRANS_REGEL_KG}&nbsp;kg blir svaret regel eller kortling, oavsett vad tabellen säger.

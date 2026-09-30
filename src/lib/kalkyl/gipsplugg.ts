@@ -416,7 +416,7 @@ function lastText(i: GipspluggIndata, barande: number): string {
   if (i.sak === 'hylla') {
     return `En hylla vill vrida sig ut från väggen, så de övre fästena bär nästan allt. Jag lägger hela vikten på ${punktOrd(barande)} av ${i.punkter}.`;
   }
-  return `Vikten delar jag jämnt på ${punktOrd(barande)}.`;
+  return `Vikten fördelas jämnt på ${punktOrd(barande)}.`;
 }
 
 /** Kapaciteten i den valda skivan, med takets gräns pålagd. */
