@@ -130,3 +130,35 @@ Det ettan har som vi måste behålla eller överträffa:
 - **Husvagn och båt** är inte med i klustret (12.4). De får nämnas i en mening som platser där burken används, men de får inga egna avsnitt och inga sidofraser i rubriker.
 - **Mögellukt** ägs av `/fukt/mogellukt/` (omgång C). En Faq-fråga får säga att burken tar fukt och inte lukt, men den länkar inte förrän sidan finns.
 - **Talet i kortsvaret får inte strykas.** Det är sidans skäl att finnas och det en AI citerar.
+
+---
+
+## Kontroll efter skrivningen, 2026-09-30
+
+SEO och GEO-agenten har läst `src/content/kunskap/fukt/fuktslukare.mdx` (utkast, cirka 1 750 ord med Faq) mot punkt 1 till 12. **Godkänd av SEO och GEO.**
+
+Hantverkarens avvikelser, alla godkända:
+
+- **Inget tal per dygn.** Det finns ingen källa för det, och sidan säger det rakt ut (rad 68). Huvudtalet är mängden per påfyllning, och det är vad frasen frågar efter.
+- **Kurvan gäller bara 25 grader**, och det står både i tabelltexten och i kylavsnittet.
+- **Jämförelsetabellen räknar vid 70 procent medan huvudtalet gäller 60.** Det står uttryckligen (rad 88), så läsaren och en AI ser vilket villkor som gäller för vilket tal. Kortsvaret, description och bildtexten säger alla 60 procent och 25 grader, så huvudtalet är konsekvent.
+- **Källarexemplet** med 88 m³ och 0,5 omsättningar per timme är samma källare som på `/fukt/avfuktare-kallare/` och samma antagande som räknaren gör. Räkningen stämmer: 1 056 m³ × 3,6 g ≈ 3,8 liter.
+
+Metadata: title "Fuktslukare, så mycket vatten tar burken" (40), description 153 tecken med talet, H1 "En fuktslukare tar ungefär en liter vatten per påse", bildAlt 97 tecken med "fuktslukare". Inget att ändra.
+
+Bättre än ettan 1 till 4 är uppfyllda:
+
+1. Talet står med källa och villkor (Staples och Nuttall, OxyChem, Henkels egen uppgift som kontroll) i kortsvaret och i tabellen.
+2. Tabellen jämför burk och avfuktare, med liter och kronor per liter och formeln redovisad.
+3. Sidan förklarar varför ytan är fel mått, med källarexemplet räknat.
+4. Kemin står med gränsen där saltet slutar lösa sig och kiselgelen som "fuktabsorberare".
+
+Fällorna är undvikna: sidan har inga kort och inga `/go/`-länkar, butiken med 2,5 grader namnges inte, husvagnen och båten får en mening var, och mögellukten har ingen länk.
+
+**Till affiliate, inte ett SEO-krav:** `kallor` innehåller en direktlänk till Proffsmagasinets produktsida för Wood's DSC50FM. Den har `rel="nofollow"` men går inte via `/go/`. Affiliate avgör om den ska stå så. Om den byts ut föreslår jag Wood's eget datablad som källa.
+
+### Inlänkar
+
+1. **`src/content/guider/fukt/avfuktare-garage.mdx`, inledningen före första H2** (rad 57, stycket "Ett garage har två vägar för fukt …"). Lägg in en mening om att en burk på hyllan inte räcker när porten och bilen bär in vatten. Ankaret är till exempel "hur lite vatten en fuktslukare tar" → `/fukt/fuktslukare/`.
+2. **`src/content/guider/fukt/avfuktare-kallare.mdx`, H2 "Hur stor avfuktare källaren behöver"**, efter stycket som börjar "Börja med yta gånger takhöjd" (rad 70). Samma källare på 88 m³ finns på båda sidorna. Ankaret är till exempel "varför en fuktslukare inte räcker ens ett dygn i källaren" → `/fukt/fuktslukare/`.
+3. Valfritt: **`src/content/guider/fukt/fukt-i-kallaren.mdx`**, raden "Tvätt som aldrig torkar …" i tabellen (rad 77) eller stycket under den, med ett ankare om burken mot maskinen.

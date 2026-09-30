@@ -1,5 +1,7 @@
 # Faktablad: /fukt/sorptionsavfuktare/
 
+> **Rättelse 2026-09-30:** Wood's DSC50FM har bytt källa från butiken (Proffsmagasinet: 8,8 l/dygn och 231 W vid 20 °C och 70 %) till Wood's bruksanvisning, engelska tabellen (<https://woods.se/wp-content/uploads/2024/12/woods_manual_dsc50_alla_sprak.pdf>, läst 2026-09-30): "Dehumidifying at 20°C and 70% r.h. 8,0 L/ 24h", "Dehumidifying at 30°C and 80% r.h. 13,5 l/24h", "Power at 20°C and 70% r.h. 145 W", "Power consumption at 20°C and 70% r.h. 3,5kWh/24 h". Den svenska tabellen i samma PDF har förskjutna rader och används inte. EGEN: 145 × 24 / 1 000 / 8,0 = 0,44 kWh per liter, × 2,40 = 1,05 kr per liter (ersätter 0,63 och 1,51).
+
 Ur den gamla sidan 2026-09-20. Talen, källorna och länkarna nedan ska stå kvar. Formuleringarna är inte förlaga.
 
 ## Frontmatter som inte rörs

@@ -132,3 +132,28 @@ Det ettan har som vi måste behålla eller överträffa:
 - **Tal utan källa**, som Purmos 0,10 till 0,15 m/s, Bygghemmas 60 till 70 watt per kvadratmeter och Airmoves procent, upprepas inte förrän faktabladet har en källa för dem.
 - **Stäng inte tilluften** som råd. Sidan säger det motsatta, med uteluftsflödet som skäl.
 - **Kortsvaret, diagnostabellen och skissen får inte strykas.** De bär både rankingen och AI-citaten.
+
+---
+
+## Kontroll efter skrivningen, 2026-09-30
+
+SEO och GEO-agenten har läst `src/content/guider/fukt/kallras.mdx` (utkast, cirka 1 700 ord med Faq) mot punkt 1 till 12. **En punkt ska rättas. Därefter är sidan godkänd.**
+
+### Retur
+
+1. **Rad 10, `plats: luften` → `plats: fonster`.** Sidan äger "kallras fönster". Hubbens plats "Fönster och väggar" samlar fönstersidorna, med kondensen, drevningen och renoveringen, och det är där en läsare med drag vid fönstret letar. Under "Luften inomhus" står luftfuktigheten och mätningen, som handlar om luften och inte om en yta. Hygrometern har fått stå kvar under Luften av det skälet, men kallras hör till fönstret.
+
+Resten stämmer. Inget att ändra:
+
+- **Title och description.** Title är "Kallras från fönster och vad som hjälper" (40 tecken). Description har 149 tecken och säger "Kallras" först, vad det är, skillnaden mot drag och att åtgärderna är billiga. H1 är "Det drar från fönstret fast det är stängt", och den delar inga ord med title i början.
+- **Kortsvaret** har golvets 16 grader med Folkhälsomyndigheten som källa. HSLF-FS 2024:10 är verifierad och står i `kallor`, liksom lufthastigheten 0,15 m/s på rad 98.
+- **"Minst lika brett som fönstret"** står inte med, eftersom det saknar källa. Det var ett krav i faktabladet och inte en punkt i bättre än ettan. Godkänt.
+- **Bättre än ettan 1 till 4 är uppfyllda.** Skissen visar två rutor (bildAlt 121 tecken med "kallras"). Diagnostabellen har fyra orsaker och myndigheten som källa. Testet har rökelse, golv, luft och glas mot HSLF-FS 2024:10. Åtgärderna står som H3 i kostnadsordning med källa och pris, och fönsterbytet kommer sist.
+- **Fällorna är undvikna.** Kallrasskyddet står i ett stycke utan rubrik. Glastemperaturen har ett exempel och länkar till kondenssidan. Rådet att stänga ventilen står inte med, och sidan säger det motsatta. Inga tal utan källa från Purmo, Bygghemma eller Airmove.
+- **Länkarna ut** går till kondenssidan, drevningen, renoveringen, U-värdet och `/rakna/daggpunkt/?rum=fonster`, som är en vanlig länk.
+
+### Inlänkar
+
+1. **`src/content/guider/fukt/kondens-pa-fonster.mdx`, H2 "Torrare luft är billigare än nytt glas"**, stycket som börjar "Låt värmen nå glaset" (rad 125). Byt MDX-kommentaren på rad 127 mot en mening med länk, till exempel om att samma kalla glas också ger drag längs golvet. Ankaret är "kallras, draget längs golvet under fönstret" → `/fukt/kallras/`. **Ja, kondenssidan ska länka till kallras nu**, i samma commit som kallras publiceras.
+2. **`src/content/kunskap/fukt/luftfuktighet-inomhus.mdx`, H2 "Luftfuktighet inomhus på vintern"**, sista stycket (rad 186), meningen "Kalla, dragiga fönster är en annan sak än fukt". Ankaret är "kalla, dragiga fönster" → `/fukt/kallras/`. Länken till drevningen står kvar.
+3. **`src/content/guider/fasad/dreva-fonster.mdx`, H2 "Felen bakom kallras vid nya fönster", punkt 1** (rad 156). Efter "trots att fönstret är nytt." läggs en mening med ankaret "skillnaden mellan kallras från glaset och drag genom fogen" → `/fukt/kallras/`. Obs till hantverkaren: punkt 1 kallar drag genom drevet för kallras, medan kallrassidans tabell räknar det som ett otätt fönster. H2:n får behålla ordet, eftersom läsaren söker på det, men meningen i punkt 1 bör säga att det som känns är drag genom fogen. Annars säger två sidor i klustret olika saker.

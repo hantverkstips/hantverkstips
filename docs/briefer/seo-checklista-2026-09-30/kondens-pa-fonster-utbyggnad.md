@@ -140,3 +140,26 @@ Det ettan har som vi måste behålla eller överträffa:
 - **Kondensfritt glas och fönsterbyte** får inte bli säljtext. Beläggningen förklaras, men inga märken rekommenderas.
 - Inga tal utan källa från konkurrenterna. Aerius "30 % av verkningsgraden efter tre år", Klarfönsters "U-värde 0,79" och Dryfts "1,2 eller lägre" upprepas inte.
 - Hälsa skrivs bara med Folkhälsomyndigheten, Astma- och Allergiförbundet eller 1177 som källa.
+
+---
+
+## Kontroll efter skrivningen, 2026-09-30
+
+SEO och GEO-agenten har läst `src/content/guider/fukt/kondens-pa-fonster.mdx` (publicerad och utbyggd, cirka 2 700 ord med Faq) mot punkt 1 till 12. **Tre punkter ska rättas. Därefter är sidan godkänd.**
+
+### Retur
+
+1. **Rad 6, `uppdaterad: 2026-09-29`.** Sätt den till publiceringsdagen för utbyggnaden. Sidan har fått tre nya H2 och ny title, och datumet är en GEO-signal (skillen avsnitt 5).
+2. **Bättre än ettan 1 saknar myndigheten.** Kortsvaret säger "5 minusgrader ute eller kallare", men ingenstans på sidan står att det är Folkhälsomyndighetens indikation på fuktskada. Det var den punkt ingen i topp 5 har. Lägg en mening i H2 "Räkna ut om ditt fönster kommer att imma", direkt efter meningen om 45 procent vid 21 grader (rad 77). I sak ska den säga att Folkhälsomyndigheten också räknar omfattande kondens på fönstrens insida, när det är cirka 5 minusgrader ute eller kallare, som ett tecken på fuktskada (FoHMFS 2014:14, som redan står i `kallor`).
+3. **Rad 125 och 127, länken till kallras.** Byt MDX-kommentaren mot en länk, nu när sidan finns. Ankaret är "kallras, draget längs golvet under fönstret" → `/fukt/kallras/`, i stycket "Låt värmen nå glaset", och i samma commit som kallras publiceras.
+
+Resten stämmer. Inget att ändra:
+
+- **Title och description.** Title är "Kondens på fönster, på insidan och utsidan" (42) och börjar med huvudfrasen. Description har 139 tecken, med frasen först och alla tre platserna. H1 står kvar.
+- **Kortsvaret** har fått meningen om utsidan.
+- **Nya H2:** "Varför blir det imma på utsidan av fönstret?" med SP, Pilkington och AGC, och H3:n om mellan glasen och de kopplade bågarna; "Kondens i sovrummet efter en natt med stängd dörr"; "Mögel i fönsterkarmen och röta i bågen" med TräGuiden 75 till 80 och T6.
+- **Sovrummet utan nattsiffra**, bara med SP:s kilo per person och dygn. Godkänt: siffran saknar säker källa, och sidan säger det. Bättre än ettan 4 är uppfylld med SP:s tal och Astma- och Allergiförbundets 45 procent.
+- **Luftfuktaremeningen** hörde till luftfuktighetssidans checklista, inte till den här. Inget saknas.
+- **`<Kalkylator namn="daggpunkt" forval="rum=fonster" />`** en gång, med förvalet beskrivet i stycket före. Skissen av utsidan har alt på 106 tecken med "utsidan". Faq har fyra frågor, och ingen upprepar en H2.
+- **Befintliga tabeller, formeln och källraderna** är orörda. Sidan länkar till kopplade bågar, `/fukt/hygrometer/`, `/fasad/dreva-fonster/` och luftfuktighetssidan.
+- **`npm run kontrollera`** ger ett fel för länken till `/fukt/hygrometer/`, som är utkast. Felet försvinner när hygrometern publiceras i samma commit.

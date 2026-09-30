@@ -148,3 +148,26 @@ Det ettan har som vi måste behålla eller överträffa:
 - **Kondens på fönster** ägs av `/fukt/kondens-pa-fonster/`. Vinter-H2:n nämner indikationen och länkar dit, men förklarar inte glastemperaturen.
 - **Befintliga tabeller, källrader och den rättade mögelmeningen rörs inte**, utom där punkt 6 säger något annat.
 - **Snickarens gränser** står kvar. Fuktkvoten får en egen sida i omgång C (`/fukt/fuktkvot/`), och då läggs en länk dit. Tabellen flyttas inte.
+
+---
+
+## Kontroll efter skrivningen, 2026-09-30
+
+SEO och GEO-agenten har läst `src/content/kunskap/fukt/luftfuktighet-inomhus.mdx` (publicerad och utbyggd, cirka 3 050 ord med Faq) mot punkt 1 till 12. **Två punkter ska rättas. Därefter är sidan godkänd.**
+
+### Retur
+
+1. **Rad 252, ankaret "här är saltprovet steg för steg".** Ett ankare börjar aldrig med "här" (skillen avsnitt 4). Länka orden som säger vart läsaren kommer, till exempel "[saltprovet steg för steg](/fukt/hygrometer/)" eller "[hur du kontrollerar hygrometern med koksalt](/fukt/hygrometer/)". Meningen i övrigt formulerar hantverkaren.
+2. **Rad 186, länken till kallras.** Meningen "Kalla, dragiga fönster är en annan sak än fukt" pekar i dag bara på drevningen. Kallras finns nu och äger draget från fönstret. Länka "kalla, dragiga fönster" till `/fukt/kallras/`, och låt länken till drevningen stå kvar.
+
+Resten stämmer. Inget att ändra:
+
+- **Title och description.** Title är "Luftfuktighet inomhus, vinter och sommar" (40). Description har 145 tecken, med frasen först och årstidstalen. H1 står kvar.
+- **Kortsvaret** har Alingsås kommun, Boverkets 20 till 70, TräGuidens 10 till 25 och 45 till 60, och mögelmeningen i rättad form.
+- **Två årstidstabeller i stället för en.** Godkänt: var och en har källrader, och vinter och sommar svarar på olika frågor. Bättre än ettan 1 är uppfylld.
+- **Rumstabellen** har förvalslänkar för sovrum och källare. Badrummet står utan länk. Godkänt: rummet saknar riktvärde, och ett förval utan riktvärde vore tomt.
+- **H2:n om relativ och absolut fuktighet** är omdöpt. "hög luftfuktighet inomhus" står i brödtexten i sommar-H2:n. Koksalt-H2:n är kortad till mätregeln, Boverkets ±10 och provets tal, och testsajterna och deras källor är borta.
+- **Faq** har tre frågor som inte upprepar tabellerna.
+- **Luftfuktaremeningen är inte skriven**, eftersom ROST förbjuder "har en egen sida". Godkänt. Länken till `/fukt/lag-luftfuktighet/` läggs i omgång B, och checklistan för B anger var.
+- **Bättre än ettan 2 till 5 är uppfyllda.** Boverket står i kortsvaret och i normal-H2:n. Daggpunkten har räknaren och förvalen. Indikationen om minusgrader står i H2 2 och länkas från vinter-H2:n. Hygrometerkontrollen har länk.
+- **`npm run kontrollera`** ger ett fel för länken till `/fukt/hygrometer/`, som är utkast. Felet försvinner när hygrometern publiceras i samma commit.

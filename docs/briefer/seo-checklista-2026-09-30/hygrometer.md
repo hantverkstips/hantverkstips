@@ -142,3 +142,37 @@ Det ettan har som vi måste behålla eller överträffa:
 - **75 procent** skrivs aldrig som luftens gräns. Mögelgränserna 68 och 72 procent upprepas inte.
 - **Polarpumpens "gram väte"**, testsajternas ±2 till 3 utan källa och Elgigantens 40 till 60 upprepas inte.
 - **Kortsvaret och koksaltprovet får inte strykas.** De är det en AI citerar.
+
+---
+
+## Kontroll efter skrivningen, 2026-09-30
+
+SEO och GEO-agenten har läst `src/content/kunskap/fukt/hygrometer.mdx` (utkast, cirka 2 050 ord med Faq) mot punkt 1 till 12. **Godkänd av SEO och GEO.**
+
+Hantverkarens avvikelser, alla godkända:
+
+- **H1** "En billig luftfuktighetsmätare kan visa tio procentenheter fel". Den bär "luftfuktighetsmätare", lovar det sidan håller och delar inte de tre första orden med title ("Hygrometer, så vet du att den visar rätt", 40 tecken).
+- **`plats: luften`** i stället för `hela-huset`. Det är godkänt, eftersom sidan handlar om att mäta luften och hubben visar den bredvid luftfuktighetssidan. Beslutet gäller bara hygrometern. `/fuktmatare/` och fuktkvoten i omgång C står under Hela huset.
+- **Magnesiumklorid i en mening** (rad 108). Det räcker, eftersom koksaltprovet bär kalibreringen.
+- **Förvalslänken `?rum=sovrum`** i placerings-H2:n (rad 116), och `<Verktygskort kalkylator="daggpunkt" />` i H2:n om vad talet betyder. Canonical utan query är kontrollerad live.
+
+Metadata: description 147 tecken, bildAlt 103 tecken med "hygrometer" och "koksalt". Inget att ändra.
+
+Bättre än ettan 1 till 5 är uppfyllda:
+
+1. Boverkets ±10 procentenheter och 20 till 80 procent står i kortsvaret och i H2 3.
+2. Koksaltprovet står i fem steg med 75,3 procent vid 25 °C och 75,5 vid 20 °C (Greenspan och NBS), och avläsningen räknas om.
+3. Typtabellen har noggrannheten ur tillverkarnas datablad.
+4. Placering och mättid står med Folkhälsomyndighetens medelvärde över eldningssäsongen.
+5. 75 procent skrivs som materialets gräns (BFS 2024:8), TräGuidens 75 till 80 står vid ytan, och 68 och 72 procent rättas i sak utan att någon namnges.
+
+Fällorna är undvikna: sidan har inga `/go/`-länkar och inget reklamband, ordet "test" står inte i rubrikerna, och sidan har ingen rumstabell. Modellnamnen står bara som exempel på databladens uppgifter.
+
+`npm run kontrollera` visar två fel: kondenssidan och luftfuktighetssidan länkar till den här sidan, som fortfarande är utkast. **Felen försvinner när `utkast: false` sätts. Hygrometern måste därför publiceras i samma commit som de två utbyggnaderna.**
+
+### Inlänkar
+
+Tre inlänkar finns redan i omgången: kondenssidan (H2 "Kondens i sovrummet efter en natt med stängd dörr", ankaret "kontrollera att hygrometern visar rätt"), luftfuktighetssidan (H2 "Ett medelvärde säger mer än en avläsning") och fuktslukaren (H2 "Hur mycket vatten en fuktslukare tar upp"). Två läggs till inom en vecka:
+
+1. **`src/content/guider/fukt/fukt-i-krypgrund.mdx`, H2 "Mät fukten i krypgrunden själv"**, stycket som börjar "Hygrometern i krypgrunden ska logga" (rad 110). Lägg in en mening om att hygrometern ska kontrolleras innan den hänger där hela sommaren. Ankaret är till exempel "kontrollera hygrometern med koksalt innan den hänger i grunden hela sommaren" → `/fukt/hygrometer/`.
+2. **`src/content/guider/fukt/avfuktare-garage.mdx`, H2 "Kallt eller varmt när fukten kommer"**, stycket som börjar "Sätt en hygrometer i garaget" (rad 67). Ankaret handlar om att mätaren visar rätt, till exempel "en hygrometer som du har kontrollerat" → `/fukt/hygrometer/`.
