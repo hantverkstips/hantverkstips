@@ -1,6 +1,6 @@
 # Affiliate, fuktklustret, 2026-09-30
 
-Affiliateagentens besked på de sex frågorna i `docs/INNEHALLSARKITEKTUR.md` avsnitt 9 ("Vad affiliateagenten behöver veta") och på rotnamnrymden. Underlag: `docs/briefer/underlag-fukt-sortiment-2026-09-30.md` (underlagsarbetaren samma dag, alla priser, lager och adresser lästa 2026-09-30), `docs/SOKORDSANALYS.md` avsnitt 7.5 och 12, skillen `affiliate`, `docs/AFFILIATE.md` avsnitt 1 till 5. Inga fröskript, inga innehållsfiler ändrade.
+Affiliateagentens besked på de sex frågorna i `docs/INNEHALLSARKITEKTUR.md` avsnitt 9 ("Vad affiliateagenten behöver veta") och på rotnamnrymden. Underlag: `docs/briefer/underlag-fukt-sortiment-2026-09-30.md` (underlagsarbetaren samma dag, alla priser, lager och adresser lästa 2026-09-30), `docs/SOKORDSANALYS.md` avsnitt 7.5 och 12, skillen `affiliate`, `docs/AFFILIATE.md` avsnitt 1 till 5. Varv 2 samma dag (underlagets avsnitt "Varv 2, fuktmätarna till fröet") gav källan för temperaturen och tillverkarnas uppgifter om kompensering. Fröskript: `supabase/seed-produkter-fuktmatare-2026-10.sql`, inte körd. Inga innehållsfiler ändrade.
 
 ## Sammanfattning
 
@@ -9,7 +9,7 @@ Affiliateagentens besked på de sex frågorna i `docs/INNEHALLSARKITEKTUR.md` av
 | 1 | `/luftfuktare/` | **Nej.** Ingen kategorisida. `/fukt/lag-luftfuktighet/` byggs som kunskapssida utan produkter och utan reklamband | SEO, omgång B |
 | 2 | Hygrometern | Kunskapssida **utan** produktkort, köpknappar och annonslänkar. Inget reklamband | hantverkaren, omgång A |
 | 3 | Radonmätare | Inget kort på `/fukt/radon/`. Omprövas före `/fukt/radonsug/` i omgång E | hantverkaren, omgång B |
-| 4 | `/fuktmatare/` | **Ja, kategorisida, granskning på datablad.** Test bara om Christian köper instrumenten (pengafrågan nedan) | UX och bygge, SEO, omgång C |
+| 4 | `/fuktmatare/` | **Ja, kategorisida, granskning på datablad**, som krysslasern. Inga egna instrument köps | UX och bygge, SEO, omgång C |
 | 5 | Badrumsfläkten | Köpguide med kort, tre kandidater, efter flödesresonemanget | underlag före omgång D |
 | 6 | Vind och tvättstuga | Produkter ur `luftavfuktare`; vinden bara sorption. Urvalet görs efter nytt underlag | underlag före omgång B resp. D |
 | – | Rotnamnrymden | `fuktmatare` ja. `luftfuktare` nej | UX och bygge |
@@ -46,11 +46,11 @@ SSM:s metodbeskrivning för bostäder, som gäller från 1 oktober 2026, kräver
 
 Kategorin bär. 54 artiklar i underkategorin, **43 riktiga fuktmätare för trä och bygg från 1 500 kr**, 13 av dem i lager, märken som Protimeter, Gann, Testo, Flir, Bosch, Laserliner och Elma. Prisläget är 1 609 till 24 650 kr, alltså ett proffssortiment och inte konsumentsortimentet på 150 till 2 500 kr som körning 2 räknade med. Under 1 500 kr finns bara tre: Bosch UniversalHumid, Stanley 0-77-030 och Ryobi RBPINMM1.
 
-Inget oberoende test av fuktmätare har publicerats i Sverige eller Norden de senaste tre åren. Det senaste är SP Träs rapport PX21326 från 2012, där bara Testo 606-2 och Gann BL Compact B finns i dagens sortiment. Det är luckan.
+Inget oberoende test av fuktmätare har publicerats i Sverige eller Norden de senaste tre åren. Det senaste är SP Träs rapport PX21326 från 2012, där bara Testo 606-2 och Gann BL Compact B finns i dagens sortiment. Luckan fylls inte med egen mätning; sidans försprång är tabellen med tillverkarnas förbehåll utskrivna, och temperaturen, som ingen konkurrent förklarar.
 
 **Rotnamnrymden:** `fuktmatare` godkänd.
 
-**Etiketten är Granskning** tills en mätning är gjord. Mallens rad "Granskas. Vi har inte haft maskinen." står kvar. Title och description får inte säga test, mätt eller bäst i test.
+**Etiketten är Granskning.** Christian har beslutat 2026-09-30 att vi inte köper produkter själva, i någon kategori, så sidan byggs för att vara granskning på datablad och inte för att bli test. Mallens rad "Granskas. Vi har inte haft maskinen." står kvar. Title och description får inte säga test, mätt eller bäst i test.
 
 ### Tabellen, åtta modeller
 
@@ -61,9 +61,9 @@ Samma princip som krysslasern: varje rad i tabellen får en köpknapp, så varje
 | `bosch-universalhumid` | Bosch UniversalHumid | 504 kr | i lager | stift | Det ärliga svaret för ved och virke före målning: två trägrupper, Boschs ±1 % för ledningsförmåga. Under gränsen, men att sätta en mätare för 1 700 kr först för den som ska mäta ved vore val på provision |
 | `testo-606-1` | Testo 606-1 | 1 609 kr | i lager | stift | Billigaste med tillverkarens kurvor för gran och tall och för puts, betong och gips. Testos produktblad är från 2007 |
 | `elma-dt125` | Elma DT125 | 1 680 kr | i lager | stift | Billigaste som mäter trä (±1 inom 0–30 %), fyra byggmaterialgrupper och luftens RF i samma instrument |
-| `bosch-gmp-2-15` | Bosch GMP 2-15 | 2 147 kr | i lager | stift | 37 träslag, 10 byggmaterial, RF, IP65. Mätområdet för trä saknas i Boschs bruksanvisning |
-| `flir-mr55` | Flir MR55 | 2 990 kr | beställning, skickas 5/10 | stift | Billigaste med temperaturkompensering enligt tillverkaren, nio trägrupper, ±2 % inom 7–29 %, tre års garanti |
-| `bosch-gmm-1-15` | Bosch GMM 1-15 | 3 217 kr | beställning, 8–12 dagar | stiftlös | Enda stiftlösa i sortimentet med träslagsval (37) och ett värde i fuktkvot, inte en relativ skala. Mätdjup 0–30 mm |
+| `bosch-gmp-2-15` | Bosch GMP 2-15 | 2 147 kr | i lager | stift | 37 träslag med eget mätområde vart och ett (gran 8,0–97,3 %), 10 byggmaterial, RF, IP65. Ingen temperaturkompensering; Bosch säger att mätobjektet ska ha omgivningens temperatur |
+| `flir-mr55` | Flir MR55 | 2 990 kr | beställning, skickas 5/10 | stift | Nio trägrupper, ±2 procentenheter inom 7–29 %, automatisk temperaturkompensering, app, tre års garanti. Dyrare än DT125 för kalla utrymmen, eftersom temperaturen inte kan ställas in för hand |
+| `bosch-gmm-1-15` | Bosch GMM 1-15 | 3 217 kr | beställning, 8–12 dagar | stiftlös | Enda stiftlösa i sortimentet som ger fuktkvot (4–32 %) och inte en relativ skala. Mätdjup 0–30 mm. 37 träslag står bara på Boschs produktsida |
 | `laserliner-dampmaster-compact-plus` | Laserliner DampMaster Compact Plus (082.321A) | 5 236 kr | i lager | stift | Automatisk och manuell temperaturkompensering, ±1 % inom 5–30 %, åtta byggmaterial, app. Tydligast datablad i tabellen |
 | `protimeter-surveymaster` | Protimeter BLD5375 SurveyMaster | 9 695 kr | i lager | stift och stiftlös | Proffsklassen: besiktningsinstrumentet med båda metoderna, träslagstabell, två års garanti, Protimeters datablad 07/2024 |
 
@@ -72,12 +72,16 @@ Samma princip som krysslasern: varje rad i tabellen får en köpknapp, så varje
 | Slug | Uppgift för etiketten | forVem, sakinnehåll |
 |---|---|---|
 | `bosch-universalhumid` | ved och virke | vedförrådet före eldning och virke före målning, där ±1 till 2 procentenheter räcker |
-| `elma-dt125` | trä, puts och luften i ett instrument | husägaren som vill mäta syll, reglar och puts och samtidigt se luftfuktigheten, inomhus och i källaren |
-| `flir-mr55` | kalla utrymmen | krypgrund och kallvind på vintern, där träets temperatur ligger långt under rumstemperatur och mätaren behöver kompensera |
+| `elma-dt125` | kalla utrymmen | krypgrund, kallvind och källare, där träet är kallare än 20 grader; temperaturen kompenseras automatiskt och kan ställas in för hand, och samma instrument mäter puts och luftens RF |
+| `bosch-gmm-1-15` | utan hål i ytan | golv, lister och snickerier där stifthål inte får synas, och en första sökning efter var fukten sitter |
 
 Hantverkaren skriver etiketterna och `forVem` i Christians röst. Villkor: konkreta, aldrig "premium", "budget", "bäst för pengarna", "testvinnare" eller "bäst i test". Ordningen är den ovan, billigast först.
 
-Varför de tre: var och en är den billigaste som löser sin uppgift fullt ut. MR55 får platsen för kalla utrymmen **bara om** underlagsarbetaren belägger med källa att resistansmätning i trä beror på träets temperatur och ungefär hur mycket (Träguiden, RISE eller standarden SS-EN 13183-2). Utan den källan faller motiveringen, och valet blir `bosch-gmp-2-15` med uppgiften "37 träslag".
+Varför de tre: var och en är den billigaste som löser sin uppgift fullt ut.
+
+**Temperaturen, och varför MR55 inte blev ett val.** Källan finns (varv 2, A): SP Träs rapport PX21326 (2012) säger att den resistiva mätarens värde "ändras 0,1-0,15%-enheter per grad °C från 20°C", med tumregeln 1,6 per 10 °C; USDA Wood Handbook (2021) anger ungefär 0,9 per 10 °C; SS-EN 13183-2 kräver att mätaren kan korrigera för träslag och temperatur; Träguiden säger att värdena "måste korrigeras för rådande temperatur och träslag". Källorna säger olika om storleken, och texten ska ge intervallet, inte ett medelvärde. Uppgiften "kalla utrymmen" står alltså kvar. Men varv 2 visade också att Elma DT125 kompenserar både automatiskt och med temperaturen inställd för hand, för 1 680 kr, medan MR55 bara kompenserar automatiskt med luftens temperatur, för 2 990 kr. Den billigaste som löser uppgiften fullt ut är DT125, och handinställningen är det som låter läsaren ange träets temperatur i stället för luftens. MR55 står kvar i tabellen på sina egna meriter. Den tredje platsen går till GMM 1-15, som enda stiftlösa med ett värde i fuktkvot. Det här ändrar koordinatorns villkor (MR55 om källan finns, annars GMP 2-15): källan finns, men valet görs på meriter bland modellerna som klarar uppgiften.
+
+Till hantverkaren, som fakta: alla tre som kompenserar (Elma, Flir, Laserliner) mäter omgivningens temperatur, medan standarden och källorna talar om träets. Bosch kompenserar inte och säger att mätobjektet ska ha omgivningens temperatur. Mätriktningen (längs eller tvärs fibrerna) säger källorna olika om; följ tillverkarens anvisning per modell.
 
 ### Utelämnade, med skäl
 
@@ -113,16 +117,18 @@ Varför de tre: var och en är den billigaste som löser sin uppgift fullt ut. M
 
 Ingen nyckel får `bast`: mätområden och noggrannhet är inte jämförbara rakt av mellan tillverkarna. Tomma rutor står tomma, som på krysslasern.
 
-### Öppet innan fröskript och text
+### Fröet
 
-Beställs av mig hos underlagsarbetaren före omgång C:
+`supabase/seed-produkter-fuktmatare-2026-10.sql`, efter mönstret i `seed-produkter-2026-09-30.sql`: kategorin `fuktmatare`, de åtta produkterna med de 15 nycklarna där tillverkaren anger ett värde (plus `kalla` och `anmarkning`), erbjudanden och prishistorik 2026-09-30. Alla åtta adresser svarade 200 utan omdirigering, kontrollerat av underlaget och av mig samma dag. Flir MR55 och Bosch GMM 1-15 är beställningsvaror och lagras som `restnoterad`. Inte körd.
 
-1. Bosch GMP 2-15 och GMM 1-15: mätområde för trä och vad "±1 %" och "±4 %" avser, ur Boschs svenska bruksanvisningar.
-2. Bosch UniversalHumid: EAN och läst bruksanvisning (finns delvis).
-3. Källa för temperaturens inverkan på resistansmätning (se valet av MR55).
-4. Flir MR55: RF-noggrannheten, som inte gick att läsa entydigt.
-5. IP-klass och garanti för modellerna där de saknas; tomt om tillverkaren inte anger dem.
-6. Priser och lager läses om samma dag som sidan publiceras. Fyra av åtta är beställningsvaror eller buffertlager.
+Garanti för Bosch: tillverkargarantin ger 2 år privat och 12 månader vid yrkesmässig användning. `garanti_ar` är 2 för UniversalHumid (DIY) och 1 för GMP 2-15 och GMM 1-15 (Professional); villkoret står i `anmarkning`.
+
+### Öppet innan text
+
+1. Boschs "±1 %" och "±4 %" och Testos "±1 %": tillverkarna säger inte om det är procentenheter. Står som text med förbehållet; hantverkaren skriver inte om det som procentenheter.
+2. Tomma rutor efter varv 2: Testo 606-1 garanti, stiftlängd, hammarelektrod, kompensering; Elma DT125 IP-klass; Bosch stiftlängd och app; Flir MR55 hammarelektrod; Laserliner stiftlängd, hammarelektrod, IP och garanti; Protimeter IP, noggrannhet och kompensering. De står tomma.
+3. GMM 1-15: 37 träslag bara ur Boschs produktsida (sammanfattning); bruksanvisningen anger ett område för alla trämaterial.
+4. Priser och lager läses om samma dag som sidan publiceras.
 
 ## 5. Badrumsfläkten: köpguide med kort
 
@@ -146,27 +152,6 @@ Beställs av mig före omgång D: tryck- och flödeskurvor för de tre och för 
 3. Fuktslukaren (`/fukt/fuktslukare/`, omgång A) är en förbrukningsvara under 1 500 kr och får inget kort. Sidan länkar till köpguiderna för avfuktare.
 4. Inga nya skript, inga externa resurser, inga produktbilder förrän feedens villkor är lästa.
 
-## Pengafrågan till Christian
-
-**Ska vi köpa fem fuktmätare och en våg för ett eget test, cirka 10 550 kr?**
-
-- Mätarna: Bosch UniversalHumid 504, Testo 606-1 1 609, Elma DT125 1 680, Flir MR55 2 990, Bosch GMM 1-15 3 217. Summa **10 000 kr**, alla från tabellen ovan.
-- Ugnstermometer 199,90 kr och en våg på 0,01 g. Clas Ohlsons för 349 kr är slut och anger bara upplösning; en våg med känd noggrannhet är inte prissatt än. Standarden (SS-EN 13183-1) kräver torkning i 103 ± 2 °C med fri luftcirkulation. Med vanlig hemugn avviker testet från standarden och sidan måste säga det; ett labbtorkskåp är inte prissatt.
-- Köps direkt, inte via våra egna annonslänkar.
-
-**Vad testet ger mot en granskning:**
-
-| | Granskning | Test |
-|---|---|---|
-| Etikett | Granskning | Test, första oberoende mätningen av fuktmätare i Sverige sedan SP 2012 |
-| Underlag | tillverkarens tal, som inte går att jämföra (olika sätt att ange noggrannhet) | samma bräda med alla fem mot torrvikt; avvikelsen i procentenheter per mätare |
-| Fraserna | fuktmätare 6 600 och trä 880, realistiskt plats 4 till 8 | därtill "fuktmätare bäst i test" 210 och "fuktmätare test" 90, där topp 10 är affiliatesidor utan mätning |
-| Resten av klustret | inga egna tal | mätarna används igen för egna mätningar på krypgrunds-, vinds- och fuktslukarsidorna |
-| Kostnad | 0 kr | cirka 10 550 kr plus eventuellt torkskåp, och några kvällar |
-
-Tidsramen: `/fuktmatare/` går ut i omgång C, 20 december. För att testet ska hinna med behöver beskedet komma **senast 15 oktober** (leveranstid upp till 12 dagar och brädorna ska hinna konditioneras). Kommer beskedet senare går sidan ut som granskning och byggs om till test när mätningen är gjord.
-
 ## Vad som kräver Christian
 
-1. Pengafrågan ovan, besked senast 15 oktober.
-2. Inget annat. Övriga beslut är fattade här.
+Inget. Christian har beslutat 2026-09-30 att vi inte köper produkter själva, i någon kategori, och frågan om egna tester ställs inte igen. Alla sidor med produkter i klustret är granskningar på datablad och skriver aldrig "test", "mätt" eller "jag testade".

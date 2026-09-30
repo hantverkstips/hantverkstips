@@ -408,3 +408,127 @@ Kategori: `https://www.proffsmagasinet.se/maskiner-verktyg/matinstrument/miljoin
 - Del 3: 8 (EN 13183-1 förhandsvisning, SIS, Svenskt Trä, Träguiden, Clas Ohlson ×2, expondo, Anbonilabb; PM våg- och termometerkategorier)
 - Del 4: 7 (PM hygrometerkategorier ×2, PM radonkategori och 3 produktsidor, SSM metodbeskrivning 2026, SSM-sidorna ×2)
 - Del 5: 6 (PM kategori, PM produktsidor ×3, PM-artikeln, Pax produktblad ×2, Fresh-manualen)
+
+---
+
+## Varv 2, fuktmätarna till fröet
+
+Beställt av affiliateagenten 2026-09-30, hämtat 2026-09-30. Samma märkning som ovan: **utdrag** = sökmotorns utdrag, **sammanfattning** = WebFetch-sammanfattning, inte ordagrant. Butikstext används bara för pris, lager, artikelnummer, EAN och adress.
+
+### A. Temperaturens inverkan på resistansmätning i trä
+
+**Hittat: ja, fyra källor som inte är tillverkare eller butik.** Två ger storleken, två säger bara att korrektion krävs.
+
+| Källa | Ordagrant | Var | Läst |
+|---|---|---|---|
+| USDA Forest Products Laboratory, *Wood Handbook* (FPL-GTR-282, 2021), kap. 13 "Drying and Control of Moisture Content and Dimensional Changes", R. Bergman, https://research.fs.usda.gov/download/treesearch/62261.pdf | "Make temperature corrections if the temperature of the wood differs considerably from the temperature of calibration used by the manufacturer. Approximate corrections for conductance-type (resistance) meters are made by adding or subtracting about 0.5% for each 5.6 °C (10 °F) the wood temperature differs from the calibration temperature. Add the correction factors to the readings for temperatures less than the calibration temperature and subtract from the readings for temperatures greater than the calibration temperature." Samma stycke: "about 6% to 30% for resistance meters … Readings greater than 30% must be considered only qualitative." | s. 13-3, avsnittet "Electrical Method" | 2026-09-30 |
+| SP Trä, rapport PX21326 (2012-09-20), https://www.maleriforetagen.se/globalassets/dokumentbank-oppna/sp-ytfuktkvotsrapport-20120920.pdf | "Temperaturkompensering är för resistiva fuktkvotsmätare viktig då mätvärdet ändras 0,1-0,15%-enheter per grad °C från 20°C. Temperaturkompensering görs antingen via en inställning på mätaren, automatiskt via en sensor på mätaren eller tumregeln: Dra ifrån 1,6% per 10°C från avläst värde över 20°C och lägg till 1,6% per 10°C från avläst värde under 20°C, se Fukt i trä för byggindustrin [2005]." | rapportens s. 5–6 (17) | 2026-09-30 |
+| Samma rapport, Bilaga 1 "Mätinstruktion Målfuktkvot" | "Kompensera mätvärdet med avseende på temperatur om inte mätaren har denna funktion. Använd ev. tabell som medföljer mätinstrumentet eller tumregeln: Dra ifrån 1,6 % per 10°C från avläst värde över 20°C. Lägg till 1,6 % per 10°C från avläst värde under 20°C." Kravlistan i slutsatserna: "Temperaturkompensering bör vara möjlig" | Bilaga 1 (PDF s. 18); slutsatser | 2026-09-30 |
+| EN 13183-2:2002 "Moisture content of a piece of sawn timber – Part 2: Estimation by electrical resistance method", iTeh:s förhandsvisning av SIST EN 13183-2:2003, https://cdn.standards.iteh.ai/samples/7840/57a4e39f3bba44e9a435e8dce003ea5e/SIST-EN-13183-2-2003.pdf. Svensk beteckning SS-EN 13183-2 (SIS, https://www.sis.se/en/produkter/wood-technology/wood-sawlogs-and-sawn-timber/ssen131832/); gällande status i SIS ej kontrollerad | Avsnitt 5: "The meter shall be equipped with settings or tables to correct for wood species and temperature." Avsnitt 7: "Correct the electrical resistance moisture meter reading to take into consideration the temperature and species of the timber being measured." Avsnitt 4: "suitable for timber having a moisture content between approximately 7 % and 30 %." Bilaga A: resultatet redovisas med bl.a. "species setting, temperature setting, penetration depth". Ingen storlek på temperatureffekten i förhandsvisningen | avsnitt 4, 5, 7, bilaga A | 2026-09-30 |
+| Träguiden (Svenskt Trä), "Fuktkvot och mätning", uppdaterad 2021-06-14, https://www.traguiden.se/om-tra/materialet-tra/traets-egenskaper-och-kvalitet/fuktegenskaper1/fuktkvot-och-matning/ | "Det gemensamma för alla är att uppmätta värden måste korrigeras för rådande temperatur och träslag." Ingen storlek | avsnittet "Bestämning av fuktkvot" | 2026-09-30 (sidans källkod läst, ordagrant) |
+
+- Egen räkning, samma enhet: Wood Handbook 0,5 per 5,6 °C × 10/5,6 ≈ **0,9 per 10 °C**. SP: 0,1–0,15 per °C × 10 = **1,0–1,5 procentenheter per 10 °C**; tumregeln **1,6 per 10 °C**.
+- **Källorna säger olika om storleken**: ca 0,9 (Wood Handbook) mot 1,0–1,6 (SP) per 10 °C. Inget medelvärde. SP väger tyngst för svensk text: rapporten gäller nordisk gran och furu, räknar från 20 °C och är skriven för mätning i fält i Sverige. Wood Handbook är nyare (2021) men anger "about" och har tillverkarens kalibreringstemperatur som referens, inte 20 °C.
+- SP skriver "%-enheter" i första meningen men bara "%" i tumregeln. Att tumregeln avser procentenheter framgår av sammanhanget men står inte uttryckligen.
+- Riktningen: varmare trä än referensen ger ett för högt värde som ska dras ifrån; kallare trä ger ett för lågt värde som ska läggas till (Wood Handbook och SP).
+- Tillverkarna som kompenserar (Elma DT125, Flir MR55, Laserliner 082.321A, se B2) gör det med **omgivningens** temperatur. Standarden och Wood Handbook talar om **träets** temperatur. Boschs bruksanvisningar säger i stället att mätobjektet ska ha samma temperatur som omgivningen (se B2).
+- **Källorna säger olika om mätriktningen:** EN 13183-2 avsnitt 7: "Normally take the measurement in the direction of the grain. Take the measurement at right angles to the grain if specially requested in the manual for the instrument." SP-rapporten s. 6, med hänvisning till VTT publikation 420: "Mätriktningen tvärs eller längs fibrerna har ingen stor betydelse". Träguiden: "Mätningen ska ske med stiften efter varandra i fiberriktningen." Boschs UniversalHumid-bruksanvisning: "Mät alltid tvärs mot fibrerna." Standarden väger tyngst, och den låter tillverkarens anvisning gälla när den kräver tvärs.
+- Ej läst: primärkällan "Fukt i trä för byggindustrin" (2005), som SP hänvisar till för talen.
+
+### B. Per modell
+
+Priser och lager lästa i PM:s `__INIT_STATE__` (`ListPrice.AmountWithTax`, `StockStatus`, `StockQuantity`, `StockText`) 2026-09-30. Adresskontroll med `curl` utan att följa omdirigering 2026-09-30: **alla åtta gav 200 utan omdirigering**. "Tillv. art.nr" = tillverkarens nummer; PM:s fält `mpn` anges där tillverkarens saknas.
+
+#### B1. PM-data
+
+| Modell | Full PM-adress | Pris 30/9 | Lager 30/9 | PM art.nr | EAN (PM `Gtin`) | Tillv. art.nr |
+|---|---|---|---|---|---|---|
+| Bosch UniversalHumid | https://www.proffsmagasinet.se/maskiner-verktyg/matinstrument/fuktmatare/fuktmatare/bosch-diy-universalhumid-fuktmatare-for-tra-med-batterier-4054182 | 504 kr | i lager (5), "Skickas inom 24 timmar!" | 4054182 | **4053423245271** | 3 603 F88 000 (Bosch bruksanvisning 1 609 92A 7M9; tekniska data anger "3 603 F88 0..") ; PM `mpn` "UniversalHumid" |
+| Testo 606-1 | https://www.proffsmagasinet.se/maskiner-verktyg/matinstrument/fuktmatare/fuktmatare/testo-606-1-fuktmatare-2850033 | 1 609 kr | i lager (4), "Skickas inom 24 timmar!" | 2850033 | 4029547008290 | 0560 6060 (Testo datablad 0981 9684/msp/01.2023) |
+| Elma DT125 | https://www.proffsmagasinet.se/maskiner-verktyg/matinstrument/eltestverktyg/installationstestare/elma-dt125-fuktmatare-med-batteri-for-tra-div-byggnadsmaterial-samt-rel-luftfuktighet-4065187 | 1 680 kr | i lager (9), "Skickas inom 24 timmar!" | 4065187 | 5706445840168 (Elma anger samma) | Elmas varunummer **ej hittat** (elma.dk visar EAN och EL-nr 6398206772; ett sökutdrag säger "3025776", ej bekräftat); PM `mpn` "DT125" |
+| Bosch GMP 2-15 | https://www.proffsmagasinet.se/maskiner-verktyg/matinstrument/fuktmatare/fuktmatare/bosch-gmp-2-15-fuktmatare-4079909 | 2 147 kr | i lager (3), "Skickas inom 24 timmar!" | 4079909 | 4053423340044 | 0 601 078 100 (produktnummer 3601K78100), https://www.bosch-professional.com/se/sv/products/gmp-2-15-0601078100 |
+| Flir MR55 | https://www.proffsmagasinet.se/maskiner-verktyg/matinstrument/fuktmatare/fuktmatare/flir-mr55-fuktmatare-med-bluetooth-me13552 | 2 990 kr | beställningsvara (`BackOrder`, 0 i lager, köpbar), "Skickas 2026-10-05" | ME13552 | 5706445881734 | MR55 (Flir manual MR55-en-US_AB) |
+| Bosch GMM 1-15 | https://www.proffsmagasinet.se/maskiner-verktyg/matinstrument/fuktmatare/fuktmatare/bosch-gmm-1-15-fuktmatare-med-batteri-och-laddare-4079903 | 3 217 kr | beställningsvara (`OutOfStock`, köpbar), "Skickas om 8-12 dagar" | 4079903 | 4053423340051 | 0 601 078 200 (produktnummer 3601K78200), https://www.bosch-professional.com/se/sv/products/gmm-1-15-0601078200 (**sammanfattning**) |
+| Laserliner 082.321A DampMaster Compact Plus | https://www.proffsmagasinet.se/maskiner-verktyg/matinstrument/fuktmatare/fuktmatare/laserliner-082321a-fuktmatare-med-vaska-och-batterier-4065101 | 5 236 kr | i lager (9), "Skickas inom 24 timmar!" | 4065101 | 4021563699858 (Laserliner anger samma) | 082.321A (Laserliner datablad) |
+| Protimeter BLD5375 SurveyMaster | https://www.proffsmagasinet.se/maskiner-verktyg/matinstrument/fuktmatare/fuktmatare/protimeter-bld5375-surveymaster-fuktmatare-for-matning-och-sokning-4059208 | 9 695 kr | i lager (3), "Skickas inom 24 timmar!" | 4059208 | 1976449879004 | BLD5375 (Protimeter datablad och manual) |
+
+- Priser och lager är oförändrade mot tabell 2c.
+- "Bosch UniversalHumid" i beställningen = PM:s "Bosch DIY UniversalHumid".
+
+#### B2. Tillverkarens uppgifter
+
+"Ej angivet" / "nämns ej" = letat i de lästa källorna utan träff.
+
+| Modell | Fuktkvot trä (tillverkaren) | Vad noggrannheten avser | Temp.komp. | Stift | Hammarelektrod | IP | Garanti | Batteri | App |
+|---|---|---|---|---|---|---|---|---|---|
+| Bosch UniversalHumid | Trägrupp A 7,1–74,7 %, B 6,4–61,9 % | "Ledningsförmåga ± 1 %", fotnot "Vid en drifttemperatur på 25 °C"; vad procenten avser sägs inte | **Inget.** I stället: "Innan mätning, se till att omgivningstemperaturen stämmer överens med temperaturen i mätobjektet." | längd i mm ej angiven; "Optimala mätresultat får man om stiften sticker in ca. 4-5 mm i träet. En markering på 5 mm djup finns på stiften som referens." | nämns ej; "använd inte våld, och använd heller inte andra föremål för att slå in mätinstrumentet i träet!" | ingen IP-klass; "Mätinstrumentet är inte stänk- och dammskyddat." | se Bosch-garantin under källorna | 3 × 1,5 V LR03 (AAA), ca 10 h | nämns ej |
+| Testo 606-1 | 8,8–54,8 vikt-% (bok, gran, lärk, björk, körsbär, valnöt); 7,0–47,9 vikt-% (ek, tall, lönn, ask, douglasgran, meranti) | "±1 %" och "±1 digit" (tabellen förskjuten i PDF-texten); vad procenten avser sägs inte | nämns ej | längd ej angiven; reservelektroder (1 par) 0192 5348 | nämns ej | **IP20** | **ej hittat** (testo.com gav 429) | 2 × AAA, 200 h (utan belysning) | nej |
+| Elma DT125 | 1–75 % (del 2c) | 0–30 %: ±1; 30–60 %: ±2; 60–75 %: ±4 (del 2c) | **Ja, automatisk och manuell.** "Elma DT125 kompenserar automatiskt för olika materialtemperaturer, då Elma DT125 mäter omgivningstemperaturen och använder denna mätning för intern beräkning. I tillägg kan man i Elma DT125 även ställa in temperaturen manuellt för att öka mätnoggrannheten. Detta värde sparas inte och måste ställas in varje gång man slår på instrumentet." | "Elektrodelængde: 8mm", integrerade, utbytbara | **tillval**: "Til Elma DT125 kan endvidere tilsluttes eksterne prober, herunder en hammerelektrode" (elma.dk, **sammanfattning** med citat) | ej angivet | "Garanti: 1 år." | 3 × CR2032 | nej |
+| Bosch GMP 2-15 | Per material, se B5. Byggträ 6,7–100,0 %; gran 8,0–97,3 %; tall, europeisk 7,3–97,4 %. Fotnot: "Mätvärden över 80 % indikeras som "> 80 %" på displayen." | "Mätprecision (typisk) Ledningsförmåga (materialfukthalt) ±1 %", fotnot "Vid en drifttemperatur på 25 °C". Bruksanvisningen säger **inte** om det är procentenheter fuktkvot eller procent av avläsningen | **Inget.** "Mätnoggrannheten blir störst när mätobjektet har samma temperatur som omgivningen. Låt därför vid behov mätobjektets temperatur utjämnas." | längd i mm ej angiven; "Optimala mätresultat får man om stiften sticks in ca 4-5 mm (upp till hacket) i mätobjektet." | nämns ej; "Slå inte in mätinstrumentet i mätobjektet med hjälp av andra föremål." | **IP65** | se Bosch-garantin under källorna | 2 × AA 40 h, eller Li-jon 3,7 V 1,0 Ah (tillbehör) 25 h | nämns ej |
+| Flir MR55 | Grupp 1–9: 7–29 % ±2 % MC; 30–99 % "Reference Only" | "± 2% MC"; fotnot: "Accuracy specification is based on the analysis in J. Fernández-Golfín et al. Actual real-world accuracy depends on a variety of factors; For more information, refer to ASTM D4444, section 6." | **Ja, automatisk.** "Moisture measurements are automatically temperature compensated. The meter calculates the compensation using the ambient temperature measurements." Manuell inställning nämns ej | 10 mm, integrerade, utbytbara | nämns ej (manualen nämner bara micro-USB-uttaget) | **IP40** | "Limited 3 years"; manualen: "Register your product at the website to receive a free 1-year warranty extension." | 2 × AA, 70 h utan arbetslampa | Bluetooth (METERLiNK), FLIR Tools Mobile (del 2c) |
+| Bosch GMM 1-15 | "Alla trämaterial 4 % ... 32 %"; byggmaterial t.ex. gipsskiva 0,9–20 %, lättbetong 0,8–53 % | "Mätnoggrannhet i trämaterial (typisk) ±4 %", fotnoter "Vid en drifttemperatur på 25 °C" och "Fuktmätvärden för byggnadsmaterial är endast avsedda som referens". Vad procenten avser sägs inte. Ordet "Dyn-läge" (del 2c, ur Boschs produktsida) **finns inte** i bruksanvisningen | **Inget** (stiftlös; "temperatur" förekommer bara om drift, förvaring och laddning) | – (stiftlös); mätdjup 0–30 mm | – | **IP65** | se Bosch-garantin under källorna | 2 × AA, eller Li-jon 3,7 V 1,0 Ah; ca 10 h | nämns ej |
+| Laserliner 082.321A | grupp A 4,6–91,6 %; B 6,1–103,6 %; C 3,0–79,2 % (del 2c) | Databladet: "± 1% (5% ... 30%) ± 2% (<5% and >30%)". Bruksanvisningen (**sammanfattning**, se källor): "Wood: ± 0.3% from the end value ± 5 digits". **Källorna säger olika**; databladet är läst direkt hos Laserliner och väger tyngst | **Ja, automatisk och manuell.** Databladet: "Automatic and manual temperature compensation: measuring device adapted to temperature of material to be measured". Bruksanvisningen (**sammanfattning** med citat): "The device automatically compensates for different wood temperatures by measuring the ambient temperature" | längd ej angiven; "Measuring spikes can be replaced" | nämns ej | ej angivet | ej angivet | 4 × 1,5 V AAA (bruksanvisningen via manuals.plus, **sammanfattning**) | Digital Connection, MeasureNote-app |
+| Protimeter BLD5375 SurveyMaster | stift 6–99 % WME; stiftlöst 60–999 relativt | ej angivet | **nämns ej** i datablad eller manual | "Pin up to 0.4 in (10 mm)"; integrerade stift och medföljande "Heavy Duty Moisture Probe" | **tillval**: "a Hammer Electrode (optional)" (manualen); "Hammer electrode for wood floor applications" (databladet, under Options) | ej angivet | "2 years on manufacturing defects. Does not include wearing part or accessories." | "3V(2 x AA)2700mAh"; "more than 20 hours" | Bluetooth, Protimeter Connect |
+
+Källor för B2:
+- Bosch UniversalHumid: bruksanvisning 1 609 92A 7M9 (29.04.2022), svensk del s. 100–103 (Tekniska data, Mätprocedur), PM-bilaga https://pm-asset.azureedge.net/api/asset-download?id=AssetDocument76763748, läst 2026-09-30.
+- Bosch GMP 2-15: bruksanvisning 1 609 92A F7L (10.11.2025), svensk del s. 104–106 (Tekniska data, Mätområde materialfukthalt) och s. 110 (Anvisningar för mätobjekt, Mätprocedur), https://www.bosch-professional.com/binary/manualsmedia/o615646v21_160992AF7L_202511.pdf, läst 2026-09-30. Tabellen på s. 106 kontrollerad i tabelläge; i vanligt textläge är värdena förskjutna en rad.
+- Bosch GMM 1-15: bruksanvisning 1 609 92A B3E (27.03.2025), svensk del s. 127–129 (Tekniska data) och avsnittet "Anvisningar för mätobjekt", https://www.bosch-professional.com/binary/manualsmedia/o569105v21_160992AB3E_202503.pdf, läst 2026-09-30.
+- Bosch-garantin: "Tillverkargaranti (status 01.12.2021)", 1 600 A02 CK4, https://www.bosch-professional.com/binary/manualsmedia/o375646v21_1600A02CK4_202112.pdf, länkad från GMM 1-15-sidan (inte från GMP 2-15-sidan), läst 2026-09-30. Gäller enligt texten "Samtliga Bosch elverktyg, tryckluftsverktyg, mätinstrument och trädgårdsredskap". Punkt 1: "en garanti som gäller i två år … Vid verktyg som används kommersiellt eller yrkesmässigt eller utsätts för jämförbar belastning är garantitiden tolv månader." Punkt 2: "Du kan förlänga garantitiden till totalt tre år" vid registrering inom fyra veckor (mybosch-tools.com för privat bruk, bosch-professional.com/pro360 för proffsverktyg).
+- Testo 606-1: datablad "testo 606", 0981 9684/msp/01.2023, https://static.testo.com/image/upload/HQ/testo-606-data-sheet.pdf, s. 2, läst 2026-09-30. **Källorna säger olika** med PM-bilagan från 2007 (del 2c, "0–90 %"); databladet 2023 väger tyngst.
+- Elma DT125: bruksanvisning SE/NO/DK/EN, PM-bilaga https://pm-asset.azureedge.net/api/asset-download?id=AssetDocument81306978, svenska avsnitt 4 och 6.1, danska tekniska data ("Elektrodelængde: 8mm", "Garanti: 1 år."), läst 2026-09-30; https://elma.dk/produkter/elma-dt125-fugtmaaler-m-naaleelektroder (**sammanfattning**), läst 2026-09-30.
+- Flir MR55: manual MR55-en-US_AB (release augusti 2018), PM-bilaga https://pm-asset.azureedge.net/api/asset-download?id=28830159, avsnitt 4.2, 9 och 12; produktblad 07/18, PM-bilaga id 28830161; lästa 2026-09-30.
+- Laserliner 082.321A: datablad https://laserliner.com/export/assets/082.321A_en_60_17.pdf (läst 2026-09-30); bruksanvisning återpublicerad av tredje part, https://manuals.plus/laserliner/082-321a-dampmaster-compact-plus-moisture-meter-manual (**sammanfattning**, tekniska revisioner "03.17"), läst 2026-09-30.
+- Protimeter BLD5375: datablad AAS-920-085G-EN (07/2024), https://www.protimeter.com/hubfs/AAS-920-085G-EN-Protimeter-SurveyMaster-072224-web.pdf; manual INS5375 Rev. A (juni 2023), https://www.protimeter.com/hubfs/INS5375%20(1)%20(1).pdf; båda lästa 2026-09-30.
+
+#### B3. Flir MR55, RF-noggrannheten
+
+- Manualen (avsnitt 9, läsbar): "Ambient Relative Humidity 0 ~ 10% ± 4%; 10 ~ 85% ± 2%". Temperatur "± 2°F (± 1°C)".
+- Produktbladet 07/18 går inte att läsa entydigt: texten ger "0 - 20% ±5% ±4%" och "20 - 80% ±3.5% ±2%" i två kolumner.
+- **Källorna säger olika**, och produktbladet går inte att tolka säkert. Manualen väger tyngst.
+- Också olika: drifttemperatur 0–60 °C i produktbladet, 0–50 °C i manualen.
+
+#### B4. Protimeter SurveyMaster, samma modell?
+
+- **Ja.** Databladet AAS-920-085G-EN har rubriken "PROTIMETER SurveyMaster™ Dual-Function Moisture Meter BLD5375". Manualen INS5375 Rev. A gäller "Surveymaster" med samma funktioner (stift %WME, stiftlöst "REL" 60–999, Bluetooth). PM:s `mpn` är "BLD5375 SurveyMaster" och PM:s produktnamn har BLD5375.
+- Det är **inte** samma instrument som "Protimeter Surveymaster SM" i SP-testet 2012 eller "SurveyMaster II" i PM:s paket LA23042. Att de är olika generationer bygger på namnen; hur de skiljer sig har inte kontrollerats.
+- Ett sökutdrag (manualslib, ej läst) anger "1x9V battery" för SurveyMaster; det gäller troligen en äldre manual. INS5375 Rev. A anger 2 × AA. Utdraget är inte använt.
+
+#### B5. Bosch GMP 2-15, mätområde per träslag (bruksanvisningen s. 105–106)
+
+Min–max enligt bruksanvisningen. Fotnot: värden över 80 % visas som "> 80 %".
+
+| Material | Min | Max |
+|---|---|---|
+| Byggträ | 6,7 % | 100,0 % |
+| Gran | 8,0 % | 97,3 % |
+| Tall, europeisk | 7,3 % | 97,4 % |
+| Ädelgran | 8,4 % | 91,1 % |
+| Lärkträd | 7,0 % | 100,0 % |
+| Björk, europeisk | 4,6 % | 95,9 % |
+| Ek, europeisk | 6,9 % | 97,5 % |
+| Bok | 6,2 % | 93,2 % |
+
+- Resten av de 37 trämaterialen och de 10 byggmaterialen står på samma sidor. Lägsta minimivärde bland trämaterialen: björk 4,6 %; högsta: ädelgran 8,4 %.
+- Bruksanvisningen gäller både GMP 1-13 och GMP 2-15 och delar inte upp mätområdet per modell.
+
+### Fortfarande tomt efter varv 2
+
+- Testo 606-1: garanti, stiftlängd, hammarelektrod, temperaturkompensering (testo.com gav 429; databladet nämner inget av det).
+- Elma DT125: IP-klass; Elmas eget varunummer.
+- Bosch UniversalHumid och GMP 2-15: stiftlängd i mm (bara instickdjup 4–5 mm); app (nämns ej).
+- Bosch: vad "±1 %" och "±4 %" avser (bruksanvisningarna säger det inte).
+- Flir MR55: hammarelektrod (nämns ej).
+- Laserliner 082.321A: stiftlängd, hammarelektrod, IP-klass, garanti. Batteriet bara via en bruksanvisning återpublicerad av tredje part.
+- Protimeter BLD5375: IP-klass, noggrannhet, temperaturkompensering (nämns ej).
+- Bosch-garantin är ett generellt dokument, länkat bara från GMM 1-15.
+
+### Sidor som inte gick att läsa i varv 2
+
+- https://www.testo.com/sv-SE/testo-606-1/p/0560-6060 och https://www.testo.com/en-US/testo-606-1/p/0560-6060 (429)
+- https://static-int.testo.com/media/b6/fd/f5ee3fc4bc6d/testo-606-Instruction-manual.pdf (403)
+- https://www.testequipmentdepot.com/testo/pdf/606-1_manual.pdf (301 till tom fil)
+- https://www.fpl.fs.usda.gov/documnts/fplgtr/fplgtr282/chapter_13_fpl_gtr282.pdf (omdirigeras till research.fs.usda.gov/nrs; samma kapitel läst via treesearch 62261)
+- https://elma.dk/produkter/elma-dt125 (404; rätt adress elma.dk/produkter/elma-dt125-fugtmaaler-m-naaleelektroder läst)
+- https://laserliner.com/en/products/moisture-measurement/dampmaster-compact-plus/ (404)
+- https://standards.iteh.ai/catalog/standards/cen/c04b1bc8-0dd6-4669-9ac6-4a1cc375369d/en-13183-2-2002 (renderas med JavaScript; förhandsvisningens PDF hittad via sökning och läst)
