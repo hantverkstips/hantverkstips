@@ -11,18 +11,21 @@
  */
 import {
   ARSTIDER,
+  formVarden,
   RUMSVAL,
   STANDARD,
+  TYPISKA_U,
   TYPISKA_YTOR,
   type DaggpunktIndata,
 } from '../../lib/kalkyl/daggpunkt';
+import { formateraTal } from '../../lib/format';
 import { ETIKETT_KLASS, FALT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, ramKlass, VAL_KLASS } from '../../lib/kalkyl/stil';
 
 interface Props {
   /** Valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
   indata?: DaggpunktIndata;
   /** Talen som de skrevs i adressen, så att ett felskrivet värde går att rätta. */
-  varden?: { temp: string; rf: string; ytatemp: string };
+  varden?: { temp: string; rf: string; ytatemp: string; u: string; ute: string };
   fel?: Partial<Record<keyof DaggpunktIndata, string>>;
   /** Inbäddad i en artikel: tätare fält, inga hjälprader. */
   kompakt?: boolean;
@@ -33,11 +36,7 @@ interface Props {
 
 const {
   indata = STANDARD,
-  varden = {
-    temp: String(STANDARD.luftTempC),
-    rf: String(STANDARD.rfProcent),
-    ytatemp: String(STANDARD.ytTempC),
-  },
+  varden = formVarden(STANDARD),
   fel = {},
   kompakt = false,
   idPrefix = '',
@@ -65,6 +64,34 @@ const talfalt = [
     hjalp: 'Det tal hygrometern visar mitt i rummet.',
   },
 ] as const;
+
+/*
+ * Fönstret: den kallaste ytan är glaset, och det räknas fram ur U-värdet och
+ * temperaturen ute, så fältet för ytans temperatur byts mot två fält. Texterna
+ * är hantverkarens (docs/briefer/texter-daggpunkt-rum-2026-09-30.md, F1 till F4).
+ */
+const fonster = indata.rum === 'fonster';
+const fonsterfalt = [
+  {
+    namn: 'u',
+    etikett: 'Fönstrets U-värde',
+    enhet: 'W/m²K',
+    varde: varden.u,
+    fel: fel.uVarde,
+    hjalp: 'Vet du inte fönstrets U-värde, ta talet för den sorts fönster du har.',
+    lista: true,
+  },
+  {
+    namn: 'ute',
+    etikett: 'Temperaturen ute',
+    enhet: '°C',
+    varde: varden.ute,
+    fel: fel.uteTempC,
+    hjalp: 'Ju kallare det är ute, desto kallare blir glaset på insidan.',
+    lista: false,
+  },
+] as const;
+const uSpann = (s: readonly [number, number]) => `${formateraTal(s[0], 1)} till ${formateraTal(s[1], 1)}`;
 ---
 
 <form method="get" action="/rakna/daggpunkt/">
@@ -99,6 +126,47 @@ const talfalt = [
     }
   </div>
 
+  {
+    fonster ? (
+      fonsterfalt.map((f) => (
+        <div class="mb-4">
+          <label for={id(f.namn)} class={ETIKETT_KLASS}>
+            {f.etikett}
+          </label>
+          <div class="flex items-center gap-2">
+            <input
+              id={id(f.namn)}
+              name={f.namn}
+              type="text"
+              inputmode="decimal"
+              value={f.varde}
+              aria-describedby={f.fel ? id(`${f.namn}-fel`) : f.lista ? id(`${f.namn}-hjalp`) : undefined}
+              class:list={[FALT_KLASS, ramKlass(Boolean(f.fel))]}
+            />
+            <span class="text-brod text-blyerts-2">{f.enhet}</span>
+          </div>
+          {f.fel && (
+            <p id={id(`${f.namn}-fel`)} class={FEL_KLASS}>
+              {f.fel}
+            </p>
+          )}
+          {f.lista ? (
+            <div id={id(`${f.namn}-hjalp`)} class={HJALP_KLASS}>
+              <p class="m-0">{f.hjalp}</p>
+              <ul class="m-0 mt-1 list-none p-0">
+                {TYPISKA_U.map((t) => (
+                  <li>
+                    {t.typ}, {uSpann(t.spann)}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            !f.fel && !kompakt && <p class={HJALP_KLASS}>{f.hjalp}</p>
+          )}
+        </div>
+      ))
+    ) : (
   <div class="mb-4">
     <label for={id('ytatemp')} class={ETIKETT_KLASS}>Den kallaste ytans temperatur</label>
     <div class="flex items-center gap-2">
@@ -128,13 +196,15 @@ const talfalt = [
       {
         !kompakt && (
           <p class="m-0 mt-1">
-            Talen är min erfarenhet från äldre hus, ingen publicerad tabell. Vill du ha ditt eget värde mäter du
+            Talen är mina antaganden och ingen publicerad tabell. Vill du ha ditt eget värde mäter du
             väggen med en IR-termometer.
           </p>
         )
       }
     </div>
   </div>
+    )
+  }
 
   <fieldset class="m-0 mb-4 p-0 border-0">
     <legend class:list={[ETIKETT_KLASS, 'p-0']}>Årstid</legend>
@@ -151,7 +221,7 @@ const talfalt = [
   </fieldset>
 
   <fieldset class="m-0 mb-6 p-0 border-0">
-    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Utrymme</legend>
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>Utrymme eller fönster</legend>
     <div class={radioKlass}>
       {
         RUMSVAL.map((r) => (

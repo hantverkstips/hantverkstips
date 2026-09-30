@@ -13,6 +13,7 @@
  * Rubriken är ett <p> i H3-stil, inte en H3: komponenten kan stå var som helst i
  * en artikel och en riktig H3 skulle kunna ge fel rubrikordning.
  */
+import { forvalFranAdress as daggpunktForval } from '../../lib/kalkyl/daggpunkt';
 import { forvalFranAdress as elkostnadForval } from '../../lib/kalkyl/elkostnad';
 import { tolkaQuery as tolkaGrannemedgivande } from '../../lib/kalkyl/grannemedgivande';
 import { hittaKalkylator } from '../../lib/kalkyl/register';
@@ -46,8 +47,11 @@ interface Props {
   /**
    * Förval som en querysträng, till exempel "atgard=altan". Finns för
    * grannemedgivandet (docs/briefer/spec-kalkyl-grannemedgivande-2026-09-28.md
-   * 12.6) och elkostnaden, med samma nycklar som verktygets delbara adress
-   * plus typ=golvvarme (forvalFranAdress i src/lib/kalkyl/elkostnad.ts).
+   * 12.6), elkostnaden, med samma nycklar som verktygets delbara adress
+   * plus typ=golvvarme (forvalFranAdress i src/lib/kalkyl/elkostnad.ts), och
+   * daggpunkten, med rummet och talen i verktygets adress, till exempel
+   * "rum=fonster" (forvalFranAdress i src/lib/kalkyl/daggpunkt.ts,
+   * docs/briefer/spec-daggpunkt-rum-2026-09-30.md avsnitt 7).
    * Talen och deras källor är artikelns: golvvärmesidan skriver golvets hela
    * effekt i watt, tillverkarens W/m² gånger den fria ytan.
    * En annan slug med förval, en okänd nyckel eller ett värde som räknaren
@@ -101,9 +105,16 @@ if (!MED_FORMULAR.includes(namn)) {
   );
 }
 
-if (forval !== undefined && namn !== 'grannemedgivande' && namn !== 'elkostnad') {
-  throw new Error(`[Kalkylator] Förval finns bara för grannemedgivandet och elkostnaden, inte för "${namn}".`);
+if (forval !== undefined && namn !== 'grannemedgivande' && namn !== 'elkostnad' && namn !== 'daggpunkt') {
+  throw new Error(`[Kalkylator] Förval finns bara för grannemedgivandet, elkostnaden och daggpunkten, inte för "${namn}".`);
 }
+/** Daggpunktens förval, tolkat och prövat som adressen på verktygssidan. */
+const dpForval = namn === 'daggpunkt' && forval !== undefined ? daggpunktForval(forval) : undefined;
+if (dpForval?.status === 'fel') {
+  throw new Error(`[Kalkylator] Förvalet "${forval}" till daggpunkten går inte att räkna: ${dpForval.fel}`);
+}
+const dpIndata = dpForval?.status === 'ok' ? dpForval.indata : undefined;
+const dpVarden = dpForval?.status === 'ok' ? dpForval.varden : undefined;
 /** Elkostnadens förval, tolkat och prövat som adressen på verktygssidan. */
 const elForval = namn === 'elkostnad' && forval !== undefined ? elkostnadForval(forval) : undefined;
 if (elForval?.status === 'fel') {
@@ -145,7 +156,7 @@ const prefix = `${k.slug}-inbaddad-`;
   </p>
   <p class="m-0 mb-6 text-brod lg:text-brod-lg text-blyerts-2">{k.rad}</p>
 
-  {namn === 'daggpunkt' && <DaggpunktForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
+  {namn === 'daggpunkt' && <DaggpunktForm kompakt={true} indata={dpIndata} varden={dpVarden} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'avfuktare' && <AvfuktareForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'elkostnad' && <ElkostnadForm kompakt={true} indata={elIndata} varden={elVarden} typ={elTyp} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'innervagg' && <InnervaggForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}

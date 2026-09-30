@@ -18,13 +18,21 @@ import Bas from '../../layouts/Bas.astro';
 import { formateraTal } from '../../lib/format';
 import {
   ATGARDSTEXT,
+  FORVAL_PER_RUM,
+  formVarden,
   KRITISKT_FUKTTILLSTAND_RF,
   raknaDaggpunkt,
+  RSI_M2K_PER_W,
+  RUM_MED_FORVAL,
   STANDARD,
+  TEXT,
   tolkaQuery,
+  TYPISKA_U,
   type DaggpunktResultat,
+  type NormalKalla,
+  type Rum,
 } from '../../lib/kalkyl/daggpunkt';
-import { CELL_KLASS, ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
+import { ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
 import { verktyg } from '../../lib/strukturdata';
 import { verktygsDelningsbild, verktygsillustration, verktygsVarumarkesbild } from '../../lib/verktygsbild';
 import DaggpunktForm from '../../components/kalkyl/DaggpunktForm.astro';
@@ -54,15 +62,19 @@ const visatIndata = resultat.status === 'ogiltig' ? STANDARD : indata;
  * talen: "tjugo" eller "" blir NaN i tolkaQuery, och NaN i ett fält som läsaren
  * ska rätta är obrukbart.
  */
-function faltVarde(nyckel: string, standard: number): string {
+function faltVarde(nyckel: string, tolkat: string): string {
   const ra = Astro.url.searchParams.get(nyckel);
   if (ra !== null) return ra;
-  return String(standard).replace('.', ',');
+  return tolkat;
 }
+// Ett fält utan nyckel i adressen får rummets förval, eller STANDARD utan rum.
+const tolkat = formVarden(indata);
 const varden = {
-  temp: faltVarde('temp', STANDARD.luftTempC),
-  rf: faltVarde('rf', STANDARD.rfProcent),
-  ytatemp: faltVarde('ytatemp', STANDARD.ytTempC),
+  temp: faltVarde('temp', tolkat.temp),
+  rf: faltVarde('rf', tolkat.rf),
+  ytatemp: faltVarde('ytatemp', tolkat.ytatemp),
+  u: faltVarde('u', tolkat.u),
+  ute: faltVarde('ute', tolkat.ute),
 };
 
 /**
@@ -70,13 +82,22 @@ const varden = {
  * uträkningen. Den byggs av de tolkade värdena, inte av strängen läsaren skrev,
  * så att en delad länk alltid ger samma resultat som skärmen visar.
  */
-const delaQuery = new URLSearchParams({
-  temp: String(visatIndata.luftTempC).replace('.', ','),
-  rf: String(visatIndata.rfProcent).replace('.', ','),
-  ytatemp: String(visatIndata.ytTempC).replace('.', ','),
-  arstid: visatIndata.arstid,
-  rum: visatIndata.rum,
-});
+const visatVarden = formVarden(visatIndata);
+const arFonster = visatIndata.rum === 'fonster';
+// Fönstret delar U-värdet och temperaturen ute, alla andra rum ytans temperatur.
+const delaQuery = new URLSearchParams([
+  ['temp', visatVarden.temp],
+  ['rf', visatVarden.rf],
+  ...(arFonster ? [] : [['ytatemp', visatVarden.ytatemp]]),
+  ['arstid', visatIndata.arstid],
+  ['rum', visatIndata.rum],
+  ...(arFonster
+    ? [
+        ['u', visatVarden.u],
+        ['ute', visatVarden.ute],
+      ]
+    : []),
+]);
 const delaLank = new URL(`/rakna/daggpunkt/?${delaQuery.toString()}`, Astro.site ?? Astro.url).toString();
 
 /** Tal ur resultatet, färdigformaterade, så att markupen nedan blir läsbar. */
@@ -91,7 +112,8 @@ const tal =
         ytTempKrav: formateraTal(visat.ytTempForGransenC, 1),
         luftTemp: formateraTal(visatIndata.luftTempC, 0),
         rfInne: formateraTal(visatIndata.rfProcent, 0),
-        ytTemp: formateraTal(visatIndata.ytTempC, 0),
+        // Glaset räknas fram och visas med en decimal; en inmatad yta som förut.
+        ytTemp: formateraTal(visat.ytTempC, arFonster ? 1 : 0),
       }
     : null;
 
@@ -104,7 +126,7 @@ const BESKED_RUBRIK = {
 
 const BESKED_RAD = {
   vadra: 'Vädra kort med genomdrag ett par gånger om dagen, och gör ytan varmare.',
-  avfuktare: 'Stäng fönstret och sätt in en avfuktare.',
+  avfuktare: 'Sätt in en avfuktare, och släpp inte in varm sommarluft genom fönster eller port.',
   sank_fuktproduktion: 'Få ner fukten du själv skapar inne, och gör ytan varmare.',
   varm_eller_isolera_ytan: 'Gör ytan varmare.',
 } as const;
@@ -122,6 +144,136 @@ const KORT_SVAR_YTA = {
   ingen_risk: 'Din kallaste yta är varmare än så, så den blir inte våt.',
 } as const;
 
+/*
+ * Förvalen per rum. Texterna är hantverkarens
+ * (docs/briefer/texter-daggpunkt-rum-2026-09-30.md, S1 till S5). Talen kommer
+ * som parametrar och skrivs aldrig för hand.
+ */
+const RUMSRAD_RUBRIK = 'Typiska tal för';
+const RUMSRAD_ARIA = 'Fyll i typiska tal för ett rum';
+/** S2: rummets normala luftfuktighet och var läsarens tal ligger. lagst är null när källan bara ger ett högsta tal. */
+function normaltRad(
+  rumNamn: string,
+  lagst: number | null,
+  hogst: number,
+  rfInne: string,
+  lage: 'under' | 'inom' | 'over',
+): string {
+  if (lagst === null) {
+    const dina = lage === 'over' ? 'gör det' : 'gör det inte';
+    return `I ${rumNamn} bör luftfuktigheten helst inte gå över ${hogst} procent, och dina ${rfInne} procent ${dina}.`;
+  }
+  const dina = lage === 'over' ? 'över det spannet' : lage === 'under' ? 'under det spannet' : 'inom det spannet';
+  return `I ${rumNamn} brukar luftfuktigheten ligga på ${lagst} till ${hogst} procent så här års, och dina ${rfInne} procent ligger ${dina}.`;
+}
+/** S3: hur glasets temperatur kom fram ur U-värdet och temperaturen ute. */
+function fonsterRad(u: string, ute: string, glas: string): string {
+  return `Ett fönster med U-värdet ${u} håller ${glas} grader mitt på glaset när det är ${ute} grader ute, och det är glasets temperatur jag jämför med daggpunkten. Kanten runt glaset och bågens nederdel är kallare än mitten, så där kommer imman först.`;
+}
+/** S4: källraden under S3. */
+const FONSTER_KALLRAD = `Glasets temperatur är temperaturen inne minus ${formateraTal(RSI_M2K_PER_W, 2)} gånger U-värdet gånger skillnaden mellan inne och ute. Talet ${formateraTal(RSI_M2K_PER_W, 2)} m²K/W är värmemotståndet vid en lodrät yta inomhus i standarden SS-EN ISO 6946, och U-värdena kommer ur Energimyndighetens fönsterguide ET 2025:01.`;
+/** S5: meningen före källraden om rummets normala luftfuktighet (källraden är TEXT.normaltKalla). */
+function normaltKallaRad(rumNamn: string, kalla: NormalKalla): string {
+  switch (kalla) {
+    case 'traguiden':
+      return `Luftfuktigheten i ${rumNamn} följer årstiden. Den är högst på sommaren och lägst på vintern, när kall uteluft kommer in och blir torr av att värmas upp.`;
+    case 'astma-allergi':
+      return `Talet för ${rumNamn} är ett råd mot kvalster och gäller vintern. Kvalster trivs sämre i torr luft.`;
+    case 'fohm':
+      return `För ${rumNamn} finns inget mål att sikta på, bara en gräns där det är dags att ta reda på vad som är fel.`;
+    case 'villaagarna':
+      return `Gränsen för ${rumNamn} gäller egentligen väggarna och träet. Luften hålls under den så att materialen runt omkring inte blir fuktigare än så med tiden.`;
+    case 'olsson-sp':
+      return `Gränsen för ${rumNamn} är satt för träet i golvbjälklaget ovanför, där mögel kan börja växa när luftfuktigheten går strax över gränsen.`;
+    case 'sbi':
+      return `Gränsen för ${rumNamn} gäller rost på det som står där, som verktyg, cyklar och bilen.`;
+  }
+}
+/** Rummen som de står mitt i en mening i S2 och S5. */
+const RUM_I_TEXT: Record<Rum, string> = {
+  bostad: 'ett uppvärmt rum',
+  sovrum: 'ett sovrum',
+  fonster: 'rummet innanför fönstret',
+  kallare: 'en källare',
+  krypgrund: 'en krypgrund',
+  garage: 'ett garage',
+};
+const rumNamn = (r: Rum): string => RUM_I_TEXT[r];
+
+/** Grader med minustecknet som ord, som i löptexten på sajten. */
+const graderOrd = (n: number): string => {
+  const t = formateraTal(Math.abs(n), Number.isInteger(n) ? 0 : 1);
+  return n < 0 ? `minus ${t}` : t;
+};
+/**
+ * Cellklasserna en gång på <table>, som på badrum-kostnad och fasadyta, så att
+ * raderna förvalen lägger till inte bär klasserna var för sig (budgeten).
+ */
+const TABELL_KLASS =
+  'w-full border-collapse text-liten tabular-nums [&_th]:p-2 [&_td]:p-2 [&_th]:align-top [&_td]:align-top [&_th]:text-left [&_tbody_th]:[font-weight:inherit] [&_tr]:border-b [&_tr]:border-linje [&_th]:text-blyerts [&_td]:text-blyerts [&_thead_th]:text-etikett [&_thead_th]:uppercase [&_thead_th]:text-blyerts-2';
+const ET_2025_01 =
+  'https://energiochklimatradgivningen.se/download/18.5e9a579b195c021e865e6614/1742900645267/BQ_EPRO011_FO%CC%88NSTER_ET_2025_01_A4_TA.pdf';
+
+/** S6: "Vad" och "Källa eller antagande" för förvalens rader, en per rum. */
+const FORVAL_ANTAGANDE: Record<Exclude<Rum, 'bostad'>, { storhet: string; stod: string }> = {
+  sovrum: {
+    storhet: 'Talen i sovrummet vintertid',
+    stod: 'Talen för luften har stöd hos Folkhälsomyndigheten och Astma- och Allergiförbundet. Väggens temperatur ligger i den kallare änden av spannet för ytterväggar i hjälptexten, som är mitt antagande',
+  },
+  fonster: {
+    storhet: 'Talen för fönstret vintertid',
+    stod: 'Luften är densamma som i sovrummet. U-värdet är det för ett vanligt tvåglasfönster i Energimyndighetens fönsterguide, och temperaturen ute är den temperatur där Folkhälsomyndigheten säger att mycket kondens på insidan tyder på ett fuktproblem',
+  },
+  kallare: {
+    storhet: 'Talen i källaren på sommaren',
+    stod: 'Luften är fuktig sommarluft efter SMHI:s tal för juli. Väggens temperatur ligger i den varmare änden av spannet för källarväggar i hjälptexten, som är mitt antagande',
+  },
+  krypgrund: {
+    storhet: 'Talen i krypgrunden på sommaren',
+    stod: 'Luften är densamma som i källaren. Ytans temperatur är den jag räknar med i en krypgrund, och Fuktcentrums mätningar ger en medeltemperatur strax under den',
+  },
+  garage: {
+    storhet: 'Talen i ett ouppvärmt garage på sommaren',
+    stod: 'Luften är densamma som i källaren. Ytan har samma temperatur som avfuktarkalkylatorn räknar med för ett ouppvärmt garage',
+  },
+};
+
+/** Raderna förvalen lägger till i antagandetabellen (S6), efter Magnus-raden. */
+const antagandenRum: { storhet: string; varde: string; grund: 'Källa' | 'Antagande'; stod: string; url?: string }[] = [
+  {
+    storhet: 'Värmemotståndet mellan rumsluften och glaset',
+    varde: `${formateraTal(RSI_M2K_PER_W, 2)} m²K/W`,
+    grund: 'Källa',
+    stod: 'Standarden SS-EN ISO 6946, värdet för en lodrät yta inomhus',
+  },
+  {
+    storhet: 'U-värdena för tvåglas, treglas och energifönster i hjälptexten',
+    varde: `${TYPISKA_U.map((t) => `${formateraTal(t.spann[0], 1)} till ${formateraTal(t.spann[1], 1)}`)
+      .join(', ')
+      .replace(/, ([^,]*)$/, ' och $1')} W/m²K`,
+    grund: 'Källa',
+    stod: 'Energimyndighetens fönsterguide ET 2025:01, tabell 1',
+    url: ET_2025_01,
+  },
+  ...RUM_MED_FORVAL.flatMap((r) => {
+    const f = FORVAL_PER_RUM[r];
+    if (!f) return [];
+    const yta =
+      f.ytTempC !== undefined
+        ? `ytan ${graderOrd(f.ytTempC)} °C`
+        : `U ${formateraTal(f.uVarde ?? STANDARD.uVarde, 1)} W/m²K, ute ${graderOrd(f.uteTempC ?? STANDARD.uteTempC)} °C`;
+    return [
+      {
+        storhet: FORVAL_ANTAGANDE[r].storhet,
+        varde: `${formateraTal(f.luftTempC, 0)} °C, ${formateraTal(f.rfProcent, 0)} % RF, ${yta}`,
+        // Ytorna 12 och 10 grader är antaganden; fönstrets tal har alla källa (spec avsnitt 1).
+        grund: f.ytTempC !== undefined ? ('Antagande' as const) : ('Källa' as const),
+        stod: FORVAL_ANTAGANDE[r].stod,
+      },
+    ];
+  }),
+];
+
 const titel = 'Daggpunkt, räkna ut om väggen blir våt';
 
 /** Antagandena i tabellen under "Så räknar vi". Samma tal som konstanterna i kalkylen. */
@@ -133,6 +285,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     stod: 'Lawrence 2005 i tidskriften BAMS 86(2), som anger osäkerheten till 0,35 grader',
     url: 'https://journals.ametsoc.org/view/journals/bams/86/2/bams-86-2-225.xml',
   },
+  ...antagandenRum,
   {
     storhet: 'Högsta tillåtna fukttillstånd, den gräns verktyget jämför luften intill ytan med',
     varde: '75 % RF',
@@ -164,7 +317,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'De typiska yttemperaturerna i hjälptexten',
     varde: '12 till 15, 5 till 10 och 8 till 12 grader',
     grund: 'Antagande',
-    stod: 'Min erfarenhet från äldre hus. Din vägg kan ligga flera grader åt endera hållet, så mät med en IR-termometer om du kan',
+    stod: 'Mitt antagande, inga mätningar. Din vägg kan ligga flera grader åt endera hållet, så mät med en IR-termometer om du kan',
   },
   {
     storhet: 'Gränsen där jag säger att ytan måste bli varmare',
@@ -284,7 +437,27 @@ const huvudbild = varumarke ?? illustration;
       )
     }
 
-    <div class="linjerat mt-8 lg:grid lg:grid-cols-2 lg:gap-8">
+    {/* Rumsraden: en länk per rum som öppnar förvalet. Ingen JS. */}
+    <nav aria-label={RUMSRAD_ARIA} class="mt-8">
+      <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">{RUMSRAD_RUBRIK}</p>
+      <ul class="m-0 p-0 list-none flex flex-wrap gap-x-4">
+        {
+          RUM_MED_FORVAL.map((r) => (
+            <li>
+              <a
+                href={`/rakna/daggpunkt/?rum=${r}#raknaren`}
+                aria-current={indata.rum === r ? 'true' : undefined}
+                class:list={[LANK_KLASS, 'inline-flex min-h-11 items-center', indata.rum === r && 'font-bold']}
+              >
+                {TEXT.rumKort[r]}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div id="raknaren" class="linjerat mt-4 lg:grid lg:grid-cols-2 lg:gap-8">
       <DaggpunktForm indata={indata} varden={varden} fel={fel} />
 
       <div class="mt-8 border-t border-linje pt-6 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
@@ -318,6 +491,15 @@ const huvudbild = varumarke ?? illustration;
                 Din kallaste yta på {tal.ytTemp} grader ligger {tal.marginal} grader{' '}
                 {visat.bedomning === 'kondens' ? 'under' : 'över'} daggpunkten, och luften intill den håller{' '}
                 {tal.rfYta} procent.
+              </p>
+              <p class="m-0 mt-1 text-liten text-blyerts-2">
+                {normaltRad(
+                  rumNamn(visatIndata.rum),
+                  visat.normalt.lagst,
+                  visat.normalt.hogst,
+                  tal.rfInne,
+                  visat.normalt.lage,
+                )}
               </p>
 
               <p class="m-0 mt-4 text-liten text-blyerts-2">
@@ -356,6 +538,18 @@ const huvudbild = varumarke ?? illustration;
         <section>
           <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
           <ul class="m-0 p-0 list-none text-brod lg:text-brod-lg">
+            {arFonster && (
+              <li class="mb-4 border-l-2 border-linje pl-4">
+                <span class="block">
+                  {fonsterRad(
+                    formateraTal(visatIndata.uVarde ?? STANDARD.uVarde, 1),
+                    graderOrd(visatIndata.uteTempC ?? STANDARD.uteTempC),
+                    tal.ytTemp,
+                  )}
+                </span>
+                <span class="block text-liten text-blyerts-2">{FONSTER_KALLRAD}</span>
+              </li>
+            )}
             <li class="mb-4 border-l-2 border-linje pl-4">
               <span class="block">
                 {visat.bedomning === 'kondens' ? (
@@ -423,12 +617,17 @@ const huvudbild = varumarke ?? illustration;
             ))}
 
             <li class="mb-4 border-l-2 border-linje pl-4">
+              <span class="block">{normaltKallaRad(rumNamn(visatIndata.rum), visat.normalt.kalla)}</span>
+              <span class="block text-liten text-blyerts-2">{TEXT.normaltKalla[visat.normalt.kalla]}</span>
+            </li>
+
+            <li class="mb-4 border-l-2 border-linje pl-4">
               <span class="block">
                 Det svaga ledet är det du matade in. En hygrometer för ett par hundralappar kan visa några
                 procentenheter fel, och väggens temperatur är en gissning tills du mätt den med en IR-termometer. Ta
                 svaret som ett spann på några grader, och lita mer på det ju bättre du mätt.
               </span>
-              <span class="block text-liten text-blyerts-2">Min erfarenhet, ingen publicerad siffra.</span>
+              <span class="block text-liten text-blyerts-2">Mitt råd, ingen publicerad siffra.</span>
             </li>
           </ul>
 
@@ -553,24 +752,22 @@ const huvudbild = varumarke ?? illustration;
 
       <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad siffrorna vilar på</h3>
       <Tabellyta kolumner={3} class="mt-4">
-        <table class="w-full border-collapse text-liten tabular-nums">
+        <table class={TABELL_KLASS}>
           <caption class="sr-only">Antaganden och källor i daggpunktskalkylatorn</caption>
           <thead>
-            <tr class="border-b border-linje text-left">
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Vad</th>
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Jag räknar med</th>
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Källa eller antagande</th>
+            <tr>
+              <th scope="col">Vad</th>
+              <th scope="col">Jag räknar med</th>
+              <th scope="col">Källa eller antagande</th>
             </tr>
           </thead>
           <tbody>
             {
               antaganden.map((a) => (
                 <tr>
-                  <th scope="row" class:list={[CELL_KLASS, 'text-left font-normal']}>
-                    {a.storhet}
-                  </th>
-                  <td class={CELL_KLASS}>{a.varde}</td>
-                  <td class={CELL_KLASS}>
+                  <th scope="row">{a.storhet}</th>
+                  <td>{a.varde}</td>
+                  <td>
                     {a.grund}.{' '}
                     {a.url ? (
                       <a href={a.url} rel="nofollow" class={LANK_KLASS}>
@@ -589,8 +786,8 @@ const huvudbild = varumarke ?? illustration;
 
       <p class="m-0 mt-6 text-brod lg:text-brod-lg">
         Själva formeln har jag inte räknat fram själv, den är Lawrence 2005 rakt av, och den osäkerhet på 0,35
-        grader som står i spalten är hans. De tre yttemperaturerna i hjälptexten är däremot mina, och de byts mot
-        uppmätta tal så snart jag haft IR-termometern på tillräckligt många väggar. Hur jag skiljer på läst och mätt
+        grader som står i spalten är hans. De tre yttemperaturerna i hjälptexten är däremot mina egna antaganden och
+        inga mätningar, så mät din egen vägg med en IR-termometer om du kan. Hur jag skiljer på läst och mätt
         står på sidan <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar jag</a>.
       </p>
     </section>
