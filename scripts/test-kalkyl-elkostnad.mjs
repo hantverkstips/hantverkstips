@@ -309,3 +309,38 @@ test('Kalkylator: förval för elkostnad går genom forvalFranAdress och fyller 
   assert.match(k, /elkostnadForval\(forval\)/);
   assert.match(k, /<ElkostnadForm kompakt=\{true\} indata=\{elIndata\} varden=\{elVarden\} typ=\{elTyp\}/);
 });
+
+/*
+ * Förvalet produkt=[slug] i en inbäddning
+ * (docs/briefer/spec-elkostnad-forval-2026-09-30.md avsnitt 1 och 3).
+ * Effekten 275 W är ett provtal som skickas in; funktionen läser aldrig databasen.
+ */
+import { FORVAL_NYCKLAR } from '../src/lib/kalkyl/elkostnad.ts';
+
+test('förval: produkten ger effekten och slugen', () => {
+  const f = forvalFranAdress('produkt=woods-mdk21', { effektW: 275 });
+  assert.equal(f.status, 'ok');
+  assert.equal(f.indata.effektW, 275);
+  assert.equal(f.produktSlug, 'woods-mdk21');
+});
+
+test('förval: effekt i förvalet vinner över produktens', () => {
+  const f = forvalFranAdress('produkt=woods-mdk21&effekt=300', { effektW: 275 });
+  assert.equal(f.status, 'ok');
+  assert.equal(f.indata.effektW, 300);
+});
+
+test('förval: en ogiltig slug ger ingen produkt men standardeffekten', () => {
+  const f = forvalFranAdress('produkt=Ogiltig slug!');
+  assert.equal(f.status, 'ok');
+  assert.equal(f.produktSlug, null);
+  assert.equal(f.indata.effektW, EL_STANDARD.effektW);
+});
+
+test('förval: maskin är ingen nyckel', () => {
+  assert.equal(forvalFranAdress('maskin=x').status, 'fel');
+});
+
+test('förval: nyckellistan innehåller produkt', () => {
+  assert.ok(FORVAL_NYCKLAR.includes('produkt'));
+});

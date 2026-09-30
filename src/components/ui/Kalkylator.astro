@@ -14,7 +14,13 @@
  * en artikel och en riktig H3 skulle kunna ge fel rubrikordning.
  */
 import { forvalFranAdress as daggpunktForval } from '../../lib/kalkyl/daggpunkt';
-import { forvalFranAdress as elkostnadForval } from '../../lib/kalkyl/elkostnad';
+import {
+  forvalFranAdress as elkostnadForval,
+  produktForval,
+  produktSlugFranQuery,
+  type ProduktForval,
+} from '../../lib/kalkyl/elkostnad';
+import { hamtaProdukt } from '../../lib/produkter';
 import { tolkaQuery as tolkaGrannemedgivande } from '../../lib/kalkyl/grannemedgivande';
 import { hittaKalkylator } from '../../lib/kalkyl/register';
 import AltanForm from '../kalkyl/AltanForm.astro';
@@ -48,7 +54,11 @@ interface Props {
    * Förval som en querysträng, till exempel "atgard=altan". Finns för
    * grannemedgivandet (docs/briefer/spec-kalkyl-grannemedgivande-2026-09-28.md
    * 12.6), elkostnaden, med samma nycklar som verktygets delbara adress
-   * plus typ=golvvarme (forvalFranAdress i src/lib/kalkyl/elkostnad.ts), och
+   * plus typ=golvvarme och produkt=[slug] (forvalFranAdress i
+   * src/lib/kalkyl/elkostnad.ts). produkt hämtar maskinens effekt ur
+   * databasen och följer med som dolt fält; en effekt i samma förval vinner,
+   * och en produkt som saknas eller inte har effekt_w ger byggfel
+   * (docs/briefer/spec-elkostnad-forval-2026-09-30.md avsnitt 1). Och
    * daggpunkten, med rummet och talen i verktygets adress, till exempel
    * "rum=fonster" (forvalFranAdress i src/lib/kalkyl/daggpunkt.ts,
    * docs/briefer/spec-daggpunkt-rum-2026-09-30.md avsnitt 7).
@@ -115,14 +125,38 @@ if (dpForval?.status === 'fel') {
 }
 const dpIndata = dpForval?.status === 'ok' ? dpForval.indata : undefined;
 const dpVarden = dpForval?.status === 'ok' ? dpForval.varden : undefined;
-/** Elkostnadens förval, tolkat och prövat som adressen på verktygssidan. */
-const elForval = namn === 'elkostnad' && forval !== undefined ? elkostnadForval(forval) : undefined;
+/*
+ * Elkostnadens förval, tolkat och prövat som adressen på verktygssidan. Med
+ * produkt=[slug] hämtas maskinen här och bara effekten skickas till den rena
+ * formelmodulen (docs/briefer/spec-elkostnad-forval-2026-09-30.md avsnitt 1).
+ */
+const elForvalQuery = namn === 'elkostnad' && forval !== undefined ? new URLSearchParams(forval) : undefined;
+let elProduktForval: ProduktForval = { effektW: null };
+if (elForvalQuery?.has('produkt')) {
+  const slug = produktSlugFranQuery(elForvalQuery);
+  const produkt = slug ? await hamtaProdukt(slug) : null;
+  elProduktForval = produktForval(produkt?.specs ?? null);
+  if (elProduktForval.effektW === null) {
+    const visadSlug = elForvalQuery.get('produkt');
+    throw new Error(
+      `[Kalkylator] Förvalet "${forval}" till elkostnaden: produkten ${visadSlug} finns inte eller saknar effekt_w`,
+    );
+  }
+}
+const elForval =
+  namn === 'elkostnad' && forval !== undefined
+    ? elProduktForval.effektW === null
+      ? elkostnadForval(forval)
+      : elkostnadForval(forval, elProduktForval)
+    : undefined;
 if (elForval?.status === 'fel') {
   throw new Error(`[Kalkylator] Förvalet "${forval}" till elkostnaden går inte att räkna: ${elForval.fel}`);
 }
 const elIndata = elForval?.status === 'ok' ? elForval.indata : undefined;
 const elVarden = elForval?.status === 'ok' ? elForval.varden : undefined;
 const elTyp = elForval?.status === 'ok' ? elForval.typ : undefined;
+/* Slugen följer med som dolt fält till verktygssidan; raden "Jag räknar på" visas bara där. */
+const elProduktSlug = elForval?.status === 'ok' ? elForval.produktSlug : undefined;
 /** Grannemedgivandets förval, tolkat som adressen på verktygssidan. */
 if (forst !== undefined && namn !== 'kontrollplan') {
   throw new Error(`[Kalkylator] forst finns bara för kontrollplanen, inte för "${namn}".`);
@@ -158,7 +192,7 @@ const prefix = `${k.slug}-inbaddad-`;
 
   {namn === 'daggpunkt' && <DaggpunktForm kompakt={true} indata={dpIndata} varden={dpVarden} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'avfuktare' && <AvfuktareForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
-  {namn === 'elkostnad' && <ElkostnadForm kompakt={true} indata={elIndata} varden={elVarden} typ={elTyp} idPrefix={prefix} knappText="Räkna ut" />}
+  {namn === 'elkostnad' && <ElkostnadForm kompakt={true} indata={elIndata} varden={elVarden} typ={elTyp} produktSlug={elProduktSlug} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'innervagg' && <InnervaggForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'bygglov-altan' && <BygglovAltanForm kompakt={true} idPrefix={prefix} knappText="Ge mig svaret" />}
   {namn === 'altan' && <AltanForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}

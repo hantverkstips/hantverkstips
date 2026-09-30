@@ -261,7 +261,7 @@ export function raknaElkostnad(i: ElkostnadIndata): ElkostnadResultat {
  * ------------------------------------------------------------------ */
 
 /** Nycklarna ett förval får innehålla: samma som den delbara adressen. */
-export const FORVAL_NYCKLAR = ['effekt', 'timmar', 'dagar', 'elpris', 'liter', 'typ'] as const;
+export const FORVAL_NYCKLAR = ['produkt', 'effekt', 'timmar', 'dagar', 'elpris', 'liter', 'typ'] as const;
 
 /**
  * Vad räkningen gäller. `golvvarme` kommer från golvvärmesidans förval
@@ -319,18 +319,31 @@ export function formVarden(i: ElkostnadIndata): {
  * Ett förval med en okänd nyckel, en okänd typ eller ett värde som räknaren
  * inte godtar ger fel, så att en artikel aldrig bäddar in ett formulär som
  * svarar med ett fel.
+ *
+ * `produkt=[slug]` pekar ut en maskin i databasen, som på verktygssidan.
+ * Funktionen läser aldrig databasen: Kalkylator hämtar produkten och skickar
+ * dess effekt som `produktForval`. En `effekt` i samma förval vinner.
+ * Spec: docs/briefer/spec-elkostnad-forval-2026-09-30.md avsnitt 1.
  */
 export function forvalFranAdress(
   forval: string,
+  produktForval: ProduktForval = { effektW: null },
 ):
-  | { status: 'ok'; indata: ElkostnadIndata; varden: ReturnType<typeof formVarden>; typ: ElTyp }
+  | {
+      status: 'ok';
+      indata: ElkostnadIndata;
+      varden: ReturnType<typeof formVarden>;
+      typ: ElTyp;
+      /** Produktens slug ur förvalet, eller null när den saknas eller inte är en slug. */
+      produktSlug: string | null;
+    }
   | { status: 'fel'; fel: string } {
   const q = new URLSearchParams(forval);
   const okanda = [...q.keys()].filter((k) => !(FORVAL_NYCKLAR as readonly string[]).includes(k));
   if (okanda.length > 0) return { status: 'fel', fel: `okänd nyckel ${okanda.join(', ')}` };
   if (q.has('typ') && q.get('typ') !== 'golvvarme') return { status: 'fel', fel: `okänd typ ${q.get('typ')}` };
-  const { indata } = tolkaQuery(q);
+  const { indata } = tolkaQuery(q, produktForval);
   const r = raknaElkostnad(indata);
   if (r.status !== 'ok') return { status: 'fel', fel: Object.values(r.fel).join(' ') };
-  return { status: 'ok', indata, varden: formVarden(indata), typ: typFranQuery(q) };
+  return { status: 'ok', indata, varden: formVarden(indata), typ: typFranQuery(q), produktSlug: produktSlugFranQuery(q) };
 }

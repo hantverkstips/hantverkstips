@@ -124,6 +124,8 @@ if (produktSlug !== null) {
  * och dagarna skrivs alltid som ett tal, aldrig som "eget".
  */
 const delaQuery = new URLSearchParams({
+  /* Produkten först, bara när den finns och har effekt; effekt i adressen vinner ändå. */
+  ...(produktSlug !== null && produkt && forval.effektW !== null ? { produkt: produktSlug } : {}),
   effekt: komma(visatIndata.effektW),
   timmar: komma(visatIndata.timmarPerDygn),
   dagar: komma(visatIndata.dagar),
