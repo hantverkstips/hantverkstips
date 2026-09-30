@@ -23,6 +23,9 @@
  *   - plats som inte finns i registret för sidans pelare (src/lib/plats.ts),
  *     på guide, kunskap, jämförelse, kategori eller räknare, och grannsidor i en
  *     hubfil som pekar fel (tillagt 2026-09-30)
+ *   - källa i frontmatterfältet kallor vars url pekar på en butik (BUTIKSDOMANER),
+ *     i alla samlingar och även i utkast; en butikskälla står utan url
+ *     (tillagt 2026-09-30)
  *
  * Varnar (bygget går vidare) vid:
  *   - publicerad artikel, test eller jämförelse utan inlänk från en annan
@@ -80,6 +83,36 @@ const MAX_TITEL = 60;
 const MIN_DESCRIPTION = 120;
 const MAX_DESCRIPTION = 155;
 
+/**
+ * Butiker som inte får stå som url i en källhänvisning (frontmatterfältet
+ * kallor). En länk till en butik i källistan är en ospårad butikslänk utan
+ * reklammärkning, och butiken är ingen oberoende källa; källan står med sin
+ * titel men utan url. Värden och alla underdomäner matchar (www., docs., shop.).
+ * Beslut affiliateagenten 2026-09-30.
+ */
+const BUTIKSDOMANER = [
+  'proffsmagasinet.se',
+  'bygghemma.se',
+  'jula.se',
+  'byggmax.se',
+  'bauhaus.se',
+  'k-rauta.se',
+  'clasohlson.com',
+  'biltema.se',
+  'elgiganten.se',
+  'hornbach.se',
+  'ahlsell.se',
+  'beijerbygg.se',
+  'optimera.se',
+  'xl-bygg.se',
+  'woody.se',
+  'byggfabriken.com',
+  'badrumsbutiken.se',
+  'comfort.se',
+  'polarpumpen.se',
+  'duab.se',
+] as const;
+
 /** Grupperna <Kortgrupp> känner till. Speglar src/components/ui/Kortgrupp.astro. */
 const KORTGRUPPER = ['hitta-felet', 'valj-ratt', 'gor-det-sjalv', 'rakna'] as const;
 
@@ -92,6 +125,8 @@ interface Fil {
   id: string;
   data: Record<string, unknown>;
   body: string;
+  /** Hela filen som den står på disk, för radnummer i frontmattern. */
+  ra: string;
   utkast: boolean;
   /** Adressen sidan får, eller null om filen inte blir en egen sida. */
   url: string | null;
@@ -158,9 +193,10 @@ for (const samling of SAMLINGAR) {
     const filnamn = delar[delar.length - 1] ?? rel;
     const id = filnamn.replace(/\.(md|mdx)$/, '');
     const mapp = delar.length > 1 ? (delar[0] ?? null) : null;
-    const { data, body } = delaFrontmatter(readFileSync(hel, 'utf8'), sokvag);
+    const ra = readFileSync(hel, 'utf8');
+    const { data, body } = delaFrontmatter(ra, sokvag);
     const utkast = data.utkast === true;
-    filer.push({ samling, sokvag, mapp, id, data, body, utkast, url: urlFor(samling, id, data) });
+    filer.push({ samling, sokvag, mapp, id, data, body, ra, utkast, url: urlFor(samling, id, data) });
 
     if (!SLUG.test(id) || id === 'index') {
       felet(sokvag, `filnamnet "${id}" blir adressen och får bara innehålla a-z, 0-9 och bindestreck (inte "index")`);
@@ -413,6 +449,79 @@ for (const f of filer) {
         `description är ${beskrivning.length} tecken, ${riktning} spannet ${MIN_DESCRIPTION} till ${MAX_DESCRIPTION}`,
       );
     }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Källor som pekar på en butik. Tillagt 2026-09-30, se BUTIKSDOMANER. VARNING tills svepet är klart (docs/AFFILIATE.md, "/go/-rutten"); då byter koordinatorn varna mot felet.
+
+/**
+ * Undantaget: tillverkarens dokument på en butiks server (docs/AFFILIATE.md,
+ * "/go/-rutten", beslut 2026-09-30). Länkens form avgör, inte titeln: värden
+ * ska stå i listan, och länken ska sluta på .pdf eller gå via asset-download.
+ * En produkt-, kategori- eller guidesida på en butiksdomän undantas aldrig.
+ * Nya vägar läggs till av UX efter affiliates besked.
+ */
+const TILLATNA_DOKUMENTVAGAR: { vard: string; sokvag?: string }[] = [
+  { vard: "pm-asset.azureedge.net", sokvag: "/api/asset-download" },
+  { vard: "media.hornbach.se" },
+  { vard: "img.bygghemma.se" },
+];
+
+/** Sant när adressen är ett tillverkardokument på en butiks server som får länkas. */
+function arTillatetDokument(url: string): boolean {
+  let u: URL;
+  try {
+    u = new URL(url);
+  } catch {
+    return false;
+  }
+  const vard = u.hostname.toLowerCase().replace(/.$/, "");
+  const sokvag = u.pathname.toLowerCase();
+  const pdf = sokvag.endsWith(".pdf");
+  const viaAssetDownload = sokvag.startsWith("/api/asset-download");
+  return TILLATNA_DOKUMENTVAGAR.some(
+    (v) => vard === v.vard && (v.sokvag === undefined || sokvag.startsWith(v.sokvag)) && (pdf || viaAssetDownload),
+  );
+}
+
+/** Butiksdomänen värden hör till, eller null. Trasiga adresser tar schemat. */
+function butikFor(url: string): string | null {
+  let vard: string;
+  try {
+    vard = new URL(url).hostname.toLowerCase().replace(/\.$/, '');
+  } catch {
+    return null;
+  }
+  return BUTIKSDOMANER.find((d) => vard === d || vard.endsWith(`.${d}`)) ?? null;
+}
+
+for (const f of filer) {
+  const kallor = f.data.kallor;
+  if (!Array.isArray(kallor)) continue;
+  // Radnumret räknas i råtexten: första raden efter "kallor:" i frontmattern
+  // som innehåller adressen. Samma adress två gånger får var sin rad.
+  const rader = f.ra.split(/\r?\n/);
+  const slut = rader.indexOf('---', 1);
+  const start = rader.findIndex((r, i) => i < slut && /^kallor\s*:/.test(r));
+  const anvanda = new Set<number>();
+  for (const k of kallor) {
+    if (typeof k !== 'object' || k === null) continue;
+    const post = k as Record<string, unknown>;
+    const url = strang(post.url);
+    if (!url) continue;
+    const butik = butikFor(url);
+    if (!butik || arTillatetDokument(url)) continue;
+    let rad = -1;
+    for (let i = Math.max(start, 0); i < (slut > 0 ? slut : rader.length); i++) {
+      if (!anvanda.has(i) && rader[i]?.includes(url)) {
+        rad = i;
+        break;
+      }
+    }
+    if (rad >= 0) anvanda.add(rad);
+    const plats = rad >= 0 ? `${f.sokvag}:${rad + 1}` : f.sokvag;
+    varna(plats, `källan "${strang(post.titel) ?? ''}" pekar på butiken ${butik}. Källhänvisningar till en butik står utan url.`);
   }
 }
 

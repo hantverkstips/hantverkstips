@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Avfuktare upphängd på gaveln inne på vinden, med en kort slang som lutar ned mot gavelventilen.">
+  <!-- Anteckningsboken, samma hand som vind-fuktvagar.svg. Kallvinden från sidan med gaveln till höger.
+       Blyerts 2 px för taket med råspont (dubbellinje), gaveln, bjälklaget, gavelventilen, maskinen (kvadrat utan märke)
+       och de två beslagen. Maskinen sitter HÖGRE än ventilen. Blyerts-2 för torrluften och måttbygeln.
+       Snickarpenna bara för våtluftsslangen, Ø 40 mm som dubbellinje, med fall nedåt ut genom gaveln (enda pennsaken).
+       Tumstock bakom måttet. Inte skalenlig. Spec: spec-skiss-avfuktare-vind-2026-10.md avsnitt 6.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2 1,5: torrluften ut över vinden, måttbygeln -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M390,142 Q346,152.6 300,162 M309,155 L300,162 L311,166 M390,151 Q346,172.4 302,192 M309,184 L302,192 L313,194"/>
+    <path d="M427,180 Q430,247 480,249 M421,180 H433 M480,243 V255"/>
+  </g>
+
+  <!-- Blyerts: taket med råsponten, gaveln, bjälklaget, gavelventilen, maskinen, beslagen -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M54,296 Q281,159 507,26 M66,297 Q274,171.5 480,50"/>
+    <path d="M480,48 Q481,129 480,210 M480,242 Q481,271 480,302 M500,28 Q501,119 500,210 M500,242 Q501,274 500,309"/>
+    <path d="M62,300 Q271,299.4 480,300 M62,307 Q281,307.6 503,307"/>
+    <path d="M477,210 H503 M477,242 H503 M486,213 V221 M494,213 V221"/>
+    <path d="M398,115 Q430,114.4 462,115 M461,113 Q460.4,145 461,177 M463,175 Q430,175.6 398,175 M400,177 Q399.4,145 400,113"/>
+    <path d="M400,139 H392 V153 H400 M436,175 V181 H446 V175"/>
+    <path d="M461,123 H480 M461,167 H480 M470,119 V127 M470,163 V171"/>
+  </g>
+
+  <!-- Tumstock bakom måttet -->
+  <rect x="347" y="258" width="124" height="30" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 409 273)"/>
+
+  <!-- Snickarpenna: våtluftsslangen, Ø 40 mm, med fall nedåt ut genom ventilen -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M438,181 Q440,232 480,233 L532,239 M444,181 Q447,226 480,227 L532,233 M532,233 V239"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="354" y="281">högst 0,6 m</text>
+  </g>
+</svg>

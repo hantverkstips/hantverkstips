@@ -42,4 +42,18 @@ Caveat 500, 24 px, högst 55 tecken. Orden tas ur hantverkarens kommentar:
 
 ## 5. Godkännande
 
-Ej ritad.
+Godkänd av UX och bygge 2026-09-30, efter rättelsen i avsnitt 6. Publicerad fil 6 426 byte.
+
+## 6. Rättelse 2026-09-30 (ersätter avsnitt 2 och 3)
+
+Specens första utkast satte maskinen under ventilen med slangen uppåt. Det är fel. Freshs bruksanvisning säger att kanalen "bör luta nedåt", och Drybox att ventilen ska sitta lägre än maskinen. Hantverkarens kommentar i `src/content/guider/fukt/avfuktare-vind.mdx` gäller.
+
+- **Maskinen.** Fresh D-800, 200 × 200 × 200 mm, ritas som en kvadrat utan märke. Den är fastskruvad på gaveln med två beslag, **högre än ventilen**, cirka x 380–440, y 110–170.
+- **Ventilen.** Gavelventilen sitter lägre, cirka y 200–230, i gaveln vid x 480–500.
+- **Slangen, i penna 2,5.** Våtluftsslangen, Ø 40 mm, går från maskinens undersida med **fall nedåt** till ventilen och ut genom gaveln. Den ritas som en dubbellinje med 6 enheters avstånd. Bredvid den står en måttbygel i blyerts-2 1,5.
+- **Torrluften.** Två raka pilar i blyerts-2 från maskinens vänstra sida, fritt ut över vinden.
+- **Taket.** Vinden och taket ritas som i avsnitt 2 i övrigt.
+
+**Etiketter.** Kommentaren ger bara nyckeltalet: V1 "högst 0,6 m" på tumstock vid bygeln. Etiketterna T1–T3 i avsnitt 3 utgår, eftersom hantverkaren inte har gett dem.
+
+`aria-label` är bildAlt ordagrant: "Avfuktare upphängd på gaveln inne på vinden, med en kort slang som lutar ned mot gavelventilen."

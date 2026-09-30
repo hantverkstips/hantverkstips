@@ -109,7 +109,7 @@ Props och logik enligt filen. Utseende:
 - Under knappen finstilt i `blyerts-2`: "Annonslänk · pris 12 sep". Utan pris bara "Annonslänk". Punkten är U+00B7.
 - Text: "Till Proffsmagasinet" med pris, "Se pris hos Proffsmagasinet" utan, "Slut i lager hos Proffsmagasinet" vid `slut`. `butikNamn` från databasen.
 
-Det som anropar Kopknapp (Produktkort, Jamforelsetabell, DetHarBehoverDu, vyerna) skickar `pris`, `prisDatum`, `butikNamn`, `slut` från `billigasteErbjudande()` i `produkter.ts`. Innehållsfiler skickar bara `produkt` och eventuellt `modul`; då saknas pris, och knappen säger "Se pris hos Proffsmagasinet". Det är avsiktligt: prisdata i löptext ska gå via Produktkort.
+Det som anropar Kopknapp (Produktkort, Jamforelsetabell, DetHarBehoverDu, vyerna) skickar `pris`, `prisDatum`, `butikNamn`, `slut` från `billigasteErbjudande()` i `produkter.ts`. Innehållsfiler skickar bara `produkt` och eventuellt `modul`. Ändrat 2026-09-30 på affiliates begäran (priset ska alltid ha datum): när `pris`, `prisDatum`, `butikNamn` och `lager` inte skickas in hämtar Kopknapp själv produktens billigaste erbjudande med `hamtaProdukt` och `billigasteErbjudande`, och lagerläget med `lagerlage()`, samma regler som korten. Modulen är då `kort_kompakt` om inget annat anges. Saknas produkten eller erbjudandet blir texten "Se pris hos" plus butikens namn, med Proffsmagasinet som reserv, aldrig ett tomt eller odefinierat namn.
 
 ### 2.3 `Produktkort.astro`
 

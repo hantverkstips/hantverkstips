@@ -364,8 +364,9 @@ export const ATGARDSTEXT: Record<Atgard, string> = {
   tata_bjalklaget:
     'Täta vindsluckan och alla ställen där rör, kablar och ventilationskanaler går upp genom bjälklaget. Luften inifrån huset bär mer vatten än vindsluften, och när den tar sig upp genom glipor kondenserar den på den kalla råsponten.',
   // Spec avsnitt 15, textlistan V8. Källa: GT 13.2 (K4, K8, K11, K12).
+  // Hantverkarens (docs/briefer/texter-daggpunkt-rum-2026-09-30.md, V8b): samma råd som /fukt/avfuktare-vind/ om takfoten och gavelventilerna.
   ventilera_vinden:
-    'Håll ventilationsöppningarna vid takfoten och i nocken eller gavlarna fria, och stäng dem inte för att få det varmare där uppe. Luften på en ventilerad vind håller i genomsnitt lite mindre vatten än uteluften, så ventilationen för bort det som ändå läcker upp.',
+    'Håll ventilerna i gavlarna fria, så att vinden aldrig blir helt utan ventilation. På en vanlig vind är takfoten också öppen, och så ska det vara så länge vinden klarar sig utan maskin. Sätter du in en avfuktare tätar du takfoten så som tillverkaren av maskinen beskriver, men gavelventilerna lämnar du öppna.',
 };
 
 const GOR_INTE_VINTER_BOSTAD =

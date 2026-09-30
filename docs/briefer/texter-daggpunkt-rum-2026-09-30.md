@@ -132,10 +132,12 @@ Hantverkaren, 2026-09-30. Står i koden på nycklarnas platser; här för gransk
 | V5 | ett kallt vindsutrymme ("på en kallvind" går inte in efter "I" i S2) |
 | V6 | I ett kallt vindsutrymme är det vanligt att luftfuktigheten ligger över 75 procent hela vintern. Det är inget tecken på skada i sig, eftersom mögel växer långsamt i kyla. (75 ur `KRITISKT_FUKTTILLSTAND_RF`) |
 | V7 | Täta vindsluckan och alla ställen där rör, kablar och ventilationskanaler går upp genom bjälklaget. Luften inifrån huset bär mer vatten än vindsluften, och när den tar sig upp genom glipor kondenserar den på den kalla råsponten. |
-| V8 | Håll ventilationsöppningarna vid takfoten och i nocken eller gavlarna fria, och stäng dem inte för att få det varmare där uppe. Luften på en ventilerad vind håller i genomsnitt lite mindre vatten än uteluften, så ventilationen för bort det som ändå läcker upp. |
+| V8 (V8b) | Håll ventilerna i gavlarna fria, så att vinden aldrig blir helt utan ventilation. På en vanlig vind är takfoten också öppen, och så ska det vara så länge vinden klarar sig utan maskin. Sätter du in en avfuktare tätar du takfoten så som tillverkaren av maskinen beskriver, men gavelventilerna lämnar du öppna. |
 | V9 | En kondensavfuktare gör knappt någon nytta på vinden på vintern. Under tio grader är den fel maskin, och på en kallvind är det nästan lika kallt som ute. Ingen avfuktare av något slag ersätter heller en tät vindslucka, eftersom den fuktiga luften fortsätter att komma underifrån. |
 | V10 | Täta vindsluckan och ställena där rör och kablar går upp genom bjälklaget. |
 | V10b | Håll ventilationen på vinden fri. |
 | V11 | Det här löser du genom att täta bjälklaget underifrån, och ingen maskin gör det åt dig. |
 | V12 | Boverket beskriver hur kalla vindar får kondens på undertaket, och i Bygg & teknik 4/06 pekar SP ut inneluft som läcker upp som en av orsakerna. |
 | V13 | Hagentoft på Chalmers visade med mätningar i ett SBUF-projekt att styrd ventilation gav i genomsnitt 7,4 procentenheter lägre luftfuktighet på vinden än vanlig ventilation. LTH:s mätningar visar att vinden följer uteluften och bara är någon grad varmare. |
+
+| V8b `ATGARDSTEXT.ventilera_vinden` (daggpunkt.ts) | "Därför blev svaret så", åtgärd 2 på vinden | Skriv om så att räknaren säger samma sak som /fukt/avfuktare-vind/: behåll gavelventilerna fria. Takfoten är öppen på en vanlig vind, men tätas när man sätter in en avfuktare enligt guiden. Säg inte "stäng dem inte" om takfoten utan förbehållet. Gamla texten ersatt av TEXT SAKNAS 2026-09-30 |

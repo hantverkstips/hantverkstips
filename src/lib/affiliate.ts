@@ -7,6 +7,8 @@
  * länkar till butiker.
  */
 
+import type { Lagerlage } from './lagerlage';
+
 /** Var på sidan knappen satt. Kolumnen klick.modul har en check-constraint på listan. */
 export const KLICK_MODULER = [
   'varaval',
@@ -137,4 +139,43 @@ export function byggSparlank(lankmall: string, v: SparlankVarden): string {
     .replace('{epi}', encodeURIComponent(v.epi))
     .replace('{epi2}', encodeURIComponent(v.epi2 ?? ''))
     .replace('{url}', encodeURIComponent(v.url));
+}
+
+/** Sajtens enda butik. Står när butikens namn saknas eller är trasigt. */
+const RESERVBUTIK = 'Proffsmagasinet';
+
+/**
+ * Butikens namn trimmat, eller Proffsmagasinet när namnet saknas, är tomt eller
+ * är strängen "undefined" eller "null" (ett värde som gått genom en mall-literal).
+ */
+export function butikNamnEllerReserv(namn: unknown): string {
+  if (typeof namn !== 'string') return RESERVBUTIK;
+  const t = namn.trim();
+  if (t === '' || /^(undefined|null)$/i.test(t)) return RESERVBUTIK;
+  return t;
+}
+
+/** Köpknappens text per lagerläge. Se src/components/ui/Kopknapp.astro. */
+export function kopknappText(lager: Lagerlage, harPris: boolean, butikNamn: unknown): string {
+  const namn = butikNamnEllerReserv(butikNamn);
+  if (lager === 'ej_bestallningsbar') return `Ej beställningsbar hos ${namn}`;
+  if (lager === 'slut') return `Slut i lager hos ${namn}`;
+  return harPris ? `Till ${namn}` : `Se pris hos ${namn}`;
+}
+
+/** Fälten som anroparen skickar när den själv har hämtat erbjudandet. */
+const ERBJUDANDE_PROPS = ['pris', 'prisDatum', 'butikNamn', 'lager'] as const;
+
+/**
+ * Ska Kopknapp hämta erbjudandet själv? Bara när inget av fälten finns bland
+ * props. Nyckeln räknas, inte värdet: en anropare som skickar pris={null} har
+ * redan frågat databasen. Se docs/SPEC-SIDMALLAR.md avsnitt 2.2.
+ */
+export function kopknappHamtarSjalv(props: object): boolean {
+  return !ERBJUDANDE_PROPS.some((nyckel) => nyckel in props);
+}
+
+/** Modulen när ingen skickats: kort_kompakt för en knapp som hämtat själv, annars avslut. */
+export function kopknappModul(modul: KlickModul | undefined, hamtarSjalv: boolean): KlickModul {
+  return modul ?? (hamtarSjalv ? 'kort_kompakt' : 'avslut');
 }
