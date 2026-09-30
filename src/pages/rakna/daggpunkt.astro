@@ -134,11 +134,18 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     url: 'https://journals.ametsoc.org/view/journals/bams/86/2/bams-86-2-225.xml',
   },
   {
-    storhet: 'Gränsen där mögel kan växa på ytan',
+    storhet: 'Högsta tillåtna fukttillstånd, den gräns verktyget jämför luften intill ytan med',
     varde: '75 % RF',
     grund: 'Källa',
     stod: 'Boverkets byggregler, BFS 2024:8, 7 kap. 1 §, högsta tillåtna fukttillstånd när materialets eget värde inte är undersökt',
     url: 'https://www.boverket.se/sv/PBL-kunskapsbanken/regler-om-byggande/hygien-halsa-och-miljo/fuktsakerhet/',
+  },
+  {
+    storhet: 'Gränsen där mögel kan börja växa på trä och träbaserade material',
+    varde: '75 till 80 % RF',
+    grund: 'Källa',
+    stod: 'Svenskt Trä, TräGuiden, sidan om mikroorganismer. Gränsen gäller vid rumstemperatur och när fukten ligger kvar länge',
+    url: 'https://www.traguiden.se/om-tra/materialet-tra/traets-egenskaper-och-kvalitet/bestandighet1/mikroorganismer1/',
   },
   {
     storhet: 'Hur många gram vatten luften bär per kubikmeter. Raden är för den som vill räkna efter',
@@ -263,8 +270,8 @@ const huvudbild = varumarke ?? illustration;
           <p class="m-0 leading-6">{KORT_SVAR_YTA[visat.bedomning]}</p>
           <p class="m-0 leading-6">
             Luften intill ytan ligger på <Markering>{tal.rfYta} procent luftfuktighet</Markering>,{' '}
-            {visat.bedomning === 'ingen_risk' ? 'under' : 'över'} Boverkets gräns för mögel på{' '}
-            {KRITISKT_FUKTTILLSTAND_RF} procent.
+            {visat.bedomning === 'ingen_risk' ? 'under' : 'över'}{' '}
+            {KRITISKT_FUKTTILLSTAND_RF} procent, gränsen där mögel kan börja växa.
           </p>
           <p class="m-0 leading-6">
             {visat.bedomning === 'ingen_risk'
@@ -361,20 +368,20 @@ const huvudbild = varumarke ?? illustration;
                 ) : visat.bedomning === 'mogelrisk' ? (
                   <>
                     Din yta klarar sig undan kondensen med {tal.marginal} grader till godo, men luften alldeles
-                    intill den ligger på {tal.rfYta} procent, och Boverkets gräns går vid {KRITISKT_FUKTTILLSTAND_RF}.
+                    intill den ligger på {tal.rfYta} procent, och redan vid {KRITISKT_FUKTTILLSTAND_RF} procent kan mögel börja växa.
                     Står det så vecka efter vecka växer mögel på ytan utan att den någonsin varit blöt. Luften inne
                     bär {tal.anghalt} gram vatten per kubikmeter.
                   </>
                 ) : (
                   <>
                     Din yta har {tal.marginal} grader till godo mot daggpunkten, och luften intill den håller{' '}
-                    {tal.rfYta} procent, vilket är under Boverkets gräns på {KRITISKT_FUKTTILLSTAND_RF}. Luften inne
+                    {tal.rfYta} procent, vilket är under de {KRITISKT_FUKTTILLSTAND_RF} procent där mögel kan börja växa. Luften inne
                     bär {tal.anghalt} gram vatten per kubikmeter. Det är ett rum som mår bra.
                   </>
                 )}
               </span>
               <span class="block text-liten text-blyerts-2">
-                Gränsen 75 procent står i Boverkets byggregler. Daggpunkten kommer ur Magnus-formeln enligt Lawrence 2005.
+                Gränsen på 75 procent kommer från TräGuiden och står också i Boverkets byggregler. Daggpunkten kommer ur Magnus-formeln enligt Lawrence 2005.
               </span>
             </li>
 
@@ -465,9 +472,10 @@ const huvudbild = varumarke ?? illustration;
         Kondens på en vägg ser sällan ut som droppar. Väggen suger i sig vattnet, tapeten mörknar och det börjar
         lukta källare. Och det behöver inte ens bli så blött. Luften alldeles intill en kall vägg är alltid fuktigare
         än luften mitt i rummet, och ligger den på hög luftfuktighet i några veckor räcker det för att mögel ska
-        börja växa. Boverkets byggregler sätter gränsen vid 75 procent relativ fuktighet i ett material, och den
-        kallas högsta tillåtna fukttillstånd. Den gränsen gäller när ingen har undersökt vad just det materialet tål. Så
-        mögel växer gärna på en yta som ingen skulle kalla våt, och det är det talet som verktyget jämför med.
+        börja växa. Gränsen går vid 75 procent relativ fuktighet. Under den kan inget mögel utvecklas, enligt Svenskt
+        Träs handbok TräGuiden, och ju högre över den luften ligger, desto fortare växer det. Så mögel växer gärna på en yta som
+        ingen skulle kalla våt. Samma tal står i Boverkets byggregler som högsta tillåtna fukttillstånd för material vars eget gränsvärde
+        inte är väl undersökt, och det är det talet verktyget jämför med.
       </p>
 
       <Pennstreck id="sovrummet-i-januari" niva={3}>Sovrummet i januari</Pennstreck>

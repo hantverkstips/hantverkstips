@@ -1,6 +1,8 @@
 # Faktablad: rakna/kallare
 
 Ur verktygssidan 2026-09-20, före omskrivningen. Fyra filer: `src/pages/rakna/kallare.astro`, `src/components/kalkyl/KallareForm.astro`, `src/lib/kalkyl/kallare.ts`, raden i `src/lib/kalkyl/register.ts`. Konstanter, källor, logik och tester rörs inte.
+Anmärkning 2026-09-30: BBR 6:52 nedan är ersatt. Fuktkravet står sedan 1 juli 2026 i Boverkets föreskrifter BFS 2024:8, 7 kap. 1 §, med samma 75 procent och begreppet "högsta tillåtna fukttillstånd". Regeln nämner inte mögel. Mögelgränsen för trä, 75 till 80 procent RF vid rumstemperatur och lång varaktighet, kommer från TräGuiden, sidan Mikroorganismer (https://www.traguiden.se/om-tra/materialet-tra/traets-egenskaper-och-kvalitet/bestandighet1/mikroorganismer1/, uppdaterad 2025-01-24). Se `guider-fukt-i-krypgrund.md` avsnitt 1.1 och 1.2.
+
 
 ## Konstanter och tal
 
