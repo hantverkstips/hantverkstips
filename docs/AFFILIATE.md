@@ -32,7 +32,7 @@ Utöver det bara verktygskortet till kalkylatorn, där texten talar om storlek. 
 
 ### Produktsidor och bäst i test
 
-Här får sajten se ut som en tidning med testresultat, och här ligger intäkten. DESIGN.md beskriver layouten. Från affiliatehåll är kraven att "Våra val" har tre etiketter som är konkreta (inte "premium", "mellanklass", "budget"), att jämförelsetabellen har köpknapp i sista raden, och att varje produktavsnitt slutar med en knapp. På testsidor ligger första knappen i omdömesblocket och den sista efter "Så testade vi", ingen däremellan.
+Här får sajten se ut som en tidning med testresultat, och här ligger intäkten. DESIGN.md beskriver layouten. Från affiliatehåll är kraven att "Våra val" har tre etiketter som är konkreta (inte "premium", "mellanklass", "budget"), att jämförelsetabellen har köpknapp i sista raden, och att varje produktavsnitt slutar med en knapp. Sedan 2026-09-30 (`docs/briefer/spec-kategorisida-produkter-2026-09-30.md`) får bara produkter i "Våra val" eller med testsida ett eget avsnitt; övriga står i jämförelsetabellen med knappen i prisraden och i ItemList. Varje aktiv produkt i kategorin hamnar alltså med köpknapp på kategorisidan, också den som läggs in för en köpguide. Därför prövas varje produkt som läggs i en kategori med kategorisida mot samma krav som ett kort: tillverkarens datablad, underlag i `docs/briefer/underlag-*.md` och värd knappen på meriter. En produkt som inte klarar det läggs i en kategori utan kategorisida eller inte alls. Tillbehör läggs aldrig i en kategori med kategorisida. På testsidor ligger första knappen i omdömesblocket och den sista efter "Så testade vi", ingen däremellan.
 
 ### Kalkylatorer
 
