@@ -405,6 +405,8 @@ export function hittaKalkylator(slug: string): Kalkylator | undefined;
 
 `pelare` kom till 2026-09-17. Hubbens grupp Räkna (`Kortgrupp`) och `/amnen/` filtrerade fram till dess bara på `kategori`, och en kalkylator som inte pekar på en produktkategori kunde därför inte visas i något ämne. Båda läser nu `k.pelare` först och kategorin sedan. Samma dag, med elkostnadskalkylatorn, blev fältet en lista: verktyget räknar på vilken maskin som helst men frågan ställs oftast om en avfuktare, så det står i både El och energi och Fukt. `Kortgrupp`, `/amnen/` och `scripts/kontrollera-innehall.ts` läser listan. `rad` är högst tolv ord, den ska rymmas på två rader i ett kort. `npm run kontrollera` stoppar bygget om `pelare` eller `kategori` i registret pekar på något som inte finns.
 
+`plats` (2026-09-30) är valfri och gäller bara i en pelare med platsregister i `src/lib/plats.ts`, i dag Fukt: den säger under vilken plats hubben listar räknaren. Utan fältet står räknaren under Hela huset. `npm run kontrollera` stoppar ett värde som inte finns i registret.
+
 `sasong` är underlag för chefredaktörens val av `justNu`, inte något koden läser: `sasongensKalkylator` togs bort 2026-09-16 med startsidans säsongsblock. Fler kalkylatorer läggs till här och som `src/pages/rakna/[slug].astro`-filer. Sidfoten och `/rakna/` läser listan.
 
 ### 3.4 `src/lib/strukturdata.ts`
@@ -496,6 +498,8 @@ export async function getStaticPaths() {
 Pelarslugs vinner alltid: en kategori får inte heta som en pelare, bygget stoppar. Rutten renderar `<PelarHub entry />` eller `<Kategorisida entry />`.
 
 **`vyer/PelarHub.astro`.** `sidtyp` sätts inte (inga knappar). `reklam={false}`, `bred={true}`. Brödsmulor: Hantverkstips / {kort}. H1 `title`, `description` visas inte (den är meta), `<Content components={{ h2: Pennstreck, Faktaruta, Varning, Verktygskort, Markering, Illustration, Kortgrupp }} />`. Rutten och vyn sätter `Astro.locals.pelare` innan innehållet renderas, så att `<Kortgrupp grupp="...">` i hubfilen vet vilken pelare den står i. Brödtexten hålls till läsbredd med en scoped regel på `.hub-prosa > p` med flera; kortrutnäten (`ul.kortrutnat`) undantas och fyller sidbredden. Sist H2 "Alla sidor i {kort}" med länken "Alla guider i {kort}" till `/guider/[pelare]/` på samma rad: alla publicerade guider och kunskap med `pelare === rot`, sorterade på titel och grupperade på nivå i tre spalter. Den listan är säkerheten mot föräldralösa sidor, korten ovanför är kartan. Kategorisidorna ligger numera som kategorikort i gruppen "Välj rätt", inte i en egen lista. Strukturerad data: `artikel()` med författare redaktionen.
+
+**Platsläge** (2026-09-30). Har pelaren ett register i `src/lib/plats.ts` (`PLATSER[slug]`) ersätts de fyra grupperna av en sektion per plats: `<Innehallsforteckning>` med platserna, sedan per plats `<Pennstreck id={plats.slug}>` och `<Platslista rader />`. Raderna byggs av guider, kunskap, `grannsidor` ur hubfilen, kategorier, jämförelser och räknare, var och en med sin `plats` (saknas: `hela-huset`), och ordnas av `ordnaEfterPlats()`. Utan register är vyn oförändrad. Hela specen: `docs/briefer/spec-fukthubb-plats-2026-09-30.md`.
 
 **`vyer/Kategorisida.astro`.** `Astro.locals.sidtyp = 'kategori'`. `reklam={true}`. `bred={true}`. Data: `produkterIKategori(entry.id)`, `publicerade('tester')` filtrerade på `kategori === entry.id`, guider + kunskap + jamforelser med samma `kategori`, `hamtaButik()`. Brödsmulor: Hantverkstips / {namn}. Ordning:
 

@@ -9,18 +9,34 @@
  * Skälet (Christian 2026-09-17): hubben ska stödja hur vi fyller på framåt,
  * inte spegla de tre sidor som råkar finnas i dag. En grupp utan sidor visas
  * inte alls. Inga köpknappar, inget reklamband.
+ *
+ * Platsläge (2026-09-30): en pelare med platsregister i src/lib/plats.ts (i dag
+ * Fukt) ordnas i stället efter plats i huset, en H2 per plats och under den en
+ * tät lista (Platslista) med grupperna i samma ordning. Ordningen sätts av
+ * ordnaEfterPlats, aldrig här. Utan register byggs hubben exakt som förut.
+ * Spec: docs/briefer/spec-fukthubb-plats-2026-09-30.md.
  */
 import type { CollectionEntry } from 'astro:content';
 import Bas from '../../layouts/Bas.astro';
 import { delningsbild } from '../../lib/delningsbild';
 import { pelareUrl, publicerade } from '../../lib/innehall';
 import { KALKYLATORER } from '../../lib/kalkyl/register';
-import { pelareForKategori } from '../../lib/kort';
+import {
+  pelareForKategori,
+  tillKortArtikel,
+  tillKortJamforelse,
+  tillKortKategori,
+  type KortData,
+} from '../../lib/kort';
+import { nivaEtikett } from '../../lib/niva';
 import { hittaGrupp, hittaPelare, type PelareSlug } from '../../lib/pelare';
+import { gruppForTyp, ordnaEfterPlats, PLATSER, type Platsrad, type PlatsSlug } from '../../lib/plats';
 import { artikel as artikelData } from '../../lib/strukturdata';
 import Ikon from '../ui/Ikon.astro';
+import Innehallsforteckning from '../ui/Innehallsforteckning.astro';
 import Kortgrupp from '../ui/Kortgrupp.astro';
 import Pennstreck from '../ui/Pennstreck.astro';
+import Platslista from '../ui/Platslista.astro';
 import StrukturData from '../ui/StrukturData.astro';
 
 interface Props {
@@ -93,6 +109,62 @@ const synliga = GRUPPER.filter((g) => antal[g.id] > 0);
 const totalt = artiklar.length + jamforelser.length;
 
 /**
+ * Platsläge. Raderna byggs av samma källor som grupperna ovan, nu med plats.
+ * Grannsidor är guider och kunskap i andra pelare som hubfilen pekar ut; en som
+ * inte är publicerad hoppas över tyst (npm run kontrollera fångar okända id).
+ */
+const platser = PLATSER[slug];
+
+interface Rad extends Platsrad {
+  etikett: string;
+  rubrik: string;
+  href: string;
+}
+
+function tillRad(k: KortData, plats: PlatsSlug | undefined, grannpelare?: string): Rad {
+  const delar = [k.etikett, ...(k.niva ? [nivaEtikett(k.niva)] : []), ...(grannpelare ? [grannpelare] : [])];
+  return {
+    ...(plats ? { plats } : {}),
+    grupp: gruppForTyp(k.typ),
+    forrang: k.typ === 'kategori' ? 0 : grannpelare ? 2 : 1,
+    datum: k.sorteringsdatum.getTime(),
+    etikett: delar.join(' · '),
+    rubrik: k.rubrik,
+    href: k.href,
+  };
+}
+
+let platsgrupper: { plats: { slug: PlatsSlug; namn: string }; rader: Rad[] }[] = [];
+if (platser) {
+  const allaArtiklar = [...(await publicerade('guider')), ...(await publicerade('kunskap'))];
+  const grannar: Rad[] = [];
+  for (const g of d.grannsidor) {
+    const e = allaArtiklar.find((a) => a.id === g.id);
+    if (!e) continue;
+    grannar.push(tillRad(tillKortArtikel(e), g.plats, hittaPelare(e.data.pelare)?.kort));
+  }
+  const rader: Rad[] = [
+    ...artiklar.map((e) => tillRad(tillKortArtikel(e), e.data.plats)),
+    ...grannar,
+    ...(await Promise.all(kategorier.map(async (k) => tillRad(await tillKortKategori(k), k.data.plats)))),
+    ...jamforelser.map((j) => tillRad(tillKortJamforelse(j.e, j.p), j.e.data.plats)),
+    ...kalkylatorer.map(
+      (k): Rad => ({
+        ...(k.plats ? { plats: k.plats } : {}),
+        grupp: 'rakna',
+        forrang: 1,
+        datum: 0,
+        etikett: 'Räkna själv',
+        rubrik: k.namn,
+        href: `/rakna/${k.slug}/`,
+      }),
+    ),
+  ];
+  platsgrupper = ordnaEfterPlats(rader, platser);
+}
+const tom = platser ? platsgrupper.length === 0 : synliga.length === 0;
+
+/**
  * Delningsbilden i 1200 × 630 (scripts/generera-delningsbilder.mjs). Hubben har
  * ingen egen bild, så den får titeln i större grad och tumstocken till höger.
  * Samma fil går ut som og:image och som image i Article.
@@ -139,7 +211,7 @@ const strukturdata = artikelData({
   </div>
 
   {
-    synliga.length === 0 && (
+    tom && (
       <p class="mt-8 max-w-lasbredd text-brod lg:text-brod-lg text-blyerts-2">
         Här finns inga guider än. De första kommer inom kort, och tills dess hittar du allt vi publicerat under{' '}
         <a href="/guider/" class="lank">
@@ -151,14 +223,26 @@ const strukturdata = artikelData({
   }
 
   {
-    synliga.map((g) => (
-      <section class="mt-10 lg:mt-14">
-        <div class="max-w-lasbredd">
-          <Pennstreck id={g.id}>{g.rubrik}</Pennstreck>
-          <p class="m-0 text-brod lg:text-brod-lg text-blyerts-2">{g.rad}</p>
-        </div>
-        <Kortgrupp grupp={g.id} />
-      </section>
-    ))
+    platser ? (
+      <>
+        <Innehallsforteckning rubriker={platsgrupper.map((p) => ({ slug: p.plats.slug, text: p.plats.namn }))} />
+        {platsgrupper.map((p) => (
+          <section class="mt-10 lg:mt-14 max-w-lasbredd">
+            <Pennstreck id={p.plats.slug}>{p.plats.namn}</Pennstreck>
+            <Platslista rader={p.rader} />
+          </section>
+        ))}
+      </>
+    ) : (
+      synliga.map((g) => (
+        <section class="mt-10 lg:mt-14">
+          <div class="max-w-lasbredd">
+            <Pennstreck id={g.id}>{g.rubrik}</Pennstreck>
+            <p class="m-0 text-brod lg:text-brod-lg text-blyerts-2">{g.rad}</p>
+          </div>
+          <Kortgrupp grupp={g.id} />
+        </section>
+      ))
+    )
   }
 </Bas>

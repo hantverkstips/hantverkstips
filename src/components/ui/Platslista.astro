@@ -1,0 +1,27 @@
+---
+/**
+ * Tät lista under en plats på en hub som ordnas efter plats (PelarHub i
+ * platsläge). En rad per sida: etikett och rubrik som länk, ingen bild, ingen
+ * beskrivning, inget datum. Utseendet sitter i komponentklassen .platslista i
+ * global.css, inte på elementen, så att 46 rader håller budgeten.
+ * Spec: docs/briefer/spec-fukthubb-plats-2026-09-30.md 4.2.
+ */
+interface Props {
+  rader: { etikett: string; rubrik: string; href: string }[];
+}
+
+const { rader } = Astro.props;
+---
+
+<ul class="platslista">
+  {
+    rader.map((r) => (
+      <li>
+        <p>{r.etikett}</p>
+        <h3>
+          <a href={r.href}>{r.rubrik}</a>
+        </h3>
+      </li>
+    ))
+  }
+</ul>

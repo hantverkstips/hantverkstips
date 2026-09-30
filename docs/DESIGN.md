@@ -288,6 +288,8 @@ URL `/fukt/`. Huben är diagnosstart och länknav, handskriven av chefredaktöre
 
 **Alla sidor i pelaren.** Registret ligger sist som säkerheten mot föräldralösa sidor, i tre spalter på desktop (Enkel, Mellan, Expert sida vid sida), med länken "Alla guider i Fukt" till `/guider/fukt/` på rubrikraden. Det är ett register, inte en läsyta, så det får vara tätt: etikett och titel per rad, 1 px linje mellan raderna.
 
+**Platsläge** (2026-09-30, `docs/briefer/spec-fukthubb-plats-2026-09-30.md`). En pelare med platsregister i `src/lib/plats.ts`, i dag bara Fukt, ordnas efter plats i huset i stället för efter de fyra grupperna. Varje plats är en H2 med pennstreck, i registrets ordning, utan generell rad. Under den står en tät lista (`Platslista.astro`): etiketten "Typ · Nivå" och rubriken som länk per rad, 1 px `linje` mellan raderna, hela raden klickbar, ingen bild, ingen beskrivning. Raderna står i gruppordningen Hitta felet, Välj rätt (kategorin först), Gör det själv, Räkna, nyast först inom gruppen. Sidor utan plats står under Hela huset, sist. Sidor ur andra pelare (`grannsidor` i hubfilen) har pelarens korta namn sist i etiketten. Överst på mobil den hopfällbara innehållsförteckningen med platserna. Skälet är budgeten och mobilen: med runt 45 poster väger korten 46 kB och 19 000 px, listan en fjärdedel. Övriga hubbar är oförändrade.
+
 **Mobil.** Stående kort i huben, inte kompakta: den som valt ämne är här för att läsa, och bilden är halva anledningen att klicka. Registret blir tre listor under varandra.
 
 **Desktop.** Sidbredd, ingen innehållsförteckning (sidan är sin egen).

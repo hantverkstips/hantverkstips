@@ -20,6 +20,9 @@
  *     (tillagt 2026-09-22: det mekaniska i rösten räknas här, inte av en agent)
  *   - platshållaren TEXT SAKNAS i en fil under src/, och en pelare i
  *     src/lib/pelare.ts vars ikon saknas i ikoner.svg (tillagt 2026-09-28)
+ *   - plats som inte finns i registret för sidans pelare (src/lib/plats.ts),
+ *     på guide, kunskap, jämförelse, kategori eller räknare, och grannsidor i en
+ *     hubfil som pekar fel (tillagt 2026-09-30)
  *
  * Varnar (bygget går vidare) vid:
  *   - publicerad artikel, test eller jämförelse utan inlänk från en annan
@@ -32,6 +35,7 @@
  *   - alt på <Illustration> eller bildtext utan bildAlt över 125 tecken, och
  *     räkneorden "alltså", "avgör"/"styr" och "innan du" över gränsen per sida
  *   - räknarnas BESKRIVNING utanför spannet och alt över 125 i src/pages/rakna/
+ *   - publicerad guide eller kunskapssida utan plats i en pelare med platsregister
  *
  * Varningarna om titel och beskrivning gäller sökresultatet, inte schemat.
  *
@@ -47,6 +51,7 @@ import { lasFrontmatter, strang } from './frontmatter.ts';
 import { KALKYLATORER } from '../src/lib/kalkyl/register.ts';
 import { NIVAER } from '../src/lib/niva.ts';
 import { PELARE, PELARE_SLUGS } from '../src/lib/pelare.ts';
+import { PLATSER, type Plats } from '../src/lib/plats.ts';
 
 const ROT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const INNEHALL = join(ROT, 'src', 'content');
@@ -207,6 +212,73 @@ const SPRITE = readFileSync(join(ROT, 'src', 'assets', 'brand', 'riktning-1', 'i
 for (const p of PELARE) {
   if (!SPRITE.includes(`id="ikon-${p.ikon}"`)) {
     felet('src/lib/pelare.ts', `pelaren "${p.slug}" har ikonen "${p.ikon}" som saknas i ikoner.svg`);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Plats. En hub med platsregister (src/lib/plats.ts, i dag Fukt) ordnas efter
+// plats i huset. Fel värde gör att bygget kastar i ordnaEfterPlats, eller att
+// sidan tyst hamnar under en plats som inte finns på hubben.
+// Spec: docs/briefer/spec-fukthubb-plats-2026-09-30.md avsnitt 5.
+
+function platserFor(pelare: string): readonly Plats[] | undefined {
+  return (PLATSER as Record<string, readonly Plats[] | undefined>)[pelare];
+}
+function harPlats(pelare: string, plats: string): boolean {
+  return platserFor(pelare)?.some((p) => p.slug === plats) ?? false;
+}
+function kategorinsPelare(kategori: string | undefined): string[] {
+  const k = kategori !== undefined ? kategorier.get(kategori) : undefined;
+  return k && Array.isArray(k.data.pelare) ? k.data.pelare.map(String) : [];
+}
+
+for (const f of filer) {
+  const plats = strang(f.data.plats);
+  if (f.samling === 'guider' || f.samling === 'kunskap') {
+    const pelare = strang(f.data.pelare) ?? '';
+    if (plats !== undefined) {
+      if (!platserFor(pelare)) felet(f.sokvag, `plats "${plats}", men pelaren ${pelare} har inget platsregister i src/lib/plats.ts`);
+      else if (!harPlats(pelare, plats)) felet(f.sokvag, `plats "${plats}" finns inte i platsregistret för ${pelare} (src/lib/plats.ts)`);
+    } else if (!f.utkast && platserFor(pelare)) {
+      varna(f.sokvag, 'saknar plats och hamnar under Hela huset på hubben');
+    }
+  } else if ((f.samling === 'jamforelser' || f.samling === 'kategorier') && plats !== undefined) {
+    const pelare = f.samling === 'kategorier' ? kategorinsPelare(f.id) : kategorinsPelare(strang(f.data.kategori));
+    if (!pelare.some((p) => harPlats(p, plats))) {
+      felet(f.sokvag, `plats "${plats}" finns inte i platsregistret för någon av kategorins pelare (${pelare.join(', ') || 'inga'})`);
+    }
+  }
+}
+
+for (const k of KALKYLATORER) {
+  if (k.plats === undefined) continue;
+  const pelare = [...(k.pelare ?? []), ...kategorinsPelare(k.kategori)];
+  if (!pelare.some((p) => harPlats(p, k.plats ?? ''))) {
+    felet('src/lib/kalkyl/register.ts', `kalkylatorn "${k.slug}" har plats "${k.plats}" som inte finns i platsregistret för någon av dess pelare`);
+  }
+}
+
+const artiklarPerId = new Map([...per('guider'), ...per('kunskap')].map((f) => [f.id, f]));
+for (const hub of per('pelare')) {
+  const grannsidor = Array.isArray(hub.data.grannsidor) ? (hub.data.grannsidor as unknown[]) : [];
+  if (grannsidor.length === 0) continue;
+  if (!platserFor(hub.id)) {
+    felet(hub.sokvag, `grannsidor, men pelaren ${hub.id} har inget platsregister i src/lib/plats.ts`);
+    continue;
+  }
+  const sedda = new Set<string>();
+  for (const g of grannsidor) {
+    const post = typeof g === 'object' && g !== null ? (g as Record<string, unknown>) : {};
+    const id = strang(post.id) ?? '';
+    const plats = strang(post.plats) ?? '';
+    const sida = artiklarPerId.get(id);
+    if (!sida) felet(hub.sokvag, `grannsidan "${id}" finns inte bland guider och kunskap`);
+    else if (strang(sida.data.pelare) === hub.id) {
+      felet(hub.sokvag, `grannsidan "${id}" hör redan till ${hub.id}. Sätt plats i sidans frontmatter i stället`);
+    }
+    if (!harPlats(hub.id, plats)) felet(hub.sokvag, `grannsidan "${id}" har plats "${plats}" som inte finns i platsregistret för ${hub.id}`);
+    if (sedda.has(id)) felet(hub.sokvag, `grannsidan "${id}" står två gånger`);
+    sedda.add(id);
   }
 }
 

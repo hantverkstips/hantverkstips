@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Krypgrund i genomskärning med hygrometern under blindbotten och fuktkvotsmätaren i syllen ovanför grundmuren.">
+  <!-- Anteckningsboken. Närbild av ena sidan av en krypgrund, ute till vänster, kryprummet till höger.
+       Skalenlig, 1 enhet = 4 mm, utom bjälklagets skikt som är förenklade.
+       Blyerts 2 px för vägg, bjälklag, syll, grundmur, ventil, mark och plast; blyerts 1,5 för stiften där
+       fuktkvoten mäts; blyerts-2 för skraffering, ledare och måttbyglar; snickarpenna för hygrometern och
+       dess tråd (enda pennsaken), tumstock bakom nyckeltalet under 75 %.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts: yttervägg, bjälklag, blindbotten, syll, grundmur med ventil, mark, plast -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M100,0 Q99,30 100,62"/>
+    <path d="M136,0 Q137,30 136,60"/>
+    <path d="M98,60 Q350,62 600,60"/>
+    <path d="M112,66 Q356,68 600,66"/>
+    <path d="M100,60 Q99,92 100,124 M112,60 Q113,92 112,124"/>
+    <path d="M112,114 Q356,116 600,114"/>
+    <path d="M98,122 Q350,124 600,122"/>
+    <path d="M100,122 Q99,129 100,136 M156,120 Q157,129 156,138 M98,136 Q126,137 158,136"/>
+    <path d="M100,136 Q99,166 100,196 M150,136 Q151,166 150,196"/>
+    <path d="M100,222 Q99,291 100,360 M150,222 Q151,291 150,360"/>
+    <path d="M98,196 Q125,197 152,196 M98,222 Q125,223 152,222"/>
+    <path d="M44,272 Q72,273 100,272"/>
+    <path d="M152,289 Q151,293 152,297 Q376,299 600,297"/>
+  </g>
+  <!-- Blyerts 1,5: gallret i ventilen och stiften där fuktkvoten mäts -->
+  <g fill="none" stroke="#2a2521" stroke-width="1.5" stroke-linecap="round">
+    <path d="M100,199 V219 M104,199 V219 M108,199 V219"/>
+    <path d="M151,127.5 H157 M151,130.5 H157"/>
+    <path d="M260.5,117 V123 M263.5,117 V123"/>
+  </g>
+  <!-- Blyerts-2: ådring i syllen så att den skiljs från betongen under -->
+  <g fill="none" stroke="#625a50" stroke-width="1" stroke-linecap="round">
+    <path d="M106,128 Q126,126 146,129 M110,132 Q128,131 144,133"/>
+  </g>
+
+  <!-- Blyerts-2: skraffering i isolering, betong och mark -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M118,72l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10"/>
+    <path d="M129,94l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m144-10l10,10"/>
+    <path d="M108,144l10,10m12-10l10,10m-21,12l10,10m-21,54l10,10m12-10l10,10m-21,12l10,10m-21,12l10,10m12-10l10,10m-21,12l10,10m-21,12l10,10m12-10l10,10m-21,12l10,10"/>
+    <path d="M48,278l10,10m12-10l10,10m-21,12l10,10m12-10l8,8m-41,14l10,10m12-10l10,10m-21,12l10,10"/>
+    <path d="M160,308l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10"/>
+    <path d="M171,330l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10m12-10l10,10"/>
+  </g>
+
+  <!-- Blyerts-2: ledare och hjälplinjer -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M90,139 L104,130"/>
+    <path d="M180,151 L158,130 M244,151 L262,126"/>
+    <path d="M500,107 L500,117"/>
+  </g>
+  <g fill="none" stroke="#625a50" stroke-width="1" stroke-linecap="round" stroke-dasharray="4 3">
+    <path d="M402,159 V220"/>
+    <path d="M100,222 H88"/>
+  </g>
+
+  <!-- Måttbyglar i blyerts-2 -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M378,122 V141 M374,122 H382 M374,141 H382"/>
+    <path d="M150,214 Q276,215 402,214 M150,209 v10 M402,209 v10"/>
+    <path d="M580,122 Q581,210 580,297 M575,122 H585 M575,297 H585"/>
+    <path d="M94,272 V222 M89,272 H99 M89,222 H99"/>
+  </g>
+
+  <!-- Papperslapp bakom etiketten i isoleringen -->
+  <rect x="436" y="84" width="128" height="26" fill="#f5efe3" transform="rotate(-1 500 97)"/>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="420" y="172" width="104" height="26" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 472 185)"/>
+
+  <!-- Snickarpenna: hygrometern i sin tråd under blindbotten -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M402,122 V141"/>
+    <path d="M389,141 H415 M414,140 V160 M415,159 H389 M390,160 V140"/>
+    <path d="M395,150 H409"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#625a50">
+    <text x="424" y="158" fill="#ad3519">hygrometer</text>
+    <text x="424" y="190" fill="#2a2521">under 75 %</text>
+    <text x="372" y="148" text-anchor="end">5 till 10 cm</text>
+    <text x="276" y="206" text-anchor="middle">ca 1 m</text>
+    <text x="572" y="236" text-anchor="end">60 till 80 cm</text>
+    <text x="46" y="256">0,2 m</text>
+    <text x="172" y="170" fill="#2a2521">fuktkvot</text>
+    <text x="52" y="146">syll</text>
+    <text x="440" y="104">blindbotten</text>
+    <text x="470" y="289">plast</text>
+  </g>
+</svg>

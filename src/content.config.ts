@@ -3,12 +3,14 @@ import { defineCollection, z, type SchemaContext } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { NIVAER, STANDARD_NIVA } from './lib/niva';
 import { PELARE_SLUGS } from './lib/pelare';
+import { PLATS_SLUGS } from './lib/plats';
 
 // Scheman för content collections. Fälten dokumenteras i docs/ARKITEKTUR.md.
 // Ändra här först, uppdatera dokumentet, sedan innehållsfilerna.
 
 const pelareEnum = z.enum(PELARE_SLUGS);
 const nivaEnum = z.enum(NIVAER);
+const platsEnum = z.enum(PLATS_SLUGS);
 
 /**
  * Loader för artikelsamlingarna. Filerna ligger i undermappar (guider/fukt/,
@@ -74,6 +76,10 @@ const artikel = ({ image }: SchemaContext) =>
     // Vem sidan är skriven för: enkel, mellan eller expert. Visas som etikett i
     // artikelhuvudet ("Kunskap · Expert") och grupperar hubsidans lista. Se src/lib/niva.ts.
     niva: nivaEnum.default(STANDARD_NIVA),
+    // Plats i huset: rubriken sidan står under på en hub som ordnas efter plats.
+    // Valfri, och har bara betydelse i en pelare med platsregister i src/lib/plats.ts
+    // (i dag Fukt). Utelämnad: Hela huset. Se docs/briefer/spec-fukthubb-plats-2026-09-30.md.
+    plats: platsEnum.optional(),
     // Produktkategori artikeln hör till (slug i src/content/kategorier/). Valfri:
     // en altanguide har ingen kategori förrän kap- och gersågar finns.
     kategori: z.string().optional(),
@@ -146,7 +152,7 @@ const tester = defineCollection({
   loader: artikelLoader('tester'),
   schema: (ctx) =>
     artikel(ctx)
-      .omit({ pelare: true })
+      .omit({ pelare: true, plats: true })
       .extend({
         // `bild` ärvs från artikel men renderas inte av testmallen: här är den bara
         // kortets bild och pekar på en skiss som står kvar i texten (DESIGN.md 6).
@@ -214,6 +220,9 @@ const pelare = defineCollection({
     ingress: z.string(),
     // Två till tre viktiga sidor som /amnen/ länkar till (sökvägar).
     viktiga: z.array(z.object({ titel: z.string(), href: z.string() })).max(3).default([]),
+    // Guider och kunskap i andra pelare som hubben visar under en plats. id är
+    // filnamnet. Bara i en pelare med platsregister (src/lib/plats.ts).
+    grannsidor: z.array(z.object({ id: z.string(), plats: platsEnum })).default([]),
     uppdaterad: z.coerce.date().optional(),
     utkast: z.boolean().default(false),
   }),
@@ -231,6 +240,8 @@ const kategorier = defineCollection({
     ingress: z.string(),
     // Pelare kategorin hör till. Kategorisidan länkar till hubbarna, hubbarna till kategorin.
     pelare: z.array(pelareEnum).min(1),
+    // Plats på en hub som ordnas efter plats (src/lib/plats.ts). Utelämnad: Hela huset.
+    plats: platsEnum.optional(),
     // Specs från produkter.specs (jsonb) som visas i tabeller, i ordning.
     specs: z.array(
       z.object({

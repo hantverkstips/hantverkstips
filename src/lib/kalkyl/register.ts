@@ -4,6 +4,8 @@
  * En ny kalkylator läggs till här och som src/pages/rakna/[slug].astro.
  * Hela mönstret står i docs/SPEC-SIDMALLAR.md avsnitt 4.7.
  */
+import type { PlatsSlug } from '../plats';
+
 export interface Kalkylator {
   slug: string;
   namn: string;
@@ -26,6 +28,11 @@ export interface Kalkylator {
    * frågan ställs oftast om en avfuktare.
    */
   pelare?: readonly string[];
+  /**
+   * Plats i huset, src/lib/plats.ts. Gäller i en pelare som har platsregister,
+   * och i dag bara Fukt. Utelämnad: Hela huset.
+   */
+  plats?: PlatsSlug;
 }
 
 export const KALKYLATORER: Kalkylator[] = [
@@ -35,6 +42,7 @@ export const KALKYLATORER: Kalkylator[] = [
     rad: 'Temperaturen inne och hygrometerns tal räcker, och väggens temperatur gissar du ur en lista om du inte mätt. Svaret säger om det blir kondens eller mögel.',
     sasong: [11, 2],
     pelare: ['fukt'],
+    plats: 'luften',
   },
   {
     slug: 'avfuktare',
@@ -120,6 +128,7 @@ export const KALKYLATORER: Kalkylator[] = [
        frågan ställs från snösmältningen till oktober. */
     sasong: [3, 10],
     pelare: ['grund', 'fukt'],
+    plats: 'kallare',
   },
   {
     slug: 'kallare',
@@ -131,6 +140,7 @@ export const KALKYLATORER: Kalkylator[] = [
        guiden, så frågan ställs från högsommaren till dess källaren blir kall. */
     sasong: [7, 10],
     pelare: ['fukt', 'grund'],
+    plats: 'kallare',
   },
   {
     slug: 'rotavdrag',

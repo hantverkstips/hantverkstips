@@ -208,6 +208,11 @@ publicerad:       # datum
 uppdaterad:       # datum, valfritt
 pelare:           # fukt | inomhus | altan | tak | grund | isolering | verktyg | el. Styr URL:en och undermappen
 niva:             # enkel | mellan | expert, standard mellan. Etikett i artikelhuvudet, grupp på huben
+plats:            # valfritt. kallare | krypgrund | vind | garage | badrum | fonster | luften | hela-huset.
+                  # Bara i en pelare med platsregister i src/lib/plats.ts (i dag Fukt); annars byggfel.
+                  # Styr under vilken plats hubben listar sidan. Utan fältet: Hela huset.
+                  # Finns även på jämförelser och kategorier, inte på tester.
+                  # Spec: docs/briefer/spec-fukthubb-plats-2026-09-30.md
 typ:              # bara guider: projektguide | problemguide | kopguide
 kategori:         # kategorislug, valfritt. Krävs för att listas på kategorisidan
 produkter:        # lista. Antingen slug, eller { slug, forVem, etikett }
@@ -255,6 +260,8 @@ title, description, uppdaterad, utkast
 seoTitle:         # valfritt, som ovan
 ingress:          # en mening om pelaren, på hubben och på /amnen/
 viktiga:          # upp till tre { titel, href } som /amnen/ länkar till.
+grannsidor:       # valfritt, bara i en pelare med platsregister. Lista med { id, plats }: guider och
+                  # kunskap i andra pelare som hubben listar under en plats utan att de flyttar
                   # Bara publicerade adresser: en länk till ett utkast är byggfel
 ```
 
@@ -272,6 +279,7 @@ specs:            # lista med { nyckel, etikett, enhet, bast: hogst | lagst }, i
 val:              # upp till tre { produkt, etikett, forVem } för "Våra val". Första är "Vårt val"
 kopguide:         # sökväg till köpguiden
 kalkylator:       # slug i src/lib/kalkyl/register.ts
+plats:            # valfritt, som för guider. Utan fältet: Hela huset på hubben
 noindex:          # valfritt, standard false. <meta name="robots" content="noindex"> utan att
                   # avpublicera sidan. Används medan kategorin bara har platshållartext
 forfattare, uppdaterad, utkast

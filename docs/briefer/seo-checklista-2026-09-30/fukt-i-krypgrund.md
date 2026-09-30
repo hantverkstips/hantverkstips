@@ -136,3 +136,25 @@ Det ettan har som vi måste behålla eller överträffa:
 - **Isolergrunds avhandlingstal** (75 procent mykotoxiner) och "300 000 fastigheter" är okontrollerade och står inte på sidan.
 - **Kort svar, gränstabellen och åtgärdstabellen får inte strykas**; de bär både ranking och AI-citat.
 - Hälsoråd bara med Folkhälsomyndigheten som källa, inga diagnoser.
+
+---
+
+## Kontroll efter skrivningen, 2026-09-30
+
+SEO och GEO-agenten har läst `src/content/guider/fukt/fukt-i-krypgrund.mdx` (utkast, cirka 2 500 ord brödtext) mot punkt 1 till 12. **Godkänd av SEO och GEO.**
+
+Hantverkarens avvikelser, alla godkända:
+
+- **H1** "Hur fuktig krypgrunden får bli innan träet tar skada". Löftet är gränsen, och den delar inte de tre första orden med title ("Fukt i krypgrund, mät själv och välj åtgärd", 43 tecken).
+- **Description** 137 tecken. Den ligger inom 120 till 155 och har huvudfrasen först, mögel, mätningen och åtgärden per mätvärde. Inget att ändra.
+- **Källan i gränstabellen** står i raden under med radnummer ("första raden BFS 2024:8, övriga TräGuiden"). Varje rad går att spåra till en källa, så Bättre än ettan 1 är uppfylld.
+- **Bara Anticimex 43 procent**, med underlag (50 877 besiktningar 2018 till 2019) och år. Det är rätt enligt faktabladskravet.
+- **Sidofraserna**: "mögel i krypgrunden" i två H2, köpa hus och försäkringen i egna H2, lukten i det första avsnittet. Inget att ändra.
+- **Faq med tre frågor** (hälsa, rotavdrag, hur ofta). Ingen av dem upprepar gränstabellen eller åtgärdstabellen. FAQPage följer av komponenten och stämmer med det som syns.
+
+Bättre än ettan 1 till 5: uppfyllda. Det finns en gränstabell med källa, mätningen steg för steg med placering, en tabell som ger åtgärd per mätvärde, husköpet med jordabalken och Konsumentverket, och försäkringen i tabell för tre bolag. Fällorna är undvikna: ingen H2 om avfuktarval, inget klor, inga okontrollerade tal. Länkarna ut går till köpguiden (en per H2), isoleringen, luftfuktigheten, dräneringen och daggpunkten.
+
+### Inlänkar som hantverkaren lägger
+
+1. **`src/content/guider/fukt/avfuktare-krypgrund.mdx`, H2 "Regnvatten, lukt och paketpriset"**, stycket som börjar "Luktar det källare i hallen" (rad 296). Efter "Då sitter lukten redan i virket, och det är där den ska åtgärdas." läggs en mening om hur man ser om träet har tagit skada. Ankaret är till exempel "mäta fukten i träet och leta efter mögel och röta" → `/fukt/fukt-i-krypgrund/`.
+2. **`src/content/guider/grund/isolera-krypgrund.mdx`, H2 "En hel sommar med hygrometern i grunden"**, stycket som börjar "Häng en hygrometer i krypgrunden" (rad 94). En mening om var hygrometern ska hänga och hur träets fuktkvot mäts. Ankaret är till exempel "var hygrometern och fuktkvotsmätaren ska sitta i krypgrunden" → `/fukt/fukt-i-krypgrund/`. Sidan har redan en länk till `/fukt/luftfuktighet-inomhus/` i samma H2, vilket är tillåtet eftersom målen är olika.

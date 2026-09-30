@@ -311,6 +311,76 @@ body {
     }
   }
 
+  /*
+    Platslistan på en hub som ordnas efter plats (Platslista.astro). En rad per
+    sida: etikett och rubrik, inget annat. Hela raden är klickyta på samma sätt
+    som artikelkortet. Klasserna sitter här, inte på elementen, för budgetens
+    skull. Spec: docs/briefer/spec-fukthubb-plats-2026-09-30.md 4.2.
+  */
+  .platslista {
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--color-linje);
+  }
+  .platslista li {
+    position: relative;
+    padding-block: 0.75rem;
+    border-bottom: 1px solid var(--color-linje);
+  }
+  .platslista p {
+    margin: 0;
+    font-size: var(--text-etikett);
+    line-height: var(--text-etikett--line-height);
+    letter-spacing: var(--text-etikett--letter-spacing);
+    font-weight: var(--text-etikett--font-weight);
+    text-transform: uppercase;
+    color: var(--color-blyerts-2);
+  }
+  .platslista h3 {
+    margin: 0.25rem 0 0;
+    font-family: var(--font-serif);
+    font-size: var(--text-kortrubrik);
+    line-height: var(--text-kortrubrik--line-height);
+    font-weight: var(--text-kortrubrik--font-weight);
+  }
+  @media (min-width: 64rem) {
+    .platslista h3 {
+      font-size: var(--text-kortrubrik-lg);
+      line-height: var(--text-kortrubrik-lg--line-height);
+    }
+  }
+  .platslista a {
+    color: var(--color-blyerts);
+    text-decoration-line: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+    /* Synlig men svag i vila, så att raden läses som länk utan kortets ram. */
+    text-decoration-color: var(--color-linje);
+    transition: text-decoration-color 150ms;
+  }
+  .platslista a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+  .platslista li:hover a,
+  .platslista a:focus-visible {
+    text-decoration-color: var(--color-penna);
+  }
+  .platslista li:has(a:focus-visible) {
+    outline: 3px solid var(--color-penna);
+    outline-offset: 2px;
+  }
+  .platslista li:has(a:focus-visible) a:focus-visible {
+    outline: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .platslista a {
+      transition: none;
+    }
+  }
+
   /* Placeholder för kort utan illustration: ett blankt blad ur samma block som
      skisserna. Linjer var 24:e px och en marginallinje i penna vid 35 procent.
      Samma recept som .linjerat, men utan innehållsmarginal. Aldrig en grå ruta. */

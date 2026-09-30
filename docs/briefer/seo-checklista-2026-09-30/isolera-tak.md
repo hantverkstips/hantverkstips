@@ -132,3 +132,26 @@ Det ettan har som vi måste behålla eller överträffa:
 - **Isovers tal** får inte citeras utan läsning.
 - **Kort svar och tabeller får inte strykas** för att texten blir lång; de bär både ranking och AI-citat.
 - PBL-meningen om 2027-01-01 dateras och läggs i påminnelsen för januari; ingen text om vad som gäller efter nyår utan källa.
+
+---
+
+## Kontroll efter skrivningen, 2026-09-30
+
+SEO och GEO-agenten har läst `src/content/guider/el/isolera-tak.mdx` (utkast, cirka 2 400 ord brödtext) mot punkt 1 till 12. **Godkänd av SEO och GEO.**
+
+Hantverkarens avvikelser, alla godkända:
+
+- **seoTitle** "Isolera tak inifrån utan att taket möglar" (41 tecken). Den börjar med båda huvudfraserna och ryms under 44 tecken. Kannibaliserar inte mot vindsidan eller krypgrundssidan.
+- **H1** "Ett snedtak som isoleras inifrån behöver luft under yttertaket". Den delar inte de tre första orden med title, och löftet är luftspalten.
+- **Description** (150 tecken): inget att ändra.
+- **"Tak utan luftspalt" som H3** under luftspaltens H2. Det räcker, eftersom H2:n bär "luftspalt" och H3:n frågan.
+- **BFS 2026:9 för energikravet** och BFS 2024:8 för fukten är rätt enligt faktabladet och ersätter checklistans punkt 3 och fälla 2 på den punkten. `/el/u-varde/` har samma tal, 0,13 från 1 oktober 2026. Källbeteckningen där stäms av i nästa uppdatering av den sidan.
+- **Kortad besparing med länk till vindsidan**: godkänd, Verktygskort `u-varde` står kvar.
+- **Ingen Faq**: godkänd.
+
+Bättre än ettan 1 till 5: uppfyllda. Tabellen skiljer de tre fallen åt. Luftspaltstabellen har källa per rad. "Utan luftspalt" besvaras med BFS 2024:8 och SBUF. U-värdestabellen står tillsammans med tabellen över förlorad takhöjd. Utifrån-avsnittet bygger på Boverkets energiguide från juni 2026. Kort svar, tabeller med rubrikrad och enhet, och länkar ut till vindsidan, u-värde, takfot, daggpunkt och takbyte finns.
+
+### Inlänkar som hantverkaren lägger
+
+1. **`src/content/guider/el/tillaggsisolera-vind.mdx`, H2 "Värmen som går genom vindsbjälklaget i dag"**, stycket som börjar "Börja med det du har" (rad 77). Efter meningen "Vindsbjälklaget är golvet på vinden, som samtidigt är taket i rummen under." läggs en mening om att en inredd vind med lutande tak isoleras i snedtaket i stället. Ankaret är till exempel "isolera snedtaket inifrån" → `/el/isolera-tak/`.
+2. **`src/content/guider/tak/takfot.mdx`, H2 "Takfotsventilationen och fukten på vinden"**, punkt 2 i listan, efter meningen om vindavledaren. En mening om att spalten ska gå obruten upp till nocken även när vinden är inredd och snedtaket isoleras inifrån. Ankaret är till exempel "luftspalten i ett snedtak som isoleras inifrån" → `/el/isolera-tak/`. Högst en länk dit i den H2:n.
