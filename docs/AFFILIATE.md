@@ -62,6 +62,8 @@ Rapporter i gränssnittet: transaktioner, klick och statistik per EPI, vilket r�
 
 ### /go/-rutten
 
+**Källhänvisningar till butiken (regel 2026-09-30).** Ingen länk på sajten går direkt till en butik vi har program med, inte heller i `kallor`. Butiken är källa bara för pris, lager och artikelnummer; då står posten i `kallor` utan `url`, med produkt och läsdatum, till exempel "Proffsmagasinet, Drybox X4, pris och lager 30 september 2026". Prestanda hänvisas till tillverkarens datablad. Tillverkarens dokument som bara finns som bilaga hos butiken (`pm-asset.azureedge.net`) får länkas, eftersom de är tillverkarens och inte en butikssida; finns samma dokument hos tillverkaren länkas det dit.
+
 Rutten finns i `src/pages/go/[slug].ts` och gör 302 till `erbjudanden.affiliate_url`. Två ändringar krävs.
 
 Först lagras inte feedens `TrackingUrl` som primär länk. Vi lagrar `ProductUrl` som `butik_url` och bygger spårningslänken vid anropet från `butiker.lankmall`, till exempel `https://track.adtraction.com/t/t?a=A&as=AS&t=2&tk=1&epi={epi}&url={url}`. Skälet är EPI: feedens länk har inget EPI, och utan EPI kan vi inte koppla en konvertering till en sida. `url`-värdet URL-kodas och ligger sist, som dokumentationen kräver.

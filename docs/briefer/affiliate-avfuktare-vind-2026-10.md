@@ -41,6 +41,26 @@ Varför de tre: var och en är den billigaste som löser sin uppgift fullt ut. D
 - **Acetec 30, 60, 120 och 180 Pro** (75 708–166 362 kr): 2–10,6 kW, industriformat.
 - **Drybox DryAttic** (14 999 kr) och **Trygghetsvakten**: styrd ventilation med värmekabel, inte sorption. Trygghetsvakten säljs inte av Proffsmagasinet och beskrivs utan kort och utan butikslänk, som SEO säger. DryAttic säljs av Proffsmagasinet men är samma typ; den får inget kort i omgång B, eftersom beslut 6 gäller sorption. Om sidan beskriver styrd ventilation som ett likvärdigt alternativ prövar jag DryAttic på nytt, och då med samma krav på tillverkarens energiuppgift och anvisning.
 
+## DryAttic, tillägg 2026-09-30
+
+Sidan (utkastet 2026-09-30, H2 "Sorptionsavfuktare eller styrd ventilation", stycket på rad 133) rekommenderar styrd ventilation med värme som ett eget val. Enligt villkoret ovan prövades DryAttic på nytt, mot tillverkarens energiuppgift och anvisning. Underlag: `underlag-avfuktare-vind-2026-10.md`, avsnittet "Drybox DryAttic, 2026-09-30". Fröskript: `supabase/seed-produkter-dryattic-2026-10.sql`, inte körd.
+
+**Beslut: kort.** `drybox-dryattic`, 14 999 kr, beställningsvara ("Skickas om 9-14 dagar") hos Proffsmagasinet 2026-09-30, lagras som `restnoterad`. Kortet står efter stycket som väljer mellan sorption och styrd ventilation, inte i H2:n om sorptionsavfuktarna. Kategori `vindsventilation`, utan kategorisida, så att den inte hamnar i tabellen på `/luftavfuktare/`. Den läggs i `produkter` i frontmatter.
+
+Varför: Drybox har produktblad (2026-04), installationsmanual för vind och energiuppgift (250–400 kWh per år för 100 kvm). Den har samma delar som Trygghetsvakten Vind Classic (fläkt, 50 m värmekabel, backventil, ljuddämpare), som Proffsmagasinet inte säljer, och kostar 3 981 kr mindre än Vind Classics 18 980 kr i Trygghetsvaktens egen butik. För den läsare sidan själv skickar till styrd ventilation är den det köpbara svaret, och billigast.
+
+Etikett efter uppgiften, till exempel att den håller elen nere på en vind utan påväxt. Hantverkaren skriver den.
+
+Villkor:
+1. Energin står som tillverkarens uppgift. Produktbladet anger ca 400 kWh och 4 kWh per kvm och år, drybox.se 250–400 kWh för 100 kvm, och Drybox säger själva att läckage från bostaden höjer förbrukningen. Inget oberoende mätvärde.
+2. Ytan är 10–100 kvm enligt Drybox; större vindar kräver fler slingor eller fläktar. Inget tal i kubikmeter.
+3. Ljud: inget dB-tal. Proffsmagasinets gamla produktblad skriver "ljudlös"; Drybox har strukit ordet. Sidan skriver inte att den är tyst.
+4. Garanti: 2 år, 5 år vid registrering (Drybox nyaste källor). Inte butikens 7 år.
+5. El: om anslutningen är stickpropp eller fast står inte. Sidan skriver inte att den kan kopplas in utan elinstallatör.
+6. Tätningen: Drybox kräver tätad takfot (manualen s. 2–3), med ett utlopp mitt emot fläkten. Samma sak som sidan redan säger om X4.
+7. Tröskelvärdena för fläkt och värme anges inte; börvärdet är "≤ 60 % RF".
+8. Trygghetsvakten står kvar utan kort och utan butikslänk.
+
 ## Villkor för sidan
 
 1. **Granskning på datablad.** Inga egna mätningar, inget "test", "mätt" eller "jag testade".

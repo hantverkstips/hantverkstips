@@ -364,3 +364,93 @@ Källa: PM:s produktsidor, `__INIT_STATE__` (`Price.ListPrice.AmountWithTax`, `S
 | woods-ad30 | 5 495 kr | 5 495 kr | – | `InStock`, 16 st, "Skickas inom 24 timmar!" | 200 | oförändrat pris; art.nr 4028611 |
 | eeese-adam-20 | 2 756 kr | 2 756 kr | – | `InStock`, 18 st, "Skickas inom 24 timmar!" | 200 | oförändrat pris; art.nr 2920263 |
 | innova-igdhx-30 | 2 341 kr | 2 341 kr (visas, går inte att köpa) | – | `OutOfStock`, `AvailableForPurchase: false`, `StockStatus: "Unavailable"`, "Ej beställningsbar för tillfället" | 200 | **Inte utgången**: produktstatus `Active` (inte `Expired`), finns kvar i kategorin (kortet har klassen `temp-unavail`) och i sitemap (products_3). Går **inte** att beställa i dag; ingen antal- eller leveranstid anges. Samma läge som 16/9. Art.nr 3137762 |
+
+## Drybox DryAttic, 2026-09-30
+
+Dokument, alla lästa i sin helhet med curl + pdftotext 2026-09-30:
+
+- **PB23** Produktblad, PM-bilaga "DryAttic-Produktblad.pdf", https://pm-asset.azureedge.net/api/asset-download?id=72013561, 1 sida, skapad 2023-03-04 (PDF-metadata).
+- **PB26** Produktblad på drybox.se, https://drybox.se/wp-content/uploads/2026/04/produktblad-DryAttic.pdf (länkat från dokumentportalen https://drybox.se/dokumentportal/), 1 sida, skapad 2026-04-13. **Nyare än PM:s bilaga och inte identiskt** (skillnader nedan).
+- **IM** Installationsmanual, PM-bilaga https://pm-asset.azureedge.net/api/asset-download?id=AssetDocument72013562, 11 sidor, skapad 2022-12-10. **Byte för byte samma fil** (md5) som https://drybox.se/wp-content/uploads/2023/03/DryAttic-Installation-Manual.pdf.
+- **GB** Garantiblad, https://drybox.se/wp-content/uploads/2023/03/DryAttic-Garantiblad.pdf, 1 sida (samma villkor som IM s. 10).
+- **DS** Tillverkarens sida https://drybox.se/produkter/dryattic/ (200, ingen omdirigering; dateModified 2026-04-20), läst med curl, ordagrant. Länkar till dokumentportalen, inte direkt till PDF:erna.
+- **PM** Produktsidan, `__INIT_STATE__`, läst med curl 2026-09-30.
+
+Tillverkare enligt IM s. 11: "Amrox Group AB, Västra Rydsvägen 122, 196 31 Kungsängen". Drybox artikelnummer: "X3020" (PB23, PB26).
+
+### Produktsidan hos PM
+
+| Uppgift | Värde | Källa |
+|---|---|---|
+| HTTP | 200, `redirect_url` tomt (curl utan -L) | curl 2026-09-30 |
+| Art.nr | 3137751 (`Sku`) | PM |
+| EAN | 7350069720283 (`Gtin`) | PM |
+| Mpn | "DryAttic" | PM |
+| Pris | 14 999 kr (`Price.ListPrice.AmountWithTax` "14999.000"; exkl. moms "11999.2") | PM |
+| Ord.pris/kampanj | – (`Campaigns: []`, inget jämförprisfält) | PM |
+| Lager (B2C) | `OutOfStock`, `AvailableForPurchase: true`, `StockQuantity: 0`, `StoredInOurWarehouse: false`; produktstatus `Active` | PM |
+| Leveranstext | "Skickas om 9-14 dagar" | PM |
+| Frakt | `FreeShippingEligible: false` | PM |
+| PM:s tekniska data | "Rumsstorlek, max. 100 m²"; i `TechnicalData` samma tal som PB26 plus raden Garanti = "2 år" | PM |
+| PM:s garantitext | "Få 7 års garanti på din avfuktare … Registrera din Drybox avfuktare här för att få garanti på 7 år. Förlängd garanti gäller endast privatpersoner och vid registrering inom 6 månader efter köpet." | PM `FullReview.Warranty` |
+| Omdömen | 0 | PM |
+
+### Tekniska uppgifter
+
+| Uppgift | Värde | Källa |
+|---|---|---|
+| Teknik, princip | "DryAttic är en kombination av fläkt och termisk avfuktning. Varm luft kan innehålla mer fukt än kall luft, den termiska avfuktaren höjer temperaturen när det behövs för att hålla den relativa fuktigheten på säkra nivåer. Den värmestyrda avfuktningen kombineras med en fläktenhet som blåser in torr luft utifrån." | PB23, PB26 |
+| När fläkten går | "Den andra styrenheten mäter fuktskillnaden mellan ute och inne. När ventilationen är uttorkande aktiveras fläkten som ventilerar in torr luft. Fläkten aktiveras även varma sommardagar för att ventilera ut värmeöverskott på vinden." DS: "När uteluften är torrare kan fläkten föra in den och på så sätt avlasta värmesteget." Tröskelvärden ej angivna | IM s. 6; DS |
+| Vad värmekabeln gör och när | "Styrenheten till värmekabeln mäter klimatet inne på vinden. När det är ett sådant klimat att mögel och svamp skulle kunna växa aktiverar den värmekabeln." DS: "När den relativa luftfuktigheten stiger aktiveras den termiska funktionen och höjer temperaturen i utrymmet." Börvärde "Relativ fuktighets installerad": **"60% RF"** (PB23) / **"≤ 60% RF"** (PB26, DS, PM). "Temperaturhöjning +2°C" (villkor ej angivet) | IM s. 6; DS; PB23; PB26 |
+| Förpackningens innehåll | Ingen packlista i något dokument. Delar som IM beskriver som medföljande: "Paket med ljuddämpare, väggstos och backventil" (backventil "förmonterad", "genomföring i gummi för utesensorn"); "Fläkt med upphängningsremmar" ("förmonterade gummiband"); "Styrenhet med sensorer" (innesensor, utesensor); värmekabel ("dubbelrullad från fabrik"); "de bifogade" kabelklämmorna; "tre medföljande självborrande plåtskruvar". Förlängningskabel till fläkten ingår inte: "Dessa kan ni beställa av er återförsäljare" | IM s. 2, 3, 4, 5 |
+| Fläktens luftflöde | "Fläktkapacitet 350 m3/h" (tryck ej angivet) | PB23, PB26, DS |
+| Effekt fläkt | ej angivet | – |
+| Effekt värmekabel | ej angivet | – |
+| Effekt max totalt | "Maximal effekt 610 W" | PB23, PB26, DS |
+| Energi per kvm och år | "Normal energiåtgång 4 kWh per m2 /år" (villkor ej angivet utöver "normal") | PB23, PB26, DS |
+| Energi per år | "Ca förbrukning: 400 kWh/år" (PB23, PB26, utan angiven yta). DS, FAQ: "ca 250-400 kWh per år räknat på en vind om 100 kvm. Ju mer varmluftsläckage från boytan du har till vinden desto högre blir förbrukningen." IM s. 2: "Luftläckage nedifrån drar upp energiförbrukningen". **Källorna säger olika** i nederkanten (bladen: bara 400; DS: 250–400); båda från tillverkaren | PB23, PB26, DS, IM s. 2 |
+| Täckt yta | "Area: 10 - 100 m2" (PB23), "10 – 100 m2" (PB26; DS "Systemets kapacitet"); PM "Rumsstorlek, max. 100 m²". Volym ej angiven. Större vindar: "kan fläkten kombineras med fler eller större slingor. Även fler fläktar kan köras tillsammans för dem största vindarna" (PB). "Räcker inte värmekabeln runt hela vinden kan det behövas komplettering i form av ytterligare enheter" (IM s. 3) | PB23, PB26, DS, PM, IM s. 3 |
+| Kabellängd | "Värmeslingans längd (1st) 50 m" | PB23, PB26, DS |
+| Lägsta/högsta arbetstemperatur | "Temperatur, användningsområde: -40° C till + 40° C." Lagring "-40° C till +80° C" | IM s. 11 |
+| Givare, antal och vad de mäter | "Systemet har tre sensorer och två styrenheter. Två sensorer sitter på ventilationsstyrningen. Ena är färgmärkt med blått för utomhus. Den sista sensorn sitter på värmestyrningen och ska sitta inne på vinden." Värmestyrningen "mäter klimatet inne på vinden"; ventilationsstyrningen "mäter fuktskillnaden mellan ute och inne". Om givarna mäter RF, temperatur eller båda: ej angivet | IM s. 6 |
+| Givare, placering | Svart sensor (värmestyrningen): "längst ner mot takfoten och dikt an mot råsponten (undersidan innertaket). Sensorn hamnar då under värmekabeln vilket ger en korrekt mätning". Blåmärkt (ute): "placeras i genomföringen i ventilstosen. Stick igenom sensorn och dra tillbaka den tills änden på sensorn är i höjd med änden på gummigenomföringen". Omärkt (inne, ventilationsstyrningen): "på behörigt avstånd från värmekabeln inne på vinden" | IM s. 3, 4 |
+| Styrning, display, app | Två styrenheter, "Storlek styrenheter (D x B x H) 120 x 100 x 50 mm". Ingen display och ingen app nämnd. Bara lysdioder: "fast grönt sken" = i ordning; "lyser rött" eller inte alls = "kontakta inköpsstället"; blinkar "med en sekunds mellanrum" = luftfuktigheten för hög, och kvarstår det efter några veckor "kapaciteten hos systemet kan vara för låg". "testknappen på huvudenheten" startar fläkten. Att börvärdet kan ställas står inte ("installerad") | PB23, PB26; IM s. 7, 8 |
+| Tätning av takfot och vind | "För att DryAttic skall fungera effektivt behöver du täta eventuell takfotsventilation. Det är ofta enklast att täta denna från utsidan. Ett tillvägagångssätt är att sätta igen luftspalten under takutsprånget med en läkt. Om detta ej är möjligt kan man dreva luftspalten inifrån vinden med hjälp av bottningslist eller fogskum. Om ni har ventilationsöppningar i taket (s.k. mögelstoppers) behöver ni även sätta igen dessa." Vindsbjälklaget: "Det ska vara helt tätt och det gäller även vindsluckan om ni har en sådan." Yttertaket: "Lokala läckor måste åtgärdas – det går inte att avfukta bort vatten som läkt in." **Motsägelse inom IM**: s. 5 säger att utloppsventilen "kan vara gavelventil, yttertaksventil eller takfotsventilation som bevaras i det bortersta facket" | IM s. 2, 3, 5 |
+| Placering av värmekabel | "så lågt som möjligt – dock minst 10 cm ovanför eventuell isolering"; "lågt efter takfoten på den sida som är fuktigast. Oftast är det den nord-östra sidan"; "får aldrig övertäckas, klämmas eller isoleras. Kabeln ska alltid hänga fritt". DS, FAQ: "Värmekabeln spikas fast i takstolarna så långt ner som möjligt utan att komma i kontakt med isolering, plast eller annat material." Styrenheten "där det är som fuktigast vilket kan vara exempelvis i nordlig eller nordostlig riktning eller ovanför sov- eller badrum" | IM s. 3, 6; DS |
+| Placering av fläkt | Paketet "mot en ytterväggshuv. Används befintlig gavelventil bör insektsnät avlägsnas"; fläkten hängs i gummibanden "i en regel eller i yttertaket, så att fläkten hamnar vid änden av ljuddämparen"; "Det är bra att fläkten hänger fritt då ljudvolymen annars kan öka." Fläktens styrenhet "om möjligt … på östra eller norra sidan av huset"; "Det finns inget krav på att fläkten skall sitta nära styrenheten." DS: "Fläkten monteras i en friskluftsventil, helst i norrläge." Utloppsventilen "diametralt motsatt fläkten"; vid korsvindar "flera utblås och ofta behövs också en eller flera extra fläktmoduler" | IM s. 4, 5, 6; DS |
+| Håltagning, diameter | ej angivet. "monteras enkelt i befintlig luftventil" (DS, PM) eller "mot en ytterväggshuv" (IM s. 4). Ventilstosens diameter ej angiven | DS; PM; IM s. 4 |
+| Elanslutning | "Anslutningar 230 V / 50 Hz" (PB23, PB26). IM s. 11: "Anslutning: 220V växelspänning +/- 10%, 50-60 Hz". IM s. 7: "Anslut DryAttic till elnätet." Stickpropp eller fast anslutning: ej angivet. Krav på elinstallatör: ej angivet; DS, FAQ: "konstruerade för att vara en enkla gör-det-själv installation. Det finns inga tekniskt komplicerade moment". "Elektrisk skyddsklass: IP 43, enheten skall monteras inomhus i vindsutrymmet" | PB23, PB26; IM s. 7, 11; DS |
+| Ljud | Inget dB-tal. PB23: "Ljudlös" (i fördelslistan; **struket i PB26**). IM s. 5: gummiremmarna "minimerar vibrationer och stomljud" | PB23; PB26; IM s. 5 |
+| Mått | Fläkt "750 x 300 x 300 mm" (D x B x H); styrenheter "120 x 100 x 50 mm" | PB23, PB26, DS |
+| Vikt | **Källorna säger olika**: PB23 "totalvikt (small/large) 15/19 kg"; PB26 "Totalvikt 15 kg". PB26 är nyast och väger tyngst; vad small/large avser står inte | PB23; PB26 |
+| Garanti | **Källorna säger olika**: GB och IM s. 10 "minst 2 år konstruktions-, fabrikations- och materialgaranti från inköpsdagen", företag "alltid 1 års garanti", förlängd garanti vid registrering "senast 6 månader efter inköpsdatum", "endast privatpersoner" (längd ej angiven där). PB23/PB26 "5 års fabriksgaranti (vid registrering)"; DS "Garantin för en DryAttic är 2 år … förlängd garanti till 5 år". IM s. 11 "Garantitid: 6 år från leveransdatum vid registrering". PM "7 år" vid registrering, men PM:s egen tabell "2 år". Tyngst väger tillverkarens nyaste, PB26 (2026-04-13) och DS (2026-04-20): 2 år, 5 år vid registrering | GB; IM s. 10, 11; PB23; PB26; DS; PM |
+| Underhåll | PB23, PB26: "Underhållsfri"; DS: "Kräver minimalt underhåll". IM s. 8, "Tillsyn", "Före och efter varje vinter": lysdioden "fast grönt sken", "att tilluftsventiler inte har satts igen", sensorerna "fria från spindelnät", fuktkvot i virket "ca:17 % eller lägre", färgförändringar eller påväxt, vattenläckage, fläkten med testknappen. "Kalibreringsintervall: under normal användning behöver enheten inte kalibreras om under sin livstid" (IM s. 11). Filter nämns bara i de allmänna garantivillkoren | PB23, PB26; DS; IM s. 8, 10, 11 |
+| Livslängd | "Ca 50 års livslängd" (PB23) → "Lång teknisk livslängd" (PB26); IM s. 11 "under normal användning över 50 år"; DS och PM "upp till 50 års livslängd" | PB23; PB26; IM s. 11; DS; PM |
+
+### Skillnader mellan PM:s produktblad (2023) och drybox.se:s (2026)
+
+- RF: "60% RF" → "≤ 60% RF".
+- "Ca 50 års livslängd" → "Lång teknisk livslängd".
+- "Ljudlös" → struket.
+- "totalvikt (small/large) 15/19 kg" → "Totalvikt 15 kg".
+- Övriga tal lika.
+
+### Öppet
+
+- Effekt per del (fläkt, värmekabel) saknas; bara "Maximal effekt 610 W".
+- Energin: 4 kWh/m²/år och ca 400 kWh/år utan angivna villkor (läckage, ort, år); DS ger 250–400 kWh för 100 m². Inget oberoende mätvärde.
+- Tröskelvärden för fläkten (hur stor fuktskillnad) och för värmen ("mögel och svamp skulle kunna växa") är inte angivna; "≤ 60% RF" är det enda talet.
+- Vad givarna mäter (RF, temperatur) står inte.
+- Stickpropp eller fast anslutning, och om elinstallatör krävs, står inte. Fläktens kabel kan förlängas med "speciella förlängningskablar" (tillbehör).
+- Ventilstosens diameter och storlek på ytterväggshuv eller gavelventil saknas.
+- Ljud: inget dB-tal.
+- Garantin: 2, 5, 6 och 7 år förekommer i tillverkarens och PM:s texter.
+- Vikt 15 eller 15/19 kg; vad "small/large" var framgår inte. PM säljer en variant (Mpn "DryAttic").
+- IM s. 2–3 kräver att takfotsventilationen tätas; IM s. 5 tillåter takfotsventilation som utlopp "i det bortersta facket".
+- IM s. 8 skriver "trämaterialet i krypgrunden" i vindsmanualen (egen iakttagelse: troligen kopierat från en krypgrundsmanual).
+- IM s. 11 hänvisar till "Maskindirektivet (98/79/EG)" och till direktiv som ersatts (89/336/EEG, 73/23/EEG). Egen iakttagelse: 98/79/EG är inte maskindirektivet; ej kontrollerat mot EUR-Lex i denna omgång. Manualen är skapad 2022-12.
+- DryAttic är inte sorption; jfr Del A3 och likheten med TrygghetsVakten Vind Classic (Del D).
+
+### Sidor som inte gick att läsa
+
+- Inga. Alla källor svarade 200. drybox.se:s produktsida länkar inte PDF:erna direkt, bara till https://drybox.se/dokumentportal/.
