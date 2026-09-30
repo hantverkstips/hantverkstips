@@ -17,8 +17,10 @@ values (
 );
 
 -- Kategorier. Slug ska matcha filen i src/content/kategorier/.
--- Krysslaser (2026-09-16) har ännu inga produkter; specs-nycklar enligt kategorifilen:
--- rackvidd_m, noggrannhet_mm_per_10m, linjer, sjalvnivellering_grader, laserklass, batteri.
+-- Krysslaser (2026-09-16): produkterna läggs in av supabase/seed-produkter-2026-09-30.sql.
+-- Specs-nycklar enligt kategorifilen och SEO-checklistan 2026-09-30:
+-- rackvidd_m, rackvidd_mottagare_m, noggrannhet_mm_per_10m, linjer, farg,
+-- sjalvnivellering_grader, laserklass, batteri, ip_klass, leverans.
 insert into kategorier (slug, namn, beskrivning)
 values
   ('luftavfuktare', 'Luftavfuktare', 'Avfuktare för källare, krypgrund och garage.'),
