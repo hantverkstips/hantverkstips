@@ -94,3 +94,17 @@ Befintliga länkar står kvar: köpguiderna för källare, krypgrund och garage,
 - **"elkostnad avfuktare"** ägs av `/rakna/elkostnad/`.
 - **Inget "bäst", "test", "mätt" eller "jag testade"** i title, description, H1, rubriker eller etiketter.
 - Etiketterna byts på alla tre sidor samtidigt (punkt 6.2).
+
+---
+
+## Kontroll efter skrivningen, 2026-09-30
+
+SEO och GEO-agenten har läst `src/content/kategorier/luftavfuktare.md` mot punkt 1 till 12, och etiketterna i `avfuktare-kallare.mdx` och `fukt-i-kallaren.mdx`. **Godkänd av SEO och GEO.**
+
+- **Title och description.** Title är "Avfuktare och luftavfuktare jämförda" (36 tecken). Den börjar med det nakna ordet och har varken "bäst" eller "test". Description har 153 tecken, båda orden i första meningen och temperaturen som det som avgör typen. H1 står kvar. Inget att ändra.
+- **Mätlöftena är borta** ur ingressen, description och brödtexten. Det enda "mätt" som står kvar gäller tillverkarens provklimat, och det är rätt. Sidan säger själv att den är en granskning och inget test.
+- **Etiketterna är konkreta** på alla tre sidorna, med samma lydelse för samma maskin: "Källare som håller 15 grader", "Källare under 10 grader" och "Källare med golvbrunn". De följer 15/10-gränsen, och forVem stämmer med den.
+- **"Så väljer du"** har det nakna ordet och likheten mellan orden i första meningen, mellanzonen 10 till 15 grader med källa, och de små och tysta maskinerna. Den tar också upp lägenheten, sovrummet, fuktslukaren (länkad), husvagnen och båten, vägghängda maskiner och pumpar. Sidofraserna står i naturlig form utan egna H2. Att husvagnen och båten står utan tal är rätt, eftersom ingen källa finns.
+- **Kannibaliseringen är hållen.** Ingen H2 heter "Hur stor avfuktare". Köpguidernas fraser står bara som länkankare. Ordet "sorptionsavfuktare" står i description men inte i title, H1 eller H2, och det är godkänt.
+- **Längden** är 790 ord, inom målet 800 till 1 200 räknat med normal avrundning. `uppdaterad` är 2026-09-30.
+- **Kvar till omgång B:** länken till `/fukt/avfuktare-vind/` i stycket om platserna, och länken till elkostnadens förval när den finns.

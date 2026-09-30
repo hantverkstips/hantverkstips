@@ -1,9 +1,9 @@
 ---
 namn: Luftavfuktare
 title: Luftavfuktare jämförda på tillverkarnas egna siffror, och de tre jag pekar på
-seoTitle: Bästa luftavfuktaren, jämförd på datablad
-description: Vilken luftavfuktare som är bäst enligt tillverkarnas egna siffror, tre jag står för och hur stor du behöver. Inga egna mätningar än.
-ingress: Här står alla maskinerna med samma mått i en tabell, och tillverkarens kapacitet har villkoret utskrivet bredvid sig. Tre val står jag för tills kammartestet vid 10 och 20 grader är gjort. Saknas ett tal i databladet står rutan tom.
+seoTitle: Avfuktare och luftavfuktare jämförda
+description: Avfuktare och luftavfuktare är samma maskin, och här jämför jag dem på datablad. Temperaturen avgör om du ska ha kondens- eller sorptionsavfuktare.
+ingress: Här står alla maskinerna med samma mått i en tabell, och tillverkarens kapacitet har villkoret utskrivet bredvid sig. Tre av dem är mina val, en för varje sorts källare. Saknas ett tal i databladet står det ”ej angivet” i rutan.
 pelare: [fukt]
 specs:
   - nyckel: kapacitet_liter_dygn
@@ -38,50 +38,55 @@ specs:
     etikett: Slanganslutning
 val:
   - produkt: woods-sw39fw
-    etikett: Bäst totalt
-    forVem: En källare på upp till 40 kvm vid 60 till 70 procent luftfuktighet, som kallnar mot 5 grader i november.
+    etikett: Källare som håller 15 grader
+    forVem: En källare på upp till 40 kvm som håller minst 15 grader och har 60 till 70 procent luftfuktighet, men ingen golvbrunn. Tanken rymmer 11,4 liter och töms för hand.
   - produkt: acetec-evodry-6h-2
-    etikett: Bäst till kall källare
-    forVem: En källare under 10 grader med en vägg mot det fria för våtluftsslangen.
+    etikett: Källare under 10 grader
+    forVem: En källare som är kallare än 10 grader under de fuktiga månaderna. Maskinen blåser ut den fuktiga luften genom en slang, så du behöver ta upp ett hål i ytterväggen.
   - produkt: woods-mdk21
-    etikett: Bäst för pengarna
-    forVem: En uppvärmd källare som håller 15 grader, med golvbrunn.
+    etikett: Källare med golvbrunn
+    forVem: En källare som håller minst 15 grader och har golvbrunn. Tanken rymmer bara 4 liter, så vattnet behöver gå i slang till brunnen. Maskinen kostar mindre än Wood's SW39FW.
 kopguide: /fukt/avfuktare-kallare/
 kalkylator: avfuktare
 forfattare: christian
-uppdaterad: 2026-09-21
+uppdaterad: 2026-09-30
 # Indexerad sedan 2026-09-16 kväll, när köpknapparna började svara (secret key i Vercel).
 utkast: false
 ---
 
+
 ## Så väljer du
 
-Börja med temperaturen i utrymmet, och ta storleken efter det. Den bästa luftavfuktaren för dig är den som gör nytta vid den temperatur din källare faktiskt har i november.
+Avfuktare och luftavfuktare är två ord för samma maskin, och vilken sort du behöver hänger mest på temperaturen i utrymmet under de fuktiga månaderna. I en källare är det augusti och september. Håller det 15 grader eller mer räcker en kondensavfuktare, som kyler luften så att vattnet fälls ut. Är det kallare än 10 grader behövs i stället en maskin som torkar luften med ett material som suger åt sig fukt, och skillnaden mellan de två förklarar jag i [sorptionsavfuktare mot kondens](/fukt/sorptionsavfuktare/). Storleken tar du först när typen är bestämd.
 
-Håller källaren 15 grader eller mer året om räcker en kondensavfuktare, som kyler luften så att vattnet fälls ut. Mellan 10 och 15 grader tappar en kondensavfuktare det mesta av sin kapacitet, och det visar både Ljungby Fuktkontroll och tillverkarnas egna tal. I en källare som håller 15 grader är Wood's SW39FW mitt förstaval för upp till 40 kvm vid 60 till 70 procent luftfuktighet. Vad de 19 literna på lådan blir i en källare på 15 grader står i [granskningen av Wood's SW39FW](/tester/woods-sw39fw/). Har du golvbrunn och en källare som håller 15 grader är Wood's MDK21 den billiga vägen.
+Mellan 10 och 15 grader får en kondensmaskin ut betydligt mindre vatten än lådan lovar, och återförsäljaren Ljungby Fuktkontroll skriver att den behöver 15 grader för att göra ett bra jobb. Är källaren nästan uppe i 15 grader räcker ändå en kondensmaskin, men är den en bit under skulle jag välja sorption.
 
-Ligger utrymmet under 10 grader en längre period på vintern är det sorption som gäller, en maskin som fångar vattnet i ett fuktsugande hjul och därför klarar kyla som en kondensmaskin inte klarar. Då pekar jag på Acetec EvoDry 6H 2.0. Vad den kostar i drift och vad installationen kräver står i [granskningen av EvoDry 6H 2.0](/tester/acetec-evodry-6h-2/). Reservationen är att den drar 530 W och behöver ett hål i ytterväggen för våtluftsslangen. Varför gränserna går vid 10 och 15 grader, och vad tillverkarna själva anger vid 5, 10 och 20 grader, står i [sorptionsavfuktare, temperaturen avgör](/fukt/sorptionsavfuktare/).
+Till den varma källaren är Wood's SW39FW mitt förstaval för upp till 40 kvm vid 60 till 70 procent luftfuktighet. Vad de 19 literna på lådan blir i en källare på 15 grader räknar jag om i [granskningen av Wood's SW39FW](/tester/woods-sw39fw/). Har du dessutom golvbrunn är Wood's MDK21 den billiga vägen.
 
-Storleken räknar du ut från ytan, takhöjden och den luftfuktighet du mäter i dag. Ta en källare på 40 kvm med 2,2 meter i tak. Ligger den på 65 procent luftfuktighet i augusti landar den på 16 liter märkt kapacitet för en kondensmaskin, och märkt kapacitet är siffran på förpackningen. Ligger samma källare på 75 procent krävs 22 liter. Hela tabellen från 20 till 80 kvm, antagandena bakom den och maskinerna som klarar talen finns i [rätt avfuktare till källaren](/fukt/avfuktare-kallare/). Vill du ha talet för just ditt utrymme gör [kalkylatorn](/rakna/avfuktare/) räkningen med samma formel.
+Till den kalla källaren är Acetec EvoDry 6H 2.0 mitt val. Haken är att den drar 530 W och behöver ett hål i ytterväggen för våtluftsslangen, den slang som för ut den fuktiga luften. [Granskningen av EvoDry 6H 2.0](/tester/acetec-evodry-6h-2/) räknar på driftkostnaden och hålet i väggen.
 
-Är utrymmet en krypgrund dimensionerar du efter golvytan och inte efter volymen. Tabellen för det står i [avfuktare till krypgrunden](/fukt/avfuktare-krypgrund/). Ett garage får dessutom fukt genom porten och med bilen, och om det värms eller inte spelar roll för valet av maskin. Läs [vilken maskin ett kallt eller ett uppvärmt garage behöver](/fukt/avfuktare-garage/).
+Storleken räknar du ut från ytan, takhöjden och den luftfuktighet du mäter i dag. Ta en källare på 40 kvm med 2,2 meter i tak. Visar hygrometern 65 procent luftfuktighet i augusti behöver källaren en kondensmaskin med 16 liter märkt kapacitet. Talet är omräknat till samma provvillkor som tillverkaren använder, så du kan jämföra det direkt med siffran på förpackningen. Vid 75 procent krävs 22 liter. Hela tabellen från 20 till 80 kvm, antagandena bakom den och maskinerna som klarar talen finns i [rätt avfuktare till källaren](/fukt/avfuktare-kallare/). Vill du ha talet för just ditt utrymme gör [kalkylatorn](/rakna/avfuktare/) räkningen med samma formel.
 
-Siffran på lådan är mätt vid 30 grader och 80 procent luftfuktighet, ett klimat som ingen svensk källare har. Ingen kondensmaskin i tabellen har en uppgift om kapacitet vid 10 grader, och det är just den siffran som avgör vad du får ut i november. Tills jag mätt den själv ska du läsa tabellens kapacitet som det mesta maskinen kan ge under bästa tänkbara villkor. Vill du förstå fukten först, före maskinen, börjar du i [pelaren Fukt](/fukt/).
+Är utrymmet en krypgrund dimensionerar du efter golvytan och inte efter volymen, med tabellen i [avfuktare till krypgrunden](/fukt/avfuktare-krypgrund/). Ett garage får dessutom fukt genom porten och med bilen, och om det värms eller inte spelar roll för valet av maskin. Läs [vilken maskin ett kallt eller ett uppvärmt garage behöver](/fukt/avfuktare-garage/). Vill du först veta var fukten kommer ifrån hittar du svaret bland [guiderna om fukt](/fukt/).
+
+Till en lägenhet eller ett sovrum, där det är varmt, räcker en liten kondensavfuktare. Vill du ha en tyst maskin jämför du raden för ljudnivå i tabellen, men flera tillverkare anger den inte, och då vet du inte hur det låter. Ska du bara hålla en garderob eller ett skåp torrt kan en [fuktslukare med salt](/fukt/fuktslukare/) räcka, men till ett helt rum tar den upp för lite.
+
+I en husvagn eller en båt gäller samma gränser vid 10 och 15 grader som i en källare. Maskiner för just dem har jag inte granskat, och inte heller vägghängda maskiner eller maskiner med en pump som lyfter vattnet i slang upp till ett avlopp.
+
+För de flesta kondensmaskinerna är siffran på lådan mätt vid 30 grader och 80 procent luftfuktighet, ett varmare och fuktigare klimat än i en källare. Ingen kondensmaskin i tabellen har en uppgift om kapacitet vid 10 grader, och det är just i en sval källare den siffran behövs. Läs därför tabellens kapacitet som det mesta maskinen kan ge under bästa tänkbara villkor.
 
 ## Varifrån talen i tabellen kommer
 
-Ingen av maskinerna i tabellen har jag haft i handen. Allt i tabellen är tillverkarens uppgift, återgiven från Proffsmagasinets produktsida eller från tillverkarens eget datablad, och varje sida i kategorin är märkt Granskning av det skälet. Bäst i test kan jag inte skriva om någon luftavfuktare förrän jag mätt dem, så det står inte här.
+Ingen av maskinerna i tabellen har jag haft i handen. Allt i tabellen är tillverkarens uppgift, återgiven från Proffsmagasinets produktsida eller från tillverkarens eget datablad, så sidan är en granskning och inget test. Hur jag hämtar och räknar om tillverkarnas tal har jag skrivit ner i [metoden](/om/sa-testar-vi/).
 
-Kapaciteten står med det villkor tillverkaren anger. En maskin som ger 20 liter per dygn vid 30 grader och 80 procent luftfuktighet ger inte 20 liter vid 12 grader och 75 procent. Saknas villkoret på produktsidan står det ej angivet, och jag räknar inte fram en siffra åt tillverkaren.
+Kapaciteten står med det villkor tillverkaren anger. En maskin som ger 20 liter per dygn under tillverkarens provvillkor ger inte 20 liter vid 12 grader och 75 procent. Anger tillverkaren inget villkor står det ”ej angivet” på raden för villkoret.
 
 Tre saker har jag räknat själv:
 
 - Kilowattimmar per månad ur märkeffekten
 - Kilowattimmar per liter, där tillverkaren anger både effekt och kapacitet vid samma villkor
-- Dimensioneringstabellen, med Magnus-formeln
+- Dimensioneringstabellen, som bygger på Magnus-formeln för hur mycket vatten luften bär vid en viss temperatur
 
 Konstanterna och källorna står under [hur kalkylatorn räknar](/rakna/avfuktare/#sa-raknar-vi).
 
-Valen ovan bygger på vad databladen säger om lägsta arbetstemperatur, tank, slanganslutning och effekt, och på att jag hellre pekar på en maskin med svenskt datablad än på en billigare utan. Det är därför eeese Adam 20 (märket stavas så, med små bokstäver) inte är mitt val, trots lägre pris och lägre uppgiven ljudnivå.
-
-Det som fattas är mätningen. Kapacitet i kammare vid 10 och 20 grader och ljud på 1 och 3 meter är planerade. När de är gjorda byts etiketten till Test, och den här texten skrivs om. Hur jag går till väga står under [så testar jag](/om/sa-testar-vi/).
+Valen ovan bygger på vad databladen säger om lägsta arbetstemperatur, tank, slanganslutning och effekt, och på att jag hellre väljer en maskin med svenskt datablad än en billigare maskin utan. Det är därför eeese Adam 20 inte är mitt val, fast den kostar mindre. Vill du jämföra den med valen står den i tabellen ovanför korten.
