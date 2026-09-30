@@ -2,7 +2,8 @@
 /**
  * Enda tillåtna sättet att länka till en butik. Går alltid via /go/.
  * Innehållsfiler skriver: <Kopknapp produkt="woods-mrd20" />
- * Sidmallar anger modul; sidtyp och position kommer från Astro.locals om de utelämnas.
+ * Sidmallar anger modul; sidtyp kommer från Astro.locals om den utelämnas, och
+ * position fylls i av src/middleware.ts i den färdiga HTML:en.
  * Full anatomi (pris, tillstånd, utseende) i docs/SPEC-SIDMALLAR.md avsnitt 2.2
  * och docs/DESIGN.md avsnitt 6.
  */
@@ -31,7 +32,7 @@ interface Props {
   modul?: KlickModul;
   /** Sätts normalt av sidmallen via Astro.locals.sidtyp. */
   sidtyp?: Sidtyp;
-  /** Löpnummer på sidan. Räknas upp automatiskt om den utelämnas. */
+  /** Löpnummer på sidan. Utelämnas den numrerar src/middleware.ts knapparna i sidans ordning. */
   position?: number;
   /** Pris i kronor från erbjudanden.pris. Saknas: "Se pris hos ..." */
   pris?: number | null;
@@ -82,15 +83,13 @@ const restnoterad = lager === 'restnoterad';
 
 const sidtyp = Astro.props.sidtyp ?? Astro.locals.sidtyp;
 /**
- * Positionsräknaren går bara upp för knappar som faktiskt blir annonslänkar.
- * En ej köpbar produkt får ingen /go/-länk, och då ska den inte heller ta en
- * position i klickstatistiken.
+ * Utan position skrivs platshållaren, och src/middleware.ts numrerar länkarna i
+ * den ordning de står i HTML:en. En ej köpbar produkt får ingen /go/-länk och
+ * tar därför ingen position i klickstatistiken.
  */
-const position = ejKopbar
+const href = ejKopbar
   ? null
-  : (Astro.props.position ?? (Astro.locals.kopknappPosition = (Astro.locals.kopknappPosition ?? 0) + 1));
-
-const href = ejKopbar ? null : goLank(produkt, { butik, modul, sidtyp, position: position ?? undefined });
+  : goLank(produkt, { butik, modul, sidtyp, position: Astro.props.position ?? 'auto' });
 const datum = prisDatum ? new Date(prisDatum) : null;
 const harPris = typeof pris === 'number' && pris > 0;
 

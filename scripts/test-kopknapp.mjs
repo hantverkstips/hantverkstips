@@ -3,11 +3,20 @@
  *   node --experimental-strip-types --test scripts/test-kopknapp.mjs
  *
  * Saknas butikens namn ska knappen säga Proffsmagasinet, aldrig "undefined".
+ * Utan position skriver knappen position=KPOS, som numreraKopknappar fyller i.
  */
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { butikNamnEllerReserv, kopknappHamtarSjalv, kopknappModul, kopknappText } from '../src/lib/affiliate.ts';
+import {
+  butikNamnEllerReserv,
+  goLank,
+  kopknappHamtarSjalv,
+  kopknappModul,
+  kopknappText,
+  numreraKopknappar,
+  POSITION_PLATSHALLARE,
+} from '../src/lib/affiliate.ts';
 
 test('saknat eller trasigt namn ger Proffsmagasinet', () => {
   for (const v of [undefined, null, '', '  ', 'undefined', 'null', 'Undefined', ' NULL ', 42, {}]) {
@@ -58,4 +67,45 @@ test('modulstandard: kort_kompakt när knappen hämtat själv, annars avslut', (
   assert.equal(kopknappModul(undefined, false), 'avslut');
   assert.equal(kopknappModul('tabell', true), 'tabell');
   assert.equal(kopknappModul('tabell', false), 'tabell');
+});
+
+// Position i sidans ordning: docs/briefer/spec-kopknapp-position-2026-09-30.md avsnitt 2.
+
+test('numreraKopknappar numrerar platshållarna i textens ordning, med &amp; och &', () => {
+  const in_ =
+    '<a href="/go/a/?modul=avslut&amp;position=KPOS">A</a>' +
+    '<a href="/go/b/?modul=tabell&position=KPOS">B</a>' +
+    '<a href="/go/c/?position=KPOS">C</a>';
+  const ut =
+    '<a href="/go/a/?modul=avslut&amp;position=1">A</a>' +
+    '<a href="/go/b/?modul=tabell&position=2">B</a>' +
+    '<a href="/go/c/?position=3">C</a>';
+  assert.equal(numreraKopknappar(in_), ut);
+});
+
+test('text utan platshållare kommer tillbaka oförändrad', () => {
+  const t = '<p>Ingen knapp här, bara KPOS som ord.</p><a href="/go/a/?modul=avslut">A</a>';
+  assert.equal(numreraKopknappar(t), t);
+});
+
+test('en uttryckligen skriven position rörs inte', () => {
+  const t =
+    '<a href="/go/a/?modul=avslut&amp;position=7">A</a><a href="/go/b/?modul=avslut&amp;position=KPOS">B</a>';
+  assert.equal(
+    numreraKopknappar(t),
+    '<a href="/go/a/?modul=avslut&amp;position=7">A</a><a href="/go/b/?modul=avslut&amp;position=1">B</a>',
+  );
+});
+
+test("goLank med position 'auto' ger platshållaren", () => {
+  assert.equal(POSITION_PLATSHALLARE, 'KPOS');
+  assert.ok(goLank('x', { position: 'auto' }).includes('position=KPOS'));
+  assert.equal(goLank('x', { modul: 'avslut', position: 'auto' }), '/go/x/?modul=avslut&position=KPOS');
+});
+
+test('goLank med tal eller utan position som förut', () => {
+  assert.equal(goLank('x'), '/go/x/');
+  assert.equal(goLank('x', { position: 3 }), '/go/x/?position=3');
+  assert.equal(goLank('x', { position: 0 }), '/go/x/');
+  assert.equal(goLank('x', { butik: 'pm', modul: 'tabell', sidtyp: 'guide', position: 2 }), '/go/x/?butik=pm&modul=tabell&sidtyp=guide&position=2');
 });

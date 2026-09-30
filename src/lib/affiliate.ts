@@ -56,11 +56,20 @@ export function franBas36(epi: string): number {
   return parseInt(epi, 36);
 }
 
+/**
+ * Står i /go/-länken när knappen inte fått någon position. src/middleware.ts
+ * byter den mot 1, 2, 3 i den färdiga HTML:en, i sidans ordning. Astro renderar
+ * syskon parallellt, så en räknare under renderingen ger fel ordning
+ * (docs/briefer/spec-kopknapp-position-2026-09-30.md).
+ */
+export const POSITION_PLATSHALLARE = 'KPOS';
+
 export interface GoParametrar {
   butik?: string;
   modul?: KlickModul;
   sidtyp?: Sidtyp;
-  position?: number;
+  /** Ett tal, eller 'auto' för platshållaren som numreraKopknappar fyller i. */
+  position?: number | 'auto';
 }
 
 /** Bygger /go/-länken som Kopknapp använder. Bara kända parametrar följer med. */
@@ -69,11 +78,24 @@ export function goLank(produkt: string, p: GoParametrar = {}): string {
   if (p.butik) q.set('butik', p.butik);
   if (p.modul) q.set('modul', p.modul);
   if (p.sidtyp) q.set('sidtyp', p.sidtyp);
-  if (p.position !== undefined && Number.isInteger(p.position) && p.position > 0) {
+  if (p.position === 'auto') {
+    q.set('position', POSITION_PLATSHALLARE);
+  } else if (p.position !== undefined && Number.isInteger(p.position) && p.position > 0) {
     q.set('position', String(p.position));
   }
   const fraga = q.toString();
   return `/go/${produkt}/${fraga ? `?${fraga}` : ''}`;
+}
+
+const PLATSHALLARE_I_TEXT = new RegExp(`([?&]|&amp;)position=${POSITION_PLATSHALLARE}(?![A-Za-z0-9_])`, 'g');
+
+/**
+ * Byter varje position=KPOS mot position=1, 2, 3 i den ordning de står i
+ * texten, med &amp; eller & före. En uttryckligen skriven position rörs inte.
+ */
+export function numreraKopknappar(html: string): string {
+  let n = 0;
+  return html.replace(PLATSHALLARE_I_TEXT, (_: string, fore: string) => `${fore}position=${++n}`);
 }
 
 export interface SparlankVarden {
