@@ -67,3 +67,18 @@ Publicerad fil under 28 kB (28 672 byte), källan under 10 kB, ingen `<text>` i 
 ## 8. Godkännande
 
 Ej ritad.
+
+## 9. Hantverkarens rapport, 2026-09-30
+
+Står i kommentaren vid `bild:` i `src/content/kunskap/fukt/hygrometer.mdx`. Gäller före avsnitt 5. Källan är Greenspan 1977, 75,29 ± 0,12 vid 25 °C, ur faktabladet `kunskap-hygrometer.md` 2.2. Etiketterna, ordagrant, Caveat 24 px, 41 tecken:
+
+| Nr | Text | Färg | Placering |
+|---|---|---|---|
+| V1 | 75,3 % | blyerts på tumstock | i displayen |
+| T1 | blött koksalt | blyerts | vid skålen, vänster om burken, ledare till saltet |
+| T2 | locket på, ett dygn | blyerts | vid locket, ovanför eller till vänster |
+| T3 | 25 grader | blyerts-2 | till höger om burken |
+
+`aria-label` = bildAlt ordagrant: "En hygrometer i en sluten glasburk bredvid en skål med blött koksalt, och displayen visar 75,3 procent."
+
+Godkänd av UX och bygge 2026-09-30. Publicerad fil 16 506 byte, källa 3 791 byte, ingen `<text>`. Godkända avvikelser: displayen och hygrometern är bredare, så att 75,3 % ryms i 24 px, och ringen går utanför hygrometerns kanter.

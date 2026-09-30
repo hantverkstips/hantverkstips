@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Kallras i två rutor: kall luft faller längs fönstret bakom en gardin, och ett fritt element under fönstret bryter fallet.">
+  <!-- Anteckningsboken, samma hand som kondens-fonster.svg och kondens-utsida.svg. Två rutor, samma rum sett från sidan,
+       yttervägg till vänster med fönstret i väggen. Vänster: gardinen hänger framför elementet och stänger in värmen,
+       kallraset i snickarpenna längs glaset och ut över golvet (enda pennsaken). Höger: elementet fritt, varm luft i
+       blyerts-2 upp längs glaset, inget fall. Inte skalenlig. Tumstock bakom glasets temperatur, enda markeringen.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2 1,25: väggarnas skraffering -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M43,22 l10,10 M43,44 l10,10 M52,33 l10,10 M52,53 l10,10 M43,198 l10,10 M43,220 l10,10 M43,242 l10,10 M43,264 l10,10 M43,286 l10,10 M43,307 l10,10 M52,209 l10,10 M52,231 l10,10 M52,253 l10,10 M52,275 l10,10 M52,297 l10,10"/>
+    <path d="M333,22 l10,10 M333,44 l10,10 M342,33 l10,10 M342,53 l10,10 M333,198 l10,10 M333,220 l10,10 M333,242 l10,10 M333,264 l10,10 M333,286 l10,10 M333,307 l10,10 M342,209 l10,10 M342,231 l10,10 M342,253 l10,10 M342,275 l10,10 M342,297 l10,10"/>
+  </g>
+
+  <!-- Blyerts-2 1,5: skiljelinjen mellan rutorna -->
+  <path d="M300,20 Q301,180 300,340" fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Blyerts: väggarna, karmarna, glasen, golven, elementen, gardinstången och gardinen -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M40,17 Q39.5,169 40,323 M64,17 Q64.6,42 64,68 M64,192 Q64.6,256 64,323 M37,20 Q52,19.5 67,20 M40,66 Q52,66.4 64,66 M55,66 V71 H66 M40,194 Q52,193.6 64,194 M55,194 V189 H66 M58,70 Q58.8,130 58,190 M62,70 Q61.2,130 62,190"/>
+    <path d="M330,17 Q329.5,169 330,323 M354,17 Q354.6,42 354,68 M354,192 Q354.6,256 354,323 M327,20 Q342,19.5 357,20 M330,66 Q342,66.4 354,66 M345,66 V71 H356 M330,194 Q342,193.6 354,194 M345,194 V189 H356 M348,70 Q348.8,130 348,190 M352,70 Q351.2,130 352,190"/>
+    <path d="M37,320 Q165,321.5 293,320 M327,320 Q455,321.5 583,320"/>
+    <path d="M78,220 Q95,219.5 112,220 M110,218 Q110.6,260 110,302 M112,300 Q95,300.5 78,300 M80,302 Q79.4,260 80,218 M86,225 Q86.5,260 86,295 M92,225 Q91.5,260 92,295 M98,225 Q98.5,260 98,295 M104,225 Q103.5,260 104,295"/>
+    <path d="M368,220 Q385,219.5 402,220 M400,218 Q400.6,260 400,302 M402,300 Q385,300.5 368,300 M370,302 Q369.4,260 370,218 M376,225 Q376.5,260 376,295 M382,225 Q381.5,260 382,295 M388,225 Q388.5,260 388,295 M394,225 Q393.5,260 394,295"/>
+    <path d="M66,58 Q97,57.4 128,58 M116,58 q4,10 0,20.3 t0,20.3 t0,20.3 t0,20.3 t0,20.3 t0,20.3 t0,20.3 t0,20.3 t0,20.3 t0,20.3 t0,20.3 t0,20.3"/>
+  </g>
+
+  <!-- Blyerts-2 1,5: den varma luften från det fria elementet upp längs glaset -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M380,214 Q368,205 368,192 T362,168 T360,144 T359,120 T359,96 M353,99 L359,86 L365,99"/>
+    <path d="M392,214 Q382,204 382,191 T374,167 T370,143 T368,124 M362,127 L368,114 L374,127"/>
+  </g>
+
+  <!-- Blyerts-2 1,25: ledaren till glaset -->
+  <path d="M124,92 L66,80" fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round"/>
+
+  <!-- Tumstock bakom glasets temperatur -->
+  <rect x="127" y="80" width="114" height="30" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 184 95)"/>
+
+  <!-- Snickarpenna: kallraset längs glaset, under elementet och gardinen och ut över golvet -->
+  <path d="M71,90 Q70.4,193 71,296 Q72,311 94,311 Q176,311.8 258,312 M246,305 L259,312 L246,319" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="74" y="44" fill="#625a50">minus 10 ute, 21 inne</text>
+    <text x="133" y="103">glaset 8,9°</text>
+    <text x="160" y="298" fill="#ad3519">kallras</text>
+    <text x="410" y="268">elementet fritt</text>
+  </g>
+</svg>

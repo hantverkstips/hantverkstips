@@ -13,9 +13,11 @@ import assert from 'node:assert/strict';
 import {
   ATGARDSTEXT,
   daggpunkt,
+  daggpunktTabell,
   FORVAL_PER_RUM,
   forvalFranAdress,
   glasTemperatur,
+  GOR_INTE_VINTER_VIND,
   GRANSER,
   NORMALT_PER_RUM,
   RUM_MED_FORVAL,
@@ -26,6 +28,8 @@ import {
   mattnadsanghalt,
   raknaDaggpunkt,
   STANDARD,
+  TABELL_RF,
+  TABELL_TEMP,
   tolkaQuery,
 } from '../src/lib/kalkyl/daggpunkt.ts';
 
@@ -225,11 +229,12 @@ const KONTROLL = {
   fonster: { daggpunkt: 8.6, yta: 10.9, rfYta: 86, bedomning: 'mogelrisk' },
   kallare: { daggpunkt: 14.4, yta: 12, rfYta: 100, bedomning: 'kondens' },
   krypgrund: { daggpunkt: 14.4, yta: 10, rfYta: 100, bedomning: 'kondens' },
+  vind: { daggpunkt: -0.6, yta: 0, rfYta: 96, bedomning: 'mogelrisk' },
   garage: { daggpunkt: 14.4, yta: 10, rfYta: 100, bedomning: 'kondens' },
 };
 
 test('R2: varje förval fyller indata och ger kontrolltalen', () => {
-  assert.deepEqual(RUM_MED_FORVAL, ['sovrum', 'fonster', 'kallare', 'krypgrund', 'garage']);
+  assert.deepEqual(RUM_MED_FORVAL, ['sovrum', 'fonster', 'kallare', 'krypgrund', 'vind', 'garage']);
   for (const rum of RUM_MED_FORVAL) {
     const f = FORVAL_PER_RUM[rum];
     const { indata, harIndata } = tolkaQuery(new URLSearchParams(`rum=${rum}`));
@@ -260,6 +265,63 @@ test('R2: källaren, krypgrunden och garaget får rådet för kalla utrymmen, so
     const r = raknaDaggpunkt(tolkaQuery(new URLSearchParams(`rum=${rum}`)).indata);
     assert.deepEqual(r.atgarder, ['vadra', 'sank_fuktproduktion', 'varm_eller_isolera_ytan'], rum);
     assert.match(r.gorInteDetHar, /avfuktare till ett sovrum/, rum);
+  }
+});
+
+test('R9: kallvinden, rum=vind, ger förvalet och kontrolltalen i spec avsnitt 14', () => {
+  const { indata, harIndata } = tolkaQuery(new URLSearchParams('rum=vind'));
+  assert.equal(harIndata, true);
+  assert.deepEqual(
+    [indata.luftTempC, indata.rfProcent, indata.ytTempC, indata.arstid, indata.rum],
+    [2, 83, 0, 'vinter', 'vind'],
+  );
+  const r = raknaDaggpunkt(indata);
+  assert.equal(r.status, 'ok');
+  assert.ok(Math.abs(r.daggpunktC - -0.6) <= 0.1, `daggpunkt: fick ${r.daggpunktC}, väntade -0,6`);
+  assert.equal(r.ytTempC, 0);
+  assert.equal(Math.round(r.rfVidYtanProcent), 96);
+  assert.equal(r.bedomning, 'mogelrisk');
+  assert.equal(r.normalt.lage, 'inom');
+  assert.deepEqual(r.normalt, { lagst: 79, hogst: 88, kalla: 'lth-vind', lage: 'inom' });
+  assert.equal(forvalFranAdress('rum=vind').status, 'ok');
+});
+
+test('R10: vinden vintertid får tätning och ventilation, ingen avfuktare (spec avsnitt 15)', () => {
+  const r = raknaDaggpunkt(tolkaQuery(new URLSearchParams('rum=vind')).indata);
+  assert.deepEqual(r.atgarder, ['tata_bjalklaget', 'ventilera_vinden']);
+  assert.equal(r.visaAvfuktare, false);
+  assert.equal(r.gorInteDetHar, GOR_INTE_VINTER_VIND);
+  for (const a of r.atgarder) assert.equal(typeof ATGARDSTEXT[a], 'string', a);
+});
+
+test('R10: vinden sommartid med mögelrisk får samma två åtgärder och ingen "gör inte"', () => {
+  const r = raknaDaggpunkt(
+    tolkaQuery(new URLSearchParams('rum=vind&arstid=sommar&temp=15&rf=80&ytatemp=12')).indata,
+  );
+  assert.equal(r.bedomning, 'mogelrisk');
+  assert.deepEqual(r.atgarder, ['tata_bjalklaget', 'ventilera_vinden']);
+  assert.equal(r.gorInteDetHar, null);
+  assert.equal(r.visaAvfuktare, false);
+});
+
+test('R10: vinden utan risk får inga åtgärder', () => {
+  const r = raknaDaggpunkt(tolkaQuery(new URLSearchParams('rum=vind&rf=60')).indata);
+  assert.equal(r.bedomning, 'ingen_risk');
+  assert.deepEqual(r.atgarder, []);
+  assert.equal(r.visaAvfuktare, false);
+  assert.equal(r.gorInteDetHar, null);
+});
+
+test('R10: källaren och krypgrunden får samma åtgärder som före vindens gren', () => {
+  for (const rum of ['kallare', 'krypgrund']) {
+    const r = raknaDaggpunkt(tolkaQuery(new URLSearchParams(`rum=${rum}`)).indata);
+    assert.deepEqual(r.atgarder, ['avfuktare', 'varm_eller_isolera_ytan'], rum);
+    assert.equal(r.visaAvfuktare, true, rum);
+    assert.match(r.gorInteDetHar, /Vädra inte/, rum);
+    const v = raknaDaggpunkt(tolkaQuery(new URLSearchParams(`rum=${rum}&arstid=vinter`)).indata);
+    assert.deepEqual(v.atgarder, ['vadra', 'sank_fuktproduktion', 'varm_eller_isolera_ytan'], rum);
+    assert.equal(v.visaAvfuktare, false, rum);
+    assert.match(v.gorInteDetHar, /kondensavfuktare/, rum);
   }
 });
 
@@ -322,7 +384,7 @@ test('R7: forvalFranAdress godtar rummen och stoppar allt annat', () => {
   assert.equal(ok.status, 'ok');
   assert.equal(ok.indata.rum, 'fonster');
   assert.deepEqual(ok.varden, { temp: '21', rf: '45', ytatemp: '12', u: '3', ute: '-5' });
-  assert.equal(forvalFranAdress('rum=vind').status, 'fel');
+  assert.equal(forvalFranAdress('rum=badrum').status, 'fel');
   assert.equal(forvalFranAdress('farg=bla').status, 'fel');
   assert.equal(forvalFranAdress('rum=kallare&rf=120').status, 'fel');
 });
@@ -340,10 +402,11 @@ test('R8: texterna finns som strängar (TEXT SAKNAS tills hantverkaren skrivit d
     assert.equal(typeof t, 'string', namn);
     assert.ok(t.length > 0, namn);
   }
-  assert.deepEqual(RUMSVAL.map((r) => r.varde), ['bostad', 'sovrum', 'fonster', 'kallare', 'krypgrund', 'garage']);
+  assert.deepEqual(RUMSVAL.map((r) => r.varde), ['bostad', 'sovrum', 'fonster', 'kallare', 'krypgrund', 'vind', 'garage']);
   assert.deepEqual(Object.keys(TEXT.normaltKalla).sort(), [
     'astma-allergi',
     'fohm',
+    'lth-vind',
     'olsson-sp',
     'sbi',
     'traguiden',
@@ -357,4 +420,65 @@ test('R8: texterna finns som strängar (TEXT SAKNAS tills hantverkaren skrivit d
       [0.6, 0.9],
     ],
   );
+});
+
+/*
+ * Daggpunktstabellen under räknaren (spec-daggpunkt-tabell-2026-09-30.md avsnitt 2 och 6).
+ * Kontrolltalen är GT 3.2 i docs/briefer/faktablad/fukt-gemensamma-tal.md, räknade
+ * utanför koden. Tolerans 0,05 efter avrundning till en decimal.
+ */
+const KONTROLL_TABELL = {
+  22: { 30: 3.6, 40: 7.8, 50: 11.1, 60: 13.9, 70: 16.3, 80: 18.4 },
+  21: { 30: 2.8, 40: 6.9, 50: 10.2, 60: 12.9 },
+  20: { 30: 1.9, 40: 6.0, 50: 9.3, 60: 12.0, 70: 14.4, 80: 16.4 },
+  15: { 70: 9.6, 80: 11.6 },
+  12: { 60: 4.5, 70: 6.7, 80: 8.7 },
+};
+
+test('daggpunktstabellen har 6 rader med 6 celler i konstanternas ordning', () => {
+  const tabell = daggpunktTabell();
+  assert.deepEqual(TABELL_TEMP, [12, 15, 18, 20, 21, 22]);
+  assert.deepEqual(TABELL_RF, [30, 40, 50, 60, 70, 80]);
+  assert.equal(tabell.length, 6);
+  assert.deepEqual(tabell.map((r) => r.tempC), [...TABELL_TEMP]);
+  for (const rad of tabell) {
+    assert.equal(rad.celler.length, 6);
+    assert.deepEqual(rad.celler.map((c) => c.rf), [...TABELL_RF]);
+  }
+});
+
+test('daggpunktstabellen stämmer mot kontrolltalen i GT 3.2', () => {
+  const tabell = daggpunktTabell();
+  let antal = 0;
+  for (const [temp, kolumner] of Object.entries(KONTROLL_TABELL)) {
+    const rad = tabell.find((r) => r.tempC === Number(temp));
+    assert.ok(rad, `rad ${temp}`);
+    for (const [rf, vantat] of Object.entries(kolumner)) {
+      const cell = rad.celler.find((c) => c.rf === Number(rf));
+      assert.ok(cell, `cell ${temp}/${rf}`);
+      assert.ok(
+        Math.abs(cell.daggpunktC - vantat) <= 0.05,
+        `${temp} °C och ${rf} %: fick ${cell.daggpunktC}, väntade ${vantat}`,
+      );
+      antal += 1;
+    }
+  }
+  assert.equal(antal, 21);
+});
+
+test('daggpunktstabellen stiger med RF i varje rad och med temperaturen i varje kolumn', () => {
+  const tabell = daggpunktTabell();
+  for (const rad of tabell) {
+    for (let k = 1; k < rad.celler.length; k++) {
+      assert.ok(rad.celler[k].daggpunktC > rad.celler[k - 1].daggpunktC, `rad ${rad.tempC}, kolumn ${rad.celler[k].rf}`);
+    }
+  }
+  for (let k = 0; k < TABELL_RF.length; k++) {
+    for (let r = 1; r < tabell.length; r++) {
+      assert.ok(
+        tabell[r].celler[k].daggpunktC > tabell[r - 1].celler[k].daggpunktC,
+        `kolumn ${TABELL_RF[k]}, rad ${tabell[r].tempC}`,
+      );
+    }
+  }
 });

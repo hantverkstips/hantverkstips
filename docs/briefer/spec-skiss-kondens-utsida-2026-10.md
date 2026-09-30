@@ -70,3 +70,24 @@ Publicerad fil under 28 kB (28 672 byte), källan under 10 kB, ingen `<text>` i 
 ## 8. Godkännande
 
 Ej ritad.
+
+## 9. Beslut efter hantverkarens rapport, 2026-09-30
+
+Hantverkarens kommentar står i `src/content/guider/fukt/kondens-pa-fonster.mdx` rad 143–145. Den gäller före avsnitt 1–5 där de säger emot varandra.
+
+- **Utstrålningen ritas.** Källan finns i `faktablad/guider-kondens-pa-fonster-utbyggnad-2026-09-30.md` U1 (SP, "Utstrålningen kan vara så stor att glaset blir avkylt till lägre temperatur än uteluftens"). Två eller tre vågiga pilar i blyerts-2 från ytterglaset upp mot himlen med stjärnor, som i avsnitt 4.
+- **Dropparna** på ytterglasets utsida är tätast i nederdelen och glesnar uppåt. Längs kanten, närmast bågen, finns en torr rand på 6–8 enheter utan droppar. Ringen i penna runt dropparna står kvar och är den enda saken som pekar.
+- **Inget nyckeltal och ingen gul markering.** Hantverkaren skriver "Inga temperaturer", och U-värdet står inte i hans beskrivning. V1 i avsnitt 5 utgår.
+- **Etiketterna** är hantverkarens egna ord ur kommentaren, bildtexten och H2:n. Bara dessa, Caveat 24 px, 41 tecken:
+
+| Nr | Text | Färg | Placering |
+|---|---|---|---|
+| T1 | ute | blyerts-2 | vänster, under himlen, cirka (110, 150) |
+| T2 | inne | blyerts | höger, cirka (500, 110) |
+| T3 | imma på utsidan | penna | vänster om dropparna, cirka (200, 240), ledare i penna till (352, 230) |
+| T4 | kallare än luften ute | blyerts | vänster, cirka (150, 190), ledare i blyerts-2 till ytterglaset vid (366, 160) |
+| T5 | torrt | blyerts | höger om innerglaset, cirka (470, 170), ledare till (416, 170) |
+
+- alt och bildtext är hantverkarens. De står i kommentaren och läggs in av honom.
+
+Godkänd av UX och bygge 2026-09-30. Publicerad fil 19 192 byte, källa 5 808 byte, ingen `<text>`. Rättat vid granskningen: ringen har ett glapp upptill, och utstrålningspilarna börjar utanför ringen. Hantverkaren lägger in bilden med `<Illustration namn="fukt/kondens-utsida" … />`.

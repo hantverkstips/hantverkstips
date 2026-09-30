@@ -21,9 +21,15 @@
  */
 
 export type Arstid = 'vinter' | 'sommar';
-export type Rum = 'bostad' | 'sovrum' | 'fonster' | 'kallare' | 'krypgrund' | 'garage';
+export type Rum = 'bostad' | 'sovrum' | 'fonster' | 'kallare' | 'krypgrund' | 'vind' | 'garage';
 export type Bedomning = 'kondens' | 'mogelrisk' | 'ingen_risk';
-export type Atgard = 'vadra' | 'sank_fuktproduktion' | 'varm_eller_isolera_ytan' | 'avfuktare';
+export type Atgard =
+  | 'vadra'
+  | 'sank_fuktproduktion'
+  | 'varm_eller_isolera_ytan'
+  | 'avfuktare'
+  | 'tata_bjalklaget'
+  | 'ventilera_vinden';
 
 export interface DaggpunktIndata {
   /** Lufttemperatur i rummet, grader Celsius. */
@@ -41,7 +47,7 @@ export interface DaggpunktIndata {
 }
 
 /** Varifrån rummets normala luftfuktighet kommer. Texten per källa står i TEXT.normaltKalla. */
-export type NormalKalla = 'traguiden' | 'astma-allergi' | 'fohm' | 'villaagarna' | 'olsson-sp' | 'sbi';
+export type NormalKalla = 'traguiden' | 'astma-allergi' | 'fohm' | 'villaagarna' | 'olsson-sp' | 'sbi' | 'lth-vind';
 
 export interface Normalt {
   /** Lägsta normala luftfuktighet, procent, eller null när källan bara ger ett högsta tal. */
@@ -100,7 +106,7 @@ const MAGNUS_B = 17.625;
 const MAGNUS_C = 243.04;
 
 /** Osäkerheten i daggpunkten, grader. Källa: Lawrence 2005, samma artikel. */
-const OSAKERHET_C = 0.35;
+export const OSAKERHET_C = 0.35;
 
 /** Omräkning från ångtryck (hPa) till ånghalt (g/m³), ur samma härledning. */
 const ANGHALT_KONSTANT = 216.68;
@@ -168,6 +174,7 @@ export const RUMSVAL: { varde: Rum; etikett: string }[] = [
   { varde: 'fonster', etikett: 'Fönstret i ett uppvärmt rum' },
   { varde: 'kallare', etikett: 'Källare' },
   { varde: 'krypgrund', etikett: 'Krypgrund' },
+  { varde: 'vind', etikett: 'Kallvind' },
   { varde: 'garage', etikett: 'Garage, förråd eller uthus' },
 ];
 
@@ -221,6 +228,15 @@ export const FORVAL_PER_RUM: Partial<Record<Rum, Forval>> = {
    */
   krypgrund: { luftTempC: 20, rfProcent: 70, ytTempC: 10, arstid: 'sommar' },
   /*
+   * Källa för 2 °C och 83 %: SP, Samuelson och Hägerhed Engman, Bygg & teknik 4/06,
+   * tabell 2, uteluft 0 °C och 95 % ger 83 % i en vind två grader varmare; LTH,
+   * Harderup och Arfvidsson, Bygg & teknik 4/07, vinden 0,5–2 grader varmare än ute
+   * (fukt-gemensamma-tal.md K3, K5, K8).
+   * ANTAGANDE för ytan 0: råspontens undersida antas hålla uteluftens temperatur.
+   * Klara nätter blir den kallare, men inget läst underlag ger ett tal (K15).
+   */
+  vind: { luftTempC: 2, rfProcent: 83, ytTempC: 0, arstid: 'vinter' },
+  /*
    * Källa för 20/70: som källaren.
    * ANTAGANDE för ytan 10: ouppvärmt garage räknas på 10 grader i /rakna/avfuktare/
    * och på /fukt/avfuktare-garage/ (faktablad/guider-avfuktare-garage.md rad 44).
@@ -229,10 +245,10 @@ export const FORVAL_PER_RUM: Partial<Record<Rum, Forval>> = {
 };
 
 /** Rummen med förval, i den ordning länkraden ovanför formuläret visar dem. */
-export const RUM_MED_FORVAL: Exclude<Rum, 'bostad'>[] = ['sovrum', 'fonster', 'kallare', 'krypgrund', 'garage'];
+export const RUM_MED_FORVAL: Exclude<Rum, 'bostad'>[] = ['sovrum', 'fonster', 'kallare', 'krypgrund', 'vind', 'garage'];
 
 /** Rummen som får rådet för kalla utrymmen i steg 5 (spec avsnitt 1, "råd som"). */
-const KALLA_RUM: readonly Rum[] = ['kallare', 'krypgrund', 'garage'];
+const KALLA_RUM: readonly Rum[] = ['kallare', 'krypgrund', 'vind', 'garage'];
 
 /*
  * Rummets normala luftfuktighet per årstid (spec avsnitt 3).
@@ -262,6 +278,11 @@ export const NORMALT_PER_RUM: Record<Rum, Record<Arstid, Normalt>> = {
   krypgrund: {
     vinter: { lagst: null, hogst: 75, kalla: 'olsson-sp' },
     sommar: { lagst: null, hogst: 75, kalla: 'olsson-sp' },
+  },
+  // Källa: Harderup och Arfvidsson, LTH, Bygg & teknik 4/07, kall vind: månadsmedel 79–88 % oktober–februari, "mars–september alltid under 75 %" (fukt-gemensamma-tal.md K8).
+  vind: {
+    vinter: { lagst: 79, hogst: 88, kalla: 'lth-vind' },
+    sommar: { lagst: null, hogst: 75, kalla: 'lth-vind' },
   },
   // Källa: Stålbyggnadsinstitutet, ingen korrosion under 60 % (T41).
   garage: {
@@ -294,6 +315,7 @@ export const TEXT: {
     fonster: 'Fönster',
     kallare: 'Källare',
     krypgrund: 'Krypgrund',
+    vind: 'Kallvind',
     garage: 'Garage',
   },
   fel: {
@@ -312,6 +334,8 @@ export const TEXT: {
     'olsson-sp':
       'Lars Olsson på SP skriver i Bygg & teknik 8/06 att luftfuktigheten i en krypgrund ska ner till säkra nivåer, cirka 75 procent, och att mögel börjar växa vid 75 till 80 procent.',
     sbi: 'Stålbyggnadsinstitutet skriver att det i luft praktiskt taget inte sker någon korrosion under 60 procents relativ luftfuktighet.',
+    'lth-vind':
+      'Harderup och Arfvidsson vid LTH mätte i en kall vind i Stockholm och fick månadsmedel på 79 till 88 procent från oktober till februari och under 75 procent från mars till september.',
   },
 };
 
@@ -336,6 +360,12 @@ export const ATGARDSTEXT: Record<Atgard, string> = {
     'Gör ytan varmare, med värme eller isolering. Ju närmare rummets temperatur väggen ligger, desto längre är den från daggpunkten. Att dra ut garderoben några centimeter från ytterväggen kostar ingenting och hjälper.',
   avfuktare:
     'Sätt in en avfuktare. I ett kallt utrymme på sommaren är det det enda som faktiskt tar bort vatten ur luften, eftersom uteluften bär mer vatten än luften inne.',
+  // Spec avsnitt 15, textlistan V7. Källa: GT 13.2 (K1, Samuelson 2006).
+  tata_bjalklaget:
+    'Täta vindsluckan och alla ställen där rör, kablar och ventilationskanaler går upp genom bjälklaget. Luften inifrån huset bär mer vatten än vindsluften, och när den tar sig upp genom glipor kondenserar den på den kalla råsponten.',
+  // Spec avsnitt 15, textlistan V8. Källa: GT 13.2 (K4, K8, K11, K12).
+  ventilera_vinden:
+    'Håll ventilationsöppningarna vid takfoten och i nocken eller gavlarna fria, och stäng dem inte för att få det varmare där uppe. Luften på en ventilerad vind håller i genomsnitt lite mindre vatten än uteluften, så ventilationen för bort det som ändå läcker upp.',
 };
 
 const GOR_INTE_VINTER_BOSTAD =
@@ -346,6 +376,10 @@ const GOR_INTE_SOMMAR_KALLT =
 
 const GOR_INTE_VINTER_KALLT =
   'I ett kallt utrymme på vintern lägger en kondensavfuktare mer tid på att avfrosta sig själv än på att avfukta. Där är en sorptionsavfuktare rätt maskin, så spara pengarna tills du står med rätt sort i handen.';
+
+/** Spec avsnitt 15, textlistan V9. Källa: GT avsnitt 5 (kondensavfuktaren under 10 grader). */
+export const GOR_INTE_VINTER_VIND =
+  'En kondensavfuktare gör knappt någon nytta på vinden på vintern. Under tio grader är den fel maskin, och på en kallvind är det nästan lika kallt som ute. Ingen avfuktare av något slag ersätter heller en tät vindslucka, eftersom den fuktiga luften fortsätter att komma underifrån.';
 
 /**
  * Mättnadsångtryck i hPa vid temperaturen, Magnus-formeln.
@@ -378,6 +412,23 @@ export function mattnadsanghalt(tempC: number): number {
 export function daggpunkt(tempC: number, rfProcent: number): number {
   const alfa = Math.log(rfProcent / 100) + (MAGNUS_B * tempC) / (MAGNUS_C + tempC);
   return (MAGNUS_C * alfa) / (MAGNUS_B - alfa);
+}
+
+/*
+ * Daggpunktstabellen under räknaren (docs/briefer/spec-daggpunkt-tabell-2026-09-30.md).
+ * Raderna och kolumnerna är sajtens exempel och ingen källa behövs, eftersom de är
+ * indata: 12 och 15 är källarraderna på /fukt/luftfuktighet-inomhus/, 18 källarluften
+ * i augusti på räknarsidan, 20 till 22 bostadens rader. Cellerna räknas med daggpunkt().
+ */
+export const TABELL_TEMP = [12, 15, 18, 20, 21, 22] as const;
+export const TABELL_RF = [30, 40, 50, 60, 70, 80] as const;
+
+/** Daggpunkten per rad och kolumn i TABELL_TEMP och TABELL_RF, avrundad till en decimal. */
+export function daggpunktTabell(): { tempC: number; celler: { rf: number; daggpunktC: number }[] }[] {
+  return TABELL_TEMP.map((tempC) => ({
+    tempC,
+    celler: TABELL_RF.map((rf) => ({ rf, daggpunktC: Math.round(daggpunkt(tempC, rf) * 10) / 10 })),
+  }));
 }
 
 function arArstid(v: string | null): v is Arstid {
@@ -548,7 +599,12 @@ export function raknaDaggpunkt(i: DaggpunktIndata): DaggpunktResultat {
   let visaAvfuktare = false;
   let gorInteDetHar: string | null = null;
 
-  if (bedomning !== 'ingen_risk') {
+  if (bedomning !== 'ingen_risk' && i.rum === 'vind') {
+    // Spec avsnitt 15: på vinden är det inneluft som läcker upp genom bjälklaget
+    // (GT 13.2). Grenen går före KALLA_RUM och ger aldrig avfuktaren.
+    atgarder.push('tata_bjalklaget', 'ventilera_vinden');
+    gorInteDetHar = i.arstid === 'vinter' ? GOR_INTE_VINTER_VIND : null;
+  } else if (bedomning !== 'ingen_risk') {
     if (i.arstid === 'vinter') {
       atgarder.push('vadra', 'sank_fuktproduktion');
       gorInteDetHar = kallt ? GOR_INTE_VINTER_KALLT : GOR_INTE_VINTER_BOSTAD;

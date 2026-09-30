@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="En hygrometer i en sluten glasburk bredvid en skål med blött koksalt, och displayen visar 75,3 procent.">
+  <!-- Anteckningsboken, samma hand som tejptest.svg. Blyerts 2 px för bordet, burken med locket, skålen och
+       hygrometern, blyerts-2 för glasets reflex, gängan, saltet, vattenlinjen och ledaren, snickarpenna för den
+       öppna ringen runt displayen (enda pennsaken). Sett från sidan. Inte skalenlig. Hygrometern är generisk.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Överstrykning med tumstocksgul bakom nyckeltalet -->
+  <rect x="327" y="203" width="66" height="26" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 360 216)"/>
+
+  <!-- Blyerts: bordet, burken, locket, skålen, hygrometern med displayen -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M60,318 Q300,321.5 540,318"/>
+    <path d="M181,69 Q179,190 180,302 Q180,317 195,317 Q300,318.5 405,317 Q420,317 420,302 Q421,190 419,69"/>
+    <path d="M176,50 Q300,48 424,50 Q429,50 428,55 Q429,63 428,70 Q300,73 172,70 Q171,63 172,55 Q171,50 176,50"/>
+    <path d="M196,270 Q250,271.5 304,270 M200,271 A50,47 0 0 0 300,271"/>
+    <path d="M322,170 Q360,169 398,170 Q404,170 404,176 Q405,245 404,317 M316,317 Q315,245 316,176 Q316,170 322,170"/>
+    <path d="M329,190 Q360,189 391,190 Q395,190 395,194 Q396,215 395,236 Q395,240 391,240 Q360,241 329,240 Q325,240 325,236 Q324,215 325,194 Q325,190 329,190"/>
+  </g>
+
+  <!-- Blyerts-2 1,5: glasets reflex och gängan under locket -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M194,94 Q192,122 193,152 M198,100 Q197,112 197.5,124"/>
+    <path d="M183,76 l12,-3 M183,82 l12,-3 M405,73 l12,3 M405,79 l12,3"/>
+  </g>
+
+  <!-- Blyerts-2 1,25: saltet, vattenlinjen, ledarna -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M206,282 q6.5,-3 13,0 t13,0 t13,0 t13,0 t13,0 t13,0 t13,0"/>
+    <path d="M212,289 l4,1 M224,288 l1,0 M233,290 l4,-1 M246,288 l1,0 M255,290 l4,1 M268,289 l1,0 M278,288 l4,1 M289,290 l1,0"/>
+    <path d="M216,297 l1,0 M226,298 l4,-1 M238,296 l1,0 M248,298 l4,1 M261,297 l1,0 M271,296 l4,1 M283,298 l1,0"/>
+    <path d="M222,305 l4,1 M233,304 l1,0 M243,306 l4,-1 M256,304 l1,0 M265,306 l4,1 M277,305 l1,0"/>
+    <path d="M233,311 l1,0 M242,312 l4,-1 M254,311 l1,0 M264,312 l3,-1"/>
+    <path d="M130,248 Q180,262 232,292"/>
+  </g>
+
+  <!-- Snickarpenna: den öppna ringen runt displayen, glapp uppe till höger -->
+  <path d="M388,179 C372,171 332,171 313,188 C298,203 299,232 318,246 C338,259 386,258 405,244 C420,232 420,212 410,198" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="360" y="224" text-anchor="middle">75,3 %</text>
+    <text x="48" y="239.5">blött koksalt</text>
+    <text x="300" y="38" text-anchor="middle">locket på, ett dygn</text>
+    <text x="440" y="130" fill="#625a50">25 grader</text>
+  </g>
+</svg>

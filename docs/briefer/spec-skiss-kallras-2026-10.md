@@ -68,3 +68,18 @@ Publicerad fil under 30 kB (30 720 byte), källan under 12 kB, ingen `<text>` i 
 ## 8. Godkännande
 
 Ej ritad.
+
+## 9. Hantverkarens rapport, 2026-09-30
+
+Står i kommentaren vid `bild:` i `src/content/guider/fukt/kallras.mdx`. Gäller före avsnitt 2 och 5. **Vänster ruta visar gardinen** framför elementet, som stänger in värmen, så elementet ritas i båda rutorna. Etiketterna, ordagrant, Caveat 24 px, 54 tecken:
+
+| Nr | Text | Färg | Placering |
+|---|---|---|---|
+| V1 | glaset 8,9° | blyerts på tumstock | vänster ruta, vid glaset |
+| T1 | kallras | penna | vänster ruta, över golvpilen |
+| T2 | minus 10 ute, 21 inne | blyerts-2 | överst i vänster ruta |
+| T3 | elementet fritt | blyerts | höger ruta, vid elementet |
+
+`aria-label` = bildAlt ordagrant: "Kallras i två rutor: kall luft faller längs fönstret bakom en gardin, och ett fritt element under fönstret bryter fallet."
+
+Godkänd av UX och bygge 2026-09-30. Publicerad fil 18 396 byte, källa 4 851 byte, ingen `<text>`. Godkända avvikelser: elementen står 8 enheter längre in, fallet börjar vid y 90, gardinen hänger från en stång, och elementen har inga ben, så att golvpilen går fri.

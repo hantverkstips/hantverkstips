@@ -169,3 +169,51 @@ Förvalsadresser för sidorna i omgång A och B:
 | Badrum, kallvind | finns inte, tal saknas (avsnitt 9) | – |
 
 `<Verktygskort>` tar inget förval; en förvalslänk skrivs som vanlig länk i löptext. Förvalet kan kombineras med tal, till exempel `forval="rum=fonster&ute=-10"`.
+
+## 14. Tillägg 2026-09-30: kallvinden
+
+Koordinatorns beslut efter underlaget i `faktablad/fukt-gemensamma-tal.md` avsnitt 13: kallvinden får ett förval. Badrummet får inget, eftersom varken temperatur, RF efter dusch eller kallaste ytan har källa (13.1, "Saknas").
+
+**Förvalet, `rum=vind`:** luft 2 °C, 83 % RF, kallaste ytan 0 °C, vinter, råd som `kallt`.
+
+- 2 °C och 83 %: SP:s tabell 2 (GT K5). Uteluft på 0 °C och 95 %, "det normala" i södra Sverige vintertid (K3), ger 83 % i en vind som är 2 grader varmare. Två grader är övre änden av LTH:s uppmätta 0,5 till 2 grader (K8). Vattnet i luften är då detsamma som ute, vilket stämmer med K12. Källa.
+- Ytan 0 °C: råspontens undersida antas hålla uteluftens temperatur. Klara nätter blir den kallare, men inget läst underlag ger ett tal (K15, "Saknas"). ANTAGANDE, märkt som de andra ytorna.
+- Kontrolltal: daggpunkt −0,6, ytan 0, RF vid ytan 96, mögelrisk. Ingen kondens: ytan ligger 0,6 grader över daggpunkten.
+
+**Normalt, `NORMALT_PER_RUM.vind`:** vinter 79–88 %, månadsmedel oktober till februari; sommar högst 75 %, "mars–september alltid under 75 %". Båda ur Harderup och Arfvidsson, LTH, Bygg & teknik 4/07 (K8). Nyckeln är `lth-vind`. Med förvalet hamnar 83 inom spannet.
+
+**Kod:** `'vind'` läggs i `Rum`, `KALLA_RUM`, `FORVAL_PER_RUM`, `NORMALT_PER_RUM` och `NormalKalla`, i `RUMSVAL` efter krypgrund, och i `RUM_MED_FORVAL` efter krypgrund. `TEXT.rumKort.vind`, `TEXT.normaltKalla['lth-vind']`, RUMSVAL-etiketten och `FORVAL_ANTAGANDE.vind` är TEXT SAKNAS (textlistan, avsnitt V).
+
+**Tester:** `rum=vind` ger förvalet och kontrolltalen ovan, `normalt.lage` är `inom`, och `forvalFranAdress('rum=vind')` är ok. Fallet i R7 som använde `rum=vind` som okänt rum byts mot `rum=badrum`.
+
+## 15. Tillägg 2026-09-30: vindens eget råd
+
+Koordinatorns beslut: på vinden är det fuktig inneluft som läcker upp genom bjälklaget. Rådet blir att täta vindsluckan och genomföringarna, hålla vinden ventilerad och inte ställa en kondensavfuktare i kylan. Källorna är GT 13.2: K1 och Samuelson 2006 om inneluft som läcker upp, K4 och K8 om klimatet som ute, K11 och K12 om ventilationen, och avsnitt 5 om kondensavfuktaren under 10 grader.
+
+**Formelmodulen, steg 5.** `Atgard` får `'tata_bjalklaget'` och `'ventilera_vinden'`. När `rum === 'vind'` och bedömningen inte är `ingen_risk` gäller:
+
+- `atgarder = ['tata_bjalklaget', 'ventilera_vinden']`. Ingen `vadra`, ingen `sank_fuktproduktion`, ingen `varm_eller_isolera_ytan` och ingen `avfuktare`.
+- `visaAvfuktare = false` båda årstiderna.
+- `gorInteDetHar`: vinter `GOR_INTE_VINTER_VIND`, sommar `null`.
+
+Grenen står före den befintliga logiken och returnerar tidigt ur rådsdelen. Övriga rum rörs inte. `KALLA_RUM` behåller `vind` för ordningens skull, men vindens gren går före.
+
+**Nycklarna** (textlistan avsnitt V, V7 till V13, alla TEXT SAKNAS):
+
+| Nyckel | Fil |
+|---|---|
+| V7 `ATGARDSTEXT.tata_bjalklaget` | daggpunkt.ts |
+| V8 `ATGARDSTEXT.ventilera_vinden` | daggpunkt.ts |
+| V9 `GOR_INTE_VINTER_VIND` | daggpunkt.ts |
+| V10 `BESKED_RAD.tata_bjalklaget` och V10b `BESKED_RAD.ventilera_vinden` (typen kräver alla åtgärder, den andra syns inte i praktiken) | daggpunkt.astro |
+| V11 kortsvarets sista rad för vinden, `KORT_SVAR_VIND` | daggpunkt.astro, i villkoret där `atgarder[0] === 'avfuktare'` prövas: lägg `'tata_bjalklaget'` före |
+| V12 källraden under `tata_bjalklaget` i "Därför blev svaret så" | daggpunkt.astro, i villkoret på `a` |
+| V13 källraden under `ventilera_vinden` | daggpunkt.astro, samma villkor |
+
+**Tester:**
+- `rum=vind` (vinter): åtgärderna är de två i ordning, `visaAvfuktare` är false och `gorInteDetHar` är strängen `GOR_INTE_VINTER_VIND` (TEXT SAKNAS godtas).
+- `rum=vind&arstid=sommar&temp=15&rf=80&ytatemp=12`: mögelrisk, samma två åtgärder, `gorInteDetHar` null, `visaAvfuktare` false.
+- `rum=vind&rf=60`: `ingen_risk` och inga åtgärder.
+- `rum=kallare` och `rum=krypgrund` ger samma åtgärder som i dag.
+
+Granskning av avsnitt 15, 2026-09-30: testet 29 av 29, astro check 0 fel. UX och bygge lade till ett villkor: punkten om de två vägarna under gränsen ("sänk luftfuktigheten eller värm ytan") visas inte för vinden, eftersom den säger emot vindens råd. Ingen text ändrad. Godkänd av UX och bygge för koden.

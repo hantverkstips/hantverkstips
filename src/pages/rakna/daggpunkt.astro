@@ -18,13 +18,17 @@ import Bas from '../../layouts/Bas.astro';
 import { formateraTal } from '../../lib/format';
 import {
   ATGARDSTEXT,
+  daggpunktTabell,
   FORVAL_PER_RUM,
   formVarden,
   KRITISKT_FUKTTILLSTAND_RF,
+  OSAKERHET_C,
   raknaDaggpunkt,
   RSI_M2K_PER_W,
   RUM_MED_FORVAL,
   STANDARD,
+  TABELL_RF,
+  TABELL_TEMP,
   TEXT,
   tolkaQuery,
   TYPISKA_U,
@@ -44,6 +48,19 @@ import StrukturData from '../../components/ui/StrukturData.astro';
 import Tabellyta from '../../components/ui/Tabellyta.astro';
 import Illustration from '../../components/ui/Illustration.astro';
 import Verktygskort from '../../components/ui/Verktygskort.astro';
+
+/*
+ * Daggpunktstabellen. Texterna är hantverkarens
+ * (docs/briefer/texter-daggpunkt-rum-2026-09-30.md, T1 till T5). Talen i
+ * cellerna och huvudena räknas och skrivs aldrig för hand.
+ */
+const TABELL_RUBRIK = 'Daggpunkt i tabell för vanliga temperaturer inne';
+const TABELL_INGRESS =
+  'Leta upp raden för temperaturen i rummet och kolumnen för det hygrometern visar. Talet där de möts är daggpunkten i grader, och en yta som är kallare än så blir våt.';
+const TABELL_CAPTION =
+  'Daggpunkten i grader vid olika temperatur och luftfuktighet inne, med temperaturen i raderna och luftfuktigheten i kolumnerna';
+const TABELL_HORN = '°C / RF';
+const TABELL_KALLRAD = `Räknat av Hantverkstips med Magnus-formeln och de konstanter Mark Lawrence publicerade 2005. Formeln kan visa upp till ${formateraTal(OSAKERHET_C, 2)} grader för mycket eller för lite.`;
 
 Astro.locals.sidtyp = 'verktyg';
 
@@ -129,6 +146,9 @@ const BESKED_RAD = {
   avfuktare: 'Sätt in en avfuktare, och släpp inte in varm sommarluft genom fönster eller port.',
   sank_fuktproduktion: 'Få ner fukten du själv skapar inne, och gör ytan varmare.',
   varm_eller_isolera_ytan: 'Gör ytan varmare.',
+  // Spec avsnitt 15, textlistan V10 och V10b.
+  tata_bjalklaget: 'Täta vindsluckan och ställena där rör och kablar går upp genom bjälklaget.',
+  ventilera_vinden: 'Håll ventilationen på vinden fri.',
 } as const;
 
 const beskedRad =
@@ -143,6 +163,9 @@ const KORT_SVAR_YTA = {
   mogelrisk: 'Din kallaste yta är varmare än så och blir inte våt, men luften alldeles intill den är för fuktig.',
   ingen_risk: 'Din kallaste yta är varmare än så, så den blir inte våt.',
 } as const;
+
+/** Spec avsnitt 15, textlistan V11: kortsvarets sista rad för vinden. */
+const KORT_SVAR_VIND = 'Det här löser du genom att täta bjälklaget underifrån, och ingen maskin gör det åt dig.';
 
 /*
  * Förvalen per rum. Texterna är hantverkarens
@@ -187,6 +210,8 @@ function normaltKallaRad(rumNamn: string, kalla: NormalKalla): string {
       return `Gränsen för ${rumNamn} är satt för träet i golvbjälklaget ovanför, där mögel kan börja växa när luftfuktigheten går strax över gränsen.`;
     case 'sbi':
       return `Gränsen för ${rumNamn} gäller rost på det som står där, som verktyg, cyklar och bilen.`;
+    case 'lth-vind':
+      return `I ${rumNamn} är det vanligt att luftfuktigheten ligger över ${KRITISKT_FUKTTILLSTAND_RF} procent hela vintern. Det är inget tecken på skada i sig, eftersom mögel växer långsamt i kyla.`;
   }
 }
 /** Rummen som de står mitt i en mening i S2 och S5. */
@@ -196,6 +221,7 @@ const RUM_I_TEXT: Record<Rum, string> = {
   fonster: 'rummet innanför fönstret',
   kallare: 'en källare',
   krypgrund: 'en krypgrund',
+  vind: 'ett kallt vindsutrymme',
   garage: 'ett garage',
 };
 const rumNamn = (r: Rum): string => RUM_I_TEXT[r];
@@ -211,6 +237,15 @@ const graderOrd = (n: number): string => {
  */
 const TABELL_KLASS =
   'w-full border-collapse text-liten tabular-nums [&_th]:p-2 [&_td]:p-2 [&_th]:align-top [&_td]:align-top [&_th]:text-left [&_tbody_th]:[font-weight:inherit] [&_tr]:border-b [&_tr]:border-linje [&_th]:text-blyerts [&_td]:text-blyerts [&_thead_th]:text-etikett [&_thead_th]:uppercase [&_thead_th]:text-blyerts-2';
+/** Daggpunktstabellen: tätare celler än TABELL_KLASS så att sju kolumner ryms på 343 px, talen högerställda. */
+const DAGGPUNKT_TABELL_KLASS =
+  'w-full border-collapse text-liten tabular-nums [&_th]:px-1 [&_td]:px-1 [&_th]:py-2 [&_td]:py-2 [&_th]:text-left [&_thead_th+th]:text-right [&_td]:text-right [&_tbody_th]:[font-weight:inherit] [&_tr]:border-b [&_tr]:border-linje [&_th]:text-blyerts-2 [&_td]:text-blyerts [&_thead_th]:text-etikett [&_thead_th]:uppercase';
+const daggpunktRader = daggpunktTabell();
+/** Läsarens cell får markering bara när både temperaturen och luftfuktigheten är en rad och en kolumn. */
+const lasarensTemp = (TABELL_TEMP as readonly number[]).includes(visatIndata.luftTempC) ? visatIndata.luftTempC : null;
+const lasarensRf = (TABELL_RF as readonly number[]).includes(visatIndata.rfProcent) ? visatIndata.rfProcent : null;
+/** En decimal, decimalkomma och ett riktigt minustecken (U+2212). */
+const tabellTal = (n: number): string => formateraTal(n, 1).replace(/^-/, '−');
 const ET_2025_01 =
   'https://energiochklimatradgivningen.se/download/18.5e9a579b195c021e865e6614/1742900645267/BQ_EPRO011_FO%CC%88NSTER_ET_2025_01_A4_TA.pdf';
 
@@ -231,6 +266,10 @@ const FORVAL_ANTAGANDE: Record<Exclude<Rum, 'bostad'>, { storhet: string; stod: 
   krypgrund: {
     storhet: 'Talen i krypgrunden på sommaren',
     stod: 'Luften är densamma som i källaren. Ytans temperatur är den jag räknar med i en krypgrund, och Fuktcentrums mätningar ger en medeltemperatur strax under den',
+  },
+  vind: {
+    storhet: 'Talen på en kallvind vintertid',
+    stod: 'Talen för luften kommer från SP:s beräkning för en vind som är två grader varmare än uteluften, när det är 0 grader och 95 procent luftfuktighet ute. För ytan antar jag att råsponten håller uteluftens temperatur, eftersom jag inte hittat något tal för hur mycket kallare den blir en klar natt',
   },
   garage: {
     storhet: 'Talen i ett ouppvärmt garage på sommaren',
@@ -429,9 +468,11 @@ const huvudbild = varumarke ?? illustration;
           <p class="m-0 leading-6">
             {visat.bedomning === 'ingen_risk'
               ? 'Du behöver inte göra något, men mät igen om det luktar unket.'
-              : visat.atgarder[0] === 'avfuktare'
-                ? 'Det här löser du med en avfuktare. Vädring gör det värre.'
-                : 'Vädra, skapa mindre fukt inne och gör ytan varmare.'}
+              : visat.atgarder[0] === 'tata_bjalklaget'
+                ? KORT_SVAR_VIND
+                : visat.atgarder[0] === 'avfuktare'
+                  ? 'Det här löser du med en avfuktare. Vädring gör det värre.'
+                  : 'Vädra, skapa mindre fukt inne och gör ytan varmare.'}
           </p>
         </Faktaruta>
       )
@@ -579,7 +620,8 @@ const huvudbild = varumarke ?? illustration;
               </span>
             </li>
 
-            {visat.bedomning !== 'ingen_risk' && (
+            {/* Vinden har eget råd (spec avsnitt 15): de två vägarna och värme på ytan gäller inte där. */}
+            {visat.bedomning !== 'ingen_risk' && visatIndata.rum !== 'vind' && (
               <li class="mb-4 border-l-2 border-linje pl-4">
                 <span class="block">
                   {visat.ytanMasteBliVarmare ? (
@@ -611,7 +653,11 @@ const huvudbild = varumarke ?? illustration;
                     ? 'Mitt råd. Att uteluften i augusti bär mer vatten än en kall källare följer av SMHI:s tal för sommarluft.'
                     : a === 'vadra'
                       ? 'Mitt råd. Att vinterluft bär nästan inget vatten följer av Magnus-formeln vid minusgrader.'
-                      : 'Mitt råd, inget krav från någon källa.'}
+                      : a === 'tata_bjalklaget'
+                        ? 'Boverket beskriver hur kalla vindar får kondens på undertaket, och i Bygg & teknik 4/06 pekar SP ut inneluft som läcker upp som en av orsakerna.'
+                        : a === 'ventilera_vinden'
+                          ? 'Hagentoft på Chalmers visade med mätningar i ett SBUF-projekt att styrd ventilation gav i genomsnitt 7,4 procentenheter lägre luftfuktighet på vinden än vanlig ventilation. LTH:s mätningar visar att vinden följer uteluften och bara är någon grad varmare.'
+                          : 'Mitt råd, inget krav från någon källa.'}
                 </span>
               </li>
             ))}
@@ -659,6 +705,41 @@ const huvudbild = varumarke ?? illustration;
         </section>
       )
     }
+
+    <section>
+      <Pennstreck id="daggpunktstabell">{TABELL_RUBRIK}</Pennstreck>
+      <p class="m-0 text-brod lg:text-brod-lg">{TABELL_INGRESS}</p>
+      <Tabellyta kolumner={7} class="mt-4">
+        <table class={DAGGPUNKT_TABELL_KLASS}>
+          <caption class="sr-only">{TABELL_CAPTION}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{TABELL_HORN}</th>
+              {TABELL_RF.map((rf) => <th scope="col">{`${rf} %`}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {
+              daggpunktRader.map((rad) => (
+                <tr>
+                  <th scope="row">{`${rad.tempC} °C`}</th>
+                  {rad.celler.map((c) => (
+                    <td>
+                      {rad.tempC === lasarensTemp && c.rf === lasarensRf ? (
+                        <Markering>{tabellTal(c.daggpunktC)}</Markering>
+                      ) : (
+                        tabellTal(c.daggpunktC)
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </Tabellyta>
+      <p class="m-0 mt-2 text-liten text-blyerts-2">{TABELL_KALLRAD}</p>
+    </section>
 
     <section>
       <Pennstreck id="vad-daggpunkten-ar">Vad daggpunkten är och varför väggen kan mögla utan att bli våt</Pennstreck>
