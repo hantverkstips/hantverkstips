@@ -647,3 +647,184 @@ kallor:
   - titel: Ruuvi, Bathroom
     url: https://ruuvi.com/bathroom/
 ```
+
+## 14. Tillägg 2026-09-30: tvättläget (underlag till `/rakna/elkostnad/`, spec avsnitt 4)
+
+Beställt av koordinatorn för UX-agentens spec `docs/briefer/spec-elkostnad-forval-2026-09-30.md` avsnitt 4. Allt läst 2026-09-30. **M** = mätning, **R** = regel, **T** = antagande i en rapport, **ER** = egen räkning (formeln står), **E** = exempel ur ett register, inte ett snitt. Avsnitten ovan rörs inte.
+
+### 14.1 Energimyndighetens test, luftavfuktare för tvättorkning (2017)
+
+Källa: Energimyndigheten, "Luftavfuktare torka tvätt", testsida, "Senast uppdaterad: 2017-12-11". https://www.energimyndigheten.se/effektiv-energianvandning/tester/tester-a-o/luftavfuktare-torka-tvatt/ . Sidan länkar ingen PDF-rapport, och ingen annan rapport har hittats. Inget nyare test av avfuktare för tvätt hittat.
+
+Testvillkor, så som sidan anger dem:
+
+- 7 kg tvätt per torkning ("I testet har vi hängt upp 7 kilo tvätt på torkning").
+- Laboratorium, "en miljö som ska motsvara en tvättstuga, ett badrum eller en källare med mekanisk ventilation".
+- Torrt = "så torr att du kan hänga in kläderna direkt i skåpet".
+- Alla fem är kondensavfuktare; "De kan inte köras vid lägre omgivningstemperaturer än +5 grader Celsius."
+- **Saknas på sidan:** rummets temperatur och RF, luftomsättning, tvättens restfukt eller centrifugvarvtal före torkning, tvättens material. Testets kWh går därför inte att räkna om till en annan restfukt med källa.
+
+Tabellen som den står (pris med moms 2017, sidans uppgift):
+
+| Tillverkare | Modell | Pris 2017 | kWh per torkning (7 kg) | kWh/kg (ER: kWh ÷ 7) |
+|---|---|---|---|---|
+| Ahlsell/KCC | 16 AJ | 2 739 kr | 1,45 | 0,21 |
+| Stadler Form | Albert | 3 889 kr | 1,37 | 0,20 |
+| Canvac | Q Air D220 | 3 495 kr | 3,05 | 0,44 |
+| Electrolux | EXD20DN3W | 3 889 kr | 2,50 | 0,36 |
+| Woods | TDR28FS | 4 755 kr | 2,96 | 0,42 |
+
+- Snitt 0,32 kWh/kg (sidan). ER-kontroll: (1,37 + 1,45 + 2,50 + 2,96 + 3,05) ÷ 5 ÷ 7 = 0,324. Stämmer.
+- Torktid: snabbast Ahlsell KCC-16 AJ 6 h 54 min; längst Canvac Qair D220 10 h 24 min; snitt 8 h 34 min (tabellen), "åtta och en halv timme" (brödtexten). **Saknas:** torktid för de tre andra modellerna.
+- Avfuktningseffektivitet (DER): Albert 1,24 l/kWh, Canvac 1,01 l/kWh, Woods 0,78 l/kWh (lägst). **Saknas:** KCC och Electrolux; figur 2 finns men talen går inte att läsa ur sidans HTML.
+- ER, med förbehåll: vatten i behållaren per torkning = kWh × DER: Albert 1,37 × 1,24 = 1,7 l; Canvac 3,05 × 1,01 = 3,1 l; Woods 2,96 × 0,78 = 2,3 l. Sidan säger inte att DER mättes i samma körning, och en del av fukten går ut med ventilationen. Används inte som restfukt.
+- Står avfuktaren på ett dygn "ökar energianvändningen två till tre gånger"; 4,6 kWh/dygn (Albert Stadler Form) till 7,5 kWh/dygn (Woods TDR28FS). För räknaren: testets tal gäller bara om avfuktaren stängs av när tvätten är torr.
+- Standby: 0,3 W (KCC 16AJ), 0,4 W (Albert), 1,9 W (Canvac Qair D220).
+- Sidan: avfuktaren är effektivast "i hus med mekanisk ventilation" som återvinner värmen (frånluftsvärmepump eller FTX).
+- De testade modellerna finns inte i produktdatabasen (sökt i `src/content` 2026-09-30).
+
+Jämförelsen mellan torkmetoder, tabell 1 på samma sida, som den står. Samma tal i Energimyndighetens pressmeddelande "Bästa sättet att torka tvätt", 13 december 2017, https://www.mynewsdesk.com/se/statens_energimyndighet__stem/pressreleases/baesta-saettet-att-torka-tvaett-2326082 , där torktiden skrivs "2,33" osv. (timmar,minuter, inte decimaltimmar).
+
+| Metod | Kapacitet | Torktid | kWh/kg | Mer energi än värmepumpstumlare |
+|---|---|---|---|---|
+| Torktumlare med värmepump (A+ eller A++) | 7 kg | 2 h 33 min | 0,23 | – |
+| Kondenstorktumlare utan värmepump | 8 kg | 3 h 22 min | 0,27 | 17 % |
+| Luftavfuktare | 7 kg | 8 h 34 min | 0,32 | 39 % |
+| Torkskåp med värmepump | 4 kg | 2 h 2 min | 0,43 | 87 % |
+| Torkskåp med avfuktare | 3,5 kg | 4 h 2 min | 0,46 | 100 % |
+| Torkskåp med utblåskanal | 4 kg | 2 h 10 min | 0,82 | 257 % |
+
+- ER: värmepumpstumlare 0,23 × 7 = 1,6 kWh per 7 kg-omgång; luftavfuktare i snitt 0,32 × 7 = 2,3 kWh per omgång.
+- **Saknas:** vilka torktumlare och torkskåp som mättes (modeller), och om de fick tvätt med samma restfukt som avfuktarna. Tumlarna var A+/A++ på den gamla skalan, som inte används sedan 1 juli 2025 (se 14.3).
+- Sidan: "Torkskåp och luftavfuktare har inga ekodesignkrav och ingen energimärkning motsvarande det som finns för torktumlare."
+
+### 14.2 Restfukt efter centrifugering
+
+Ingen myndighet, tillverkare eller EU-text hittad som ger restfukt per varvtal (1 200 och 1 400 varv/min) som allmän tabell. Det som finns:
+
+**Regeln (R).** Kommissionens delegerade förordning (EU) 2019/2014 om energimärkning av tvättmaskiner, bilaga II tabell 3, antagen lydelse via legislation.gov.uk (EUR-Lex svarade inte, se 14.5): https://www.legislation.gov.uk/eur/2019/2014/annex/II/adopted
+
+| Centrifugeringseffektivitetsklass | Restfukt D (%) |
+|---|---|
+| A | D < 45 |
+| B | 45 ≤ D < 54 |
+| C | 54 ≤ D < 63 |
+| D | 63 ≤ D < 72 |
+| E | 72 ≤ D < 81 |
+| F | 81 ≤ D < 90 |
+| G | D ≥ 90 |
+
+- Mäts i eco 40-60 som viktat värde av full, halv och kvarts last (bilaga IV punkt 7, https://www.legislation.gov.uk/eur/2019/2014/annex/IV/adopted). Definition i bilaga I: "the amount of moisture contained in the load at the end of the washing cycle". **Osäkert:** förordningen säger inte ordagrant att procenten räknas på torr tvättvikt; det står i den harmoniserade standarden, som inte är läst.
+- Senare ändringar av 2019/2014 (bl.a. 2021/340) är inte lästa; tabellen är den antagna lydelsen.
+
+**Exempel ur EU:s produktregister EPREL (E).** Varvtal och viktad restfukt i eco 40-60 enligt leverantörens deklaration, läst ur EPREL:s API per modell 2026-09-30 (https://eprel.ec.europa.eu/api/products/washingmachines2019/[id]); svenska produktblad på https://eprel.ec.europa.eu/fiches/washingmachines2019/Fiche_[id]_SV.pdf
+
+| EPREL-id | Märke, modell | Kapacitet | Varv/min (eco 40-60) | Restfukt D | Klass |
+|---|---|---|---|---|---|
+| 1925521 | Electrolux EW6MS406B | 6 kg | 951 | 60,5 % | C |
+| 2482208 | LG F2X50S8TLB | 8 kg | 1 150 | 53,9 % | B |
+| 1579324 | Electrolux EW6SM227C | 7 kg | 1 151 | 53,6 % | B |
+| 2034958 | Candy TCA286TM5-S | 8 kg | 1 151 | 53,9 % | B |
+| 1245197 | AEG LR63XR844 | 8 kg | 1 351 | 53,4 % | B |
+| 1809662 | Bauknecht B8 99AD Silence EE | 9 kg | 1 351 | 53,0 % | B |
+| 2004242 | Bosch WUU28T71 | 8 kg | 1 400 | 53,0 % | B |
+| 1099239 | Haier HW90-B14939S8 | 9 kg | 1 400 | 53,8 % | B |
+| 2035601 | Miele WWB360 WPS | 8 kg | 1 400 | 53,9 % | B |
+| 1985924 | Bosch WGB256A41 | 10 kg | 1 600 | 43,5 % | A |
+
+- Iakttagelse, inte statistik (tio modeller, valda efter vad sökningen gav): modellerna mellan 1 150 och 1 400 varv ligger alla på 53–54 %, strax under gränsen till klass C. Märkningens tal följer klassgränsen mer än varvtalet, så EU-data skiljer inte 1 200 från 1 400 varv.
+- EPREL:s listsökning (API) svarar 403; ett snitt över alla modeller går inte att ta fram härifrån.
+
+**JRC (EU-kommissionens forskningscentrum), antagande (T).** Boyano m.fl., "Ecodesign and Energy Label for Household Washing machines and washer dryers", Preparatory study, Final report, EUR 28809 EN, 2017. https://www.eceee.org/static/media/uploads/site-2/ecodesign/products/domestic-washing-machines/jrc108604_20171117_wash_prepstudy(6).pdf (JRC:s egen adress svarade "Request Rejected"; eceee:s fil är samma rapport, 17 MB).
+
+- Basfallet för kombinerad tvätt-tork har max 1 400 varv; för tvätt som torkas på annat håll räknar rapporten "Moisture content must be decreased from 50% to 1%" (tabell 5.7). Förbättringsalternativet: "Residual moisture content of laundry decreases from 50 to 45%".
+- Tabell 4.10: vid tumling och torkning inomhus rekommenderas "as minimum 1,200-1,400 rpm"; klass A (< 45 %) "would need much less energy than a class B".
+- Rapporten citerar OCU (spansk konsumentorganisation), mars 2015: maskiner på 1 000 och 1 200 varv tar bort hälften av fukten, 1 400 varv 60 %. Andrahandsuppgift, originalet inte läst.
+
+**Inte använt** (butik, blogg eller forum om prestanda): Elon, Tretti, Coolblue, pro-witgoed, whitegoodshelp, tvattmaskin-info, byggahus. De anger för 1 200 varv "40–50 %" eller "cirka 53 %", för 1 400 varv "cirka 50 %" eller "44 %". Talen går isär.
+
+**Saknas:** Energimyndighetens eller Konsumentverkets egen uppgift om restfukt per varvtal. Råd & Rön (Konsumentverket) 2010 finns bara som kopia på docplayer.se och är inte läst.
+
+### 14.3 Torktumlarens energi enligt EU:s energimärkning
+
+**Skalan A+++ till D gäller inte längre för nya tumlare.** Delegerad förordning (EU) 2023/2534 upphäver (EU) nr 392/2012 (artikel 8) och tillämpas från 1 juli 2025 (artikel 10). Ny skala A–G. Enligt EU-kommissionen tillåter ekodesignförordningen (EU) 2023/2533 från 1 juli 2025 bara tumlare med värmepump (Energy Efficient Products, Tumble dryers, https://energy-efficient-products.ec.europa.eu/product-list/tumble-dryers_en , sidan daterad "4 June 2025"; nyhet 1 juli 2025, https://energy.ec.europa.eu/news/new-measures-more-energy-efficient-household-tumble-dryers-1-july-2025-07-01_en). 2023/2533 är inte läst i original.
+
+**Gällande märkning, (EU) 2023/2534** (svensk text, EUT L, 22.11.2023, via Publikationsbyrån: http://publications.europa.eu/resource/celex/32023R2534 ; formlerna är bilder och avlästa ur dem):
+
+- Eco-programmet: "ett program som kan torka bomullstvätt från en initial fukthalt i tvätten på 60 % ned till en slutlig fukthalt på 0 %" (artikel 2). Dellast = hälften av nominell kapacitet.
+- EEI = EtC ÷ SEC × 100 (bilaga IV 1 a).
+- SEC = 0,46 × c^0,63 kWh per cykel för tumlare som inte är frånluftstumlare; c = nominell kapacitet (bilaga IV 1 b i).
+- EtC = 0,24 × Edry + 0,76 × Edry½ (bilaga IV 1 c). Viktat mot halv last; inte energin för en full omgång.
+- Etiketten visar kWh per 100 cykler = EtC × 100, avrundat till heltal (bilaga IV 1 f).
+- Klasser (bilaga II tabell 1): A EEI ≤ 43; B 43 < EEI ≤ 50; C 50–60; D 60–70; E 70–85; F 85–100; G > 100.
+
+ER för 8 kg: SEC = 0,46 × 8^0,63 = 1,70 kWh. Klassgräns i EtC = EEI ÷ 100 × 1,70.
+
+| Klass | EtC högst (kWh per viktad cykel) | Etikett högst (kWh/100 cykler) |
+|---|---|---|
+| A | 0,73 | 73 |
+| B | 0,85 | 85 |
+| C | 1,02 | 102 |
+| D | 1,19 | 119 |
+| E | 1,45 | 145 |
+| F | 1,70 | 170 |
+
+**Osäkert:** delegerad förordning (EU) 2025/1353 (1 juli 2025) ändrar 2023/2534, bl.a. "clarifying some aspects of the measurement and calculation methods". Inte läst. Formlerna ovan är den ursprungliga lydelsen.
+
+**Den gamla skalan, (EU) nr 392/2012** (för tumlare köpta före juli 2025; antagen lydelse via legislation.gov.uk):
+
+- Standardbomullsprogrammet torkar från 60 % till 0 % fukthalt (artikel 2, https://www.legislation.gov.uk/eur/2012/392/article/2/adopted).
+- SAEc = 140 × c^0,8 kWh/år för tumlare som inte är frånluftstumlare; Et = (3 × Edry + 4 × Edry½) ÷ 7; 160 cykler per år; AEc räknar även med frånläge och kvarlämnat läge (bilaga VII, https://www.legislation.gov.uk/eur/2012/392/annex/VII/adopted). EEI jämför AEc med SAEc; formelbilden visas inte på sidan, EEI = AEc ÷ SAEc × 100 är alltså inte ordagrant avläst.
+- Klasser (bilaga VI tabell 1, https://www.legislation.gov.uk/eur/2012/392/annex/VI/adopted): A+++ EEI < 24; A++ 24–32; A+ 32–42; A 42–65; B 65–76; C 76–85; D ≥ 85.
+
+ER för 8 kg: SAEc = 140 × 8^0,8 = 738,9 kWh/år. Gräns i Et ≈ EEI ÷ 100 × SAEc ÷ 160, utan frånläge och kvarlämnat läge, så verkligt Et blir något lägre.
+
+| Klass | AEc högst (kWh/år) | Et högst ungefär (kWh per viktad cykel) |
+|---|---|---|
+| A+++ | 177 | 1,11 |
+| A++ | 236 | 1,48 |
+| A+ | 310 | 1,94 |
+| A | 480 | 3,00 |
+| B | 562 | 3,51 |
+
+**Uppmätta snitt (M, EU-kommissionen, Energy Efficient Products-sidan ovan):** "In 2020, heat pump dryers consumed 1.0 kWh/cycle, compared to 2.7 kWh/cycle for vented electric dryers and condenser dryers with electric heating element." Sålda tumlare 2020 i snitt 150 kWh/år, "1.4 kWh per cycle". EU:s tumlare 2020: 107 cykler per år, 2,3 kg tvätt per vecka och hushåll. **Saknas:** kapacitet och last bakom 1,0 och 2,7 kWh/cykel.
+
+**Saknas:** kWh för en full 8 kg-omgång per klass. Det står bara i varje modells produktblad (Edry). Inget produktblad för tumlare är hämtat.
+
+### 14.4 Det räknaren inte kan påstå
+
+- Testet 2017 och EU-märkningen mäter inte under samma villkor: märkningen utgår från 60 % restfukt, testet anger ingen. Att ställa Energimyndighetens 0,32 kWh/kg för avfuktare mot en märkt tumlares kWh per kg är egen räkning över två metoder.
+- Energimyndighetens jämförelse (0,23 mot 0,32 kWh/kg) är den enda källan som mäter avfuktare och tumlare sida vid sida. Den väger tyngst för förvalen. Märkningens tal är för den som vill räkna på sin egen tumlare.
+- Ingen källa för hur avfuktarens energi ändras med rummets temperatur och RF vid tvättorkning.
+- Att avfuktarens värme stannar i huset nämner sidan bara för hus med återvinnande ventilation. Inget tal.
+
+### 14.5 Lästa och inte nådda
+
+- EUR-Lex (eur-lex.europa.eu), alla adresser: HTTP 202 med tomt svar. Ersatt med Publikationsbyrån (2023/2534, officiell svensk text) och legislation.gov.uk (392/2012 och 2019/2014, "the original version as it was originally adopted in the EU").
+- JRC:s publikationsarkiv: "Request Rejected". Rapporten hämtad från eceee.org.
+- Energimyndighetens sida om energimärkning av torktumlare (…/produkter-med-energimarkning/torktumlare/): 404.
+- EPREL listsökning: 403. Enskilda modeller gick att läsa.
+
+### 14.6 Källor (kallor-format)
+
+```yaml
+kallor:
+  - titel: Energimyndigheten, Luftavfuktare torka tvätt (senast uppdaterad 2017-12-11)
+    url: https://www.energimyndigheten.se/effektiv-energianvandning/tester/tester-a-o/luftavfuktare-torka-tvatt/
+  - titel: Energimyndigheten, Bästa sättet att torka tvätt, pressmeddelande 13 december 2017
+    url: https://www.mynewsdesk.com/se/statens_energimyndighet__stem/pressreleases/baesta-saettet-att-torka-tvaett-2326082
+  - titel: Kommissionens delegerade förordning (EU) 2023/2534 om energimärkning av torktumlare för hushållsbruk
+    url: http://publications.europa.eu/resource/celex/32023R2534
+  - titel: Kommissionens delegerade förordning (EU) nr 392/2012, bilaga VI och VII (antagen lydelse)
+    url: https://www.legislation.gov.uk/eur/2012/392/annex/VI/adopted
+  - titel: Kommissionens delegerade förordning (EU) 2019/2014, bilaga II och IV (antagen lydelse)
+    url: https://www.legislation.gov.uk/eur/2019/2014/annex/II/adopted
+  - titel: Europeiska kommissionen, Energy Efficient Products, Tumble dryers
+    url: https://energy-efficient-products.ec.europa.eu/product-list/tumble-dryers_en
+  - titel: Europeiska kommissionen, New measures for more energy efficient household tumble dryers from 1 July (1 juli 2025)
+    url: https://energy.ec.europa.eu/news/new-measures-more-energy-efficient-household-tumble-dryers-1-july-2025-07-01_en
+  - titel: EPREL, produktblad tvättmaskin Bosch WUU28T71 (exempel)
+    url: https://eprel.ec.europa.eu/fiches/washingmachines2019/Fiche_2004242_SV.pdf
+  - titel: Boyano m.fl., JRC, Ecodesign and Energy Label for Household Washing machines and washer dryers, EUR 28809 EN, 2017
+    url: https://www.eceee.org/static/media/uploads/site-2/ecodesign/products/domestic-washing-machines/jrc108604_20171117_wash_prepstudy(6).pdf
+```
