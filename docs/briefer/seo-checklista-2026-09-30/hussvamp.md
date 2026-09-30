@@ -112,3 +112,31 @@ Det ettan har som vi måste behålla eller överträffa: saneringens steg i öve
 - **Firmornas tillväxttal** (mm per dygn) står bara med källa och märkt som firmans uppgift.
 - **Inget råd om att riva eller behandla själv** före prov och försäkringsbolag.
 - **Inga hälsopåståenden** utan myndighet.
+
+---
+
+## Kontroll efter skrivningen, 2026-09-30
+
+SEO och GEO-agenten har läst `src/content/kunskap/fukt/hussvamp.mdx` (utkast, cirka 1 900 ord med Faq) mot punkt 1 till 12. **Godkänd av SEO och GEO.**
+
+- **Metadata.** Title "Äkta hussvamp, tecknen och försäkringen" har 39 tecken och description 144. H1 är "Bara ett prov kan säga om det är äkta hussvamp". Bilden finns än så länge bara som kommentar. När bilden kommer ska `bildAlt` (103 tecken, med "hussvamp") stå med.
+- **Hantverkarens avvikelser är godkända.**
+  - Fuktavsnittet står sist, eftersom läsaren först behöver veta vad hon ser och vad hon ska göra.
+  - Försäkringsrubriken är "Hussvampsförsäkringen betalar bara när arten är bestämd".
+  - Sidan har ingen Faq om hälsa, eftersom ingen myndighet är källa.
+  - "Vit hussvamp" förklaras som ett namn utan egen art. Det är bättre än att ge den en egen rad i tabellen.
+- **Bättre än ettan 1 till 4 är uppfyllda.**
+  - Jämförelsetabellen har fyra rader och en kolumn för försäkringen.
+  - TräGuidens gränser står i en egen tabell, med Botaniska Analysgruppens tal för just hussvampen.
+  - Försäkringstabellen har fyra bolag och villkorsdatum.
+  - Stegen vid misstanke säger att man ringer försäkringsbolaget före provet.
+- **Länkarna ut** går till krypgrunden, källaren, vinden och hygrometern. Fuktkvoten och fuktmätaren länkas i omgång C.
+
+### Inlänkar
+
+Regeln kräver två, och båda finns:
+
+1. `src/content/guider/fukt/fukt-i-krypgrund.mdx`, H2 "Det här betalar villaförsäkringen för" (rad 193), med ankaret "hur du känner igen äkta hussvamp och vad bolagen kräver". Den läggs nu.
+2. `src/content/guider/fukt/fukt-pa-vinden.mdx`, H2 "Tecknen syns på undersidan av yttertaket" (rad 87), där röta i sponten nämns.
+
+En tredje är valfri: `src/content/guider/fukt/fukt-i-kallaren.mdx`, H2 "Lukt i källaren kommer före fläcken", om stycket nämner röta i trä. Ankaret blir då "bruna kuber i träet kan vara äkta hussvamp".

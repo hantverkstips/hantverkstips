@@ -111,3 +111,36 @@ Det ettan har som vi måste behålla eller överträffa: yta och storlek per mod
 - **Trygghetsvakten** får ingen butikslänk om Proffsmagasinet inte säljer den, och den beskrivs som styrd ventilation, inte som avfuktare i teknisk mening.
 - **Orsaken till fukten på vinden** ägs av `/fukt/fukt-pa-vinden/`. Här står en sammanfattning med länk.
 - Inget "bäst", "test", "mätt" eller "testvinnare". Etiketterna följer uppgiften, som på `/luftavfuktare/`.
+
+---
+
+## Kontroll efter skrivningen, 2026-09-30
+
+SEO och GEO-agenten har läst `src/content/guider/fukt/avfuktare-vind.mdx` (utkast, cirka 2 600 ord brödtext med tabeller) mot punkt 1 till 12. **Godkänd av SEO och GEO.**
+
+**Hantverkarens avvikelser är alla godkända:**
+
+- **H1** är "Vilken avfuktare kallvinden behöver och hur stor den ska vara". "vindsavfuktare" står i första stycket i stället för i H1, och det räcker för sidofrasen. H1 delar inte de tre första orden med title.
+- **Title och description.** Title är "Avfuktare på vinden, sorption eller fläkt" (41 tecken) och följer 12.8. Description har 150 tecken. Varken "bäst" eller "test" förekommer.
+- **Elen räknad per liter** (RCF 12: 665 W, 6,7 liter per dygn vid 0 °C, cirka 2,4 kWh per liter, 740 till 1 520 kWh från oktober till mars för 150 m³). Det är bättre än kravet i punkt 11.4, eftersom kostnaden följer vattnet och inte gångtiden. Länken till elkostnadsräknaren med `?produkt=fresh-d800` godkänns som delbar adress.
+- **Storlekstabellen** bygger på egna antaganden om luftbyten (0,5 och 1 med tätad takfot, 2,75 med öppen enligt Harderup, LTH). Antagandena är redovisade, och det är just det som gör kubikmetermåttet bättre än butikernas kvadratmeter.
+- **Inget verktygskort till avfuktarräknaren**, eftersom den inte räknar vinden. Rätt beslut: ett kort till en räknare som ger fel svar för platsen vore sämre än inget.
+- **Extra länk till `/tak/takfot/`.** Godkänd, eftersom takfoten avgör luftbytet.
+- **Styrd ventilation som likvärdigt val när elen ska hållas nere.** Godkänt. Trygghetsvakten beskrivs som styrd ventilation utan kort och utan butikslänk, och sidan förklarar varför EvoDry 6H 2.0 inte är med.
+
+**Bättre än ettan 1 till 4 är uppfyllda:**
+
+1. Typerna står med temperaturgränsen och källa.
+2. Dimensioneringen görs i m³ och luftbyten, med antagandena utskrivna.
+3. Installationen vid gaveln har tillverkarnas anvisning.
+4. El och pris står per år med formel och datum.
+
+**Övrigt stämmer:** sidan har fyra produktkort med etiketter som anger uppgiften, alltså köpguide och inte problemguide. Reklambandet sätts av layouten. Sidan länkar ut till vindens fuktsida, räknaren med `rum=vind`, sorptionen, takfoten, krypgrundsguiden, kategorisidan och elkostnaden.
+
+### Inlänkar
+
+1. **`src/content/kategorier/luftavfuktare.md`, "Så väljer du"**, stycket som börjar "Är utrymmet en krypgrund dimensionerar du efter golvytan" (rad 70). Lägg in en mening om kallvinden efter meningen om krypgrunden. Ankaret är till exempel "avfuktare på kallvinden" → `/fukt/avfuktare-vind/`. Det fullgör punkt 9 i `luftavfuktare-metadata.md`.
+2. **`src/content/guider/fukt/fukt-pa-vinden.mdx`, H2 "En avfuktare kommer efter tätningen"**. Byt MDX-kommentaren på rad 157 mot en länk i stycket ovanför (rad 155), efter meningen som länkar till sorptionsavfuktaren. Ankaret är till exempel "vilken sorptionsavfuktare vinden behöver och hur stor den ska vara" → `/fukt/avfuktare-vind/`. Länken till `/fukt/sorptionsavfuktare/` står kvar.
+3. **`src/content/guider/el/tillaggsisolera-vind.mdx`, H2 "En kallare vind är en fuktigare vind, och det är väntat"**, stycket som börjar "Det är inget skäl att låta bli". Lägg in en mening om att en vind som fortfarande är för fuktig efter tätningen kan behöva en maskin. Ankaret är till exempel "en avfuktare som klarar kallvinden" → `/fukt/avfuktare-vind/`. H2:n "Ventilationen ska vara kvar som den är" rörs inte.
+
+Alla tre läggs i samma commit som `avfuktare-vind.mdx` får `utkast: false`, så att kontrollen inte flaggar länkar till ett utkast.

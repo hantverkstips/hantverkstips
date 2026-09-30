@@ -476,7 +476,7 @@ function arTillatetDokument(url: string): boolean {
   } catch {
     return false;
   }
-  const vard = u.hostname.toLowerCase().replace(/.$/, "");
+  const vard = u.hostname.toLowerCase().replace(/\.$/, "");
   const sokvag = u.pathname.toLowerCase();
   const pdf = sokvag.endsWith(".pdf");
   const viaAssetDownload = sokvag.startsWith("/api/asset-download");

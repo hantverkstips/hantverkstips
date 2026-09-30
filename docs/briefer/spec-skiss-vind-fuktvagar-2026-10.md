@@ -48,4 +48,17 @@ Caveat 500, 24 px, högst 60 tecken. Orden tas ur hantverkarens kommentar:
 
 ## 6. Godkännande
 
-Ej ritad.
+Godkänd av UX och bygge 2026-09-30.
+
+## 7. Hantverkarens rapport, 2026-09-30 (gäller före avsnitt 1, 3 och 4)
+
+Kommentaren står vid `bild:` i `src/content/guider/fukt/fukt-pa-vinden.mdx`.
+
+- **Tre vägar.** Den första är inneluft genom vindsluckan och runt ett elrör i bjälklaget, i penna. Den andra är uteluft in vid takfoten och ut genom **gavelventilen**, inte vid nocken; gavelventilen ritas som ett litet galler i den bortre gaveln, synligt genom snittet. Den tredje är utstrålningen mot en klar natthimmel, med rimfrost under råsponten.
+- **Bjälklagets isolering** ritas som ett skrafferat band med en måttbygel. Hela taket syns ändå, så bilden förblir en helhetsbild.
+- **Etiketterna, ordagrant och inga andra:**
+  - V1 "ute 0 °C och 95 %" på tumstock, uppe till vänster under himlen.
+  - T1 "400 mm" vid måttbygeln över isoleringen, i blyerts-2.
+  - T2 "daggpunkt −0,7 °C" vid rimfrosten, i blyerts, med ledare.
+- Talen har källa: SP (GT K3) och den egna räkningen i GT K20. 400 mm kommer från LTH:s mätvind (K8).
+- `aria-label` är bildAlt, ordagrant.

@@ -56,4 +56,15 @@ Caveat 500, 24 px, högst 55 tecken. Orden tas ur hantverkarens kommentar:
 
 ## 5. Godkännande
 
-Ej ritad.
+Godkänd av UX och bygge 2026-09-30.
+
+## 6. Hantverkarens rapport, 2026-09-30 (gäller före avsnitt 1–3)
+
+Kommentaren står vid `bild:` i `src/content/kunskap/fukt/hussvamp.mdx`.
+
+- **Sidorna byter plats.** **Vänster:** syllen med kubisk brunröta, sprickor på längden och tvären, och grå mycelsträngar i penna ner över grundmuren mot nästa träbit. Den träbiten är en kort bit trä, till exempel en regel, nere till höger om muren. **Höger:** en bräda med mögelprickar bara på ytan och helt trä under.
+- **Etiketterna, ordagrant och inga andra:**
+  - T1 "fuktkvot över 30 %" vid syllen, med tumstock bakom "30 %".
+  - T2 "75–80 % RF" vid den möglade brädan, i blyerts-2.
+- Källan är TräGuiden i GT (T24 och T2).
+- `aria-label` är bildAlt, ordagrant.

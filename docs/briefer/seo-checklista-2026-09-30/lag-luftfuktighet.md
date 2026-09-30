@@ -111,3 +111,26 @@ Det ettan har som vi måste behålla eller överträffa: symtomen på torr luft 
 - **Luftfuktighet per rum** ägs av `/fukt/luftfuktighet-inomhus/`, **kalibrering** av `/fukt/hygrometer/` och **kondensen** av `/fukt/kondens-pa-fonster/`. Här står sammanfattningar med länk.
 - **Corona, virus och syreupptag** står inte på sidan.
 - **Elkostnaden** ägs av `/rakna/elkostnad/`.
+
+---
+
+## Kontroll efter skrivningen, 2026-09-30
+
+SEO och GEO-agenten har läst `src/content/kunskap/fukt/lag-luftfuktighet.mdx` (utkast, cirka 1 750 ord) mot punkt 1 till 12. **Godkänd av SEO och GEO.**
+
+- **Metadata.** Title "Luftfuktare, behövs den på vintern?" har 35 tecken, description 145 och bildAlt 113, med "luftfuktare". H1 "Låg luftfuktighet inomhus på vintern behöver sällan en luftfuktare" bär den viktigaste sidofrasen och börjar inte som title. Inget att ändra.
+- **"låg luftfuktighet symptom"** står som rubriken "Tecknen på för torr luft". Godkänt.
+- **Kortsvaret** har TräGuidens 10 till 25 procent, Folkhälsomyndighetens 45 procent vid 21 grader och varningen för kondens, med källorna i stycket.
+- **Bättre än ettan 1 till 4 är uppfyllda.**
+  - Kondensvarningen står med `<Kalkylator namn="daggpunkt" forval="rum=sovrum" />` och en textlänk till samma förval. Textlänken är godkänd, eftersom den är en delbar adress och inte ett andra verktygskort.
+  - Taket har en myndighet som källa.
+  - Vattenbehovet för sovrummet är uträknat.
+  - Typerna står i en tabell.
+- **Inga produkter, inga `/go/`-länkar och inget "bäst i test".** Länkarna ut går till luftfuktigheten, hygrometern, kondensen och räknaren. Länken till elkostnadens förval för luftfuktaren läggs in när B0 finns.
+
+### Inlänkar
+
+Inlänken från luftfuktighetssidan finns redan. Två läggs till:
+
+1. **`src/content/guider/fukt/kondens-pa-fonster.mdx`, H2 "Kondens i sovrummet efter en natt med stängd dörr"**, efter den numrerade listan och före stycket "Häng sedan en hygrometer i sovrummet". En mening med ankaret "en luftfuktare i sovrummet ger mer imma, inte mindre" → `/fukt/lag-luftfuktighet/`.
+2. **`src/content/kunskap/fukt/hygrometer.mdx`, H2 "Vad talet på displayen säger om huset"**, första stycket, som börjar "På vintern är låga tal normala i ett uppvärmt hus". Ankaret är till exempel "när låga tal på vintern behöver en luftfuktare" → `/fukt/lag-luftfuktighet/`.

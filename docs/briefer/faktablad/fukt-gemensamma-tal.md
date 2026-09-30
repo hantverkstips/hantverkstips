@@ -59,8 +59,8 @@ Kolumnen "Så skriver sidan" är den formulering i sak som alla sidor ska hålla
 | T43 | 0,35 l/s per m² golvarea | Minsta uteluftsflöde, bostad | BFS 2024:8 3 kap. 5 § (krav vid byggande); FoHMFS 2014:18 (allmänt råd, befintliga) | 2026-09-30 |
 | T44 | 4,0 l/s per person | Minsta uteluftsflöde per rum i bostad | BFS 2024:8 3 kap. 5 § | 2026-09-30 |
 | T45 | 1 000 ppm CO₂ | Över detta tyder på otillräcklig ventilation | Folkhälsomyndigheten, Vägledning om ventilation | 2026-09-30, UTDRAG |
-| T46 | 0,5 luftomsättningar/h | 0,35 l/s per m² × 3,6 / 2,5 m takhöjd | **EGEN**, formel i 7.3 | – |
-| T47 | 200 Bq/m³ | Referensnivå för radon i bostäder, allmänna lokaler och arbetsplatser, årlig genomsnittlig aktivitetskoncentration | Strålskyddsförordningen (2018:506) 3 kap. 6 § | 2026-09-30 |
+| T46 | 0,5 luftomsättningar/h | I bostäder bör luftomsättningen inte understiga 0,5 rumsvolymer per timme (samma som 0,35 l/s per m² × 3,6 / 2,5 m takhöjd, formel i 7.3) | Folkhälsomyndigheten, FoHMFS 2014:18 (PDF), tillagt 2026-09-30 ur `kunskap-lag-luftfuktighet.md` 1.3; tidigare **EGEN** | 2026-09-30 |
+| T47 | 200 Bq/m³ | Referensnivå för radon i bostäder, allmänna lokaler och arbetsplatser, årlig genomsnittlig aktivitetskoncentration. Skyldigheten att åtgärda står inte här utan i strålskyddslagen (2018:396) 3 kap. 6 §: fastighetsägaren "ska" hålla halten så låg som möjligt och rimligt | Strålskyddsförordningen (2018:506) 3 kap. 6 §, kontrollerad ordagrant i riksdagens text t.o.m. SFS 2026:1336; lagen t.o.m. SFS 2026:1590 (`kunskap-radon.md` 2.1–2.2) | 2026-09-30 |
 | T48 | 200 Bq/m³ | Gränsvärde (årsmedelvärde) i nya byggnader, utrymmen där människor vistas mer än tillfälligt | BFS 2024:8 3 kap. 2 § | 2026-09-30 |
 | T49 | 100 Bq/l / 1 000 Bq/l | Radon i dricksvatten, allmän vattentäkt (gränsvärde, LIVSFS 2022:12) / egen brunn (otjänligt) | SSM, Referensnivå och gränsvärden | 2026-09-30 |
 | T50 | minst två månader, 1 oktober–30 april | Radonmätning i bostad, långtidsmätning | SSM, Att mäta radon; Radon i småhus | 2026-09-30 |
@@ -70,7 +70,7 @@ Kolumnen "Så skriver sidan" är den formulering i sak som alla sidor ska hålla
 | T54 | ca 100 Bq/m³ | Medelhalten i svenska bostäder | samma | 2026-09-30 |
 | T55 | 1929–1975 | Blåbetong tillverkades | SSM, Radonkällor i inomhusluften; Blåbetong (fråga och svar) | 2026-09-30 |
 | T56 | 5 000–200 000 Bq/m³ | Typisk radonhalt i markluften | SSM, Radonkällor | 2026-09-30 |
-| T57 | ca 400 000 bostäder | Bostäder i Sverige över referensnivån ("drygt/uppemot" ej säkerställt, se 8.5) | SSM, Radon i småhus | 2026-09-30 |
+| T57 | närmare 400 000 bostäder | Bostäder i Sverige över referensnivån. Ordet är "närmare", ordagrant på SSM:s Radon i småhus och Att mäta radon (båda uppdaterade 2026-09-04), rättat 2026-09-30 ur `kunskap-radon.md` avsnitt 3 | SSM, Radon i småhus | 2026-09-30 |
 
 57 tal. Avvikelser på befintliga sidor: avsnitt 10.
 
@@ -348,7 +348,8 @@ Tabell 2 i Mikroorganismer, "Ungefärliga fuktkvoter vid 20 °C för olika värd
 
 ### 8.1 Författningarna, ordagrant
 
-- **Strålskyddsförordningen (2018:506) 3 kap. 6 §**: "Referensnivån för radon är 200 becquerel per kubikmeter luft inomhus i bostäder, lokaler som allmänheten har tillträde till och på arbetsplatser, uttryckt som årlig genomsnittlig aktivitetskoncentration." <https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/stralskyddsforordning-2018506_sfs-2018-506/>, t.o.m. SFS 2026:1336, läst 2026-09-30 (UTDRAG; paragrafnumret och lydelsen bör ögonkontrolleras i riksdagens text innan de citeras på sidan).
+- **Strålskyddsförordningen (2018:506) 3 kap. 6 §**: "Referensnivån för radon är 200 becquerel per kubikmeter luft inomhus i bostäder, lokaler som allmänheten har tillträde till och på arbetsplatser, uttryckt som årlig genomsnittlig aktivitetskoncentration." <https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/stralskyddsforordning-2018506_sfs-2018-506/>, t.o.m. SFS 2026:1336, läst 2026-09-30. Paragrafnumret och lydelsen är kontrollerade ordagrant i riksdagens text 2026-09-30 (`kunskap-radon.md` 2.1); UTDRAG-märkningen är borttagen.
+- **Strålskyddslagen (2018:396) 3 kap. 6 §**: "I fråga om lokaler som allmänheten har tillträde till och i fråga om bostäder ska fastighetsägaren optimera strålskyddet genom att vidta åtgärder så att radonhalten hålls så låg som det är möjligt och rimligt." <https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/stralskyddslag-2018396_sfs-2018-396/>, t.o.m. SFS 2026:1590, läst 2026-09-30. Obs: både lagen och förordningen har en 3 kap. 6 §; förordningen ger nivån, lagen plikten.
 - **BFS 2024:8 3 kap. 2 §**: "Årsmedelvärdet av aktivitetskoncentrationen av radon i luften får inte överstiga 200 Bq/m3 i utrymmen där människor vistas mer än tillfälligt." (adress i 1.1, ordagrant ur PDF-texten, läst 2026-09-30)
 - Skillnaden: **referensnivå** för befintliga bostäder (bör åtgärdas över), **gränsvärde** för nya byggnader (får inte överstigas). "Gränsvärde" om ett befintligt hus är fel ord.
 
@@ -396,7 +397,7 @@ SSM, "Radonkällor i inomhusluften", <https://www.stralsakerhetsmyndigheten.se/o
 - "Om miljödosekvivalentraten är över 0,3 µSv/h intill en vägg är det troligt att väggen är av blåbetong".
 - "Enbart byggnadsmaterialet ger inte upphov till några riktigt höga radonhalter, i praktiken aldrig över 1000 Bq/m3".
 - Hushållsvatten: "om radonhalten i vattnet är 1000 Bq/l ger det upphov till en radonhalt på cirka 100 Bq/m3 i inomhusluften."
-- Radon i småhus (8.3): "…uppemot/drygt 400 000 bostäder i Sverige som har en radonhalt över referensnivån" (ordet före talet klipptes i utdraget; läs om innan talet används).
+- Radon i småhus (8.3), ordagrant läst 2026-09-30: "Strålsäkerhetsmyndigheten uppskattar att det finns närmare 400 000 bostäder i Sverige som har en radonhalt över referensnivån." (`kunskap-radon.md` avsnitt 3)
 
 ### 8.6 Det som inte upprepas
 

@@ -47,4 +47,19 @@ Caveat 500, 24 px, högst 60 tecken. Orden tas ur hantverkarens kommentar. Här 
 
 ## 5. Godkännande
 
-Ej ritad.
+Godkänd av UX och bygge 2026-09-30.
+
+## 6. Koordinatorns och hantverkarens beställning, 2026-09-30 (gäller före avsnitt 1–3)
+
+Alt och bildtext står i frontmatter i `src/content/kunskap/fukt/radon.mdx`. Beställningen kom via koordinatorn.
+
+- **Tvåplanshus med platta på mark.** Pilarna i penna går genom en spricka i plattan. Genomföringen tas bort, så att det blir en sak som pekar.
+- **Vattnet** kommer från en brunn med en droppe, i blyerts-2: en brunn i marken bredvid huset, med rör in i huset. Kranen tas bort.
+- **Dosorna.** Fyra dosor, två per plan i två olika rum. Vid en av dem på bottenvåningen står två måttbyglar i blyerts-2: "30 cm" till väggen och "1,5 m" till fönstret. Fönstret ritas i det rummet.
+- **Etiketterna, ordagrant och inga andra:**
+  - "blåbetong 1929–1975" vid väggen, i blyerts. Tankstreck i årtalsspannet, som i GT 8.5.
+  - "30 cm" och "1,5 m" vid byglarna.
+  - "200 Bq/m³" på tumstock.
+- **Huset får inte likna** huset på luftfuktighetssidan, `src/assets/illustrationer-kallor/fukt/luftfuktighet-rum.svg`. Titta på den och välj en annan takform, andra proportioner och en annan rumsindelning.
+- Publicerad fil under 28 672 byte.
+- `aria-label` är bildAlt, ordagrant.

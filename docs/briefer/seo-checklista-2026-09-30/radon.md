@@ -104,6 +104,7 @@ Det ettan har som vi måste behålla eller överträffa: marken och blåbetongen
 - **SSM:s metodbeskrivning för bostäder** (PDF, gäller från 1 oktober 2026). Den gick inte att läsa i det gemensamma faktabladet (8.3) och måste läsas nu: mättid, antal mätpunkter, krav på instrument (högst 20 procent osäkerhet vid 200 Bq/m³ enligt affiliatebeslutet) och kalibrering.
 - Kontrollera strålskyddsförordningens 3 kap. 6 § ordagrant i riksdagens text (utdrag i 8.1). Läs om SSM:s "400 000 bostäder" ordagrant, eller låt bli att använda talet.
 - Priser med datum från minst tre: Anticimex (795 och 1 490 kr), Radonova (läs om, gav 429), Svensk Energideklaration eller ett laboratorium. Kontrollera vilka som är Swedac-ackrediterade, med Swedacs register som källa.
+  - **Anmärkning från hantverkaren 2026-09-30** (`faktablad/kunskap-radon.md` 4.2–4.3): Anticimex 1 490 kr gäller **korttidsmätning**, inte långtidsmätning; långtidsmätningen kostar 795 kr med två dosor, och webbshoppen tar 1 395 kr för korttidsmätningen. "Radonova 429" var HTTP-felkoden 429 (Too Many Requests), inget pris.
 - Digital mätare: tillverkarens datablad för minst en (noggrannhet, kalibrering) och om SSM godtar den för årsmedelvärde.
 - Radon som dolt fel vid husköp: en källa som inte är en advokatbyrå eller firma, eller skriv det utan tal.
 - Boverkets "Vad är radon?" (oläst 2026-09-30).
@@ -116,3 +117,22 @@ Det ettan har som vi måste behålla eller överträffa: marken och blåbetongen
 - **Hälsan bara med SSM som källa.** Inga påståenden om symtom.
 - **"radonsug", "radonsanering" och "radon åtgärder"** ägs av `/fukt/radonsug/`. Här står de inte i title, H1 eller H2.
 - **WHO:s 100 Bq/m³** får bara stå om faktabladet har WHO:s egen källa.
+
+---
+
+## Kontroll efter skrivningen, 2026-09-30
+
+SEO och GEO-agenten har läst `src/content/kunskap/fukt/radon.mdx` (utkast, cirka 2 230 ord) mot punkt 1 till 12. **Godkänd av SEO och GEO.**
+
+- **Metadata.** Title "Radon i huset, gränsvärdet och mätningen" har 40 tecken, description 143 och bildAlt 115, med "radon". H1 "Du vet inte om huset har radon förrän du har mätt" börjar inte som title. Inget att ändra.
+- **Hantverkarens avvikelser är godkända.** H2:n "Gränsvärde och referensnivå för radon" bär "radon gränsvärde". "radonmätning hur ofta" står bara i brödtexten, "radon lukt" och "radon källare" står i Faq, och hälsan bygger bara på SSM.
+- **Bättre än ettan 1 till 5 är uppfyllda.** Nivåtabellen har rätt ord och författning, och sidan rättar "riktvärde" och "Folkhälsomyndighetens rekommendation". Sidan har SSM:s mätregel ur metodbeskrivningen, en daterad pristabell med fyra säljare (30 september 2026), spårfilm jämförd med digital mätare och SSM:s tal för hälsan.
+- **Rättelse av min checklista.** Anticimex 1 490 kr gällde korttidsmätning, och "Radonova 429" var en HTTP-kod, inte ett pris. Sidans 1 395 kr för korttidsmätning i Anticimex webbshop gäller.
+- **Metodbeskrivningen i `kallor`.** Adressen som står där, `/globalassets/publikationer/metodbeskrivning--matning-av-radon-i-bostader.pdf`, är den som SSM:s egna sidor länkar till, och den svarar 200 med en PDF (kontrollerat 2026-09-30). Den står kvar. `/contentassets/…`-adressen gav en inloggningssida och används inte.
+- **Airthings Wave Plus** nämns som tillverkarens uppgift om noggrannhet, utan länk. Det är godkänt för SEO. En länk eller ett kort avgör affiliate, men affiliatebeslutet 2026-09-30 var inga kort på radonsidan.
+- **Länkarna ut** går till källaren, hygrometern och luftfuktigheten. Radonsugen länkas i omgång E.
+
+### Inlänkar
+
+1. **`src/content/guider/fukt/fukt-i-kallaren.mdx`, H2 "Här slutar jag själv och ringer"**, i rutan `<Varning rubrik="Radon syns inte på plasten">`. Sista meningen börjar "Ska du ändå öppna golvet eller täta mot grunden, mät ra…". Ankaret läggs på själva uppmaningen att mäta, till exempel "mät radonhalten först" → `/fukt/radon/`.
+2. **`src/pages/rakna/kallare.astro`, stycket "Radon syns varken på plasten eller på hygrometern"** (rad 621–622). Lägg till en mening med länk, till exempel "Hur du mäter radon och vad 200 becquerel betyder" → `/fukt/radon/`, med `LANK_KLASS`. Filen är .astro, så UX eller utvecklaren lägger in den. Källraden `stod` på rad 284 står kvar utan länk.

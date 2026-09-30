@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Kall vind i genomskärning med tre vägar för fukt: inneluft genom vindsluckan, uteluft vid takfoten och rimfrost under taket.">
+  <!-- Anteckningsboken, samma hand som kallras.svg. Hela sadeltaket sett från gaveln, med rummet under,
+       inte en takfot i närbild och inte ett snitt genom bjälklaget (el/vind-takfot, el/vind-bjalklag, tak/takfot-snitt).
+       Blyerts 2 px för tak, råspont (dubbellinje), bjälklag, väggar, lucka, elrör, gavelventil och rimfrostens kors.
+       Blyerts-2 för isolerbandets kant och skraffering, himlen, uteluften in vid takfötterna och ut genom
+       gavelventilen, utstrålningen, måttbygeln och ledaren. Snickarpenna bara för inneluften genom luckan och
+       runt elröret (enda pennsaken). Tumstock bakom uteluftens tal. Inte skalenlig.
+       Råspontens undersida: vänster y = 332 − x, höger y = x − 268. Spec: spec-skiss-vind-fuktvagar-2026-10.md avsnitt 7.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2 1,25: isolerbandets skraffering -->
+  <path d="M148,248 l10,-10 M192,248 l10,-10 M214,248 l10,-10 M304,248 l10,-10 M326,248 l10,-10 M348,248 l10,-10 M370,248 l10,-10 M392,248 l10,-10 M414,248 l10,-10 M436,248 l10,-10 M124,248 l7,-7 M470,248 l7,-7" fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round"/>
+
+  <!-- Blyerts-2 1,5: isolerbandets kant, himlen, uteluften, utstrålningen, måttbygeln -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M108,250 Q122,238 140,228 Q155,227.6 171,228 M179,228 Q212,227.6 246,228 M300,228 Q380,227.5 460,228 Q478,238 492,250"/>
+    <path d="M118,24 V40 M110,32 H126 M112,26 L124,38 M124,26 L112,38 M496,56 V70 M489,63 H503 M491,58 L501,68 M501,58 L491,68 M548,20 Q574,40 552,62"/>
+    <path d="M58,282 Q90,252 122,220 M110,221 L122,220 L119,232 M542,282 Q510,252 478,220 M490,221 L478,220 L481,232 M258,114 Q268,98 280,82 M270,86 L280,82 L281,93"/>
+    <path d="M372,84 Q380,80 378,72 T386,60 T394,50 T404,40 M394,39 L405,39 L404,50 M456,168 Q464,164 462,156 T470,144 T478,134 T488,124 M478,123 L489,123 L488,134"/>
+    <path d="M449,228 H461 M449,250 H461 M455,229 Q455.4,239 455,249"/>
+  </g>
+
+  <!-- Blyerts-2 1,25: ledaren till rimfrosten -->
+  <path d="M380,145 L399,142" fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round"/>
+
+  <!-- Blyerts: taket med råsponten, bjälklaget, väggar, golv, lucka, elrör med lampa, gavelventil, rimfrost -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M63,256 Q182,136.5 303,16 M297,16 Q418,136.5 537,256 M66,253 V266 M534,253 V266"/>
+    <path d="M68,258 Q183,142.5 300,26 Q417,142.5 532,258 M68,264 Q183,148.5 300,32 Q417,148.5 532,264"/>
+    <path d="M99,250 Q172,249.4 246,250 M300,250 Q400,249.4 501,250 M99,257 Q172,257.6 246,257 M300,257 Q400,257.6 501,257 M246,226 V259 M300,226 V259 M251,254 Q273,253.6 295,254"/>
+    <path d="M100,255 Q99,297 100,339 M500,255 Q501,297 500,339 M94,336 Q300,337.5 506,336"/>
+    <path d="M171,214 V262 M179,214 V262 M165,262 Q175,276 185,262 Z"/>
+    <path d="M284,52 Q300,51.5 316,52 L316,72 Q300,72.5 284,72 Z M287,57 H313 M287,62 H313 M287,67 H313"/>
+    <path d="M169,165 l6,6 m0,-6 l-6,6 M181,153 l6,6 m0,-6 l-6,6 M193,141 l6,6 m0,-6 l-6,6 M205,129 l6,6 m0,-6 l-6,6 M217,117 l6,6 m0,-6 l-6,6 M381,121 l6,6 m0,-6 l-6,6 M393,133 l6,6 m0,-6 l-6,6 M405,145 l6,6 m0,-6 l-6,6 M417,157 l6,6 m0,-6 l-6,6"/>
+  </g>
+
+  <!-- Tumstock bakom uteluftens tal -->
+  <rect x="51" y="67" width="157" height="28" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 130 81)"/>
+
+  <!-- Snickarpenna: inneluften upp genom luckans springor och runt elröret -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M258,332 Q250,312 256,292 T252,254 T238,222 T218,190 T204,164 M205,178 L204,164 L215,172"/>
+    <path d="M290,332 Q298,312 292,292 T296,254 T318,224 T350,196 T390,167 M376,170 L390,167 L383,180"/>
+    <path d="M188,300 Q192,282 188,264 T190,232 T186,204 T184,188 M178,198 L184,186 L190,198"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="57" y="88">ute 0 °C och 95 %</text>
+    <text x="222" y="150">daggpunkt −0,7 °C</text>
+    <text x="392" y="220" fill="#625a50">400 mm</text>
+  </g>
+</svg>

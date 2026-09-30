@@ -120,3 +120,20 @@ Det ettan har som vi måste behålla eller överträffa:
 - **"tilläggsisolera vind"** ägs av El, och **takfotens arbete** av Tak.
 - **Mer ventilation som standardråd** står inte på sidan.
 - **Firmornas procent** står bara med firma, år och underlag. Airmoves och Polarpumpens tal utan källa upprepas inte.
+
+---
+
+## Kontroll efter skrivningen, 2026-09-30
+
+SEO och GEO-agenten har läst `src/content/guider/fukt/fukt-pa-vinden.mdx` (utkast, cirka 2 500 ord med Faq) mot punkt 1 till 12. **Godkänd av SEO och GEO.**
+
+- **Metadata.** Title "Fukt på vinden, orsaken och vad som hjälper" har 43 tecken, description 149 och bildAlt 124, med "vind". H1 är "Vinden blir oftast fuktig av luften från bostaden". Inget att ändra.
+- **Hantverkarens avvikelser är godkända.** Det gäller mätrubriken "Hygrometern och fuktkvotsmätaren visar hur fuktig vinden är", husköpsrubriken "Fukt på vinden i besiktningsprotokollet" och rapportens lydelse "75 procent av de skadade vindarna". Sidofraserna står i H2:orna "Kondens på vinden kommer från tre håll", "Mer ventilation på vinden gör den oftast fuktigare" och husköpsrubriken.
+- **Bättre än ettan 1 till 4 är uppfyllda.**
+  - Skissen visar tre vägar in för fukten.
+  - Ventilationsfrågan besvaras med SP och Boverket som källor.
+  - Mätningen har gränser och `<Kalkylator namn="daggpunkt" forval="rum=vind" />`.
+  - Husköpet har en egen H2.
+- **MDX-kommentarerna** för mögelsidan (rad 91) och avfuktarguiden (rad 164) syns inte publikt. Kommentaren på rad 164 blir en länk i samma commit som `/fukt/avfuktare-vind/` publiceras. Kommentaren på rad 91 blir en länk i omgång E.
+- **Länkarna ut** går till hussvamp, tilläggsisolera vind, takfoten, hygrometern, luftfuktigheten och sorptionsavfuktaren.
+- **Inlänkarna** från `/el/tillaggsisolera-vind/` och `/tak/takfot/` finns redan. `npm run kontrollera` ger fyra fel för dem och för länkarna till hussvamp och låg luftfuktighet, eftersom målen fortfarande är utkast. **Felen försvinner när radon, låg luftfuktighet, fukt på vinden och hussvamp publiceras i samma commit.** En tredje inlänk läggs gärna i `src/content/kunskap/fukt/hygrometer.mdx`, H2 "Vilken hygrometer som passar var i huset", i stycket om krypgrunden och vinden, med ankaret "vad talen betyder på vinden".

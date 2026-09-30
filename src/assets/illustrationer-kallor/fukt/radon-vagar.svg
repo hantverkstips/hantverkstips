@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Radonets tre vägar in i en villa, från marken, från en vägg av blåbetong och från brunnen, och mätdosor i fyra rum.">
+  <!-- Anteckningsboken, samma hand som kallras.svg. Tvåplanshus med pulpettak i genomskärning, platta på mark.
+       Markluften i snickarpenna upp genom en spricka i plattan (enda pennsaken). Blåbetongväggen och brunnen med
+       röret in i huset i blyerts-2. Fyra mätdosor, två rum per plan, byglar till väggen och fönstret vid en av dem.
+       Tumstock bakom referensnivån, enda markeringen. Inte skalenlig. Caveat 500 blir banor.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2 1,25: markens skraffering, blåbetongens streck i väggen, ledaren -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M46,304l10,10M68,304l10,10M90,304l10,10M112,304l10,10M134,304l10,10M156,304l10,10M178,304l10,10M332,304l10,10M354,304l10,10M376,304l10,10M398,304l10,10M420,304l10,10M468,304l10,10M490,304l10,10M574,304l10,10"/>
+    <path d="M57,326l10,10M79,326l10,10M101,326l10,10M123,326l10,10M145,326l10,10M167,326l10,10M321,326l10,10M343,326l10,10M365,326l10,10M387,326l10,10M409,326l10,10M431,326l10,10M563,326l10,10"/>
+    <path d="M46,348l10,10M68,348l10,10M90,348l10,10M112,348l10,10M134,348l10,10M156,348l10,10M178,348l10,10M332,348l10,10M354,348l10,10M376,348l10,10M398,348l10,10M420,348l10,10M442,348l10,10M464,348l10,10M486,348l10,10M574,348l10,10"/>
+    <path d="M182,194l6,5M182,214l6,5M182,234l6,5M182,254l6,5M182,272l6,5"/>
+    <path d="M150,238 Q164,239 177,242"/>
+  </g>
+
+  <!-- Blyerts: marken, plattan, väggarna, bjälklaget, taket, fönstret och dosorna -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M44,292 Q110,293 176,292 M474,292 Q492,291.5 510,292 M560,292 Q575,291.5 590,292"/>
+    <path d="M173,282 Q208,282.6 243,282 M263,282 Q370,283.4 477,282 M173,294 Q208,294.6 243,294 M263,294 Q370,295.2 477,294 M176,280 V296 M474,280 V296"/>
+    <path d="M180,284 Q179.4,232 180,180 M190,282 Q190.6,232 190,184 M180,184 Q179.3,129 180,71"/>
+    <path d="M470,284 Q470.6,264 470,242 M470,194 Q470.5,151 470,107"/>
+    <path d="M462,241 H478 M464,195 H476 M466,197 V239 M474,197 V239 M470,199 V237"/>
+    <path d="M176,178 Q325,179.5 474,178 M176,184 Q325,185 474,184"/>
+    <path d="M340,186 Q340.6,233 340,282 M300,178 Q300.6,133 300,87"/>
+    <path d="M160,64 Q326,82 492,104 M166,72 Q326,90 488,113 M160,64 L166,72 M492,104 L488,113"/>
+    <path d="M295,236 H311 V246.5 H294 V234 M357,236 H373 V246.5 H356 V234 M225,144 H241 V154.5 H224 V142 M379,150 H395 V160.5 H378 V148"/>
+  </g>
+
+  <!-- Blyerts-2 2: brunnen, droppen och röret in i huset -->
+  <g fill="none" stroke="#625a50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M509,276 Q535,275 561,276 M516,278 Q515,312 516,346 M554,278 Q555,312 554,346 M514,346 Q535,347 556,346"/>
+    <path d="M519,316 q4,-3 8,0 t8,0 t8,0 t8,0"/>
+    <path d="M535,234 q-9,13 -9,19 a9,9 0 0 0 18,0 q0,-6 -9,-19"/>
+    <path d="M516,332 Q485,332.6 452,332 V262 H438 M516,326 Q487,326.6 458,326 V268 H438 M438,261 V269"/>
+  </g>
+
+  <!-- Blyerts-2 1,5: måttbyglarna, 30 cm till väggen och 1,5 m till fönstret -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M341,254 H357 M341,249 V259 M357,249 V259"/>
+    <path d="M373,228 Q419,228.8 465,228 M373,222 V234 M465,222 V234"/>
+  </g>
+
+  <!-- Tumstock bakom referensnivån -->
+  <rect x="196" y="195" width="100" height="27" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 246 208)"/>
+
+  <!-- Snickarpenna: markluften upp genom marken och sprickan i plattan -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M253,354 q-4,-8 0,-16 t0,-16 t0,-16 t0,-16 t0,-16 t0,-16 t0,-16 M247,254 L253,242 L259,254"/>
+    <path d="M206,354 q2,-10 10,-14 t10,-14 t8,-12 t6,-10 M239,314 L240,304 L231,308"/>
+    <path d="M300,354 q-2,-10 -10,-14 t-10,-14 t-8,-12 t-6,-10 M267,314 L266,304 L275,308"/>
+    <path d="M243,282 l4,4 l-4,4 l4,4 M263,282 l-4,4 l4,4 l-4,4"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="64" y="228">blåbetong</text>
+    <text x="50" y="254">1929–1975</text>
+    <text x="202" y="216">200 Bq/m³</text>
+    <text x="346" y="278" fill="#625a50">30 cm</text>
+    <text x="396" y="220" fill="#625a50">1,5 m</text>
+  </g>
+</svg>

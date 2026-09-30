@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="En syll med kubisk brunröta och mycelsträngar över grundmuren, bredvid en bräda med mögel bara på ytan.">
+  <!-- Anteckningsboken, samma hand som kallras.svg. Två rutor, var sin bit trä på en grundmur av block.
+       Vänster: syllen sönderbruten i kuber av brunröta, kanterna nedsjunkna, mycelsträngarna i snickarpenna
+       ner över stenen mot en ny regel på marken (enda pennsaken). Höger: en bräda med ådringen hel och
+       mögelprickar bara på ytan. Tumstock bakom "30 %", enda markeringen. Inte skalenlig.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2 1,5: skiljelinjen mellan rutorna -->
+  <path d="M300,20 Q301,180 300,340" fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Blyerts-2 1,25: murarnas fogar, brädans ådring och regelns ådring -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M58,202 Q147,203 236,202 M58,234 Q147,233 236,234 M58,266 Q147,267 236,266 M58,298 Q147,297 236,298 M118,170 V202 M178,170 V202 M88,202 V234 M148,202 V234 M208,202 V234 M118,234 V266 M178,234 V266 M88,266 V298 M148,266 V298 M208,266 V298 M118,298 V330 M178,298 V330"/>
+    <path d="M342,202 Q446,203 550,202 M342,234 Q446,233 550,234 M342,266 Q446,267 550,266 M342,298 Q446,297 550,298 M402,170 V202 M472,170 V202 M372,202 V234 M442,202 V234 M512,202 V234 M402,234 V266 M472,234 V266 M372,266 V298 M442,266 V298 M512,266 V298 M402,298 V330 M472,298 V330"/>
+    <path d="M336,150 Q400,147 452,151 Q478,153 504,150 T556,150 M336,162 Q390,165 444,160 Q472,156 500,162 T556,162 M462,156 q8,-5 16,0 q-8,5 -16,0 M254,312 Q270,310.5 286,312 M256,321 Q272,322.5 285,320"/>
+  </g>
+
+  <!-- Blyerts: syllen, brädan, murarna, marken och den nya regeln -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M47,135 Q52,128 64,129 Q146,132 228,129 Q241,129 247,136 M244,132 Q245,152 244,173 M47,170 Q147,171.5 247,170 M50,131 Q49,152 50,173"/>
+    <path d="M327,142 Q446,141 565,142 M562,139 Q562.5,156 562,173 M327,170 Q446,171 565,170 M330,139 Q329.5,156 330,173"/>
+    <path d="M58,168 Q57,250 58,332 M236,168 Q237,250 236,332 M44,330 Q170,331.5 296,330"/>
+    <path d="M342,168 Q341,250 342,332 M550,168 Q551,250 550,332 M314,330 Q447,331.5 582,330"/>
+    <path d="M246,302 Q271,301.5 296,302 M248,300 V332 M293,300 V332"/>
+  </g>
+
+  <!-- Blyerts 1,75: kubernas sprickor, på längden och tvären -->
+  <g fill="none" stroke="#2a2521" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M51,151 l12,1.5 10,-2 12,1.5 11,-1 12,2 10,-2 13,1 11,-1.5 12,1.5 11,-1 13,1.5 11,-2 12,1.5 12,-1 11,1 10,-1"/>
+    <path d="M68,130 l-1.5,9 2,7 -1,8 1.5,7 -1,10 M89,131 l1.5,8 -2,8 1,8 -1.5,7 1,9 M108,131 l-1,9 1.5,7 -2,8 1.5,8 -1,8 M129,132 l1.5,9 -1.5,7 1,7 -1.5,8 1,9 M148,132 l-1.5,8 2,8 -1,8 1,7 -1,9 M169,132 l1,9 -2,7 1.5,8 -1,7 1,9 M188,131 l-1.5,8 1.5,8 -1,8 1.5,8 -1,8 M209,131 l1.5,9 -2,7 1,8 -1,7 1.5,9 M228,130 l-1,9 1.5,7 -1.5,8 1,8 -1,9"/>
+  </g>
+
+  <!-- Blyerts-2: mögelprickar och ludd bara på brädans yta -->
+  <path d="M338,139h.1M343,138h.1M351,139h.1M356,140h.1M365,138h.1M370,140h.1M378,137h.1M384,138h.1M391,137h.1M398,139h.1M403,137h.1M412,141h.1M416,138h.1M426,137h.1M430,139h.1M438,138h.1M442,141h.1M450,138h.1M457,138h.1M462,140h.1M469,138h.1M475,141h.1M482,140h.1M490,138h.1M497,138h.1M504,139h.1M508,138h.1M516,137h.1M521,138h.1M530,139h.1M538,138h.1M542,139h.1M549,140h.1M556,138h.1M343,147h.1M365,146h.1M379,148h.1M402,149h.1M420,149h.1M437,148h.1M453,146h.1M470,147h.1M487,147h.1M508,148h.1M523,149h.1M539,147h.1" fill="none" stroke="#625a50" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M358,135 q3,-4 6,0 M394,134 q3,-4 6,0 t6,0 M433,135 q3,-4 6,0 M477,134 q3,-4 6,0 t6,0 M526,135 q3,-4 6,0" fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round"/>
+
+  <!-- Tumstock bakom 30 % -->
+  <rect x="166" y="80" width="50" height="30" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 191 95)"/>
+
+  <!-- Snickarpenna: mycelsträngarna från syllens undersida ner över stenen, en mot den nya regeln -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M78,172 Q71,190 75,210 T71,250 T79,290 T73,328 M75,210 l-11,10 M72,250 l10,9 l2,8 M78,290 l-10,12"/>
+    <path d="M146,173 Q153,196 145,218 T151,262 T143,300 T151,328 M145,218 l11,9 M151,262 l-12,10 l-3,8 M143,300 l10,11"/>
+    <path d="M212,173 Q221,200 215,230 T223,274 Q228,298 249,310 M215,230 l-11,10 M221,264 l12,-3 M230,298 l-10,12"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="60" y="104">fuktkvot över 30 %</text>
+    <text x="392" y="116" fill="#625a50">75–80 % RF</text>
+  </g>
+</svg>
