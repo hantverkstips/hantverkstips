@@ -349,3 +349,18 @@ Krav: 1 sorption; 2 tillverkaren anger drift under +5 °C (lägsta ordagrant); 3
 - drybox.se (X4, X5) och trygghetsvakten.se (vindsavfuktare, butik, Vind Classic, Vind Start, DH2), Villaägarna: lästa via WebFetch, därför **sammanfattning**, inte ordagrant.
 - Boverkets sida via WebFetch gav inget innehåll; läst med curl i stället.
 - www.acetec.se/page/installera-avfuktare: inte läst i denna omgång.
+
+## Prisomläsning /luftavfuktare/, 2026-09-30
+
+Källa: PM:s produktsidor, `__INIT_STATE__` (`Price.ListPrice.AmountWithTax`, `Status` med B2C-tillgänglighet, `Quantity`, `StockText`, `AvailableForPurchase`, `StockStatus`, `Campaigns`), lästa med curl 2026-09-30. Adresserna är de i uppdraget. HTTP-status med `curl` utan `-L`; `redirect_url` tomt för alla åtta. Ord.pris: **inget av de åtta har kampanj eller jämförpris** (`Campaigns: []` på alla, inget jämförprisfält i sidans data), därför "–". Kategorin (https://www.proffsmagasinet.se/vvs-inomhusklimat/inomhusklimat/avfuktare/avfuktare, `TotalProducts: 39`) listar alla åtta; alla åtta finns i PM:s produktsitemap (blob-filerna `proffs-se_sv-se_sitemap_products_1–3.xml`).
+
+| slug | pris 16/9 | pris i dag | ord.pris | lagerstatus (B2C), leveranstext ordagrant | HTTP | anmärkning |
+|---|---|---|---|---|---|---|
+| woods-sw23fw | 5 496 kr | 5 496 kr | – | `InStock`, 26 st, "Skickas inom 24 timmar!" | 200 | oförändrat pris; art.nr 4058316 |
+| woods-sw43fw | 7 866 kr | 7 866 kr | – | `InStock`, 5 st, "Skickas inom 24 timmar!" | 200 | oförändrat pris; art.nr 4058319 |
+| woods-dsc50fm | 6 072 kr | 6 072 kr | – | `InStock`, 11 st, "Skickas inom 24 timmar!" | 200 | oförändrat pris; art.nr VS57625 |
+| woods-sw59fm | 8 311 kr | 8 311 kr | – | `InStock`, 2 st, "Skickas inom 24 timmar!" | 200 | oförändrat pris; bara 2 i lager; art.nr VS17696 |
+| woods-ad20 | 3 999 kr | 3 999 kr | – | `InStock`, 24 st, "Skickas inom 24 timmar!" | 200 | oförändrat pris; art.nr VS57634 |
+| woods-ad30 | 5 495 kr | 5 495 kr | – | `InStock`, 16 st, "Skickas inom 24 timmar!" | 200 | oförändrat pris; art.nr 4028611 |
+| eeese-adam-20 | 2 756 kr | 2 756 kr | – | `InStock`, 18 st, "Skickas inom 24 timmar!" | 200 | oförändrat pris; art.nr 2920263 |
+| innova-igdhx-30 | 2 341 kr | 2 341 kr (visas, går inte att köpa) | – | `OutOfStock`, `AvailableForPurchase: false`, `StockStatus: "Unavailable"`, "Ej beställningsbar för tillfället" | 200 | **Inte utgången**: produktstatus `Active` (inte `Expired`), finns kvar i kategorin (kortet har klassen `temp-unavail`) och i sitemap (products_3). Går **inte** att beställa i dag; ingen antal- eller leveranstid anges. Samma läge som 16/9. Art.nr 3137762 |
