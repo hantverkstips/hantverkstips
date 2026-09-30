@@ -14,7 +14,18 @@
  * Alla props är valfria, eftersom det inbäddade formuläret inte har någon
  * uträkning att visa värden ur; då står standardvärdena i fälten.
  */
-import { formVarden, GANGTIDER, PERIODER, STANDARD, type ElkostnadIndata, type ElTyp } from '../../lib/kalkyl/elkostnad.ts';
+import {
+  formVarden,
+  GANGTIDER,
+  PERIODER,
+  STANDARD,
+  TVATT_STANDARD,
+  tvattVarden,
+  type ElkostnadIndata,
+  type ElTyp,
+  type Plats,
+  type TvattIndata,
+} from '../../lib/kalkyl/elkostnad.ts';
 import {
   ETIKETT_KLASS,
   FALT_KLASS,
@@ -34,10 +45,19 @@ interface Props {
   fel?: Partial<Record<keyof ElkostnadIndata, string>>;
   /** Produktens slug, när läsaren kom hit från ett produktkort. Följer med vidare. */
   produktSlug?: string | null;
+  /** Platsens förval (?plats=kallare). Följer med vidare som dolt fält. */
+  plats?: Plats | null;
   /** Raden över formuläret: "Räknar på Wood's SW39FW, 320 W enligt butiken". */
   produktRad?: string | null;
-  /** Vad räkningen gäller. golvvarme följer med som dolt fält, så att sidan visar golvvärmens text. */
+  /**
+   * Vad räkningen gäller. golvvarme och tvatt följer med som dolt fält. Vid
+   * tvatt byts effekt, timmar, dagar och liter mot kg och torkningar
+   * (docs/briefer/spec-elkostnad-forval-2026-09-30.md avsnitt 8.2).
+   */
   typ?: ElTyp;
+  /** Tvättlägets fält som de skrevs i adressen. Standardvärdena när propen utelämnas. */
+  tvattFalt?: { kg: string; torkningar: string; elpris: string };
+  tvattFel?: Partial<Record<keyof TvattIndata, string>>;
   /** Inbäddad i en artikel: tätare fält, inga hjälprader. */
   kompakt?: boolean;
   /** Prefix på id-attributen, så att två formulär på samma sida inte krockar. */
@@ -50,8 +70,11 @@ const {
   // Elpriset med två decimaler, som på fakturan och i sajtens eltabeller.
   varden = formVarden(indata),
   produktSlug = null,
+  plats = null,
   produktRad = null,
   typ = 'maskin',
+  tvattFalt = tvattVarden(TVATT_STANDARD),
+  tvattFel = {},
   fel = {},
   kompakt = false,
   idPrefix = '',
@@ -65,7 +88,42 @@ const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
 const fardigPeriod = PERIODER.some((p) => p.dagar === indata.dagar);
 const egetAntal = fardigPeriod ? '' : varden.dagar;
 
-const talfalt = [
+const tvatt = typ === 'tvatt';
+
+interface Talfalt {
+  namn: string;
+  etikett: string;
+  enhet: string;
+  varde: string;
+  fel: string | undefined;
+  hjalp: string | null;
+}
+
+/*
+ * Tvättlägets två fält, i samma mönster som maskinens. Etiketterna, enheterna
+ * och hjälptexterna är hantverkarens: T2 till T5 och T19 i
+ * docs/briefer/texter-elkostnad-forval-2026-09-30.md.
+ */
+const tvattTalfalt: Talfalt[] = [
+  {
+    namn: 'kg',
+    etikett: 'Tvätt per torkning',
+    enhet: 'kg',
+    varde: tvattFalt.kg,
+    fel: tvattFel.kgPerTorkning,
+    hjalp: 'Energimyndigheten torkade 7 kg åt gången i sitt test.',
+  },
+  {
+    namn: 'torkningar',
+    etikett: 'Torkningar i veckan',
+    enhet: 'gånger',
+    varde: tvattFalt.torkningar,
+    fel: tvattFel.torkningarPerVecka,
+    hjalp: 'Räkna en torkning för varje maskin tvätt du hänger upp.',
+  },
+];
+
+const maskinTalfalt: Talfalt[] = [
   {
     namn: 'effekt',
     etikett: 'Maskinens effekt',
@@ -82,12 +140,19 @@ const talfalt = [
     fel: fel.timmarPerDygn,
     hjalp: null,
   },
-] as const;
+];
+
+const talfalt = tvatt ? tvattTalfalt : maskinTalfalt;
+/* Elpriset står kvar i båda lägena; värdet och felet kommer ur läget. */
+const elprisVarde = tvatt ? tvattFalt.elpris : varden.elpris;
+const elprisFel = tvatt ? tvattFel.elprisKrPerKwh : fel.elprisKrPerKwh;
 ---
 
 <form method="get" action="/rakna/elkostnad/">
+  {plats && <input type="hidden" name="plats" value={plats} />}
   {produktSlug && <input type="hidden" name="produkt" value={produktSlug} />}
   {typ === 'golvvarme' && <input type="hidden" name="typ" value="golvvarme" />}
+  {tvatt && <input type="hidden" name="typ" value="tvatt" />}
 
   {
     produktRad && (
@@ -110,7 +175,13 @@ const talfalt = [
               inputmode="decimal"
               value={f.varde}
               aria-describedby={
-                f.fel ? id(`${f.namn}-fel`) : f.namn === 'timmar' && !kompakt ? id('timmar-hjalp') : undefined
+                f.fel
+                  ? id(`${f.namn}-fel`)
+                  : f.namn === 'timmar' && !kompakt
+                    ? id('timmar-hjalp')
+                    : tvatt && !kompakt && f.hjalp
+                      ? id(`${f.namn}-hjalp`)
+                      : undefined
               }
               class:list={[FALT_KLASS, ramKlass(Boolean(f.fel))]}
             />
@@ -121,7 +192,12 @@ const talfalt = [
               {f.fel}
             </p>
           ) : (
-            !kompakt && f.hjalp && <p class={HJALP_KLASS}>{f.hjalp}</p>
+            !kompakt &&
+            f.hjalp && (
+              <p id={tvatt ? id(`${f.namn}-hjalp`) : undefined} class={HJALP_KLASS}>
+                {f.hjalp}
+              </p>
+            )
           )}
           {f.namn === 'timmar' && !f.fel && !kompakt && (
             <div id={id('timmar-hjalp')} class={HJALP_KLASS}>
@@ -138,6 +214,7 @@ const talfalt = [
     }
   </div>
 
+  {!tvatt && (
   <fieldset class="m-0 mb-4 p-0 border-0">
     <legend class:list={[ETIKETT_KLASS, 'p-0']}>Hur länge räknar du på</legend>
     <div class={radioKlass}>
@@ -169,8 +246,10 @@ const talfalt = [
     </div>
     {fel.dagar && <p id={id('dagar-fel')} class={FEL_KLASS}>{fel.dagar}</p>}
   </fieldset>
+  )}
 
-  <div class="mb-4">
+  {/* I tvättläget står knappen direkt efter elpriset, med literfältets marginal. */}
+  <div class={tvatt ? 'mb-6' : 'mb-4'}>
     <label for={id('elpris')} class={ETIKETT_KLASS}>Elpris</label>
     <div class="flex items-center gap-2">
       <input
@@ -178,16 +257,16 @@ const talfalt = [
         name="elpris"
         type="text"
         inputmode="decimal"
-        value={varden.elpris}
-        aria-describedby={fel.elprisKrPerKwh ? id('elpris-fel') : !kompakt ? id('elpris-hjalp') : undefined}
-        class:list={[FALT_KLASS, ramKlass(Boolean(fel.elprisKrPerKwh))]}
+        value={elprisVarde}
+        aria-describedby={elprisFel ? id('elpris-fel') : !kompakt ? id('elpris-hjalp') : undefined}
+        class:list={[FALT_KLASS, ramKlass(Boolean(elprisFel))]}
       />
       <span class="text-brod text-blyerts-2">kr per kWh</span>
     </div>
     {
-      fel.elprisKrPerKwh ? (
+      elprisFel ? (
         <p id={id('elpris-fel')} class={FEL_KLASS}>
-          {fel.elprisKrPerKwh}
+          {elprisFel}
         </p>
       ) : (
         !kompakt && (
@@ -200,6 +279,7 @@ const talfalt = [
     }
   </div>
 
+  {!tvatt && (
   <div class="mb-6">
     <label for={id('liter')} class={ETIKETT_KLASS}>Liter vatten per dygn, om det är en avfuktare</label>
     <div class="flex items-center gap-2">
@@ -243,6 +323,7 @@ const talfalt = [
       )
     }
   </div>
+  )}
 
   <button type="submit" class={KNAPP_KLASS}>{knappText}</button>
 </form>

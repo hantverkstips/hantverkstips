@@ -21,15 +21,29 @@ import Bas from '../../layouts/Bas.astro';
 import { ELPRIS_KALLA, ELPRIS_KR_PER_KWH } from '../../lib/antaganden';
 import { formateraPris, formateraTal } from '../../lib/format';
 import {
+  FORVAL_PER_PLATS,
   gorInteText,
+  PLATSER,
+  platsFranQuery,
   produktForval,
   produktSlugFranQuery,
   raknaElkostnad,
+  STANDARD,
   standardMedForval,
   tolkaQuery,
+  tolkaTvatt,
+  raknaTvatt,
+  TVATT_KWH_PER_KG,
+  TVATT_METODER,
+  TVATT_STANDARD,
+  TVATT_TEST,
   typFranQuery,
   type ElkostnadIndata,
   type ElkostnadResultat,
+  type Plats,
+  type TvattIndata,
+  type TvattMetod,
+  type TvattResultat,
 } from '../../lib/kalkyl/elkostnad';
 import { CELL_KLASS, ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
 import { hamtaProdukt, produktNamn } from '../../lib/produkter';
@@ -54,7 +68,9 @@ const q = Astro.url.searchParams;
 const produktSlug = produktSlugFranQuery(q);
 const produkt = produktSlug ? await hamtaProdukt(produktSlug) : null;
 const forval = produktForval(produkt?.specs ?? null);
-const standard = standardMedForval(forval);
+/* Platsens förval, ?plats=kallare: effekt och gångtid ur FORVAL_PER_PLATS. */
+const plats = platsFranQuery(q);
+const standard = standardMedForval(forval, plats);
 
 const { indata } = tolkaQuery(q, forval);
 /* golvvarme från golvvärmesidans förval: samma räkning, golvvärmens texter. */
@@ -67,6 +83,18 @@ const visat: ElkostnadResultat = resultat.status === 'ogiltig' ? raknaElkostnad(
 const visatIndata: ElkostnadIndata = resultat.status === 'ogiltig' ? standard : indata;
 /* Vid golvvärme aldrig avfuktarens text om hygrostaten (gorInteText). */
 const gorInte = visat.status === 'ok' ? gorInteText(visat, typ) : null;
+
+/*
+ * Tvättläget, ?typ=tvatt (docs/briefer/spec-elkostnad-forval-2026-09-30.md
+ * avsnitt 8.3): egen räkning per kg tvätt i stället för maskinens. Ogiltig
+ * indata ger standardvarningen och TVATT_STANDARD, som maskinen.
+ */
+const tvattLage = typ === 'tvatt';
+const { indata: tvattIndata } = tolkaTvatt(q);
+const tvattResultat = raknaTvatt(tvattIndata);
+const tvattFel = tvattResultat.status === 'ogiltig' ? tvattResultat.fel : {};
+const tvattVisat: TvattResultat = tvattResultat.status === 'ogiltig' ? raknaTvatt(TVATT_STANDARD) : tvattResultat;
+const tvattVisatIndata: TvattIndata = tvattResultat.status === 'ogiltig' ? TVATT_STANDARD : tvattIndata;
 
 const komma = (n: number) => String(n).replace('.', ',');
 /** Tal i löptext: heltal utan decimal, annars en. "19 liter", "7,4 liter". */
@@ -106,17 +134,35 @@ const varden = {
   liter: literVarde,
 };
 
+/* Tvättlägets fält, som de skrevs i adressen, av samma skäl som faltVarde. */
+const tvattFalt = {
+  kg: q.get('kg') ?? komma(TVATT_STANDARD.kgPerTorkning),
+  torkningar: q.get('torkningar') ?? komma(TVATT_STANDARD.torkningarPerVecka),
+  elpris: q.get('elpris') ?? formateraTal(TVATT_STANDARD.elprisKrPerKwh, 2),
+};
+
 /** Raden över formuläret när adressen pekar ut en produkt. */
 let produktRad: string | null = null;
 if (produktSlug !== null) {
   if (produkt && forval.effektW !== null) {
     const namn = produktNamn(produkt);
-    produktRad = `Jag räknar på ${namn}, som drar ${talText(forval.effektW)} W enligt butiken. Har du egna tal, byt ut dem.`;
+    produktRad = `Jag räknar på ${namn}, som drar ${talText(forval.effektW)} W enligt butiken. Har du egna tal, skriv in dem i stället.`;
   } else {
     produktRad =
       'Maskinen i länken finns inte i min produktdatabas, eller så saknar den uppgift om effekt. Fälten står därför på standardvärdena.';
   }
 }
+
+/** E1: raden över formuläret när adressen har plats men ingen produkt. Texten är hantverkarens. */
+function platsRad(maskin: string, effektW: number, villkorTemp: number, villkorRf: number): string {
+  return `Jag räknar på ${maskin}, som drar ${talText(effektW)} W när luften håller ${talText(villkorTemp)} grader och ${talText(villkorRf)} procent luftfuktighet. Har du egna tal, skriv in dem i stället.`;
+}
+if (plats !== null && produktSlug === null) {
+  const p = FORVAL_PER_PLATS[plats];
+  produktRad = platsRad(p.maskin, p.effektW, p.villkor.tempC, p.villkor.rf);
+}
+/* Tvättläget räknar inte på någon maskin, så raden står inte där. */
+if (tvattLage) produktRad = null;
 
 /**
  * Delbar länk. Hela tillståndet ligger redan i query-strängen, så adressen är
@@ -124,7 +170,9 @@ if (produktSlug !== null) {
  * och dagarna skrivs alltid som ett tal, aldrig som "eget".
  */
 const delaQuery = new URLSearchParams({
-  /* Produkten först, bara när den finns och har effekt; effekt i adressen vinner ändå. */
+  /* Platsen först när den finns, före produkten. effekt och timmar står ändå i adressen och vinner. */
+  ...(plats !== null ? { plats } : {}),
+  /* Produkten därefter, bara när den finns och har effekt; effekt i adressen vinner ändå. */
   ...(produktSlug !== null && produkt && forval.effektW !== null ? { produkt: produktSlug } : {}),
   effekt: komma(visatIndata.effektW),
   timmar: komma(visatIndata.timmarPerDygn),
@@ -133,7 +181,103 @@ const delaQuery = new URLSearchParams({
 });
 if (visatIndata.literPerDygn !== null) delaQuery.set('liter', komma(visatIndata.literPerDygn));
 if (typ === 'golvvarme') delaQuery.set('typ', typ);
-const delaLank = new URL(`/rakna/elkostnad/?${delaQuery.toString()}`, Astro.site ?? Astro.url).toString();
+/* I tvättläget är länken typ=tvatt&kg=…&torkningar=…&elpris=…, av de tolkade värdena. */
+const tvattDelaQuery = new URLSearchParams({
+  typ: 'tvatt',
+  kg: komma(tvattVisatIndata.kgPerTorkning),
+  torkningar: komma(tvattVisatIndata.torkningarPerVecka),
+  elpris: komma(tvattVisatIndata.elprisKrPerKwh),
+});
+const delaLank = new URL(
+  `/rakna/elkostnad/?${(tvattLage ? tvattDelaQuery : delaQuery).toString()}`,
+  Astro.site ?? Astro.url,
+).toString();
+
+/*
+ * Tvättlägets tal och texter. Talen kommer ur raknaTvatt; texterna T6 till T18
+ * är hantverkarens (docs/briefer/texter-elkostnad-forval-2026-09-30.md avsnitt T)
+ * och får talen som parametrar.
+ */
+const tvattTal =
+  tvattVisat.status === 'ok'
+    ? {
+        kg: talText(tvattVisatIndata.kgPerTorkning),
+        torkningar: talText(tvattVisatIndata.torkningarPerVecka),
+        kgPerAr: formateraTal(tvattVisat.kgPerAr, 0),
+        elpris: formateraTal(tvattVisatIndata.elprisKrPerKwh, 2),
+        krAvfuktare: formateraPris(tvattVisat.metoder.avfuktare.krPerAr),
+        krVarmepump: formateraPris(tvattVisat.metoder.varmepumpstumlare.krPerAr),
+        krKondens: formateraPris(tvattVisat.metoder.kondenstumlare.krPerAr),
+      }
+    : null;
+/** Tumlarna under det stora talet, en rad per metod utom avfuktaren. */
+const TUMLARE: TvattMetod[] = ['varmepumpstumlare', 'kondenstumlare'];
+
+/** T6: beskedet. */
+function tvattRubrik(_krAvfuktare: string, _krVarmepump: string): string {
+  return 'Ska du köpa nytt för tvättens skull är en tumlare med värmepump billigast att driva.';
+}
+/** T7: raden under beskedet. */
+function tvattRad(kgPerAr: string, _krKondens: string): string {
+  return `Står det redan en avfuktare i tvättstugan kan du använda den, men stäng av den när tvätten är torr. Du torkar ${kgPerAr} kg tvätt om året.`;
+}
+/** T8: etiketten ovanför det stora talet, avfuktarens kr per år. */
+const TVATT_TAL_ETIKETT = 'Avfuktaren, kr per år';
+/** T9: metodernas namn. */
+const TVATT_METODNAMN: Record<TvattMetod, string> = {
+  avfuktare: 'Luftavfuktare',
+  varmepumpstumlare: 'Torktumlare med värmepump',
+  kondenstumlare: 'Kondenstumlare utan värmepump',
+};
+/** T10: kortsvaret i Faktarutan. */
+function tvattKortsvar(
+  kg: string,
+  torkningar: string,
+  krAvfuktare: string,
+  krVarmepump: string,
+  krKondens: string,
+): string {
+  const ganger = torkningar === '1' ? 'en gång' : `${torkningar} gånger`;
+  return `Torkar du ${kg} kg tvätt ${ganger} i veckan med en luftavfuktare kostar det ${krAvfuktare} om året. En torktumlare med värmepump klarar samma tvätt för ${krVarmepump}, och en kondenstumlare utan värmepump för ${krKondens}. Talen kommer från Energimyndighetens test, där avfuktaren stängdes av när tvätten var torr.`;
+}
+/** T11: hur talet räknas, kg i veckan gånger testets kWh per kg. */
+function TVATT_DARFOR_RAKNING(kgPerVecka: string, kwhPerKgAvfuktare: string, kgPerAr: string): string {
+  return `Du torkar ${kgPerVecka.replace(/,0$/, '')} kg tvätt i veckan, och det blir ${kgPerAr} kg på ett år. En luftavfuktare drar ${kwhPerKgAvfuktare} kWh för varje kilo, och kilona gånger det talet gånger ditt elpris ger kronorna. Tumlarna räknas på samma sätt med sina egna tal.`;
+}
+/** T12: testet anger inte restfukten. */
+const TVATT_DARFOR_RESTFUKT =
+  'Testet säger inte hur blöt tvätten var när den hängdes upp, och inte heller om tumlarna fick lika blöt tvätt som avfuktarna. Talen jämför metoderna i testet med varandra, och din egen tvätt kan hamna både över och under talen.';
+/** T13: källraden under T11 och T12, med datumet 2017-12-11. */
+const TVATT_KALLRAD = 'Energimyndighetens test av luftavfuktare för tvätt, 11 december 2017';
+/** T14: "Gör inte det här" i tvättläget. */
+const TVATT_GOR_INTE =
+  'Avfuktaren ska stängas av när tvätten är torr. Står den på ett helt dygn drar den två till tre gånger så mycket el, och då blir den dyrare än båda tumlarna. Ställ in en timer eller stäng av den för hand när du tar in tvätten.';
+/** T15: tvättabellens rubrik. */
+const TVATTABELL_RUBRIK = 'Torka tvätten med avfuktare eller torktumlare';
+/** T16: tvättabellens ingress. */
+const TVATTABELL_INGRESS =
+  'Energimyndigheten torkade tvätt med de tre metoderna och mätte hur mycket el det gick åt. Tumlaren med värmepump drog minst och luftavfuktaren mest.';
+/** T17: källraden under tvättabellen, med datum och adress. */
+function tvattabellKallrad(datum: string): string {
+  return `Energimyndighetens test av luftavfuktare för tvätt, uppdaterat ${datum}. Kolumnen ${TVATTABELL_KOLUMN_PER_TORKNING} är testets tal per kilo gånger ${TVATT_TEST.kgPerTorkning} kg. Tumlarna i testet var märkta A+ och A++ på den gamla energiskalan, som inte har använts för nya tumlare sedan juli 2025.`;
+}
+/** T18: länken till tvättläget under eltabellen i maskinläget. */
+const TVATT_LANK = 'Jämför avfuktare och torktumlare för tvätten';
+/** T20: pekradens början i tvättläget, före länken "står under verktyget". Hantverkarens (texter-elkostnad-forval-2026-09-30.md). */
+const TVATT_PEKRAD_FORE = 'Hur talet räknas och vad testet säger';
+/** T19: tvättabellens hörncell, kolumnrubriker och caption. */
+const TVATTABELL_HORN = 'Metod';
+const TVATTABELL_KOLUMN_PER_KG = 'kWh per kg';
+const TVATTABELL_KOLUMN_PER_TORKNING = `kWh per ${TVATT_TEST.kgPerTorkning} kg`;
+const TVATTABELL_CAPTION =
+  'El per kilo tvätt och per torkning för en luftavfuktare och två sorters torktumlare, ur Energimyndighetens test';
+
+/** Tvättabellen: kWh per kg ur konstanterna och kWh per torkning om testets 7 kg. */
+const tvattabell = TVATT_METODER.map((m) => ({
+  metod: m,
+  perKg: formateraTal(TVATT_KWH_PER_KG[m], 2),
+  perTorkning: formateraTal(TVATT_KWH_PER_KG[m] * TVATT_TEST.kgPerTorkning, 2),
+}));
 
 /** Tal ur resultatet, färdigformaterade, så att markupen nedan blir läsbar. */
 const tal =
@@ -155,7 +299,49 @@ const tal =
       }
     : null;
 
-const titel = 'Vad kostar maskinen i el per månad och år';
+/* E8: högst 44 tecken med "el" och "avfuktare" (SEO:s checklista raknare-elkostnad-forval.md). */
+const titel = 'Vad drar avfuktaren i el per år?';
+
+/*
+ * Tabellen "elen per avfuktare": en rad per plats i FORVAL_PER_PLATS, räknad
+ * med raknaElkostnad på platsens gångtid, 365 dagar och SCB:s elpris.
+ * Texterna E2 till E7 är hantverkarens (docs/briefer/texter-elkostnad-forval-2026-09-30.md).
+ */
+const ELTABELL_RUBRIK = 'Hur mycket el en avfuktare drar på ett år';
+/* E3 med länken till /fukt/sorptionsavfuktare/ och ett eget ankare. */
+const ELTABELL_INGRESS = {
+  fore: 'Effekten gäller i det klimat tillverkaren provade maskinen i, och klimatet står i kolumnen Provklimat. I en kall källare ger samma watt färre liter vatten, och under tio grader är',
+  ankare: 'en sorptionsavfuktare',
+  efter: ' rätt maskin.',
+};
+const PLATS_KORT: Record<Plats, string> = { kallare: 'Källare', krypgrund: 'Krypgrund', vind: 'Kallvind', garage: 'Garage' };
+const ELTABELL_HORN = 'Plats och maskin';
+const ELTABELL_CAPTION = 'Avfuktarens effekt, provklimat, el per dygn och kostnad per år för varje plats';
+/** E7: källorna till effekterna, 8 timmar per dygn och elpriset med perioden. */
+function eltabellKallrad(period: string, elpris: string): string {
+  return `Effekterna och provklimaten kommer ur tillverkarnas datablad och bruksanvisningar och ur butikens produktsidor. Att maskinen går 8 timmar om dygnet är mitt antagande. Elpriset ${elpris} kr per kWh är SCB:s genomsnitt för hushåll, ${period}.`;
+}
+/** Talen med högst två decimaler och utan nollor på slutet: 2,56, 2,8, 2,2. */
+const kortTal = (n: number): string => String(Math.round(n * 100) / 100).replace('.', ',');
+const eltabell = PLATSER.map((p) => {
+  const f = FORVAL_PER_PLATS[p];
+  const r = raknaElkostnad({
+    ...STANDARD,
+    effektW: f.effektW,
+    timmarPerDygn: f.timmarPerDygn,
+    dagar: 365,
+    elprisKrPerKwh: ELPRIS_KR_PER_KWH,
+  });
+  return {
+    plats: p,
+    f,
+    kwhPerDygn: r.status === 'ok' ? kortTal(r.kwhPerDygn) : '',
+    krPerAr: r.status === 'ok' ? formateraTal(Math.round(r.krPerAr)) : '',
+  };
+});
+/** Klasserna en gång på <table>, som daggpunktens tabell, talen högerställda. */
+const ELTABELL_KLASS =
+  'w-full border-collapse text-liten tabular-nums [&_th]:px-1 [&_td]:px-1 [&_th]:py-2 [&_td]:py-2 [&_th]:text-left [&_th]:align-top [&_td]:align-top [&_thead_th+th]:text-right [&_td]:text-right [&_tbody_th]:[font-weight:inherit] [&_tr]:border-b [&_tr]:border-linje [&_th]:text-blyerts-2 [&_td]:text-blyerts [&_thead_th]:text-etikett [&_thead_th]:uppercase';
 
 /** Antagandena i tabellen under "Så räknar vi". Samma tal som konstanterna i kalkylen. */
 const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande'; stod: string; url?: string }[] = [
@@ -209,8 +395,9 @@ const FRAGOR = [
 /** Slug, namn och beskrivning på ett ställe: brödsmulan, og:image och WebApplication läser samma. */
 const SLUG = 'elkostnad';
 const VERKTYGSNAMN = 'Elkostnadskalkylator';
+/* E9: 120 till 155 tecken (SEO:s checklista raknare-elkostnad-forval.md). */
 const BESKRIVNING =
-  'Räkna ut elkostnaden för avfuktaren, värmefläkten eller frysen. Du får kilowattimmar och kronor per månad och år, räknat på SCB:s elpris eller ditt eget.';
+  'Räkna ut vad avfuktaren drar i el och kostar per år med ditt eget elpris. Det finns färdiga tal för källare, krypgrund, vind och garage, och för tvätt.';
 const illustration = verktygsillustration(SLUG);
 /**
  * Varumärkesbilden i sidhuvudet, sedan 2026-09-19 (docs/DESIGN.md avsnitt 7).
@@ -249,7 +436,7 @@ const huvudbild = varumarke ?? illustration;
     */}
     <section class="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-8">
       <div class="lg:col-span-7">
-        <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">Vad kostar maskinen i el? Räkna ut kWh och kronor</h1>
+        <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">Räkna ut vad avfuktaren och andra maskiner drar i el</h1>
         <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
           Det här är för maskinen som står och går, som avfuktaren i källaren, värmefläkten i garaget eller frysen
           i förrådet. Fyll i effekten i watt, hur många timmar om dygnet den går och vad du betalar för elen, så
@@ -276,7 +463,17 @@ const huvudbild = varumarke ?? illustration;
     </section>
 
     {
-      visat.status === 'ok' && tal && (
+      tvattLage && tvattTal && (
+        <Faktaruta variant="kortsvar">
+          <p class="m-0 leading-6">
+            {tvattKortsvar(tvattTal.kg, tvattTal.torkningar, tvattTal.krAvfuktare, tvattTal.krVarmepump, tvattTal.krKondens)}
+          </p>
+        </Faktaruta>
+      )
+    }
+
+    {
+      !tvattLage && visat.status === 'ok' && tal && (
         <Faktaruta variant="kortsvar">
           <p class="m-0 leading-6">Din maskin drar {tal.kwhPerDygn} kWh el per dygn.</p>
           <p class="m-0 leading-6">
@@ -294,20 +491,48 @@ const huvudbild = varumarke ?? illustration;
         indata={indata}
         varden={varden}
         fel={fel}
-        produktSlug={produktSlug}
+        produktSlug={tvattLage ? null : produktSlug}
+        plats={tvattLage ? null : plats}
         produktRad={produktRad}
         typ={typ}
+        tvattFalt={tvattFalt}
+        tvattFel={tvattFel}
       />
 
       <div class="mt-8 border-t border-linje pt-6 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
         {
           visat.status === 'ok' && tal && (
             <>
-              {resultat.status === 'ogiltig' && (
+              {(tvattLage ? tvattResultat.status : resultat.status) === 'ogiltig' && (
                 <p class="m-0 mb-2 text-liten text-varning">
                   Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.
                 </p>
               )}
+              {tvattLage && tvattTal ? (
+                <>
+                  <p class="m-0 font-sans text-h3 lg:text-h3-lg font-bold text-blyerts">
+                    {tvattRubrik(tvattTal.krAvfuktare, tvattTal.krVarmepump)}
+                  </p>
+                  <p class="m-0 mt-1 text-brod">{tvattRad(tvattTal.kgPerAr, tvattTal.krKondens)}</p>
+
+                  <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">{TVATT_TAL_ETIKETT}</p>
+                  <p class="m-0 mt-1 font-serif text-siffra lg:text-siffra-lg text-blyerts">
+                    <Markering>{tvattTal.krAvfuktare}</Markering>
+                  </p>
+                  {/* En rad per tumlare: namnet till vänster, kronorna till höger. */}
+                  <ul class="m-0 mt-2 list-none p-0 text-brod">
+                    {TUMLARE.map((m) => (
+                      <li class="flex justify-between gap-4 border-b border-linje py-1">
+                        <span>{TVATT_METODNAMN[m]}</span>
+                        <span class="tabular-nums">
+                          {m === 'varmepumpstumlare' ? tvattTal.krVarmepump : tvattTal.krKondens}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : (
+              <>
               {/* Beskedet står först. Delposterna och rådet står under verktyget. */}
               <p class="m-0 font-sans text-h3 lg:text-h3-lg font-bold text-blyerts">
                 Räkna med {tal.krPerPeriod} för {tal.dagar} dagar, och {tal.krPerAr} om året.
@@ -332,9 +557,11 @@ const huvudbild = varumarke ?? illustration;
               <p class="m-0 mt-2 text-liten text-blyerts-2">
                 Räknat på {tal.effekt} W i {tal.timmar} timmar per dygn och {tal.elpris} kr per kilowattimme.
               </p>
+              </>
+              )}
 
               <p class="m-0 mt-4 text-liten text-blyerts-2">
-                Vad det blir per dygn, per liter och på ett år{' '}
+                {tvattLage ? TVATT_PEKRAD_FORE : 'Vad det blir per dygn, per liter och på ett år'}{' '}
                 <a href="#darfor-blev-svaret-sa" class={LANK_KLASS}>
                   står under verktyget
                 </a>
@@ -365,7 +592,39 @@ const huvudbild = varumarke ?? illustration;
     </div>
 
     {
-      visat.status === 'ok' && tal && (
+      tvattLage && tvattTal && (
+        <section>
+          <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
+          <ul class="m-0 p-0 list-none text-brod lg:text-brod-lg">
+            <li class="mb-4 border-l-2 border-linje pl-4">
+              <span class="block">
+                {TVATT_DARFOR_RAKNING(
+                  formateraTal(tvattVisatIndata.kgPerTorkning * tvattVisatIndata.torkningarPerVecka, 1),
+                  formateraTal(TVATT_KWH_PER_KG.avfuktare, 2),
+                  tvattTal.kgPerAr,
+                )}
+              </span>
+              <a href={TVATT_TEST.url} rel="nofollow" class:list={['block text-liten', LANK_KLASS]}>
+                {TVATT_KALLRAD}
+              </a>
+            </li>
+            <li class="mb-4 border-l-2 border-linje pl-4">
+              <span class="block">{TVATT_DARFOR_RESTFUKT}</span>
+              <a href={TVATT_TEST.url} rel="nofollow" class:list={['block text-liten', LANK_KLASS]}>
+                {TVATT_KALLRAD}
+              </a>
+            </li>
+          </ul>
+          <h3 id="gor-inte-det-har" class="m-0 mt-6 font-sans text-h3 lg:text-h3-lg text-blyerts">
+            Gör inte det här
+          </h3>
+          <p class="m-0 mt-2 text-brod lg:text-brod-lg">{TVATT_GOR_INTE}</p>
+        </section>
+      )
+    }
+
+    {
+      !tvattLage && visat.status === 'ok' && tal && (
         <section>
           <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
           <ul class="m-0 p-0 list-none text-brod lg:text-brod-lg">
@@ -416,6 +675,93 @@ const huvudbild = varumarke ?? illustration;
       )
     }
 
+    {
+      tvattLage && (
+        <section>
+          <Pennstreck id="avfuktare-eller-tumlare">{TVATTABELL_RUBRIK}</Pennstreck>
+          <p class="m-0 text-brod lg:text-brod-lg">{TVATTABELL_INGRESS}</p>
+          <Tabellyta kolumner={3} class="mt-4">
+            <table class={ELTABELL_KLASS}>
+              <caption class="sr-only">{TVATTABELL_CAPTION}</caption>
+              <thead>
+                <tr>
+                  <th scope="col">{TVATTABELL_HORN}</th>
+                  <th scope="col">{TVATTABELL_KOLUMN_PER_KG}</th>
+                  <th scope="col">{TVATTABELL_KOLUMN_PER_TORKNING}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  tvattabell.map((r) => (
+                    <tr>
+                      <th scope="row">{TVATT_METODNAMN[r.metod]}</th>
+                      <td>{r.perKg}</td>
+                      <td>{r.perTorkning}</td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
+          </Tabellyta>
+          <p class="m-0 mt-2 text-liten text-blyerts-2">
+            <a href={TVATT_TEST.url} rel="nofollow" class={LANK_KLASS}>
+              {tvattabellKallrad(TVATT_TEST.datum)}
+            </a>
+          </p>
+        </section>
+      )
+    }
+
+    {!tvattLage && (
+    <section>
+      <Pennstreck id="elen-per-avfuktare">{ELTABELL_RUBRIK}</Pennstreck>
+      <p class="m-0 text-brod lg:text-brod-lg">
+        {ELTABELL_INGRESS.fore}{' '}
+        <a href="/fukt/sorptionsavfuktare/" class={LANK_KLASS}>{ELTABELL_INGRESS.ankare}</a>
+        {ELTABELL_INGRESS.efter}
+      </p>
+      <Tabellyta kolumner={5} class="mt-4">
+        <table class={ELTABELL_KLASS}>
+          <caption class="sr-only">{ELTABELL_CAPTION}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{ELTABELL_HORN}</th>
+              <th scope="col">Effekt, W</th>
+              <th scope="col">Provklimat</th>
+              <th scope="col">kWh per dygn</th>
+              <th scope="col">Kr per år</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              eltabell.map((r) => (
+                <tr>
+                  <th scope="row">
+                    <a href={`/rakna/elkostnad/?plats=${r.plats}`} class={LANK_KLASS}>{PLATS_KORT[r.plats]}</a>
+                    <span class="block">{r.f.maskin}, {r.f.typ}</span>
+                  </th>
+                  <td>{r.f.effektW}</td>
+                  {/* Hårda mellanslag som i format.ts, så att "70 %" inte bryts isär. */}
+                  <td>{`${r.f.villkor.tempC} °C, ${r.f.villkor.rf} %`}</td>
+                  <td>{r.kwhPerDygn}</td>
+                  <td>{r.krPerAr}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </Tabellyta>
+      <p class="m-0 mt-2 text-liten text-blyerts-2">
+        {eltabellKallrad(ELPRIS_KALLA.period, formateraTal(ELPRIS_KR_PER_KWH, 2))}
+      </p>
+      <p class="m-0 mt-4">
+        <a href="/rakna/elkostnad/?typ=tvatt" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
+          {TVATT_LANK}
+        </a>
+      </p>
+    </section>
+    )}
+
     <section>
       <Pennstreck id="watt-till-kwh">Räkna om watt till kilowattimmar själv</Pennstreck>
       <p class="m-0 text-brod lg:text-brod-lg">
@@ -431,7 +777,7 @@ const huvudbild = varumarke ?? illustration;
         fuktgivaren säger till och stannar när luften är torr nog, och en värmefläkt på termostat gör samma sak med
         värmen. Verktyget här ovanför antar att märkeffekten dras under hela gångtiden du fyller i, så för en
         maskin som pendlar får du en övre gräns. Vill du veta vad den verkligen drar sätter du en energimätare
-        mellan maskinen och vägguttaget och läser av efter en vecka. Det är så jag gör själv.
+        mellan maskinen och vägguttaget och läser av efter en vecka.
       </p>
 
       <Pennstreck id="avfuktaren" niva={3}>Avfuktaren i källaren</Pennstreck>

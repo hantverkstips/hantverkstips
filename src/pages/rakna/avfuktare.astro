@@ -19,8 +19,9 @@ import {
   tolkaQuery,
   type AvfuktareResultat,
 } from '../../lib/kalkyl/avfuktare';
+import { produktForval, raknaElkostnad, STANDARD as EL_STANDARD } from '../../lib/kalkyl/elkostnad';
 import { CELL_KLASS, ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
-import { hamtaButik, lagstaPris, produkterIKategori } from '../../lib/produkter';
+import { hamtaButik, lagstaPris, produktNamn, produkterIKategori } from '../../lib/produkter';
 import { verktyg } from '../../lib/strukturdata';
 import { verktygsDelningsbild, verktygsillustration, verktygsVarumarkesbild } from '../../lib/verktygsbild';
 import AvfuktareForm from '../../components/kalkyl/AvfuktareForm.astro';
@@ -79,6 +80,7 @@ const butik = await hamtaButik();
  * inom osäkerhetsintervallet. Aldrig en maskin under intervallets nedre kant.
  */
 let traffar: string[] = [];
+const elrader: { slug: string; namn: string; effektW: number; kwhPerAr: number }[] = [];
 if (visat.status === 'ok') {
   const krav = visat.marktKapacitetLiter;
   const golv = visat.marktIntervall[0];
@@ -97,7 +99,27 @@ if (visat.status === 'ok') {
   ]
     .slice(0, 3)
     .map((p) => p.slug);
+
+  /*
+   * En elrad per träff, i kortens ordning, räknad med raknaElkostnad på 8 timmar
+   * per dygn och 365 dagar. En maskin utan effekt_w får ingen rad.
+   * Spec: docs/briefer/spec-elkostnad-forval-2026-09-30.md avsnitt 7.3.
+   */
+  for (const slug of traffar) {
+    const p = alla.find((x) => x.slug === slug);
+    const effektW = produktForval(p?.specs ?? null).effektW;
+    if (!p || effektW === null) continue;
+    const r = raknaElkostnad({ ...EL_STANDARD, effektW, timmarPerDygn: 8, dagar: 365 });
+    if (r.status === 'ok') elrader.push({ slug, namn: produktNamn(p), effektW, kwhPerAr: r.kwhPerAr });
+  }
 }
+
+/** E10: en kort mening per maskin under korten. Texten är hantverkarens. */
+function kwhRad(namn: string, effektW: number, kwhPerAr: number): string {
+  return `${namn} drar ${formateraTal(effektW)} W, och går den 8 timmar om dygnet blir det ${formateraTal(kwhPerAr)} kWh på ett år.`;
+}
+/** E11: länktexten på raden till elkostnadsräknaren. */
+const KWH_LANK = 'Räkna ut kronorna med ditt elpris';
 
 /**
  * Kolumner efter antal träffar, och aldrig bredare än läsbredden när de är få:
@@ -385,6 +407,20 @@ const huvudbild = varumarke ?? illustration;
               <a href="/luftavfuktare/">Här är alla jag granskat.</a>
             </p>
           </Faktaruta>
+        )
+      }
+      {
+        elrader.length > 0 && (
+          <ul class="m-0 mt-4 p-0 list-none space-y-2 text-brod lg:text-brod-lg">
+            {elrader.map((r) => (
+              <li>
+                {kwhRad(r.namn, r.effektW, r.kwhPerAr)}{' '}
+                <a href={`/rakna/elkostnad/?produkt=${r.slug}&timmar=8&dagar=365`} class={LANK_KLASS}>
+                  {KWH_LANK}
+                </a>
+              </li>
+            ))}
+          </ul>
         )
       }
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">

@@ -58,7 +58,12 @@ interface Props {
    * src/lib/kalkyl/elkostnad.ts). produkt hämtar maskinens effekt ur
    * databasen och följer med som dolt fält; en effekt i samma förval vinner,
    * och en produkt som saknas eller inte har effekt_w ger byggfel
-   * (docs/briefer/spec-elkostnad-forval-2026-09-30.md avsnitt 1). Och
+   * (docs/briefer/spec-elkostnad-forval-2026-09-30.md avsnitt 1).
+   * plats=kallare, krypgrund eller garage fyller effekten och gångtiden ur
+   * FORVAL_PER_PLATS och följer med som dolt fält, utan rad i det kompakta
+   * formuläret; en okänd plats ger byggfel (samma spec, avsnitt 7.4).
+   * typ=tvatt, med kg och torkningar, ger det kompakta tvättformuläret
+   * (avsnitt 8.4). Och
    * daggpunkten, med rummet och talen i verktygets adress, till exempel
    * "rum=fonster" (forvalFranAdress i src/lib/kalkyl/daggpunkt.ts,
    * docs/briefer/spec-daggpunkt-rum-2026-09-30.md avsnitt 7).
@@ -157,6 +162,9 @@ const elVarden = elForval?.status === 'ok' ? elForval.varden : undefined;
 const elTyp = elForval?.status === 'ok' ? elForval.typ : undefined;
 /* Slugen följer med som dolt fält till verktygssidan; raden "Jag räknar på" visas bara där. */
 const elProduktSlug = elForval?.status === 'ok' ? elForval.produktSlug : undefined;
+const elPlats = elForval?.status === 'ok' ? elForval.plats : undefined;
+/* typ=tvatt ger det kompakta tvättformuläret med förvalets kg och torkningar (spec avsnitt 8.4). */
+const elTvattFalt = elForval?.status === 'ok' ? elForval.tvatt?.varden : undefined;
 /** Grannemedgivandets förval, tolkat som adressen på verktygssidan. */
 if (forst !== undefined && namn !== 'kontrollplan') {
   throw new Error(`[Kalkylator] forst finns bara för kontrollplanen, inte för "${namn}".`);
@@ -192,7 +200,7 @@ const prefix = `${k.slug}-inbaddad-`;
 
   {namn === 'daggpunkt' && <DaggpunktForm kompakt={true} indata={dpIndata} varden={dpVarden} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'avfuktare' && <AvfuktareForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
-  {namn === 'elkostnad' && <ElkostnadForm kompakt={true} indata={elIndata} varden={elVarden} typ={elTyp} produktSlug={elProduktSlug} idPrefix={prefix} knappText="Räkna ut" />}
+  {namn === 'elkostnad' && <ElkostnadForm kompakt={true} indata={elIndata} varden={elVarden} typ={elTyp} produktSlug={elProduktSlug} plats={elPlats} tvattFalt={elTvattFalt} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'innervagg' && <InnervaggForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'bygglov-altan' && <BygglovAltanForm kompakt={true} idPrefix={prefix} knappText="Ge mig svaret" />}
   {namn === 'altan' && <AltanForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}

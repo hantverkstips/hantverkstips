@@ -157,9 +157,104 @@ export function produktForval(specs: Record<string, unknown> | null | undefined)
   return { effektW: null };
 }
 
-/** Standardvärdena med produktens effekt inlagd när den finns. */
-export function standardMedForval(forval: ProduktForval): ElkostnadIndata {
-  return { ...STANDARD, effektW: forval.effektW ?? STANDARD.effektW };
+/* ------------------------------------------------------------------ *
+ * Förval per plats
+ * ------------------------------------------------------------------ */
+
+/**
+ * Platserna som har ett förval, `?plats=kallare`. Luftfuktare, radonsug
+ * och tvätt väntar på underlag och får en rad här när talet finns; ingen effekt
+ * gissas. Spec: docs/briefer/spec-elkostnad-forval-2026-09-30.md avsnitt 7.
+ */
+export type Plats = 'kallare' | 'krypgrund' | 'vind' | 'garage';
+
+export interface PlatsForval {
+  /** Maskinens namn, som i köpguiden för platsen. */
+  maskin: string;
+  typ: 'kondens' | 'sorption';
+  /** Märkeffekten i watt vid villkoret. */
+  effektW: number;
+  /** Tillverkarens provklimat för effekten. */
+  villkor: { tempC: number; rf: number };
+  timmarPerDygn: number;
+}
+
+/**
+ * En rad per plats. timmarPerDygn är 8 i alla: ANTAGANDE, samma som i
+ * GANGTIDER och köpguidernas tabeller.
+ */
+export const FORVAL_PER_PLATS: Record<Plats, PlatsForval> = {
+  /*
+   * Källa: Proffsmagasinets produktsida, 320 W (`faktablad/guider-avfuktare-kallare.md`
+   * rad 104). Wood's bruksanvisning för systermodellen SW38F: 320 W vid 20 °C och
+   * 70 % (`faktablad/guider-avfuktare-garage.md` rad 74). Förstavalet i köpguiden
+   * för källaren.
+   */
+  kallare: {
+    maskin: "Wood's SW39FW",
+    typ: 'kondens',
+    effektW: 320,
+    villkor: { tempC: 20, rf: 70 },
+    timmarPerDygn: 8,
+  },
+  /*
+   * Källa: Fresh: 350 W, 6 l vid 27 °C och 60 % (`faktablad/guider-avfuktare-krypgrund.md`
+   * rad 84). Valet i köpguiden för krypgrunden som har villkor; Drybox X4 anger inga.
+   */
+  krypgrund: {
+    maskin: 'Fresh D-800',
+    typ: 'sorption',
+    effektW: 350,
+    villkor: { tempC: 27, rf: 60 },
+    timmarPerDygn: 8,
+  },
+  /*
+   * Källa: affiliates val för vinden, docs/briefer/affiliate-avfuktare-vind-2026-10.md;
+   * effekt och villkor som krypgrunden, Fresh: 350 W, 6 l vid 27 °C och 60 %
+   * (`faktablad/guider-avfuktare-krypgrund.md` rad 84).
+   * ANTAGANDE: 8 timmar per dygn, samma som övriga platser.
+   */
+  vind: {
+    maskin: 'Fresh D-800',
+    typ: 'sorption',
+    effektW: 350,
+    villkor: { tempC: 27, rf: 60 },
+    timmarPerDygn: 8,
+  },
+  /*
+   * Källa: Wood's bruksanvisning rev. 2022-05-02: 275 W vid 30 °C och 80 %.
+   * Tillverkaren väger tyngst mot butikens 240 W (`faktablad/guider-avfuktare-garage.md`
+   * rad 18 och 73). Valet i köpguiden för det uppvärmda garaget.
+   */
+  garage: {
+    maskin: "Wood's MDK21",
+    typ: 'kondens',
+    effektW: 275,
+    villkor: { tempC: 30, rf: 80 },
+    timmarPerDygn: 8,
+  },
+};
+
+/** Platserna i tabellens ordning. */
+export const PLATSER = Object.keys(FORVAL_PER_PLATS) as Plats[];
+
+/** plats ur adressen, eller null när den saknas eller är okänd. */
+export function platsFranQuery(q: URLSearchParams): Plats | null {
+  const v = q.get('plats');
+  return v !== null && (PLATSER as string[]).includes(v) ? (v as Plats) : null;
+}
+
+/**
+ * Standardvärdena med förvalen inlagda. Effekten: produktens, sedan platsens,
+ * sist STANDARD. Gångtiden: platsens, sedan STANDARD.
+ */
+export function standardMedForval(forval: ProduktForval, plats: Plats | null = null): ElkostnadIndata {
+  const p = plats === null ? null : FORVAL_PER_PLATS[plats];
+  return {
+    ...STANDARD,
+    effektW: forval.effektW ?? p?.effektW ?? STANDARD.effektW,
+    timmarPerDygn: p?.timmarPerDygn ?? STANDARD.timmarPerDygn,
+  };
 }
 
 /**
@@ -172,9 +267,9 @@ export function tolkaQuery(
   q: URLSearchParams,
   forval: ProduktForval = { effektW: null },
 ): { indata: ElkostnadIndata; harIndata: boolean } {
-  const standard = standardMedForval(forval);
-  const harIndata =
-    q.has('effekt') || q.has('timmar') || q.has('dagar') || q.has('elpris') || q.has('liter') || q.has('produkt');
+  // effekt och timmar i adressen vinner; sedan produkten, platsen och STANDARD.
+  const standard = standardMedForval(forval, platsFranQuery(q));
+  const harIndata = ['effekt', 'timmar', 'dagar', 'elpris', 'liter', 'produkt', 'plats'].some((k) => q.has(k));
 
   const raDagar = q.get('dagar');
   const dagar = raDagar === null ? standard.dagar : raDagar.trim() === 'eget' ? tillTal(q.get('dagareget')) : tillTal(raDagar);
@@ -261,19 +356,175 @@ export function raknaElkostnad(i: ElkostnadIndata): ElkostnadResultat {
  * ------------------------------------------------------------------ */
 
 /** Nycklarna ett förval får innehålla: samma som den delbara adressen. */
-export const FORVAL_NYCKLAR = ['produkt', 'effekt', 'timmar', 'dagar', 'elpris', 'liter', 'typ'] as const;
+export const FORVAL_NYCKLAR = [
+  'plats',
+  'produkt',
+  'effekt',
+  'timmar',
+  'dagar',
+  'elpris',
+  'liter',
+  'typ',
+  'kg',
+  'torkningar',
+] as const;
 
 /**
  * Vad räkningen gäller. `golvvarme` kommer från golvvärmesidans förval
  * (typ=golvvarme) och följer med i formuläret och den delbara adressen, så att
  * sidan inte visar avfuktarens text för något som inte är en avfuktare.
  * Räkningen är densamma; bara texterna skiljer.
+ * `tvatt` är tvättläget (spec avsnitt 8): en egen räkning per kg tvätt, med
+ * tolkaTvatt och raknaTvatt nedan.
  */
-export type ElTyp = 'maskin' | 'golvvarme';
+export type ElTyp = 'maskin' | 'golvvarme' | 'tvatt';
 
-/** typ ur adressen. Allt annat än golvvarme är en maskin, som förut. */
+/** typ ur adressen. Allt annat än golvvarme och tvatt är en maskin, som förut. */
 export function typFranQuery(q: URLSearchParams): ElTyp {
-  return q.get('typ') === 'golvvarme' ? 'golvvarme' : 'maskin';
+  const t = q.get('typ');
+  return t === 'golvvarme' ? 'golvvarme' : t === 'tvatt' ? 'tvatt' : 'maskin';
+}
+
+/* ------------------------------------------------------------------ *
+ * Tvättläget, ?typ=tvatt
+ * Spec: docs/briefer/spec-elkostnad-forval-2026-09-30.md avsnitt 8.
+ * Underlag: docs/briefer/faktablad/fukt-gemensamma-tal.md avsnitt 14.
+ * Koordinatorns beslut: testets tal per kg gäller för alla metoder. Restfukten
+ * räknas inte om, eftersom ingen källa ger den per varvtal, och EU-märkningen
+ * provar tumlare vid 60 %.
+ * ------------------------------------------------------------------ */
+
+export type TvattMetod = 'avfuktare' | 'varmepumpstumlare' | 'kondenstumlare';
+
+/**
+ * kWh per kg tvätt. Källa: Energimyndigheten, "Luftavfuktare torka tvätt",
+ * testsida senast uppdaterad 2017-12-11, tabell 1. Adressen:
+ * https://www.energimyndigheten.se/effektiv-energianvandning/tester/tester-a-o/luftavfuktare-torka-tvatt/
+ */
+export const TVATT_KWH_PER_KG: Record<TvattMetod, number> = {
+  avfuktare: 0.32,
+  varmepumpstumlare: 0.23,
+  kondenstumlare: 0.27,
+};
+
+/** Metoderna i tabellens ordning. */
+export const TVATT_METODER = Object.keys(TVATT_KWH_PER_KG) as TvattMetod[];
+
+/** Källa: samma sida, "7 kilo tvätt på torkning". */
+export const TVATT_TEST = {
+  kgPerTorkning: 7,
+  datum: '2017-12-11',
+  url: 'https://www.energimyndigheten.se/effektiv-energianvandning/tester/tester-a-o/luftavfuktare-torka-tvatt/',
+} as const;
+
+export interface TvattIndata {
+  /** Kg tvätt per torkning. */
+  kgPerTorkning: number;
+  /** Torkningar per vecka. */
+  torkningarPerVecka: number;
+  /** Elpris i kronor per kilowattimme, allt inräknat. */
+  elprisKrPerKwh: number;
+}
+
+/**
+ * Standardvärdena i tvättläget.
+ * - 7 kg har testet som källa (TVATT_TEST).
+ * - 1 torkning i veckan är ett ANTAGANDE: en enhet att skala från, som läsaren
+ *   byter mot sitt eget tal.
+ * - Elpriset är SCB-talet ur antaganden.ts, som i STANDARD.
+ */
+export const TVATT_STANDARD: TvattIndata = {
+  kgPerTorkning: TVATT_TEST.kgPerTorkning,
+  torkningarPerVecka: 1,
+  elprisKrPerKwh: ELPRIS_KR_PER_KWH,
+};
+
+/** ANTAGANDE, inmatningsgränser. Elpriset har samma gränser som GRANSER. */
+export const TVATT_GRANSER = {
+  kgPerTorkning: [1, 20],
+  torkningarPerVecka: [0.1, 30],
+  elprisKrPerKwh: GRANSER.elprisKrPerKwh,
+} as const;
+
+/** Ett år räknas som DAGAR_PER_AR / 7 veckor. */
+const VECKOR_PER_AR = DAGAR_PER_AR / 7;
+
+export interface TvattMetodResultat {
+  kwhPerAr: number;
+  krPerAr: number;
+  kwhPerTorkning: number;
+}
+
+export type TvattResultat =
+  | { status: 'ok'; kgPerAr: number; metoder: Record<TvattMetod, TvattMetodResultat> }
+  | { status: 'ogiltig'; fel: Partial<Record<keyof TvattIndata, string>> };
+
+/** T1: felraden för kg. Texten är hantverkarens (texter-elkostnad-forval-2026-09-30.md). */
+function tvattFelKg(min: number, max: number): string {
+  return `Skriv en tvättmängd mellan ${min} och ${max} kg`;
+}
+
+/** T1: felraden för torkningar. Texten är hantverkarens. */
+function tvattFelTorkningar(min: string, max: number): string {
+  return `Skriv ett antal torkningar i veckan mellan ${min} och ${max}`;
+}
+
+/** Läser kg, torkningar och elpris ur adressen. Decimalkomma godtas. */
+export function tolkaTvatt(q: URLSearchParams): { indata: TvattIndata; harIndata: boolean } {
+  const harIndata = ['kg', 'torkningar', 'elpris'].some((k) => q.has(k));
+  return {
+    harIndata,
+    indata: {
+      kgPerTorkning: q.has('kg') ? tillTal(q.get('kg')) : TVATT_STANDARD.kgPerTorkning,
+      torkningarPerVecka: q.has('torkningar') ? tillTal(q.get('torkningar')) : TVATT_STANDARD.torkningarPerVecka,
+      elprisKrPerKwh: q.has('elpris') ? tillTal(q.get('elpris')) : TVATT_STANDARD.elprisKrPerKwh,
+    },
+  };
+}
+
+export function raknaTvatt(i: TvattIndata): TvattResultat {
+  const fel: Partial<Record<keyof TvattIndata, string>> = {};
+  const [kgMin, kgMax] = TVATT_GRANSER.kgPerTorkning;
+  const [torkMin, torkMax] = TVATT_GRANSER.torkningarPerVecka;
+  const [prisMin, prisMax] = TVATT_GRANSER.elprisKrPerKwh;
+
+  if (!Number.isFinite(i.kgPerTorkning) || i.kgPerTorkning < kgMin || i.kgPerTorkning > kgMax) {
+    fel.kgPerTorkning = tvattFelKg(kgMin, kgMax);
+  }
+  if (!Number.isFinite(i.torkningarPerVecka) || i.torkningarPerVecka < torkMin || i.torkningarPerVecka > torkMax) {
+    fel.torkningarPerVecka = tvattFelTorkningar(String(torkMin).replace('.', ','), torkMax);
+  }
+  if (!Number.isFinite(i.elprisKrPerKwh) || i.elprisKrPerKwh < prisMin || i.elprisKrPerKwh > prisMax) {
+    // Samma felrad som maskinens elpris.
+    fel.elprisKrPerKwh = `Skriv ett elpris mellan ${String(prisMin).replace('.', ',')} och ${prisMax} kr per kWh`;
+  }
+  if (Object.keys(fel).length > 0) return { status: 'ogiltig', fel };
+
+  // Kg tvätt per år: kg per torkning gånger torkningar per vecka gånger veckorna.
+  const kgPerAr = i.kgPerTorkning * i.torkningarPerVecka * VECKOR_PER_AR;
+  const metod = (m: TvattMetod): TvattMetodResultat => {
+    const kwhPerAr = kgPerAr * TVATT_KWH_PER_KG[m];
+    return { kwhPerAr, krPerAr: kwhPerAr * i.elprisKrPerKwh, kwhPerTorkning: i.kgPerTorkning * TVATT_KWH_PER_KG[m] };
+  };
+  return {
+    status: 'ok',
+    kgPerAr,
+    metoder: {
+      avfuktare: metod('avfuktare'),
+      varmepumpstumlare: metod('varmepumpstumlare'),
+      kondenstumlare: metod('kondenstumlare'),
+    },
+  };
+}
+
+/** Fältens värden i tvättläget som de står i formuläret: decimalkomma, elpriset med två decimaler. */
+export function tvattVarden(i: TvattIndata): { kg: string; torkningar: string; elpris: string } {
+  const komma = (n: number): string => String(n).replace('.', ',');
+  return {
+    kg: komma(i.kgPerTorkning),
+    torkningar: komma(i.torkningarPerVecka),
+    elpris: i.elprisKrPerKwh.toFixed(2).replace('.', ','),
+  };
 }
 
 /**
@@ -324,6 +575,9 @@ export function formVarden(i: ElkostnadIndata): {
  * Funktionen läser aldrig databasen: Kalkylator hämtar produkten och skickar
  * dess effekt som `produktForval`. En `effekt` i samma förval vinner.
  * Spec: docs/briefer/spec-elkostnad-forval-2026-09-30.md avsnitt 1.
+ *
+ * `plats=kallare` (krypgrund, garage) ger platsens effekt och gångtid ur
+ * FORVAL_PER_PLATS; en okänd plats ger fel (avsnitt 7).
  */
 export function forvalFranAdress(
   forval: string,
@@ -336,14 +590,49 @@ export function forvalFranAdress(
       typ: ElTyp;
       /** Produktens slug ur förvalet, eller null när den saknas eller inte är en slug. */
       produktSlug: string | null;
+      /** Platsen ur förvalet, eller null. */
+      plats: Plats | null;
+      /** Tvättlägets tal och fältvärden vid typ=tvatt, annars null. */
+      tvatt: { indata: TvattIndata; varden: ReturnType<typeof tvattVarden> } | null;
     }
   | { status: 'fel'; fel: string } {
   const q = new URLSearchParams(forval);
   const okanda = [...q.keys()].filter((k) => !(FORVAL_NYCKLAR as readonly string[]).includes(k));
   if (okanda.length > 0) return { status: 'fel', fel: `okänd nyckel ${okanda.join(', ')}` };
-  if (q.has('typ') && q.get('typ') !== 'golvvarme') return { status: 'fel', fel: `okänd typ ${q.get('typ')}` };
+  const typ = q.get('typ');
+  if (q.has('typ') && typ !== 'golvvarme' && typ !== 'tvatt') return { status: 'fel', fel: `okänd typ ${typ}` };
+  if (q.has('plats') && platsFranQuery(q) === null) return { status: 'fel', fel: `okänd plats ${q.get('plats')}` };
+  /*
+   * Tvättläget har egna nycklar (kg, torkningar, elpris). Maskinens nycklar i
+   * ett tvättförval, eller tvättens utan typ=tvatt, skulle inte synas i
+   * formuläret, så de ger fel.
+   */
+  const tvattNycklar = ['kg', 'torkningar'];
+  const maskinNycklar = ['plats', 'produkt', 'effekt', 'timmar', 'dagar', 'liter'];
+  if (typ === 'tvatt') {
+    const fel = [...q.keys()].filter((k) => maskinNycklar.includes(k));
+    if (fel.length > 0) return { status: 'fel', fel: `${fel.join(', ')} hör inte till typ=tvatt` };
+  } else {
+    const fel = [...q.keys()].filter((k) => tvattNycklar.includes(k));
+    if (fel.length > 0) return { status: 'fel', fel: `${fel.join(', ')} kräver typ=tvatt` };
+  }
+  let tvatt: { indata: TvattIndata; varden: ReturnType<typeof tvattVarden> } | null = null;
+  if (typ === 'tvatt') {
+    const t = tolkaTvatt(q).indata;
+    const rt = raknaTvatt(t);
+    if (rt.status !== 'ok') return { status: 'fel', fel: Object.keys(rt.fel).join(', ') };
+    tvatt = { indata: t, varden: tvattVarden(t) };
+  }
   const { indata } = tolkaQuery(q, produktForval);
   const r = raknaElkostnad(indata);
   if (r.status !== 'ok') return { status: 'fel', fel: Object.values(r.fel).join(' ') };
-  return { status: 'ok', indata, varden: formVarden(indata), typ: typFranQuery(q), produktSlug: produktSlugFranQuery(q) };
+  return {
+    status: 'ok',
+    indata,
+    varden: formVarden(indata),
+    typ: typFranQuery(q),
+    produktSlug: produktSlugFranQuery(q),
+    plats: platsFranQuery(q),
+    tvatt,
+  };
 }

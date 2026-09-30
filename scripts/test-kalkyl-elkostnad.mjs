@@ -344,3 +344,171 @@ test('förval: maskin är ingen nyckel', () => {
 test('förval: nyckellistan innehåller produkt', () => {
   assert.ok(FORVAL_NYCKLAR.includes('produkt'));
 });
+
+/*
+ * Förval per plats (docs/briefer/spec-elkostnad-forval-2026-09-30.md avsnitt 7.1
+ * och 7.5). Kontrolltalen är specens tabell i 7.1: 8 h per dygn, 365 dagar och
+ * 2,40 kr per kWh.
+ */
+import { FORVAL_PER_PLATS, platsFranQuery } from '../src/lib/kalkyl/elkostnad.ts';
+
+const PLATS_KONTROLL = {
+  kallare: { effektW: 320, kwhPerDygn: 2.56, kwhPerAr: 934.4, krPerAr: 2242.56 },
+  krypgrund: { effektW: 350, kwhPerDygn: 2.8, kwhPerAr: 1022, krPerAr: 2452.8 },
+  vind: { effektW: 350, kwhPerDygn: 2.8, kwhPerAr: 1022, krPerAr: 2452.8 },
+  garage: { effektW: 275, kwhPerDygn: 2.2, kwhPerAr: 803, krPerAr: 1927.2 },
+};
+
+test('plats: varje plats ger förvalet och kontrolltalen i 7.1', () => {
+  assert.deepEqual(Object.keys(FORVAL_PER_PLATS), Object.keys(PLATS_KONTROLL));
+  for (const [plats, k] of Object.entries(PLATS_KONTROLL)) {
+    const q = new URLSearchParams(`plats=${plats}&dagar=365`);
+    assert.equal(platsFranQuery(q), plats);
+    const { indata, harIndata } = tolkaQuery(q);
+    assert.equal(harIndata, true);
+    assert.equal(indata.effektW, k.effektW, plats);
+    assert.equal(indata.timmarPerDygn, 8, plats);
+    assert.equal(indata.elprisKrPerKwh, 2.4);
+    const r = raknaElkostnad(indata);
+    assert.equal(r.status, 'ok');
+    assert.ok(Math.abs(r.kwhPerDygn - k.kwhPerDygn) < 1e-9, `${plats} kWh per dygn ${r.kwhPerDygn}`);
+    assert.ok(Math.abs(r.kwhPerAr - k.kwhPerAr) < 1e-9, `${plats} kWh per år ${r.kwhPerAr}`);
+    assert.ok(Math.abs(r.krPerAr - k.krPerAr) < 1e-6, `${plats} kr per år ${r.krPerAr}`);
+    const f = forvalFranAdress(`plats=${plats}`);
+    assert.equal(f.status, 'ok');
+    assert.equal(f.plats, plats);
+    assert.equal(f.indata.effektW, k.effektW);
+  }
+});
+
+test('plats: effekt och timmar i adressen vinner över platsen', () => {
+  assert.equal(tolkaQuery(new URLSearchParams('plats=kallare&effekt=500')).indata.effektW, 500);
+  assert.equal(tolkaQuery(new URLSearchParams('plats=kallare&timmar=24')).indata.timmarPerDygn, 24);
+  assert.equal(forvalFranAdress('plats=kallare&effekt=500').indata.effektW, 500);
+  assert.equal(forvalFranAdress('plats=kallare&timmar=24').indata.timmarPerDygn, 24);
+  // Produkten går före platsen.
+  assert.equal(tolkaQuery(new URLSearchParams('plats=krypgrund&produkt=woods-mdk21'), { effektW: 275 }).indata.effektW, 275);
+});
+
+test('plats: radonsug ger inget förval i tolkaQuery och fel i forvalFranAdress', () => {
+  const q = new URLSearchParams('plats=radonsug');
+  assert.equal(platsFranQuery(q), null);
+  assert.equal(tolkaQuery(q).indata.effektW, EL_STANDARD.effektW);
+  assert.equal(tolkaQuery(q).indata.timmarPerDygn, EL_STANDARD.timmarPerDygn);
+  assert.equal(forvalFranAdress('plats=radonsug').status, 'fel');
+});
+
+test('plats: nyckellistan har plats', () => {
+  assert.ok(FORVAL_NYCKLAR.includes('plats'));
+});
+
+test('plats: FORVAL_PER_PLATS har villkor på varje rad', () => {
+  for (const [plats, p] of Object.entries(FORVAL_PER_PLATS)) {
+    assert.ok(Number.isFinite(p.villkor.tempC), plats);
+    assert.ok(Number.isFinite(p.villkor.rf), plats);
+    assert.ok(p.maskin.length > 0, plats);
+    assert.ok(p.typ === 'kondens' || p.typ === 'sorption', plats);
+  }
+  assert.deepEqual(FORVAL_PER_PLATS.kallare.villkor, { tempC: 20, rf: 70 });
+  assert.deepEqual(FORVAL_PER_PLATS.krypgrund.villkor, { tempC: 27, rf: 60 });
+  assert.deepEqual(FORVAL_PER_PLATS.garage.villkor, { tempC: 30, rf: 80 });
+});
+
+/*
+ * Tvättläget (docs/briefer/spec-elkostnad-forval-2026-09-30.md avsnitt 8.1 och 8.5).
+ * Kontrolltalen är specens tabell i 8.1: 7 kg, 1 torkning i veckan och 2,40 kr per
+ * kWh ger 365 kg per år. Talen per kg är Energimyndighetens test, 2017-12-11, tabell 1.
+ */
+import {
+  raknaTvatt,
+  tolkaTvatt,
+  TVATT_GRANSER,
+  TVATT_KWH_PER_KG,
+  TVATT_STANDARD,
+  TVATT_TEST,
+} from '../src/lib/kalkyl/elkostnad.ts';
+
+const TVATT_KONTROLL = {
+  avfuktare: { kwhPerAr: 116.8, krPerAr: 280.32, kwhPerTorkning: 2.24 },
+  varmepumpstumlare: { kwhPerAr: 83.95, krPerAr: 201.48, kwhPerTorkning: 1.61 },
+  kondenstumlare: { kwhPerAr: 98.55, krPerAr: 236.52, kwhPerTorkning: 1.89 },
+};
+
+test('tvätt: TVATT_KWH_PER_KG är testets tal, exakt', () => {
+  assert.deepEqual(TVATT_KWH_PER_KG, { avfuktare: 0.32, varmepumpstumlare: 0.23, kondenstumlare: 0.27 });
+  assert.equal(TVATT_TEST.kgPerTorkning, 7);
+  assert.equal(TVATT_TEST.datum, '2017-12-11');
+  assert.match(TVATT_TEST.url, /^https:\/\/www\.energimyndigheten\.se\//);
+  assert.deepEqual(TVATT_STANDARD, { kgPerTorkning: 7, torkningarPerVecka: 1, elprisKrPerKwh: 2.4 });
+});
+
+test('tvätt: raknaTvatt(TVATT_STANDARD) ger kontrolltalen i 8.1', () => {
+  const r = raknaTvatt(TVATT_STANDARD);
+  assert.equal(r.status, 'ok');
+  assert.ok(Math.abs(r.kgPerAr - 365) < 1e-9, `kg per år ${r.kgPerAr}`);
+  for (const [metod, k] of Object.entries(TVATT_KONTROLL)) {
+    const m = r.metoder[metod];
+    assert.ok(Math.abs(m.kwhPerAr - k.kwhPerAr) < 1e-9, `${metod} kWh per år ${m.kwhPerAr}`);
+    assert.ok(Math.abs(m.krPerAr - k.krPerAr) < 1e-6, `${metod} kr per år ${m.krPerAr}`);
+    assert.ok(Math.abs(m.kwhPerTorkning - k.kwhPerTorkning) < 1e-9, `${metod} kWh per torkning ${m.kwhPerTorkning}`);
+  }
+  assert.deepEqual(Object.keys(r.metoder), Object.keys(TVATT_KONTROLL));
+});
+
+test('tvätt: decimalkomma, kg=3,5 ger halva talen per torkning', () => {
+  const { indata, harIndata } = tolkaTvatt(new URLSearchParams('typ=tvatt&kg=3,5'));
+  assert.equal(harIndata, true);
+  assert.equal(indata.kgPerTorkning, 3.5);
+  assert.equal(indata.torkningarPerVecka, 1);
+  assert.equal(indata.elprisKrPerKwh, 2.4);
+  const r = raknaTvatt(indata);
+  assert.equal(r.status, 'ok');
+  for (const [metod, k] of Object.entries(TVATT_KONTROLL)) {
+    assert.ok(Math.abs(r.metoder[metod].kwhPerTorkning - k.kwhPerTorkning / 2) < 1e-9, metod);
+    assert.ok(Math.abs(r.metoder[metod].krPerAr - k.krPerAr / 2) < 1e-6, metod);
+  }
+  assert.equal(tolkaTvatt(new URLSearchParams('torkningar=0,5')).indata.torkningarPerVecka, 0.5);
+  assert.equal(tolkaTvatt(new URLSearchParams('elpris=1,15')).indata.elprisKrPerKwh, 1.15);
+  assert.equal(tolkaTvatt(new URLSearchParams('typ=tvatt')).harIndata, false);
+  assert.deepEqual(tolkaTvatt(new URLSearchParams('typ=tvatt')).indata, TVATT_STANDARD);
+});
+
+test('tvätt: gränserna ger fel per fält', () => {
+  assert.deepEqual([...TVATT_GRANSER.kgPerTorkning], [1, 20]);
+  assert.deepEqual([...TVATT_GRANSER.torkningarPerVecka], [0.1, 30]);
+  assert.deepEqual([...TVATT_GRANSER.elprisKrPerKwh], [...GRANSER.elprisKrPerKwh]);
+  const r = raknaTvatt({ kgPerTorkning: 21, torkningarPerVecka: 0, elprisKrPerKwh: 99 });
+  assert.equal(r.status, 'ogiltig');
+  assert.equal(typeof r.fel.kgPerTorkning, 'string');
+  assert.equal(typeof r.fel.torkningarPerVecka, 'string');
+  assert.equal(typeof r.fel.elprisKrPerKwh, 'string');
+  const baraKg = raknaTvatt({ ...TVATT_STANDARD, kgPerTorkning: NaN });
+  assert.equal(baraKg.status, 'ogiltig');
+  assert.deepEqual(Object.keys(baraKg.fel), ['kgPerTorkning']);
+  assert.equal(raknaTvatt({ ...TVATT_STANDARD, kgPerTorkning: 1, torkningarPerVecka: 30 }).status, 'ok');
+  assert.equal(raknaTvatt({ ...TVATT_STANDARD, kgPerTorkning: 20, torkningarPerVecka: 0.1 }).status, 'ok');
+});
+
+test('tvätt: förvalet typ=tvatt är ok, kg=50 ger fel', () => {
+  const f = forvalFranAdress('typ=tvatt');
+  assert.equal(f.status, 'ok');
+  assert.equal(f.typ, 'tvatt');
+  assert.deepEqual(f.tvatt?.indata, TVATT_STANDARD);
+  assert.deepEqual(f.tvatt?.varden, { kg: '7', torkningar: '1', elpris: '2,40' });
+  const egen = forvalFranAdress('typ=tvatt&kg=5&torkningar=3');
+  assert.equal(egen.status, 'ok');
+  assert.equal(egen.tvatt?.indata.kgPerTorkning, 5);
+  assert.equal(egen.tvatt?.indata.torkningarPerVecka, 3);
+  assert.equal(forvalFranAdress('typ=tvatt&kg=50').status, 'fel');
+  // Maskinens förval har inget tvättläge, och nycklarna blandas inte.
+  assert.equal(forvalFranAdress('effekt=320').tvatt, null);
+  assert.equal(forvalFranAdress('kg=7').status, 'fel');
+  assert.equal(forvalFranAdress('typ=tvatt&effekt=300').status, 'fel');
+});
+
+test('tvätt: typFranQuery ger tvatt, och nyckellistan har kg och torkningar', () => {
+  assert.equal(typFranQuery(new URLSearchParams('typ=tvatt')), 'tvatt');
+  assert.equal(typFranQuery(new URLSearchParams('typ=golvvarme')), 'golvvarme');
+  assert.ok(FORVAL_NYCKLAR.includes('kg'));
+  assert.ok(FORVAL_NYCKLAR.includes('torkningar'));
+});
