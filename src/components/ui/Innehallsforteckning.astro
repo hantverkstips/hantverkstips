@@ -1,10 +1,12 @@
 ---
 /**
  * Innehållsförteckning byggd på H2. Två varianter, en per plats, så att listan
- * aldrig hamnar två gånger i HTML:en:
+ * aldrig hamnar två gånger i HTML:en, båda i ett kort:
  *  - hopfallbar: <details> på mobil, stängd som standard, dold från lg
- *  - sidospalt:  alltid öppen lista, dold under lg, anroparen gör den sticky
- * Färre än tre poster: renderar ingenting. Ingen JavaScript.
+ *  - sidospalt:  alltid öppen lista, dold under lg, överst i sidospalten
+ * Listan har en linje till vänster och inga siffror (.innehall i global.css).
+ * Färre än tre poster: renderar ingenting. Ingen JavaScript, ingen aktiv rad.
+ * Spec: docs/briefer/spec-designlyft-b-2026-10-02.md 1.7.
  */
 interface Props {
   rubriker: { slug: string; text: string }[];
@@ -18,32 +20,25 @@ const visa = rubriker.length >= 3;
 {
   visa &&
     (variant === 'hopfallbar' ? (
-      <details class="lg:hidden my-6 border border-linje rounded-sm">
-        <summary class="flex min-h-11 items-center px-4 py-3 font-bold text-blyerts cursor-pointer">
+      <details class="kort innehall mt-7 lg:hidden">
+        <summary class="flex min-h-11 items-center px-4 font-bold text-blyerts cursor-pointer">
           Innehåll, {rubriker.length} avsnitt
         </summary>
-        <ol class="m-0 px-4 pb-2 pt-0 list-decimal list-inside text-blyerts-2">
+        <ol class="mx-4 mb-3">
           {rubriker.map((r) => (
-            <li class="border-t border-linje">
-              <a
-                href={`#${r.slug}`}
-                class="inline-flex min-h-11 items-center lank text-blyerts"
-              >
-                {r.text}
-              </a>
+            <li>
+              <a href={`#${r.slug}`}>{r.text}</a>
             </li>
           ))}
         </ol>
       </details>
     ) : (
-      <nav class="hidden lg:block" aria-label="Innehåll">
-        <p class="m-0 mb-2 text-etikett-lg uppercase text-blyerts">Innehåll</p>
-        <ol class="m-0 p-0 list-none text-liten text-blyerts-2">
+      <nav class="kort innehall px-5.5 py-4.5 hidden lg:block" aria-label="Innehåll">
+        <p class="etikett mb-2 text-blyerts-2">Innehåll, {rubriker.length} avsnitt</p>
+        <ol>
           {rubriker.map((r) => (
-            <li class="mb-2">
-              <a href={`#${r.slug}`} class="lank text-blyerts-2">
-                {r.text}
-              </a>
+            <li>
+              <a href={`#${r.slug}`}>{r.text}</a>
             </li>
           ))}
         </ol>

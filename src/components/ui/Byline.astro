@@ -1,0 +1,40 @@
+---
+/**
+ * Bylinen under H1: porträttplatsen, namnet som länk till författarsidan,
+ * datumen och läsminuterna. Datumen är exakt samma värden som datePublished och
+ * dateModified i Article-markupen (SEO-villkor 2026-10-02). Utan publicerad
+ * (kategorisidan) står bara "Uppdaterad {datum}".
+ * Spec: docs/SPEC-SIDMALLAR.md 2.8, docs/briefer/spec-designlyft-b-2026-10-02.md 1.3.
+ */
+import { getEntry } from 'astro:content';
+import { formateraDatum, isoDatum } from '../../lib/format';
+import Portratt from './Portratt.astro';
+
+interface Props {
+  forfattare: string;
+  publicerad?: Date | undefined;
+  uppdaterad?: Date | undefined;
+  minuter?: number | undefined;
+}
+
+const { forfattare, publicerad, uppdaterad, minuter } = Astro.props;
+const post = (await getEntry('forfattare', forfattare)) ?? (await getEntry('forfattare', 'christian'));
+const id = post?.id ?? 'christian';
+const namn = post?.data.namn ?? 'Christian';
+---
+
+<p class="byline">
+  <Portratt storlek={40} />
+  <a class="lank text-blyerts font-bold" href={`/forfattare/${id}/`}>{namn}</a>
+  {
+    (publicerad || uppdaterad || minuter) && (
+      <span>
+        {publicerad ? (
+          <>Publicerad <time datetime={isoDatum(publicerad)}>{formateraDatum(publicerad)}</time>{uppdaterad && (<>, uppdaterad <time datetime={isoDatum(uppdaterad)}>{formateraDatum(uppdaterad)}</time></>)}</>
+        ) : (
+          uppdaterad && (<>Uppdaterad <time datetime={isoDatum(uppdaterad)}>{formateraDatum(uppdaterad)}</time></>)
+        )}{minuter && ` · ${minuter} min`}
+      </span>
+    )
+  }
+</p>

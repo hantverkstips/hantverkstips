@@ -377,7 +377,7 @@ Samma mall. Kort svar bär det konkreta svaret med nyckeltalet markerat och de v
 
 ### 5.6 Bäst i test (kategorisida)
 
-URL `/luftavfuktare/`. Sidan som tjänar pengar, så första skärmen på 375 × 667 ska innehålla rubrik, ingress och första rekommendationen med köpknapp. Ingen bild ovanför. Formen är artikelmallens (5.3), med Våra val och tabellen som bryter ut till sidbredd.
+URL `/luftavfuktare/`. Sidan som tjänar pengar. Första skärmen på 375 × 667 innehåller rubrik, ingress och början av första valet (etiketten och namnet); köpknappen följer i nästa skärm, eftersom produktkortet med tre fakta och svagheten inte ryms tidigare (ändrat 2026-10-02 med fas B). Ingen bild ovanför. Formen är artikelmallens (5.3), med Våra val och tabellen som bryter ut till sidbredd.
 
 ```
 ┌──────────────────────────────────────────────────┐
@@ -646,7 +646,7 @@ Sedan 2026-09-16 visas nivån på **alla artikelkort**, även på startsidan: et
 
 **Syfte.** En liten sak man kan ta i: ett ämne i ämnesraden, ett ankare till en grupp på hubben och räkna-indexet, ett förval i räknaren, en granne till hubben. Och, i gult, en etikett som säger en produkts roll ("Kallt enkelgarage", "Källare 15 grader"), som inte är en länk.
 
-**Utseende.** `.chip`: `inline-flex`, `items-center`, 6 px mellan ikon och text, minst 44 px hög (skissen ritar 36; klickytan går före), 14 px vågrätt, radie `full`, 1 px `blyerts-2`-ram, ytan `papper-2` (i ämnesraden och på banden `papper`), text `blyerts` 14 px utan understrykning. Hover: ramen blir `blyerts` och texten får understrykning i penna. Fokus: den globala ringen. Aktuell (`aria-current`): ytan `tumstock` och ramen `tumstock` i ämnesraden; ytan `blyerts` och texten `papper` för ett valt förval i räknaren. `.chip-gul` (etiketten): ytan `tumstock`, ingen ram, 13 px fetstil, 32 px hög, 12 px vågrätt, aldrig en länk.
+**Utseende.** `.chip`: `inline-flex`, `items-center`, 6 px mellan ikon och text, minst 44 px hög (skissen ritar 36; klickytan går före), 14 px vågrätt, radie `full`, 1 px `blyerts-2`-ram, ytan `papper-2` (i ämnesraden och på banden `papper`), text `blyerts` 14 px utan understrykning. Hover: ramen blir `blyerts` och texten får understrykning i penna. Fokus: den globala ringen. Aktuell (`aria-current`): ytan `tumstock` och ramen `tumstock` i ämnesraden; ytan `blyerts` och texten `papper` för ett valt förval i räknaren. `.chip-gul` (etiketten): ytan `tumstock`, ingen ram, 13 px fetstil, minst 32 px hög, 12 px vågrätt och 4 px lodrätt, aldrig en länk. Radien är 16 px, inte `full`, så att en etikett som bryts på två rader på mobil blir en rundad ruta i stället för en tillplattad cirkel.
 
 ### Knapp
 

@@ -76,3 +76,17 @@ En post per månad, `sasong.1` till `sasong.12`. Raden står i heron under styck
 ### Talkorten, `src/lib/kalkyl/korttal.ts`
 
 `korttal.[slug]`, en per räknare som svarar med ett tal; utvecklaren lämnar listan över vilka. Villkoret som står bredvid talet räknaren ger vid sina standardvärden, så att talet går att förstå utan sidan: vad talet gäller och de värden det är räknat på. I skissen: "vid 20 grader och 50 %" (daggpunkt 9,3 °C), "torka tvätt, en gång i veckan" (elkostnad 280 kr), "nya luckor, efter rotavdraget" (kök 16 898 kr). Högst 40 tecken. Värdena i villkoret ska vara räknarens standardvärden; UX och bygge kontrollerar dem mot formelmodulen.
+
+## Fas B
+
+Spec: `docs/briefer/spec-designlyft-b-2026-10-02.md`.
+
+| Nyckel | Fil | Var och vad | Längd | I skissen |
+|---|---|---|---|---|
+| `artikel.jobbar.text` | `src/components/vyer/Artikel.astro` och `Kategorisida.astro` | Rutan "Så jobbar jag" i högerspalten på varje artikel och kategorisida, en eller två meningar före länken "Så testar jag" | högst 140 tecken | "Talen är tillverkarnas. Jag har läst databladen men inte haft maskinerna. Reklamen styr inte valen." |
+| `artikel.produkter.fot` | `src/components/vyer/Artikel.astro` | Raden sist i högerspaltens lista "Produkterna jag nämner". Måste innehålla `{butik}` och `{datum}`. Raderna i listan är ankare till korten på sidan, inte annonslänkar, så raden säger bara var priserna kommer ifrån och när de lästes (affiliatebeslut) | högst 60 tecken | "Priser hos {butik}, lästa {datum}." (affiliateagentens exempel) |
+| `kategori.fler.rubrik` | `src/components/vyer/Kategorisida.astro` | H2 över korten längst ner på kategorisidan, med guider och granskningar i samma kategori. Måste innehålla `{namn}`. Ordet test får inte stå i den (SEO avsnitt 13) | högst 50 tecken | "Fler guider och tester om {namn}" (gamla, får inte stå kvar) |
+| `guider.typ.kategori.namn` | `src/lib/guider.ts` | Namnet på typfiltret för kategorisidorna på /guider/, singular, i filterraden | högst 24 tecken | förut "Bäst i test" |
+| `guider.typ.kategori.plural` | `src/lib/kort.ts` | Samma i plural, H1 och title på /guider/typ/kategori/ | högst 40 tecken | förut "Bäst i test" |
+
+Utöver nycklarna: produktkortet visar ett nytt valfritt fält `svaghet` (en mening om det som talar emot produkten), i artiklarnas `produkter` och i kategorifilernas `val`. Det står inte som TEXT SAKNAS; kortet visar testets "Köp inte om" eller ingenting tills fältet är ifyllt.

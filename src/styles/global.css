@@ -523,7 +523,9 @@ body {
     align-items: center;
     min-height: 32px;
     padding-inline: 12px;
-    border-radius: var(--radius-full);
+    padding-block: 4px;
+    border-radius: 1rem;
+    line-height: 1.3;
     background-color: var(--color-tumstock);
     color: var(--color-blyerts);
     font-size: var(--text-finstilt);
@@ -1203,7 +1205,7 @@ body {
 
   /*
     Tvåspaltsmallen: brödtext i läsbredd med innehållsförteckningen i höger spalt.
-    Blocket är 63 rem (44 + 3 gap + 16) och centreras i sidbredden, så att
+    Blocket är 66 rem (44 + 3 gap + 300 px) och centreras i sidbredden, så att
     brödsmulor, rubrik, tabeller och produktavsnitt får samma vänsterkant.
   */
   .tvaspalt {
@@ -1211,12 +1213,12 @@ body {
   }
   @media (min-width: 64rem) {
     .tvaspalt {
-      max-width: 63rem;
+      max-width: 66rem;
       margin-inline: auto;
     }
     .tvaspalt-rad {
       display: grid;
-      grid-template-columns: minmax(0, 44rem) 16rem;
+      grid-template-columns: minmax(0, 44rem) 300px;
       gap: 3rem;
       align-items: start;
     }
@@ -1410,7 +1412,8 @@ body {
       max-width: calc(100% + 3rem);
     }
     /* En tabell inne i en faktaruta stannar i rutan. */
-    .linjerat .prosa .brodtabell-block {
+    .linjerat .prosa .brodtabell-block,
+    .blad .prosa .brodtabell-block {
       width: auto;
       min-width: 0;
       max-width: 100%;
@@ -1439,7 +1442,7 @@ body {
        Tabellsiffror gör ändå att kolumnerna radar upp sig. */
     text-align: left;
     vertical-align: top;
-    border-bottom: 1px solid var(--color-linje);
+    border: 1px solid var(--color-linje);
   }
   /* Korta celler (tal med enhet, produktnamn) hålls ihop på en rad. Klasserna
      sätts vid bygget av pluginet i astro.config.mjs (scripts/tabellceller.mjs),
@@ -1490,9 +1493,13 @@ body {
     background-color: var(--color-papper-2);
     font-weight: 700;
   }
-  .prosa .brodtabell tbody tr:last-child > th,
-  .prosa .brodtabell tbody tr:last-child > td {
-    border-bottom: 0;
+  /* Jämförelsetabellen: samma ram runt varje cell (fas B 1.2). Dess behållare
+     har ramen runt hela tabellen, så tabellens yttre kant döljs. */
+  .tabell-behallare.border > table {
+    border-style: hidden;
+  }
+  .tabell-behallare.border > table :is(th, td) {
+    border: 1px solid var(--color-linje);
   }
   .prosa .brodtabell caption {
     caption-side: top;
@@ -1616,24 +1623,6 @@ body {
   }
 
   /*
-    Köpknappen, det gemensamma för båda lägena i Kopknapp.astro. Visning och
-    färger skiljer mellan lägena och står kvar som verktyg på elementet.
-  */
-  .kopknapp,
-  .prosa .kopknapp {
-    min-height: calc(var(--spacing) * 11);
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--radius-md);
-    padding-inline: calc(var(--spacing) * 5);
-    padding-block: calc(var(--spacing) * 3);
-    --tw-font-weight: var(--font-weight-bold);
-    font-weight: var(--font-weight-bold);
-    text-decoration-line: none;
-    text-align: center;
-  }
-
-  /*
     Räknarnas fält och etiketten runt en radioknapp eller kryssruta. Samma som
     Tailwinds w-full min-h-12 rounded-sm border bg-papper px-3 text-brod
     text-blyerts tabular-nums (FALT_KLASS) och flex min-h-11 items-center gap-2
@@ -1666,194 +1655,438 @@ body {
   }
 
   /*
-    Köpknappens två lägen som står på nästan varje knapp: full bredd på mobil
-    (flex w-full sm:inline-flex sm:w-auto) och köpbar (bg-penna text-papper
-    hover:bg-blyerts hover:text-papper). Läget utan pris behåller sina verktyg.
-    .prosa-varianten behövs för färgen: .prosa a sätter penna och väger tyngre
-    än en ensam klass. Spec: spec-skal-budget-2026-09-28 avsnitt 14.3.
+    Designlyftet fas B: artikelmallen och kategorisidan.
+    Spec: docs/briefer/spec-designlyft-b-2026-10-02.md, docs/DESIGN.md 5.3 till
+    5.6 och avsnitt 6.
   */
-  .kopknapp-full,
-  .prosa .kopknapp-full {
-    display: flex;
-    width: 100%;
+
+  /* Etikett-stil: 12 px (13 från lg), fetstil, versaler, spärrning. Färgen
+     sätter elementet (text-penna, text-blyerts-2). */
+  .etikett {
+    margin: 0;
+    font-size: var(--text-etikett);
+    line-height: var(--text-etikett--line-height);
+    letter-spacing: var(--text-etikett--letter-spacing);
+    font-weight: var(--text-etikett--font-weight);
+    text-transform: uppercase;
   }
-  @media (width >= 40rem) {
-    .kopknapp-full,
-    .prosa .kopknapp-full {
-      display: inline-flex;
-      width: auto;
+  @media (width >= 64rem) {
+    .etikett {
+      font-size: var(--text-etikett-lg);
+      line-height: var(--text-etikett-lg--line-height);
     }
   }
-  .kopknapp-aktiv,
-  .prosa .kopknapp-aktiv {
-    background-color: var(--color-penna);
+
+  /* Bylinen under H1: porträttplatsen, namnet, datumen och läsminuterna. */
+  .byline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 14px;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--color-blyerts-2);
+  }
+
+  /* Knappen inne i brödtexten: .prosa a sätter penna och understrykning och
+     väger tyngre än .knapp, så knappens färger sägs en gång till här. */
+  .prosa .knapp {
+    color: var(--color-penna);
+    text-decoration-line: none;
+  }
+  .prosa .knapp-fylld {
     color: var(--color-papper);
   }
   @media (hover: hover) {
-    .kopknapp-aktiv:hover,
-    .prosa .kopknapp-aktiv:hover {
-      background-color: var(--color-blyerts);
+    .prosa .knapp:hover {
       color: var(--color-papper);
     }
   }
 
   /*
-    Produktkortet och dess bildyta utan foto, som förut stod som verktyg på
-    varje kort: border border-linje rounded-sm p-4 lg:p-6 bg-papper, och
-    nyckelvärdenas dl, dt och dd. Den rekommenderade får bg-papper-2 som verktyg
-    bredvid. .prosa-varianten behövs för dt och dd: .prosa dd och .prosa dd + dt
-    ger marginal och väger tyngre än .produktkort dt.
-    Spec: spec-skal-budget-2026-09-28 avsnitt 14.3.
+    Köpknappen (Kopknapp.astro): knappen och prisblocket, under varandra på
+    mobil och på en rad från 640 px. I en tabellcell och utan pris
+    (.kopknapp-stapel) alltid under varandra. Ej köpbar är ett <span> utan
+    länk, som inte ska se klickbar ut vid hover.
   */
-  .produktkort {
-    border-style: var(--tw-border-style, solid);
-    border-width: 1px;
-    border-color: var(--color-linje);
-    border-radius: var(--radius-sm);
-    padding: calc(var(--spacing) * 4);
-    background-color: var(--color-papper);
-  }
-  @media (width >= 64rem) {
-    .produktkort {
-      padding: calc(var(--spacing) * 6);
-    }
-  }
-  .produktkort dl > div,
-  .prosa .produktkort dl > div {
-    display: contents;
-  }
-  .produktkort dt,
-  .prosa .produktkort dt {
-    margin: 0;
-    color: var(--color-blyerts-2);
-  }
-  .produktkort dd,
-  .prosa .produktkort dd {
-    margin: 0;
-    margin-bottom: calc(var(--spacing) * 2);
-    --tw-numeric-spacing: tabular-nums;
-    font-variant-numeric: var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacing,) var(--tw-numeric-fraction,);
-    color: var(--color-blyerts);
+  .kopknapp-rad {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
   @media (width >= 40rem) {
-    .produktkort dd,
-    .prosa .produktkort dd {
-      margin-bottom: 0;
+    .kopknapp-rad {
+      flex-direction: row;
+      align-items: center;
+      gap: 16px;
+    }
+    .kopknapp-rad > .knapp {
+      flex-shrink: 0;
+    }
+    td > .kopknapp-rad,
+    .kopknapp-stapel {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
     }
   }
-  .produktkort-bild {
-    display: flex;
-    width: calc(var(--spacing) * 24);
-    height: calc(var(--spacing) * 18);
-    align-items: center;
-    justify-content: center;
-    border-style: var(--tw-border-style, solid);
-    border-width: 1px;
-    border-color: var(--color-linje);
-    border-radius: var(--radius-sm);
-    padding: calc(var(--spacing) * 2);
-    background-color: var(--color-papper-2);
-    text-align: center;
+  span.kopknapp {
+    pointer-events: none;
   }
-  /*
-    Kortets märkesrad, rubrik och nyckelvärdeslista (spec-skal-budget-2026-09-28
-    avsnitt 15.2). Samma värden som m-0 mb-1 text-etikett lg:text-etikett-lg
-    uppercase text-penna, m-0 font-sans text-h3 lg:text-h3-lg text-blyerts och
-    m-0 mt-3 grid grid-cols-1 sm:grid-cols-[auto_minmax(0,1fr)] gap-x-4
-    gap-y-1 text-liten. Märkesraden är stycket närmast före rubriken.
-    .prosa-varianten behövs för rubriken: .prosa h3 sätter luft och vikt.
-  */
-  .produktkort p:has(+ h3) {
+  .kopknapp-pris {
     margin: 0;
-    margin-bottom: var(--spacing);
-    font-size: var(--text-etikett);
-    line-height: var(--tw-leading, var(--text-etikett--line-height));
-    letter-spacing: var(--tw-tracking, var(--text-etikett--letter-spacing));
-    font-weight: var(--tw-font-weight, var(--text-etikett--font-weight));
-    text-transform: uppercase;
-    color: var(--color-penna);
+    font-size: var(--text-ingress);
+    line-height: 1.3;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-blyerts);
+  }
+  .kopknapp-annons {
+    display: block;
+    font-size: var(--text-liten);
+    line-height: var(--text-liten--line-height);
+    font-weight: 400;
+    color: var(--color-blyerts-2);
+  }
+  .kopknapp-pris > span:first-child:not(.kopknapp-annons) {
+    font-weight: 400;
+    color: var(--color-blyerts-2);
+  }
+
+  /*
+    Produktkortet (Produktkort.astro). Smalt kort: bildrutan 96 × 72 till
+    vänster om chip och namn (.produktkort-topp), resten under i full bredd.
+    Brett kort: två spalter, bildrutan i 150 px och texten till höger; toppen
+    löses upp med display: contents så att chip och namn hamnar i textspalten.
+    Vilket läge det blir avgör kortets egen bredd (container query), inte
+    skärmens, eftersom kortet står både i en textspalt på 44 rem och i rutnät
+    med tre kort i rad (räknarsidorna). 30 rem innanför ramen motsvarar en
+    skärm på 640 px. Rekommenderad får bg-ruta på roten. Text och fakta med 8 px
+    emellan.
+  */
+  .produktkort {
+    container-type: inline-size;
+    padding: 16px;
+  }
+  @media (width >= 40rem) {
+    .produktkort {
+      padding: 22px;
+    }
+  }
+  .produktkort-topp {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .produktkort-namn,
+  .produktkort-text {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .produktkort-text {
+    margin-top: 12px;
   }
   .produktkort h3,
   .prosa .produktkort h3 {
     margin: 0;
-    font-family: var(--font-sans);
-    font-size: var(--text-h3);
-    line-height: var(--tw-leading, var(--text-h3--line-height));
-    font-weight: var(--tw-font-weight, var(--text-h3--font-weight));
+    font-family: var(--font-serif);
+    font-size: var(--text-h2);
+    line-height: var(--text-h2--line-height);
+    font-weight: var(--text-h2--font-weight);
     color: var(--color-blyerts);
   }
-  .produktkort dl {
+  .produktkort-text > p {
     margin: 0;
-    margin-top: calc(var(--spacing) * 3);
-    display: grid;
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-    column-gap: calc(var(--spacing) * 4);
-    row-gap: var(--spacing);
-    font-size: var(--text-liten);
-    line-height: var(--tw-leading, var(--text-liten--line-height));
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--color-blyerts-2);
   }
-  @media (width >= 40rem) {
-    .produktkort dl {
-      grid-template-columns: auto minmax(0, 1fr);
-    }
+  .produktkort-text > .kopknapp-rad {
+    align-self: stretch;
+    margin-top: 4px;
   }
-  @media (width >= 64rem) {
-    .produktkort p:has(+ h3) {
-      font-size: var(--text-etikett-lg);
-      line-height: var(--tw-leading, var(--text-etikett-lg--line-height));
-      letter-spacing: var(--tw-tracking, var(--text-etikett-lg--letter-spacing));
-      font-weight: var(--tw-font-weight, var(--text-etikett-lg--font-weight));
-    }
-    .produktkort h3,
-    .prosa .produktkort h3 {
-      font-size: var(--text-h3-lg);
-      line-height: var(--tw-leading, var(--text-h3-lg--line-height));
-      font-weight: var(--tw-font-weight, var(--text-h3-lg--font-weight));
-    }
+  .produktkort-bild {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 96px;
+    height: 72px;
+    padding: 6px;
+    background-color: var(--color-vit);
+    border: 1px solid var(--color-linje);
+    border-radius: var(--radius-sm);
+    text-align: center;
   }
-
-  /* Bildytan i jämförelsetabellens kolumnhuvud: w-20 h-15 p-1 i stället för
-     kortets w-24 h-18 p-2. Märket i bildytan får sin stil här, inte på spanen:
-     text-etikett uppercase text-blyerts-2. .prosa sätter inget på span.
-     Spec: spec-kategorisida-budget-2026-09-28 avsnitt 2.1 och 2.2. */
-  .produktkort-bild-liten {
-    width: calc(var(--spacing) * 20);
-    height: calc(var(--spacing) * 15);
-    padding: var(--spacing);
+  .produktkort-bild > img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
   .produktkort-bild span {
     font-size: var(--text-etikett);
-    line-height: var(--tw-leading, var(--text-etikett--line-height));
-    letter-spacing: var(--tw-tracking, var(--text-etikett--letter-spacing));
-    font-weight: var(--tw-font-weight, var(--text-etikett--font-weight));
+    line-height: var(--text-etikett--line-height);
+    letter-spacing: var(--text-etikett--letter-spacing);
+    font-weight: var(--text-etikett--font-weight);
     text-transform: uppercase;
     color: var(--color-blyerts-2);
   }
-
-  /* Annonsraden under köpknappen, "Annonslänk · pris …": m-0 mt-2
-     text-finstilt text-blyerts-2. Den är en del av reklammärkningen och ska se
-     ut som förut. .prosa sätter inget på p utöver direkta barn.
-     Spec: spec-kategorisida-budget-2026-09-28 avsnitt 2.3. */
-  .kopknapp-annons {
+  /* Jämförelsetabellens kolumnhuvud, utan bild: 80 × 60 i alla bredder. */
+  .produktkort-bild.produktkort-bild-liten {
+    width: 80px;
+    height: 60px;
+    padding: 4px;
+  }
+  /* Tre fakta: värdet överst (dd), etiketten under (dt), i källordningen dt, dd. */
+  .fakta {
+    display: grid;
+    gap: 8px;
     margin: 0;
-    margin-top: calc(var(--spacing) * 2);
-    font-size: var(--text-finstilt);
-    line-height: var(--tw-leading, var(--text-finstilt--line-height));
+    align-self: stretch;
+  }
+  .fakta > div {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .produktkort .fakta dt {
+    margin: 0;
+    font-weight: 400;
+    font-size: var(--text-liten);
+    line-height: var(--text-liten--line-height);
+    color: var(--color-blyerts-2);
+  }
+  .produktkort .fakta dd {
+    margin: 0;
+    font-weight: 700;
+    font-size: var(--text-brod);
+    line-height: 1.35;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-blyerts);
+  }
+  /* Ett mycket smalt kort (räknarsidornas tre i rad): bildrutan över namnet. */
+  @container (width < 20rem) {
+    .produktkort-topp {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+  }
+  @container (width >= 30rem) {
+    .produktkort-inre {
+      display: grid;
+      grid-template-columns: 150px minmax(0, 1fr);
+      column-gap: 22px;
+      row-gap: 8px;
+      align-items: start;
+    }
+    .produktkort-topp {
+      display: contents;
+    }
+    .produktkort-bild {
+      grid-row: 1 / span 2;
+      width: 150px;
+      height: 150px;
+      padding: 10px;
+    }
+    .produktkort-text {
+      margin-top: 0;
+    }
+    .fakta {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+  }
+  /* Kategorisidans val, tre i rad från lg: kortet staplat, bildrutan överst
+     i full bredd och 150 px hög, knappen och priset under varandra. */
+  @media (width >= 64rem) {
+    .produktkort-rad .produktkort-topp {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+    }
+    .produktkort-rad .produktkort-bild {
+      width: 100%;
+      height: 150px;
+    }
+    .produktkort-rad .kopknapp-rad {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+    }
+  }
+  /* Ett smalt kort har knappen och priset under varandra, oavsett skärm. */
+  @container (width < 30rem) {
+    .produktkort .kopknapp-rad {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+    }
+  }
+
+  /* Kort svar: färgad yta, etiketten, första stycket i 19 px, resten i 17 px,
+     och valen som gula chips sist. */
+  .kortsvar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px;
+  }
+  .kortsvar > p {
+    margin: 0;
+    font-size: var(--text-brod);
+    line-height: var(--text-brod--line-height);
+  }
+  .kortsvar > p:first-child {
+    font-size: var(--text-etikett);
+    line-height: var(--text-etikett--line-height);
+    letter-spacing: var(--text-etikett--letter-spacing);
+    font-weight: var(--text-etikett--font-weight);
+    text-transform: uppercase;
+    color: var(--color-blyerts-2);
+  }
+  .kortsvar > p:nth-child(2) {
+    font-size: var(--text-ingress);
+    line-height: var(--text-ingress--line-height);
+  }
+  @media (width >= 40rem) {
+    .kortsvar {
+      padding: 24px 28px;
+    }
+  }
+
+  /* Frågor och svar: linje mellan frågorna, + och − i penna, ingen triangel. */
+  .faq details {
+    border-top: 1px solid var(--color-linje);
+    padding-block: 14px;
+  }
+  .faq details:last-of-type {
+    border-bottom: 1px solid var(--color-linje);
+  }
+  .faq summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 44px;
+    cursor: pointer;
+    list-style: none;
+    font-weight: 700;
+    color: var(--color-blyerts);
+  }
+  .faq summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq summary::marker {
+    content: "";
+  }
+  .faq summary::after {
+    content: "+";
+    color: var(--color-penna);
+    font-weight: 700;
+  }
+  .faq details[open] > summary::after {
+    content: "\2212";
+  }
+  .faq details > div {
+    margin-top: 10px;
+    font-size: var(--text-brod);
+    line-height: var(--text-brod--line-height);
+    color: var(--color-blyerts-2);
+  }
+  @media (width >= 64rem) {
+    .faq details > div {
+      font-size: var(--text-brod-lg);
+    }
+  }
+
+  /* Innehållsförteckningen, båda varianterna: listan utan siffror med en linje
+     till vänster. 44 px per rad under lg, 8 px lodrätt från lg. */
+  .innehall ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-left: 1px solid var(--color-linje);
+  }
+  .innehall a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 8px 0 8px 12px;
+    color: var(--color-blyerts);
+    text-decoration: none;
+    font-size: 0.9375rem;
+    line-height: 1.4;
+  }
+  @media (hover: hover) {
+    .innehall a:hover {
+      color: var(--color-penna);
+    }
+  }
+  @media (width >= 64rem) {
+    .innehall a {
+      display: block;
+      min-height: 0;
+    }
+  }
+
+  /* Källor sist i textspalten: numrerad lista i 14 px blyerts-2. */
+  .kallor {
+    margin: 0;
+    padding-left: 20px;
+    list-style: decimal;
+    font-size: var(--text-liten);
+    line-height: 1.7;
     color: var(--color-blyerts-2);
   }
 
-  /* Priset ovanför köpknappen, i kort, tabeller och listor: m-0 mb-2 font-bold
-     tabular-nums text-brod text-blyerts (Kopknapp.astro; avsnitt 15.2). */
-  .kopknapp-pris {
-    margin: 0;
-    margin-bottom: calc(var(--spacing) * 2);
-    --tw-font-weight: var(--font-weight-bold);
-    font-weight: var(--font-weight-bold);
-    --tw-numeric-spacing: tabular-nums;
-    font-variant-numeric: var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacing,) var(--tw-numeric-fraction,);
-    font-size: var(--text-brod);
-    line-height: var(--tw-leading, var(--text-brod--line-height));
+  /* Sidospaltens produktlista: en rad per produkt med namnet och rollen till
+     vänster och priset till höger, sist raden om annonslänkarna. */
+  .sidolista {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 18px 22px;
+  }
+  .sidolista > :is(a, div) {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding-top: 8px;
+    border-top: 1px solid var(--color-linje);
+    font-size: 0.9375rem;
+    line-height: 1.4;
     color: var(--color-blyerts);
+    text-decoration: none;
+  }
+  .sidolista > :is(a, div) > span:first-child {
+    font-weight: 700;
+  }
+  .sidolista > :is(a, div) > span:first-child > span {
+    display: block;
+    font-weight: 400;
+    color: var(--color-blyerts-2);
+  }
+  .sidolista > :is(a, div) > span:last-child:not(:first-child) {
+    flex-shrink: 0;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  @media (hover: hover) {
+    .sidolista > a:hover > span:first-child {
+      text-decoration-line: underline;
+      text-decoration-color: var(--color-penna);
+      text-underline-offset: 3px;
+    }
+  }
+  .sidolista > p:last-child {
+    margin: 0;
+    font-size: var(--text-finstilt);
+    line-height: var(--text-finstilt--line-height);
+    color: var(--color-blyerts-2);
   }
 
   /*

@@ -2,7 +2,8 @@
 /**
  * Reklammärkning enligt docs/AFFILIATE.md avsnitt 5. Formuleringen är fastställd
  * och ändras inte. Bandet ligger direkt under sidhuvudet, ovanför första
- * köpknappen, och går inte att stänga.
+ * köpknappen, och går inte att stänga. "Reklam." i fetstil först, länken längst
+ * till höger från lg och sist i texten på mobil (spec-designlyft-b 1.5).
  */
 interface Props {
   butikNamn?: string;
@@ -11,12 +12,10 @@ interface Props {
 const { butikNamn = 'Proffsmagasinet' } = Astro.props;
 ---
 
-<div class="bg-papper-2 border-b border-linje">
-  <p class="mx-auto max-w-lasbredd px-4 sm:px-6 lg:px-8 py-3 m-0 text-liten text-blyerts">
-    Reklam. Sidan innehåller annonslänkar till {butikNamn}. Handlar du via dem får jag provision, priset för dig är
-    detsamma.{' '}
-    <a href="/om/sa-tjanar-vi-pengar/" class="lank">
-      Så tjänar jag pengar.
-    </a>
+<div class="band border-t-0">
+  <p class="sidram py-2.5 text-liten text-blyerts flex flex-wrap gap-x-4">
+    <span><b>Reklam.</b> Sidan innehåller annonslänkar till {butikNamn}. Handlar du via dem får jag provision, priset för dig är
+    detsamma.</span>
+    <a href="/om/sa-tjanar-vi-pengar/" class="lank lg:ml-auto">Så tjänar jag pengar.</a>
   </p>
 </div>

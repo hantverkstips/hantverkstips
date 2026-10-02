@@ -28,7 +28,7 @@ import {
 
 /**
  * Korttyper i den ordning typfiltret på /guider/ visar dem. "kategori" är en
- * kategorisida ("Bäst i test"), inte en artikel.
+ * kategorisida (en granskning på datablad), inte en artikel.
  */
 export const KORTTYPER = [
   'kopguide',
@@ -50,11 +50,11 @@ export const TYP_PLURAL: Record<KortTyp, string> = {
   kunskap: 'Kunskapsartiklar',
   test: 'Tester och granskningar',
   jamforelse: 'Jämförelser',
-  kategori: 'Bäst i test',
+  kategori: 'Granskade produktgrupper', // guider.typ.kategori.plural
 };
 
 export interface KortData {
-  /** "Köpguide", "Granskning", "Bäst i test". Från typEtikett() */
+  /** "Köpguide", "Granskning", "Granskad på datablad". Från typEtikett() */
   etikett: string;
   /** Visas som " · Mellan" efter etiketten. Kategorikort har ingen nivå. */
   niva?: Niva;
@@ -170,8 +170,8 @@ export interface KategoriValRad {
 
 /**
  * Startsidans Granskat på datablad: kategorins två första val som finns i
- * databasen, med billigaste erbjudandets pris. prisDatum är det senaste
- * `uppdaterad` bland de visade erbjudandena och butikNamn dess butik; båda null
+ * databasen, med billigaste erbjudandets pris. prisDatum är det äldsta
+ * `uppdaterad` bland de visade erbjudandena och butikNamn det senastes butik; båda null
  * när inget val har ett erbjudande. Utan databas blir val tom. Startsidan är
  * enda anroparen. Spec: spec-designlyft-a-2026-10-02 avsnitt 5.5.
  */
@@ -197,13 +197,18 @@ export async function kategoriVal(entry: CollectionEntry<'kategorier'>): Promise
     (a, b) => (a === null || b.uppdaterad.getTime() > a.uppdaterad.getTime() ? b : a),
     null,
   );
+  /** Ett datum som står för flera priser är det äldsta (spec-designlyft-b avsnitt 10.2). */
+  const aldst = erbjudanden.reduce<Erbjudande | null>(
+    (a, b) => (a === null || b.uppdaterad.getTime() < a.uppdaterad.getTime() ? b : a),
+    null,
+  );
   const produkter = await produkterIKategori(entry.id);
   return {
     namn: entry.data.namn,
     href: kategoriUrl(entry.id),
     antal: produkter.length,
     val,
-    prisDatum: senast ? senast.uppdaterad : null,
+    prisDatum: aldst ? aldst.uppdaterad : null,
     butikNamn: senast ? senast.butikNamn : null,
   };
 }

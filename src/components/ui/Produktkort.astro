@@ -1,14 +1,23 @@
-﻿---
+---
 /**
- * Produktkort. Ser ut som ett inklistrat urklipp: ram i linje, 2 px radie,
- * ingen skugga. Nyckelvärdena kommer från kategorifilens specs, inte från
- * databasen direkt, så att samma fyra värden visas för alla produkter i en
- * kategori. Se docs/SPEC-SIDMALLAR.md avsnitt 2.3.
+ * Produktkort. Ett kort med bildrutan till vänster, redaktörens etikett som gul
+ * chip, namnet, tre fakta ur produktfakta.ts, svagheten och köpknappen med pris
+ * och datum. Utseendet står i .produktkort* och .fakta i global.css.
+ * Se docs/SPEC-SIDMALLAR.md 2.3, docs/DESIGN.md avsnitt 6 (Produktkort) och
+ * docs/briefer/spec-designlyft-b-2026-10-02.md avsnitt 3. Kortets inre
+ * (.produktkort-inre) byter till två spalter efter kortets egen bredd, så att
+ * kortet håller både i textspalten och i räknarsidornas rutnät.
+ *
+ * Ankaret produkt-{slug} sätts bara på kortet i artikelns lista "Produkterna jag
+ * nämner" (modul avslut), som sidospaltens produktlista pekar på. Samma produkt
+ * kan stå som kort även i texten eller bland valen, och två element med samma
+ * id på en sida är fel.
  */
 import { getCollection } from 'astro:content';
 import type { KlickModul } from '../../lib/affiliate';
 import { ELKOSTNAD_KATEGORIER, produktForval } from '../../lib/kalkyl/elkostnad';
 import { publicerade, testUrl } from '../../lib/innehall';
+import { treFakta } from '../../lib/produktfakta';
 import {
   billigasteErbjudande,
   hamtaProdukt,
@@ -22,24 +31,21 @@ import Kopknapp from './Kopknapp.astro';
 interface Props {
   /** Produktens slug i databasen. */
   produkt: string;
+  /** Utan verkan sedan fas B; står kvar för filerna som skickar den. */
   variant?: 'kompakt' | 'full';
-  /** Redaktörens etikett, till exempel "Bäst till krypgrund". */
-  etikett?: string;
-  forVem?: string;
+  /** Redaktörens etikett, till exempel "Kallt enkelgarage". En gul chip. */
+  etikett?: string | undefined;
+  forVem?: string | undefined;
+  /** En mening om det som talar emot produkten. Annars testets "Köp inte om". */
+  svaghet?: string | undefined;
   modul?: KlickModul;
+  /** Bland valen: ytan ruta. */
   rekommenderad?: boolean;
   visaTestlank?: boolean;
 }
 
-const {
-  produkt: slug,
-  variant = 'kompakt',
-  etikett,
-  forVem,
-  rekommenderad = false,
-  visaTestlank = true,
-} = Astro.props;
-const modul: KlickModul = Astro.props.modul ?? (variant === 'full' ? 'kort_full' : 'kort_kompakt');
+const { produkt: slug, etikett, forVem, rekommenderad = false, visaTestlank = true } = Astro.props;
+const modul: KlickModul = Astro.props.modul ?? 'kort_kompakt';
 
 const produkt = await hamtaProdukt(slug);
 if (!produkt) varnaSaknadProdukt(slug, Astro.url.pathname);
@@ -47,18 +53,13 @@ if (!produkt) varnaSaknadProdukt(slug, Astro.url.pathname);
 /**
  * Kategorin slås upp i samlingen, inte med getEntry: databasen har kategorier
  * utan kategorisida (färgborttagare, högtryckstvättar), och getEntry varnar i
- * bygget för varje sådan produkt. Utan fil blir det inga nyckelvärden.
+ * bygget för varje sådan produkt. Utan fil blir det inga fakta.
  * Spec: docs/briefer/spec-bilder-fasad-2026-09-28.md avsnitt 7.5.
  */
 const kategori = produkt?.kategoriSlug
   ? (await getCollection('kategorier')).find((k) => k.id === produkt.kategoriSlug)
   : undefined;
-const specs = (kategori?.data.specs ?? [])
-  .filter((s) => {
-    const v = produkt?.specs[s.nyckel];
-    return v !== undefined && v !== null && v !== '';
-  })
-  .slice(0, 4);
+const fakta = produkt ? treFakta(produkt.kategoriSlug, kategori?.data.specs ?? [], produkt.specs) : [];
 
 const tester = await publicerade('tester');
 const test = produkt ? tester.find((t) => t.data.produkt === produkt.slug) : undefined;
@@ -67,9 +68,13 @@ const erbjudande = produkt ? billigasteErbjudande(produkt) : null;
 const namn = produkt ? produktNamn(produkt) : slug;
 const bild = produkt ? lokalBild(produkt) : null;
 
-/** Ram, radie, luft och bakgrund står i .produktkort i global.css; den rekommenderade får papper-2. */
-const kortKlass = ['produktkort', rekommenderad && 'bg-papper-2'];
-const harBild = bild !== null;
+/** Svagheten, och meningen om att det är en granskning när vi inte har haft produkten. */
+const svaghet = Astro.props.svaghet ?? test?.data.kopInteOm;
+const granskning = !test || test.data.etikett !== 'test';
+const svaghetsrad = [svaghet, granskning ? 'Jag har läst databladet men inte provat den.' : undefined]
+  .filter(Boolean)
+  .join(' ');
+
 /**
  * Utan effekt i databladet finns inget att räkna på, och länken utgår. Den
  * visas bara i kategorier som räknaren är gjord för (ELKOSTNAD_KATEGORIER).
@@ -79,116 +84,68 @@ const harEffekt =
   produkt.kategoriSlug !== null &&
   ELKOSTNAD_KATEGORIER.includes(produkt.kategoriSlug) &&
   produktForval(produkt.specs).effektW !== null;
-const bildBredd = variant === 'kompakt' ? 96 : 400;
-const bildHojd = variant === 'kompakt' ? 72 : 300;
+const id = modul === 'avslut' ? `produkt-${slug}` : undefined;
+const kortKlass = ['kort produktkort', rekommenderad && 'bg-ruta'];
 ---
 
 {
   !produkt ? (
-    <div class:list={kortKlass}>
-      <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-blyerts">Produkt: {slug}</p>
+    <div class:list={kortKlass} id={id}>
+      <p class="etikett text-blyerts">Produkt: {slug}</p>
       <p class="m-0 mt-2 text-liten text-blyerts-2">Produktdata saknas i bygget</p>
     </div>
   ) : (
-    /* Nyckelvärdenas stil står i .produktkort i global.css, inte på varje par
-       (spec-skal-budget-2026-09-28 avsnitt 13.1, 5.2, och 14.3). */
-    <div class:list={kortKlass}>
-      <div class:list={['flex gap-4', harBild && variant === 'full' ? 'flex-col lg:flex-row lg:gap-6' : 'flex-row']}>
-        <div class:list={[harBild && variant === 'full' ? 'lg:w-2/5 shrink-0' : 'shrink-0']}>
+    <div class:list={kortKlass} id={id}>
+      <div class="produktkort-inre">
+      <div class="produktkort-topp">
+        <div class="produktkort-bild">
           {bild ? (
-            <div class="bg-vit border border-linje rounded-sm p-2">
-              <img
-                src={bild}
-                alt={namn}
-                width={bildBredd}
-                height={bildHojd}
-                loading="lazy"
-                decoding="async"
-                class:list={[
-                  'block object-contain',
-                  variant === 'kompakt' ? 'w-24 h-18' : 'w-full aspect-4/3 h-auto',
-                ]}
-              />
-            </div>
+            <img src={bild} alt={namn} width="150" height="150" loading="lazy" decoding="async" />
           ) : (
-            /* Utan bild blir rutan alltid kompakt, aldrig en tom 4:3-yta i full bredd. */
-            <div class="produktkort-bild">
-              <span>{produkt.marke ?? produkt.namn}</span>
-            </div>
+            <span>{produkt.marke ?? produkt.namn}</span>
           )}
         </div>
-
-        <div class="min-w-0 flex-1">
-          {/* Märkesraden, rubriken och nyckelvärdena får sin stil av .produktkort i
-              global.css (spec-skal-budget-2026-09-28 avsnitt 15.2). */}
-          {etikett && <p>{etikett}</p>}
+        <div class="produktkort-namn">
+          {etikett && <span class="chip-gul">{etikett}</span>}
           <h3>{namn}</h3>
-          {forVem && <p class="m-0 mt-1 text-brod text-blyerts-2">{forVem}</p>}
-
-          {/* Nyckelvärdena: etiketten tar bara den bredd den behöver, värdet
-              resten, och minmax(0,1fr) hindrar att ett långt värde spränger
-              spalten. Med två lika breda kolumner skrev etikett och värde över
-              varandra i ett smalt kort (designgranskningen 2026-09-16 punkt 3).
-              Under 640 px ligger värdet i stället på egen rad under etiketten:
-              i ett kompakt kort bredvid bilden blir värdekolumnen annars så smal
-              att "ej angivet, sannolikt 30 °C/80 % RF" bryts på fem rader
-              (granskningen 2026-09-16 punkt 5.5). Marginalen under värdet
-              skiljer paren åt när de är staplade. */}
-          {specs.length > 0 && (
-            <dl>
-              {specs.map((s) => (
-                <div>
-                  <dt>{s.etikett}</dt>
-                  <dd>
-                    {String(produkt.specs[s.nyckel])}
-                    {s.enhet ? ` ${s.enhet}` : ''}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          )}
-
-          {/* Har maskinen en effekt i databladet går den att räkna på. Länken
-              tar med slugen, så att elkostnadskalkylatorn kan fylla i effekten
-              och kapaciteten åt läsaren. Diskret textlänk, samma stil som
-              "Läs testet" nedan. */}
-          {harEffekt && (
-            <p class="m-0 mt-3">
-              <a
-                href={`/rakna/elkostnad/?produkt=${produkt.slug}`}
-                class="inline-flex min-h-11 items-center lank"
-              >
-                Räkna elkostnaden
-              </a>
-            </p>
-          )}
         </div>
       </div>
 
-      {/* Köpknappen ligger under bild och text, full bredd på mobil, så att
-          knapptexten aldrig bryts av den 96 px breda bilden bredvid. */}
-      <div class="mt-4">
+      <div class="produktkort-text">
+        {forVem && <p>{forVem}</p>}
+        {fakta.length > 0 && (
+          <dl class="fakta">
+            {fakta.map((f) => (
+              <div>
+                <dt>{f.etikett}</dt>
+                <dd>{f.varde}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
+        {svaghetsrad && <p>{svaghetsrad}</p>}
         <Kopknapp
           produkt={produkt.slug}
           modul={modul}
-          bredd="full"
           pris={erbjudande?.pris ?? null}
           prisDatum={erbjudande?.uppdaterad ?? null}
           butikNamn={erbjudande?.butikNamn}
           lager={lagerlage(erbjudande)}
         />
-      </div>
-
-      {visaTestlank && test && (
-        <p class="m-0 mt-3">
-          <a
-            href={testUrl(test)}
-            class="inline-flex min-h-11 items-center lank"
-          >
-            Läs testet
+        {/* Har maskinen en effekt i databladet går den att räkna på. Länken tar
+            med slugen, så att elkostnadsräknaren fyller i effekten åt läsaren. */}
+        {harEffekt && (
+          <a href={`/rakna/elkostnad/?produkt=${produkt.slug}`} class="lank inline-flex min-h-11 items-center">
+            Räkna elkostnaden
           </a>
-        </p>
-      )}
+        )}
+        {visaTestlank && test && (
+          <a href={testUrl(test)} class="lank inline-flex min-h-11 items-center">
+            {test.data.etikett === 'granskning' ? 'Läs granskningen' : 'Läs testet'}
+          </a>
+        )}
+      </div>
+      </div>
     </div>
   )
 }

@@ -77,6 +77,7 @@ export interface ProduktRef {
   slug: string;
   forVem?: string;
   etikett?: string;
+  svaghet?: string;
 }
 
 export function normaliseraProdukter(lista: (string | ProduktRef)[]): ProduktRef[] {
@@ -116,4 +117,20 @@ export function typEtikett(typ: string, testEtikett?: 'test' | 'granskning'): st
     default:
       return typ;
   }
+}
+
+/**
+ * Läsminuter till bylinen: brödtextens ord delat med 200, avrundat uppåt,
+ * minst 1. Frontmatter, MDX-taggar, länkarnas adresser och tabellstreck räknas
+ * inte. Ett ord är en följd av bokstäver eller siffror.
+ * Spec: docs/briefer/spec-designlyft-b-2026-10-02.md 1.4.
+ */
+export function lasminuter(text: string): number {
+  const ren = text
+    .replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, ' ')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\]\([^)]*\)/g, '] ')
+    .replace(/\|/g, ' ');
+  const ord = ren.match(/[\p{L}\p{N}]+/gu)?.length ?? 0;
+  return Math.max(1, Math.ceil(ord / 200));
 }

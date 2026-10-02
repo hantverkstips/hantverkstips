@@ -63,21 +63,13 @@ const markup = {
     <section class="faq">
       <Pennstreck id={slugify(rubrik)}>{rubrik}</Pennstreck>
       {/*
-        Klasserna för varje fråga står en gång här som varianter, inte på varje
-        <details>, <summary> och svar (spec-skal-budget-2026-09-28 avsnitt
-        13.1, 5.1). Svarets <p> har ingen m-0: preflight nollar redan
-        marginalen, och en variant på föräldern skulle slå länkradens mt-2.
+        Utseendet står i .faq i global.css: linje mellan frågorna, "+" i penna
+        till höger som blir "−" när raden är öppen, ingen triangel
+        (spec-designlyft-b 1.6).
       */}
-      <div class="border-t border-linje [&_details]:border-b [&_details]:border-linje [&_summary]:min-h-11 [&_summary]:cursor-pointer [&_summary]:py-3 [&_summary]:font-sans [&_summary]:font-bold [&_summary]:leading-6 [&_summary]:text-blyerts [&_details>div]:pb-4 [&_p]:text-brod [&_p]:lg:text-brod-lg">
+      <div>
         {fragor.map((f) => (
           <details>
-            {/*
-              Ingen flex-klass här. <summary> har display: list-item, och det
-              är den egenskapen som ritar triangeln; byts den mot flex
-              försvinner triangeln och raden ser ut som en vanlig rubrik, utan
-              något som säger att den går att fälla ut. py-3 plus radavståndet
-              ger 48 px klickhöjd.
-            */}
             <summary>
               {f.fraga}
             </summary>

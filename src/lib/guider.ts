@@ -58,9 +58,9 @@ export interface FilterPost {
   aktiv: boolean;
 }
 
-/** Typens namn i filtret, singular. Kategorisidor heter Bäst i test. */
+/** Typens namn i filtret, singular. Kategorisidorna är granskningar (SOKORDSANALYS avsnitt 13). */
 export function typNamn(typ: KortTyp): string {
-  return typ === 'kategori' ? 'Bäst i test' : typEtikett(typ);
+  return typ === 'kategori' ? 'Granskad produktgrupp' /* guider.typ.kategori.namn */ : typEtikett(typ);
 }
 
 function gemener(text: string): string {

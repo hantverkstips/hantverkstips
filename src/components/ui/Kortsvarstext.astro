@@ -1,13 +1,20 @@
 ---
 /**
- * Texten i "Kort svar". Frontmatter är en ren sträng, men mallen (DESIGN.md
- * avsnitt 5.5 och 6) vill ha nyckeltalet överstruket. Därför den enda
- * markeringen som tolkas i frontmatter: **så här** blir <Markering>.
+ * "Kort svar" som färgad yta: etiketten, första stycket i 19 px, följande i
+ * 17 px, och i en köpguide valen som gula chips sist ("Kallt garage: Acetec
+ * EvoDry 6H 2.0"), utan köpknapp. Spec: docs/briefer/spec-designlyft-b-2026-10-02.md
+ * 1.9, docs/DESIGN.md avsnitt 6 (Faktaruta och Kort svar).
+ *
+ * Frontmatter är en ren sträng, men nyckeltalet ska vara överstruket. Därför den
+ * enda markeringen som tolkas i frontmatter: **så här** blir <Markering>.
  *
  * Ingen markdown i övrigt. Skribenten skriver
  *   kortSvar: En källare på 40 kvm behöver minst **12 liter per dygn**.
  * och får ett gult streck bakom talet. Fler än en markering varnar vid bygget:
  * överstrykningen ska peka ut ett nyckeltal, inte måla halva stycket.
+ *
+ * Står komponenten i en <Faktaruta variant="kortsvar"> (jämförelsesidan) ser
+ * Faktaruta att ytan redan är ritad och lägger ingen andra runt den.
  */
 import Markering from './Markering.astro';
 
@@ -15,9 +22,11 @@ interface Props {
   text: string;
   /** Var texten står, används i byggvarningen. */
   plats?: string;
+  /** Köpguidens val som gula chips sist: "{etikett}: {namn}". */
+  val?: { etikett: string; namn: string }[];
 }
 
-const { text, plats } = Astro.props;
+const { text, plats, val = [] } = Astro.props;
 
 /*
  * Stycken skiljs med blankrad i frontmatter (blockstil `|`, inte `>-`, som
@@ -40,10 +49,22 @@ if (antalMarkeringar > 1) {
 }
 ---
 
-{
-  styckenMedDelar.map((delar) => (
-    <p class="m-0 leading-6 [&+p]:mt-3">
-      {delar.map((del, i) => (i % 2 === 1 ? <Markering>{del}</Markering> : del))}
-    </p>
-  ))
-}
+<div class="yta kortsvar">
+  <p>Kort svar</p>
+  {
+    styckenMedDelar.map((delar) => (
+      <p>{delar.map((del, i) => (i % 2 === 1 ? <Markering>{del}</Markering> : del))}</p>
+    ))
+  }
+  {
+    val.length > 0 && (
+      <div class="flex flex-wrap gap-2.5 mt-1.5">
+        {val.map((v) => (
+          <span class="chip-gul">
+            {v.etikett}: {v.namn}
+          </span>
+        ))}
+      </div>
+    )
+  }
+</div>

@@ -50,14 +50,17 @@ interface Props {
    * Se src/lib/lagerlage.ts.
    */
   lager?: Lagerlage;
-  /** full gör knappen block och full bredd på mobil, auto från sm. Standard auto. */
+  /** Utan verkan sedan fas B: knappen är alltid full bredd på mobil. Står kvar för anroparna. */
   bredd?: 'auto' | 'full';
-  /** Prisraden ovanför knappen. Sätt false när anroparen placerar priset själv. */
+  /**
+   * Priset bredvid knappen. Sätt false när anroparen placerar priset själv;
+   * då står bara raden "Annonslänk · pris …" kvar, under knappen.
+   */
   visaPris?: boolean;
   class?: string;
 }
 
-const { produkt, butik, slut = false, bredd = 'auto', visaPris = true, class: klass } = Astro.props;
+const { produkt, butik, slut = false, visaPris = true, class: klass } = Astro.props;
 
 /**
  * Innehållsfiler skickar bara produkt (och kanske modul och text). Då hämtar
@@ -78,7 +81,7 @@ const lager: Lagerlage = hamtarSjalv
   ? lagerlage(erbjudande)
   : (Astro.props.lager ?? (slut ? 'slut' : 'kopbar'));
 const ejKopbar = lager === 'slut' || lager === 'ej_bestallningsbar';
-/** Negativ lagerstatus som ändå går att köpa: visas i raden under knappen. */
+/** Negativ lagerstatus som ändå går att köpa: visas i raden under priset. */
 const restnoterad = lager === 'restnoterad';
 
 const sidtyp = Astro.props.sidtyp ?? Astro.locals.sidtyp;
@@ -93,46 +96,40 @@ const href = ejKopbar
 const datum = prisDatum ? new Date(prisDatum) : null;
 const harPris = typeof pris === 'number' && pris > 0;
 
-const text = Astro.props.text ?? kopknappText(lager, harPris, butikNamn);
+/**
+ * "Se pris hos {butik}" i alla köpbara lägen, med och utan pris
+ * (spec-designlyft-b avsnitt 2). kopknappText ger just den texten när den får
+ * veta att priset saknas, och "Slut i lager hos …" och "Ej beställningsbar hos …"
+ * som förut; priset står ju nu bredvid knappen.
+ */
+const text = Astro.props.text ?? kopknappText(lager, false, butikNamn);
 
 /**
- * Sekundär stil: ram i stället för fylld knapp. Ett <span> renderas i stället
- * för <a> när varan inte går att köpa, så att ingen läsare skickas via /go/
- * till en produkt butiken inte säljer. Då är raden under inte heller en
- * annonslänk, bara prisdatumet.
+ * Ej köpbar: konturknapp och ett <span> i stället för <a>, så att ingen läsare
+ * skickas via /go/ till en produkt butiken inte säljer. Då är raden under inte
+ * heller en annonslänk, bara prisdatumet.
  */
-const knappKlass = [
-  // Det gemensamma står i .kopknapp i global.css (spec-skal-budget-2026-09-28 steg 4).
-  'kopknapp',
-  // Full bredd och det köpbara läget är modifierare i global.css (spec-skal-budget-2026-09-28 avsnitt 14.3).
-  bredd === 'full' ? 'kopknapp-full' : 'inline-flex',
-  ejKopbar ? 'border-2 border-blyerts text-blyerts-2' : 'kopknapp-aktiv',
-];
 const prisrad = datum && harPris ? `pris ${formateraDatumKort(datum)}` : '';
+const annons = ejKopbar ? prisrad : `Annonslänk${prisrad ? ` · ${prisrad}` : ''}${restnoterad ? ' · restnoterad' : ''}`;
+const belopp = visaPris && typeof pris === 'number' && pris > 0 ? formateraPris(pris) : null;
 ---
 
-<div class:list={[klass]}>
-  {
-    visaPris && harPris && (
-      <p class="kopknapp-pris">
-        {ejKopbar && <span class="font-normal text-blyerts-2">senast </span>}
-        {formateraPris(pris)}
-      </p>
-    )
-  }
+<div class:list={['kopknapp-rad', !visaPris && 'kopknapp-stapel', klass]}>
   {
     ejKopbar ? (
-      <span class:list={knappKlass}>{text}</span>
+      <span class="knapp kopknapp">{text}</span>
     ) : (
-      <a href={href} rel="sponsored nofollow" class:list={knappKlass}>
+      <a href={href} rel="sponsored nofollow" class="knapp knapp-fylld kopknapp">
         {text}
       </a>
     )
   }
   {
-    (!ejKopbar || prisrad) && (
-      <p class="kopknapp-annons">
-        {ejKopbar ? prisrad : `Annonslänk${prisrad ? ` · ${prisrad}` : ''}${restnoterad ? ' · restnoterad' : ''}`}
+    (belopp || annons) && (
+      <p class="kopknapp-pris">
+        {belopp && ejKopbar && <span>senast </span>}
+        {belopp}
+        {annons && <span class="kopknapp-annons">{annons}</span>}
       </p>
     )
   }

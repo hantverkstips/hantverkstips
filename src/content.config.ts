@@ -56,6 +56,8 @@ const produktRef = z.union([
     slug: z.string(),
     forVem: z.string().optional(),
     etikett: z.string().optional(),
+    // En mening om det som talar emot produkten. Produktkortet visar den.
+    svaghet: z.string().optional(),
   }),
 ]);
 
@@ -268,7 +270,15 @@ const kategorier = defineCollection({
     // "Våra val". Etiketterna skrivs av redaktören och säger något konkret,
     // aldrig "premium" eller "budget". Första valet är "Vårt val" på startsidan.
     val: z
-      .array(z.object({ produkt: z.string(), etikett: z.string(), forVem: z.string().optional() }))
+      .array(
+        z.object({
+          produkt: z.string(),
+          etikett: z.string(),
+          forVem: z.string().optional(),
+          // En mening om det som talar emot produkten. Produktkortet visar den.
+          svaghet: z.string().optional(),
+        }),
+      )
       .max(3)
       .default([]),
     // Sökväg till köpguiden och slug på kalkylatorn, för blocket "Så väljer du".

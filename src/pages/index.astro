@@ -49,7 +49,7 @@ const T = {
   amnenRubrik: 'Var i huset gäller det?', // start.amnen.rubrik
   guiderRubrik: 'Nytt och aktuellt i {månad}', // start.guider.rubrik
   bastRubrik: 'Maskinerna jag granskat på datablad', // start.bast.rubrik
-  bastPrisrad: 'Priserna är från {butik} den {datum}. Länkarna dit är annonslänkar. Jag har läst databladen men inte provat maskinerna.', // start.bast.prisrad
+  bastPrisrad: 'Priserna hämtade jag hos {butik} den {datum}. Jag har läst databladen men inte provat maskinerna.', // start.bast.prisrad
   raknaRubrik: 'Räkna på ditt eget hus', // start.rakna.rubrik
   raknaAlla: 'Alla {antal} räknare, med källan till varje tal', // start.rakna.alla
   jobbarRad: 'Jag är husägare norr om Stockholm och har varken firma eller butik.', // start.jobbar.rad
@@ -109,13 +109,13 @@ const siffror = T.heroSiffror
 
 // Granskat på datablad: en per publicerad och indexerbar kategori, två val med pris.
 const granskat = await Promise.all(kategorier.filter((k) => !k.data.noindex).map(kategoriVal));
-const senastPris = granskat
+const aldstPris = granskat
   .filter((g) => g.prisDatum)
-  .sort((a, b) => (b.prisDatum?.getTime() ?? 0) - (a.prisDatum?.getTime() ?? 0))[0];
-const prisrad = senastPris?.prisDatum
+  .sort((a, b) => (a.prisDatum?.getTime() ?? 0) - (b.prisDatum?.getTime() ?? 0))[0];
+const prisrad = aldstPris?.prisDatum
   ? T.bastPrisrad
-      .replace('{butik}', senastPris.butikNamn ?? '')
-      .replace('{datum}', formateraDatum(senastPris.prisDatum))
+      .replace('{butik}', aldstPris.butikNamn ?? '')
+      .replace('{datum}', formateraDatum(aldstPris.prisDatum))
   : null;
 
 /**

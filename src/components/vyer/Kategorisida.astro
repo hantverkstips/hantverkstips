@@ -1,32 +1,36 @@
 ---
 /**
- * Bäst i test. Sidan som tjänar pengar, så första skärmen på 375 x 667 ska
- * innehålla rubrik, ingress och första rekommendationen med köpknapp.
- * Se docs/SPEC-SIDMALLAR.md avsnitt 4.2 och docs/DESIGN.md avsnitt 5.6.
+ * Kategorisidan, en granskning på datablad. Sidan som tjänar pengar, så första
+ * skärmen på 375 x 667 ska innehålla rubrik, ingress och första
+ * rekommendationen med köpknapp. Formen är artikelmallens, med valen och
+ * tabellen i sidbredd. Se docs/SPEC-SIDMALLAR.md avsnitt 4.2, docs/DESIGN.md
+ * avsnitt 5.6 och docs/briefer/spec-designlyft-b-2026-10-02.md avsnitt 5.
  */
-import { getEntry, render, type CollectionEntry } from 'astro:content';
+import { render, type CollectionEntry } from 'astro:content';
 import Bas from '../../layouts/Bas.astro';
-import { formateraDatum, isoDatum } from '../../lib/format';
 import {
-  artikelUrl,
-  jamforelseUrl,
   kategoriUrl,
   publicerade,
   slugify,
   testUrl,
   typEtikett,
 } from '../../lib/innehall';
+import { pelareForKategori, tillKortArtikel, tillKortJamforelse, tillKortTest, type KortData } from '../../lib/kort';
+import type { PelareSlug } from '../../lib/pelare';
 import { billigasteErbjudande, hamtaButik, lagerlage, produktNamn, produkterIKategori } from '../../lib/produkter';
 import { kategori as kategoriData } from '../../lib/strukturdata';
+import Artikelrutnat from '../ui/Artikelrutnat.astro';
 import Brodsmulor from '../ui/Brodsmulor.astro';
+import Byline from '../ui/Byline.astro';
 import Faktaruta from '../ui/Faktaruta.astro';
-import Forfattarruta from '../ui/Forfattarruta.astro';
+import Faq from '../ui/Faq.astro';
 import Innehallsforteckning from '../ui/Innehallsforteckning.astro';
 import Jamforelsetabell from '../ui/Jamforelsetabell.astro';
 import Kopknapp from '../ui/Kopknapp.astro';
 import Markering from '../ui/Markering.astro';
 import Pennstreck from '../ui/Pennstreck.astro';
 import Produktkort from '../ui/Produktkort.astro';
+import Rubrikrad from '../ui/Rubrikrad.astro';
 import StrukturData from '../ui/StrukturData.astro';
 import Varning from '../ui/Varning.astro';
 import Verktygskort from '../ui/Verktygskort.astro';
@@ -46,19 +50,20 @@ const butik = await hamtaButik();
 const tester = (await publicerade('tester')).filter((t) => t.data.kategori === entry.id);
 const testPerProdukt = new Map(tester.map((t) => [t.data.produkt, t]));
 
-const relaterade = [
-  ...(await publicerade('guider')).filter((e) => e.data.kategori === entry.id),
-  ...(await publicerade('kunskap')).filter((e) => e.data.kategori === entry.id),
-].map((e) => ({ etikett: typEtikett(e.data.typ), namn: e.data.title, href: artikelUrl(e) }));
-
-const jamforelser = (await publicerade('jamforelser'))
-  .filter((e) => e.data.kategori === entry.id)
-  .map((e) => ({ etikett: 'Jämförelse', namn: e.data.title, href: jamforelseUrl(e) }));
-
-const allaRelaterade = [...relaterade, ...jamforelser];
-
-const forfattare = await getEntry('forfattare', d.forfattare);
-const forfattareNamn = forfattare?.data.namn ?? 'Christian';
+/**
+ * Fler: guider, kunskap, tester och jämförelser med samma kategori, som kort.
+ * Tester och jämförelser räknas till kategorins första pelare.
+ */
+const pelare: PelareSlug = await pelareForKategori(entry.id);
+const fler: KortData[] = [
+  ...(await publicerade('guider')).filter((e) => e.data.kategori === entry.id).map(tillKortArtikel),
+  ...(await publicerade('kunskap')).filter((e) => e.data.kategori === entry.id).map(tillKortArtikel),
+  ...tester.map((t) => tillKortTest(t, pelare)),
+  ...(await publicerade('jamforelser')).filter((e) => e.data.kategori === entry.id).map((e) => tillKortJamforelse(e, pelare)),
+];
+const FLER_RUBRIK = 'Mer att läsa om samma ämne'; // kategori.fler.rubrik
+const flerRubrik = FLER_RUBRIK.replace('{namn}', d.namn);
+const JOBBAR_TEXT = 'Siffrorna för maskinerna kommer från tillverkarna, och jag har läst databladen men inte haft dem hos mig. Reklamen på sidan är märkt och styr inte vilka maskiner jag väljer.'; // artikel.jobbar.text
 
 const valSlugs = d.val.map((v) => v.produkt);
 const etiketter: Record<string, string> = Object.fromEntries(d.val.map((v) => [v.produkt, v.etikett]));
@@ -97,6 +102,7 @@ const strukturdata = kategoriData({
     };
   }),
 });
+const brodsmulor = [{ namn: 'Hantverkstips', href: '/' }, { namn: d.namn }];
 ---
 
 <Bas
@@ -104,157 +110,131 @@ const strukturdata = kategoriData({
   description={d.description}
   reklam={true}
   butikNamn={butik?.namn}
-  brodsmulor={[{ namn: 'Hantverkstips', href: '/' }, { namn: d.namn }]}
+  brodsmulor={brodsmulor}
   brodsmulorIVy={true}
-  bred={true}
+  galleri={true}
   noindex={d.noindex}
   ogTyp="website"
 >
   <StrukturData slot="head" data={strukturdata} />
 
-  <div class="tvaspalt">
-    <div class="min-w-0 lg:max-w-lasbredd">
-      <Brodsmulor lista={[{ namn: 'Hantverkstips', href: '/' }, { namn: d.namn }]} />
-
-      <h1 class="m-0 mt-6 font-serif text-h1 lg:text-h1-lg">{d.title}</h1>
-      <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">{d.ingress}</p>
-      <p class="m-0 mt-3 text-liten text-blyerts-2">
-        {
-          d.uppdaterad && (
-            <>
-              Uppdaterad <time datetime={isoDatum(d.uppdaterad)}>{formateraDatum(d.uppdaterad)}</time> ·{' '}
-            </>
-          )
-        }Av {forfattareNamn} · {produkter.length} produkter jämförda
-      </p>
+  <div class="sidram pt-8">
+    <div class="tvaspalt">
+      <Brodsmulor lista={brodsmulor} />
+      <p class="etikett mt-6 text-penna">Granskad på datablad · {produkter.length} produkter</p>
+      <h1 class="m-0 mt-3.5 max-w-3xl font-serif text-h1 lg:text-h1-lg">{d.title}</h1>
+      <p class="m-0 mt-4 max-w-lasbredd text-ingress lg:text-ingress-lg">{d.ingress}</p>
+      <div class="mt-3.5">
+        <Byline forfattare={d.forfattare} uppdaterad={d.uppdaterad} />
+      </div>
     </div>
+  </div>
 
-    {
-      d.val.length > 0 && produkter.length > 0 && (
-        <section class="mt-8 -mx-4 sm:-mx-6 lg:mx-0 bg-papper-2 px-4 sm:px-6 lg:px-8 py-6">
+  {
+    d.val.length > 0 && produkter.length > 0 && (
+      <section class="band mt-10">
+        <div class="sidram py-10 lg:py-12">
           <Pennstreck id="vara-val" utanLuft={true}>
             Våra val
           </Pennstreck>
-          {/* Korten är urklipp på papper-2-blocket och har därför papper som
-              bakgrund, inte rekommenderad-varianten. */}
-          <div class="grid gap-3 lg:grid-cols-3">
+          <div class="produktkort-rad grid gap-4 lg:grid-cols-3 lg:gap-5">
             {d.val.map((v) => (
               <Produktkort
                 produkt={v.produkt}
-                variant="kompakt"
                 etikett={v.etikett}
                 forVem={v.forVem}
+                svaghet={v.svaghet}
                 modul="varaval"
+                rekommenderad={true}
               />
             ))}
           </div>
-        </section>
-      )
-    }
+        </div>
+      </section>
+    )
+  }
 
-    <Innehallsforteckning rubriker={rubriker} variant="hopfallbar" />
+  <section class="sidram mt-12">
+    <Pennstreck id={slugify('Jämförelse')} utanLuft={true}>Jämförelse</Pennstreck>
+    <Jamforelsetabell
+      produkter={produkter.map((p) => p.slug)}
+      kategori={entry.id}
+      rekommenderade={valSlugs}
+      etiketter={etiketter}
+    />
+  </section>
 
-    <section>
-      <Pennstreck id={slugify('Jämförelse')}>Jämförelse</Pennstreck>
-      <Jamforelsetabell
-        produkter={produkter.map((p) => p.slug)}
-        kategori={entry.id}
-        rekommenderade={valSlugs}
-        etiketter={etiketter}
-      />
-    </section>
-
-    <div class="tvaspalt-rad">
+  <div class:list={['sidram', fler.length === 0 && 'pb-16 lg:pb-24']}>
+    <div class="tvaspalt tvaspalt-rad mt-4">
       <div class="min-w-0">
-      {
-        medSektion.map((p, i) => {
-          const test = testPerProdukt.get(p.slug);
-          const e = billigasteErbjudande(p);
-          return (
-            <section class:list={['pt-12 lg:pt-16', i > 0 && 'border-t border-linje']}>
-              <Pennstreck id={slugify(produktNamn(p))} utanLuft={true}>
-                {produktNamn(p)}
-              </Pennstreck>
-              {test && (
-                <p class="m-0 mb-4 text-etikett lg:text-etikett-lg uppercase text-blyerts">
-                  {typEtikett('test', test.data.etikett)}
-                </p>
-              )}
-              <Produktkort
-                produkt={p.slug}
-                variant="full"
-                rekommenderad={valSlugs.includes(p.slug)}
-                etikett={etiketter[p.slug]}
-                modul="kort_full"
-              />
-              {test ? (
-                <>
-                  <p class="mt-6 text-brod lg:text-brod-lg">{test.data.omdome}</p>
-                  <Faktaruta variant="kopom" kopOm={test.data.kopOm} kopInteOm={test.data.kopInteOm} />
-                  <p class="m-0">
-                    <a
-                      href={testUrl(test)}
-                      class="inline-flex min-h-11 items-center lank"
-                    >
-                      Läs hela testet
-                    </a>
-                  </p>
-                  <div class="mt-4">
-                    <Kopknapp
-                      produkt={p.slug}
-                      modul="avslut"
-                      pris={e?.pris ?? null}
-                      prisDatum={e?.uppdaterad ?? null}
-                      butikNamn={e?.butikNamn}
-                      lager={lagerlage(e)}
-                    />
-                  </div>
-                </>
-              ) : (
-                <p class="mt-6 text-brod text-blyerts-2">Jag har läst databladet men inte provat den.</p>
-              )}
-            </section>
-          );
-        })
-      }
+        <Innehallsforteckning rubriker={rubriker} variant="hopfallbar" />
+        {
+          medSektion.map((p, i) => {
+            const test = testPerProdukt.get(p.slug);
+            const e = billigasteErbjudande(p);
+            return (
+              <section class:list={['pt-12 lg:pt-16', i > 0 && 'border-t border-linje']}>
+                <Pennstreck id={slugify(produktNamn(p))} utanLuft={true}>
+                  {produktNamn(p)}
+                </Pennstreck>
+                {test && <p class="etikett mb-4 text-blyerts">{typEtikett('test', test.data.etikett)}</p>}
+                <Produktkort
+                  produkt={p.slug}
+                  rekommenderad={valSlugs.includes(p.slug)}
+                  etikett={etiketter[p.slug]}
+                  modul="kort_full"
+                />
+                {test && (
+                  <>
+                    <p class="mt-6 text-brod lg:text-brod-lg">{test.data.omdome}</p>
+                    <Faktaruta variant="kopom" kopOm={test.data.kopOm} kopInteOm={test.data.kopInteOm} />
+                    <p class="m-0">
+                      <a href={testUrl(test)} class="inline-flex min-h-11 items-center lank">
+                        {test.data.etikett === 'granskning' ? 'Läs hela granskningen' : 'Läs hela testet'}
+                      </a>
+                    </p>
+                    <div class="mt-4">
+                      <Kopknapp
+                        produkt={p.slug}
+                        modul="avslut"
+                        pris={e?.pris ?? null}
+                        prisDatum={e?.uppdaterad ?? null}
+                        butikNamn={e?.butikNamn}
+                        lager={lagerlage(e)}
+                      />
+                    </div>
+                  </>
+                )}
+              </section>
+            );
+          })
+        }
 
-      <div class="prosa mt-12">
-        <Content components={{ h2: Pennstreck, Faktaruta, Varning, Markering }} />
+        <div class="prosa mt-12">
+          <Content components={{ h2: Pennstreck, Faktaruta, Varning, Markering, Faq }} />
+        </div>
       </div>
 
-      {d.kalkylator && <Verktygskort kalkylator={d.kalkylator} />}
-
-      {
-        allaRelaterade.length > 0 && (
-          <section>
-            <Pennstreck id={slugify(`Fler guider och tester om ${d.namn}`)}>
-              Fler guider och tester om {d.namn}
-            </Pennstreck>
-            <ul class="m-0 p-0 list-none">
-              {allaRelaterade.map((r) => (
-                <li class="border-t border-linje py-3">
-                  <p class="m-0 text-etikett uppercase text-blyerts">{r.etikett}</p>
-                  <a
-                    href={r.href}
-                    class="inline-flex min-h-11 items-center lank"
-                  >
-                    {r.namn}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )
-      }
-
-        <Forfattarruta forfattare={d.forfattare} uppdaterad={d.uppdaterad} />
-      </div>
-
-      <aside class="hidden lg:block">
-        <div class="sticky top-20">
-          <Innehallsforteckning rubriker={rubriker} variant="sidospalt" />
+      <aside class="mt-12 flex flex-col gap-5 lg:mt-0 lg:sticky lg:top-6">
+        <Innehallsforteckning rubriker={rubriker} variant="sidospalt" />
+        {d.kalkylator && <Verktygskort kalkylator={d.kalkylator} variant="liten" iRutnat />}
+        <div class="yta border-0 px-5.5 py-4 text-liten text-blyerts-2 flex flex-col gap-1.5">
+          <p class="etikett text-blyerts">Så jobbar jag</p>
+          <p class="m-0">{JOBBAR_TEXT}</p>
+          <a href="/om/sa-testar-vi/" class="lank self-start">Så testar jag</a>
         </div>
       </aside>
     </div>
   </div>
+
+  {
+    fler.length > 0 && (
+      <section class="band mt-14">
+        <div class="sidram py-12 lg:py-14">
+          <Rubrikrad id={slugify(flerRubrik)} rubrik={flerRubrik} />
+          <Artikelrutnat kort={fler} visaMeta={false} />
+        </div>
+      </section>
+    )
+  }
 </Bas>
