@@ -15,9 +15,16 @@ import {
   testUrl,
   typEtikett,
 } from './innehall';
+import { KALKYLATORER } from './kalkyl/register';
 import type { Niva } from './niva';
 import { PELARE, type PelareSlug } from './pelare';
-import { billigasteErbjudande, hamtaProdukt, produkterIKategori, produktNamn } from './produkter';
+import {
+  billigasteErbjudande,
+  hamtaProdukt,
+  produkterIKategori,
+  produktNamn,
+  type Erbjudande,
+} from './produkter';
 
 /**
  * Korttyper i den ordning typfiltret på /guider/ visar dem. "kategori" är en
@@ -139,7 +146,7 @@ export async function tillKortKategori(entry: CollectionEntry<'kategorier'>): Pr
   const datum = entry.data.uppdaterad ?? new Date(0);
 
   return {
-    etikett: 'Bäst i test',
+    etikett: 'Granskad på datablad',
     rubrik: entry.data.namn,
     beskrivning: entry.data.description,
     pelare,
@@ -154,19 +161,118 @@ export async function tillKortKategori(entry: CollectionEntry<'kategorier'>): Pr
   };
 }
 
-/** Billigaste priset i kategorin, för blocket "Bäst i test just nu". */
-export async function kategoriVal(entry: CollectionEntry<'kategorier'>) {
-  const val = entry.data.val[0];
-  const produkt = val ? await hamtaProdukt(val.produkt) : null;
-  const erbjudande = produkt ? billigasteErbjudande(produkt) : null;
+/** Ett val i kategorikortet på startsidan: etiketten, produktens namn och billigaste pris. */
+export interface KategoriValRad {
+  etikett: string;
+  produktNamn: string;
+  pris: number | null;
+}
+
+/**
+ * Startsidans Granskat på datablad: kategorins två första val som finns i
+ * databasen, med billigaste erbjudandets pris. prisDatum är det senaste
+ * `uppdaterad` bland de visade erbjudandena och butikNamn dess butik; båda null
+ * när inget val har ett erbjudande. Utan databas blir val tom. Startsidan är
+ * enda anroparen. Spec: spec-designlyft-a-2026-10-02 avsnitt 5.5.
+ */
+export async function kategoriVal(entry: CollectionEntry<'kategorier'>): Promise<{
+  namn: string;
+  href: string;
+  antal: number;
+  val: KategoriValRad[];
+  prisDatum: Date | null;
+  butikNamn: string | null;
+}> {
+  const val: KategoriValRad[] = [];
+  const erbjudanden: Erbjudande[] = [];
+  for (const v of entry.data.val) {
+    if (val.length === 2) break;
+    const produkt = await hamtaProdukt(v.produkt);
+    if (!produkt) continue;
+    const erbjudande = billigasteErbjudande(produkt);
+    if (erbjudande) erbjudanden.push(erbjudande);
+    val.push({ etikett: v.etikett, produktNamn: produktNamn(produkt), pris: erbjudande?.pris ?? null });
+  }
+  const senast = erbjudanden.reduce<Erbjudande | null>(
+    (a, b) => (a === null || b.uppdaterad.getTime() > a.uppdaterad.getTime() ? b : a),
+    null,
+  );
   const produkter = await produkterIKategori(entry.id);
   return {
     namn: entry.data.namn,
     href: kategoriUrl(entry.id),
-    produktNamn: produkt ? produktNamn(produkt) : null,
-    pris: erbjudande?.pris ?? null,
     antal: produkter.length,
+    val,
+    prisDatum: senast ? senast.uppdaterad : null,
+    butikNamn: senast ? senast.butikNamn : null,
   };
+}
+
+/** Hubbens grupper, i den ordning hubben visar dem. */
+export const HUBGRUPPER = ['hitta-felet', 'valj-ratt', 'gor-det-sjalv', 'rakna'] as const;
+export type Grupp = (typeof HUBGRUPPER)[number];
+
+/**
+ * Pelarhubbens urval, på ett ställe (förut i Kortgrupp och dubblerat i
+ * PelarHub). Grupperna i ordningen ovan, utan tomma grupper:
+ *   hitta-felet    problemguider och kunskap, nyast först
+ *   valj-ratt      kategorisidor som kategorikort, sedan köpguider och jämförelser
+ *   gor-det-sjalv  projektguider
+ *   rakna          räknarna i pelaren
+ * Spec: spec-designlyft-a-2026-10-02 avsnitt 4.5.
+ */
+export async function hubGrupper(
+  pelare: PelareSlug,
+): Promise<{ id: Grupp; kort: KortData[]; kalkylatorer: string[] }[]> {
+  const artiklar = [...(await publicerade('guider')), ...(await publicerade('kunskap'))].filter(
+    (e) => e.data.pelare === pelare,
+  );
+  const allaKategorier = await publicerade('kategorier');
+  const kategorier = allaKategorier.filter((k) => (k.data.pelare as readonly string[]).includes(pelare));
+
+  const hittaFelet = artiklar
+    .filter((e) => e.data.typ === 'problemguide' || e.data.typ === 'kunskap')
+    .map(tillKortArtikel)
+    .sort(nyastForst);
+
+  const gorDetSjalv = artiklar
+    .filter((e) => e.data.typ === 'projektguide')
+    .map(tillKortArtikel)
+    .sort(nyastForst);
+
+  const kategorikort = await Promise.all(kategorier.map(tillKortKategori));
+  const jamforelser = await Promise.all(
+    (await publicerade('jamforelser')).map(async (e) => ({
+      entry: e,
+      pelare: await pelareForKategori(e.data.kategori),
+    })),
+  );
+  const ovriga = [
+    ...artiklar.filter((e) => e.data.typ === 'kopguide').map(tillKortArtikel),
+    ...jamforelser.filter((j) => j.pelare === pelare).map((j) => tillKortJamforelse(j.entry, j.pelare)),
+  ].sort(nyastForst);
+  const valjRatt = [...kategorikort, ...ovriga];
+
+  /*
+   * En räknare hör till pelaren antingen direkt (listan pelare i registret)
+   * eller genom sin produktkategori. Daggpunkten pekar inte på någon kategori,
+   * och utan det första ledet skulle den aldrig synas i en hub. Listan gör att
+   * samma räknare kan höra hemma i två ämnen, som elkostnaden.
+   */
+  const kalkylatorer = KALKYLATORER.filter((k) => {
+    if (k.pelare?.includes(pelare)) return true;
+    if (!k.kategori) return false;
+    const kategori = allaKategorier.find((x) => x.id === k.kategori);
+    return kategori ? (kategori.data.pelare as readonly string[]).includes(pelare) : false;
+  }).map((k) => k.slug);
+
+  const grupper: { id: Grupp; kort: KortData[]; kalkylatorer: string[] }[] = [
+    { id: 'hitta-felet', kort: hittaFelet, kalkylatorer: [] },
+    { id: 'valj-ratt', kort: valjRatt, kalkylatorer: [] },
+    { id: 'gor-det-sjalv', kort: gorDetSjalv, kalkylatorer: [] },
+    { id: 'rakna', kort: [], kalkylatorer },
+  ];
+  return grupper.filter((g) => g.kort.length + g.kalkylatorer.length > 0);
 }
 
 /**

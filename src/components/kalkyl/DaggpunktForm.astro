@@ -32,6 +32,13 @@ interface Props {
   /** Prefix på id-attributen, så att två formulär på samma sida inte krockar. */
   idPrefix?: string;
   knappText?: string;
+  /**
+   * 'luften': bara temperaturen och luftfuktigheten inne, två i bredd från 640 px,
+   * inga andra fält och inga dolda fält; räknarsidan tar standardvärdena för
+   * resten via tolkaQuery. Räkna-indexets Prova direkt
+   * (spec-designlyft-a-2026-10-02 12.1). Standard 'alla'.
+   */
+  faltUrval?: 'alla' | 'luften';
 }
 
 const {
@@ -41,7 +48,15 @@ const {
   kompakt = false,
   idPrefix = '',
   knappText = 'Räkna ut',
+  faltUrval = 'alla',
 } = Astro.props;
+
+const allaFalt = faltUrval === 'alla';
+/*
+ * Slotten fore-knapp står mellan fälten och knappen, med knappens luft under sig.
+ * Renderas först, eftersom ett villkor som blir false i slotten ändå räknas som en slot.
+ */
+const foreKnapp = Astro.slots.has('fore-knapp') ? (await Astro.slots.render('fore-knapp')).trim() : '';
 
 const id = (namn: string) => `${idPrefix}${namn}`;
 const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
@@ -95,7 +110,7 @@ const uSpann = (s: readonly [number, number]) => `${formateraTal(s[0], 1)} till 
 ---
 
 <form method="get" action="/rakna/daggpunkt/">
-  <div class:list={[kompakt && 'sm:grid sm:grid-cols-2 sm:gap-4']}>
+  <div class:list={[(kompakt || !allaFalt) && 'sm:grid sm:grid-cols-2 sm:gap-4']}>
     {
       talfalt.map((f) => (
         <div class="mb-4">
@@ -126,7 +141,7 @@ const uSpann = (s: readonly [number, number]) => `${formateraTal(s[0], 1)} till 
     }
   </div>
 
-  {
+  {allaFalt && (
     fonster ? (
       fonsterfalt.map((f) => (
         <div class="mb-4">
@@ -204,8 +219,10 @@ const uSpann = (s: readonly [number, number]) => `${formateraTal(s[0], 1)} till 
     </div>
   </div>
     )
-  }
+  )}
 
+  {allaFalt && (
+  <>
   <fieldset class="m-0 mb-4 p-0 border-0">
     <legend class:list={[ETIKETT_KLASS, 'p-0']}>Årstid</legend>
     <div class={radioKlass}>
@@ -233,6 +250,14 @@ const uSpann = (s: readonly [number, number]) => `${formateraTal(s[0], 1)} till 
       }
     </div>
   </fieldset>
+  </>
+  )}
+
+  {foreKnapp !== '' && (
+    <div class="mb-6">
+      <Fragment set:html={foreKnapp} />
+    </div>
+  )}
 
   <button type="submit" class={KNAPP_KLASS}>{knappText}</button>
 </form>

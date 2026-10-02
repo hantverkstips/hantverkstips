@@ -26,6 +26,11 @@
  *   - källa i frontmatterfältet kallor vars url pekar på en butik (BUTIKSDOMANER),
  *     i alla samlingar och även i utkast; en butikskälla står utan url
  *     (tillagt 2026-09-30)
+ *   - säsongsradens href i src/lib/sasong.ts som leder ingenstans, saknar
+ *     avslutande snedstreck eller går till ett utkast, och i en hubfil en
+ *     borjaHar som inte finns, är utkast eller hör till en annan pelare, och en
+ *     href i lasordning eller grannar som leder ingenstans (tillagt 2026-10-02,
+ *     spec-designlyft-a-2026-10-02 avsnitt 5.1 och 5.6)
  *
  * Varnar (bygget går vidare) vid:
  *   - publicerad artikel, test eller jämförelse utan inlänk från en annan
@@ -39,6 +44,10 @@
  *     räkneorden "alltså", "avgör"/"styr" och "innan du" över gränsen per sida
  *   - räknarnas BESKRIVNING utanför spannet och alt över 125 i src/pages/rakna/
  *   - publicerad guide eller kunskapssida utan plats i en pelare med platsregister
+ *   - räknare i registret som färre än två innehållsfiler länkar till, med
+ *     /rakna/[slug]/, <Kalkylator namn="[slug]"> eller <Verktygskort
+ *     kalkylator="[slug]">. Sidfoten visar bara tre räknare och bär dem inte
+ *     längre (tillagt 2026-10-02, spec-designlyft-a-2026-10-02 avsnitt 12.3)
  *
  * Varningarna om titel och beskrivning gäller sökresultatet, inte schemat.
  *
@@ -55,6 +64,7 @@ import { KALKYLATORER } from '../src/lib/kalkyl/register.ts';
 import { NIVAER } from '../src/lib/niva.ts';
 import { PELARE, PELARE_SLUGS } from '../src/lib/pelare.ts';
 import { PLATSER, type Plats } from '../src/lib/plats.ts';
+import { SASONG } from '../src/lib/sasong.ts';
 
 const ROT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const INNEHALL = join(ROT, 'src', 'content');
@@ -112,9 +122,6 @@ const BUTIKSDOMANER = [
   'polarpumpen.se',
   'duab.se',
 ] as const;
-
-/** Grupperna <Kortgrupp> känner till. Speglar src/components/ui/Kortgrupp.astro. */
-const KORTGRUPPER = ['hitta-felet', 'valj-ratt', 'gor-det-sjalv', 'rakna'] as const;
 
 interface Fil {
   samling: Samling;
@@ -399,17 +406,6 @@ for (const f of filer) {
   // Inbäddat formulär. Samma register, annat attribut: <Kalkylator namn="daggpunkt" />.
   for (const m of f.body.matchAll(/<Kalkylator\s+namn="([^"]+)"/g)) {
     if (!kalkylatorer.has(m[1] ?? '')) felet(f.sokvag, `<Kalkylator namn="${m[1]}"> finns inte i registret`);
-  }
-
-  // Hubbens kortgrupper. Komponenten läser pelaren ur rutten och fungerar bara
-  // i en pelarhub, så både okänt gruppnamn och fel samling är fel här.
-  for (const m of f.body.matchAll(/<Kortgrupp\s+grupp="([^"]+)"/g)) {
-    if (!(KORTGRUPPER as readonly string[]).includes(m[1] ?? '')) {
-      felet(f.sokvag, `<Kortgrupp grupp="${m[1]}"> är okänd. Använd en av ${KORTGRUPPER.join(', ')}`);
-    }
-    if (f.samling !== 'pelare') {
-      felet(f.sokvag, '<Kortgrupp> fungerar bara i en pelarhub, den läser pelaren ur rutten');
-    }
   }
 
   const bild = strang(f.data.bild);
@@ -725,11 +721,75 @@ for (const f of filer) {
   }
 }
 
+/**
+ * En intern adress som en mall eller modul bär utanför innehållsfilerna:
+ * säsongsraden i src/lib/sasong.ts och hubfilens lasordning och grannar. Samma
+ * krav som länkarna ovan: avslutande snedstreck, en sida som finns, inte ett
+ * utkast. Räknas inte som inlänk. Ankare och query skalas av före kontrollen.
+ */
+function kollaAdress(fran: string, ra: string, vad: string) {
+  if (!ra.startsWith('/')) {
+    felet(fran, `${vad} ${ra} är ingen intern adress. Den ska börja med /`);
+    return;
+  }
+  const url = ra.replace(/[#?].*$/, '');
+  if (!url.endsWith('/')) {
+    felet(fran, `${vad} ${ra} saknar avslutande snedstreck`);
+    return;
+  }
+  const mal = sidorPerUrl.get(url);
+  if (!mal && !statiska.has(url)) felet(fran, `${vad} ${url} leder ingenstans. Ingen innehållsfil, kalkylator eller fast sida har den adressen`);
+  else if (mal?.utkast) felet(fran, `${vad} ${url} är utkast. Länken blir 404 i bygget`);
+}
+
+// Säsongsraden. En href som ännu är TEXT SAKNAS fångas av platshållarkontrollen.
+for (const [manad, post] of Object.entries(SASONG)) {
+  if (post.href === PLATSHALLARE) continue;
+  kollaAdress('src/lib/sasong.ts', post.href, `månad ${manad}: länken`);
+}
+
+// Hubfilens borjaHar, lasordning och grannar (src/content.config.ts, samlingen pelare).
+for (const hub of per('pelare')) {
+  const borja = hub.data.borjaHar;
+  if (borja && typeof borja === 'object') {
+    const { samling, id } = borja as { samling?: string; id?: string };
+    const mal = filer.find((x) => x.samling === samling && x.id === id);
+    if (!mal) felet(hub.sokvag, `borjaHar pekar på ${samling}/${id} som inte finns`);
+    else if (mal.utkast) felet(hub.sokvag, `borjaHar pekar på ${samling}/${id} som är utkast`);
+    else if (strang(mal.data.pelare) !== hub.id) {
+      felet(hub.sokvag, `borjaHar pekar på ${samling}/${id}, som hör till pelaren ${strang(mal.data.pelare)}, inte ${hub.id}`);
+    }
+  }
+  const lasordning = hub.data.lasordning;
+  const steg =
+    lasordning && typeof lasordning === 'object' && Array.isArray((lasordning as { steg?: unknown }).steg)
+      ? ((lasordning as { steg: unknown[] }).steg)
+      : [];
+  const grannar = Array.isArray(hub.data.grannar) ? (hub.data.grannar as unknown[]) : [];
+  for (const [vad, lista] of [['lasordning: steget', steg], ['grannar: länken', grannar]] as const) {
+    for (const post of lista) {
+      const href = post && typeof post === 'object' ? strang((post as Record<string, unknown>).href) : undefined;
+      if (href === undefined) felet(hub.sokvag, `${vad} saknar href`);
+      // En ren adress utan ankare kontrolleras redan av lankarI, som går igenom
+      // frontmatterns strängar; här de övriga, så att samma fel inte står två gånger.
+      else if (!/^\/[a-z0-9\-/]*$/.test(href)) kollaAdress(hub.sokvag, href, vad);
+    }
+  }
+}
+
 for (const f of filer) {
   if (!KRAVER_INLANK.includes(f.samling) || f.utkast) continue;
   if (!inlankar.has(f.sokvag)) {
     varna(f.sokvag, `${f.url} saknar inlänk från en annan innehållsfil. Sidfot, meny och automatiska listor räknas inte`);
   }
+}
+
+// Räknarnas inlänkar från innehållet. En fil räknas en gång, hur många länkar
+// den än har. Spec-designlyft-a-2026-10-02 avsnitt 12.3.
+for (const k of KALKYLATORER) {
+  const monster = [`/rakna/${k.slug}/`, `<Kalkylator namn="${k.slug}"`, `<Verktygskort kalkylator="${k.slug}"`];
+  const n = filer.filter((f) => monster.some((m) => f.ra.includes(m))).length;
+  if (n < 2) varna('src/lib/kalkyl/register.ts', `räknaren ${k.slug} har ${n} inlänkar från innehållet, minst två krävs`);
 }
 
 // ---------------------------------------------------------------------------

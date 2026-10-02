@@ -1,22 +1,24 @@
 ---
 /**
- * Ämnesraden på startsidan. Alla pelare i PELARE-ordning som kort, direkt
- * under öppningen, i sidbredd. Fyra kolumner från 1024 px, tre från 640, två under.
- * Elva ämnen blir tre rader på desktop, en per grupp, och sex på mobil, där det
- * sista kortet tar hela bredden. Sedan 2026-09-17 täcker pelarna huset från
- * tak till grund, ute och inne, och kortets etikett säger vilken grupp ämnet
- * hör till (Utsidan, Insidan, Hela huset) och hur många sidor som finns.
+ * Ämnesraden på startsidan: alla pelare i PELARE-ordning som ämneskort, under
+ * startsidans rubrikrad "Var sitter problemet?", som också bär länken Alla
+ * ämnen. Fyra kolumner från 1024 px, tre från 640, två under. Pelaren med flest
+ * publicerade sidor (den första i PELARE-ordning vid lika) tar två kolumner
+ * och har ytan ruta, så att elva kort blir tolv celler och raderna går jämnt
+ * ut i alla tre bredder. Kortets etikett säger vilken grupp ämnet hör till
+ * (Utsidan, Insidan, Hela huset) och hur många sidor som finns.
  *
- * En pelare vars hub är publicerad blir ett klickbart kort med artikelkortets
- * ram, hover och fokus. Övriga står kvar som dämpade kort utan länk med ordet
- * Kommer: kartan visar hela sajten, inte bara det som hunnit publiceras, och en
- * död länk till en hub som är utkast byggs aldrig.
+ * En pelare vars hub är publicerad blir ett klickbart kort med den runda
+ * symbolen. Övriga står kvar dämpade utan länk med ordet Kommer: kartan visar
+ * hela sajten, och en död länk till en hub som är utkast byggs aldrig.
+ * Utseendet står i .amneskort i global.css (docs/DESIGN.md avsnitt 6, Ämneskort).
  */
 import { hubPublicerad, pelareUrl, publicerade } from '../../lib/innehall';
 import { hittaGrupp, PELARE } from '../../lib/pelare';
 import Ikon from './Ikon.astro';
 
 const KOMMER = 'Kommer';
+const STORST = 'störst än så länge'; // start.amnen.storst
 
 const artiklar = [...(await publicerade('guider')), ...(await publicerade('kunskap'))];
 
@@ -27,52 +29,56 @@ const kort = await Promise.all(
     return {
       pelare,
       grupp,
+      antal,
       publicerad: await hubPublicerad(pelare.slug),
       etikett: antal === 0 ? grupp : `${grupp} · ${antal === 1 ? '1 sida' : `${antal} sidor`}`,
     };
   }),
 );
+
+/** Den största: flest sidor, den första i PELARE-ordning vid lika. */
+const storst = kort.reduce((b, k) => (k.antal > b.antal ? k : b), kort[0]!);
 ---
 
-<nav aria-label="Ämnen" class="mt-8 lg:mt-12">
-  <ul class="m-0 grid list-none grid-cols-2 gap-3 p-0 sm:grid-cols-3 lg:grid-cols-4 lg:gap-5 [&>li:last-child:nth-child(odd)]:col-span-2 sm:[&>li:last-child:nth-child(odd)]:col-span-1">
+<nav aria-label="Ämnen">
+  <ul class="m-0 grid list-none grid-cols-2 gap-3 p-0 sm:grid-cols-3 lg:grid-cols-4 lg:gap-5">
     {
-      kort.map((k) =>
-        k.publicerad ? (
-          <li>
-            <div class="artikelkort h-full rounded-sm border border-linje bg-papper p-4">
-              <Ikon namn={k.pelare.ikon} storlek={36} class="text-blyerts" />
-              <p class="m-0 mt-2 text-etikett uppercase text-blyerts-2">{k.etikett}</p>
-              <p class="m-0 mt-1 font-serif text-kortrubrik lg:text-kortrubrik-lg">
-                <a href={pelareUrl(k.pelare.slug)} class="kortlank">
-                  {k.pelare.kort}
-                </a>
-              </p>
-              <p class="m-0 mt-1 text-liten text-blyerts-2">{k.pelare.rad}</p>
-            </div>
+      kort.map((k) => {
+        const stor = k === storst;
+        return (
+          <li class:list={[stor && 'col-span-2']}>
+            {k.publicerad ? (
+              <div class:list={['kort artikelkort amneskort', stor && 'amneskort-stor']}>
+                <span class="symbol">
+                  <Ikon namn={k.pelare.ikon} storlek={26} />
+                </span>
+                <div>
+                  <p>{stor ? `${k.etikett} · ${STORST}` : k.etikett}</p>
+                  <p>
+                    <a href={pelareUrl(k.pelare.slug)} class="kortlank">
+                      {k.pelare.namn}
+                    </a>
+                  </p>
+                  <p>{k.pelare.rad}</p>
+                </div>
+              </div>
+            ) : (
+              <div class:list={['amneskort amneskort-kommer', stor && 'amneskort-stor']}>
+                <span class="symbol">
+                  <Ikon namn={k.pelare.ikon} storlek={26} />
+                </span>
+                <div>
+                  <p>
+                    {k.grupp} · {KOMMER}
+                  </p>
+                  <p>{k.pelare.namn}</p>
+                  <p>{k.pelare.rad}</p>
+                </div>
+              </div>
+            )}
           </li>
-        ) : (
-          <li>
-            <div class="flex h-full flex-col rounded-sm border border-linje bg-papper-2 p-4">
-              <Ikon namn={k.pelare.ikon} storlek={36} class="text-blyerts-2" />
-              <p class="m-0 mt-2 text-etikett uppercase text-blyerts-2">
-                {k.grupp} · {KOMMER}
-              </p>
-              <p class="m-0 mt-1 font-serif text-kortrubrik lg:text-kortrubrik-lg text-blyerts-2">{k.pelare.kort}</p>
-              <p class="m-0 mt-1 text-liten text-blyerts-2">{k.pelare.rad}</p>
-            </div>
-          </li>
-        ),
-      )
+        );
+      })
     }
   </ul>
-
-  <p class="m-0 flex justify-end">
-    <a
-      href="/amnen/"
-      class="huvudmeny inline-flex min-h-11 items-center lank"
-    >
-      Alla ämnen
-    </a>
-  </p>
 </nav>

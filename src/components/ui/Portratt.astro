@@ -1,0 +1,27 @@
+---
+/**
+ * Porträttplatsen. Ingen bild av Christian finns, så platsen är en cirkel i
+ * papper-2 med snickarpennan mitt i: 40 px i bylinen (fas B), 120 px i
+ * startsidans Så jobbar jag. När ett foto finns byts ikonen mot fotot i samma
+ * cirkel. Dekorativ: namnet bredvid bär betydelsen.
+ * Spec: docs/briefer/spec-designlyft-a-2026-10-02.md 4.7, docs/DESIGN.md avsnitt 6.
+ */
+import Ikon from './Ikon.astro';
+
+interface Props {
+  storlek: 40 | 120;
+}
+
+const { storlek } = Astro.props;
+const stor = storlek === 120;
+---
+
+<span
+  aria-hidden="true"
+  class:list={[
+    'inline-flex shrink-0 items-center justify-center rounded-full border border-linje bg-papper-2 text-blyerts',
+    stor ? 'size-30' : 'size-10',
+  ]}
+>
+  <Ikon namn="penna" storlek={stor ? 64 : 22} />
+</span>

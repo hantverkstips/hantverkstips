@@ -3,21 +3,21 @@
  * Startsidan är en uppslagen anteckningsbok, inte en landningssida. Ingen
  * bakgrundsbild, inga köpknappar, inget reklamband.
  *
- * Blocken följer docs/DESIGN.md avsnitt 5.1: heron (H1, stycket och husskissen),
- * ämnesraden, rutnätet med guider och tester (där "Just nu" är det stora
- * kortet), Bäst i test just nu, Räkna själv och Så jobbar vi. "Just nu" och
- * "Senaste" är ett och samma rutnät: två block med samma sorts innehåll blev
- * två gånger samma bild. Ämnesraden ersatte "Börja här" 2026-09-16: läsaren såg
- * inget att klicka på ovanför vecket och hittade inte till ämnena från
- * startsidan. Säsongsblocket togs bort 2026-09-16: övre halvan sa fyra saker
- * samtidigt. Säsongen styr i stället "Just nu" och rutnätet.
+ * Ordningen följer docs/DESIGN.md 5.1 (omgjord 2026-10-02, spec
+ * docs/briefer/spec-designlyft-a-2026-10-02.md avsnitt 6): heroblocket, Var
+ * sitter problemet (band), Börja här (det stora kortet och fyra i rad),
+ * Granskat på datablad, Räkna själv (band, tre talkort och den kompakta
+ * listan) och Så jobbar jag. Sidan bygger sina sektioner själv (<Bas galleri>).
+ * Månaden i säsongsetiketten, säsongsraden och rubriken Börja här kommer ur
+ * byggdatumet (src/lib/sasong.ts), så sidan byts vid första bygget i en ny månad.
  */
 import { getEntry, render } from 'astro:content';
 import Bas from '../layouts/Bas.astro';
 // Sidans LCP-bild. Egen skiss i ordmärkets stil, dekorativ: H1 bär meningen.
 import heroBild from '../assets/illustrationer/start/hus-tumstock.svg';
-import { formateraPris } from '../lib/format';
-import { arPublicerad, publicerade, slugify } from '../lib/innehall';
+import { formateraDatum, formateraPris } from '../lib/format';
+import { arPublicerad, publicerade } from '../lib/innehall';
+import { korttal } from '../lib/kalkyl/korttal';
 import { KALKYLATORER } from '../lib/kalkyl/register';
 import {
   allaKort,
@@ -28,17 +28,47 @@ import {
   tillKortTest,
   type KortData,
 } from '../lib/kort';
+import { hittaPelare, PELARE } from '../lib/pelare';
+import { byggmanad, iSasong, manadsnamn, sasongsrad } from '../lib/sasong';
 import { organisation } from '../lib/strukturdata';
 import Amnesrad from '../components/ui/Amnesrad.astro';
+import Artikelkort from '../components/ui/Artikelkort.astro';
 import Artikelrutnat from '../components/ui/Artikelrutnat.astro';
+import Ikon from '../components/ui/Ikon.astro';
 import Markering from '../components/ui/Markering.astro';
 import Pennstreck from '../components/ui/Pennstreck.astro';
+import Portratt from '../components/ui/Portratt.astro';
+import Rubrikrad from '../components/ui/Rubrikrad.astro';
 import StrukturData from '../components/ui/StrukturData.astro';
 import Verktygskort from '../components/ui/Verktygskort.astro';
+
+/* Ny publik text, skriven av hantverkaren (docs/briefer/texter-designlyft-2026-10-02.md). */
+const T = {
+  heroEtikett: 'Aktuellt i {månad}', // start.hero.etikett
+  heroSiffror: 'Här finns {sidor} sidor, {raknare} räknare och {kategorier} granskade produktgrupper. Varje tal har en källa, och det jag inte provat kallar jag inte test.', // start.hero.siffror
+  amnenRubrik: 'Var i huset gäller det?', // start.amnen.rubrik
+  guiderRubrik: 'Nytt och aktuellt i {månad}', // start.guider.rubrik
+  bastRubrik: 'Maskinerna jag granskat på datablad', // start.bast.rubrik
+  bastPrisrad: 'Priserna är från {butik} den {datum}. Länkarna dit är annonslänkar. Jag har läst databladen men inte provat maskinerna.', // start.bast.prisrad
+  raknaRubrik: 'Räkna på ditt eget hus', // start.rakna.rubrik
+  raknaAlla: 'Alla {antal} räknare, med källan till varje tal', // start.rakna.alla
+  jobbarRad: 'Jag är husägare norr om Stockholm och har varken firma eller butik.', // start.jobbar.rad
+  jobbar1Rubrik: 'Jag räknar själv', // start.jobbar.1.rubrik
+  jobbar1Text: 'Räknarna visar sina antaganden, och varje tal kommer ur ett datablad, från en myndighet eller ur min räkning.', // start.jobbar.1.text
+  jobbar2Rubrik: 'Talen från tillverkaren', // start.jobbar.2.rubrik
+  jobbar2Text: 'Jag läser i databladet vad en maskin klarar och under vilka villkor. Butiken är källa bara för priset.', // start.jobbar.2.text
+  jobbar3Rubrik: 'Test kräver en mätning', // start.jobbar.3.rubrik
+  jobbar3Text: 'Har jag inte haft maskinen hos mig kallar jag det granskning. Reklamen är märkt och styr inte vad jag väljer.', // start.jobbar.3.text
+};
 
 const startsida = await getEntry('sidor', 'startsida');
 if (!startsida) throw new Error('src/content/sidor/startsida.mdx saknas');
 const { Content } = await render(startsida);
+
+/** Månaden ur byggdatumet i svensk tid. */
+const m = byggmanad();
+const manad = manadsnamn(m);
+const sasong = sasongsrad(m);
 
 // Just nu: chefredaktörens val. Utkast länkas aldrig från en publicerad sida.
 const justNuRef = startsida.data.justNu;
@@ -59,13 +89,53 @@ if (justNuRef) {
   }
 }
 
-// Rutnätet: det stora kortet först, sedan de fyra senaste med justNu bortfiltrerad.
-// Ett stort plus fyra fyller två rader exakt på desktop.
-const ovriga = (await allaKort()).filter((k) => k.href !== justNu?.href).slice(0, justNu ? 4 : 5);
-const rutnat = justNu ? [justNu, ...ovriga] : ovriga;
+// Börja här: det stora kortet (justNu, annars det senaste) och de fyra följande.
+const alla = await allaKort();
+const stort = justNu ?? alla[0];
+const fyra = alla.filter((k) => k.href !== stort?.href).slice(0, 4);
 
-// Bäst i test just nu: en rad per kategori med kategorifilens första val.
-const bastITest = await Promise.all((await publicerade('kategorier')).map(kategoriVal));
+// Sifferraden i heron: publicerade sidor, räknare och kategorier, räknade i bygget.
+// {sidor} är innehållssidorna: guider, kunskap, tester, jämförelser och
+// kategorisidor. Hubbar, om-sidor och räknare räknas inte (spec 12.6).
+const kategorier = await publicerade('kategorier');
+const artiklar = (
+  await Promise.all((['guider', 'kunskap', 'tester', 'jamforelser'] as const).map((s) => publicerade(s)))
+).flat();
+const antalSidor = artiklar.length + kategorier.length;
+const siffror = T.heroSiffror
+  .replace('{sidor}', String(antalSidor))
+  .replace('{raknare}', String(KALKYLATORER.length))
+  .replace('{kategorier}', String(kategorier.length));
+
+// Granskat på datablad: en per publicerad och indexerbar kategori, två val med pris.
+const granskat = await Promise.all(kategorier.filter((k) => !k.data.noindex).map(kategoriVal));
+const senastPris = granskat
+  .filter((g) => g.prisDatum)
+  .sort((a, b) => (b.prisDatum?.getTime() ?? 0) - (a.prisDatum?.getTime() ?? 0))[0];
+const prisrad = senastPris?.prisDatum
+  ? T.bastPrisrad
+      .replace('{butik}', senastPris.butikNamn ?? '')
+      .replace('{datum}', formateraDatum(senastPris.prisDatum))
+  : null;
+
+/**
+ * Räkna själv: tre talkort, de första räknarna i registret vars säsong omfattar
+ * byggmånaden och som har ett tal, påfyllt i registerordning med räknare som
+ * har ett tal. Övriga räknare i den kompakta listan, i registerordning.
+ */
+const medTal = KALKYLATORER.filter((k) => korttal(k.slug));
+const talkort = [
+  ...medTal.filter((k) => iSasong(k.sasong, m)),
+  ...medTal.filter((k) => !iSasong(k.sasong, m)),
+].slice(0, 3);
+const ovrigaRaknare = KALKYLATORER.filter((k) => !talkort.includes(k));
+const pelareKort = (slugar: readonly string[] | undefined) => (hittaPelare(slugar?.[0] ?? '') ?? PELARE[0]).kort;
+
+const PRINCIPER = [
+  { ikon: 'kalkylator', rubrik: T.jobbar1Rubrik, text: T.jobbar1Text },
+  { ikon: 'info', rubrik: T.jobbar2Rubrik, text: T.jobbar2Text },
+  { ikon: 'check', rubrik: T.jobbar3Rubrik, text: T.jobbar3Text },
+] as const;
 
 /**
  * Title säger samma sak som H1: två sanningar om samma sida håller inte i
@@ -77,25 +147,38 @@ const h1 = startsida.data.title;
 const sidtitel = startsida.data.seoTitle ?? 'Hantverkstips, kunskap om huset från källaren till taket';
 ---
 
-<Bas title={sidtitel} description={startsida.data.description} bred={true}>
+<Bas title={sidtitel} description={startsida.data.description} galleri>
   <StrukturData slot="head" data={organisation()} />
 
-  {/*
-    Heron i sidbredd. Desktop: texten 6/12 till vänster, skissen 6/12 till
-    höger, lodrätt centrerade med 48 px emellan. Mobil: H1, stycket, sedan
-    skissen i full bredd. Bilden är dekorativ och står utan ram och bildtext:
-    H1 bär meningen, och skissen har genomskinlig bakgrund, så en ram hade
-    bara lagt ännu en kant i övre halvan. Det är sidans LCP-bild.
-  */}
-  <section class="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-12">
-    <div class="lg:col-span-6">
-      <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">{h1}</h1>
-      <div class="prosa mt-4 text-ingress lg:text-ingress-lg">
-        <Content components={{ Markering }} />
+  {/* Heroblocket: ett block i sidbredd. Bilden är dekorativ och sidans LCP-bild. */}
+  <section class="sidram pt-8 pb-12 lg:pt-14">
+    <div
+      class="blad rounded-md shadow-block grid grid-cols-1 items-center gap-8 p-5 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:gap-12 lg:p-12"
+    >
+      <div class="flex flex-col gap-5">
+        <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
+          {T.heroEtikett.replace('{månad}', manad)}
+        </p>
+        <h1 class="m-0 font-serif text-h1 lg:text-h1-xl">{h1}</h1>
+        <div class="prosa text-ingress lg:text-ingress-lg">
+          <Content components={{ Markering }} />
+        </div>
+        <p class="m-0 text-brod lg:text-brod-lg">
+          {sasong.fore}<a href={sasong.href} class="lank">{sasong.lank}</a>{sasong.efter}
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a class="knapp knapp-fylld" href="/rakna/">
+            <Ikon namn="kalkylator" storlek={22} />
+            Räkna själv
+          </a>
+          <a class="knapp" href="/guider/typ/problemguide/">
+            <Ikon namn="sok" storlek={22} />
+            Hitta felet
+          </a>
+        </div>
+        <p class="m-0 text-liten text-blyerts-2">{siffror}</p>
       </div>
-    </div>
 
-    <div class="lg:col-span-6">
       <img
         src={heroBild.src}
         alt=""
@@ -103,98 +186,135 @@ const sidtitel = startsida.data.seoTitle ?? 'Hantverkstips, kunskap om huset fr�
         height={heroBild.height}
         fetchpriority="high"
         decoding="async"
-        class="block h-auto w-full"
+        class="mx-auto block h-auto w-full lg:max-w-md"
       />
     </div>
   </section>
 
-  {/*
-    Ämnesraden. Åtta ämneskort i sidbredd direkt under öppningen: sajtens karta
-    och sidans enda navigering ovanför vecket.
-  */}
-  <Amnesrad />
+  <section class="band">
+    <div class="sidram py-12 lg:py-14">
+      <Rubrikrad id="amnen" rubrik={T.amnenRubrik} lank={{ text: 'Alla ämnen', href: '/amnen/' }} />
+      <Amnesrad />
+    </div>
+  </section>
 
   {
-    rutnat.length > 0 && (
-      <section>
-        <div class="flex flex-wrap items-baseline justify-between gap-x-6">
-          <Pennstreck id={slugify('Guider och tester')}>Guider och tester</Pennstreck>
-          <a
-            href="/guider/"
-            class="huvudmeny inline-flex min-h-11 items-center lank"
-          >
-            Alla guider och tester
-          </a>
+    stort && (
+      <section class="sidram pt-12 lg:pt-16">
+        <Rubrikrad
+          id="borja-har"
+          rubrik={T.guiderRubrik.replace('{månad}', manad)}
+          lank={{ text: 'Alla guider och granskningar', href: '/guider/' }}
+        />
+        <Artikelkort
+          etikett={stort.etikett}
+          niva={stort.niva}
+          rubrik={stort.rubrik}
+          beskrivning={stort.beskrivning}
+          illustration={stort.illustration}
+          pelare={stort.pelare}
+          datum={stort.datum}
+          meta={stort.meta}
+          href={stort.href}
+          bladfakta={stort.bladfakta}
+          variant="stor"
+          storBild="halv"
+        />
+        <div class="mt-5">
+          <Artikelrutnat kort={fyra} kolumner={4} kompaktPaMobil visaBeskrivning={false} />
         </div>
-        <Artikelrutnat kort={rutnat} storForsta={true} kompaktPaMobil={true} prioriteraForsta={false} />
       </section>
     )
   }
 
   {
-    bastITest.length > 0 && (
-      <section>
-        <Pennstreck id={slugify('Bäst i test just nu')}>Bäst i test just nu</Pennstreck>
-        <ul class="m-0 grid list-none grid-cols-1 gap-x-12 p-0 lg:grid-cols-2">
-          {bastITest.map((b) => (
-            <li class="border-t border-linje py-4">
-              <h3 class="m-0 font-sans text-h3 lg:text-h3-lg">
-                <a href={b.href} class="lank text-blyerts">
-                  {b.namn}
-                </a>
-              </h3>
-              {b.produktNamn && (
-                <p class="m-0 mt-1 text-brod text-blyerts-2">
-                  <span class="text-etikett uppercase text-blyerts">Mitt val</span> {b.produktNamn}
-                  {b.pris !== null && <> · {formateraPris(b.pris)}</>}
-                  {b.antal > 0 && <> · {b.antal} granskade</>}
-                </p>
+    granskat.length > 0 && (
+      <section class="sidram pt-12 lg:pt-16">
+        <Rubrikrad id="granskat" rubrik={T.bastRubrik} />
+        <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-5">
+          {granskat.map((g) => (
+            <div class="kort p-6 lg:px-7">
+              <div class="flex items-baseline justify-between gap-4">
+                <h3 class="m-0 font-serif text-h2">{g.namn}</h3>
+                {g.antal > 0 && <p class="m-0 shrink-0 text-etikett uppercase text-blyerts-2">{g.antal} granskade</p>}
+              </div>
+              {g.val.length > 0 && (
+                <ul class="m-0 mt-4 grid list-none gap-3 p-0">
+                  {g.val.map((v) => (
+                    <li class="granskad-rad">
+                      <span class="chip-gul">{v.etikett}</span>
+                      <span class="font-bold">{v.produktNamn}</span>
+                      {v.pris !== null && <span class="ml-auto tabular-nums">{formateraPris(v.pris)}</span>}
+                    </li>
+                  ))}
+                </ul>
               )}
-              <p class="m-0 mt-1">
-                <a
-                  href={b.href}
-                  class="inline-flex min-h-11 items-center lank"
-                >
+              <p class="m-0 mt-3">
+                <a href={g.href} class="lank min-h-11 inline-flex items-center">
                   Alla jag granskat
                 </a>
               </p>
-            </li>
-          ))}
-        </ul>
-      </section>
-    )
-  }
-
-  {
-    /* Alla kalkylatorer, från den första. Blocket är enda stället på startsidan
-       där verktygen syns sedan säsongsblocket togs bort 2026-09-16. */
-    KALKYLATORER.length > 0 && (
-      <section>
-        <Pennstreck id={slugify('Räkna själv')}>Räkna själv</Pennstreck>
-        <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
-          {KALKYLATORER.map((k) => (
-            <Verktygskort kalkylator={k.slug} iRutnat={true} />
+            </div>
           ))}
         </div>
+        {prisrad && <p class="m-0 mt-4 text-liten text-blyerts-2">{prisrad}</p>}
       </section>
     )
   }
 
-  <section class="max-w-lasbredd">
-    <Pennstreck id={slugify('Så jobbar jag')}>Så jobbar jag</Pennstreck>
-    <p class="m-0 text-brod lg:text-brod-lg">
-      Jag mäter själv när jag kan och läser tillverkarnas datablad när jag inte kan.{' '}
-      <a href="/om/sa-testar-vi/" class="lank">
-        Så testar jag
-      </a>
-      . Sajten finansieras av annonslänkar, och hur det påverkar det jag skriver står på{' '}
-      <a
-        href="/om/sa-tjanar-vi-pengar/"
-        class="lank"
-      >
-        Så tjänar jag pengar
-      </a>
-      .
-    </p>
+  <section class="band mt-12 lg:mt-16">
+    <div class="sidram py-12 lg:py-14">
+      <Rubrikrad
+        id="rakna"
+        rubrik={T.raknaRubrik.replace('{antal}', String(KALKYLATORER.length))}
+        lank={{ text: 'Alla räknare', href: '/rakna/' }}
+      />
+      <div class="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-5">
+        {talkort.map((k) => <Verktygskort kalkylator={k.slug} variant="tal" iRutnat />)}
+      </div>
+      <ul class="kort kompaktlista mt-5">
+        {
+          ovrigaRaknare.map((k) => (
+            <li>
+              <a href={`/rakna/${k.slug}/`}>
+                <span>{pelareKort(k.pelare)}</span>
+                <span>{k.namn}</span>
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <a href="/rakna/">{T.raknaAlla.replace('{antal}', String(KALKYLATORER.length))}</a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sidram py-12 lg:py-16">
+    <div class="grid grid-cols-1 items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-12">
+      <div class="flex flex-col gap-3.5">
+        <Portratt storlek={120} />
+        <Pennstreck id="sa-jobbar-jag" utanLuft>Så jobbar jag</Pennstreck>
+        <p class="m-0 text-blyerts-2">{T.jobbarRad}</p>
+      </div>
+      <div>
+        <ul class="principer">
+          {
+            PRINCIPER.map((p) => (
+              <li>
+                <Ikon namn={p.ikon} storlek={30} class="text-penna" />
+                <p class="m-0 font-bold">{p.rubrik}</p>
+                <p class="m-0 text-liten text-blyerts-2">{p.text}</p>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="m-0 mt-5">
+          <a href="/om/sa-testar-vi/" class="lank min-h-11 inline-flex items-center">
+            Så testar jag
+          </a>
+        </p>
+      </div>
+    </div>
   </section>
 </Bas>

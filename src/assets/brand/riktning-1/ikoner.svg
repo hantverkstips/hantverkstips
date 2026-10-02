@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg">
-  <!-- Riktning 1, Anteckningsboken. 21 ikoner, 24 x 24, linje 1,75, runda ändar,
+  <!-- Riktning 1, Anteckningsboken. 22 ikoner, 24 x 24, linje 1,75, runda ändar,
        lätt darr i långa linjer och små överskjut i hörnen (blyertskänsla).
        stroke = currentColor, sätts till token blyerts #2a2521 via CSS.
        Användning: <svg width="24" height="24"><use href="/ikoner.svg#ikon-fukt"/></svg> -->
@@ -119,5 +119,14 @@
 
   <symbol id="ikon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
     <path d="M4,12.5 L9.5,18 Q14.5,11 20,6"/>
+  </symbol>
+
+  <!-- Snickarpennan, ritad 2026-10-02 för porträttplatsen (Portratt.astro):
+       snett från nere till vänster upp till höger, kort spets och en linje där
+       den vässade delen börjar. -->
+  <symbol id="ikon-penna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4.5,19.5 L5.5,15 Q10.6,9.8 15.5,5 Q17,3.6 18.5,5 L19,5.5 Q20.4,7 19,8.5 Q14.2,13.6 9,18.5 Z"/>
+    <path d="M13.5,7 L17,10.5"/>
+    <path d="M5.5,15 L9.1,18.6"/>
   </symbol>
 </svg>

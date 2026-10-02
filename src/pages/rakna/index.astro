@@ -1,79 +1,102 @@
 ---
 /**
- * Galleriet över kalkylatorerna. Statiskt, inga köpknappar, inget reklamband.
+ * Räkna själv-indexet. Statiskt, inga köpknappar, inget reklamband.
  *
- * Korten är samma <Artikelkort> som guiderna och testerna ligger i, med
- * registrets namn som rubrik och dess rad som beskrivning. Egen komponent
- * behövdes inte: illustration, etikett, rubrik, beskrivning, href och pelare
- * är precis vad kortet tar. Metaraden stängs av (visaPelare={false}), eftersom
- * pelaren redan står i etiketten och ett verktyg saknar datum.
- *
- * Sidbredd, med rubrik och ingress i läsbredd som pelarhubben gör, och samma
- * rutnät som /guider/: tre kolumner från 1024 px, två från 640, en under. Fem
- * verktyg blir en rad om tre och en om två. Se docs/SPEC-SIDMALLAR.md 4.6.
+ * Sedan designlyftet 2026-10-02 (docs/DESIGN.md 5.8.1, spec fas A avsnitt 8):
+ * rubrikbandet med brödsmulor, H1, ingress och chips till grupperna, och till
+ * höger daggpunktens inbäddade räknare som "Prova direkt". Sedan en sektion per
+ * grupp i src/lib/kalkyl/grupper.ts: fyra räknare eller färre som verktygskort
+ * med bild, två i rad från 1024 px; fler som den kompakta listan med namnet och
+ * svarets form. Sist stycket om källorna i en färgad yta.
  */
 import Bas from '../../layouts/Bas.astro';
-import { KALKYLATORER } from '../../lib/kalkyl/register';
-import { hittaPelare, PELARE } from '../../lib/pelare';
-import { verktygsillustration, verktygsVarumarkesbild } from '../../lib/verktygsbild';
-import Artikelkort from '../../components/ui/Artikelkort.astro';
+import { RAKNEGRUPPER } from '../../lib/kalkyl/grupper';
+import { hittaKalkylator, type Kalkylator as Raknare } from '../../lib/kalkyl/register';
+import Brodsmulor from '../../components/ui/Brodsmulor.astro';
+import Kalkylator from '../../components/ui/Kalkylator.astro';
+import Rubrikrad from '../../components/ui/Rubrikrad.astro';
+import Verktygskort from '../../components/ui/Verktygskort.astro';
 
-/**
- * Pelaren är den första i registrets lista. Elkostnadskalkylatorn hör hemma i
- * både El och energi och Fukt; etiketten visar den första, som registret har
- * ordnat efter var frågan oftast ställs.
- */
-const kort = KALKYLATORER.map((k) => {
-  const pelare = hittaPelare(k.pelare?.[0] ?? '') ?? PELARE[0];
-  return {
-    slug: k.slug,
-    etikett: `Räkna själv · ${pelare.kort}`,
-    rubrik: k.namn,
-    beskrivning: k.rad,
-    illustration: verktygsVarumarkesbild(k.slug) ?? verktygsillustration(k.slug),
-    pelare: pelare.slug,
-    href: `/rakna/${k.slug}/`,
-  };
-});
+const PROVA_ETIKETT = 'Prova en räknare'; // rakna.prova.etikett
+
+const brodsmulor = [{ namn: 'Hantverkstips', href: '/' }, { namn: 'Räkna själv' }];
+
+const grupper = RAKNEGRUPPER.map((g) => ({
+  ...g,
+  raknare: g.slugs.map((s) => {
+    const k = hittaKalkylator(s);
+    if (!k) throw new Error(`[rakna] Okänd räknare "${s}" i grupperna`);
+    return k;
+  }) as Raknare[],
+}));
 ---
 
 <Bas
   title="Räkna själv"
   description="Räkna ut hur mycket material du behöver, vad jobbet kostar och om du behöver bygglov. Varje tal har en källa, och svaret ligger kvar i länken."
-  brodsmulor={[{ namn: 'Hantverkstips', href: '/' }, { namn: 'Räkna själv' }]}
-  bred={true}
+  brodsmulor={brodsmulor}
+  galleri
+  brodsmulorIVy
 >
-  <div class="max-w-lasbredd">
-    <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">Räkna själv</h1>
-    <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
-      Här räknar du ut talet du behöver innan du köper material eller drar igång maskinen. Du fyller i dina egna
-      mått, och verktyget räknar på siffror jag kan peka ut varifrån de kommer. Svaret är ett spann att hålla sig
-      inom, för ingen tomt och inget hus är exakt som standardvärdena.
-    </p>
-  </div>
+  <section class="band">
+    <div
+      class="sidram grid grid-cols-1 items-center gap-8 pt-6 pb-8 lg:items-start lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:gap-12 lg:pt-10 lg:pb-11"
+    >
+      <div class="flex flex-col gap-4">
+        <Brodsmulor lista={brodsmulor} />
+        <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">Räkna själv</h1>
+        <p class="m-0 text-ingress lg:text-ingress-lg">
+          Här räknar du ut talet du behöver innan du köper material eller drar igång maskinen. Du fyller i dina egna
+          mått, och verktyget räknar på siffror jag kan peka ut varifrån de kommer. Svaret är ett spann att hålla sig
+          inom, för ingen tomt och inget hus är exakt som standardvärdena.
+        </p>
+        <div class="flex flex-wrap gap-2">
+          {
+            grupper.map((g) => (
+              <a class="chip bg-papper" href={`#${g.id}`}>
+                {g.rubrik} · {g.raknare.length}
+              </a>
+            ))
+          }
+        </div>
+      </div>
+      <Kalkylator namn="daggpunkt" etikett={PROVA_ETIKETT} blad visaSvar />
+    </div>
+  </section>
 
-  <ul class="kortrutnat m-0 mt-8 grid list-none grid-cols-1 gap-4 p-0 sm:grid-cols-2 lg:mt-10 lg:grid-cols-3 lg:gap-6">
-    {
-      kort.map((k) => (
-        <li>
-          <Artikelkort
-            etikett={k.etikett}
-            rubrik={k.rubrik}
-            beskrivning={k.beskrivning}
-            illustration={k.illustration}
-            pelare={k.pelare}
-            href={k.href}
-            rubrikniva={2}
-            visaPelare={false}
-          />
-        </li>
-      ))
-    }
-  </ul>
+  {
+    grupper.map((g) => (
+      <section class="sidram pt-12 lg:pt-14">
+        <Rubrikrad id={g.id} rubrik={g.rubrik} rad={g.rad} />
+        {g.raknare.length <= 4 ? (
+          <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-5">
+            {g.raknare.map((k) => (
+              <Verktygskort kalkylator={k.slug} variant="bild" iRutnat />
+            ))}
+          </div>
+        ) : (
+          <ul class="raknelista">
+            {g.raknare.map((k) => (
+              <li>
+                <a href={`/rakna/${k.slug}/`}>
+                  <span>{k.namn}</span>
+                  <span>{k.svar}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    ))
+  }
 
-  <p class="m-0 mt-8 max-w-lasbredd text-brod lg:mt-10 lg:text-brod-lg">
-    Varje verktyg visar var talen kommer ifrån. Under svaret står en tabell med en källa bakom varje tal, ett datablad
-    eller en myndighet, eller ordet antagande när jag har valt talet själv. När du har räknat ligger dina värden kvar
-    i webbläsarens adressfält, så du kan spara länken eller dela uträkningen med den som ska göra jobbet.
-  </p>
+  <section class="sidram py-12 lg:py-16">
+    <div class="yta p-6 lg:p-8">
+      <p class="m-0 max-w-lasbredd text-brod lg:text-brod-lg">
+        Varje verktyg visar var talen kommer ifrån. Under svaret står en tabell med en källa bakom varje tal, ett
+        datablad eller en myndighet, eller ordet antagande när jag har valt talet själv. När du har räknat ligger dina
+        värden kvar i webbläsarens adressfält, så du kan spara länken eller dela uträkningen med den som ska göra jobbet.
+      </p>
+    </div>
+  </section>
 </Bas>

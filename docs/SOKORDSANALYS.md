@@ -1124,7 +1124,21 @@ Ingen av de nya sidorna delar de tre första orden i title med en befintlig. Gr�
 5. **Hälften av långsvansen är tom och lukten är liten.** 151 fraser utan data, 170 på 10 eller 20. Lukt i huset, som såg stor ut i autocomplete, är 270. Tjänsteorden (besiktning, sanering, kontroll) är 50 till 400 och blir avsnitt, som fraslistan föreslog.
 6. **Två tidigare beslut ändras.** Hygrometern blir en egen sida (7.5 sa avsnitt), och `/fukt/mogel-i-kallaren/` stryks till förmån för en H2.
 
-## Källor
+## 13. Designlyftet och sökningen, 2026-10-02
+
+Christian har godkänt en ny form för alla sidor (`docs/briefer/spec-designlyft-a-2026-10-02.md`, `docs/DESIGN.md`). Tre frågor gällde sökningen, och här är besluten.
+
+1. **Sidfoten får kortas.** Sidfotslänkar räknas inte som inlänkar enligt våra regler (skillen seo-och-geo avsnitt 4), och Google väger dem lågt eftersom de står likadant på varje sida. Det som bär räknarna är `/rakna/`, länkarna i texterna och verktygskorten.
+   - Sidfoten ska ha tre räknare, en länk "Alla räknare" till `/rakna/`, fyra ämnen och fyra länkar om sajten.
+   - De tre räknarna väljs ur registret efter `sasong` för den aktuella månaden, med `/rakna/rotavdrag/` som reserv när färre än tre är i säsong. Valet görs i bygget.
+   - De fyra ämnena är de största pelarna: `/fukt/`, `/badrum/`, `/kok/` och `/tak/`. Ämnesraden i sidhuvudet länkar fortsatt till alla publicerade hubbar, och det är den som bär hubbarna.
+   - Villkor: varje räknare har minst två inlänkar från innehållsfiler, och `npm run kontrollera` ska inte varna för någon föräldralös räknare när sidfoten är kortad. UX kontrollerar det innan sidfoten byggs.
+2. **Toppmenyn får ingen post "Bäst i test" nu.** Ingen samlingssida finns, och båda kategorisidorna är granskningar på datablad. Ordet "test" får inte stå i deras title eller rubriker (affiliatebeslutet 2026-09-30), så en menypost som kallar dem "Bäst i test" vore en felaktig etikett och en signal som sidorna inte kan bära. Posten tas upp igen när `/verktyg/` har fem publicerade sidor. Då får den heta efter vad den leder till, till exempel "Verktyg och maskiner", och peka på hubben. `/amnen/` begärs aldrig för indexering och är ingen ersättning.
+3. **Bylinen överst och svarsytan som Kort svar godkänns**, på tre villkor:
+   - **Bylinen** visar både publiceringsdatum och uppdateringsdatum, med samma datum som `datePublished` och `dateModified` i Article-markupen, och namnet "Christian" länkar till författarsidan. Det är `Person`-signalen som tidigare låg i författarrutan.
+   - **På räknarna** ska svarsytan i standardläget, utan query, innehålla en mening i klartext med talet, villkoret och källan, renderad på servern. Det är stycket en AI lyfter, och utan den separata Kort svar-rutan får det inte bli bara ett tal.
+   - **Bilden som försvinner ur räknarens huvud** får inte ta med sig delningsbilden. `og:image` och förhandsbilden står kvar, och `WebApplication` ändras inte.
+
 
 Sökresultat och sidor lästa 2026-09-16. Volymer från `docs/data/keyword-stats-2026-09-16.csv` (Google Ads, Sverige, sep 2024 till aug 2026).
 

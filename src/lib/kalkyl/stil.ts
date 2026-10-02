@@ -17,8 +17,11 @@ export const VAL_KLASS = 'val';
 export const ETIKETT_KLASS = 'block mb-1 font-bold text-blyerts';
 export const HJALP_KLASS = 'm-0 mt-1 text-liten text-blyerts-2';
 export const FEL_KLASS = 'm-0 mt-1 text-liten text-varning';
-export const KNAPP_KLASS =
-  'inline-flex min-h-12 items-center rounded-md border-2 border-blyerts px-5 py-3 font-bold text-blyerts hover:bg-blyerts hover:text-papper';
+/**
+ * Räkna ut: fylld knapp, 52 px hög, hover blyerts enligt .knapp i global.css
+ * (docs/DESIGN.md avsnitt 6 Knapp; spec-designlyft-a-2026-10-02 12.2).
+ */
+export const KNAPP_KLASS = 'knapp knapp-fylld min-h-13';
 export const LANK_KLASS = 'lank';
 export const CELL_KLASS = 'border-b border-linje p-2 align-top text-blyerts';
 

@@ -1,8 +1,9 @@
 ---
 /**
- * Artikelkortet: ett urklipp med bild, etikett, rubrik, beskrivning och metarad.
- * Samma kort bär artiklar, tester, jämförelser och kategorisidor; det som skiljer
- * är vad som skickas in. Se docs/DESIGN.md avsnitt 6, Artikelkort.
+ * Artikelkortet: ett kort med bilden i en pappersruta, etikett, rubrik,
+ * beskrivning och metarad. Samma kort bär artiklar, tester, jämförelser och
+ * kategorisidor; det som skiljer är vad som skickas in. Se docs/DESIGN.md
+ * avsnitt 6, Artikelkort, och spec-designlyft-a-2026-10-02 avsnitt 4.1.
  *
  * Hela kortet är klickbart, men länken är rubriken (regeln "rubriken är länken").
  * Tekniken är .kortlank::after i global.css, inte en <a> runt allt: skärmläsaren
@@ -10,6 +11,8 @@
  *
  * Bilden är alltid en egen skiss eller ett eget foto. Kategorikortet har ingen
  * bild alls: det visar det blanka bladet med vårt val och antalet granskade.
+ * Typografin står i .artikelkort-text i global.css; det stora kortet lägger sina
+ * tillägg som verktyg, som vinner över komponentlagret.
  */
 import { Image } from 'astro:assets';
 import { formateraDatumKortMedAr } from '../../lib/format';
@@ -31,12 +34,18 @@ interface Props {
   meta?: string;
   href: string;
   variant?: 'standard' | 'stor';
-  /** Kort två och uppåt i startsidans rutnät: bild till vänster på mobil. */
+  /** Det stora kortets bild: halva bredden (startsidan) eller 1/2,4 (hubben). */
+  storBild?: 'halv' | 'smal';
+  /** Under 640 px pappersrutan som en ruta på 120 px till vänster, ingen beskrivning. */
   kompaktPaMobil?: boolean;
   /** Metaraden utan pelarnamn. Används på hubben, där alla kort har samma pelare. */
   visaPelare?: boolean;
+  /** Standard true. Startsidans fyra kort har ingen beskrivning. */
+  visaBeskrivning?: boolean;
+  /** Standard true. Hubbens grupper har ingen metarad. */
+  visaMeta?: boolean;
   rubrikniva?: 2 | 3;
-  /** Startsidans stora kort är LCP-bild och laddas inte lazy. */
+  /** Kortets bild är sidans LCP-bild och laddas inte lazy. */
   prioriterad?: boolean;
   /** Kategorikortets bildyta: vårt val och antalet granskade på det blanka bladet. */
   bladfakta?: { val?: string; antal?: number };
@@ -54,22 +63,20 @@ const {
   meta,
   href,
   variant = 'standard',
+  storBild = 'halv',
   kompaktPaMobil = false,
   visaPelare = true,
+  visaBeskrivning = true,
+  visaMeta = true,
   rubrikniva = 3,
   prioriterad = false,
   bladfakta,
 } = Astro.props;
 
 const Rubrik = rubrikniva === 2 ? 'h2' : 'h3';
-const rubrikklass = [
-  'm-0 mt-2 font-serif text-kortrubrik lg:text-kortrubrik-lg',
-  variant === 'stor' ? 'lg:text-kortrubrik-xl' : '',
-]
-  .join(' ')
-  .trim();
 const p = hittaPelare(pelare);
 const stor = variant === 'stor';
+const kompakt = kompaktPaMobil && !stor;
 
 const metadelar = [
   ...(visaPelare && p ? [p.kort] : []),
@@ -79,22 +86,18 @@ const metadelar = [
 // SVG kan inte skalas av bildtjänsten: med widths genereras bara kopior av samma
 // fil. Skisserna renderas därför som vanliga <img> med width och height.
 const svg = illustration?.format === 'svg';
+const laddning = prioriterad ? ('eager' as const) : ('lazy' as const);
 ---
 
 <article
   class:list={[
-    'artikelkort border border-linje rounded-sm bg-papper overflow-hidden',
-    kompaktPaMobil && 'flex-row sm:flex-col',
-    stor && 'lg:flex-row',
+    'artikelkort kort',
+    kompakt && 'artikelkort-kompakt',
+    stor && 'lg:grid',
+    stor && (storBild === 'smal' ? 'lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]' : 'lg:grid-cols-2'),
   ]}
 >
-  <div
-    class:list={[
-      'relative shrink-0 overflow-hidden',
-      kompaktPaMobil ? 'w-30 border-r border-linje sm:w-full sm:border-r-0 sm:border-b' : 'w-full border-b border-linje',
-      stor && 'lg:w-7/12 lg:self-stretch lg:border-r lg:border-b-0',
-    ]}
-  >
+  <div class:list={['pappersruta', stor && 'p-5 lg:flex lg:items-center lg:border-b-0 lg:border-r lg:border-linje']}>
     {
       illustration ? (
         svg ? (
@@ -103,13 +106,9 @@ const svg = illustration?.format === 'svg';
             alt={bildAlt}
             width={illustration.width}
             height={illustration.height}
-            loading={prioriterad ? 'eager' : 'lazy'}
+            loading={laddning}
             {...(prioriterad ? { fetchpriority: 'high' as const } : {})}
             decoding="async"
-            class:list={[
-              'block w-full aspect-[5/3] bg-papper',
-              stor ? 'object-contain lg:h-full lg:aspect-auto' : 'object-cover',
-            ]}
           />
         ) : (
           <Image
@@ -117,21 +116,12 @@ const svg = illustration?.format === 'svg';
             alt={bildAlt}
             widths={[375, 560, 760]}
             sizes="(min-width: 1024px) 380px, 100vw"
-            loading={prioriterad ? 'eager' : 'lazy'}
+            loading={laddning}
             decoding="async"
-            class:list={[
-              'block w-full aspect-[5/3] bg-papper',
-              stor ? 'object-contain lg:h-full lg:aspect-auto' : 'object-cover',
-            ]}
           />
         )
       ) : (
-        <div
-          class:list={[
-            'plats-blad flex aspect-[5/3] items-center justify-center p-3 text-center',
-            stor && 'lg:h-full lg:aspect-auto',
-          ]}
-        >
+        <div class:list={['plats-blad', stor && 'w-full']}>
           {bladfakta && (bladfakta.val || bladfakta.antal) ? (
             <div>
               {bladfakta.val && (
@@ -150,46 +140,28 @@ const svg = illustration?.format === 'svg';
               )}
             </div>
           ) : (
-            p && <Ikon namn={p.ikon} storlek={kompaktPaMobil ? 24 : 40} class="text-blyerts-2 sm:size-10" />
+            p && <Ikon namn={p.ikon} storlek={kompakt ? 24 : 40} class="text-blyerts-2 sm:size-10" />
           )}
         </div>
       )
     }
   </div>
 
-  <div
-    class:list={[
-      'flex min-w-0 flex-1 flex-col',
-      kompaktPaMobil ? 'p-3 sm:p-4 lg:p-6' : 'p-4 lg:p-6',
-      stor && 'lg:justify-center',
-    ]}
-  >
-    <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-blyerts">
+  <div class:list={['artikelkort-text', stor && 'lg:p-9 lg:justify-center']}>
+    <p class:list={[stor && 'text-penna']}>
       {etikett}{niva && ` · ${nivaEtikett(niva)}`}
     </p>
 
-    <Rubrik class={rubrikklass}>
+    <Rubrik class:list={[stor && 'text-h2 lg:text-kortrubrik-xl']}>
       <a href={href} class="kortlank">{rubrik}</a>
     </Rubrik>
 
     {
-      beskrivning && (
-        <p
-          class:list={[
-            'm-0 mt-2 text-brod text-blyerts-2 line-clamp-3',
-            kompaktPaMobil && 'hidden sm:block',
-            stor && 'lg:text-brod-lg lg:line-clamp-4',
-          ]}
-        >
-          {beskrivning}
-        </p>
+      visaBeskrivning && beskrivning && (
+        <p class:list={['artikelkort-beskr', stor && 'lg:text-ingress-lg line-clamp-none']}>{beskrivning}</p>
       )
     }
 
-    {
-      metadelar.length > 0 && (
-        <p class="m-0 mt-auto pt-3 text-liten text-blyerts-2">{metadelar.join(' · ')}</p>
-      )
-    }
+    {visaMeta && metadelar.length > 0 && <p class="artikelkort-meta">{metadelar.join(' · ')}</p>}
   </div>
 </article>

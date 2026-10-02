@@ -11,6 +11,12 @@ export interface Kalkylator {
   namn: string;
   rad: string;
   /**
+   * Svarets form i två till fyra ord, gemener, utan punkt: "inköpslista", "ja, nej
+   * eller anmälan". Står i räkna-indexets kompakta lista och i startsidans
+   * talkort när räknaren inte svarar med ett tal (src/lib/kalkyl/korttal.ts).
+   */
+  svar: string;
+  /**
    * Månad från och till, 1 till 12. Säsongen som kalkylatorn hör till, underlag
    * för chefredaktörens val av "Just nu" på startsidan. Startsidan läser inte
    * fältet själv sedan säsongsblocket togs bort 2026-09-16.
@@ -38,6 +44,7 @@ export interface Kalkylator {
 export const KALKYLATORER: Kalkylator[] = [
   {
     slug: 'daggpunkt',
+    svar: 'grader och mögelrisk', // register.daggpunkt.svar
     namn: 'Blir väggen våt? Räkna ut daggpunkten',
     rad: 'Temperaturen inne och hygrometerns tal räcker, och väggens temperatur gissar du ur en lista om du inte mätt. Svaret säger om det blir kondens eller mögel.',
     sasong: [11, 2],
@@ -46,6 +53,7 @@ export const KALKYLATORER: Kalkylator[] = [
   },
   {
     slug: 'avfuktare',
+    svar: 'liter per dygn', // register.avfuktare.svar
     namn: 'Hur stor avfuktare behöver du?',
     rad: 'Hur stor maskinen ska vara beror på rummets storlek och hur fuktigt det är. Här får du svaret i liter per dygn, och maskinerna som klarar det.',
     sasong: [8, 11],
@@ -54,6 +62,7 @@ export const KALKYLATORER: Kalkylator[] = [
   },
   {
     slug: 'elkostnad',
+    svar: 'kronor per månad', // register.elkostnad.svar
     namn: 'Vad kostar maskinen i el?',
     rad: 'Effekten, gångtiden och ditt elpris räcker för att se vad avfuktaren, värmefläkten eller frysen kostar per månad och år.',
     sasong: [10, 3],
@@ -61,6 +70,7 @@ export const KALKYLATORER: Kalkylator[] = [
   },
   {
     slug: 'u-varde',
+    svar: 'värmeförlust och besparing', // register.u-varde.svar
     namn: 'Beräkna U-värde och vad mer isolering sparar',
     rad: 'Fyll i vad vinden eller väggen består av, så ser du om den klarar Boverkets krav och hur många kronor om året du sparar genom att isolera mer.',
     /* Eldningssäsongen. "tilläggsisolera vind" toppar i februari enligt
@@ -71,6 +81,7 @@ export const KALKYLATORER: Kalkylator[] = [
   },
   {
     slug: 'innervagg',
+    svar: 'inköpslista', // register.innervagg.svar
     namn: 'Räkna reglar, gips och skruv till väggen',
     rad: 'Väggens längd och höjd räcker för en inköpslista med virke, skivor, skruv och ull, spillet inräknat.',
     sasong: [1, 12],
@@ -78,6 +89,7 @@ export const KALKYLATORER: Kalkylator[] = [
   },
   {
     slug: 'gipsplugg',
+    svar: 'plugg eller regel', // register.gipsplugg.svar
     namn: 'Vad håller i gipsväggen?',
     rad: 'Väg saken och säg hur tjock skivan är, så får du veta om en plugg räcker eller om den ska skruvas i regeln eller i en träbit bakom gipset.',
     sasong: [1, 12],
@@ -85,6 +97,7 @@ export const KALKYLATORER: Kalkylator[] = [
   },
   {
     slug: 'gipsskruv',
+    svar: 'längd och gänga', // register.gipsskruv.svar
     namn: 'Vilken gipsskruv ska du ha?',
     rad: 'Säg hur tjock skivan är, hur många lag du sätter och om regeln bakom är av trä eller stål. Svaret är en skruvlängd som går att köpa, med rätt gänga.',
     sasong: [1, 12],
@@ -92,6 +105,7 @@ export const KALKYLATORER: Kalkylator[] = [
   },
   {
     slug: 'kvadratmeter',
+    svar: 'färg, tapet eller golv', // register.kvadratmeter.svar
     namn: 'Räkna ut kvadratmeter och vad som går åt',
     rad: 'Rummets tre mått räcker. Du får kvadratmeter med dörren och fönstret avdragna, och hur mycket färg, tapet eller golv du ska köpa.',
     sasong: [1, 12],
@@ -99,6 +113,7 @@ export const KALKYLATORER: Kalkylator[] = [
   },
   {
     slug: 'bygglov-altan',
+    svar: 'lov eller grannens underskrift', // register.bygglov-altan.svar
     namn: 'Behöver altanen bygglov?',
     rad: 'Säg hur hög altanen är och hur nära huset och tomtgränsen den står. Svaret visar om den behöver bygglov eller grannens underskrift, med paragrafen bakom.',
     sasong: [2, 6],
@@ -106,6 +121,7 @@ export const KALKYLATORER: Kalkylator[] = [
   },
   {
     slug: 'grannemedgivande',
+    svar: 'svar och blankett', // register.grannemedgivande.svar
     namn: 'Behöver du grannemedgivande?', // bär "grannemedgivande"; ankartext i artiklarna
     rad: 'Se om grannen måste skriva under, och skriv ut ett färdigt medgivande.', // högst tolv ord, en mening med verb
     /* Byggsäsongen. "grannemedgivande" toppar i mars enligt
@@ -115,6 +131,7 @@ export const KALKYLATORER: Kalkylator[] = [
   },
   {
     slug: 'altan',
+    svar: 'virke och plintar', // register.altan.svar
     namn: 'Räkna trall, reglar och plintar',
     rad: 'Skriv in altanens mått, så får du en inköpslista med trall, reglar, plintar och skruv att ta med till bygghandeln.',
     sasong: [3, 6],
@@ -122,6 +139,7 @@ export const KALKYLATORER: Kalkylator[] = [
   },
   {
     slug: 'dranering',
+    svar: 'prisspann i kronor', // register.dranering.svar
     namn: 'Vad kostar det att dränera om huset?',
     rad: 'Räkna ut vad grävningen kostar för just din grund, och läs först om du behöver gräva över huvud taget.',
     /* Dräneringsjobb upphandlas på våren och utförs innan tjälen kommer, så
@@ -132,6 +150,7 @@ export const KALKYLATORER: Kalkylator[] = [
   },
   {
     slug: 'kallare',
+    svar: 'var fukten kommer ifrån', // register.kallare.svar
     namn: 'Gå igenom källaren själv och hitta fukten',
     rad: 'Beskriv vad du ser där nere, och jag säger om vattnet kommer ur marken, ur luften eller in genom en otäthet, och vad du gör åt det.',
     /* "fukt i källaren" toppar i september (880 sökningar) och bottnar i
@@ -144,6 +163,7 @@ export const KALKYLATORER: Kalkylator[] = [
   },
   {
     slug: 'rotavdrag',
+    svar: 'avdrag i kronor', // register.rotavdrag.svar
     namn: 'Hur mycket blir rotavdraget?',
     rad: 'Fyll i vad hantverkaren tar för själva jobbet, så ser du hur mycket som dras av och vad du betalar sedan.',
     /* Frågan ställs hela året, men toppen är december: det är dagen du betalar
@@ -161,6 +181,7 @@ export const KALKYLATORER: Kalkylator[] = [
   },
   {
     slug: 'trappa',
+    svar: 'mått på varje steg', // register.trappa.svar
     namn: 'Räkna steghöjd och stegdjup till trappan',
     rad: 'Du mäter våningshöjden, jag räknar ut stegen och säger till om något mått inte håller.',
     /* Innetrappan byggs när det är kallt ute och utetrappan innan hösten, och
@@ -170,6 +191,7 @@ export const KALKYLATORER: Kalkylator[] = [
   },
   {
     slug: 'mala-ute',
+    svar: 'när du ska sluta', // register.mala-ute.svar
     namn: 'Kan du måla ute i dag?',
     rad: 'Skriv in dagens väder och nattens prognos, så får du veta om färgen hinner torka före daggen och när du senast ska sluta.',
     sasong: [4, 10],
@@ -177,6 +199,7 @@ export const KALKYLATORER: Kalkylator[] = [
   },
   {
     slug: 'badrum-kostnad',
+    svar: 'pris post för post', // register.badrum-kostnad.svar
     /* Bär "renovera badrum" och "kostar"; ankartext i korten och hubben. */
     namn: 'Vad kostar det att renovera badrummet?',
     rad: 'Skriv in golvytan och hur påkostat det ska bli, så får du priset post för post, med arbete och material för sig, och vad du betalar efter rotavdraget.',
@@ -187,6 +210,7 @@ export const KALKYLATORER: Kalkylator[] = [
   },
   {
     slug: 'kok-kostnad',
+    svar: 'pris efter rotavdrag', // register.kok-kostnad.svar
     /* Bär "renovera kök" och "kostar"; ankartext i korten och hubben. */
     namn: 'Vad kostar det att renovera köket?',
     rad: 'Välj om luckorna, bänkskivan eller hela köket ska bytas, så får du priset med arbete och material för sig och ser vad rotavdraget drar av.',
@@ -197,6 +221,7 @@ export const KALKYLATORER: Kalkylator[] = [
   },
   {
     slug: 'takbyte',
+    svar: 'takyta och pris', // register.takbyte.svar
     /* Bär "byta tak" och "kostar"; ankartext i korten och hubben. */
     namn: 'Räkna ut vad det kostar att byta tak',
     rad: 'Skriv in husets mått och takvinkel, så räknar jag ut takytan och vad ett nytt tak kostar efter rotavdraget.',
@@ -206,6 +231,7 @@ export const KALKYLATORER: Kalkylator[] = [
   },
   {
     slug: 'takavvattning',
+    svar: 'rännor och stuprör', // register.takavvattning.svar
     /* Bär "takavvattning"; börjar inte med Hängrännor, som är guidens fras. */
     namn: 'Räkna ut takavvattningen för ditt tak',
     rad: 'Mät huset eller takfallet, så får du hängrännans bredd, stuprörets storlek och hur många rör och krokar som går åt.',
@@ -215,6 +241,7 @@ export const KALKYLATORER: Kalkylator[] = [
   },
   {
     slug: 'fasadyta',
+    svar: 'antal burkar färg', // register.fasadyta.svar
     /* Bär SEO:s fras; ankartext i guiden. */
     namn: 'Beräkna fasadyta och färg till huset',
     /* En mening med verb, som till en granne. */
@@ -226,6 +253,7 @@ export const KALKYLATORER: Kalkylator[] = [
   },
   {
     slug: 'kontrollplan',
+    svar: 'plan att skriva ut', // register.kontrollplan.svar
     /* Bär ordet kontrollplan; ankartext i artiklarna. */
     namn: 'Skriv ut en kontrollplan för ditt bygge',
     /* En mening med verb, högst tolv ord. */

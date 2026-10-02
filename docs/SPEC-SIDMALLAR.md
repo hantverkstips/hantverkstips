@@ -1,6 +1,6 @@
 # Teknisk spec: sidmallar och komponenter
 
-Skriven 2026-09-15 av teknisk ansvarig. Utvecklaren bygger mot det här dokumentet. Saknas något här, fråga innan du gissar. Designansvarig granskar det visuella mot `docs/DESIGN.md` (skrivs om för riktning 1, Anteckningsboken) och `docs/DESIGNRIKTNINGAR.md`; det här dokumentet styr struktur, props, data, tillstånd och felhantering.
+Skriven 2026-09-15 av teknisk ansvarig, omskriven i de delar designlyftet 2026-10-02 rör (avsnitt 0, 1, 2, 4.1, 4.2, 4.3, 4.6 och 4.7.0). Utvecklaren bygger mot det här dokumentet. Saknas något här, fråga innan du gissar. Designansvarig granskar det visuella mot `docs/DESIGN.md` (skrivs om för riktning 1, Anteckningsboken) och `docs/DESIGNRIKTNINGAR.md`; det här dokumentet styr struktur, props, data, tillstånd och felhantering.
 
 Allt i `src/components/ui/` och `src/components/vyer/` är Astro utan klient-JS. Inga `client:`-direktiv någonstans i det här uppdraget. Inga nya beroenden.
 
@@ -26,7 +26,9 @@ Det här finns redan och ska återanvändas, inte skrivas om:
 
 Verifierat i bygget 2026-09-15: MDX-komponenter som skickas via `components`-propen på `<Content>` fungerar utan import i innehållsfilen; `Astro.locals` som sätts i ruttens frontmatter når komponenter inne i `<Content>` vid förrendering; `render(entry).headings` ger H2-listan med `slug` och `text`.
 
-**Tokens.** Designansvarig har bytt tokens i `src/styles/global.css` till riktning 1 (kontrollerat 2026-09-15). Komponenterna byggs mot dessa namn och inga andra: färger `papper`, `papper-2`, `linje`, `blyerts`, `blyerts-2`, `penna`, `tumstock`, `ok`, `varning`, `vit`; typsnitt `font-serif` (Zilla Slab, rubriker och ordmärke), `font-sans` (Atkinson Hyperlegible, allt annat). `font-hand` (Caveat) finns som token men laddas inte som webbfont och används inte i komponenter. Det finns ingen hover-token: knappar och länkar ändrar inte färg vid hover, länkens understrykning går från 1 till 2 px. Vill designansvarig ha något annat läggs en token till i `global.css` först. Typskala, avstånd, radier och skugga enligt `global.css`. Bakgrunden är `papper`, aldrig vit; vit används bara bakom produktbilder och på knapptext.
+**Tokens och komponentklasser (2026-10-02).** Utöver färgerna nedan finns `ruta` (#faf6ec, pappersrutan och blockens papper), radierna `sm` (4 px), `md` (6 px) och `full`, skuggorna `kort`, `kort-hover`, `block` och `lyft`, och typstegen `text-h1-xl`, `text-kortrubrik-xl` (32 px) och `text-siffra-xl`. Kort, block, ytor, band, chips, knappar, symboler och steg byggs med komponentklasserna i `@layer components` (`.kort`, `.blad`, `.yta`, `.band`, `.sidram`, `.pappersruta`, `.chip`, `.chip-gul`, `.knapp`, `.knapp-fylld`, `.symbol`, `.steg`, `.rubrikrad`), aldrig med egna rader av verktyg; utseendet står i `docs/DESIGN.md` avsnitt 4 och 6 och värdena i `docs/briefer/spec-designlyft-a-2026-10-02.md` avsnitt 1.
+
+**Färger och typsnitt.** Komponenterna byggs mot de här namnen och inga andra: färger `papper`, `papper-2`, `ruta`, `linje`, `blyerts`, `blyerts-2`, `penna`, `tumstock`, `ok`, `varning`, `vit`; typsnitt `font-serif` (Zilla Slab, rubriker, ordmärke och stora tal), `font-sans` (Atkinson Hyperlegible, allt annat). `font-hand` (Caveat) finns som token för SVG-källorna men används aldrig i komponenter. Hover på knappar och chips ändrar färg enligt `docs/DESIGN.md` avsnitt 6 (Knapp, Chip); länkens understrykning går från 1 till 2 px. Vill UX och bygge ha något annat läggs en token till i `global.css` först. Bakgrunden är `papper`, aldrig vit; `vit` används bakom produktbilder och i formulärfält.
 
 ## 1. Layout: `src/layouts/Bas.astro`
 
@@ -39,6 +41,8 @@ interface Props {
   reklam?: boolean;              // visar Reklamband. Standard false
   brodsmulor?: Brodsmula[];      // från src/lib/innehall.ts. Utelämnas på startsidan
   bred?: boolean;                // main får max-w-sidbredd i stället för lasbredd. Kategori, jämförelse, kalkylator
+  galleri?: boolean;             // main utan bredd, marginal och luft: sidan bygger sektioner och band själv. Startsida, hub, räkna-index (2026-10-02)
+  brodsmulorIVy?: boolean;       // vyn renderar <Brodsmulor> själv; layouten skriver ändå BreadcrumbList
   noindex?: boolean;             // lägger noindex i robots-taggen. 404 och admin
   ogBild?: string;               // sökväg i public till sidans delningsbild. Utelämnad: /og-standard.png
   ogTyp?: 'website' | 'article'; // article på artiklar, tester och jämförelser, website på hubbar och verktyg
@@ -70,12 +74,13 @@ Skriptet är idempotent: en PNG skrivs om bara när innehållsfilen (och därmed
 2. Ingen inlinead ikonsprite sedan 2026-09-28. `Ikon.astro` importerar `ikoner.svg?url` och ritar `<use href={`${sprite}#ikon-${namn}`} />`; filen har `xmlns` och `<symbol id="ikon-...">` och serveras från `/_astro/` med hash. Ordmärket inlineas fortfarande, med kommentaren bortskalad vid bygget. Se `docs/briefer/spec-skal-budget-2026-09-28.md`.
 3. `<header>`, 56 px hög på mobil, 64 från `lg`, 1 px `linje` under. Innehåll i `max-w-sidbredd`:
    - Ordmärket som länk till `/`: `import ordmarke from '../assets/brand/riktning-1/ordmarke-inline.svg?raw'`, `set:html` inuti `<a href="/" class="ordmarke" aria-label="Hantverkstips, till startsidan">`. Filen finns (designansvarig lade till den 2026-09-15), saknar `xmlns` med avsikt och sätter färger och typsnitt via `var(--color-blyerts)`, `var(--color-penna)`, `var(--color-tumstock)` och `var(--font-serif)`, så den följer tokens automatiskt. CSS: `.ordmarke svg { height: 1.75rem; width: auto }` på mobil, `2rem` från `lg`. Ordmärket är den enda länken till startsidan i sidhuvudet.
+   - Ämnesraden i chips sedan 2026-10-02: länkarna i `.amnesrad` har chipens utseende via föräldraklassen (ingen klass per länk), `ul` har `gap-2 py-1`, och den aktuella pelaren (första segmentet i `Astro.url.pathname` lika med en publicerad hub) får `aria-current="page"` på hubben och `aria-current="true"` under den, med ytan `tumstock`.
    - Desktop (`hidden lg:flex`): `<nav aria-label="Sajtens sidor">` med de fasta sidorna i rad till höger: Guider `/guider/`, Räkna själv `/rakna/`, Om mig `/om/` och Kontakt `/om/kontakt/`. 15 px, `blyerts`, understrykning vid hover. Under den, i samma `<header>`, ämnesraden `<nav aria-label="Ämnen" class="hidden lg:block">` på `papper-2`: de publicerade hubbarna i `PELARE`-ordning med pelarikonen i 20 px och `kort`-namnet i 14 px, och sist "Alla ämnen" `/amnen/` mot högerkanten (`li.ml-auto`). Inget tak för antalet: `<ul>` har `flex-wrap`, så raden bryts till en andra rad när hubbarna inte ryms, aldrig sidledsrullning (2026-09-29). Listan byggs av `publicerade('pelare')`.
    - Mobil (`lg:hidden`): `<details class="meny">` med `<summary>` som visar `<Ikon namn="meny" />` och ordet "Meny" (text, inte bara ikon), 44 px hög. När öppen: en lista absolut positionerad under sidhuvudet, full bredd, bakgrund `papper`, `shadow-lyft`, 48 px per rad. Innehåll uppifrån: hubbarna med pelarikon och raden "Alla ämnen", sedan "Guider och tester" och "Räkna själv", sedan rubriken "Bäst i test" i etikett-stil följd av kategorisidorna (max fyra, från `publicerade('kategorier')`), sist "Så testar vi" och "Om Hantverkstips". Ingen JavaScript, `<details>` sköter öppna och stäng. `summary::marker` döljs.
 4. `<Reklamband />` om `reklam`.
 5. `<Brodsmulor lista={brodsmulor} />` om `brodsmulor` finns, inuti `main`:s bredd, ovanför slot.
-6. `<main id="innehall" tabindex="-1">` med `max-w-lasbredd` (eller `sidbredd` om `bred`), `px-4 sm:px-6 lg:px-8`, `py-8 lg:py-12`.
-7. `<footer>` bakgrund `blyerts`, text `papper`, 14 px. Ordmärket överst i `papper`: samma inline-SVG, och eftersom den läser `var(--color-blyerts)` räcker det att sidfotens `.ordmarke` sätter `style="--color-blyerts: var(--color-papper)"`; tumstocksgult och pennstrecket behålls. Fyra grupper, en spalt på mobil och fyra från `lg`, i ordning:
+6. `<main id="innehall" tabindex="-1">` med `max-w-lasbredd` (eller `sidbredd` om `bred`), `px-4 sm:px-6 lg:px-8`, `py-8 lg:py-12`. Med `galleri` bara `flex-1 w-full`.
+7. `<footer>` bakgrund `blyerts`, text `papper`, 14 px, `mt-12 lg:mt-24` (med `galleri` `mt-0`). Sedan 2026-10-02 fyra spalter från `lg`: varumärket (ordmärket, raden `sidfot.rad` i `text-linje`, "© {år} Hantverkstips" i `text-finstilt text-linje`), Ämnen (`/fukt/`, `/badrum/`, `/kok/`, `/tak/` när de är publicerade), Räkna själv (tre räknare med `iSasong` för `byggmanad()` i registerordning, påfyllt med `rotavdrag` och sedan registerordning, och "Alla räknare" till `/rakna/`) och Om sajten (Så testar jag, Så tjänar jag pengar, Kontakt, Integritet). SEO-beslut, `docs/SOKORDSANALYS.md` avsnitt 13. Listorna nedan i den här punkten gällde före 2026-10-02 och ersätts av det här stycket. Ordmärket i `papper`: samma inline-SVG, och eftersom den läser `var(--color-blyerts)` räcker det att sidfotens `.ordmarke` sätter `style="--color-blyerts: var(--color-papper)"`; tumstocksgult och pennstrecket behålls. Fyra grupper, en spalt på mobil och fyra från `lg`, i ordning:
    - **Ämnen**: alla publicerade hubbar, i `PELARE`-ordning, sist raderna "Alla ämnen" (`/amnen/`) och "Alla guider och tester" (`/guider/`). Data: `publicerade('pelare')` matchad mot `PELARE` för namn. En pelare utan publicerad hub listas inte.
    - **Bäst i test**: alla publicerade kategorier (`publicerade('kategorier')`), länk till `/[kategori]/` med `namn`.
    - **Räkna själv**: alla poster i `KALKYLATORER` (avsnitt 3.3), länk till `/rakna/[slug]/`.
@@ -99,50 +104,39 @@ interface Props { namn: IkonNamn; storlek?: number /* px, standard 24 */; class?
 
 Renderar `<svg width={storlek} height={storlek} aria-hidden="true" class={...}><use href={`#ikon-${namn}`} /></svg>`. Färgen kommer från `currentColor`. Ikonen är alltid dekorativ; texten bredvid bär betydelsen. Exportera `IkonNamn` från filen så att `pelare.ts` kan typas mot den.
 
-### 2.2 `Kopknapp.astro` (finns, justera utseendet)
+### 2.2 `Kopknapp.astro`
 
-Props och logik enligt filen. Utseende:
+Props och datalogik som förut: när `pris`, `prisDatum`, `butikNamn` och `lager` inte skickas in hämtar Kopknapp själv produktens billigaste erbjudande med `hamtaProdukt` och `billigasteErbjudande` och lagerläget med `lagerlage()` (ändrat 2026-09-30 på affiliates begäran: priset ska alltid ha datum). Modulen är `kort_kompakt` om inget annat anges. Saknas produkten eller erbjudandet blir texten "Se pris hos" plus butikens namn, med Proffsmagasinet som reserv.
 
-- Prisrad ovanför knappen: pris i `blyerts`, 600, tabellsiffror. Vid `slut`: "senast" i `blyerts-2` före priset.
-- Primär knapp: bakgrund `penna`, text `papper`, 16 px 600, `px-5 py-3`, minst 44 px hög, radie `md`, ingen ikon, ingen skugga, ingen färgändring vid hover (fokusringen och markören räcker tills designansvarig lagt till en hover-token). Filen använder redan tokennamnen ovan. Full bredd inuti kort på mobil (`w-full sm:w-auto` styrs av föräldern med en klass på wrappern, komponenten själv är `inline-block`).
-- Sekundär (`slut`): genomskinlig, 1,5 px ram `blyerts`, text `blyerts`.
-- Under knappen finstilt i `blyerts-2`: "Annonslänk · pris 12 sep". Utan pris bara "Annonslänk". Punkten är U+00B7.
-- Text: "Till Proffsmagasinet" med pris, "Se pris hos Proffsmagasinet" utan, "Slut i lager hos Proffsmagasinet" vid `slut`. `butikNamn` från databasen.
-
-Det som anropar Kopknapp (Produktkort, Jamforelsetabell, DetHarBehoverDu, vyerna) skickar `pris`, `prisDatum`, `butikNamn`, `slut` från `billigasteErbjudande()` i `produkter.ts`. Innehållsfiler skickar bara `produkt` och eventuellt `modul`. Ändrat 2026-09-30 på affiliates begäran (priset ska alltid ha datum): när `pris`, `prisDatum`, `butikNamn` och `lager` inte skickas in hämtar Kopknapp själv produktens billigaste erbjudande med `hamtaProdukt` och `billigasteErbjudande`, och lagerläget med `lagerlage()`, samma regler som korten. Modulen är då `kort_kompakt` om inget annat anges. Saknas produkten eller erbjudandet blir texten "Se pris hos" plus butikens namn, med Proffsmagasinet som reserv, aldrig ett tomt eller odefinierat namn.
+Utseendet sedan designlyftet (fas B, `docs/DESIGN.md` avsnitt 6, Köpknapp): knappen är `.knapp .knapp-fylld` med texten "Se pris hos {butik}", priset står bredvid knappen från 640 px och under den på mobil, i 19 px fetstil tabellsiffror, med raden "Annonslänk · pris {datum}" (och "· restnoterad" eller "· slut i lager") i 14 px blyerts-2 under priset. Slut i lager: `.knapp` (kontur), "Slut i lager hos {butik}", "senast" före priset. Pris saknas: ingen prisrad, "Annonslänk" utan datum. `rel="sponsored nofollow"`, `/go/[slug]` med `modul`, `sidtyp` och `position` som förut. Affiliateagenten godkänner knappen innan fas B är klar.
 
 ### 2.3 `Produktkort.astro`
 
 ```ts
 interface Props {
   produkt: string;                       // slug
-  variant?: 'kompakt' | 'full';          // standard kompakt
-  etikett?: string;                      // "Bäst till krypgrund". Redaktörens text
-  forVem?: string;                       // en rad, redaktörens text
-  modul?: KlickModul;                    // standard kort_kompakt respektive kort_full
-  rekommenderad?: boolean;               // bakgrund papper-2
+  etikett?: string;                      // "Kallt enkelgarage". Redaktörens text, renderas som .chip-gul
+  svaghet?: string;                      // en mening, redaktörens text
+  modul?: KlickModul;                    // standard kort_kompakt
+  rekommenderad?: boolean;               // ytan ruta
   visaTestlank?: boolean;                // standard true
 }
 ```
 
-Data: `await hamtaProdukt(produkt)` (avsnitt 3.1). Kategorifilen för produktens `kategoriSlug` via `getEntry('kategorier', slug)` ger `specs` och därmed nyckelvärdena. Testlänk: `publicerade('tester')` filtrerad på `data.produkt === slug`, första träffen ger `href` till `testUrl(entry)`.
+Fas B. Data: `await hamtaProdukt(produkt)` och kategorifilen via `getEntry('kategorier', kategoriSlug)`. De tre fakta kommer ur `src/lib/produktfakta.ts`, en karta kategori → tre `specs`-nycklar med etikett och formatering (luftavfuktare: lägsta arbetstemperatur, kapacitet med villkor, effekt; krysslaser: räckvidd, noggrannhet, lasrar). Testlänken som förut. "Räkna elkostnaden" står kvar under faktan när produkten har `effekt_w` (`produktForval()`, 4.7.3).
 
-Innehåll, i ordning: bild, etikett (om satt, `penna`, etikett-stil), H3 med `marke` och `modell` (eller `namn` om de saknas), `forVem`, nyckelvärden (de första fyra i kategorifilens `specs` som produkten har värde för, som `<dl>` med etikett och värde plus enhet, tabellsiffror), länken "Räkna elkostnaden", pris och köpknapp, länk "Läs testet" (sekundär stil, om test finns).
-
-"Räkna elkostnaden" kom till 2026-09-17 med elkostnadskalkylatorn. Den står under nyckelvärdena, som textlänk i `penna` med 44 px klickyta, och går till `/rakna/elkostnad/?produkt=[slug]`. Raden visas bara när produktens specs har `effekt_w`; utan effekt finns inget att räkna på. Villkoret läses med `produktForval()` ur avsnitt 4.7.3, så att ett tal som ligger som sträng i databasen behandlas likadant här och i kalkylatorn.
-
-Bild: 4:3-ruta, vit bakgrund, 1 px `linje`, radie `sm`, 8 px luft, `object-fit: contain`. Kompakt: 96 × 72 px till vänster om texten. Full: överst i kortets bredd på mobil, 40 procent till vänster från `lg`. Bilden renderas bara om `bildUrl` börjar med `/` (lokal fil under `public/bilder/produkter/`), med `<img width height loading="lazy" decoding="async">`; externa adresser hotlinkas inte och ger tillståndet "Bild saknas".
+Utseende enligt `docs/DESIGN.md` avsnitt 6, Produktkort: ett `.kort`, bildrutan `vit` 150 px till vänster från 640 px och 96 × 72 på mobil, `.chip-gul` med etiketten, namnet i Zilla Slab 24 px (H3), faktan tre i bredd, svagheten, Kopknapp. Varianterna `kompakt` och `full` slogs ihop till ett kort 2026-10-02; anropare som skickar `variant` och `forVem` uppdateras i fas B (`forVem` står kvar i kategorifilens `val` och används av sidospaltens produktlista).
 
 Tillstånd:
 
 | Tillstånd | Beteende |
 |---|---|
-| Normal | Ram `linje`, bakgrund `papper`, radie `md`, 16 px innermarginal (24 från `lg`) |
-| Rekommenderad | Bakgrund `papper-2` |
-| Bild saknas | Rutan i `papper-2` med `marke` (eller `namn`) i etikett-stil centrerat |
+| Normal | `.kort` |
+| Rekommenderad | Ytan `ruta` |
+| Bild saknas | Bildrutan med `marke` (eller `namn`) i etikett-stil centrerat |
 | Utan test | Länken utgår |
-| Slut i lager | `slut` skickas till Kopknapp när `lagerstatus` är `slut`. Kortet i övrigt oförändrat |
-| Databas saknas (`hamtaProdukt` ger null) | Kortet renderas som ram med texten `Produkt: {slug}` i etikett-stil och raden "Produktdata saknas i bygget" i `blyerts-2`. Ingen köpknapp. `console.warn` en gång per slug |
+| Slut i lager | `slut` till Kopknapp. Kortet i övrigt oförändrat |
+| Databas saknas | Kortet med `Produkt: {slug}` i etikett-stil och "Produktdata saknas i bygget" i `blyerts-2`. Ingen köpknapp. `console.warn` en gång per slug |
 
 ### 2.4 `Jamforelsetabell.astro`
 
@@ -163,22 +157,18 @@ Markup: `<div class="tabell-behallare">` med `overflow-x: auto`, före den en ra
 
 Bästa värdet: för specs med `bast` jämförs numeriska värden (`Number(v)`, `NaN` räknas inte); bästa cellen får `font-semibold text-ok`. Saknat värde skrivs "ej angivet" i `blyerts-2`. Enheter står bara i radrubriken. Prisraden utgår om ingen produkt har pris.
 
-### 2.5 `Faktaruta.astro`
+### 2.5 `Faktaruta.astro` och `Kortsvarstext.astro`
 
 ```ts
 interface Props {
   variant?: 'kortsvar' | 'fakta' | 'kopom';   // standard fakta
-  rubrik?: string;                            // H3-stil. kortsvar: standard "Kort svar"
+  rubrik?: string;                            // H3-stil. kortsvar: etiketten "Kort svar"
   kopOm?: string;                             // bara kopom
   kopInteOm?: string;                         // bara kopom
 }
 ```
 
-- `kortsvar`: 4 px `penna`-linje till vänster, ingen bakgrund, 16 px innermarginal. Enligt riktning 1 får rutan dessutom ett svagt linjerat mönster: bakgrund `url(monster.svg)` importerad via `?url`, bara om designansvarig bekräftar det i DESIGN.md. Bygg utan mönster först.
-- `fakta`: bakgrund `papper-2`, radie `md`, 16 px innermarginal (24 från `lg`).
-- `kopom`: som `fakta`, med två delar under etiketterna "Köp om" och "Köp inte om" (etikett-stil), staplade på mobil, två spalter från `lg`. Texten kommer från `kopOm` och `kopInteOm`, ett stycke var. Slot ignoreras.
-
-Innehåller aldrig köpknappar. Slot renderas som `<div class="prosa">` så att stycken och listor i MDX får rätt avstånd.
+Utseende sedan fas B (`docs/DESIGN.md` avsnitt 6, Faktaruta och Kort svar): `kortsvar` och `Kortsvarstext` är en färgad yta (`.yta`, 24/28 px innermarginal) med etiketten "Kort svar", första stycket i 19 px och följande i 17 px, och i en köpguide valen som `.chip-gul` sist; `fakta` är ett `.blad`; `kopom` är en `.yta` med två delar. Inget linjerat papper bakom Kort svar. Innehåller aldrig köpknappar. Slot renderas som `<div class="prosa">`.
 
 ### 2.6 `Varning.astro`
 
@@ -190,23 +180,17 @@ Innehåller aldrig köpknappar. Slot renderas som `<div class="prosa">` så att 
 interface Props { rubriker: { slug: string; text: string }[] }
 ```
 
-Anroparen filtrerar `headings` från `render()` på `depth === 2` och skickar dem, eller bygger listan själv (kategorisidan). Färre än tre poster: renderar ingenting.
+Anroparen filtrerar `headings` på `depth === 2`. Färre än tre poster: renderar ingenting. Två markupvarianter: `<details class="lg:hidden">` med `<summary>` "Innehåll, {n} avsnitt" i ett `.kort`, stängd, `<ol>` med 44 px per rad; och `<nav class="hidden lg:block" aria-label="Innehåll">` i ett `.kort` överst i sidospalten (fas B) med etiketten "Innehåll, {n} avsnitt" och listan i 15 px `blyerts` med en 1 px `linje` till vänster. Länkarna är `#${slug}`. Ingen aktiv rad. På pelarhubben används komponenten inte längre: chipsen i rubrikbandet tar dess plats (fas A).
 
-Två markupvarianter i samma komponent:
-- `<details class="lg:hidden">` med `<summary>` "Innehåll, {n} avsnitt", ram `linje`, radie `md`, stängd som standard. Öppnad: `<ol>` med 44 px per rad.
-- `<nav class="hidden lg:block" aria-label="Innehåll">` med rubriken "Innehåll" i etikett-stil och samma `<ol>`, 15 px `blyerts-2`. Anroparen placerar den i sidospalten med `sticky top-20`.
-
-Länkarna är `#${slug}`. Slugs från Astro innehåller å, ä, ö; det är tillåtet.
-
-### 2.8 `Forfattarruta.astro`
+### 2.8 `Byline.astro` (ersätter `Forfattarruta.astro` i fas B)
 
 ```ts
-interface Props { forfattare: string; publicerad?: Date; uppdaterad?: Date }
+interface Props { forfattare: string; publicerad?: Date; uppdaterad?: Date; minuter?: number }
 ```
 
-Data: `getEntry('forfattare', forfattare)`; saknas den används `redaktionen`; saknas även den renderas texten "Redaktionen" utan länk. 1 px `linje` ovanför, 24 px lodrätt. Foto 64 × 64 px, radie `sm`, via `<Image>` från `data.bild`; utan foto en kvadrat i `papper-2` med initialer (första bokstaven i varje ord i `namn`, max två) i etikett-stil. Namnet som länk till `/forfattare/[id]/`, 600. Rad två: `presentation`, eller om `sedan` finns "{yrke} sedan {sedan}. {presentation}". Rad tre i 14 px `blyerts-2`: "Publicerad {datum}" och ", uppdaterad {datum}" om den finns. Rad fyra: länk "Så testar vi" till `/om/sa-testar-vi/`.
+Fas B. Data: `getEntry('forfattare', forfattare)`, reserv `christian`. En rad i 15 px blyerts-2 under H1: `<Portratt storlek={40} />` (2.19), namnet som länk till `/forfattare/[id]/` i fetstil `blyerts`, "Publicerad {datum}", ", uppdaterad {datum}" när den finns, och " · {minuter} min" när `minuter` skickas. Vyn räknar `minuter` ur brödtextens råtext: ord delat på blanktecken, 200 ord per minut, avrundat uppåt, MDX-taggar och frontmatter bortskalade. `Forfattarruta.astro` tas bort när ingen vy använder den; `Article`-markupens författare är oförändrad. Datumen i bylinen är exakt samma värden som `datePublished` och `dateModified` (SEO-villkor 2026-10-02).
 
-### 2.9b `Artikelkort.astro`, `Artikelrutnat.astro` och `Kortgrupp.astro` (nya 2026-09-16)
+### 2.9b `Artikelkort.astro`, `Artikelrutnat.astro` och `Kortgrupp.astro`
 
 ```ts
 // Artikelkort
@@ -217,30 +201,31 @@ interface Props {
   beskrivning?: string;       // klipps till tre rader i CSS
   illustration?: ImageMetadata;  // SVG som <img>, raster via <Image>
   bildAlt?: string;           // standard "", bilden är dekorativ på ett kort
-  pelare: PelareSlug;         // placeholderns ikon och metaradens pelarnamn
+  pelare: PelareSlug;         // det tomma bladets ikon och metaradens pelarnamn
   datum?: Date;
   meta?: string;              // fri text i stället för datum: "13 granskade"
   href: string;
   variant?: 'standard' | 'stor';
-  kompaktPaMobil?: boolean;   // bild 120 × 72 till vänster under 640 px
+  storBild?: 'halv' | 'smal'; // stor: bilden 1/2 (startsidan) eller 1/2,4 (hubben)
+  kompaktPaMobil?: boolean;   // pappersrutan 120 px till vänster under 640 px
   visaPelare?: boolean;       // false på hubben, där alla kort har samma pelare
+  visaBeskrivning?: boolean;  // standard true; false på startsidans fyra
+  visaMeta?: boolean;         // standard true; false i hubbens grupper
   rubrikniva?: 2 | 3;         // standard 3
   prioriterad?: boolean;      // LCP-bild, ingen lazy
-  bladfakta?: { val?: string; antal?: number };  // kategorikortets bildyta
+  bladfakta?: { val?: string; antal?: number };  // kategorikortets blad
 }
 
 // Artikelrutnat
-interface Props { kort: KortData[]; storForsta?: boolean; kompaktPaMobil?: boolean; visaPelare?: boolean; prioriteraForsta?: boolean }
+interface Props { kort: KortData[]; kolumner?: 3 | 4; kompaktPaMobil?: boolean; visaPelare?: boolean; visaBeskrivning?: boolean; visaMeta?: boolean }
 
-// Kortgrupp (bara i en pelarhub)
-interface Props { grupp: 'hitta-felet' | 'valj-ratt' | 'gor-det-sjalv' | 'rakna' }
+// Kortgrupp (bara i PelarHub)
+interface Props { grupp: 'hitta-felet' | 'valj-ratt' | 'gor-det-sjalv' | 'rakna'; kort: KortData[]; kalkylatorer: string[] }
 ```
 
-`KortData` och mappningen från frontmatter ligger i `src/lib/kort.ts` (`tillKortArtikel`, `tillKortTest`, `tillKortJamforelse`, `tillKortKategori`, `allaKort`, `pelareForKategori`), så att startsidan, hubben, `/amnen/` och `/guider/` bygger sina kort på ett ställe. Tester och jämförelser saknar `pelare` i frontmatter och får den via kategorifilens `pelare[0]`.
+`KortData` och mappningen från frontmatter ligger i `src/lib/kort.ts` (`tillKortArtikel`, `tillKortTest`, `tillKortJamforelse`, `tillKortKategori`, `allaKort`, `pelareForKategori`, och sedan 2026-10-02 `hubGrupper(pelare)`, som gör hubbens urval på ett ställe), så att startsidan, hubben, `/amnen/` och `/guider/` bygger sina kort på ett ställe. Tester och jämförelser saknar `pelare` i frontmatter och får den via kategorifilens `pelare[0]`.
 
-`Kortgrupp` läser pelaren ur `Astro.locals.pelare`, som `src/pages/[rot]/index.astro` och `vyer/PelarHub.astro` sätter innan `<Content>` renderas. En prop går inte: taggen står i innehållsfilen. Saknad pelare eller okänd grupp ger byggfel, och `npm run kontrollera` stoppar en `<Kortgrupp>` i fel samling eller med okänt gruppnamn. En tom grupp renderar ingenting.
-
-Utseendet i sin helhet står i `docs/DESIGN.md` avsnitt 6, Artikelkort.
+Kortet är `<article class="artikelkort kort">` med bilden i en `.pappersruta` (2026-10-02). `Kortgrupp` är en ren renderare: för `rakna` Verktygskort i variant bild i två spalter från `lg`, annars `Artikelrutnat` med fyra kolumner när gruppen har fyra kort eller fler och annars tre, utan metarad. Det stora kortet renderas av anroparen själv (startsidans `justNu`, hubbens Börja här), inte av rutnätet. Utseendet i sin helhet står i `docs/DESIGN.md` avsnitt 6, Artikelkort.
 
 ### 2.9c `Filterrad.astro` och `Paginering.astro` (nya 2026-09-16)
 
@@ -253,23 +238,26 @@ Bara på `/guider/`. Inga knappar, ingen `<select>`, ingen JavaScript. `Pagineri
 
 ### 2.9 `Verktygskort.astro`
 
-`interface Props { kalkylator: string; iRutnat?: boolean }`. `iRutnat` tar bort kortets egen luft ovanför och under, så att det kan ligga i ett rutnät med samma ram och radie som artikelkorten. Slår upp i `KALKYLATORER` (avsnitt 3.3); okänd slug ger byggfel (`throw new Error`). Ett kort med ram: `<Ikon namn="kalkylator" />` och etiketten "Räkna själv" på samma rad i etikett-stil, rubriken (H3) som länk till `/rakna/[slug]/`, en rad (`rad`), länktexten "Till kalkylatorn" som en textlänk under. Inget diagram i fas 1. En sida får aldrig ha två verktygskort; det är en granskningsregel, inte något komponenten kontrollerar.
+`interface Props { kalkylator: string; variant?: 'bild' | 'tal' | 'text' | 'liten'; iRutnat?: boolean }`, standard `bild`. `iRutnat` tar bort kortets egen luft (`my-8`) i ett rutnät. Slår upp i `KALKYLATORER` (3.3); okänd slug ger byggfel. Roten är `.kort .vkort`, hela kortet är klickbart med `.kortlank` på namnets länk, och rubriken är ett `<p>` i kortrubrikens stil, eftersom kortet kan stå före sidans första H2.
 
-### 2.9d `Kalkylator.astro` (ny 2026-09-17)
+- `bild`: varumärkesbilden (`verktygsVarumarkesbild(slug) ?? verktygsillustration(slug)`) som `<img alt="" loading="lazy">` i 120/140 px till vänster, etiketten "Räkna själv · {pelarens korta namn}", namnet, `rad` och "Till räknaren" i `penna` som `<span aria-hidden="true">`. Brödtext, hubbens Räkna, räkna-indexet.
+- `tal`: utan bild; etiketten, namnet och talet ur `korttal(slug)` (2.21) i `text-siffra` med villkoret bredvid, eller registrets `svar` när talet saknas. Startsidan.
+- `text`: som `bild` utan bild. `/amnen/`, som har över trettio kort på en sida.
+- `liten`: bilden 72 px, etiketten och namnet. Sidospalten i artikel och kategorisida (fas B).
 
-`interface Props { namn: string }`, alltså kalkylatorns slug. Bäddar in verktygets riktiga formulär i en artikel i stället för att länka till det: `<Kalkylator namn="daggpunkt" />` i MDX ger etiketten "Räkna själv", kalkylatorns namn som länk till `/rakna/[slug]/`, raden ur registret, och formuläret i kompakt form med `action` till verktygssidan. Läsaren fyller i, trycker på knappen och landar på verktygssidan med sina värden i adressen och svaret uträknat. Ingen klient-JavaScript, ingen formel i komponenten.
+En sida får aldrig ha två; det är en granskningsregel, inte något komponenten kontrollerar.
 
-Formuläret kommer från `src/components/kalkyl/[Verktyg]Form.astro`, samma komponent som verktygssidan renderar, så att fälten aldrig hinner glida isär. Kalkylator sätter `idPrefix` (`daggpunkt-inbaddad-`), så att fältens id är unika även om sidan har ett annat formulär. Radioknapparna behåller sina namn (`fukt`, `temp`, `arstid`, `rum`); en radiogrupp hör till sitt formulär, inte till sidan.
+### 2.9d `Kalkylator.astro`
 
-Okänd slug ger byggfel som i Verktygskort, och en slug som finns i registret men saknar formulärkomponent ger ett eget byggfel som säger vad som fattas (listan `MED_FORMULAR` i komponenten). `npm run kontrollera` läser dessutom `<Kalkylator namn="...">` i alla innehållsfiler mot registret.
+`interface Props { namn: string; forval?: string; forst?: string; etikett?: string; blad?: boolean }`. Bäddar in räknarens riktiga formulär: `<Kalkylator namn="daggpunkt" />` i MDX ger etiketten, räknarens namn som länk till `/rakna/[slug]/`, formuläret i kompakt form med `action` till räknarsidan och fotraden. Ingen klient-JavaScript, ingen formel i komponenten. `forval` och `forst` som förut (se toppkommentaren i filen).
 
-Skillnaden mot Verktygskort: kortet är en hänvisning och ligger i rutnät och listor, Kalkylator är verktyget på plats och står en gång i en artikel, där läsaren just fått veta vad talet betyder.
+`etikett` (standard "Räkna själv") och `blad` kom till i fas A för räkna-indexets "Prova direkt": med `blad` är roten ett `.blad` med `p-5 lg:p-6` och etiketten i `penna`. I fas B blir `.blad` standard överallt (`docs/DESIGN.md` avsnitt 6, Inbäddad räknare): etiketten och namnet på en rad, formuläret, knappen "Räkna ut" som fylld knapp och fotraden; registrets `rad` står inte längre i den inbäddade räknaren.
+
+Formuläret kommer från `src/components/kalkyl/[Verktyg]Form.astro`, samma komponent som räknarsidan renderar. Kalkylator sätter `idPrefix` (`daggpunkt-inbaddad-`). Okänd slug, och en slug utan formulärkomponent (`MED_FORMULAR`), ger byggfel. `npm run kontrollera` läser `<Kalkylator namn="...">` i alla innehållsfiler mot registret.
 
 ### 2.10 `Amnesrad.astro`
 
-Inga props. Bara på startsidan. Data: `PELARE`, `hubPublicerad(slug)` per pelare, samt `publicerade('guider')` och `publicerade('kunskap')` för antalet sidor. Ett `<nav aria-label="Ämnen">` med en `<ul>` i två spalter, tre från `sm` och fyra från `lg`: ett kort per pelare, alla elva, i `PELARE`-ordning, 4 + 4 + 3 på desktop (en rad per grupp). Under `sm` spänner det sista kortet över båda spalterna när det står på en udda plats (`[&>li:last-child:nth-child(odd)]:col-span-2 sm:[&>li:last-child:nth-child(odd)]:col-span-1` på `<ul>`). Kortet är vänsterställt med `<Ikon namn={pelare.ikon} storlek={36} />` överst, en etikett i versaler, `PELARE.kort` i kortrubrik (Zilla Slab 600) och `PELARE.rad` i 14 px `blyerts-2`.
-
-Publicerad hub: kortet får klassen `artikelkort`, namnet är en `<a class="kortlank">` till `/[slug]/`, alltså samma ram, hover, fokus och klickyta som Artikelkort, och etiketten är antalet publicerade guider och kunskapsartiklar i pelaren ("4 sidor", "1 sida", ingen etikett vid noll). Utan hub: samma kort i `papper-2` med ikon och namn i `blyerts-2`, ingen länk, etiketten "Kommer". Under rutnätet länken "Alla ämnen" till `/amnen/`, högerställd. Ingen H2, ingen Pennstreck: raden är navigering, inte ett textblock. Utseendet står i `docs/DESIGN.md` avsnitt 5.1 och 6.
+Inga props. Bara på startsidan, under rubrikraden "Var sitter problemet?" som startsidan renderar (med länken "Alla ämnen"). Data: `PELARE`, `hubPublicerad(slug)` per pelare, och `publicerade('guider')` och `publicerade('kunskap')` för antalet sidor. Ett `<nav aria-label="Ämnen">` med en `<ul>` i två spalter, tre från `sm` och fyra från `lg`, ett kort per pelare i `PELARE`-ordning. Pelaren med flest sidor (första vid lika) står i `<li class="col-span-2">` med `.amneskort-stor`, så att elva kort blir tolv celler. Kortet: `.kort .artikelkort .amneskort` med `.symbol` (pelarikonen i 26 px), etiketten "{grupp} · {n} sidor" (för den största med tillägget ur textlistan), `pelare.namn` som `.kortlank` och `pelare.rad`. Utan hub: `.amneskort .amneskort-kommer`, ingen länk, etiketten "{grupp} · Kommer". Utseendet står i `docs/DESIGN.md` avsnitt 5.1 och 6.
 
 ### 2.11 `DetHarBehoverDu.astro`
 
@@ -284,11 +272,7 @@ H2 "Det här behöver du" via Pennstreck. H3 "Verktyg": en rad per post, `hamtaP
 
 ### 2.12 `Reklamband.astro`
 
-`interface Props { butikNamn?: string }`, standard "Proffsmagasinet" (rutten skickar `hamtaButik()?.namn`). Full bredd, bakgrund `papper-2`, 1 px `linje` under, 12 px lodrätt, text i läsbredd, 14 px `blyerts`. Text exakt:
-
-"Reklam. Sidan innehåller annonslänkar till {butikNamn}. Handlar du via dem får vi provision, priset för dig är detsamma. Så tjänar vi pengar."
-
-Sista meningen är länk till `/om/sa-tjanar-vi-pengar/`. Inte stängbar.
+`interface Props { butikNamn?: string }`, standard "Proffsmagasinet" (rutten skickar `hamtaButik()?.namn`). Formuleringen är fastställd i `docs/AFFILIATE.md` avsnitt 5 och står i komponenten; den ändras bara efter affiliateagentens beslut. Utseendet sedan fas B: ett smalt band i full bredd, `papper-2`, 1 px `linje` under, 10 px lodrätt, texten i sidbredd, 14 px `blyerts`, "Reklam." i fetstil först, och länken "Så tjänar jag pengar" till `/om/sa-tjanar-vi-pengar/` längst till höger från `lg` och sist i texten på mobil. Inte stängbar.
 
 ### 2.13 `Brodsmulor.astro`
 
@@ -311,6 +295,24 @@ Inga props. `<mark class="bg-tumstock/65 text-blyerts px-1 rounded-sm">` med slo
 `interface Props { kolumner: number; class?: string }`. Behållaren runt en handskriven tabell i en `.astro`-sida: ledtexten "Dra i sidled för att se hela tabellen" i `lg:hidden m-0 mb-2 text-liten text-blyerts-2` när `kolumner` är tre eller fler, sedan `.tabell-yta` runt `.tabell-behallare` runt slotten. Samma ord, samma klasser och samma yta som brödtabellerna i MDX får av hast-pluginet i `astro.config.mjs` och som `Jamforelsetabell` använder, alltså sidledsscroll i behållaren och den tonade högerkanten. Regeln står i `docs/historik-STILGUIDE-till-2026-09-20.md` och i `docs/DESIGN.md` avsnitt 6, Tabell i brödtext: raden står över varje tabell från tre kolumner, och bara på mobil.
 
 Skillnaden mot brödtabellerna är villkoret. Pluginet vet inte vad tabellen innehåller, så `global.css` räknar kolumnerna med `:has(.brodtabell tr > *:nth-child(3))`. Här vet anroparen antalet, så det är en prop: talet går att läsa i koden, och villkoret håller också i webbläsare utan `:has()`. Alla tolv antagandetabeller under `/rakna/` använder komponenten med `kolumner={3} class="mt-4"`, och nästa verktyg får raden genom att göra likadant.
+
+### 2.18 `Rubrikrad.astro` (ny 2026-10-02)
+
+`interface Props { id: string; rubrik: string; lank?: { text: string; href: string }; rad?: string }`. Sektionens rubrikrad på galleri­sidorna: `<Pennstreck id utanLuft>` till vänster och antingen länken längst till höger (`.rubrikrad`) eller raden i blyerts-2 direkt efter rubriken på samma baslinje (`.rubrikrad .rubrikrad-rad`). Bryts på mobil.
+
+### 2.19 `Portratt.astro` (ny 2026-10-02)
+
+`interface Props { storlek: 40 | 120 }`. Porträttplatsen: en rund `<span aria-hidden="true">` i `papper-2` med 1 px `linje` och `<Ikon namn="penna">` i 22 respektive 64 px. När ett foto av Christian finns byts ikonen mot fotot i samma cirkel (beslut då).
+
+### 2.20 `src/lib/sasong.ts` (ny 2026-10-02)
+
+`SASONG` (en post per månad: `fras`, `lank`, `href`, skrivna av hantverkaren), `byggmanad()` (månaden i Europe/Stockholm vid bygget), `manadsnamn(m)`, `iSasong(sasong, m)` (tål säsonger över årsskiftet, som `[11, 2]`) och `sasongsrad(m)`, som delar frasen kring länken och kastar fel när `lank` inte står i `fras`. Ingen Astro-import: `scripts/kontrollera-innehall.ts` läser `SASONG` och kontrollerar varje `href` som en intern länk. Startsidan byts vid första bygget i en ny månad.
+
+### 2.21 `src/lib/kalkyl/korttal.ts` och `src/lib/kalkyl/grupper.ts` (nya 2026-10-02)
+
+`korttal(slug): { tal: string; villkor: string } | undefined`: räknarens första stora tal vid standardvärdena, räknat med formelmodulens `STANDARD` och formaterat som räknarsidan formaterar det, och villkoret skrivet av hantverkaren. En räknare vars svar inte är ett tal har ingen post. Ändras en räknares standardvärden eller formatering ändras posten i samma ändring.
+
+`RAKNEGRUPPER`: räkna-indexets fem grupper (`fukt`, `el`, `kostnad`, `inne`, `ute`) med rubrik, rad och räknarnas slugs. Modulen kastar fel vid import om en räknare i registret saknas i grupperna, står i två, eller om en grupp nämner en okänd slug. En ny räknare läggs alltså i en grupp i samma ändring som i registret.
 
 ## 3. Datalager
 
@@ -460,20 +462,11 @@ Kategorisidans `<Content>` (4.2, punkt 6) står utanför: den renderar kategorif
 
 ### 4.1 `src/pages/index.astro`
 
-Data: `getEntry('sidor', 'startsida')` (H1 = `title`, stycket = `<Content />`), heroillustrationen som statisk import av `src/assets/illustrationer/start/hus-tumstock.svg`, `PELARE` med `hubPublicerad` per pelare (ämnesraden), "just nu" via `getEntry(justNu.samling, justNu.id)`, `publicerade('kategorier')` med `hamtaProdukt(val[0].produkt)` per kategori, de sex senaste av guider + kunskap + tester + jamforelser sorterade på `publicerad` fallande, `KALKYLATORER`.
+Data: `getEntry('sidor', 'startsida')` (H1 = `title`, stycket = `<Content />`), heron som statisk import av `src/assets/illustrationer/start/hus-tumstock.svg`, `SASONG` och `byggmanad()` (säsongsetiketten, säsongsraden och rubriken Börja här), `PELARE` (ämnesraden), `justNu` via `getEntry(justNu.samling, justNu.id)` med `arPublicerad`, `allaKort()`, `publicerade('kategorier')` med `kategoriVal()` per kategori (två val med pris och prisets datum), `KALKYLATORER` med `korttal()` och `iSasong()`.
 
-Block i ordning, enligt `docs/INNEHALLSARKITEKTUR.md` avsnitt 5 och `docs/DESIGN.md` avsnitt 5.1 (omskrivna 2026-09-16, säsongsblocket borttaget samma dag):
+Block i ordning enligt `docs/DESIGN.md` 5.1 (omgjord 2026-10-02, spec `docs/briefer/spec-designlyft-a-2026-10-02.md` avsnitt 6): heroblocket, Var sitter problemet (band, `<Amnesrad />`), Börja här (det stora kortet och fyra i rad), Granskat på datablad, Räkna själv (band, tre talkort och den kompakta listan), Så jobbar jag. `<Bas galleri>`: sidan bygger sina sektioner med `.sidram` och `.band`.
 
-1. Hero: ett rutnät i 12 kolumner i sidbredd, `items-center`, 48 px mellanrum från `lg`. Vänster 6/12: H1 i Zilla Slab och stycket från `startsida.mdx` i ingress-storlek, med länkarna i texten. Höger 6/12: illustrationen som `<img>` med `width` och `height` ur importen, `fetchpriority="high"`, `decoding="async"`, `alt=""`. Ingen ram, ingen bildtext, inget linjerat papper. Sidans LCP-bild. Mobil: en kolumn, H1, stycket, illustrationen.
-2. `<Amnesrad />` i sidbredd, direkt under heron (avsnitt 2.10). Ersatte "Börja här" 2026-09-16.
-3. Guider och tester: H2 via Pennstreck med länken "Alla guider och tester" på samma rad, sedan `<Artikelrutnat storForsta kompaktPaMobil />` med `justNu` först och de fyra senaste ur `allaKort()` efter, `justNu` bortfiltrerad på `href`. Utan `justNu` i frontmatter visas de fem senaste. Säsongen styrs genom `justNu`, inte genom ett eget block.
-4. Bäst i test just nu: H2. En rad per kategori ur `kategoriVal()`: kategorinamn (H3 som länk till `/[kategori]/`), "Vårt val" i etikett-stil med produktnamnet, pris via `formateraPris` och antalet granskade, länken "Alla vi granskat". Två spalter av rader från `lg`. Ingen köpknapp, ingen bild. Kategori vars produkt saknas i databasen visar raden utan pris. Inga kategorier: blocket utgår.
-5. Räkna själv: H2 och `<Verktygskort iRutnat />` per kalkylator i tre kolumner från `lg`, två från `sm`. Renderas när `KALKYLATORER.length > 0`.
-6. Så jobbar vi: H2 och två meningar med länkar till "Så testar vi" och "Så tjänar vi pengar", i läsbredd.
-
-`<title>` är "Hantverkstips, kunskap om huset från källaren till taket", samma mening som H1 utan H1:ans komma. Den står utskriven i rutten och byts när chefredaktören byter H1; `seoTitle` i frontmatter vinner över den.
-
-`reklam={false}`. Ingen `sidtyp`. Strukturerad data: `organisation()` i `<slot name="head">`. `bred={true}`.
+`<title>` är `seoTitle` ur `startsida.mdx`. `reklam={false}`, ingen `sidtyp`, inga köpknappar: Granskat-blockets rader är inte länkar till butiken. Strukturerad data: `organisation()` i `<slot name="head">`.
 
 ### 4.2 `src/pages/[rot]/index.astro` (pelarhub eller kategorisida)
 
@@ -497,27 +490,27 @@ export async function getStaticPaths() {
 
 Pelarslugs vinner alltid: en kategori får inte heta som en pelare, bygget stoppar. Rutten renderar `<PelarHub entry />` eller `<Kategorisida entry />`.
 
-**`vyer/PelarHub.astro`.** `sidtyp` sätts inte (inga knappar). `reklam={false}`, `bred={true}`. Brödsmulor: Hantverkstips / {kort}. H1 `title`, `description` visas inte (den är meta), `<Content components={{ h2: Pennstreck, Faktaruta, Varning, Verktygskort, Markering, Illustration, Kortgrupp }} />`. Rutten och vyn sätter `Astro.locals.pelare` innan innehållet renderas, så att `<Kortgrupp grupp="...">` i hubfilen vet vilken pelare den står i. Brödtexten hålls till läsbredd med en scoped regel på `.hub-prosa > p` med flera; kortrutnäten (`ul.kortrutnat`) undantas och fyller sidbredden. Sist H2 "Alla sidor i {kort}" med länken "Alla guider i {kort}" till `/guider/[pelare]/` på samma rad: alla publicerade guider och kunskap med `pelare === rot`, sorterade på titel och grupperade på nivå i tre spalter. Den listan är säkerheten mot föräldralösa sidor, korten ovanför är kartan. Kategorisidorna ligger numera som kategorikort i gruppen "Välj rätt", inte i en egen lista. Strukturerad data: `artikel()` med författare redaktionen.
+**`vyer/PelarHub.astro`.** Omgjord 2026-10-02 (`docs/DESIGN.md` 5.2, spec `docs/briefer/spec-designlyft-a-2026-10-02.md` avsnitt 7). `sidtyp` sätts inte (inga knappar). `reklam={false}`, `<Bas galleri brodsmulorIVy>`. Brödsmulor: Hantverkstips / {kort}. Data: `hubGrupper(slug)` ur `src/lib/kort.ts` (en gång, antalen räknas ur resultatet), hubfilens valfria `bild`, `borjaHar`, `lasordning` och `grannar`. Ordning: rubrikbandet (brödsmulor, etiketten "{grupp} · {n} sidor · {m} räknare", H1, ingressen, chips som ankare till grupperna, och till höger hubbens bild i ett `.blad` när det finns en), Börja här (`Rubrikrad` med länken till `/guider/[pelare]/` och ett `Artikelkort variant="stor" storBild="smal"`; kortet tas bort ur sin grupp), grupperna Hitta felet, Välj rätt och Gör det själv som sektioner med `Rubrikrad rad` och `<Kortgrupp>`, Räkna som band, sist Läs i ordning och Grannar när hubfilen har dem. En tom grupp visas inte, och inte heller dess chip. Hubbens bild är `bild` eller den nyaste illustrationen bland gruppernas kort utom Börja här. Strukturerad data: `artikel()` med författaren. `description` visas inte, och hubfilen har ingen brödtext.
 
-**Platsläge** (2026-09-30). Har pelaren ett register i `src/lib/plats.ts` (`PLATSER[slug]`) ersätts de fyra grupperna av en sektion per plats: `<Innehallsforteckning>` med platserna, sedan per plats `<Pennstreck id={plats.slug}>` och `<Platslista rader />`. Raderna byggs av guider, kunskap, `grannsidor` ur hubfilen, kategorier, jämförelser och räknare, var och en med sin `plats` (saknas: `hela-huset`), och ordnas av `ordnaEfterPlats()`. Utan register är vyn oförändrad. Hela specen: `docs/briefer/spec-fukthubb-plats-2026-09-30.md`.
+**Hubfilens valfria fält** (2026-10-02, `src/content.config.ts`): `bild` (image), `borjaHar` (`{ samling: 'guider' | 'kunskap', id }`), `lasordning` (`{ rubrik, steg: { text, href }[] }`, två till fem steg) och `grannar` (`{ text, href }[]`, två till fyra). `npm run kontrollera` stoppar en `borjaHar` som saknas, är utkast eller hör till en annan pelare, och en `href` som leder ingenstans. Texterna i `lasordning` och `grannar` skrivs av hantverkaren, urvalet av SEO och GEO-agenten.
 
-**`vyer/Kategorisida.astro`.** `Astro.locals.sidtyp = 'kategori'`. `reklam={true}`. `bred={true}`. Data: `produkterIKategori(entry.id)`, `publicerade('tester')` filtrerade på `kategori === entry.id`, guider + kunskap + jamforelser med samma `kategori`, `hamtaButik()`. Brödsmulor: Hantverkstips / {namn}. Ordning:
+**Platsläge** (2026-09-30, klädsel 2026-10-02). Har pelaren ett register i `src/lib/plats.ts` (`PLATSER[slug]`) ersätts grupperna av en sektion per plats med `Rubrikrad` (platsens namn) och `<Platslista rader />` i ett `.kort`, och rubrikbandets chips leder till platserna i stället för till grupperna; innehållsförteckningen utgår. Börja här står kvar. Raderna byggs av guider, kunskap, `grannsidor` ur hubfilen, kategorier, jämförelser och räknare, var och en med sin `plats` (saknas: `hela-huset`), och ordnas av `ordnaEfterPlats()`. Hela specen: `docs/briefer/spec-fukthubb-plats-2026-09-30.md`.
 
-1. H1 `title`, ingress `ingress`, meta i 14 px `blyerts-2`: "Uppdaterad {datum} · Av {författarnamn} · {n} produkter jämförda" där n är antalet produkter från databasen.
-2. Våra val: block i `papper-2` kant till kant på mobil, H2 "Våra val". Ett `Produktkort` (kompakt) per post i `val`, med `etikett`, `forVem`, `modul="varaval"`, `rekommenderad`. Staplade på mobil, tre lika i rad från `lg`. Tom `val` eller databas saknas: blocket utgår.
-3. `<Innehallsforteckning rubriker={...} />` byggd av vyn: "Jämförelse", en post per produkt (namn), "Så väljer du", "Så testade vi", plus H2 från kategorifilens body via `render()`. Alla H2 som vyn själv renderar får `id` av `slugify` i `innehall.ts` (lägg till: gemener, å→a, ä→a, ö→o, mellanslag→bindestreck).
-4. H2 "Jämförelse" (Pennstreck) och `<Jamforelsetabell produkter={alla slugs} kategori={entry.id} rekommenderade={val.map(v => v.produkt)} etiketter={...} />`.
-5. Per produkt som har ett test eller står i `val`, i tabellens ordning: H2 (Pennstreck) med namnet, `Produktkort variant="full"` med `rekommenderad` om den finns i `val`, sedan om produkten har ett test: `omdome` som stycke, `<Faktaruta variant="kopom" kopOm kopInteOm />`, länk "Läs hela testet", och en avslutande Kopknapp med `modul="avslut"`. 48 px mellan produkter (64 från `lg`) och 1 px `linje`. Övriga produkter står bara i jämförelsetabellen, med köpknappen i prisraden. Ändrat 2026-09-30 (`docs/briefer/spec-kategorisida-produkter-2026-09-30.md`): varje produkt kostade omkring 2,3 kB, och `/luftavfuktare/` gick över 66 kB vid 15 produkter. Sidans storlek ska inte växa med ett fullt kort för varje maskin som läggs i databasen för en guides skull.
-6. `<Content components={{ h2: Pennstreck, Faktaruta, Varning, Markering }} />` (kategorifilens "Så väljer du" och "Så testade vi").
-7. `<Verktygskort kalkylator={kalkylator} />` om fältet finns.
-8. H2 "Fler guider och tester om {namn}": lista med etikett och länk för allt med samma `kategori`. Tomt: utgår.
-9. `<Forfattarruta forfattare={forfattare} uppdaterad={uppdaterad} />`.
+**`vyer/Kategorisida.astro`.** `Astro.locals.sidtyp = 'kategori'`. `reklam={true}`. `bred={true}`. Data: `produkterIKategori(entry.id)`, `publicerade('tester')` filtrerade på `kategori === entry.id`, guider + kunskap + jamforelser med samma `kategori`, `hamtaButik()`. Brödsmulor: Hantverkstips / {namn}. Formen sedan fas B är artikelmallens (`docs/DESIGN.md` 5.6); ordningen:
+
+1. Huvudet: brödsmulorna, etiketten "Bäst i test · {n} granskade" i `penna`, H1 `title`, ingressen och `<Byline>` med `uppdaterad`.
+2. Valen: ett `.band` med H2 och ett `Produktkort` per post i `val`, med `etikett`, `svaghet`, `modul="varaval"` och `rekommenderad`. Staplade på mobil, i rad från `lg`. Tom `val` eller databas saknas: bandet utgår.
+3. H2 "Jämförelse" och `<Jamforelsetabell produkter={alla slugs} kategori={entry.id} rekommenderade={val.map(v => v.produkt)} etiketter={...} />` i sidbredd.
+4. Spalterna från `lg` (som artikeln): i textspalten per produkt som har ett test eller står i `val`, i tabellens ordning, H2 med namnet, `Produktkort`, `omdome` som stycke, `<Faktaruta variant="kopom">`, länken till testet och en avslutande Kopknapp med `modul="avslut"`; sedan `<Content components={{ h2: Pennstreck, Faktaruta, Varning, Markering }} />` (Så väljer du, Så testade jag) och Vanliga frågor. I sidospalten `<Innehallsforteckning>` (byggd av vyn: Jämförelse, en post per produkt, Så väljer du, Så testade jag, plus kategorifilens H2), `<Verktygskort variant="liten">` när `kalkylator` finns, och Så jobbar jag-rutan.
+5. Ett `.band` med H2 "Fler guider och tester om {namn}" och Artikelkort för allt med samma `kategori`. Tomt: utgår.
+
+Alla H2 som vyn själv renderar får `id` av `slugify` i `innehall.ts`. Författarrutan utgår; bylinen bär författaren. Varje produkt kostar omkring 2,3 kB, och bara produkter med test eller val får ett avsnitt (`docs/briefer/spec-kategorisida-produkter-2026-09-30.md`).
 
 Strukturerad data: `kategori()` i `src/lib/strukturdata.ts` med produkterna i tabellordning. Varje `ListItem` bär ett helt `Product` (`name`, `brand`, `sku`, `image` när `lokalBild()` ger en lokal fil, `url` = testsidan om test finns, annars kategorisidan med `#`-ankare till produktens H2 när den har en, och till `#jamforelse` när den bara står i tabellen) och ett `Offer` med `price` = lägsta pris, `priceCurrency: "SEK"`, `availability` ur `arSlut()` och `url` = samma sida som produktens. Ändrat 2026-09-17 från `lista()`, som bara gav namn och länk och därmed inget om det sidan faktiskt visar: pris, lager och köpknapp.
 
 Två saker är avsiktliga. `offers.url` pekar aldrig på `/go/[slug]`: Google vill ha adressen där erbjudandet visas för läsaren, och `/go/` är en vidarebefordran med `rel="sponsored nofollow"` som varken renderar pris eller produktnamn. Och pris och lagerstatus läses ur `lagstaPris()`, `billigasteErbjudande()` och `arSlut()`, alltså samma funktioner som `Kopknapp` och `produkt()`, så att sidan och markupen aldrig kan säga olika. En produkt utan pris får inget `offers`; då saknar dess `Product` det Google kräver för ett rikt resultat, vilket är rätt läge, eftersom alternativet vore ett påhittat pris.
 
-Desktop: innehåll i läsbredd centrerat i `sidbredd`, innehållsförteckningen i höger spalt från `lg` (`lg:grid lg:grid-cols-[minmax(0,44rem)_16rem] lg:gap-12`). Våra val och tabellen bryter till full `sidbredd` (`lg:col-span-2`).
+Desktop: huvudet, valen och tabellen i sidbredd; därunder rutnätet `lg:grid-cols-[minmax(0,44rem)_300px] lg:gap-12` med sidospalten `sticky top-6`, centrerat i sidbredden.
 
 ### 4.3 `src/pages/[rot]/[slug].astro` (artikel)
 
@@ -538,21 +531,18 @@ export async function getStaticPaths() {
 
 Rutten sätter `Astro.locals.sidtyp` från `typ`: `kopguide` → `guide`, `problemguide` → `problemguide`, `projektguide` → `projektguide`, `kunskap` → `kunskap` (sedan 2026-09-16, för knapparna i "Produkterna vi nämner"). Renderar `<Artikel entry />`.
 
-**`vyer/Artikel.astro`.** Ordning, gemensam:
+**`vyer/Artikel.astro`.** Formen sedan fas B (`docs/DESIGN.md` 5.3). Ordning, gemensam:
 
-1. Brödsmulor via `brodsmulorForArtikel(entry)`.
-2. Etikett (`typEtikett(typ)`) i etikett-stil, H1 `title`, ingress = `description`? Nej: ingressen är det första stycket i brödtexten och skrivs av skribenten, mallen visar inte `description`. Meta: "Publicerad {datum}" (", uppdaterad {datum}"), "Av {namn}".
-3. `<Content components={komponenter} />` där `komponenter` beror på typ (4.0 och tabellen nedan). Skribenten lägger `<Faktaruta variant="kortsvar">` överst själv; mallen tvingar inte.
-4. Bild: om `bild` finns, `<Image src={bild} alt={bildtext ?? ''} widths={[375, 704]} sizes="(min-width: 1024px) 704px, 100vw" />` med `<figcaption>`. Placeringen "under Kort svar" löses så: vyn renderar bilden före `<Content>` om innehållet inte börjar med en Faktaruta, annars direkt efter första H2:s föregångare... det kräver att vyn läser MDX-trädet, vilket vi inte gör. Beslut: bilden renderas av vyn direkt efter metaraden, före `<Content>`. Skribenten skriver "Kort svar" som första element i brödtexten och bilden hamnar då ovanför det. Designansvarig får avgöra om det håller; alternativet är att skribenten placerar bilden själv med `![]()` i MDX, och då utelämnas `bild` i frontmatter.
-5. `<Innehallsforteckning rubriker={headings depth 2} />` mellan bild och innehåll; på desktop i höger spalt.
-6. Typspecifika block efter innehållet (tabell).
-7. Källor: H2 "Källor" (Pennstreck) och `<ol>` från `kallor` med länk om `url` finns. Tom: utgår.
-8. Relaterat: H2 "Läs vidare", tre till fyra länkar: kategorisidan om `kategori` finns, huben, och de två senaste andra artiklarna i samma pelare. Färre än två: utgår.
-9. `<Forfattarruta forfattare publicerad uppdaterad />`.
+1. Huvudet i sidbredd: brödsmulorna via `brodsmulorForArtikel(entry)`, etiketten "{typEtikett(typ)} · {nivå} · {pelarens korta namn}" i `penna`, H1 `title` och `<Byline forfattare publicerad uppdaterad minuter />`. Ingressen är brödtextens första stycke; mallen visar inte `description`.
+2. Rutnätet `lg:grid-cols-[minmax(0,44rem)_300px] lg:gap-12`. Textspalten: huvudbilden när `bild` finns, som `<figure class="kort">` med bilden i en `.pappersruta` (`p-5`) och `bildtext` som `<figcaption>` i 14 px blyerts-2 (från `lg` före Kort svar, under `lg` efter, med `order`); `<Kortsvarstext>` om `kortSvar` finns; `<Innehallsforteckning>`s mobilvariant; `<Content components={komponenter} />`; de typspecifika blocken (tabellen nedan); Vanliga frågor; Källor som H2 i 22 px utan pennstreck och en `<ol>` från `kallor` med länk när `url` finns.
+3. Sidospalten (`sticky top-6`, under texten på mobil): `<Innehallsforteckning>`s desktopvariant, "Produkterna jag nämner" som ett `.kort` när sidan har produkter (rader med namn, `forVem` och pris, ankarlänk till produktens kort; raden "Annonslänkar. Priser lästa {datum}."), `<Verktygskort variant="liten">` när artikeln inte bäddar in samma räknare, och Så jobbar jag-rutan (`.yta` utan ram, etiketten, en mening, länken till `/om/sa-testar-vi/`).
+4. Läs vidare som `.band`: H2 och tre Artikelkort (kategorisidan om `kategori` finns, sedan de senaste andra artiklarna i samma pelare). Färre än två: utgår.
+
+Författarrutan utgår (2.8).
 
 | Typ | `sidtyp` | `reklam` | Komponenter till `<Content>` | Block efter innehållet |
 |---|---|---|---|---|
-| kopguide | guide | alltid true | produktuppsättningen (4.0) | H2 "Produkterna vi nämner": ett kompakt Produktkort per post i `produkter` med `forVem` och `etikett`, `modul="avslut"`. Tom lista: utgår |
+| kopguide | guide | alltid true | produktuppsättningen (4.0) | H2 "Produkterna jag nämner": ett Produktkort per post i `produkter` med `forVem` och `etikett`, `modul="avslut"`. Tom lista: utgår |
 | problemguide | problemguide | `produkter.length > 0` | samma som kopguide | inget. Produkten står i texten där diagnosen pekar på den |
 | projektguide | projektguide | `behover?.verktyg.length > 0 || produkter.length > 0` | samma som kopguide | `<DetHarBehoverDu verktyg material />` från `behover` |
 | kunskap | kunskap | `produkter.length > 0` | basuppsättningen (4.0) | H2 "Produkterna vi nämner" som i köpguiden när `produkter` inte är tom ("en produkt per typ, sist", DESIGN 5.3). Tom lista: inget, och inget reklamband |
@@ -561,7 +551,7 @@ Kunskap får inte `Kopknapp` eller `Produktkort` i brödtexten; skriver en inneh
 
 Strukturerad data: `artikel()` med `url = artikelUrl(entry)`, författarnamn från `forfattare`-samlingen, `bildUrl` om bild finns (absolut adress från `<Image>`-resultatet eller `bild.src`).
 
-Desktop: samma tvåspaltsgrid som kategorisidan. Innehåll i läsbredd, tabeller och diagram får `lg:col-span-2`.
+Desktop: från `lg` två spalter, texten i läsbredd och sidospalten 300 px, 48 px emellan, centrerade i sidbredden. Tabeller får växa ut i mellanrummet (`max-width: calc(100% + 3rem)`), aldrig över sidospalten.
 
 ### 4.4 `src/pages/tester/[slug].astro`
 
@@ -587,9 +577,7 @@ Strukturerad data: `produkt()` med `etikett`, och `brodsmulor` via layouten. Om 
 
 ### 4.6 `src/pages/rakna/index.astro`
 
-Statisk. Brödsmulor: Hantverkstips / Räkna själv. `reklam={false}`. `bred={true}`, med H1, ingress och det avslutande stycket i `max-w-lasbredd` som pelarhubben gör, så att texten och rutnätet får samma vänsterkant.
-
-**Galleri sedan 2026-09-17.** H1 "Räkna själv", ingress, sedan ett rutnät med ett `<Artikelkort>` per post i `KALKYLATORER`, i registrets ordning. Samma rutnät som `/guider/`: tre kolumner från 1024 px, två från 640, en under. Fem verktyg blir en rad om tre och en om två. Kortet får `etikett` "Räkna själv · {pelarens korta namn}" (pelaren är den första i registrets lista, uppslagen med `hittaPelare()`), `rubrik` = `namn` som länk till `/rakna/[slug]/`, `beskrivning` = `rad`, `rubrikniva={2}` och `visaPelare={false}`, eftersom pelaren redan står i etiketten och ett verktyg saknar datum. Ingen ny kortkomponent: `<Artikelkort>` tar precis de props galleriet behöver. Under rutnätet ett stycke om att varje verktyg redovisar källan per tal och att resultatet ligger kvar i adressen och går att dela.
+Statisk. `<Bas galleri brodsmulorIVy>`, brödsmulor Hantverkstips / Räkna själv, `reklam={false}`. Omgjord 2026-10-02 (`docs/DESIGN.md` 5.8.1, spec fas A avsnitt 8): rubrikbandet med brödsmulor, H1, ingress och chips till grupperna, och till höger `<Kalkylator namn="daggpunkt" etikett="…" blad />`; sedan en sektion per grupp i `RAKNEGRUPPER`, med Verktygskort i variant bild när gruppen har fyra räknare eller färre och den kompakta listan (namn och `svar`) när den har fler; sist det avslutande stycket i en `.yta`. Title, description, H1, ingress och stycket är oförändrade.
 
 ### 4.7 Kalkylatorsidorna under `/rakna/`
 
@@ -621,6 +609,30 @@ Slug, verktygsnamn och beskrivning står som `SLUG`, `VERKTYGSNAMN` och `BESKRIV
 Produkter visas bara när räkningen faktiskt pekar ut en produktegenskap. Gör den inte det, som daggpunkten, har sidan varken produktkort eller reklamband (`reklam={false}`), utan länkar vidare till kalkylatorn eller artikeln som tar vid.
 
 **Resultatspalten bär svaret, 2026-09-19.** Spalten på det linjerade papperet innehåller beskedet, det stora talet med sina rader och länkarna, alltså "Så räknar vi" och den delbara adressen. Regler med källa och "Gör inte det här" står inte i spalten utan som egna H2 direkt under verktyget, och spalten pekar dit med en rad. Skälet är att en läsare som just fått ett svar läser talet, inte en spalt med femton motiveringar bredvid formuläret. Dränering är först ut, källaren byggdes direkt så, och bygglov-altan, måla-ute och gipsplugg är ombyggda 2026-09-19. Christians beslut efter att ha läst spalten live. Bara formuleringarnas plats ändras, aldrig orden; testskripten låser texterna men inte placeringen. Spalten vid standardvärdena, före och efter: dränering 3 606 till 989, bygglov-altan 1 496 till 441, måla-ute 2 522 till 695 och gipsplugg 1 413 till 1 282 tecken. Gipsplugg behåller mest, eftersom infästningstabellen på elva rader är själva svaret där; den sidan har bara "Gör inte det här" under verktyget och ingen regellista att flytta, och tabellens ledtext lägger till trettioåtta tecken som bara syns på mobil.
+
+#### 4.7.0 Räknarmallen (2026-10-02, byggs i fas C)
+
+Alla 22 räknarsidor byggs av en delad layout, `src/components/vyer/Raknarsida.astro`, så att varje sida bara bär sina fält, sitt svar och sin text. Formen står i `docs/DESIGN.md` 5.8; där den skiljer sig från markupbeskrivningarna i 4.7.1 till 4.7.14 gäller den här. Layouten tar namngivna slottar och props, preliminärt (fas C:s spec fastställer dem efter daggpunkten, som byggs först som förebild):
+
+```ts
+interface Props {
+  slug: string;                 // ger etiketten, namnet, brödsmulan, WebApplication och delningsbilden
+  titel: string; beskrivning: string; ingress: string;
+  reklam?: boolean;
+  delaUrl: string;              // kanonisk adress med de tolkade värdena
+  matare?: { etikett: string; varde: number; grans: number; enhet: string; text: string };
+}
+// slottar: formular, svar (tal, enhet, vad, besked, status), rad (råden), resonemang, gorInte, saRaknarJag, efter (egna avsnitt, produkter), lasVidare, faq
+```
+
+- Huvudet: brödsmulor, etiketten "Räkna själv · {pelare}" i `penna`, H1, ingressen. Ingen bild i huvudet; den separata Kort svar-rutan utgår.
+- Två spalter från `lg` (`lg:grid-cols-2 lg:gap-7`, svarsspalten först i källkoden, formuläret placerat i spalt 1 med rutnätet): formuläret i ett `.blad`, svarsytan som `.yta` med talet i `text-siffra-lg lg:text-siffra-xl`, mätaren när `matare` finns, statusraden, Det här gör du som `.kort` med `.steg` (26 px), och delningsraden.
+- Resonemanget i två spalter från `lg` (`minmax(0,1.3fr) minmax(0,1fr)`): Därför blev svaret så och Gör inte det här (`.yta` med ikon) till vänster, kortet Så räknar jag med skissen i en `.pappersruta` och antagandetabellen till höger.
+- Förval som chips (`<a class="chip">` till räknarens adress med förvalets värden), fält med enheten i fältet, radioknappar som knappar (`docs/DESIGN.md` avsnitt 6, Formulärfält).
+- Mätaren: `role="img"` med `aria-label` = `text`; skalan 0 till `grans × 1,33`.
+- Delningsraden: adressen i en `<span>` med `user-select: all`, ingen knapp.
+- SEO-villkor 2026-10-02: utan query innehåller svarsytan en mening i klartext med talet, villkoret och källan, renderad på servern; `og:image` (`verktygsDelningsbild`), förhandsbilden och `WebApplication` är oförändrade.
+- Formelmodulerna, testerna och formulärens fältnamn ändras inte. Testerna låser texter men inte placering.
 
 #### 4.7.1 `src/pages/rakna/avfuktare.astro`
 

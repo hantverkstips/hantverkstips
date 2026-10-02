@@ -1,42 +1,48 @@
 ---
 /**
- * Pelarhub, sedan 2026-09-17 ett galleri utan handskriven text. Rubrik och
- * ingress kommer från hubfilen, allt annat bygger mallen av artiklarnas
- * frontmatter i fyra fasta grupper: Hitta felet, Välj rätt, Gör det själv och
- * Räkna. Varje grupp har en generell rad som säger vad som listas, aldrig
- * specifik information om ett enskilt ämne; den hör hemma i artiklarna.
+ * Pelarhub, ett galleri som mallen bygger. Rubrik och ingress kommer från
+ * hubfilen, allt annat av artiklarnas frontmatter i fyra fasta grupper: Hitta
+ * felet, Välj rätt, Gör det själv och Räkna. Varje grupp har en generell rad
+ * som säger vad som listas, aldrig specifik information om ett enskilt ämne;
+ * den hör hemma i artiklarna. En grupp utan sidor visas inte, och inte heller
+ * dess chip. Inga köpknappar, inget reklamband.
  *
- * Skälet (Christian 2026-09-17): hubben ska stödja hur vi fyller på framåt,
- * inte spegla de tre sidor som råkar finnas i dag. En grupp utan sidor visas
- * inte alls. Inga köpknappar, inget reklamband.
+ * Sedan designlyftet 2026-10-02 (docs/DESIGN.md 5.2, spec fas A avsnitt 7):
+ * rubrikbandet med brödsmulor, etikett, H1, ingress, chips och hubbens bild;
+ * Börja här med ett stort kort; grupperna som sektioner; Räkna som band; sist
+ * Läs i ordning och Grannar när hubfilen har dem. Urvalet görs en gång av
+ * hubGrupper() i src/lib/kort.ts.
  *
  * Platsläge (2026-09-30): en pelare med platsregister i src/lib/plats.ts (i dag
- * Fukt) ordnas i stället efter plats i huset, en H2 per plats och under den en
- * tät lista (Platslista) med grupperna i samma ordning. Ordningen sätts av
- * ordnaEfterPlats, aldrig här. Utan register byggs hubben exakt som förut.
+ * Fukt) ordnas i stället efter plats i huset, en sektion per plats med en tät
+ * lista (Platslista) i grupperna i samma ordning. Ordningen sätts av
+ * ordnaEfterPlats, aldrig här. Chipsen leder då till platserna.
  * Spec: docs/briefer/spec-fukthubb-plats-2026-09-30.md.
  */
 import type { CollectionEntry } from 'astro:content';
 import Bas from '../../layouts/Bas.astro';
 import { delningsbild } from '../../lib/delningsbild';
-import { pelareUrl, publicerade } from '../../lib/innehall';
+import { pelareUrl, publicerade, slugify } from '../../lib/innehall';
 import { KALKYLATORER } from '../../lib/kalkyl/register';
 import {
+  hubGrupper,
   pelareForKategori,
   tillKortArtikel,
   tillKortJamforelse,
   tillKortKategori,
+  type Grupp,
   type KortData,
 } from '../../lib/kort';
 import { nivaEtikett } from '../../lib/niva';
 import { hittaGrupp, hittaPelare, type PelareSlug } from '../../lib/pelare';
 import { gruppForTyp, ordnaEfterPlats, PLATSER, type Platsrad, type PlatsSlug } from '../../lib/plats';
 import { artikel as artikelData } from '../../lib/strukturdata';
-import Ikon from '../ui/Ikon.astro';
-import Innehallsforteckning from '../ui/Innehallsforteckning.astro';
+import Artikelkort from '../ui/Artikelkort.astro';
+import Brodsmulor from '../ui/Brodsmulor.astro';
+import Ikon, { type IkonNamn } from '../ui/Ikon.astro';
 import Kortgrupp from '../ui/Kortgrupp.astro';
-import Pennstreck from '../ui/Pennstreck.astro';
 import Platslista from '../ui/Platslista.astro';
+import Rubrikrad from '../ui/Rubrikrad.astro';
 import StrukturData from '../ui/StrukturData.astro';
 
 interface Props {
@@ -48,70 +54,84 @@ const d = entry.data;
 const slug = entry.id as PelareSlug;
 const pelare = hittaPelare(slug);
 const kort = pelare?.kort ?? d.title;
+const pelareNamn = (pelare?.namn ?? kort).toLowerCase();
 const grupp = pelare ? hittaGrupp(pelare.grupp) : undefined;
-
-// Kortgrupp läser pelaren härifrån.
-Astro.locals.pelare = slug;
 
 /**
  * Grupperna och deras generella rader. Raden får nämna ämnet (kort) men aldrig
- * en enskild sida, en produkt eller ett tal.
+ * en enskild sida, en produkt eller ett tal. Ikonen står i gruppens chip.
  */
-const artiklar = [...(await publicerade('guider')), ...(await publicerade('kunskap'))].filter(
-  (e) => e.data.pelare === slug,
-);
-const kategorier = (await publicerade('kategorier')).filter((k) =>
-  (k.data.pelare as readonly string[]).includes(slug),
-);
-const jamforelser = (
-  await Promise.all(
-    (await publicerade('jamforelser')).map(async (e) => ({ e, p: await pelareForKategori(e.data.kategori) })),
-  )
-).filter((j) => j.p === slug);
-// Samma tvåledade filter som Kortgrupp.astro: pelarleden först, sedan kategorileden.
-// Rättat 2026-09-20; tidigare räknades bara kategorileden, så Räkna-gruppen doldes
-// på varje pelare utan kategorisida trots att kalkylatorer hörde dit.
-const kalkylatorer = KALKYLATORER.filter(
-  (k) => k.pelare?.includes(slug) || (k.kategori !== undefined && kategorier.some((x) => x.id === k.kategori)),
-);
-
-const antal = {
-  'hitta-felet': artiklar.filter((e) => e.data.typ === 'problemguide' || e.data.typ === 'kunskap').length,
-  'valj-ratt': artiklar.filter((e) => e.data.typ === 'kopguide').length + kategorier.length + jamforelser.length,
-  'gor-det-sjalv': artiklar.filter((e) => e.data.typ === 'projektguide').length,
-  rakna: kalkylatorer.length,
-} as const;
-
-const GRUPPER = [
-  {
-    id: 'hitta-felet',
+const GRUPPER: Record<Grupp, { rubrik: string; rad: string; ikon: IkonNamn }> = {
+  'hitta-felet': {
     rubrik: 'Hitta felet',
-    rad: `Här listar vi guiderna som hjälper dig hitta orsaken innan du lagar eller köper något inom ${(pelare?.namn ?? kort).toLowerCase()}.`,
+    rad: 'Guiderna här leder dig till orsaken, så att du lagar eller köper rätt sak.',
+    ikon: 'sok',
   },
-  {
-    id: 'valj-ratt',
+  'valj-ratt': {
     rubrik: 'Välj rätt',
-    rad: 'Här samlar vi köpguider, jämförelser och bäst i test, alltid med nackdelarna utskrivna.',
+    rad: 'Köpguiderna och jämförelserna bygger på datablad, och nackdelarna står alltid utskrivna.',
+    ikon: 'check',
   },
-  {
-    id: 'gor-det-sjalv',
+  'gor-det-sjalv': {
     rubrik: 'Gör det själv',
-    rad: 'Här ligger projektguiderna, steg för steg, med måtten du behöver innan du börjar.',
+    rad: 'Projektguiderna tar jobbet steg för steg och har med alla mått du behöver.',
+    ikon: 'verktyg',
   },
-  {
-    id: 'rakna',
+  rakna: {
     rubrik: 'Räkna',
-    rad: 'Här finns kalkylatorerna som gör räkningen åt dig, med antagandena utskrivna.',
+    rad: 'Räknarna gör räkningen åt dig och visar vilka antaganden de bygger på.',
+    ikon: 'kalkylator',
   },
-] as const;
+};
 
-const synliga = GRUPPER.filter((g) => antal[g.id] > 0);
-const totalt = artiklar.length + jamforelser.length;
+const BORJA_RUBRIK = 'Läs det här först'; // hub.borja.rubrik
+const GRANNAR_ETIKETT = 'Hör ihop med {pelare}:'; // hub.grannar.etikett
+
+const allaGrupper = await hubGrupper(slug);
 
 /**
- * Platsläge. Raderna byggs av samma källor som grupperna ovan, nu med plats.
- * Grannsidor är guider och kunskap i andra pelare som hubfilen pekar ut; en som
- * inte är publicerad hoppas över tyst (npm run kontrollera fångar okända id).
+ * Börja här: hubfilens borjaHar om den finns och är publicerad, annars det
+ * nyaste kortet i Hitta felet. Kortet tas bort ur sin grupp, och en grupp som
+ * då blir tom visas inte.
+ */
+const artiklar = [...(await publicerade('guider')), ...(await publicerade('kunskap'))];
+let borja: KortData | undefined;
+if (d.borjaHar) {
+  const ref = d.borjaHar;
+  const e = artiklar.find((a) => a.collection === ref.samling && a.id === ref.id);
+  if (e) borja = tillKortArtikel(e);
+}
+borja ??= allaGrupper.find((g) => g.id === 'hitta-felet')?.kort[0];
+
+const grupper = allaGrupper
+  .map((g) => ({ ...g, kort: g.kort.filter((k) => k.href !== borja?.href) }))
+  .filter((g) => g.kort.length + g.kalkylatorer.length > 0);
+
+/** Sidor och räknare för etiketten: artiklar och jämförelser, inte kategorisidor. */
+const antalSidor =
+  allaGrupper.flatMap((g) => g.kort).filter((k) => k.typ !== 'kategori').length;
+const antalRaknare = allaGrupper.find((g) => g.id === 'rakna')?.kalkylatorer.length ?? 0;
+const etikett = [
+  grupp?.namn,
+  antalSidor > 0 ? (antalSidor === 1 ? '1 sida' : `${antalSidor} sidor`) : undefined,
+  antalRaknare > 0 ? (antalRaknare === 1 ? '1 räknare' : `${antalRaknare} räknare`) : undefined,
+]
+  .filter(Boolean)
+  .join(' · ');
+
+/** Hubbens bild: frontmatterns, annars den nyaste illustrationen bland gruppernas kort. */
+const hubBild =
+  d.bild ??
+  grupper
+    .flatMap((g) => g.kort)
+    .filter((k) => k.illustration)
+    .sort((a, b) => b.sorteringsdatum.getTime() - a.sorteringsdatum.getTime())[0]?.illustration;
+
+/**
+ * Platsläge. Raderna byggs av samma källor som grupperna, nu med plats, som
+ * korten inte bär. Grannsidor är guider och kunskap i andra pelare som hubfilen
+ * pekar ut; en som inte är publicerad hoppas över tyst (npm run kontrollera
+ * fångar okända id). Börja här-kortet står inte också i en plats.
  */
 const platser = PLATSER[slug];
 
@@ -136,19 +156,28 @@ function tillRad(k: KortData, plats: PlatsSlug | undefined, grannpelare?: string
 
 let platsgrupper: { plats: { slug: PlatsSlug; namn: string }; rader: Rad[] }[] = [];
 if (platser) {
-  const allaArtiklar = [...(await publicerade('guider')), ...(await publicerade('kunskap'))];
+  const egna = artiklar.filter((e) => e.data.pelare === slug);
+  const kategorier = (await publicerade('kategorier')).filter((k) =>
+    (k.data.pelare as readonly string[]).includes(slug),
+  );
+  const jamforelser = (
+    await Promise.all(
+      (await publicerade('jamforelser')).map(async (e) => ({ e, p: await pelareForKategori(e.data.kategori) })),
+    )
+  ).filter((j) => j.p === slug);
+  const raknare = new Set(allaGrupper.find((g) => g.id === 'rakna')?.kalkylatorer ?? []);
   const grannar: Rad[] = [];
   for (const g of d.grannsidor) {
-    const e = allaArtiklar.find((a) => a.id === g.id);
+    const e = artiklar.find((a) => a.id === g.id);
     if (!e) continue;
     grannar.push(tillRad(tillKortArtikel(e), g.plats, hittaPelare(e.data.pelare)?.kort));
   }
   const rader: Rad[] = [
-    ...artiklar.map((e) => tillRad(tillKortArtikel(e), e.data.plats)),
+    ...egna.map((e) => tillRad(tillKortArtikel(e), e.data.plats)),
     ...grannar,
     ...(await Promise.all(kategorier.map(async (k) => tillRad(await tillKortKategori(k), k.data.plats)))),
     ...jamforelser.map((j) => tillRad(tillKortJamforelse(j.e, j.p), j.e.data.plats)),
-    ...kalkylatorer.map(
+    ...KALKYLATORER.filter((k) => raknare.has(k.slug)).map(
       (k): Rad => ({
         ...(k.plats ? { plats: k.plats } : {}),
         grupp: 'rakna',
@@ -159,15 +188,42 @@ if (platser) {
         href: `/rakna/${k.slug}/`,
       }),
     ),
-  ];
+  ].filter((r) => r.href !== borja?.href);
   platsgrupper = ordnaEfterPlats(rader, platser);
 }
-const tom = platser ? platsgrupper.length === 0 : synliga.length === 0;
+
+/** Chipsen i rubrikbandet: till grupperna, eller i platsläge till platserna. */
+const chips: { href: string; text: string; ikon?: IkonNamn }[] = platser
+  ? platsgrupper.map((p) => ({ href: `#${p.plats.slug}`, text: `${p.plats.namn} · ${p.rader.length}` }))
+  : grupper.map((g) => ({
+      href: `#${g.id}`,
+      text: `${GRUPPER[g.id].rubrik} · ${g.kort.length + g.kalkylatorer.length}`,
+      ikon: GRUPPER[g.id].ikon,
+    }));
+
+const artikelGrupper = platser ? [] : grupper.filter((g) => g.id !== 'rakna');
+const raknaGrupp = platser ? undefined : grupper.find((g) => g.id === 'rakna');
+const lasordning = d.lasordning;
+const grannar = d.grannar;
+const tom = !borja && (platser ? platsgrupper.length === 0 : grupper.length === 0);
+
+/** Sista sektionen får luften ovanför sidfoten. */
+const sist: string = lasordning || grannar
+  ? 'las'
+  : raknaGrupp
+    ? 'rakna'
+    : artikelGrupper.length > 0
+      ? (artikelGrupper[artikelGrupper.length - 1]?.id ?? '')
+      : platsgrupper.length > 0
+        ? (platsgrupper[platsgrupper.length - 1]?.plats.slug ?? '')
+        : 'borja';
+const luft = (id: string) => (id === sist ? 'pb-16 lg:pb-24' : '');
+
+const brodsmulor = [{ namn: 'Hantverkstips', href: '/' }, { namn: kort }];
 
 /**
- * Delningsbilden i 1200 × 630 (scripts/generera-delningsbilder.mjs). Hubben har
- * ingen egen bild, så den får titeln i större grad och tumstocken till höger.
- * Samma fil går ut som og:image och som image i Article.
+ * Delningsbilden i 1200 × 630 (scripts/generera-delningsbilder.mjs). Samma fil
+ * går ut som og:image och som image i Article.
  */
 const ogBild = delningsbild('pelare', entry.id);
 
@@ -185,64 +241,158 @@ const strukturdata = artikelData({
 <Bas
   title={d.seoTitle ?? d.title}
   description={d.description}
-  brodsmulor={[{ namn: 'Hantverkstips', href: '/' }, { namn: kort }]}
-  bred={true}
+  brodsmulor={brodsmulor}
+  galleri
+  brodsmulorIVy
   ogBild={ogBild}
 >
   <StrukturData slot="head" data={strukturdata} />
 
-  <div class="max-w-lasbredd">
-    {grupp && <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">{grupp.namn}</p>}
-    <div class="mt-2 flex items-start gap-3">
-      {pelare && <Ikon namn={pelare.ikon} storlek={32} class="mt-1 text-blyerts" />}
-      <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">{d.title}</h1>
+  <section class="band">
+    <div
+      class:list={[
+        'sidram grid grid-cols-1 items-center gap-8 pt-6 pb-8 lg:gap-12 lg:pt-10 lg:pb-11',
+        hubBild && 'lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]',
+      ]}
+    >
+      <div class="flex flex-col gap-4">
+        <Brodsmulor lista={brodsmulor} />
+        {etikett && <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">{etikett}</p>}
+        <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">{d.title}</h1>
+        <p class="m-0 text-ingress lg:text-ingress-lg">{d.ingress}</p>
+        {
+          chips.length > 0 && (
+            <div class="flex flex-wrap gap-2">
+              {chips.map((c) => (
+                <a class="chip bg-papper" href={c.href}>
+                  {c.ikon && <Ikon namn={c.ikon} storlek={18} />}
+                  {c.text}
+                </a>
+              ))}
+            </div>
+          )
+        }
+      </div>
+      {
+        hubBild && (
+          <div class="blad p-6">
+            <img
+              src={hubBild.src}
+              alt=""
+              width={hubBild.width}
+              height={hubBild.height}
+              fetchpriority="high"
+              decoding="async"
+              class="block h-auto w-full"
+            />
+          </div>
+        )
+      }
     </div>
-    <p class="m-0 mt-4 text-ingress lg:text-ingress-lg text-blyerts-2">{d.ingress}</p>
-    {
-      totalt > 0 && (
-        <p class="m-0 mt-3 text-liten text-blyerts-2">
-          {totalt === 1 ? '1 sida' : `${totalt} sidor`} ·{' '}
-          <a href={`/guider/${slug}/`} class="lank">
-            Alla guider om {(pelare?.namn ?? kort).toLowerCase()}
-          </a>
-        </p>
-      )
-    }
-  </div>
+  </section>
 
   {
     tom && (
-      <p class="mt-8 max-w-lasbredd text-brod lg:text-brod-lg text-blyerts-2">
-        Här finns inga guider än. De första kommer inom kort, och tills dess hittar du allt vi publicerat under{' '}
-        <a href="/guider/" class="lank">
-          alla guider och tester
-        </a>
-        .
-      </p>
+      <section class="sidram pt-12 pb-16 lg:pt-14 lg:pb-24">
+        <p class="m-0 max-w-lasbredd text-brod lg:text-brod-lg text-blyerts-2">
+          Här finns inga guider än. De första kommer inom kort, och tills dess hittar du allt vi publicerat under{' '}
+          <a href="/guider/" class="lank">
+            alla guider och tester
+          </a>
+          .
+        </p>
+      </section>
     )
   }
 
   {
-    platser ? (
-      <>
-        <Innehallsforteckning rubriker={platsgrupper.map((p) => ({ slug: p.plats.slug, text: p.plats.namn }))} />
-        {platsgrupper.map((p) => (
-          <section class="mt-10 lg:mt-14 max-w-lasbredd">
-            <Pennstreck id={p.plats.slug}>{p.plats.namn}</Pennstreck>
-            <Platslista rader={p.rader} />
-          </section>
-        ))}
-      </>
-    ) : (
-      synliga.map((g) => (
-        <section class="mt-10 lg:mt-14">
-          <div class="max-w-lasbredd">
-            <Pennstreck id={g.id}>{g.rubrik}</Pennstreck>
-            <p class="m-0 text-brod lg:text-brod-lg text-blyerts-2">{g.rad}</p>
+    borja && (
+      <section class:list={['sidram pt-12 lg:pt-14', luft('borja')]}>
+        <Rubrikrad
+          id="borja-har"
+          rubrik={BORJA_RUBRIK}
+          lank={{ text: `Alla guider om ${pelareNamn}`, href: `/guider/${slug}/` }}
+        />
+        <Artikelkort
+          etikett={borja.etikett}
+          niva={borja.niva}
+          rubrik={borja.rubrik}
+          beskrivning={borja.beskrivning}
+          illustration={borja.illustration}
+          pelare={borja.pelare}
+          datum={borja.datum}
+          meta={borja.meta}
+          href={borja.href}
+          bladfakta={borja.bladfakta}
+          variant="stor"
+          storBild="smal"
+          visaPelare={false}
+          visaMeta={true}
+        />
+      </section>
+    )
+  }
+
+  {
+    platsgrupper.map((p) => (
+      <section class:list={['sidram pt-12 lg:pt-14', luft(p.plats.slug)]}>
+        <Rubrikrad id={p.plats.slug} rubrik={p.plats.namn} />
+        <Platslista rader={p.rader} />
+      </section>
+    ))
+  }
+
+  {
+    artikelGrupper.map((g) => (
+      <section class:list={['sidram pt-12 lg:pt-14', luft(g.id)]}>
+        <Rubrikrad id={g.id} rubrik={GRUPPER[g.id].rubrik} rad={GRUPPER[g.id].rad} />
+        <Kortgrupp grupp={g.id} kort={g.kort} kalkylatorer={g.kalkylatorer} />
+      </section>
+    ))
+  }
+
+  {
+    raknaGrupp && (
+      <section class="band mt-12 lg:mt-14">
+        <div class:list={['sidram py-12 lg:py-14', luft('rakna')]}>
+          <Rubrikrad id="rakna" rubrik={GRUPPER.rakna.rubrik} rad={GRUPPER.rakna.rad} />
+          <Kortgrupp grupp="rakna" kort={raknaGrupp.kort} kalkylatorer={raknaGrupp.kalkylatorer} />
+        </div>
+      </section>
+    )
+  }
+
+  {
+    (lasordning || grannar) && (
+      <section class:list={['sidram pt-12 lg:pt-14', luft('las')]}>
+        {lasordning && (
+          <>
+            <Rubrikrad id={slugify(lasordning.rubrik)} rubrik={lasordning.rubrik} />
+            <ol class="steg m-0 grid grid-cols-1 gap-4 lg:grid-cols-4">
+              {lasordning.steg.map((s) => (
+                <li>
+                  <a
+                    href={s.href}
+                    class="inline-flex min-h-11 items-center text-blyerts no-underline hover:underline hover:decoration-penna"
+                  >
+                    {s.text}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </>
+        )}
+        {grannar && (
+          <div class="mt-6 pt-6 border-t border-linje flex flex-wrap items-center gap-3 text-liten text-blyerts-2">
+            <span>{GRANNAR_ETIKETT.replace('{pelare}', kort.toLowerCase())}</span>
+            {grannar.map((g) => (
+              <a class="chip" href={g.href}>
+                {g.text}
+              </a>
+            ))}
           </div>
-          <Kortgrupp grupp={g.id} />
-        </section>
-      ))
+        )}
+      </section>
     )
   }
 </Bas>

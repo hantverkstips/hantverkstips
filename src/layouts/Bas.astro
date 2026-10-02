@@ -8,9 +8,11 @@
  */
 import '../styles/global.css';
 import ordmarke from '../assets/brand/riktning-1/ordmarke-inline.svg?raw';
-import { kategoriUrl, pelareUrl, publicerade, type Brodsmula } from '../lib/innehall';
+import { pelareUrl, publicerade, type Brodsmula } from '../lib/innehall';
+import { inlankar } from '../lib/kalkyl/inlankar';
 import { KALKYLATORER } from '../lib/kalkyl/register';
 import { PELARE, PELAREGRUPPER } from '../lib/pelare';
+import { byggmanad, iSasong } from '../lib/sasong';
 import { brodsmulor as brodsmulorData } from '../lib/strukturdata';
 import Brodsmulor from '../components/ui/Brodsmulor.astro';
 import Ikon, { type IkonNamn } from '../components/ui/Ikon.astro';
@@ -34,6 +36,12 @@ interface Props {
   brodsmulorIVy?: boolean;
   /** main får sidbredd i stället för läsbredd. Kategori, jämförelse, kalkylator. */
   bred?: boolean;
+  /**
+   * Galleri­sida (startsidan, pelarhubben, räkna-indexet): main utan bredd,
+   * marginal och luft, eftersom sidan bygger sina sektioner och band själv med
+   * .sidram och .band, och sidfoten utan luft ovanför. Spec fas A avsnitt 3.
+   */
+  galleri?: boolean;
   noindex?: boolean;
   /**
    * Delningsbild (og:image). Sökväg i bygget eller absolut adress. Utelämnad,
@@ -59,6 +67,7 @@ const {
   brodsmulor,
   brodsmulorIVy = false,
   bred = false,
+  galleri = false,
   noindex = false,
   ogBild,
   ogTyp = 'website',
@@ -99,7 +108,6 @@ const ogBildUrl = new URL(ogBild && !ogBild.startsWith('data:') ? ogBild : OG_ST
 const robots = noindex ? 'noindex, max-image-preview:large' : 'max-image-preview:large';
 
 const hubbar = await publicerade('pelare');
-const kategorier = await publicerade('kategorier');
 
 const publiceradeHubbar = PELARE.flatMap((p) => {
   const entry = hubbar.find((h) => h.id === p.slug);
@@ -127,6 +135,17 @@ const FASTA: Menypost[] = [
   { namn: 'Kontakt', href: '/om/kontakt/', ikon: null },
 ];
 const AMNESRAD: Menypost[] = publiceradeHubbar.map((p) => ({ namn: p.kort, href: pelareUrl(p.slug), ikon: p.ikon }));
+/**
+ * Den aktuella pelaren i ämnesraden: första segmentet i adressen lika med en
+ * publicerad hub. Hubben själv får aria-current="page", en sida under den "true",
+ * och CSS ger chipen ytan tumstock (docs/DESIGN.md avsnitt 5, Ämnesraden).
+ */
+const segment = Astro.url.pathname.split('/').filter(Boolean);
+const aktuellPelare = publiceradeHubbar.find((p) => p.slug === segment[0])?.slug;
+const aktuell = (href: string): 'page' | 'true' | undefined =>
+  aktuellPelare && href === pelareUrl(aktuellPelare) ? (segment.length === 1 ? 'page' : 'true') : undefined;
+/** Raden under ordmärket i sidfoten. */
+const SIDFOT_RAD = 'Jag skriver om att bygga, laga och sköta ett hus.'; // sidfot.rad
 /** Mobilmenyn grupperar ämnena som ämnesraden på startsidan. */
 const MOBIL_GRUPPER = PELAREGRUPPER.map((g) => ({
   namn: g.namn,
@@ -135,11 +154,33 @@ const MOBIL_GRUPPER = PELAREGRUPPER.map((g) => ({
     .map((p) => ({ namn: p.namn, href: pelareUrl(p.slug), ikon: p.ikon }) as Menypost),
 })).filter((g) => g.poster.length > 0);
 
+/**
+ * Sidfoten, kortad 2026-10-02 (spec-designlyft-a-2026-10-02 avsnitt 12.3,
+ * SEO-beslut i docs/SOKORDSANALYS.md avsnitt 13 punkt 1). Fyra spalter:
+ * varumärket, Ämnen, Räkna själv, Om sajten. Ingen Bäst i test-spalt.
+ */
+const SIDFOT_AMNEN = ['fukt', 'badrum', 'kok', 'tak'];
+const sidfotAmnen = SIDFOT_AMNEN.flatMap((slug) => publiceradeHubbar.filter((p) => p.slug === slug));
+
+/**
+ * Tre räknare i säsong för byggmånaden, i registerordning. Är färre än tre i
+ * säsong fylls listan på med rotavdrag och sedan i registerordning, utan dubbletter.
+ * En räknare som färre än två innehållsfiler länkar till väljs aldrig (avsnitt 12.7).
+ */
+const manad = byggmanad();
+const raknarInlankar = inlankar();
+const sidfotRaknare = [
+  ...KALKYLATORER.filter((k) => iSasong(k.sasong, manad)),
+  ...KALKYLATORER.filter((k) => k.slug === 'rotavdrag'),
+  ...KALKYLATORER,
+]
+  .filter((k) => (raknarInlankar.get(k.slug) ?? 0) >= 2)
+  .filter((k, i, lista) => lista.indexOf(k) === i)
+  .slice(0, 3);
+
 const OM_SAJTEN = [
-  { namn: 'Om mig', href: '/om/' },
   { namn: 'Så testar jag', href: '/om/sa-testar-vi/' },
   { namn: 'Så tjänar jag pengar', href: '/om/sa-tjanar-vi-pengar/' },
-  { namn: 'Författare', href: '/forfattare/christian/' },
   { namn: 'Kontakt', href: '/om/kontakt/' },
   { namn: 'Integritet', href: '/om/integritet/' },
 ];
@@ -279,12 +320,12 @@ const ar = new Date().getFullYear();
       {/* Ämnesraden. Bara på desktop; mobilen har ämnena i menyn. Raden bryts när hubbarna inte ryms, aldrig sidledsrullning. */}
       <nav aria-label="Ämnen" class="amnesrad hidden lg:block border-t border-linje bg-papper-2">
         <ul
-          class="mx-auto max-w-sidbredd px-8 m-0 p-0 list-none flex items-center gap-1 flex-wrap"
+          class="mx-auto max-w-sidbredd px-8 m-0 py-1 list-none flex items-center gap-2 flex-wrap"
         >
           {
             AMNESRAD.map((m) => (
               <li>
-                <a href={m.href}>
+                <a href={m.href} aria-current={aktuell(m.href)}>
                   {m.ikon && <Ikon namn={m.ikon} storlek={null} />}
                   {m.namn}
                 </a>
@@ -308,10 +349,11 @@ const ar = new Date().getFullYear();
     <main
       id="innehall"
       tabindex="-1"
-      class:list={[
-        'flex-1 w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12',
-        bred ? 'max-w-sidbredd' : 'max-w-lasbredd',
-      ]}
+      class:list={
+        galleri
+          ? 'flex-1 w-full'
+          : ['flex-1 w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12', bred ? 'max-w-sidbredd' : 'max-w-lasbredd']
+      }
     >
       {brodsmulor && brodsmulor.length > 0 && !brodsmulorIVy && (
         <div class="mb-6 print:hidden">
@@ -321,20 +363,24 @@ const ar = new Date().getFullYear();
       <slot />
     </main>
 
-    <footer class="mt-12 lg:mt-24 bg-blyerts text-papper text-liten print:hidden">
+    <footer class:list={[galleri ? 'mt-0' : 'mt-12 lg:mt-24', 'bg-blyerts text-papper text-liten print:hidden']}>
       <div
         class="sidfot mx-auto max-w-sidbredd px-4 sm:px-6 lg:px-8 py-8 lg:py-12"
       >
-        <div class="ordmarke" style="--color-blyerts: var(--color-papper)">
-          <Fragment set:html={ordmarkeFot} />
-        </div>
-
-        <div class="mt-8 grid gap-8 lg:grid-cols-4">
+        <div class="grid gap-8 lg:grid-cols-4">
           <div>
-            <p class="m-0 mb-2 text-etikett uppercase">Ämnen</p>
+            <div class="ordmarke" style="--color-blyerts: var(--color-papper)">
+              <Fragment set:html={ordmarkeFot} />
+            </div>
+            <p class="m-0 mt-3 text-linje">{SIDFOT_RAD}</p>
+            <p class="m-0 mt-2 text-finstilt text-linje">© {ar} Hantverkstips</p>
+          </div>
+
+          <div>
+            <p class="m-0 mb-2 text-etikett uppercase text-linje">Ämnen</p>
             <ul class="m-0 p-0 list-none">
               {
-                publiceradeHubbar.map((p) => (
+                sidfotAmnen.map((p) => (
                   <li>
                     <a href={pelareUrl(p.slug)}>
                       {p.namn}
@@ -342,35 +388,14 @@ const ar = new Date().getFullYear();
                   </li>
                 ))
               }
-              <li>
-                <a href="/amnen/">Alla ämnen</a>
-              </li>
-              <li>
-                <a href="/guider/">Alla guider och tester</a>
-              </li>
             </ul>
           </div>
 
           <div>
-            <p class="m-0 mb-2 text-etikett uppercase">Bäst i test</p>
+            <p class="m-0 mb-2 text-etikett uppercase text-linje">Räkna själv</p>
             <ul class="m-0 p-0 list-none">
               {
-                kategorier.map((k) => (
-                  <li>
-                    <a href={kategoriUrl(k.id)}>
-                      {k.data.namn}
-                    </a>
-                  </li>
-                ))
-              }
-            </ul>
-          </div>
-
-          <div>
-            <p class="m-0 mb-2 text-etikett uppercase">Räkna själv</p>
-            <ul class="m-0 p-0 list-none">
-              {
-                KALKYLATORER.map((k) => (
+                sidfotRaknare.map((k) => (
                   <li>
                     <a href={`/rakna/${k.slug}/`}>
                       {k.namn}
@@ -378,11 +403,14 @@ const ar = new Date().getFullYear();
                   </li>
                 ))
               }
+              <li>
+                <a href="/rakna/">Alla räknare</a>
+              </li>
             </ul>
           </div>
 
           <div>
-            <p class="m-0 mb-2 text-etikett uppercase">Om sajten</p>
+            <p class="m-0 mb-2 text-etikett uppercase text-linje">Om sajten</p>
             <ul class="m-0 p-0 list-none">
               {
                 OM_SAJTEN.map((o) => (
@@ -396,8 +424,6 @@ const ar = new Date().getFullYear();
             </ul>
           </div>
         </div>
-
-        <p class="m-0 mt-8">© {ar} Hantverkstips</p>
       </div>
     </footer>
   </body>

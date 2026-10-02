@@ -1,0 +1,25 @@
+---
+/**
+ * Sektionens rubrikrad på galleri­sidorna (startsidan, pelarhubben, räkna-indexet):
+ * H2 med pennstreck till vänster och antingen en länk längst till höger
+ * ("Alla ämnen") eller en kort rad i blyerts-2 på rubrikens baslinje. Bryts på
+ * mobil. Utseendet står i .rubrikrad i global.css. En tom rad renderas inte.
+ * Spec: docs/briefer/spec-designlyft-a-2026-10-02.md 4.7, docs/DESIGN.md avsnitt 5.
+ */
+import Pennstreck from './Pennstreck.astro';
+
+interface Props {
+  id: string;
+  rubrik: string;
+  lank?: { text: string; href: string };
+  rad?: string;
+}
+
+const { id, rubrik, lank, rad } = Astro.props;
+---
+
+<div class:list={['rubrikrad', rad && 'rubrikrad-rad']}>
+  <Pennstreck id={id} utanLuft>{rubrik}</Pennstreck>
+  {lank && <a href={lank.href} class="lank min-h-11 inline-flex items-center">{lank.text}</a>}
+  {rad && <p class="m-0 text-blyerts-2">{rad}</p>}
+</div>

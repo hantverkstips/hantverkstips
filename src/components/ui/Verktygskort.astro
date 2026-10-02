@@ -1,47 +1,82 @@
 ---
 /**
- * Länken till en kalkylator. Ett per sida, aldrig två. Inget diagram i fas 1.
- * Okänd slug ger byggfel, så att en felskriven referens i en innehållsfil syns.
+ * Länken till en räknare. En per sida, aldrig två. Okänd slug ger byggfel, så
+ * att en felskriven referens i en innehållsfil syns.
  *
- * Rubriken är ett <p> i H3-stil, inte en H3: kortet kan stå före sidans första
- * H2 (startsidans öppning) och en riktig H3 där ger fel rubrikordning.
+ * Fyra varianter (docs/DESIGN.md avsnitt 6, Verktygskort; spec fas A 4.3):
+ *   bild   varumärkesbilden till vänster, etiketten "Räkna själv · {pelare}",
+ *          namnet, registrets rad och "Till räknaren". Brödtext, hubbens
+ *          Räkna, räkna-indexet. Utan bild samma kort utan bilden.
+ *   tal    utan bild; etiketten (pelarens korta namn), namnet och räknarens tal
+ *          vid standardvärdena ur korttal.ts, eller registrets svar. Startsidan.
+ *   text   som bild utan bild. /amnen/, med över trettio kort på en sida.
+ *   liten  bilden i 72 px, etiketten "Räkna själv" och namnet. Sidospalten (fas B).
+ *
+ * Hela kortet är klickbart med .kortlank på namnets länk; "Till räknaren" är
+ * ingen egen länk, eftersom namnet redan är det. Allt utseende sitter i .vkort*
+ * i global.css. Rubriken är ett <p>, inte en H3: kortet kan stå före sidans
+ * första H2, och en riktig H3 där ger fel rubrikordning.
  */
+import { korttal } from '../../lib/kalkyl/korttal';
 import { hittaKalkylator } from '../../lib/kalkyl/register';
-import Ikon from './Ikon.astro';
+import { hittaPelare, PELARE } from '../../lib/pelare';
+import { verktygsillustration, verktygsVarumarkesbild } from '../../lib/verktygsbild';
 
 interface Props {
   kalkylator: string;
+  variant?: 'bild' | 'tal' | 'text' | 'liten';
   /**
-   * Kortet ligger i ett rutnät (hubbens grupp Räkna, startsidans säsongsblock)
-   * och sköter sitt avstånd själv genom rutnätets gap. Utan propen har det
-   * luft ovanför och under, som i löptext.
+   * Kortet ligger i ett rutnät och sköter sitt avstånd genom rutnätets gap.
+   * Utan propen har det luft ovanför och under, som i löptext.
    */
   iRutnat?: boolean;
 }
 
-const { kalkylator, iRutnat = false } = Astro.props;
+const { kalkylator, variant = 'bild', iRutnat = false } = Astro.props;
 const k = hittaKalkylator(kalkylator);
 if (!k) {
   throw new Error(`[Verktygskort] Okänd kalkylator "${kalkylator}". Lägg till den i src/lib/kalkyl/register.ts`);
 }
 const href = `/rakna/${k.slug}/`;
+
+/**
+ * Pelaren är den första i registrets lista. Elkostnaden hör hemma i både El och
+ * energi och Fukt; etiketten visar den första, som registret har ordnat efter
+ * var frågan oftast ställs.
+ */
+const pelare = hittaPelare(k.pelare?.[0] ?? '') ?? PELARE[0];
+const bild =
+  variant === 'bild' || variant === 'liten'
+    ? (verktygsVarumarkesbild(k.slug) ?? verktygsillustration(k.slug))
+    : undefined;
+const tal = variant === 'tal' ? korttal(k.slug) : undefined;
+const etikett =
+  variant === 'tal' ? pelare.kort : variant === 'liten' ? 'Räkna själv' : `Räkna själv · ${pelare.kort}`;
 ---
 
-<div class:list={['border border-linje rounded-sm bg-papper p-4 lg:p-6', !iRutnat && 'my-8']}>
-  <p class="m-0 flex items-center gap-2 text-etikett lg:text-etikett-lg uppercase text-blyerts">
-    <Ikon namn="kalkylator" storlek={24} />
-    Räkna själv
-  </p>
-  <p class="m-0 mt-2 font-sans text-h3 lg:text-h3-lg font-bold">
-    <a href={href} class="lank text-blyerts">{k.namn}</a>
-  </p>
-  <p class="m-0 mt-1 text-brod lg:text-brod-lg text-blyerts-2">{k.rad}</p>
-  <p class="m-0 mt-2">
-    <a
-      href={href}
-      class="inline-flex min-h-11 items-center lank"
-    >
-      Till räknaren
-    </a>
-  </p>
+<div class:list={['kort vkort', `vkort-${variant}`, !iRutnat && 'my-8']}>
+  {
+    bild && (
+      <img src={bild.src} alt="" width={bild.width} height={bild.height} loading="lazy" decoding="async" />
+    )
+  }
+  <div>
+    <p>{etikett}</p>
+    <p>
+      <a href={href} class="kortlank">{k.namn}</a>
+    </p>
+    {variant !== 'tal' && variant !== 'liten' && <p>{k.rad}</p>}
+    {
+      variant === 'tal' &&
+        (tal ? (
+          <p>
+            <span>{tal.tal}</span>
+            <span>{tal.villkor}</span>
+          </p>
+        ) : (
+          <p class="vkort-svar">{k.svar}</p>
+        ))
+    }
+    {variant !== 'tal' && variant !== 'liten' && <span aria-hidden="true">Till räknaren</span>}
+  </div>
 </div>

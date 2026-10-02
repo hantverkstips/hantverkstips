@@ -22,6 +22,7 @@ import {
 } from '../../lib/kalkyl/elkostnad';
 import { hamtaProdukt } from '../../lib/produkter';
 import { tolkaQuery as tolkaGrannemedgivande } from '../../lib/kalkyl/grannemedgivande';
+import { korttal } from '../../lib/kalkyl/korttal';
 import { hittaKalkylator } from '../../lib/kalkyl/register';
 import AltanForm from '../kalkyl/AltanForm.astro';
 import AvfuktareForm from '../kalkyl/AvfuktareForm.astro';
@@ -82,6 +83,23 @@ interface Props {
    * som inte är en åtgärd, ger byggfel. Skrivs efter namn.
    */
   forst?: string;
+  /**
+   * Texten i etikettraden. Standard "Räkna själv". Räkna-indexets "Prova direkt"
+   * (spec-designlyft-a-2026-10-02 4.8).
+   */
+  etikett?: string;
+  /**
+   * Roten som block (.blad) i stället för linjerat papper, och etiketten i penna
+   * utan ikon. Räkna-indexets rubrikband i fas A; standard överallt i fas B.
+   */
+  blad?: boolean;
+  /**
+   * Prova direkt på räkna-indexet: bara temperaturen och luftfuktigheten, och
+   * svaret vid standardvärdena (korttal) mellan fälten och knappen. Registrets
+   * rad och fotraden visas inte. Bara för daggpunkten; en annan slug ger byggfel
+   * (spec-designlyft-a-2026-10-02 12.1).
+   */
+  visaSvar?: boolean;
 }
 
 /** Kalkylatorer som har ett formulär att bädda in. */
@@ -109,7 +127,7 @@ const MED_FORMULAR = [
   'kok-kostnad',
 ];
 
-const { namn, forval, forst } = Astro.props;
+const { namn, forval, forst, etikett = 'Räkna själv', blad = false, visaSvar = false } = Astro.props;
 const k = hittaKalkylator(namn);
 if (!k) {
   throw new Error(`[Kalkylator] Okänd kalkylator "${namn}". Lägg till den i src/lib/kalkyl/register.ts`);
@@ -119,6 +137,16 @@ if (!MED_FORMULAR.includes(namn)) {
     `[Kalkylator] Kalkylatorn "${namn}" har inget formulär att bädda in. Lägg till komponenten i src/components/kalkyl/ och slugen i MED_FORMULAR.`,
   );
 }
+
+if (visaSvar && namn !== 'daggpunkt') {
+  throw new Error(`[Kalkylator] visaSvar finns bara för daggpunkten, inte för "${namn}".`);
+}
+/** Talet räknas i bygget med räknarens standardvärden, samma som räknarsidan utan adress. */
+const svarTal = visaSvar ? korttal('daggpunkt')?.tal : undefined;
+if (visaSvar && svarTal === undefined) {
+  throw new Error('[Kalkylator] Daggpunkten saknar korttal i src/lib/kalkyl/korttal.ts.');
+}
+const SVAR_RAD = 'En yta som är kallare än så blir våt. Fyll i ditt eget rum och räkna om.'; // rakna.prova.rad
 
 if (forval !== undefined && namn !== 'grannemedgivande' && namn !== 'elkostnad' && namn !== 'daggpunkt') {
   throw new Error(`[Kalkylator] Förval finns bara för grannemedgivandet, elkostnaden och daggpunkten, inte för "${namn}".`);
@@ -188,17 +216,26 @@ const href = `/rakna/${k.slug}/`;
 const prefix = `${k.slug}-inbaddad-`;
 ---
 
-<div class="linjerat my-8">
-  <p class="m-0 flex items-center gap-2 text-etikett lg:text-etikett-lg uppercase text-blyerts">
-    <Ikon namn="kalkylator" storlek={24} />
-    Räkna själv
+<div class={blad ? 'blad p-5 lg:p-6' : 'linjerat my-8'}>
+  <p class:list={['m-0 flex items-center gap-2 text-etikett lg:text-etikett-lg uppercase', blad ? 'text-penna' : 'text-blyerts']}>
+    {!blad && <Ikon namn="kalkylator" storlek={24} />}
+    {etikett}
   </p>
-  <p class="m-0 mt-2 mb-2 font-sans text-h3 lg:text-h3-lg font-bold">
+  <p class:list={['m-0 mt-2 font-sans text-h3 lg:text-h3-lg font-bold', visaSvar ? 'mb-6' : 'mb-2']}>
     <a href={href} class="lank text-blyerts">{k.namn}</a>
   </p>
-  <p class="m-0 mb-6 text-brod lg:text-brod-lg text-blyerts-2">{k.rad}</p>
+  {!visaSvar && <p class="m-0 mb-6 text-brod lg:text-brod-lg text-blyerts-2">{k.rad}</p>}
 
-  {namn === 'daggpunkt' && <DaggpunktForm kompakt={true} indata={dpIndata} varden={dpVarden} idPrefix={prefix} knappText="Räkna ut" />}
+  {namn === 'daggpunkt' && (
+    <DaggpunktForm kompakt={true} indata={dpIndata} varden={dpVarden} idPrefix={prefix} knappText="Räkna ut" faltUrval={visaSvar ? 'luften' : 'alla'}>
+      {visaSvar && (
+        <div slot="fore-knapp" class="yta flex flex-col items-start gap-2 px-4.5 py-3.5 sm:flex-row sm:items-center sm:gap-5">
+          <p class="m-0 font-serif text-siffra">{svarTal}</p>
+          <p class="m-0 text-liten text-blyerts-2">{SVAR_RAD}</p>
+        </div>
+      )}
+    </DaggpunktForm>
+  )}
   {namn === 'avfuktare' && <AvfuktareForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'elkostnad' && <ElkostnadForm kompakt={true} indata={elIndata} varden={elVarden} typ={elTyp} produktSlug={elProduktSlug} plats={elPlats} tvattFalt={elTvattFalt} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'innervagg' && <InnervaggForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
@@ -220,7 +257,11 @@ const prefix = `${k.slug}-inbaddad-`;
   {namn === 'takavvattning' && <TakavvattningForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'kok-kostnad' && <KokKostnadForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
 
-  <p class="m-0 mt-4 text-liten text-blyerts-2">
-    {FOTRAD}
-  </p>
+  {
+    !visaSvar && (
+      <p class="m-0 mt-4 text-liten text-blyerts-2">
+        {FOTRAD}
+      </p>
+    )
+  }
 </div>

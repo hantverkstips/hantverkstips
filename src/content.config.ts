@@ -212,7 +212,7 @@ const jamforelser = defineCollection({
 // Huben publiceras när den har minst fem sidor att länka till.
 const pelare = defineCollection({
   loader: glob({ base: './src/content/pelare', pattern: '*.{md,mdx}' }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     seoTitle: z.string().optional(),
     description: z.string().max(160),
@@ -223,6 +223,19 @@ const pelare = defineCollection({
     // Guider och kunskap i andra pelare som hubben visar under en plats. id är
     // filnamnet. Bara i en pelare med platsregister (src/lib/plats.ts).
     grannsidor: z.array(z.object({ id: z.string(), plats: platsEnum })).default([]),
+    // Designlyftet 2026-10-02 (docs/DESIGN.md 5.2). Hubbens bild i rubrikbandet;
+    // utelämnad tar hubben den nyaste illustrationen bland gruppernas kort.
+    bild: image().optional(),
+    // Börja här: en guide eller kunskapssida i pelaren. Utelämnad: den nyaste
+    // problemguiden eller kunskapssidan. npm run kontrollera stoppar ett id som
+    // inte finns, är utkast eller hör till en annan pelare.
+    borjaHar: z.object({ samling: z.enum(['guider', 'kunskap']), id: z.string() }).optional(),
+    // Läs i ordning: rubrik och två till fem steg, var och en en länk.
+    lasordning: z
+      .object({ rubrik: z.string(), steg: z.array(z.object({ text: z.string(), href: z.string() })).min(2).max(5) })
+      .optional(),
+    // Grannar: två till fyra sidor i andra pelare, som chips längst ner.
+    grannar: z.array(z.object({ text: z.string(), href: z.string() })).min(2).max(4).optional(),
     uppdaterad: z.coerce.date().optional(),
     utkast: z.boolean().default(false),
   }),

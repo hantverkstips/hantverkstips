@@ -1,10 +1,12 @@
 ---
 /**
  * Tät lista under en plats på en hub som ordnas efter plats (PelarHub i
- * platsläge). En rad per sida: etikett och rubrik som länk, ingen bild, ingen
- * beskrivning, inget datum. Utseendet sitter i komponentklassen .platslista i
- * global.css, inte på elementen, så att 46 rader håller budgeten.
- * Spec: docs/briefer/spec-fukthubb-plats-2026-09-30.md 4.2.
+ * platsläge), i ett kort. En rad per sida: etikett och rubrik som länk, ingen
+ * bild, ingen beskrivning, inget datum. Från 640 px står etiketten i en spalt
+ * till vänster. Utseendet sitter i komponentklassen .platslista i global.css,
+ * inte på elementen, så att 46 rader håller budgeten.
+ * Spec: docs/briefer/spec-fukthubb-plats-2026-09-30.md 4.2, klädsel
+ * spec-designlyft-a-2026-10-02 4.6.
  */
 interface Props {
   rader: { etikett: string; rubrik: string; href: string }[];
@@ -13,7 +15,7 @@ interface Props {
 const { rader } = Astro.props;
 ---
 
-<ul class="platslista">
+<ul class="kort platslista">
   {
     rader.map((r) => (
       <li>

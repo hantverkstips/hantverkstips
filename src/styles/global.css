@@ -56,6 +56,8 @@
   --color-*: initial;
   --color-papper: #f5efe3;
   --color-papper-2: #ebe2cf;
+  /* Pappersrutan runt en bild i ett kort och blockens linjerade papper (2026-10-02). */
+  --color-ruta: #faf6ec;
   --color-linje: #c9bca3;
   --color-blyerts: #2a2521;
   --color-blyerts-2: #625a50;
@@ -103,15 +105,16 @@
   /* Kortrubrik. Zilla Slab 600 i ett artikelkort, semantiskt en H3 men satt som
      en liten tidningsrubrik. Det är rutnätets skäl att läsas som en tidningssida
      i stället för en länklista. Regeln "H3 är sans" gäller fortfarande i löptext.
-     -xl används bara av startsidans stora kort. Se docs/DESIGN.md avsnitt 2. */
+     -xl (32 px) används bara av det stora kortet, på startsidan och hubben.
+     Se docs/DESIGN.md avsnitt 2. */
   --text-kortrubrik: 1.25rem;
   --text-kortrubrik--line-height: 1.25;
   --text-kortrubrik--font-weight: 600;
   --text-kortrubrik-lg: 1.375rem;
   --text-kortrubrik-lg--line-height: 1.25;
   --text-kortrubrik-lg--font-weight: 600;
-  --text-kortrubrik-xl: 1.5rem;
-  --text-kortrubrik-xl--line-height: 1.25;
+  --text-kortrubrik-xl: 2rem;
+  --text-kortrubrik-xl--line-height: 1.2;
   --text-kortrubrik-xl--font-weight: 600;
   --text-h2: 1.5rem;
   --text-h2--line-height: 1.25;
@@ -125,6 +128,10 @@
   --text-h1-lg: 2.625rem;
   --text-h1-lg--line-height: 1.15;
   --text-h1-lg--font-weight: 600;
+  /* Startsidans H1 i heroblocket från lg, 54 px. Bara där. */
+  --text-h1-xl: 3.375rem;
+  --text-h1-xl--line-height: 1.1;
+  --text-h1-xl--font-weight: 600;
   /* Stor siffra: kalkylatorresultat som bild. Sätts i Zilla Slab (font-serif). */
   --text-siffra: 3rem;
   --text-siffra--line-height: 1;
@@ -132,17 +139,32 @@
   --text-siffra-lg: 4rem;
   --text-siffra-lg--line-height: 1;
   --text-siffra-lg--font-weight: 600;
+  /* Räknarens svar som bild, 84 px (fas C). */
+  --text-siffra-xl: 5.25rem;
+  --text-siffra-xl--line-height: 0.95;
+  --text-siffra-xl--font-weight: 600;
 
-  /* Avstånd. Bas 4 px, Tailwinds skala. Tillåtna steg: 1 2 3 4 6 8 12 16 24. */
+  /* Avstånd. Bas 4 px, Tailwinds skala. Tillåtna steg i docs/DESIGN.md avsnitt 4;
+     inne i ett kort också halvstegen 2.5, 3.5, 4.5, 5.5 och 6.5. */
   --spacing: 0.25rem;
 
-  /* Radier. Två, inga fler. sm för urklipp (kort, fält, bilder), md för knappar och meny. */
+  /* Radier, docs/DESIGN.md avsnitt 4. sm (4 px, 2 px till 2026-10-02) för kort,
+     block, färgade ytor, fält, tabeller och bilder; md (6 px) för knappar,
+     startsidans heroblock och den öppna mobilmenyn; full för det man tar i eller
+     som är en stämpel: chips, den runda symbolen, numrerade steg, porträttplatsen. */
   --radius-*: initial;
-  --radius-sm: 0.125rem;
+  --radius-sm: 0.25rem;
   --radius-md: 0.375rem;
+  --radius-full: 9999px;
 
-  /* Skuggor. En, för det som ligger ovanpå sidan (meny, rullgardin). Kort har ram. */
+  /* Skuggor, docs/DESIGN.md avsnitt 4. Hårda, utan oskärpa, snett nedåt höger:
+     papper som ligger på papper. kort på kort och block, kort-hover när hela
+     kortet är en länk, block på startsidans heroblock. lyft bara för det som
+     faktiskt ligger ovanpå sidan, den öppna mobilmenyn. */
   --shadow-*: initial;
+  --shadow-kort: 2px 3px 0 var(--color-papper-2);
+  --shadow-kort-hover: 2px 3px 0 var(--color-linje);
+  --shadow-block: 3px 4px 0 var(--color-papper-2);
   --shadow-lyft: 0 2px 8px rgb(42 37 33 / 0.14);
 
   /* Innehållsbredd. Läsbar radlängd, och sidbredd för tabeller och diagram. */
@@ -268,18 +290,20 @@ body {
   }
 
   /*
-    Artikelkortet. Ett urklipp: 1 px ram, 2 px radie, ingen skugga. Hela kortet är
-    klickbart genom att rubrikens länk får en ::after som täcker kortet, men bara
-    rubriken är länk för skärmläsaren. Hover lyfter ingenting, den stryker under
-    rubriken med pennan. Se docs/DESIGN.md avsnitt 6, Artikelkort.
+    Artikelkortet. Ett kort (.kort nedan) med bilden i en pappersruta. Hela
+    kortet är klickbart genom att rubrikens länk får en ::after som täcker
+    kortet, men bara rubriken är länk för skärmläsaren. Hover lyfter ingenting:
+    skuggan byter färg och rubriken stryks under med pennan. Samma .kortlank
+    bär ämneskortet och verktygskortet. Se docs/DESIGN.md avsnitt 6, Artikelkort.
   */
   .artikelkort {
     position: relative;
     display: flex;
     flex-direction: column;
     height: 100%;
+    overflow: hidden;
   }
-  .artikelkort .kortlank {
+  .kortlank {
     color: var(--color-blyerts);
     text-decoration-line: underline;
     text-decoration-thickness: 2px;
@@ -287,27 +311,615 @@ body {
     text-decoration-color: transparent;
     transition: text-decoration-color 150ms;
   }
-  .artikelkort .kortlank::after {
+  .kortlank::after {
     content: "";
     position: absolute;
     inset: 0;
   }
-  .artikelkort:hover .kortlank,
-  .artikelkort .kortlank:focus-visible {
+  .kort:hover .kortlank,
+  .kortlank:focus-visible {
     text-decoration-color: var(--color-penna);
   }
   /* Ringen läggs runt hela kortet där :has finns. Webbläsare utan :has visar
      webbläsarens egen ring runt rubriken, vilket också duger. */
-  .artikelkort:has(.kortlank:focus-visible) {
+  .kort:has(.kortlank:focus-visible) {
     outline: 3px solid var(--color-penna);
     outline-offset: 2px;
   }
-  .artikelkort:has(.kortlank:focus-visible) .kortlank:focus-visible {
+  .kort:has(.kortlank:focus-visible) .kortlank:focus-visible {
     outline: none;
   }
   @media (prefers-reduced-motion: reduce) {
-    .artikelkort .kortlank {
+    .kortlank {
       transition: none;
+    }
+  }
+  /* Kortets textdel och dess typografi, en gång här i stället för på varje kort.
+     Det stora kortet lägger sina tillägg som verktyg, som vinner. */
+  .artikelkort-text {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    flex-direction: column;
+    padding: 16px;
+  }
+  .artikelkort-text > p:first-child {
+    margin: 0;
+    font-size: var(--text-etikett);
+    line-height: var(--text-etikett--line-height);
+    letter-spacing: var(--text-etikett--letter-spacing);
+    font-weight: var(--text-etikett--font-weight);
+    text-transform: uppercase;
+  }
+  .artikelkort-text > :is(h2, h3) {
+    margin: 6px 0 0;
+    font-family: var(--font-serif);
+    font-size: var(--text-kortrubrik);
+    line-height: var(--text-kortrubrik--line-height);
+    font-weight: var(--text-kortrubrik--font-weight);
+  }
+  .artikelkort-beskr {
+    margin: 6px 0 0;
+    font-size: var(--text-brod);
+    line-height: var(--text-brod--line-height);
+    color: var(--color-blyerts-2);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+  }
+  .artikelkort-meta {
+    margin: auto 0 0;
+    padding-top: 12px;
+    font-size: var(--text-liten);
+    line-height: var(--text-liten--line-height);
+    color: var(--color-blyerts-2);
+  }
+  @media (width >= 40rem) {
+    .artikelkort-text {
+      padding: 20px;
+    }
+  }
+  @media (width >= 64rem) {
+    .artikelkort-text > p:first-child {
+      font-size: var(--text-etikett-lg);
+      line-height: var(--text-etikett-lg--line-height);
+    }
+    .artikelkort-text > :is(h2, h3) {
+      font-size: var(--text-kortrubrik-lg);
+      line-height: var(--text-kortrubrik-lg--line-height);
+    }
+  }
+  /* Kompakt på mobil (startsidans fyra): under 640 px pappersrutan som en ruta
+     på 120 px till vänster, med linjen till höger, och ingen beskrivning. */
+  @media (width < 40rem) {
+    .artikelkort-kompakt {
+      flex-direction: row;
+    }
+    .artikelkort-kompakt > .pappersruta {
+      width: 120px;
+      flex-shrink: 0;
+      padding: 8px;
+      border-bottom: 0;
+      border-right: 1px solid var(--color-linje);
+    }
+    .artikelkort-kompakt .artikelkort-beskr {
+      display: none;
+    }
+  }
+
+  /*
+    Byggstenarna sedan designlyftet 2026-10-02: docs/DESIGN.md avsnitt 4 och 6,
+    värdena i docs/briefer/spec-designlyft-a-2026-10-02.md avsnitt 1. Ett utseende
+    som står på många element är en klass här, inte en rad verktyg (budgeten).
+    Ett block heter .blad, eftersom block är Tailwinds ord för display: block.
+  */
+
+  /* Sektionens innehåll i sidbredd med sidmarginal, på galleri­sidorna. */
+  .sidram {
+    width: 100%;
+    max-width: var(--container-sidbredd);
+    margin-inline: auto;
+    padding-inline: 16px;
+  }
+  @media (width >= 40rem) {
+    .sidram {
+      padding-inline: 24px;
+    }
+  }
+  @media (width >= 64rem) {
+    .sidram {
+      padding-inline: 32px;
+    }
+  }
+
+  /* Band: en sektion i full bredd på papper-2, linje ovanför och under. */
+  .band {
+    background-color: var(--color-papper-2);
+    border-block: 1px solid var(--color-linje);
+  }
+
+  /* Kort: papper på bordet, hård skugga snett nedåt höger. Skuggan byter färg
+     vid hover när hela kortet är en länk; den rör sig aldrig. */
+  .kort {
+    background-color: var(--color-papper);
+    border: 1px solid var(--color-linje);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-kort);
+    transition: box-shadow 150ms;
+  }
+  .kort:has(.kortlank):hover {
+    box-shadow: var(--shadow-kort-hover);
+  }
+
+  /* Block: ett kort på linjerat papper, en linje var 28:e px utan marginallinje. */
+  .blad {
+    background-color: var(--color-ruta);
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0 27px,
+      color-mix(in srgb, var(--color-linje) 65%, var(--color-ruta)) 27px 28px
+    );
+    border: 1px solid var(--color-linje);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-kort);
+    transition: box-shadow 150ms;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .kort,
+    .blad {
+      transition: none;
+    }
+  }
+
+  /* Färgad yta: tryckt på sidan, inte lagd på den. Ingen skugga. */
+  .yta {
+    background-color: var(--color-papper-2);
+    border: 1px solid var(--color-linje);
+    border-radius: var(--radius-sm);
+  }
+
+  /* Pappersrutan runt en bild i ett kort: ruta, 12 px luft, linje mot texten. */
+  .pappersruta {
+    background-color: var(--color-ruta);
+    padding: 12px;
+    border-bottom: 1px solid var(--color-linje);
+  }
+  .pappersruta > img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 5 / 3;
+    object-fit: contain;
+  }
+
+  /* Chip: en liten sak man kan ta i. Ramen i blyerts-2, eftersom den går att klicka på. */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    padding-inline: 14px;
+    border: 1px solid var(--color-blyerts-2);
+    border-radius: var(--radius-full);
+    background-color: var(--color-papper-2);
+    color: var(--color-blyerts);
+    font-size: var(--text-liten);
+    line-height: 1.2;
+    text-decoration: none;
+  }
+  @media (hover: hover) {
+    .chip:hover {
+      border-color: var(--color-blyerts);
+      text-decoration-line: underline;
+      text-decoration-color: var(--color-penna);
+      text-underline-offset: 3px;
+    }
+  }
+
+  /* Gul chip: en etikett som säger en produkts roll. Aldrig en länk. */
+  .chip-gul {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    padding-inline: 12px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-tumstock);
+    color: var(--color-blyerts);
+    font-size: var(--text-finstilt);
+    font-weight: 700;
+  }
+
+  /* Knapp: kontur i penna, .knapp-fylld fylld. Hover: pennan trycks hårdare. */
+  .knapp {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 48px;
+    padding-inline: 22px;
+    border: 2px solid var(--color-penna);
+    border-radius: var(--radius-md);
+    color: var(--color-penna);
+    background-color: transparent;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    text-decoration: none;
+    transition:
+      background-color 150ms,
+      color 150ms,
+      border-color 150ms;
+  }
+  .knapp-fylld {
+    background-color: var(--color-penna);
+    color: var(--color-papper);
+  }
+  @media (hover: hover) {
+    .knapp:hover {
+      background-color: var(--color-blyerts);
+      border-color: var(--color-blyerts);
+      color: var(--color-papper);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .knapp {
+      transition: none;
+    }
+  }
+
+  /* Symbol: en rund stämpel i tumstock med en ikon i blyerts. Bara i ämneskortet. */
+  .symbol {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-tumstock);
+    color: var(--color-blyerts);
+  }
+  .symbol svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  /* Steg: siffran i en rund stämpel framför varje punkt i en <ol>. Siffran är
+     listans räknare, inte text, så skärmläsaren läser en lista. */
+  .steg {
+    list-style: none;
+    padding: 0;
+    counter-reset: steg;
+  }
+  .steg > li {
+    counter-increment: steg;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .steg > li::before {
+    content: counter(steg);
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-tumstock);
+    color: var(--color-blyerts);
+    font-weight: 700;
+    font-size: 0.9375rem;
+  }
+
+  /* Rubrikraden på galleri­sidorna: H2 med pennstreck och en länk längst till
+     höger, eller (.rubrikrad-rad) en kort rad i blyerts-2 på rubrikens baslinje. */
+  .rubrikrad {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    column-gap: 24px;
+    row-gap: 4px;
+    margin-bottom: 20px;
+  }
+  .rubrikrad > .pennstreck {
+    margin: 0;
+  }
+  .rubrikrad-rad {
+    justify-content: flex-start;
+    align-items: baseline;
+    column-gap: 18px;
+  }
+
+  /* Ämneskortet (Amnesrad.astro): symbolen och texten, staplade på mobil och
+     bredvid varandra från 1024 px. Typografin via barnen, inte per element. */
+  .amneskort {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+    padding: 16px;
+  }
+  .amneskort p {
+    margin: 0;
+  }
+  .amneskort p:first-child {
+    font-size: var(--text-etikett);
+    line-height: var(--text-etikett--line-height);
+    letter-spacing: var(--text-etikett--letter-spacing);
+    font-weight: var(--text-etikett--font-weight);
+    text-transform: uppercase;
+    color: var(--color-blyerts-2);
+  }
+  .amneskort p:nth-child(2) {
+    margin-top: 4px;
+    font-family: var(--font-serif);
+    font-size: var(--text-kortrubrik);
+    line-height: var(--text-kortrubrik--line-height);
+    font-weight: var(--text-kortrubrik--font-weight);
+  }
+  .amneskort p:nth-child(3) {
+    margin-top: 4px;
+    font-size: var(--text-liten);
+    line-height: var(--text-liten--line-height);
+    color: var(--color-blyerts-2);
+  }
+  @media (width >= 64rem) {
+    .amneskort {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 20px;
+    }
+    .amneskort p:nth-child(2) {
+      font-size: var(--text-kortrubrik-lg);
+      line-height: var(--text-kortrubrik-lg--line-height);
+    }
+  }
+  .amneskort-stor {
+    background-color: var(--color-ruta);
+  }
+  /* Pelare utan hub: dämpat, ingen skugga, ingen länk. */
+  .amneskort-kommer {
+    background-color: var(--color-papper-2);
+    border: 1px solid var(--color-linje);
+    border-radius: var(--radius-sm);
+    color: var(--color-blyerts-2);
+  }
+  .amneskort-kommer .symbol {
+    background-color: var(--color-papper);
+    color: var(--color-blyerts-2);
+  }
+
+  /*
+    Verktygskortet (Verktygskort.astro), fyra varianter. Roten är .kort .vkort,
+    och typografin följer barnens ordning: etikett, namn (.kortlank), sedan rad,
+    tal eller svar, sist "Till räknaren". Spec fas A 4.3.
+  */
+  .vkort {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    height: 100%;
+    padding: 20px;
+  }
+  .vkort > img {
+    width: 120px;
+    height: auto;
+    flex-shrink: 0;
+  }
+  .vkort > div {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+  }
+  .vkort p {
+    margin: 0;
+  }
+  .vkort > div > p:first-child {
+    font-size: var(--text-etikett);
+    line-height: var(--text-etikett--line-height);
+    letter-spacing: var(--text-etikett--letter-spacing);
+    font-weight: var(--text-etikett--font-weight);
+    text-transform: uppercase;
+    color: var(--color-penna);
+  }
+  .vkort > div > p:nth-child(2) {
+    margin-top: 6px;
+    font-family: var(--font-serif);
+    font-size: var(--text-kortrubrik);
+    line-height: var(--text-kortrubrik--line-height);
+    font-weight: var(--text-kortrubrik--font-weight);
+  }
+  .vkort > div > p:nth-child(3) {
+    margin-top: 6px;
+    font-size: var(--text-liten);
+    line-height: var(--text-liten--line-height);
+    color: var(--color-blyerts-2);
+  }
+  .vkort > div > span {
+    margin-top: 8px;
+    font-weight: 700;
+    color: var(--color-penna);
+  }
+  @media (width >= 64rem) {
+    .vkort {
+      padding: 24px;
+    }
+    .vkort > img {
+      width: 140px;
+    }
+    .vkort > div > p:nth-child(2) {
+      font-size: var(--text-kortrubrik-lg);
+      line-height: var(--text-kortrubrik-lg--line-height);
+    }
+  }
+  /* tal: utan bild, etiketten i blyerts-2, talet som bild med villkoret bredvid. */
+  .vkort-tal {
+    padding: 24px;
+  }
+  .vkort-tal > div > p:first-child {
+    color: var(--color-blyerts-2);
+  }
+  .vkort-tal > div > p:nth-child(3) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 8px;
+    margin-top: 12px;
+  }
+  .vkort-tal > div > p:nth-child(3) > span:first-child {
+    font-family: var(--font-serif);
+    font-size: var(--text-siffra);
+    line-height: var(--text-siffra--line-height);
+    font-weight: var(--text-siffra--font-weight);
+    color: var(--color-blyerts);
+  }
+  /* Utan tal: svarets form ur registret i serif H2. */
+  .vkort-tal > div > p.vkort-svar {
+    font-family: var(--font-serif);
+    font-size: var(--text-h2);
+    line-height: var(--text-h2--line-height);
+    font-weight: var(--text-h2--font-weight);
+    color: var(--color-blyerts);
+  }
+  /* liten: bilden 72 px, namnet i 19 px serif. */
+  .vkort-liten > img {
+    width: 72px;
+  }
+  .vkort-liten > div > p:nth-child(2) {
+    font-size: var(--text-h3);
+    line-height: var(--text-h3--line-height);
+  }
+
+  /* Granskat på datablad (startsidan): en rad per val, inte en länk. */
+  .granskad-rad {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    padding: 14px 16px;
+    background-color: var(--color-papper-2);
+    border-radius: var(--radius-sm);
+  }
+
+  /* Startsidans kompakta lista över räknarna, i ett kort. Hela raden är länken. */
+  .kompaktlista {
+    margin: 0;
+    padding: 8px;
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    column-gap: 40px;
+  }
+  .kompaktlista li + li {
+    border-top: 1px solid var(--color-linje);
+  }
+  .kompaktlista a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 44px;
+    padding: 14px 16px;
+    color: var(--color-blyerts);
+    text-decoration: none;
+  }
+  .kompaktlista a > span:first-child:not(:only-child) {
+    width: 88px;
+    flex-shrink: 0;
+    font-size: var(--text-etikett);
+    line-height: var(--text-etikett--line-height);
+    letter-spacing: var(--text-etikett--letter-spacing);
+    font-weight: var(--text-etikett--font-weight);
+    text-transform: uppercase;
+    color: var(--color-blyerts-2);
+  }
+  /* Sista raden, länken till alla räknare, i pennan. */
+  .kompaktlista li:last-child a {
+    color: var(--color-penna);
+    font-weight: 700;
+  }
+  @media (hover: hover) {
+    .kompaktlista a:hover {
+      background-color: var(--color-papper-2);
+    }
+    .kompaktlista a:hover > span:last-child {
+      text-decoration-line: underline;
+      text-decoration-color: var(--color-penna);
+      text-underline-offset: 3px;
+    }
+  }
+  @media (width >= 64rem) {
+    .kompaktlista {
+      grid-template-columns: 1fr 1fr;
+    }
+    .kompaktlista li:nth-child(2) {
+      border-top: 0;
+    }
+  }
+
+  /* Så jobbar jag: tre principer, i spalter från 640 px. */
+  .principer {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 20px;
+  }
+  .principer li {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  @media (width >= 40rem) {
+    .principer {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  /* Räkna-indexets lista för de stora grupperna: utan kort, linje under varje rad. */
+  .raknelista {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    column-gap: 40px;
+  }
+  .raknelista a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    min-height: 44px;
+    padding-block: 14px;
+    border-bottom: 1px solid var(--color-linje);
+    color: var(--color-blyerts);
+    text-decoration: none;
+  }
+  .raknelista a > span:first-child {
+    font-weight: 700;
+    text-decoration-line: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 3px;
+  }
+  .raknelista a > span:last-child {
+    flex-shrink: 0;
+    text-align: right;
+    font-size: var(--text-liten);
+    line-height: var(--text-liten--line-height);
+    color: var(--color-blyerts-2);
+  }
+  @media (hover: hover) {
+    .raknelista a:hover > span:first-child {
+      text-decoration-color: var(--color-penna);
+    }
+  }
+  @media (width >= 64rem) {
+    .raknelista {
+      grid-template-columns: 1fr 1fr;
     }
   }
 
@@ -318,15 +930,31 @@ body {
     skull. Spec: docs/briefer/spec-fukthubb-plats-2026-09-30.md 4.2.
   */
   .platslista {
-    margin: 1rem 0 0;
-    padding: 0;
+    margin: 0;
+    padding: 8px;
     list-style: none;
-    border-top: 1px solid var(--color-linje);
   }
   .platslista li {
     position: relative;
-    padding-block: 0.75rem;
-    border-bottom: 1px solid var(--color-linje);
+    padding: 14px 16px;
+  }
+  .platslista li + li {
+    border-top: 1px solid var(--color-linje);
+  }
+  .platslista li:hover {
+    background-color: var(--color-papper-2);
+  }
+  /* Från 640 px står etiketten i en spalt till vänster om rubriken. */
+  @media (width >= 40rem) {
+    .platslista li {
+      display: grid;
+      grid-template-columns: 12rem minmax(0, 1fr);
+      column-gap: 16px;
+      align-items: baseline;
+    }
+    .platslista li h3 {
+      margin: 0;
+    }
   }
   .platslista p {
     margin: 0;
@@ -381,27 +1009,20 @@ body {
     }
   }
 
-  /* Placeholder för kort utan illustration: ett blankt blad ur samma block som
-     skisserna. Linjer var 24:e px och en marginallinje i penna vid 35 procent.
-     Samma recept som .linjerat, men utan innehållsmarginal. Aldrig en grå ruta. */
+  /* Det blanka bladet i pappersrutan på ett kort utan illustration: ruta med
+     blockets linjer (.blad), utan marginallinje, 5:3. Aldrig en grå ruta. */
   .plats-blad {
-    background-color: var(--color-papper-2);
-    background-image:
-      linear-gradient(
-        to right,
-        color-mix(in srgb, var(--color-penna) 35%, transparent) 0,
-        color-mix(in srgb, var(--color-penna) 35%, transparent) 1px,
-        transparent 1px
-      ),
-      repeating-linear-gradient(
-        to bottom,
-        transparent 0,
-        transparent 23px,
-        var(--color-linje) 23px,
-        var(--color-linje) 24px
-      );
-    background-repeat: no-repeat, repeat;
-    background-position: 24px 0, 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 5 / 3;
+    text-align: center;
+    background-color: var(--color-ruta);
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0 27px,
+      color-mix(in srgb, var(--color-linje) 65%, var(--color-ruta)) 27px 28px
+    );
   }
 
   /*
@@ -483,23 +1104,34 @@ body {
     }
   }
 
-  /* Ämnesraden. "Alla ämnen" (li.ml-auto) har egna verktyg och .lank. */
+  /* Ämnesraden i chips sedan 2026-10-02: samma värden som .chip, men ytan papper
+     på bandet. Den aktuella pelaren (aria-current, satt av Bas.astro) i tumstock.
+     "Alla ämnen" (li.ml-auto) har egna verktyg och .lank. */
   .amnesrad li:not(.ml-auto) a {
-    display: flex;
-    height: calc(var(--spacing) * 11);
+    display: inline-flex;
     align-items: center;
-    gap: calc(var(--spacing) * 2);
+    gap: 6px;
+    min-height: 44px;
     white-space: nowrap;
-    padding-inline: calc(var(--spacing) * 3);
+    padding-inline: 14px;
+    border: 1px solid var(--color-blyerts-2);
+    border-radius: var(--radius-full);
+    background-color: var(--color-papper);
     font-size: var(--text-liten);
-    line-height: var(--text-liten--line-height);
+    line-height: 1.2;
     color: var(--color-blyerts);
     text-decoration-line: none;
   }
+  .amnesrad li:not(.ml-auto) a[aria-current] {
+    background-color: var(--color-tumstock);
+    border-color: var(--color-tumstock);
+  }
   @media (hover: hover) {
     .amnesrad li:not(.ml-auto) a:hover {
+      border-color: var(--color-blyerts);
       text-decoration-line: underline;
       text-decoration-color: var(--color-penna);
+      text-underline-offset: 3px;
     }
   }
   .amnesrad svg {
