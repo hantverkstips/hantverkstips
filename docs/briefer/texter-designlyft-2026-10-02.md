@@ -190,3 +190,36 @@ Viktigt för fasadytan: Kort svar-rutan som ströks innehöll sidans enda förkl
 - Kontrollplan: planens fyra delar och den separata avfallsplanen står nu i klartexten.
 - Måla ute: natten och daggen står i svarsytans rader, 80 procent i klartexten med Nordsjö som källa.
 - Grannemedgivande: regeln om 4,5 m med lagrum står i klartexten; vem som skriver under står i mottagarlistan när medgivande krävs.
+
+### Steg 5, rotavdrag, badrum, kök, takbyte, takavvattning
+
+| Nyckel | Fil | Platshållare | Längd |
+|---|---|---|---|
+| `rotavdrag.matare.etikett` | `src/pages/rakna/rotavdrag.astro` | inga; vad mätaren mäter (avdraget mot årets tak) | högst 30 tecken |
+| `rotavdrag.klartext` | samma | `{avdrag}`, `{arbete}`, `{agare}`, `{procent}`, `{grans}`, `{betala}` | högst 200 tecken |
+| `badrum-kostnad.klartext` | `src/pages/rakna/badrum-kostnad.astro` | `{betala}` (ett tal eller ett spann), `{yta}`, `{fore}`, `{rot}`; utanför intervallet fylls bara `{yta}` i | högst 200 tecken |
+| `kok-kostnad.klartext` | `src/pages/rakna/kok-kostnad.astro` | `{betala}`, `{fore}`, `{rot}`, `{luckor}`, `{meter}` | högst 200 tecken |
+| `takbyte.klartext` | `src/pages/rakna/takbyte.astro` | `{pris}` (tom utan belopp), `{takarea}`, `{langd}`, `{bredd}`, `{vinkel}` | högst 200 tecken |
+| `takavvattning.klartext` | `src/pages/rakna/takavvattning.astro` | `{ranna}`, `{stupror}`, `{yta}`, `{antal}`, `{fall}`; utanför tabellen fylls bara `{yta}` i | högst 200 tecken |
+
+Utan plats: rotavdragets fyra meningar ur Kort svar (30 procent, material ger inget avdrag, 50 000 kr per person och 75 000 kr för rot och rut tillsammans, betalningsdagen avgör), och hela `kortsvar` i formelmodulerna för badrum, kök, takbyte och takavvattning.
+
+## Test- och jämförelsesidorna
+
+Spec: `docs/briefer/spec-designlyft-d-2026-10-02.md`.
+
+| Nyckel | Fil | Var och vad | Längd |
+|---|---|---|---|
+| `granskning.metod.rubrik` | `src/pages/tester/[slug].astro` | H2 på en granskningssida som inte har egen rubrik för metoden, före meningen "Metoden i sin helhet står på sidan Så testar jag." Ordet test får inte stå i den | högst 30 tecken |
+
+### Fas C steg 5, skrivet av hantverkaren 2026-10-02
+
+- `rotavdrag.matare.etikett`: "Avdraget mot årets gräns"
+- `rotavdrag.klartext`: "Med {arbete} kr i arbete och {agare} ägare blir rotavdraget {avdrag} kr, och du betalar {betala} kr. Skatteverket ger {procent} procent av arbetet, högst {grans} kr i avdrag, och inget på material."
+- `badrum-kostnad.klartext`: "Ett badrum med {yta} kvm golv kostar {betala} kr efter rotavdraget och {fore} kr före, räknat med offertförmedlarnas och en byggfirmas priser." Utanför intervallet (`KLARTEXT_UTANFOR`): "Ett badrum på {yta} kvm ligger utanför de storlekar som offertförmedlarnas och en byggfirmas priser gäller för, så här ger jag inget belopp."
+- `kok-kostnad.klartext`: "Det du har valt kostar {betala} kr efter rotavdraget och {fore} kr före, räknat med tillverkarnas, byggfirmornas och offertförmedlarnas priser." Bänkskivan utan rotavdrag (`KLARTEXT_VILLKOR`): "En ny bänkskiva på {meter} m kostar {betala} kr. Jag räknar utan rotavdrag, eftersom Skatteverket inte nämner ett byte av bara skivan."
+- `takbyte.klartext`: "Ett hus på {langd} × {bredd} m med {vinkel} graders taklutning har {takarea} m² tak, och ett nytt tak kostar {pris} kr efter rotavdraget, räknat med offertförmedlares och leverantörers priser." Utan belopp (`KLARTEXT_UTAN_PRIS`): "Ett hus på {langd} × {bredd} m med {vinkel} graders taklutning har {takarea} m² tak längs lutningen, räknat från husets mått och takutsprången."
+- `takavvattning.klartext`: "Ett takfall på {yta} m² behöver en ränna på {ranna} mm och {antal} stuprör på {stupror} mm, och rännan ska ha minst {fall} mm fall fram till närmaste stuprör, enligt RA Hus 21 och Plannja." Utanför tabellerna (`KLARTEXT_UTANFOR`): "Ett takfall på {yta} m² är större än tabellerna i RA Hus 21 och Plannjas anvisning går upp till, så fråga tillverkaren av rännan."
+- Andra meningen per räknare finns eftersom tomma platshållare annars gav trasiga meningar; koden väljer mening efter utfallet.
+- Rotavdraget: procentsatsen, gränsen, material och Skatteverket står i klartexten; betalningsdagen och gränsen på 75 000 kr för rot och rut står i reglerna i Därför blev svaret så.
+- Badrum, kök, takbyte och takavvattning: kortsvarens källor, datum och förbehåll står redan i svarsytans källrad och i reglerna. Det som inte flyttats är kortsvarens exempel på andra storlekar och nivåer (badrum på 4 kvm och mellannivån, köksvägarna som inte är valda, tegel och plåt, de tre takfallen). De är exempel på standardvärden som läsaren får fram genom att ändra formuläret.

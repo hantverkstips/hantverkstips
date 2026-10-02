@@ -20,10 +20,15 @@
  *
  * Räkningen pekar inte ut någon produkt, den räknar på en faktura läsaren redan
  * har, så sidan har varken produktkort eller reklamband.
+ *
+ * Räknarmallen sedan fas C (spec-designlyft-c-2026-10-02 avsnitt 14).
  */
 export const prerender = false;
 
-import Bas from '../../layouts/Bas.astro';
+import { artikelUrl, publicerade } from '../../lib/innehall';
+import { tillKortArtikel, type KortData } from '../../lib/kort';
+import { hittaKalkylator } from '../../lib/kalkyl/register';
+import { arPelare } from '../../lib/pelare';
 import {
   ANSOKAN_SENAST,
   ARET,
@@ -55,17 +60,18 @@ import {
   type RotavdragResultat,
   type Slag,
 } from '../../lib/kalkyl/rotavdrag';
-import { CELL_KLASS, ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
-import { verktyg } from '../../lib/strukturdata';
-import { verktygsDelningsbild, verktygsillustration, verktygsVarumarkesbild } from '../../lib/verktygsbild';
+import { CELL_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
+import { verktygsillustration } from '../../lib/verktygsbild';
 import RotavdragForm from '../../components/kalkyl/RotavdragForm.astro';
-import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Artikelrutnat from '../../components/ui/Artikelrutnat.astro';
 import Faq from '../../components/ui/Faq.astro';
 import Illustration from '../../components/ui/Illustration.astro';
-import Markering from '../../components/ui/Markering.astro';
+import Matare from '../../components/ui/Matare.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
-import StrukturData from '../../components/ui/StrukturData.astro';
+import Statusrad from '../../components/ui/Statusrad.astro';
+import Svarstal from '../../components/ui/Svarstal.astro';
 import Tabellyta from '../../components/ui/Tabellyta.astro';
+import Raknarsida from '../../components/vyer/Raknarsida.astro';
 
 Astro.locals.sidtyp = 'verktyg';
 
@@ -125,28 +131,14 @@ const SLAG_ETIKETT: Record<Slag, string> = {
   skatt: 'Skatten',
 };
 
-const SLAG_RAM: Record<Slag, string> = {
-  arbete: 'border-blyerts',
-  procent: 'border-blyerts',
-  datum: 'border-varning',
-  tak: 'border-blyerts-2',
-  skatt: 'border-blyerts-2',
-};
-
 /** Slug, namn och beskrivning på ett ställe: brödsmulan, og:image och WebApplication läser samma. */
 const SLUG = 'rotavdrag';
 const VERKTYGSNAMN = `Rotavdrag ${ARET}`;
 const BESKRIVNING = `Fyll i vad arbetet kostar på fakturan, så ser du hur stort rotavdraget ${ARET} blir, vad du betalar efteråt och hur mycket av årets avdrag du har kvar.`;
 const titel = `Rotavdrag ${ARET}, räkna ut avdraget och vad du betalar`;
 
+/** Skissen står i kortet Så räknar jag. Huvudet har ingen bild sedan fas C (DESIGN.md 5.8). */
 const illustration = verktygsillustration(SLUG);
-/**
- * Varumärkesbilden i sidhuvudet (docs/DESIGN.md avsnitt 7). Finns den står
- * skissen i stället i "Så räknar vi". Finns den inte visas skissen i
- * sidhuvudet, och saknas båda visas ingen bild alls.
- */
-const varumarke = verktygsVarumarkesbild(SLUG);
-const huvudbild = varumarke ?? illustration;
 
 /** Källorna bakom antagandetabellen, samlade så att raderna inte glider isär. */
 const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande'; stod: string; url?: string }[] = [
@@ -287,187 +279,286 @@ const FRAGOR = [
     svar: `Ja, och det är oftast så ett större jobb ryms på ett år. Varje ägare har en egen gräns på ${kronor(ROT_TAK_KR)} kronor, så två ägare får tillsammans dra av ${kronor(ROT_TAK_KR * 2)} kronor. Villkoret är att båda äger bostaden medan arbetet görs och att båda är med och betalar. Hur många ni än är kan avdraget aldrig bli mer än ${ROT_PROCENT} procent av hela arbetskostnaden.`,
   },
 ];
+
+if (visat.status !== 'ok') throw new Error('[rotavdrag] Standardvärdena ska alltid ge ett svar');
+
+/** Hårda mellanslag i talen, så att Svarstal inte bryter inne i ett tal. */
+const hart = (s: string): string => s.replace(/ /g, ' ');
+
+/** Läs vidare, i den förra listans ordning. Länktexterna skriver hantverkaren. */
+const LAS_VIDARE = [
+  { href: '/rakna/dranering/', text: 'Räkna på vad en dränering kostar, med maskinhyran på egen rad' },
+  { href: '/grund/dranera-hus/', text: 'Så dränerar du om huset, från schakt till återställd tomt' },
+  { href: '/golv/renovera-trappa/', text: 'Renovera trappan, tre vägar med timmar och kronor' },
+  { href: '/el/tillaggsisolera-vind/', text: 'Tilläggsisolera vinden, vad det sparar och när det blir fel' },
+  { href: '/golv/bygga-trappa/', text: 'Bygga trappa, måtten och formeln för inne och ute' },
+  { href: '/rakna/kvadratmeter/', text: 'Räkna ut kvadratmeter och hur mycket material som går åt' },
+];
+
+/*
+ * Svarsytan, fas C (spec-designlyft-c-2026-10-02 avsnitt 14): avdraget som det
+ * stora talet, mätaren mot årets gräns för rotavdrag (gränsen per person gånger
+ * ägarna, rotTakTotaltKr ur formelmodulen) och statusraden när en gräns gör
+ * avdraget mindre än procentsatsen av arbetet. Ny text är hantverkarens.
+ */
+const MATARE_ETIKETT = 'Avdraget mot årets gräns'; // rotavdrag.matare.etikett
+/** Någon av gränserna stoppar en del av avdraget: avdraget blir mindre än procentsatsen av arbetet. */
+const gransNadd = visat.begransatAv !== 'procent';
+/*
+ * Klartexten. Platshållare: {avdrag} (avdraget, kr), {arbete}
+ * (arbetskostnaden, kr), {agare} (antalet ägare som siffra), {procent}
+ * (procentsatsen), {grans} (årets gräns för rotavdrag för alla ägare, kr) och
+ * {betala} (att betala efter avdraget, kr).
+ */
+const KLARTEXT =
+  'Med {arbete} kr i arbete och {agare} ägare blir rotavdraget {avdrag} kr, och du betalar {betala} kr. Skatteverket ger {procent} procent av arbetet, högst {grans} kr i avdrag, och inget på material.'; // rotavdrag.klartext
+const klartext = KLARTEXT.replace('{avdrag}', kronor(visat.avdragKr))
+  .replace('{arbete}', kronor(visatIndata.arbetskostnadKr))
+  .replace('{agare}', String(visatIndata.antalAgare))
+  .replace('{procent}', String(ROT_PROCENT))
+  .replace('{grans}', kronor(visat.rotTakTotaltKr))
+  .replace('{betala}', kronor(visat.attBetalaKr));
+
+/**
+ * Läs vidare: artiklarna som artikelkort, räknarna med registrets namn som på
+ * hubben, i den förra listans ordning.
+ */
+const artiklar = [...(await publicerade('guider')), ...(await publicerade('kunskap'))];
+const lasVidare: KortData[] = [];
+const lasVidareLankar: { href: string; text: string }[] = [];
+for (const l of LAS_VIDARE) {
+  const e = artiklar.find((a) => artikelUrl(a) === l.href);
+  if (e) {
+    const { niva: _niva, ...kort } = tillKortArtikel(e);
+    lasVidare.push(kort);
+    continue;
+  }
+  const k = l.href.startsWith('/rakna/') ? hittaKalkylator(l.href.replace(/^\/rakna\/|\/$/g, '')) : undefined;
+  const pelare = k?.pelare?.[0];
+  if (k && pelare && arPelare(pelare)) {
+    lasVidare.push({
+      etikett: 'Räkna själv',
+      rubrik: k.namn,
+      beskrivning: k.rad,
+      pelare,
+      href: l.href,
+      // Artikelrutnat läser inte typen; kortet står varken i ett typfilter eller sorteras.
+      typ: 'kunskap',
+      sorteringsdatum: new Date(0),
+    });
+    continue;
+  }
+  lasVidareLankar.push(l);
+}
 ---
 
-<Bas
-  title={titel}
-  description={BESKRIVNING}
-  reklam={false}
-  brodsmulor={[
-    { namn: 'Hantverkstips', href: '/' },
-    { namn: 'Räkna själv', href: '/rakna/' },
-    { namn: VERKTYGSNAMN },
-  ]}
-  bred={true}
-  ogBild={verktygsDelningsbild(SLUG)}
+<Raknarsida
+  slug={SLUG}
+  namn={VERKTYGSNAMN}
+  titel={titel}
+  beskrivning={BESKRIVNING}
+  rubrik={`Rotavdrag ${ARET}, så mycket drar hantverkaren av och så mycket betalar du`}
+  delaUrl={delaLank}
 >
-  <StrukturData
-    slot="head"
-    data={verktyg({ url: `/rakna/${SLUG}/`, namn: VERKTYGSNAMN, beskrivning: BESKRIVNING })}
-  />
+  <p slot="ingress">
+    Hantverkaren drar av {ROT_PROCENT} procent av det arbetet kostar, och bara av det. Sedan finns tre gränser
+    som kan göra avdraget mindre: {kronor(ROT_TAK_KR)} kronor per person och år, den gemensamma gränsen för rot
+    och rut, och skatten du själv betalar in under året. Fyll i fakturan, så ser du hur mycket du får tillbaka,
+    vilken gräns som gäller dig och vad du får kvar att betala.
+  </p>
 
-  <div class="mx-auto w-full max-w-lasbredd">
-    {/*
-      Sidhuvudet: rubrik och ingress till vänster i 7/12, bilden till höger i
-      5/12 på desktop, under ingressen på mobil. Bilden är dekorativ, H1 bär
-      betydelsen, därför tom alt. Den är sidans LCP-bild och laddas därför
-      eagert med fetchpriority.
-    */}
-    <section class="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-8">
-      <div class="lg:col-span-7">
-        <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">
-          Rotavdrag {ARET}, så mycket drar hantverkaren av och så mycket betalar du
-        </h1>
-        <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
-          Hantverkaren drar av {ROT_PROCENT} procent av det arbetet kostar, och bara av det. Sedan finns tre gränser
-          som kan göra avdraget mindre: {kronor(ROT_TAK_KR)} kronor per person och år, den gemensamma gränsen för rot
-          och rut, och skatten du själv betalar in under året. Fyll i fakturan, så ser du hur mycket du får tillbaka,
-          vilken gräns som gäller dig och vad du får kvar att betala.
-        </p>
-      </div>
+  {/* Formuläret ligger i src/components/kalkyl/RotavdragForm.astro, så att
+      <Kalkylator namn="rotavdrag" /> i en artikel visar exakt samma fält. */}
+  <RotavdragForm slot="formular" indata={indata} varden={varden} fel={fel} />
 
-      {
-        huvudbild && (
-          <div class="lg:col-span-5">
-            <img
-              src={huvudbild.src}
-              alt=""
-              width={huvudbild.width}
-              height={huvudbild.height}
-              fetchpriority="high"
-              decoding="async"
-              class:list={['block h-auto w-full', !varumarke && 'rounded-sm border border-linje']}
-            />
-          </div>
-        )
-      }
-    </section>
-
-    <Faktaruta variant="kortsvar">
-      <p class="m-0 leading-6">
-        Hantverkaren drar av <Markering>{ROT_PROCENT} procent av arbetskostnaden</Markering> direkt på fakturan.
-      </p>
-      <p class="m-0 leading-6">Material, resor och maskinhyra ger inget avdrag alls.</p>
-      <p class="m-0 leading-6">
-        Du får högst {kronor(ROT_TAK_KR)} kr per person och år, och rot och rut får tillsammans inte gå över{' '}
-        {kronor(GEMENSAMT_TAK_KR)} kr.
-      </p>
-      <p class="m-0 leading-6">Det är dagen du betalar som avgör vilken procentsats du får.</p>
-    </Faktaruta>
-
-    <div class="linjerat mt-8 lg:grid lg:grid-cols-2 lg:gap-8">
-      {/* Formuläret ligger i src/components/kalkyl/RotavdragForm.astro, så att
-          <Kalkylator namn="rotavdrag" /> i en artikel visar exakt samma fält. */}
-      <RotavdragForm indata={indata} varden={varden} fel={fel} />
-
-      <div class="mt-8 border-t border-linje pt-6 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
-        {
-          visat.status === 'ok' && (
-            <>
-              {resultat.status === 'ogiltig' && (
-                <p class="m-0 mb-2 text-liten text-varning">Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.</p>
-              )}
-              {/* Spalten bär svaret: beskedet, talet och länkarna. Reglerna med
-                  källa och "Gör inte det här" står som egna H2 under verktyget. */}
-              <p class="m-0 font-sans text-h3 lg:text-h3-lg font-bold text-blyerts">{visat.beskedRubrik}</p>
-              <p class="m-0 mt-1 text-brod">{visat.beskedRad}</p>
-
-              <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">Ditt rotavdrag</p>
-              {/* Det stora talet är avdraget, med resten av svaret på samma
-                  baslinje där enheten står på de andra kalkylatorerna. */}
-              <p class="m-0 mt-1 flex flex-wrap items-baseline gap-x-2">
-                <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
-                  <Markering>{kronor(visat.avdragKr)}</Markering>
-                </span>
-                <span class="text-ingress lg:text-ingress-lg">kr dras av på fakturan</span>
-              </p>
-              <p class="m-0 mt-2 text-liten text-blyerts-2">
-                Räknat på {kronor(visatIndata.arbetskostnadKr)}&nbsp;kr i arbete och{' '}
-                {visatIndata.antalAgare === 1 ? 'en ägare' : `${visatIndata.antalAgare} ägare`}.
-              </p>
-
-              <ul class="m-0 mt-4 p-0 list-none text-brod tabular-nums">
-                <li class="border-t border-linje py-2">
-                  Du betalar {kronor(visat.attBetalaKr)}&nbsp;kr av fakturans {kronor(visat.fakturaKr)}&nbsp;kr.
-                </li>
-                {visat.utanAvdragKr > 0 && (
-                  <li class="border-t border-linje py-2">
-                    Utanför avdraget ligger {kronor(visat.utanAvdragKr)}&nbsp;kr, det vill säga{' '}
-                    {visat.andelUtanAvdragProcent} procent av fakturan.
-                  </li>
-                )}
-                <li class="border-t border-linje py-2">
-                  {visat.kvarRotTakKr === visat.rotTakTotaltKr
-                    ? `Ni har hela årets rotavdrag på ${kronor(visat.rotTakTotaltKr)} kr kvar.`
-                    : `Av årets rotavdrag på ${kronor(visat.rotTakTotaltKr)} kr har ni ${kronor(visat.kvarRotTakKr)} kr kvar.`}
-                </li>
-                <li class="border-t border-linje py-2">
-                  Av den gemensamma gränsen för rot och rut har ni {kronor(visat.kvarGemensamtKr)}&nbsp;kr kvar.
-                </li>
-              </ul>
-
-              <p class="m-0 mt-4 text-liten text-blyerts-2">
-                Reglerna bakom svaret, med källa, och det du inte ska göra{' '}
-                <a href="#darfor-blev-svaret-sa" class={LANK_KLASS}>står under verktyget</a>.
-              </p>
-
-              <p class="m-0 mt-4">
-                <a href="#sa-raknar-vi" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
-                  Så räknar jag
-                </a>
-              </p>
-
-              {/* Dela. Svaret står i adressen, så ett skrivskyddat fält räcker:
-                  markera och kopiera fungerar utan en rad JavaScript. */}
-              <div class="mt-4 border-t border-linje pt-4">
-                <label for="dela" class={ETIKETT_KLASS}>
-                  Dela svaret
-                </label>
-                <input id="dela" type="text" readonly value={delaLank} class:list={[FALT_KLASS, 'border-blyerts-2']} />
-                <p class="m-0 mt-1 text-liten text-blyerts-2">Dina värden ligger i adressen. Markera den och kopiera, så får den du skickar länken till samma svar.</p>
-              </div>
-            </>
-          )
-        }
-      </div>
-    </div>
-
+  <Fragment slot="svar">
     {
-      visat.status === 'ok' && (
-        <>
-          <section>
-            <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
-            <p class="m-0 mb-4 text-brod lg:text-brod-lg">
-              Varje rad här är en regel hos Skatteverket, och länken går till sidan där regeln står.
-            </p>
-            <ul class="m-0 p-0 list-none text-brod lg:text-brod-lg">
-              {visat.regler.map((regel) => (
-                <li class:list={['mb-4 border-l-2 pl-4', SLAG_RAM[regel.slag]]}>
-                  <span class="block text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
-                    {SLAG_ETIKETT[regel.slag]}
-                  </span>
-                  <span class="block">{regel.text}</span>
-                  <span class="block text-liten text-blyerts-2">
-                    <a href={regel.url} rel="nofollow" class={LANK_KLASS}>
-                      {regel.kalla}
-                    </a>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <section>
-            <Pennstreck id="gor-inte-det-har">Gör inte det här</Pennstreck>
-            {visat.gorInteDetHar.map((rad, i) => (
-              <p class:list={['m-0 text-brod lg:text-brod-lg', i > 0 && 'mt-4']}>{rad}</p>
-            ))}
-          </section>
-        </>
+      resultat.status === 'ogiltig' && (
+        <p class="text-liten text-varning">Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.</p>
       )
     }
+    <div>
+      <Svarstal tal={hart(kronor(visat.avdragKr))} enhet="kr" vad="Ditt rotavdrag" />
+      <p class="mt-1! text-liten text-blyerts-2">
+        Räknat på {kronor(visatIndata.arbetskostnadKr)}&nbsp;kr i arbete och{' '}
+        {visatIndata.antalAgare === 1 ? 'en ägare' : `${visatIndata.antalAgare} ägare`}.
+      </p>
+    </div>
+    <div class="text-brod">
+      {
+        gransNadd ? (
+          <Statusrad ton="varning" text={visat.beskedRubrik} />
+        ) : (
+          <p class="font-bold">{visat.beskedRubrik}</p>
+        )
+      }
+      <p class="mt-1!">{visat.beskedRad}</p>
+    </div>
+    <Matare
+      etikett={MATARE_ETIKETT}
+      varde={visat.avdragKr}
+      grans={visat.rotTakTotaltKr}
+      enhet="kr"
+      visat={`${kronor(visat.avdragKr)} kr`}
+      gransVisat={kronor(visat.rotTakTotaltKr)}
+    />
+    <ul class="m-0 p-0 list-none text-brod tabular-nums">
+      <li class="border-t border-linje py-2">
+        Du betalar {kronor(visat.attBetalaKr)}&nbsp;kr av fakturans {kronor(visat.fakturaKr)}&nbsp;kr.
+      </li>
+      {
+        visat.utanAvdragKr > 0 && (
+          <li class="border-t border-linje py-2">
+            Utanför avdraget ligger {kronor(visat.utanAvdragKr)}&nbsp;kr, det vill säga{' '}
+            {visat.andelUtanAvdragProcent} procent av fakturan.
+          </li>
+        )
+      }
+      <li class="border-t border-linje py-2">
+        {visat.kvarRotTakKr === visat.rotTakTotaltKr
+          ? `Ni har hela årets rotavdrag på ${kronor(visat.rotTakTotaltKr)} kr kvar.`
+          : `Av årets rotavdrag på ${kronor(visat.rotTakTotaltKr)} kr har ni ${kronor(visat.kvarRotTakKr)} kr kvar.`}
+      </li>
+      <li class="border-t border-linje py-2">
+        Av den gemensamma gränsen för rot och rut har ni {kronor(visat.kvarGemensamtKr)}&nbsp;kr kvar.
+      </li>
+    </ul>
+    <p class="text-liten text-blyerts">{klartext}</p>
+  </Fragment>
 
-    <section>
+  <Fragment slot="darfor">
+    <Pennstreck id="darfor-blev-svaret-sa" utanLuft>
+      Därför blev svaret så
+    </Pennstreck>
+    <p class="m-0 mt-4">
+      Varje rad här är en regel hos Skatteverket, och länken går till sidan där regeln står.
+    </p>
+    <div class="darfor">
+      {
+        visat.regler.map((regel) => (
+          <div>
+            <span class="block text-etikett lg:text-etikett-lg uppercase text-blyerts-2">{SLAG_ETIKETT[regel.slag]}</span>
+            <p>{regel.text}</p>
+            <p>
+              <a href={regel.url} rel="nofollow" class={LANK_KLASS}>
+                {regel.kalla}
+              </a>
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </Fragment>
+
+  {
+    visat.gorInteDetHar.length > 0 && (
+      <Fragment slot="gorInte">
+        {/* Flera råd står i samma stycke efter "Gör inte det här.", vart och ett på egen rad. */}
+        {visat.gorInteDetHar.map((rad, i) => (
+          <span class:list={[i > 0 && 'mt-3 block']}>{rad}</span>
+        ))}
+      </Fragment>
+    )
+  }
+
+  <Fragment slot="saRaknarJag">
+    {
+      illustration && (
+        <div class="pappersruta">
+          <Illustration
+            namn="rakna/rotavdrag"
+            alt="Skiss av en faktura med raderna arbete, material och maskinhyra, där bara arbetsraden är markerad som grund för avdraget"
+            bildtext="Arbetsraden bär anteckningen 30 procent och ger avdraget. Material och maskinhyra är inringade med anteckningen räknas inte, och det är därför de ska stå på egna rader på fakturan."
+            class="my-0!"
+          />
+        </div>
+      )
+    }
+    <ol class="m-0 mt-4 pl-6 list-decimal text-brod">
+      <li class="mb-2">
+        Jag tar {ROT_PROCENT} procent av arbetskostnaden och avrundar till hel krona. Materialet rör jag inte.
+      </li>
+      <li class="mb-2">
+        Sedan räknar jag ut hur mycket rotavdrag ni har kvar i år, {kronor(ROT_TAK_KR)} kr gånger antalet ägare
+        minus det ni redan använt i rot.
+      </li>
+      <li class="mb-2">
+        Samma sak med den gemensamma gränsen, {kronor(GEMENSAMT_TAK_KR)} kr gånger antalet ägare minus det ni
+        använt i både rot och rut. Det är bara här rutavdraget räknas av.
+      </li>
+      <li class="mb-2">
+        Har du fyllt i skatten drar jag bort det ni redan använt från den också. Har du lämnat fältet tomt hoppar
+        jag över steget och säger det i svaret.
+      </li>
+      <li class="mb-2">
+        Avdraget blir det minsta av de fyra talen, och beskedet säger vilket av dem som satte stopp.
+      </li>
+      <li>Att betala är arbete plus material minus avdraget.</li>
+    </ol>
+  </Fragment>
+
+  <Fragment slot="efter">
+    {/* Antagandetabellen i läsbredd, ur kortet Så räknar jag (spec-designlyft-c avsnitt 9). */}
+    <section class="max-w-lasbredd">
+      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad siffrorna vilar på</h3>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Alla tal om procentsats, gränser och datum kommer från Skatteverket, och varje rad i tabellen länkar till
+        sidan där talet står. Mitt eget är att räkningen börjar med en ägare, gränserna på fälten och förenklingen
+        i skattefältet. De raderna är märkta Antagande.
+      </p>
+      <Tabellyta kolumner={3} class="mt-4">
+        <table class="w-full border-collapse text-liten tabular-nums">
+          <caption class="sr-only">Regler, gränser och antaganden i rotavdragskalkylatorn</caption>
+          <thead>
+            <tr class="border-b border-linje text-left">
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Vad</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Jag räknar med</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Källa eller antagande</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              antaganden.map((a) => (
+                <tr>
+                  <th scope="row" class:list={[CELL_KLASS, 'text-left font-normal']}>
+                    {a.storhet}
+                  </th>
+                  <td class={CELL_KLASS}>{a.varde}</td>
+                  <td class={CELL_KLASS}>
+                    {a.grund}.{' '}
+                    {a.url ? (
+                      <a href={a.url} rel="nofollow" class={LANK_KLASS}>
+                        {a.stod}
+                      </a>
+                    ) : (
+                      a.stod
+                    )}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3" class="p-2 text-liten text-blyerts-2">
+                Procentsatsen och gränserna kan bytas varje år, och därför står årtalet i sidans rubrik. Raderna
+                märkta Antagande är mina egna val, inte Skatteverkets regler.
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </Tabellyta>
+
+      <p class="m-0 mt-6 text-brod lg:text-brod-lg">
+        Räkningen litar på att fakturan är rätt uppdelad. Står maskinhyran inne i arbetsposten räknar jag på ett
+        belopp som är för stort, och det är därför maskinen ska stå på en egen rad. Din slutskatt vet jag heller
+        ingenting om, den kommer först i deklarationen. Svaret här är en uträkning och inget besked från
+        Skatteverket, och hur jag jobbar med tal och källor står på sidan{' '}
+        <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar jag</a>.
+      </p>
+    </section>
+
+    <section class="max-w-lasbredd">
       <Pennstreck id="tre-tak">Tre gränser kan göra rotavdraget mindre än du räknat med</Pennstreck>
       <p class="m-0 text-brod lg:text-brod-lg">
         Själva procentsatsen är den lätta biten. Hantverkaren drar av {ROT_PROCENT} procent av arbetskostnaden på
@@ -540,134 +631,35 @@ const FRAGOR = [
       </p>
     </section>
 
-    <section>
-      <Pennstreck id="sa-raknar-vi">Så räknar jag</Pennstreck>
-      {
-        varumarke && illustration && (
-          <Illustration
-            namn="rakna/rotavdrag"
-            alt="Skiss av en faktura med raderna arbete, material och maskinhyra, där bara arbetsraden är markerad som grund för avdraget"
-            bildtext="Arbetsraden bär anteckningen 30 procent och ger avdraget. Material och maskinhyra är inringade med anteckningen räknas inte, och det är därför de ska stå på egna rader på fakturan."
-          />
-        )
-      }
-      <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg">
-        <li class="mb-2">
-          Jag tar {ROT_PROCENT} procent av arbetskostnaden och avrundar till hel krona. Materialet rör jag inte.
-        </li>
-        <li class="mb-2">
-          Sedan räknar jag ut hur mycket rotavdrag ni har kvar i år, {kronor(ROT_TAK_KR)} kr gånger antalet ägare
-          minus det ni redan använt i rot.
-        </li>
-        <li class="mb-2">
-          Samma sak med den gemensamma gränsen, {kronor(GEMENSAMT_TAK_KR)} kr gånger antalet ägare minus det ni
-          använt i både rot och rut. Det är bara här rutavdraget räknas av.
-        </li>
-        <li class="mb-2">
-          Har du fyllt i skatten drar jag bort det ni redan använt från den också. Har du lämnat fältet tomt hoppar
-          jag över steget och säger det i svaret.
-        </li>
-        <li class="mb-2">
-          Avdraget blir det minsta av de fyra talen, och beskedet säger vilket av dem som satte stopp.
-        </li>
-        <li>Att betala är arbete plus material minus avdraget.</li>
-      </ol>
+    {
+      (lasVidare.length > 0 || lasVidareLankar.length > 0) && (
+        <section>
+          <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
+          {lasVidare.length > 0 && (
+            <Artikelrutnat
+              kort={lasVidare}
+              kolumner={lasVidare.length === 4 ? 4 : 3}
+              visaBeskrivning={false}
+              visaMeta={false}
+            />
+          )}
+          {lasVidareLankar.length > 0 && (
+            <ul class="m-0 mt-4 p-0 list-none max-w-lasbredd">
+              {lasVidareLankar.map((l) => (
+                <li class="border-t border-linje">
+                  <a href={l.href} class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
+                    {l.text}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      )
+    }
 
-      <p class="m-0 mt-6 text-brod lg:text-brod-lg">
-        Alla tal om procentsats, gränser och datum kommer från Skatteverket, och varje rad i tabellen länkar till
-        sidan där talet står. Mitt eget är att räkningen börjar med en ägare, gränserna på fälten och förenklingen
-        i skattefältet. De raderna är märkta Antagande.
-      </p>
-
-      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad siffrorna vilar på</h3>
-      <Tabellyta kolumner={3} class="mt-4">
-        <table class="w-full border-collapse text-liten tabular-nums">
-          <caption class="sr-only">Regler, gränser och antaganden i rotavdragskalkylatorn</caption>
-          <thead>
-            <tr class="border-b border-linje text-left">
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Vad</th>
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Jag räknar med</th>
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Källa eller antagande</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              antaganden.map((a) => (
-                <tr>
-                  <th scope="row" class:list={[CELL_KLASS, 'text-left font-normal']}>
-                    {a.storhet}
-                  </th>
-                  <td class={CELL_KLASS}>{a.varde}</td>
-                  <td class={CELL_KLASS}>
-                    {a.grund}.{' '}
-                    {a.url ? (
-                      <a href={a.url} rel="nofollow" class={LANK_KLASS}>
-                        {a.stod}
-                      </a>
-                    ) : (
-                      a.stod
-                    )}
-                  </td>
-                </tr>
-              ))
-            }
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colspan="3" class="p-2 text-liten text-blyerts-2">
-                Procentsatsen och gränserna kan bytas varje år, och därför står årtalet i sidans rubrik. Raderna
-                märkta Antagande är mina egna val, inte Skatteverkets regler.
-              </td>
-            </tr>
-          </tfoot>
-        </table>
-      </Tabellyta>
-
-      <p class="m-0 mt-6 text-brod lg:text-brod-lg">
-        Räkningen litar på att fakturan är rätt uppdelad. Står maskinhyran inne i arbetsposten räknar jag på ett
-        belopp som är för stort, och det är därför maskinen ska stå på en egen rad. Din slutskatt vet jag heller
-        ingenting om, den kommer först i deklarationen. Svaret här är en uträkning och inget besked från
-        Skatteverket, och hur jag jobbar med tal och källor står på sidan{' '}
-        <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar jag</a>.
-      </p>
-    </section>
-
-    <section>
-      <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
-      <ul class="m-0 p-0 list-none">
-        <li class="border-t border-linje">
-          <a href="/rakna/dranering/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Räkna på vad en dränering kostar, med maskinhyran på egen rad
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/grund/dranera-hus/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Så dränerar du om huset, från schakt till återställd tomt
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/golv/renovera-trappa/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Renovera trappan, tre vägar med timmar och kronor
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/el/tillaggsisolera-vind/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Tilläggsisolera vinden, vad det sparar och när det blir fel
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/golv/bygga-trappa/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Bygga trappa, måtten och formeln för inne och ute
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/rakna/kvadratmeter/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Räkna ut kvadratmeter och hur mycket material som går åt
-          </a>
-        </li>
-      </ul>
-    </section>
-
-    <Faq fragor={FRAGOR} />
-  </div>
-</Bas>
+    <div class="max-w-lasbredd">
+      <Faq fragor={FRAGOR} />
+    </div>
+  </Fragment>
+</Raknarsida>

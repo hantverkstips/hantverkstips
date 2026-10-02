@@ -11,16 +11,20 @@
  * och redovisar källan bakom varje rad.
  *
  * Inga produkter och inget reklamband (checklistan 1 och 12, SOKORDSANALYS 8.6).
+ *
+ * Räknarmallen sedan fas C (spec-designlyft-c-2026-10-02 avsnitt 14).
  */
 export const prerender = false;
 
-import Bas from '../../layouts/Bas.astro';
+import { artikelUrl, publicerade } from '../../lib/innehall';
+import { tillKortArtikel, type KortData } from '../../lib/kort';
+import { hittaKalkylator } from '../../lib/kalkyl/register';
+import { arPelare } from '../../lib/pelare';
 import {
   antagandenFor,
   beskedVarden,
   delbarQuery,
   KALLOR,
-  kortsvarVarden,
   krText,
   kvmText,
   raknaBadrumKostnad,
@@ -35,17 +39,16 @@ import {
   type KallKod,
 } from '../../lib/kalkyl/renovering.ts';
 import { kallradEfterRegel } from '../../lib/kalkyl/kallrad';
-import { ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
-import { verktyg } from '../../lib/strukturdata';
-import { verktygsDelningsbild, verktygsillustration, verktygsVarumarkesbild } from '../../lib/verktygsbild';
+import { LANK_KLASS } from '../../lib/kalkyl/stil';
+import { verktygsillustration } from '../../lib/verktygsbild';
 import BadrumKostnadForm from '../../components/kalkyl/BadrumKostnadForm.astro';
-import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Artikelrutnat from '../../components/ui/Artikelrutnat.astro';
 import Faq from '../../components/ui/Faq.astro';
 import Illustration from '../../components/ui/Illustration.astro';
-import Markering from '../../components/ui/Markering.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
-import StrukturData from '../../components/ui/StrukturData.astro';
+import Svarstal from '../../components/ui/Svarstal.astro';
 import Tabellyta from '../../components/ui/Tabellyta.astro';
+import Raknarsida from '../../components/vyer/Raknarsida.astro';
 
 Astro.locals.sidtyp = 'verktyg';
 
@@ -99,7 +102,6 @@ const FRAGOR = [
 
 /* Gränssnittstext, ordagrant ur skillen nytt-verktyg. */
 const STANDARDVARNING = 'Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.';
-const DELATEXT = 'Dina värden ligger i adressen. Markera den och kopiera, så får den du skickar länken till samma svar.';
 
 /*
  * Utkastet svarar 404 i produktion (specen 4.1). Dev visar sidan med noindex,
@@ -135,8 +137,6 @@ const delaLank = new URL(`/rakna/${SLUG}/?${delbarQuery(visatIndata).toString()}
 const bv = beskedVarden(visat, visatIndata);
 const besked = TEXT.besked[visat.utfall];
 
-const ks = TEXT.kortsvar(kortsvarVarden());
-
 /**
  * Cellklasserna en gång på <table>, som på fasadyta. I posttabellen är talen
  * högerställda. Ett spann står som två <span>, det lägre talet och "till" med
@@ -146,12 +146,10 @@ const ks = TEXT.kortsvar(kortsvarVarden());
 const TABELL_KLASS =
   'w-full border-collapse text-liten tabular-nums [&_th]:p-2 [&_td]:p-2 [&_th]:align-top [&_td]:align-top [&_th]:text-left [&_tbody_th]:[font-weight:inherit] [&_tr]:border-b [&_tr]:border-linje [&_th]:text-blyerts [&_td]:text-blyerts [&_thead_th]:text-etikett [&_thead_th]:uppercase [&_thead_th]:text-blyerts-2';
 const POST_TABELL_KLASS = `${TABELL_KLASS} [&_td]:text-right [&_td_span]:whitespace-nowrap [&_thead_th+th]:text-right [&_tfoot_th]:font-bold [&_tfoot_td]:font-bold`;
-/** Regellistan: klasserna på <ul>, som fasadyta. Länkarnas utseende en gång här. */
-const REGEL_LISTA_KLASS =
-  'm-0 mt-6 p-0 list-none text-brod lg:text-brod-lg [&>li]:mb-4 [&>li]:border-l-2 [&>li]:border-blyerts-2 [&>li]:pl-4 [&_span]:block [&_span+span]:text-liten [&_span+span]:text-blyerts-2 [&_a]:text-penna [&_a]:underline [&_a]:decoration-1 [&_a]:underline-offset-2 [&_a:hover]:decoration-2';
 /** Länkarnas utseende en gång på föräldern, samma som LANK_KLASS. */
 const LANKAR_KLASS = '[&_a]:text-penna [&_a]:underline [&_a]:decoration-1 [&_a]:underline-offset-2 [&_a:hover]:decoration-2';
 const STYCKE_KLASS = 'm-0 mt-4 text-brod lg:text-brod-lg';
+const SPALTRAD_KLASS = 'text-liten text-blyerts-2 tabular-nums';
 
 const kalla = (k: KallKod): KallaRef => KALLOR[k];
 
@@ -192,316 +190,263 @@ for (const a of antaganden) {
   for (const k of a.kallor) if (!kallor.some((x) => x.kod === k)) kallor.push(kalla(k));
 }
 
+/** Skissen står i kortet Så räknar jag. Huvudet har ingen bild sedan fas C (DESIGN.md 5.8). */
 const illustration = verktygsillustration(SLUG);
-/** Varumärkesbilden i sidhuvudet (docs/DESIGN.md avsnitt 7). */
-const varumarke = verktygsVarumarkesbild(SLUG);
-const huvudbild = varumarke ?? illustration;
+
+/*
+ * Klartexten i svarsytan (spec-designlyft-c avsnitt 0 och 14), hantverkarens.
+ * Platshållare: {betala} (att betala efter rotavdraget, kr, ett tal eller "lågt
+ * till högt"), {yta} (golvytan, kvm), {fore} (före rotavdraget, kr) och {rot}
+ * (rotavdraget, kr). Utanför intervallet står bara {yta} ifylld.
+ */
+const KLARTEXT =
+  'Ett badrum med {yta} kvm golv kostar {betala} kr efter rotavdraget och {fore} kr före, räknat med offertförmedlarnas och en byggfirmas priser.'; // badrum-kostnad.klartext
+/* Utanför intervallet finns inget belopp, så meningen är en annan och bär bara {yta}. */
+const KLARTEXT_UTANFOR =
+  'Ett badrum på {yta} kvm ligger utanför de storlekar som offertförmedlarnas och en byggfirmas priser gäller för, så här ger jag inget belopp.';
+const klartext = (visat.utfall === 'utanfor' ? KLARTEXT_UTANFOR : KLARTEXT).replace(
+  '{betala}',
+  visat.utfall === 'utanfor'
+    ? ''
+    : visat.spann
+      ? `${krText(visat.attBetalaKr)} till ${krText(visat.hog.attBetalaKr)}`
+      : krText(visat.attBetalaKr),
+)
+  .replace('{yta}', kvmText(visatIndata.ytaKvm))
+  .replace('{fore}', bv.foreRot ?? '')
+  .replace('{rot}', bv.rot ?? '');
+
+/**
+ * Läs vidare: artiklarna som artikelkort, räknarna med registrets namn som på
+ * hubben, i den förra listans ordning.
+ */
+const artiklar = [...(await publicerade('guider')), ...(await publicerade('kunskap'))];
+const lasVidare: KortData[] = [];
+const lasVidareLankar: { href: string; text: string }[] = [];
+for (const l of LAS_VIDARE) {
+  const e = artiklar.find((a) => artikelUrl(a) === l.href);
+  if (e) {
+    const { niva: _niva, ...kort } = tillKortArtikel(e);
+    lasVidare.push(kort);
+    continue;
+  }
+  const k = l.href.startsWith('/rakna/') ? hittaKalkylator(l.href.replace(/^\/rakna\/|\/$/g, '')) : undefined;
+  const pelare = k?.pelare?.[0];
+  if (k && pelare && arPelare(pelare)) {
+    lasVidare.push({
+      etikett: 'Räkna själv',
+      rubrik: k.namn,
+      beskrivning: k.rad,
+      pelare,
+      href: l.href,
+      // Artikelrutnat läser inte typen; kortet står varken i ett typfilter eller sorteras.
+      typ: 'kunskap',
+      sorteringsdatum: new Date(0),
+    });
+    continue;
+  }
+  lasVidareLankar.push(l);
+}
 ---
 
-<Bas
-  title={titel}
-  description={BESKRIVNING}
-  reklam={false}
-  noindex={UTKAST}
-  brodsmulor={[
-    { namn: 'Hantverkstips', href: '/' },
-    { namn: 'Räkna själv', href: '/rakna/' },
-    { namn: VERKTYGSNAMN },
-  ]}
-  bred={true}
-  ogBild={verktygsDelningsbild(SLUG)}
+<Raknarsida
+  slug={SLUG}
+  namn={VERKTYGSNAMN}
+  titel={titel}
+  beskrivning={BESKRIVNING}
+  rubrik={H1}
+  delaUrl={delaLank}
+  saRaknarId="sa-raknar-jag"
 >
-  <StrukturData
-    slot="head"
-    data={verktyg({ url: `/rakna/${SLUG}/`, namn: VERKTYGSNAMN, beskrivning: BESKRIVNING })}
-  />
+  <p slot="ingress">{INGRESS}</p>
 
-  <div class="mx-auto w-full max-w-lasbredd">
-    {/* Sidhuvudet: rubrik och ingress i 7/12, bilden i 5/12 från lg, under ingressen på mobil. */}
-    <section class="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-8">
-      <div class="lg:col-span-7">
-        <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">{H1}</h1>
-        <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">{INGRESS}</p>
-      </div>
+  <BadrumKostnadForm slot="formular" indata={indata} varden={varden} fel={fel} />
 
-      {
-        huvudbild && (
-          <div class="lg:col-span-5">
-            <img
-              src={huvudbild.src}
-              alt=""
-              width={huvudbild.width}
-              height={huvudbild.height}
-              fetchpriority="high"
-              decoding="async"
-              class:list={['block h-auto w-full', !varumarke && 'rounded-sm border border-linje']}
-            />
-          </div>
-        )
-      }
-    </section>
+  <Fragment slot="svar">
+    {resultat.status === 'ogiltig' && <p class="text-liten text-varning">{STANDARDVARNING}</p>}
+    {
+      visat.utfall !== 'utanfor' && (
+        <Svarstal
+          tal={
+            visat.spann
+              ? `${krText(visat.attBetalaKr)} till ${krText(visat.hog.attBetalaKr)}`
+              : krText(visat.attBetalaKr)
+          }
+          enhet="kr"
+          vad={TEXT.spalt['etikett-betala']}
+        />
+      )
+    }
+    <div class="text-brod">
+      <p class="font-bold">{besked.rubrik(bv)}</p>
+      <p class="mt-1!">{besked.rad(bv)}</p>
+    </div>
+    {
+      visat.utfall !== 'utanfor' && (
+        <div>
+          <p class={SPALTRAD_KLASS}>{TEXT.spalt['rad-summa'](bv.foreRot ?? '', bv.rot ?? '')}</p>
+          <p class:list={[SPALTRAD_KLASS, 'mt-1!']}>
+            {TEXT.spalt['rad-delning'](bv.arbete ?? '', bv.material ?? '', bv.container ?? '')}
+          </p>
+          <p class="mt-1! text-liten text-blyerts-2">{TEXT.spalt['rad-kallor'](bv.hamtat)}</p>
+        </div>
+      )
+    }
+    {
+      visat.utfall !== 'utanfor' && (
+        <p>
+          <a
+            href={`/rakna/rotavdrag/?${rotavdragQuery(visat, visatIndata).toString()}`}
+            class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}
+          >
+            {TEXT.spalt['lank-rotavdrag']}
+          </a>
+        </p>
+      )
+    }
+    <p class="text-liten text-blyerts">{klartext}</p>
+  </Fragment>
 
-    <Faktaruta variant="kortsvar">
-      <p class="m-0 leading-6">
-        {ks.fore}{' '}<Markering>{ks.markering}</Markering>{ks.efter}
-      </p>
-    </Faktaruta>
-
-    <div class="linjerat mt-8 lg:grid lg:grid-cols-2 lg:gap-8">
-      <BadrumKostnadForm indata={indata} varden={varden} fel={fel} />
-
-      <div class="mt-8 border-t border-linje pt-6 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
-        {resultat.status === 'ogiltig' && <p class="m-0 mb-2 text-liten text-varning">{STANDARDVARNING}</p>}
-
-        <p class="m-0 font-sans text-h3 lg:text-h3-lg font-bold text-blyerts">{besked.rubrik(bv)}</p>
-        <p class="m-0 mt-1 text-brod">{besked.rad(bv)}</p>
-
-        {
-          visat.utfall !== 'utanfor' && (
-            <>
-              <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
-                {TEXT.spalt['etikett-betala']}
-              </p>
-              {/* Vid ett spann bryts raden vid "till", aldrig inne i ett tal. */}
-              <p class="m-0 mt-1 flex flex-wrap items-baseline gap-x-2 tabular-nums [&_span]:whitespace-nowrap">
-                <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
-                  <Markering>{krText(visat.attBetalaKr)}</Markering>
-                </span>
+  <Fragment slot="darfor">
+    <Pennstreck id="darfor-blev-svaret-sa" utanLuft>
+      Därför blev svaret så
+    </Pennstreck>
+    {
+      visat.utfall !== 'utanfor' ? (
+        <>
+          <Tabellyta kolumner={3} class="mt-4">
+            <table class={POST_TABELL_KLASS}>
+              <thead>
+                <tr>
+                  <th scope="col">{TEXT.darfor['tabell-post']}</th>
+                  <th scope="col">{TEXT.darfor['tabell-arbete']}</th>
+                  <th scope="col">{TEXT.darfor['tabell-material']}</th>
+                </tr>
+              </thead>
+              <tbody>
                 {
-                  visat.spann && (
-                    <>
-                      <span class="text-ingress lg:text-ingress-lg">till</span>
-                      <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
-                        <Markering>{krText(visat.hog.attBetalaKr)}</Markering>
-                      </span>
-                    </>
+                  postRader.map((r) => (
+                    <tr>
+                      <th scope="row">{r.namn}</th>
+                      {r.celler.map((c) => (
+                        <td>
+                          {typeof c === 'string' ? (
+                            c
+                          ) : (
+                            <>
+                              <span>{c.lag}</span>
+                              {c.hog !== null && (
+                                <>
+                                  {' '}
+                                  <span>till {c.hog}</span>
+                                </>
+                              )}
+                            </>
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))
+                }
+              </tbody>
+              <tfoot>
+                {
+                  summaRad && (
+                    <tr>
+                      <th scope="row">{TEXT.darfor.summa}</th>
+                      {summaRad.map((c) => (
+                        <td>
+                          <span>{c.lag}</span>
+                          {c.hog !== null && (
+                            <>
+                              {' '}
+                              <span>till {c.hog}</span>
+                            </>
+                          )}
+                        </td>
+                      ))}
+                    </tr>
                   )
                 }
-                <span class="text-ingress lg:text-ingress-lg">kr</span>
-              </p>
-              <p class="m-0 mt-2 text-liten text-blyerts-2 tabular-nums">
-                {TEXT.spalt['rad-summa'](bv.foreRot ?? '', bv.rot ?? '')}
-              </p>
-              <p class="m-0 mt-1 text-liten text-blyerts-2 tabular-nums">
-                {TEXT.spalt['rad-delning'](bv.arbete ?? '', bv.material ?? '', bv.container ?? '')}
-              </p>
-              <p class="m-0 mt-1 text-liten text-blyerts-2">{TEXT.spalt['rad-kallor'](bv.hamtat)}</p>
-            </>
-          )
-        }
-
-        <p class="m-0 mt-4 text-liten text-blyerts-2">
-          <a href="#darfor-blev-svaret-sa" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
-            {TEXT.spalt.pekrad}
-          </a>
-        </p>
-        <p class="m-0 mt-2">
-          <a href="#sa-raknar-jag" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
-            {TEXT.spalt['lank-sa-raknar-jag']}
-          </a>
-        </p>
-        {
-          visat.utfall !== 'utanfor' && (
-            <p class="m-0">
-              <a
-                href={`/rakna/rotavdrag/?${rotavdragQuery(visat, visatIndata).toString()}`}
-                class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}
-              >
-                {TEXT.spalt['lank-rotavdrag']}
-              </a>
-            </p>
-          )
-        }
-
-        {/* Dela. Svaret står i adressen, så ett skrivskyddat fält räcker. */}
-        <div class="mt-4 border-t border-linje pt-4">
-          <label for="dela" class={ETIKETT_KLASS}>{TEXT.spalt['dela-etikett']}</label>
-          <input id="dela" type="text" readonly value={delaLank} class:list={[FALT_KLASS, 'border-blyerts-2']} />
-          <p class="m-0 mt-1 text-liten text-blyerts-2">{DELATEXT}</p>
-        </div>
-      </div>
+              </tfoot>
+            </table>
+          </Tabellyta>
+          <p class="m-0 mt-2 text-liten text-blyerts-2">
+            <a href="#vad-siffrorna-vilar-pa" class={LANK_KLASS}>{TEXT.darfor.kallrad}</a>
+          </p>
+          <p class:list={[STYCKE_KLASS, 'tabular-nums']}>{TEXT.darfor.rot(bv)}</p>
+          <p class:list={[STYCKE_KLASS, 'tabular-nums']}>{TEXT.darfor.betala(bv)}</p>
+          <p class:list={[STYCKE_KLASS, 'tabular-nums']}>{TEXT.darfor['per-kvm'](bv)}</p>
+        </>
+      ) : (
+        <p class={STYCKE_KLASS}>{TEXT.darfor.utanfor(bv)}</p>
+      )
+    }
+    <div class:list={['darfor', LANKAR_KLASS]}>
+      {
+        (() => {
+          /* Förmedlarna namnges bara i antagandetabellen (checklistans fälla).
+             Hänvisningen dit står högst en gång på sidan: i stycket ovanför när svaret
+             når intervallet, annars under den sista regeln som vilar på en förmedlare. */
+          const kallor = visat.regler.map((nyckel) => regelKallor(nyckel));
+          const sistaFormedlare = kallradEfterRegel(kallor, visat.utfall !== 'utanfor');
+          return visat.regler.map((nyckel, r) => {
+            const regel = TEXT.regel[nyckel];
+            const namngivna = kallor[r] ?? [];
+            return (
+              <div>
+                <p>{regel.text(bv)}</p>
+                {namngivna.length > 0 ? (
+                  <p>
+                    {namngivna.map((k, i) => (
+                      <>
+                        {i > 0 && '; '}
+                        <a href={k.url} rel="nofollow">{k.titel}</a>, {k.slag}, {k.datum}
+                      </>
+                    ))}
+                  </p>
+                ) : (
+                  r === sistaFormedlare && (
+                    <p>
+                      <a href="#vad-siffrorna-vilar-pa">{TEXT.darfor.kallrad}</a>
+                    </p>
+                  )
+                )}
+              </div>
+            );
+          });
+        })()
+      }
     </div>
+  </Fragment>
 
-    <section>
-      <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
-      {
-        visat.utfall !== 'utanfor' ? (
-          <>
-            <Tabellyta kolumner={3} class="mt-4">
-              <table class={POST_TABELL_KLASS}>
-                <thead>
-                  <tr>
-                    <th scope="col">{TEXT.darfor['tabell-post']}</th>
-                    <th scope="col">{TEXT.darfor['tabell-arbete']}</th>
-                    <th scope="col">{TEXT.darfor['tabell-material']}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {
-                    postRader.map((r) => (
-                      <tr>
-                        <th scope="row">{r.namn}</th>
-                        {r.celler.map((c) => (
-                          <td>
-                            {typeof c === 'string' ? (
-                              c
-                            ) : (
-                              <>
-                                <span>{c.lag}</span>
-                                {c.hog !== null && (
-                                  <>
-                                    {' '}
-                                    <span>till {c.hog}</span>
-                                  </>
-                                )}
-                              </>
-                            )}
-                          </td>
-                        ))}
-                      </tr>
-                    ))
-                  }
-                </tbody>
-                <tfoot>
-                  {
-                    summaRad && (
-                      <tr>
-                        <th scope="row">{TEXT.darfor.summa}</th>
-                        {summaRad.map((c) => (
-                          <td>
-                            <span>{c.lag}</span>
-                            {c.hog !== null && (
-                              <>
-                                {' '}
-                                <span>till {c.hog}</span>
-                              </>
-                            )}
-                          </td>
-                        ))}
-                      </tr>
-                    )
-                  }
-                </tfoot>
-              </table>
-            </Tabellyta>
-            <p class="m-0 mt-2 text-liten text-blyerts-2">
-              <a href="#vad-siffrorna-vilar-pa" class={LANK_KLASS}>{TEXT.darfor.kallrad}</a>
-            </p>
-            <p class:list={[STYCKE_KLASS, 'tabular-nums']}>{TEXT.darfor.rot(bv)}</p>
-            <p class:list={[STYCKE_KLASS, 'tabular-nums']}>{TEXT.darfor.betala(bv)}</p>
-            <p class:list={[STYCKE_KLASS, 'tabular-nums']}>{TEXT.darfor['per-kvm'](bv)}</p>
-          </>
-        ) : (
-          <p class={STYCKE_KLASS}>{TEXT.darfor.utanfor(bv)}</p>
-        )
-      }
-      <ul class={REGEL_LISTA_KLASS}>
-        {
-          (() => {
-            /* Förmedlarna namnges bara i antagandetabellen (checklistans fälla).
-               Hänvisningen dit står högst en gång på sidan: i stycket ovanför när svaret
-               når intervallet, annars under den sista regeln som vilar på en förmedlare. */
-            const kallor = visat.regler.map((nyckel) => regelKallor(nyckel));
-            const sistaFormedlare = kallradEfterRegel(kallor, visat.utfall !== 'utanfor');
-            return visat.regler.map((nyckel, r) => {
-              const regel = TEXT.regel[nyckel];
-              const namngivna = kallor[r];
-              return (
-                <li>
-                  <span>{regel.text(bv)}</span>
-                  {namngivna.length > 0 ? (
-                    <span>
-                      {namngivna.map((k, i) => (
-                        <>
-                          {i > 0 && '; '}
-                          <a href={k.url} rel="nofollow">{k.titel}</a>, {k.slag}, {k.datum}
-                        </>
-                      ))}
-                    </span>
-                  ) : (
-                    r === sistaFormedlare && (
-                      <span>
-                        <a href="#vad-siffrorna-vilar-pa">{TEXT.darfor.kallrad}</a>
-                      </span>
-                    )
-                  )}
-                </li>
-              );
-            });
-          })()
-        }
-      </ul>
-    </section>
+  {
+    visat.gorInteDetHar.length > 0 && (
+      <Fragment slot="gorInte">
+        {/* Flera råd står i samma stycke efter "Gör inte det här.", vart och ett på egen rad. */}
+        {visat.gorInteDetHar.map((g, i) => (
+          <span class:list={[i > 0 && 'mt-3 block']}>{TEXT.gorInte[g]}</span>
+        ))}
+      </Fragment>
+    )
+  }
 
-    <section>
-      <Pennstreck id="gor-inte-det-har">Gör inte det här</Pennstreck>
-      {visat.gorInteDetHar.map((g, i) => <p class:list={['m-0 text-brod lg:text-brod-lg', i > 0 && 'mt-4']}>{TEXT.gorInte[g]}</p>)}
-    </section>
+  <Fragment slot="saRaknarJag">
+    {
+      illustration && (
+        <div class="pappersruta">
+          <Illustration namn={`rakna/${SLUG}`} alt={TEXT.skissAlt} bildtext={TEXT.skissBildtext} class="my-0!" />
+        </div>
+      )
+    }
+    <ol class="m-0 mt-4 pl-6 list-decimal text-brod [&>li]:mb-2">
+      {TEXT.steg.map((s) => <li>{s}</li>)}
+    </ol>
+  </Fragment>
 
-    {/*
-      Hantverkarens brödtext, checklistans H2 1 till 3. Länkarna skrivs som
-      vanliga <a> utan klass; utseendet står en gång på <section>.
-    */}
-    <section class={LANKAR_KLASS}>
-      {/* Vad som gör priset: posterna, vilka som är arbete och vilka som är material. */}
-      <Pennstreck>{H2_PRISET}</Pennstreck>
-      <p class="m-0 text-brod lg:text-brod-lg">
-        Kostnaden för en badrumsrenovering ligger mest i förarbetena, tätskiktet och kaklet, både i timmar och i material, eftersom underlaget ska byggas upp, tätas och kaklas innan något annat kan monteras. Rivningen är nästan bara arbete. VVS och el är ungefär hälften arbete och hälften material.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Med inredningen är det tvärtom. Toaletten, handfatet, blandarna och möblerna kostar mycket mer att köpa än att sätta upp. Där väljer du själv hur dyrt det blir.
-      </p>
-    </section>
-
-    <section class={LANKAR_KLASS}>
-      {/*
-        Vad du kan göra själv och vad det sparar. Bär "renovera badrum billigt".
-        Länkar till /badrum/tatskikt-badrum/ (gränsen) och /badrum/fogar-badrum/
-        (det billigaste sättet att fräscha upp).
-      */}
-      <Pennstreck>{H2_SJALV}</Pennstreck>
-      <p class="m-0 text-brod lg:text-brod-lg">
-        Det du kan ta på dig i räknaren är rivningen och att forsla bort det gamla. Jag har jobbat som rivare en kort period, och av allt i ett badrum är rivningen det jobb där dina egna timmar gör mest nytta. Du behöver mest verktyg för att bila, en rygg som håller och tid.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Rivningen ger rotavdrag när firman gör den, så det du sparar på att riva själv är arbetet minus avdraget. Bortforslingen kan du också ta på dig, men i räknaren sparar den ingenting.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Monteringen av inredningen går inte att välja, även om du får göra en del av den själv. Toalettstolen sitter fast i tätskiktet och <a href="/badrum/montera-duschvagg/">duschväggen skruvas ofta genom det</a>, och <a href="/badrum/tatskikt-badrum/">tabellen över vad du får göra själv i ett badrum</a> visar var gränsen går för varje arbete.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Vill du bara fräscha upp och inte renovera alls är fogarna det billigaste stället att börja på. Mögel på ytan går att tvätta bort, och <a href="/badrum/fogar-badrum/">en silikonfog som är slut kan bytas</a> utan att resten av badrummet rörs.
-      </p>
-    </section>
-
-    <section class={LANKAR_KLASS}>
-      {/*
-        Rotavdraget för badrummet: två ägare, gräns som redan är använd, att
-        material inte ger avdrag. Länkar till /rakna/rotavdrag/.
-      */}
-      <Pennstreck>{H2_ROT}</Pennstreck>
-      <p class="m-0 text-brod lg:text-brod-lg">
-        Med priserna här ryms rotavdraget för ett vanligt badrum inom en persons gräns. Gränsen nås när timpriset är högt, när badrummet är stort eller när du redan har anlitat hantverkare under året. Äger ni huset tillsammans kan ni dela avdraget, och då får var och en dra av upp till sin egen gräns, om ni båda står som ägare när jobbet görs, bor där och är med och betalar.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Rotavdrag som du redan har fått för något annat i år skriver du i fältet för det som redan är använt, så räknas bara det som finns kvar av gränsen. Rutavdrag och skatt ingår inte här. Har du haft rutavdrag i år, eller är du osäker på om skatten räcker till hela avdraget, väger <a href="/rakna/rotavdrag/">räknaren för rotavdrag</a> in båda.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Att köpa kaklet och porslinet själv ändrar inte avdraget. Materialet ger aldrig något avdrag, vem som än köper det.
-      </p>
-    </section>
-
-    <section>
-      <Pennstreck id="sa-raknar-jag">Så räknar jag</Pennstreck>
-      {
-        varumarke && illustration && (
-          <Illustration namn={`rakna/${SLUG}`} alt={TEXT.skissAlt} bildtext={TEXT.skissBildtext} />
-        )
-      }
-      <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg [&>li]:mb-2">
-        {TEXT.steg.map((s) => <li>{s}</li>)}
-      </ol>
-
+  <Fragment slot="efter">
+    {/* Antagandetabellen i läsbredd, ur kortet Så räknar jag (spec-designlyft-c avsnitt 9). */}
+    <section class="max-w-lasbredd">
       <h3 id="vad-siffrorna-vilar-pa" class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">
         Vad siffrorna vilar på
       </h3>
@@ -541,21 +486,92 @@ const huvudbild = varumarke ?? illustration;
       </ul>
     </section>
 
-    <section>
-      <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
-      <ul class="m-0 p-0 list-none">
-        {
-          LAS_VIDARE.map((l) => (
-            <li class="border-t border-linje">
-              <a href={l.href} class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-                {l.text}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
+    {/*
+      Hantverkarens brödtext, checklistans H2 1 till 3. Länkarna skrivs som
+      vanliga <a> utan klass; utseendet står en gång på <section>.
+    */}
+    <section class:list={['max-w-lasbredd', LANKAR_KLASS]}>
+      {/* Vad som gör priset: posterna, vilka som är arbete och vilka som är material. */}
+      <Pennstreck>{H2_PRISET}</Pennstreck>
+      <p class="m-0 text-brod lg:text-brod-lg">
+        Kostnaden för en badrumsrenovering ligger mest i förarbetena, tätskiktet och kaklet, både i timmar och i material, eftersom underlaget ska byggas upp, tätas och kaklas innan något annat kan monteras. Rivningen är nästan bara arbete. VVS och el är ungefär hälften arbete och hälften material.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Med inredningen är det tvärtom. Toaletten, handfatet, blandarna och möblerna kostar mycket mer att köpa än att sätta upp. Där väljer du själv hur dyrt det blir.
+      </p>
     </section>
 
-    {FRAGOR.length > 0 && <Faq fragor={FRAGOR} />}
-  </div>
-</Bas>
+    <section class:list={['max-w-lasbredd', LANKAR_KLASS]}>
+      {/*
+        Vad du kan göra själv och vad det sparar. Bär "renovera badrum billigt".
+        Länkar till /badrum/tatskikt-badrum/ (gränsen) och /badrum/fogar-badrum/
+        (det billigaste sättet att fräscha upp).
+      */}
+      <Pennstreck>{H2_SJALV}</Pennstreck>
+      <p class="m-0 text-brod lg:text-brod-lg">
+        Det du kan ta på dig i räknaren är rivningen och att forsla bort det gamla. Jag har jobbat som rivare en kort period, och av allt i ett badrum är rivningen det jobb där dina egna timmar gör mest nytta. Du behöver mest verktyg för att bila, en rygg som håller och tid.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Rivningen ger rotavdrag när firman gör den, så det du sparar på att riva själv är arbetet minus avdraget. Bortforslingen kan du också ta på dig, men i räknaren sparar den ingenting.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Monteringen av inredningen går inte att välja, även om du får göra en del av den själv. Toalettstolen sitter fast i tätskiktet och <a href="/badrum/montera-duschvagg/">duschväggen skruvas ofta genom det</a>, och <a href="/badrum/tatskikt-badrum/">tabellen över vad du får göra själv i ett badrum</a> visar var gränsen går för varje arbete.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Vill du bara fräscha upp och inte renovera alls är fogarna det billigaste stället att börja på. Mögel på ytan går att tvätta bort, och <a href="/badrum/fogar-badrum/">en silikonfog som är slut kan bytas</a> utan att resten av badrummet rörs.
+      </p>
+    </section>
+
+    <section class:list={['max-w-lasbredd', LANKAR_KLASS]}>
+      {/*
+        Rotavdraget för badrummet: två ägare, gräns som redan är använd, att
+        material inte ger avdrag. Länkar till /rakna/rotavdrag/.
+      */}
+      <Pennstreck>{H2_ROT}</Pennstreck>
+      <p class="m-0 text-brod lg:text-brod-lg">
+        Med priserna här ryms rotavdraget för ett vanligt badrum inom en persons gräns. Gränsen nås när timpriset är högt, när badrummet är stort eller när du redan har anlitat hantverkare under året. Äger ni huset tillsammans kan ni dela avdraget, och då får var och en dra av upp till sin egen gräns, om ni båda står som ägare när jobbet görs, bor där och är med och betalar.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Rotavdrag som du redan har fått för något annat i år skriver du i fältet för det som redan är använt, så räknas bara det som finns kvar av gränsen. Rutavdrag och skatt ingår inte här. Har du haft rutavdrag i år, eller är du osäker på om skatten räcker till hela avdraget, väger <a href="/rakna/rotavdrag/">räknaren för rotavdrag</a> in båda.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Att köpa kaklet och porslinet själv ändrar inte avdraget. Materialet ger aldrig något avdrag, vem som än köper det.
+      </p>
+    </section>
+
+    {
+      (lasVidare.length > 0 || lasVidareLankar.length > 0) && (
+        <section>
+          <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
+          {lasVidare.length > 0 && (
+            <Artikelrutnat
+              kort={lasVidare}
+              kolumner={lasVidare.length === 4 ? 4 : 3}
+              visaBeskrivning={false}
+              visaMeta={false}
+            />
+          )}
+          {lasVidareLankar.length > 0 && (
+            <ul class="m-0 mt-4 p-0 list-none max-w-lasbredd">
+              {lasVidareLankar.map((l) => (
+                <li class="border-t border-linje">
+                  <a href={l.href} class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
+                    {l.text}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      )
+    }
+
+    {
+      FRAGOR.length > 0 && (
+        <div class="max-w-lasbredd">
+          <Faq fragor={FRAGOR} />
+        </div>
+      )
+    }
+  </Fragment>
+</Raknarsida>

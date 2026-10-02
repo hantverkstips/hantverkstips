@@ -147,3 +147,33 @@ För varje räknare: `[slug].klartext` som `TEXT SAKNAS` med platshållare, och 
 Kontrollera också gipspluggens svarsyta: hantverkaren har strukit `lastText` ur den. Det får inte stå kvar några tomma element eller onödiga marginaler. Rätta markupen om det behövs, utan att röra texterna.
 
 Kontroller enligt avsnitt 4, med utskriftsproven ovan. Adresser: bygglov-altan standard och med ett lovpliktigt mått, grannemedgivande standard och `?grans=2&jarnvag=1`, kontrollplan standard och med flera åtgärder, mala-ute standard och med ett nej.
+
+## 14. Steg 5: rotavdrag, badrum-kostnad, kok-kostnad, takbyte, takavvattning, och städningen
+
+Mönstret står i avsnitt 3, 7, 9, 11, 12 och 13.
+
+- **rotavdrag**: `Svarstal` med avdraget i kronor. `Matare` med avdraget mot årets tak för rotavdrag, alltså taket per person gånger antalet som delar på avdraget. Taket hämtas ur formelmodulen, aldrig hårdkodat. Etikett `rotavdrag.matare.etikett`. `Statusrad` med `varning` när taket nås och avdraget blir mindre än 30 procent av arbetet. Annars ingen statusrad.
+- **badrum-kostnad** och **kok-kostnad**: `Svarstal` med totalen efter rotavdraget, som sidan visar den i dag. Posttabellen står kvar i svaret eller direkt under det, som i dag. Ingen mätare.
+- **takbyte**: `Svarstal` med priset efter rotavdraget. Takytan och materialet står som rader under beskedet. Ingen mätare.
+- **takavvattning**: `Svarstal` med hängrännans bredd i mm, och stuprör, rör och krokar under beskedet. Ingen mätare.
+
+För varje räknare: `[slug].klartext` som `TEXT SAKNAS` med platshållare. Meningar som inte längre har någon plats listas.
+
+**Städningen** när alla 22 är flyttade:
+
+1. Klassen `.linjerat` och dess regler (`.linjerat .prosa …`) tas bort ur `global.css`, liksom `.plats-blad`, om ingen fil under `src/` använder dem. Bara kommentarer får nämna dem. Kontrollera med grep.
+2. Ta bort oanvända komponentklasser från före designlyftet: `.kopknapp-full`, `.kopknapp-aktiv` och andra som grep visar att ingen använder. Ta också bort `Forfattarruta.astro` om ingen sida använder den. Lista vad som togs bort.
+3. `verktygsVarumarkesbild` används inte längre i räknarnas huvud. Funktionen står kvar, eftersom Verktygskort använder den.
+
+**Sista genomgången** av alla 22 räknare, vid standardvärden, på 375 och 1280 px:
+- ingen sidledsscroll
+- svaret först på mobil
+- enheten inne i breda fält
+- radioknappar som knappar
+- Räkna ut fylld i penna
+- delningsraden
+- Så räknar jag-kortet till höger från 1024 px
+- inga vänsterlinjer utom Varning
+- inga `TEXT SAKNAS` utom dina nya
+
+Resultatet blir en tabell med en rad per räknare och en kolumn per punkt.

@@ -10,10 +10,15 @@
  * src/lib/kalkyl/takbyte.ts, geometrin i tak.ts. Sidan räknar ingenting själv.
  *
  * Inga produkter och inget reklamband (checklistan 1).
+ *
+ * Räknarmallen sedan fas C (spec-designlyft-c-2026-10-02 avsnitt 14).
  */
 export const prerender = false;
 
-import Bas from '../../layouts/Bas.astro';
+import { artikelUrl, publicerade } from '../../lib/innehall';
+import { tillKortArtikel, type KortData } from '../../lib/kort';
+import { hittaKalkylator } from '../../lib/kalkyl/register';
+import { arPelare } from '../../lib/pelare';
 import {
   antagandenFor,
   avvattningQuery,
@@ -22,7 +27,6 @@ import {
   harBelopp,
   KALLOR,
   kallradRegel,
-  kortsvarVarden,
   kronor,
   m2Text,
   meterText,
@@ -39,17 +43,16 @@ import {
   type KallaRef,
   type TakbyteIndata,
 } from '../../lib/kalkyl/takbyte.ts';
-import { ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
-import { verktyg } from '../../lib/strukturdata';
-import { verktygsDelningsbild, verktygsillustration, verktygsVarumarkesbild } from '../../lib/verktygsbild';
+import { LANK_KLASS } from '../../lib/kalkyl/stil';
+import { verktygsillustration } from '../../lib/verktygsbild';
 import TakbyteForm from '../../components/kalkyl/TakbyteForm.astro';
-import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Artikelrutnat from '../../components/ui/Artikelrutnat.astro';
 import Faq from '../../components/ui/Faq.astro';
 import Illustration from '../../components/ui/Illustration.astro';
-import Markering from '../../components/ui/Markering.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
-import StrukturData from '../../components/ui/StrukturData.astro';
+import Svarstal from '../../components/ui/Svarstal.astro';
 import Tabellyta from '../../components/ui/Tabellyta.astro';
+import Raknarsida from '../../components/vyer/Raknarsida.astro';
 
 Astro.locals.sidtyp = 'verktyg';
 
@@ -104,7 +107,6 @@ const FRAGOR = [
 
 /* Gränssnittstext, ordagrant ur skillen nytt-verktyg. */
 const STANDARDVARNING = 'Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.';
-const DELATEXT = 'Dina värden ligger i adressen. Markera den och kopiera, så får den du skickar länken till samma svar.';
 
 if (UTKAST && import.meta.env.PROD) {
   return new Response(null, { status: 404, headers: { 'X-Robots-Tag': 'noindex' } });
@@ -138,7 +140,9 @@ const delaLank = new URL(
 
 const bv = beskedVarden(visat, visatIndata);
 const besked = TEXT.besked[visat.utfall];
-const ks = TEXT.kortsvar(kortsvarVarden());
+
+/** Hårda mellanslag i talen, så att Svarstal bara bryter före "till". */
+const hart = (s: string): string => s.replace(/ /g, ' ');
 
 /* Påslagstabellen: raden närmast läsarens vinkel i fetstil, bara den. */
 const paslag = paslagstabell();
@@ -151,11 +155,9 @@ const TABELL_KLASS =
   'w-full border-collapse text-liten tabular-nums [&_th]:p-2 [&_td]:p-2 [&_th]:align-top [&_td]:align-top [&_th]:text-left [&_tbody_th]:[font-weight:inherit] [&_tr]:border-b [&_tr]:border-linje [&_th]:text-blyerts [&_td]:text-blyerts [&_thead_th]:text-etikett [&_thead_th]:uppercase [&_thead_th]:text-blyerts-2';
 const TAL_TABELL_KLASS = `${TABELL_KLASS} [&_td]:text-right [&_td]:whitespace-nowrap [&_thead_th+th]:text-right`;
 const ANDE_TABELL_KLASS = `${TAL_TABELL_KLASS} [&_tr:last-child>*]:font-bold`;
-const REGEL_LISTA_KLASS =
-  'm-0 mt-6 p-0 list-none text-brod lg:text-brod-lg [&>li]:mb-4 [&>li]:border-l-2 [&>li]:border-blyerts-2 [&>li]:pl-4 [&_span]:block [&_span+span]:text-liten [&_span+span]:text-blyerts-2 [&_a]:text-penna [&_a]:underline [&_a]:decoration-1 [&_a]:underline-offset-2 [&_a:hover]:decoration-2';
 const LANKAR_KLASS = '[&_a]:text-penna [&_a]:underline [&_a]:decoration-1 [&_a]:underline-offset-2 [&_a:hover]:decoration-2';
 const STYCKE_KLASS = 'm-0 mt-4 text-brod lg:text-brod-lg';
-const SPALTRAD_KLASS = 'm-0 mt-1 text-liten text-blyerts-2 tabular-nums';
+const SPALTRAD_KLASS = 'text-liten text-blyerts-2 tabular-nums';
 const SPALTLANK_KLASS = ['inline-flex min-h-11 items-center', LANK_KLASS];
 
 const kalla = (k: Kallkod): KallaRef => KALLOR[k];
@@ -166,222 +168,294 @@ for (const a of antaganden) {
   for (const k of a.kallor) if (!kallor.some((x) => x.kod === k)) kallor.push(kalla(k));
 }
 
+/** Skissen står i kortet Så räknar jag. Huvudet har ingen bild sedan fas C (DESIGN.md 5.8). */
 const illustration = verktygsillustration(SLUG);
-const varumarke = verktygsVarumarkesbild(SLUG);
-const huvudbild = varumarke ?? illustration;
+
+/*
+ * Klartexten i svarsytan (spec-designlyft-c avsnitt 0 och 14), hantverkarens.
+ * Platshållare: {pris} (att betala efter rotavdraget, kr, ett tal eller "lågt
+ * till högt"), {takarea} (m² längs lutningen), {langd} och {bredd} (husets
+ * mått, m) och {vinkel} (grader).
+ * Utan belopp (utanför eller för flack lutning) är {pris} tom.
+ */
+const KLARTEXT =
+  'Ett hus på {langd} × {bredd} m med {vinkel} graders taklutning har {takarea} m² tak, och ett nytt tak kostar {pris} kr efter rotavdraget, räknat med offertförmedlares och leverantörers priser.'; // takbyte.klartext
+/* Utan belopp (utanför eller för flack lutning) står bara takarean. */
+const KLARTEXT_UTAN_PRIS =
+  'Ett hus på {langd} × {bredd} m med {vinkel} graders taklutning har {takarea} m² tak längs lutningen, räknat från husets mått och takutsprången.';
+const klartext = (harBelopp(visat) ? KLARTEXT : KLARTEXT_UTAN_PRIS).replace(
+  '{pris}',
+  harBelopp(visat)
+    ? visat.ettTal
+      ? kronor(visat.lag.attBetalaKr)
+      : `${kronor(visat.lag.attBetalaKr)} till ${kronor(visat.hog.attBetalaKr)}`
+    : '',
+)
+  .replace('{takarea}', m2Text(visat.geometri.takareaM2))
+  .replace('{langd}', komma(visatIndata.langdM))
+  .replace('{bredd}', komma(visatIndata.breddM))
+  .replace('{vinkel}', bv.vinkel);
+
+/**
+ * Läs vidare: artiklarna som artikelkort, räknarna med registrets namn som på
+ * hubben, i den förra listans ordning.
+ */
+const artiklar = [...(await publicerade('guider')), ...(await publicerade('kunskap'))];
+const lasVidare: KortData[] = [];
+const lasVidareLankar: { href: string; text: string }[] = [];
+for (const l of LAS_VIDARE) {
+  const e = artiklar.find((a) => artikelUrl(a) === l.href);
+  if (e) {
+    const { niva: _niva, ...kort } = tillKortArtikel(e);
+    lasVidare.push(kort);
+    continue;
+  }
+  const k = l.href.startsWith('/rakna/') ? hittaKalkylator(l.href.replace(/^\/rakna\/|\/$/g, '')) : undefined;
+  const pelare = k?.pelare?.[0];
+  if (k && pelare && arPelare(pelare)) {
+    lasVidare.push({
+      etikett: 'Räkna själv',
+      rubrik: k.namn,
+      beskrivning: k.rad,
+      pelare,
+      href: l.href,
+      // Artikelrutnat läser inte typen; kortet står varken i ett typfilter eller sorteras.
+      typ: 'kunskap',
+      sorteringsdatum: new Date(0),
+    });
+    continue;
+  }
+  lasVidareLankar.push(l);
+}
 ---
 
-<Bas
-  title={titel}
-  description={BESKRIVNING}
-  reklam={false}
-  noindex={UTKAST}
-  brodsmulor={[
-    { namn: 'Hantverkstips', href: '/' },
-    { namn: 'Räkna själv', href: '/rakna/' },
-    { namn: VERKTYGSNAMN },
-  ]}
-  bred={true}
-  ogBild={verktygsDelningsbild(SLUG)}
+<Raknarsida
+  slug={SLUG}
+  namn={VERKTYGSNAMN}
+  titel={titel}
+  beskrivning={BESKRIVNING}
+  rubrik={H1}
+  delaUrl={delaLank}
+  saRaknarId="sa-raknar-jag"
 >
-  <StrukturData slot="head" data={verktyg({ url: `/rakna/${SLUG}/`, namn: VERKTYGSNAMN, beskrivning: BESKRIVNING })} />
+  <p slot="ingress">{INGRESS}</p>
 
-  <div class="mx-auto w-full max-w-lasbredd">
-    <section class="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-8">
-      <div class="lg:col-span-7">
-        <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">{H1}</h1>
-        <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">{INGRESS}</p>
-      </div>
-      {
-        huvudbild && (
-          <div class="lg:col-span-5">
-            <img
-              src={huvudbild.src}
-              alt=""
-              width={huvudbild.width}
-              height={huvudbild.height}
-              fetchpriority="high"
-              decoding="async"
-              class:list={['block h-auto w-full', !varumarke && 'rounded-sm border border-linje']}
-            />
-          </div>
-        )
-      }
-    </section>
+  <TakbyteForm slot="formular" indata={indata} varden={varden} fel={fel} />
 
-    <Faktaruta variant="kortsvar">
-      <p class="m-0 leading-6">
-        {ks.fore}{' '}<Markering>{ks.markering}</Markering>{ks.efter}
-      </p>
-    </Faktaruta>
-
-    <div class="linjerat mt-8 lg:grid lg:grid-cols-2 lg:gap-8">
-      <TakbyteForm indata={indata} varden={varden} fel={fel} />
-
-      <div class="mt-8 border-t border-linje pt-6 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
-        {resultat.status === 'ogiltig' && <p class="m-0 mb-2 text-liten text-varning">{STANDARDVARNING}</p>}
-
-        <p class="m-0 font-sans text-h3 lg:text-h3-lg font-bold text-blyerts">{besked.rubrik(bv)}</p>
-        <p class="m-0 mt-1 text-brod">{besked.rad(bv)}</p>
-
-        {
-          harBelopp(visat) ? (
-            <>
-              <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
-                {TEXT.spalt['etikett-betala']}
-              </p>
-              <p class="m-0 mt-1 flex flex-wrap items-baseline gap-x-2 tabular-nums">
-                <span class="whitespace-nowrap font-serif text-siffra lg:text-siffra-lg text-blyerts">
-                  <Markering>{kronor(visat.lag.attBetalaKr)}</Markering>
-                </span>
-                <span class="text-ingress lg:text-ingress-lg">{visat.ettTal ? 'kr' : TEXT.spalt.till(bv)}</span>
-              </p>
-              <p class:list={[SPALTRAD_KLASS, 'mt-2']}>{TEXT.spalt['rad-takarea'](bv)}</p>
-              <p class={SPALTRAD_KLASS}>{TEXT.spalt['rad-delning'](bv)}</p>
-              <p class={SPALTRAD_KLASS}>{TEXT.spalt['rad-rot'](bv)}</p>
-            </>
-          ) : (
-            <>
-              <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
-                {TEXT.spalt['etikett-takarea']}
-              </p>
-              <p class="m-0 mt-1 flex items-baseline gap-x-2 whitespace-nowrap tabular-nums">
-                <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
-                  <Markering>{m2Text(visat.geometri.takareaM2)}</Markering>
-                </span>
-                <span class="text-ingress lg:text-ingress-lg">{TEXT.spalt['enhet-takarea']}</span>
-              </p>
-            </>
-          )
-        }
-
-        <p class:list={[SPALTRAD_KLASS, 'mt-2', LANKAR_KLASS]}>
-          {TEXT.spalt['rad-geometri'](bv)}{' '}<a href="/tak/takstolar/">{TEXT.spalt['lank-takstolar']}</a>
-        </p>
-
-        <p class="m-0 mt-4 text-liten text-blyerts-2">
-          <a href="#darfor-blev-svaret-sa" class:list={SPALTLANK_KLASS}>{TEXT.spalt.pekrad}</a>
-        </p>
-        <p class="m-0">
-          <a href="#sa-raknar-jag" class:list={SPALTLANK_KLASS}>{TEXT.spalt['lank-sa-raknar-jag']}</a>
-        </p>
-        {
-          harBelopp(visat) && (
-            <p class="m-0">
-              <a href={`/rakna/rotavdrag/?${rotavdragQuery(visat, visatIndata).toString()}`} class:list={SPALTLANK_KLASS}>
-                {TEXT.spalt['lank-rotavdrag']}
-              </a>
-            </p>
-          )
-        }
-        <p class="m-0">
-          <a
-            href={`/rakna/takavvattning/?${avvattningQuery(visatIndata, visat.geometri).toString()}`}
-            class:list={SPALTLANK_KLASS}
-          >
-            {TEXT.spalt['lank-takavvattning']}
-          </a>
-        </p>
-
-        <div class="mt-4 border-t border-linje pt-4">
-          <label for="dela" class={ETIKETT_KLASS}>{TEXT.spalt['dela-etikett']}</label>
-          <input id="dela" type="text" readonly value={delaLank} class:list={[FALT_KLASS, 'border-blyerts-2']} />
-          <p class="m-0 mt-1 text-liten text-blyerts-2">{DELATEXT}</p>
-        </div>
-      </div>
+  <Fragment slot="svar">
+    {resultat.status === 'ogiltig' && <p class="text-liten text-varning">{STANDARDVARNING}</p>}
+    {
+      harBelopp(visat) ? (
+        <Svarstal
+          tal={
+            visat.ettTal
+              ? hart(kronor(visat.lag.attBetalaKr))
+              : `${hart(kronor(visat.lag.attBetalaKr))} till ${hart(kronor(visat.hog.attBetalaKr))}`
+          }
+          enhet="kr"
+          vad={TEXT.spalt['etikett-betala']}
+        />
+      ) : (
+        <Svarstal
+          tal={m2Text(visat.geometri.takareaM2)}
+          enhet={TEXT.spalt['enhet-takarea']}
+          vad={TEXT.spalt['etikett-takarea']}
+        />
+      )
+    }
+    <div class="text-brod">
+      <p class="font-bold">{besked.rubrik(bv)}</p>
+      <p class="mt-1!">{besked.rad(bv)}</p>
     </div>
-
-    <section>
-      <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
+    <div class={LANKAR_KLASS}>
       {
-        harBelopp(visat) ? (
+        harBelopp(visat) && (
           <>
-            {visat.ettTal ? (
-              <p class:list={[STYCKE_KLASS, 'tabular-nums']}>{TEXT.darfor['ett-tal'](bv)}</p>
-            ) : (
-              <Tabellyta kolumner={3} class="mt-4">
-                <table class={ANDE_TABELL_KLASS}>
-                  <thead>
-                    <tr>
-                      <th scope="col">{TEXT.darfor['tabell-ande']}</th>
-                      <th scope="col">{TEXT.darfor['tabell-lag']}</th>
-                      <th scope="col">{TEXT.darfor['tabell-hog']}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {(
-                      [
-                        ['rad-pris', 'prisKvm'],
-                        ['rad-kostnad', 'kostnadKr'],
-                        ['rad-arbete', 'arbeteKr'],
-                        ['rad-material', 'materialKr'],
-                        ['rad-rot', 'rotKr'],
-                        ['rad-betala', 'attBetalaKr'],
-                      ] as const
-                    ).map(([rubrik, falt]) => (
-                      <tr>
-                        <th scope="row">{TEXT.darfor[rubrik]}</th>
-                        <td>{kronor(visat.lag[falt])}</td>
-                        <td>{kronor(visat.hog[falt])}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </Tabellyta>
-            )}
-            <p class:list={[STYCKE_KLASS, 'tabular-nums']}>{TEXT.darfor.tillagg(bv)}</p>
-            <p class="m-0 mt-2 text-liten text-blyerts-2">
-              <a href="#vad-siffrorna-vilar-pa" class={LANK_KLASS}>{TEXT.darfor.kallrad}</a>
-            </p>
+            <p class={SPALTRAD_KLASS}>{TEXT.spalt['rad-takarea'](bv)}</p>
+            <p class:list={[SPALTRAD_KLASS, 'mt-1!']}>{TEXT.spalt['rad-delning'](bv)}</p>
+            <p class:list={[SPALTRAD_KLASS, 'mt-1!']}>{TEXT.spalt['rad-rot'](bv)}</p>
           </>
-        ) : (
-          <p class={STYCKE_KLASS}>{visat.utfall === 'lutning' ? TEXT.darfor.lutning(bv) : TEXT.darfor.utanfor(bv)}</p>
         )
       }
-      <ul class={REGEL_LISTA_KLASS}>
+      <p class:list={[SPALTRAD_KLASS, harBelopp(visat) && 'mt-1!']}>
+        {TEXT.spalt['rad-geometri'](bv)}{' '}<a href="/tak/takstolar/">{TEXT.spalt['lank-takstolar']}</a>
+      </p>
+    </div>
+    <div>
+      {
+        harBelopp(visat) && (
+          <p>
+            <a href={`/rakna/rotavdrag/?${rotavdragQuery(visat, visatIndata).toString()}`} class:list={SPALTLANK_KLASS}>
+              {TEXT.spalt['lank-rotavdrag']}
+            </a>
+          </p>
+        )
+      }
+      <p>
+        <a
+          href={`/rakna/takavvattning/?${avvattningQuery(visatIndata, visat.geometri).toString()}`}
+          class:list={SPALTLANK_KLASS}
+        >
+          {TEXT.spalt['lank-takavvattning']}
+        </a>
+      </p>
+    </div>
+    <p class="text-liten text-blyerts">{klartext}</p>
+  </Fragment>
+
+  <Fragment slot="darfor">
+    <Pennstreck id="darfor-blev-svaret-sa" utanLuft>
+      Därför blev svaret så
+    </Pennstreck>
+    {
+      harBelopp(visat) ? (
+        <>
+          {visat.ettTal ? (
+            <p class:list={[STYCKE_KLASS, 'tabular-nums']}>{TEXT.darfor['ett-tal'](bv)}</p>
+          ) : (
+            <Tabellyta kolumner={3} class="mt-4">
+              <table class={ANDE_TABELL_KLASS}>
+                <thead>
+                  <tr>
+                    <th scope="col">{TEXT.darfor['tabell-ande']}</th>
+                    <th scope="col">{TEXT.darfor['tabell-lag']}</th>
+                    <th scope="col">{TEXT.darfor['tabell-hog']}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(
+                    [
+                      ['rad-pris', 'prisKvm'],
+                      ['rad-kostnad', 'kostnadKr'],
+                      ['rad-arbete', 'arbeteKr'],
+                      ['rad-material', 'materialKr'],
+                      ['rad-rot', 'rotKr'],
+                      ['rad-betala', 'attBetalaKr'],
+                    ] as const
+                  ).map(([rubrik, falt]) => (
+                    <tr>
+                      <th scope="row">{TEXT.darfor[rubrik]}</th>
+                      <td>{kronor(visat.lag[falt])}</td>
+                      <td>{kronor(visat.hog[falt])}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </Tabellyta>
+          )}
+          <p class:list={[STYCKE_KLASS, 'tabular-nums']}>{TEXT.darfor.tillagg(bv)}</p>
+          <p class="m-0 mt-2 text-liten text-blyerts-2">
+            <a href="#vad-siffrorna-vilar-pa" class={LANK_KLASS}>{TEXT.darfor.kallrad}</a>
+          </p>
+        </>
+      ) : (
+        <p class={STYCKE_KLASS}>{visat.utfall === 'lutning' ? TEXT.darfor.lutning(bv) : TEXT.darfor.utanfor(bv)}</p>
+      )
+    }
+    <div class:list={['darfor', LANKAR_KLASS]}>
+      {
+        (() => {
+          /* Förmedlarna namnges bara i antagandetabellen (checklistans fälla).
+             Hänvisningen dit står högst en gång på sidan: i stycket ovanför när svaret
+             har belopp, annars under den sista regeln som vilar på en förmedlare. */
+          const regelkallor = visat.regler.map((nyckel) => regelKallor(nyckel, visatIndata));
+          const sistaFormedlare = kallradRegel(visat, visatIndata);
+          return visat.regler.map((nyckel, i) => {
+            const namngivna = regelkallor[i] ?? [];
+            return (
+              <div>
+                <p>{TEXT.regel[nyckel].text(bv)}</p>
+                {namngivna.length > 0 ? (
+                  <p>
+                    {namngivna.map((k, n) => (
+                      <>
+                        {n > 0 && '; '}
+                        <a href={k.url} rel="nofollow">{k.titel}</a>, {k.slag}, {k.datum}
+                      </>
+                    ))}
+                  </p>
+                ) : (
+                  i === sistaFormedlare && (
+                    <p>
+                      <a href="#vad-siffrorna-vilar-pa">{TEXT.darfor.kallrad}</a>
+                    </p>
+                  )
+                )}
+              </div>
+            );
+          });
+        })()
+      }
+    </div>
+  </Fragment>
+
+  {
+    visat.gorInteDetHar.length > 0 && (
+      <Fragment slot="gorInte">
+        {/* Flera råd står i samma stycke efter "Gör inte det här.", vart och ett på egen rad. */}
+        {visat.gorInteDetHar.map((g, n) => (
+          <span class:list={[n > 0 && 'mt-3 block']}>{TEXT.gorInte[g]}</span>
+        ))}
+      </Fragment>
+    )
+  }
+
+  <Fragment slot="saRaknarJag">
+    {
+      illustration && (
+        <div class="pappersruta">
+          <Illustration namn={`rakna/${SLUG}`} alt={TEXT.skissAlt} bildtext={TEXT.skissBildtext} class="my-0!" />
+        </div>
+      )
+    }
+    <ol class="m-0 mt-4 pl-6 list-decimal text-brod [&>li]:mb-2">
+      {TEXT.steg(stegVarden()).map((s) => <li>{s}</li>)}
+    </ol>
+  </Fragment>
+
+  <Fragment slot="efter">
+    {/* Antagandetabellen i läsbredd, ur kortet Så räknar jag (spec-designlyft-c avsnitt 9). */}
+    <section class="max-w-lasbredd">
+      <h3 id="vad-siffrorna-vilar-pa" class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">
+        Vad siffrorna vilar på
+      </h3>
+      <Tabellyta kolumner={3} class="mt-4">
+        <table class={TABELL_KLASS}>
+          <thead>
+            <tr>
+              <th scope="col">Vad</th>
+              <th scope="col">Värde</th>
+              <th scope="col">Källa eller antagande</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              antaganden.map((a) => (
+                <tr>
+                  <th scope="row">{TEXT.antagande[a.nyckel]}</th>
+                  <td>{a.varde}</td>
+                  <td>
+                    {a.typ}.{a.kallor.length > 0 && ` ${a.kallor.map((k) => kalla(k).titel).join('; ')}`}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </Tabellyta>
+      <ul class:list={['m-0 mt-4 pl-6 text-liten', LANKAR_KLASS]}>
         {
-          (() => {
-            /* Förmedlarna namnges bara i antagandetabellen (checklistans fälla).
-               Hänvisningen dit står högst en gång på sidan: i stycket ovanför när svaret
-               har belopp, annars under den sista regeln som vilar på en förmedlare. */
-            const kallor = visat.regler.map((nyckel) => regelKallor(nyckel, visatIndata));
-            const sistaFormedlare = kallradRegel(visat, visatIndata);
-            return visat.regler.map((nyckel, i) => {
-              const namngivna = kallor[i];
-              return (
-                <li>
-                  <span>{TEXT.regel[nyckel].text(bv)}</span>
-                  {namngivna.length > 0 ? (
-                    <span>
-                      {namngivna.map((k, n) => (
-                        <>
-                          {n > 0 && '; '}
-                          <a href={k.url} rel="nofollow">{k.titel}</a>, {k.slag}, {k.datum}
-                        </>
-                      ))}
-                    </span>
-                  ) : (
-                    i === sistaFormedlare && (
-                      <span>
-                        <a href="#vad-siffrorna-vilar-pa">{TEXT.darfor.kallrad}</a>
-                      </span>
-                    )
-                  )}
-                </li>
-              );
-            });
-          })()
+          kallor.map((k) => (
+            <li>
+              <a href={k.url} rel="nofollow">{k.titel}</a>, {k.slag}, {k.datum}
+            </li>
+          ))
         }
       </ul>
     </section>
 
-    <section>
-      <Pennstreck id="gor-inte-det-har">Gör inte det här</Pennstreck>
-      {visat.gorInteDetHar.map((g, n) => <p class:list={['m-0 text-brod lg:text-brod-lg', n > 0 && 'mt-4']}>{TEXT.gorInte[g]}</p>)}
-    </section>
-
     {/* Hantverkarens brödtext, checklistans H2 1 till 3. Länkarnas utseende står en gång på <section>. */}
-    <section class={LANKAR_KLASS}>
+    <section class:list={['max-w-lasbredd', LANKAR_KLASS]}>
       {/*
         Takarean ur husets mått. Bär "beräkna takarea" och "takvinkel". Formeln i
         klartext, takutsprånget och påslagstabellen nedan.
@@ -421,7 +495,7 @@ const huvudbild = varumarke ?? illustration;
       <p class="m-0 mt-2 text-liten text-blyerts-2">{TEXT.paslag.rad}</p>
     </section>
 
-    <section class={LANKAR_KLASS}>
+    <section class:list={['max-w-lasbredd', LANKAR_KLASS]}>
       {/*
         Vad som ingår i priset: rivning, underlag, läkt, material, plåtdetaljer,
         ställning och container. Arbete och material för sig. Länk till /tak/plattak/.
@@ -438,7 +512,7 @@ const huvudbild = varumarke ?? illustration;
       </p>
     </section>
 
-    <section class={LANKAR_KLASS}>
+    <section class:list={['max-w-lasbredd', LANKAR_KLASS]}>
       {/* Rotavdraget på takbytet: två ägare och vad som räknas som arbete. Länk till /rakna/rotavdrag/. */}
       <Pennstreck>{H2_ROT}</Pennstreck>
       <p class="m-0 text-brod lg:text-brod-lg">
@@ -449,66 +523,39 @@ const huvudbild = varumarke ?? illustration;
       </p>
     </section>
 
-    <section>
-      <Pennstreck id="sa-raknar-jag">Så räknar jag</Pennstreck>
-      {illustration && <Illustration namn={`rakna/${SLUG}`} alt={TEXT.skissAlt} bildtext={TEXT.skissBildtext} />}
-      <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg [&>li]:mb-2">
-        {TEXT.steg(stegVarden()).map((s) => <li>{s}</li>)}
-      </ol>
+    {
+      (lasVidare.length > 0 || lasVidareLankar.length > 0) && (
+        <section>
+          <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
+          {lasVidare.length > 0 && (
+            <Artikelrutnat
+              kort={lasVidare}
+              kolumner={lasVidare.length === 4 ? 4 : 3}
+              visaBeskrivning={false}
+              visaMeta={false}
+            />
+          )}
+          {lasVidareLankar.length > 0 && (
+            <ul class="m-0 mt-4 p-0 list-none max-w-lasbredd">
+              {lasVidareLankar.map((l) => (
+                <li class="border-t border-linje">
+                  <a href={l.href} class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
+                    {l.text}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      )
+    }
 
-      <h3 id="vad-siffrorna-vilar-pa" class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">
-        Vad siffrorna vilar på
-      </h3>
-      <Tabellyta kolumner={3} class="mt-4">
-        <table class={TABELL_KLASS}>
-          <thead>
-            <tr>
-              <th scope="col">Vad</th>
-              <th scope="col">Värde</th>
-              <th scope="col">Källa eller antagande</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              antaganden.map((a) => (
-                <tr>
-                  <th scope="row">{TEXT.antagande[a.nyckel]}</th>
-                  <td>{a.varde}</td>
-                  <td>
-                    {a.typ}.{a.kallor.length > 0 && ` ${a.kallor.map((k) => kalla(k).titel).join('; ')}`}
-                  </td>
-                </tr>
-              ))
-            }
-          </tbody>
-        </table>
-      </Tabellyta>
-      <ul class:list={['m-0 mt-4 pl-6 text-liten', LANKAR_KLASS]}>
-        {
-          kallor.map((k) => (
-            <li>
-              <a href={k.url} rel="nofollow">{k.titel}</a>, {k.slag}, {k.datum}
-            </li>
-          ))
-        }
-      </ul>
-    </section>
-
-    <section>
-      <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
-      <ul class="m-0 p-0 list-none">
-        {
-          LAS_VIDARE.map((l) => (
-            <li class="border-t border-linje">
-              <a href={l.href} class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-                {l.text}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </section>
-
-    {FRAGOR.length > 0 && <Faq fragor={FRAGOR} />}
-  </div>
-</Bas>
+    {
+      FRAGOR.length > 0 && (
+        <div class="max-w-lasbredd">
+          <Faq fragor={FRAGOR} />
+        </div>
+      )
+    }
+  </Fragment>
+</Raknarsida>
