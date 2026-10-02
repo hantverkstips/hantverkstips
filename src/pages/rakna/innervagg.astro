@@ -15,8 +15,9 @@
  */
 export const prerender = false;
 
-import Bas from '../../layouts/Bas.astro';
 import { formateraTal } from '../../lib/format';
+import { artikelUrl, publicerade } from '../../lib/innehall';
+import { tillKortArtikel, type KortData } from '../../lib/kort';
 import {
   raknaInnervagg,
   SKIVA_BREDD_MM,
@@ -28,19 +29,20 @@ import {
   type InnervaggIndata,
   type InnervaggResultat,
 } from '../../lib/kalkyl/innervagg';
-import { CELL_KLASS, ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
+import { hittaKalkylator } from '../../lib/kalkyl/register';
+import { CELL_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
+import { arPelare } from '../../lib/pelare';
 import { hamtaButik } from '../../lib/produkter';
-import { verktyg } from '../../lib/strukturdata';
-import { verktygsDelningsbild, verktygsillustration, verktygsVarumarkesbild } from '../../lib/verktygsbild';
+import { verktygsillustration } from '../../lib/verktygsbild';
 import InnervaggForm from '../../components/kalkyl/InnervaggForm.astro';
-import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Artikelrutnat from '../../components/ui/Artikelrutnat.astro';
 import Faq from '../../components/ui/Faq.astro';
-import Markering from '../../components/ui/Markering.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
 import Produktkort from '../../components/ui/Produktkort.astro';
-import StrukturData from '../../components/ui/StrukturData.astro';
+import Svarstal from '../../components/ui/Svarstal.astro';
 import Tabellyta from '../../components/ui/Tabellyta.astro';
 import Illustration from '../../components/ui/Illustration.astro';
+import Raknarsida from '../../components/vyer/Raknarsida.astro';
 
 Astro.locals.sidtyp = 'verktyg';
 
@@ -250,235 +252,262 @@ const SLUG = 'innervagg';
 const VERKTYGSNAMN = 'Regelkalkylator';
 const BESKRIVNING =
   'Fyll i väggens längd, höjd och regelavstånd, så får du materialåtgången för innerväggen med reglar, gipsskivor, skruv och mineralull, spillet inräknat.';
+/** Skissen står i kortet Så räknar jag. Huvudet har ingen bild sedan fas C (DESIGN.md 5.8). */
 const illustration = verktygsillustration(SLUG);
-/**
- * Varumärkesbilden i sidhuvudet, sedan 2026-09-19 (docs/DESIGN.md avsnitt 7).
- * Finns den står skissen i stället i "Så räknar vi", där måtten förklarar
- * räkningen. Finns den inte visas skissen i sidhuvudet som förut.
+
+/*
+ * Svarsytan, fas C (spec-designlyft-c-2026-10-02 avsnitt 12). Ny text är
+ * hantverkarens. Klartexten har platshållarna {reglar} (stående reglar),
+ * {skivor} (gipsskivor utan spill), {langd} och {hojd} (m), {regel} (regelns
+ * mått, "45 × 70 mm") och {cc} (mm).
  */
-const varumarke = verktygsVarumarkesbild(SLUG);
-const huvudbild = varumarke ?? illustration;
+const KLARTEXT =
+  'En vägg på {langd} × {hojd} m med reglar {regel} på c {cc} mm behöver {reglar} stående reglar och {skivor} gipsskivor utan spill, räknat med Gyprocs och Norgips mått.'; // innervagg.klartext
+const klartext = tal
+  ? KLARTEXT.replace('{reglar}', tal.reglar)
+      .replace('{skivor}', tal.skivor)
+      .replace('{langd}', tal.langd)
+      .replace('{hojd}', tal.hojd)
+      .replace('{regel}', regelText)
+      .replace('{cc}', tal.cc)
+  : '';
+
+/** Läs vidare som kort, i den förra listans ordning. Räknaren får registrets namn som på hubben. */
+const LAS_VIDARE = ['/inomhus/bygga-innervagg/', '/inomhus/gipsskruv/', '/rakna/gipsskruv/'];
+const artiklar = [...(await publicerade('guider')), ...(await publicerade('kunskap'))];
+const lasVidare: KortData[] = LAS_VIDARE.flatMap((href): KortData[] => {
+  const e = artiklar.find((a) => artikelUrl(a) === href);
+  if (e) {
+    const { niva: _niva, ...kort } = tillKortArtikel(e);
+    return [kort];
+  }
+  const k = hittaKalkylator(href.replace(/^\/rakna\/|\/$/g, ''));
+  const pelare = k?.pelare?.[0];
+  if (!k || !pelare || !arPelare(pelare)) return [];
+  return [
+    {
+      etikett: 'Räkna själv',
+      rubrik: k.namn,
+      beskrivning: k.rad,
+      pelare,
+      href,
+      // Artikelrutnat läser inte typen; kortet står varken i ett typfilter eller sorteras.
+      typ: 'kunskap',
+      sorteringsdatum: new Date(0),
+    },
+  ];
+});
 ---
 
-<Bas
-  title={titel}
-  description={BESKRIVNING}
+<Raknarsida
+  slug={SLUG}
+  namn={VERKTYGSNAMN}
+  titel={titel}
+  beskrivning={BESKRIVNING}
+  rubrik="Så mycket reglar, gips och skruv går åt till din innervägg"
   reklam={true}
   butikNamn={butik?.namn}
-  brodsmulor={[
-    { namn: 'Hantverkstips', href: '/' },
-    { namn: 'Räkna själv', href: '/rakna/' },
-    { namn: VERKTYGSNAMN },
-  ]}
-  bred={true}
-  ogBild={verktygsDelningsbild(SLUG)}
+  delaUrl={delaLank}
 >
-  <StrukturData
-    slot="head"
-    data={verktyg({ url: `/rakna/${SLUG}/`, namn: VERKTYGSNAMN, beskrivning: BESKRIVNING })}
-  />
+  <p slot="ingress">
+    Hur lång väggen ska bli, hur högt det är till taket och hur tätt reglarna ska sitta är allt jag behöver
+    för att ge dig en lista att ta med till bygghandeln. Den säger hur många reglar, gipsskivor och skruv som går åt per
+    löpmeter vägg, och hur mycket mineralull du behöver i facken. Spillet ligger redan på, och varje tal har en
+    källa eller ett antagande som du kan läsa längre ner.
+  </p>
 
-  <div class="mx-auto w-full max-w-lasbredd">
-    {/*
-      Sidhuvudet: rubrik och ingress till vänster i 7/12, bilden till höger i
-      5/12 på desktop, under ingressen på mobil. Bilden är dekorativ, H1 bär
-      betydelsen, därför tom alt. Den är sidans LCP-bild och laddas därför
-      eagert med fetchpriority. Varumärkesbilden har transparent bakgrund och
-      ligger som heron utan ram; skissen är ett urklipp och får ramen. Saknas
-      båda visas ingen bild alls.
-    */}
-    <section class="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-8">
-      <div class="lg:col-span-7">
-        <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">Så mycket reglar, gips och skruv går åt till din innervägg</h1>
-        <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
-          Hur lång väggen ska bli, hur högt det är till taket och hur tätt reglarna ska sitta är allt jag behöver
-          för att ge dig en lista att ta med till bygghandeln. Den säger hur många reglar, gipsskivor och skruv som går åt per
-          löpmeter vägg, och hur mycket mineralull du behöver i facken. Spillet ligger redan på, och varje tal har en
-          källa eller ett antagande som du kan läsa längre ner.
+  {/* Formuläret ligger i src/components/kalkyl/InnervaggForm.astro, så att
+      <Kalkylator namn="innervagg" /> i en artikel visar exakt samma fält. */}
+  <InnervaggForm slot="formular" indata={indata} varden={varden} fel={fel} />
+
+  {
+    visat.status === 'ok' && tal && (
+      <Fragment slot="svar">
+        {resultat.status === 'ogiltig' && (
+          <p class="text-liten text-varning">
+            Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.
+          </p>
+        )}
+        <Svarstal
+          tal={tal.reglar}
+          enhet="reglar"
+          vad={`Vägg på ${tal.langd} m, ${regelText}, ${tal.cc} mm från regelmitt till regelmitt`}
+        />
+        {/* Skivorna som andra rad, som förut, på samma baslinje som enheten. */}
+        <p class="svarstal">
+          <span class="font-serif text-h1">{tal.skivor}</span>
+          <span>
+            <span class="font-serif text-h2">gipsskivor</span>
+          </span>
         </p>
-      </div>
+        <p class="text-liten text-blyerts-2">
+          Reglarna kapar du till {tal.kapLangd} m, och skivorna är {formateraTal(SKIVA_BREDD_MM)} ×{' '}
+          {formateraTal(SKIVA_HOJD_MM)} mm.
+        </p>
+        <div class="text-brod">
+          <p class="font-bold">
+            Köp {tal.antalLangder} reglar om {tal.handelslangd} m, {tal.skivorMedSpill} gipsskivor och{' '}
+            {tal.skruvAttKopa} gipsskruv.
+          </p>
+          <p>
+            Det ger {tal.reglar} stående reglar när du kapat dem, och spillet på virke och skivor är inräknat.
+            {tal.ull && <> Ta med {tal.ull} kvm mineralull till facken.</>}
+          </p>
+        </div>
+        <p class="text-liten text-blyerts">{klartext}</p>
+      </Fragment>
+    )
+  }
 
-      {
-        huvudbild && (
-          <div class="lg:col-span-5">
-            <img
-              src={huvudbild.src}
-              alt=""
-              width={huvudbild.width}
-              height={huvudbild.height}
-              fetchpriority="high"
-              decoding="async"
-              class:list={['block h-auto w-full', !varumarke && 'rounded-sm border border-linje']}
-            />
+  {
+    visat.status === 'ok' && tal && (
+      <Fragment slot="darfor">
+        <Pennstreck id="darfor-blev-svaret-sa" utanLuft>
+          Därför blev svaret så
+        </Pennstreck>
+        <div class="darfor tabular-nums">
+          <div>
+            <p>
+              Virket är {tal.virke} löpmeter. {tal.syllHammarband} m av det är syll och hammarband, resten är
+              reglarna
+              {visat.avvaxlingM > 0 && <> och {tal.avvaxling} m avväxling över dörren</>}. Med spillet inräknat
+              blir det {tal.virkeMedSpill} löpmeter.
+              {visat.antalReglarDorr > 0 && <> {tal.reglarDorr} av reglarna står vid dörröppningarna.</>}
+            </p>
+            <p>Reglarna kapas 15 mm kortare än rumshöjden enligt Gyproc. Spillet på fem procent är mitt.</p>
           </div>
-        )
-      }
+          <div>
+            <p>
+              {tal.antalLangder} reglar om {tal.handelslangd} m är den handelslängd som spiller minst, {tal.spill}{' '}
+              procent.
+            </p>
+            <p>Längderna 2,4 till 4,8 m är de byggvaruhusen brukar lagerföra. Ingen publicerad standard.</p>
+          </div>
+          <div>
+            <p>Skivorna täcker {tal.skivyta} kvm, och med spillet blir det {tal.skivorMedSpill} skivor.</p>
+            <p>Skivan på 1 200 × 2 500 mm är normalskivan hos Norgips och Gyproc. Spillet på tio procent är mitt.</p>
+          </div>
+          <div>
+            <p>
+              Räknat går det åt {tal.skruv} gipsskruv, och jag rundar upp till {tal.skruvAttKopa}. {packRad} Skruven
+              ska vara {visat.skruvLangdText}.
+            </p>
+            <p>
+              Skruvavstånden c 200 mm i kant och c 300 mm i fält är Norgips och Svenskt Träs. Längden kommer ur
+              Norgips tumregel om 20 mm ner i träet.
+            </p>
+          </div>
+          {tal.ull && (
+            <div>
+              <p>
+                Ullen är {tal.ull} kvm mineralull i 45 mm tjocklek
+                {tal.ullBredd ? <>, och den finns i {tal.ullBredd} mm bredd</> : <>, och den får du kapa själv</>}.
+              </p>
+              <p>Bredderna 455 och 610 mm anger Norgips. För c 400 mm anger ingen tillverkare någon bredd.</p>
+            </div>
+          )}
+        </div>
+      </Fragment>
+    )
+  }
+
+  {
+    visat.status === 'ok' && visat.gorInteDetHar.length > 0 && (
+      <Fragment slot="gorInte">
+        {/* Flera råd står i samma stycke efter "Gör inte det här.", vart och ett på egen rad. */}
+        {visat.gorInteDetHar.map((rad, i) => (
+          <span class:list={[i > 0 && 'mt-3 block']}>{rad}</span>
+        ))}
+      </Fragment>
+    )
+  }
+
+  <Fragment slot="saRaknarJag">
+    {
+      illustration && (
+        <div class="pappersruta">
+          <Illustration
+            namn="rakna/innervagg"
+            alt="Regelvägg framifrån med syll, hammarband, fem reglar, en gipsskiva och en måttbygel märkt c 450."
+            bildtext="Skissen visar det verktyget räknar på: väggens längd, regelavståndet mätt från mitt till mitt, och skruven var tjugonde centimeter i skivkanten."
+            class="my-0!"
+          />
+        </div>
+      )
+    }
+    <ol class="m-0 mt-4 pl-6 list-decimal text-brod">
+      <li class="mb-2">
+        Väggens längd delar jag med c-måttet och avrundar uppåt. Sedan lägger jag till en regel för den sista
+        väggänden.
+      </li>
+      <li class="mb-2">Varje dörröppning lägger till två reglar och en avväxling över öppningen.</li>
+      <li class="mb-2">
+        Virket är syll och hammarband (väggens längd två gånger) plus reglarna kapade till rumshöjden minus
+        15 mm.
+      </li>
+      <li class="mb-2">
+        Varje handelslängd prövar jag mot kaplängden, och den som lämnar minst spill får du som förslag. Vid lika
+        spill vinner den kortaste.
+      </li>
+      <li class="mb-2">
+        Väggytan gånger två sidor gånger antalet lag ger skivytan, och den delar jag med skivans tre kvadratmeter.
+      </li>
+      <li class="mb-2">
+        Skivytan gånger skruvtätheten ger antalet skruv, och det talet rundar jag upp till hela hundratal.
+      </li>
+      <li>Väggytan en gång ger kvadratmetrarna mineralull, eftersom ullen ligger i facket mellan reglarna.</li>
+    </ol>
+  </Fragment>
+
+  <Fragment slot="efter">
+    {/* Antagandetabellen i läsbredd, ur kortet Så räknar jag (spec-designlyft-c avsnitt 9). */}
+    <section class="max-w-lasbredd">
+      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad siffrorna vilar på</h3>
+      <Tabellyta kolumner={3} class="mt-4">
+        <table class="w-full border-collapse text-liten tabular-nums">
+          <caption class="sr-only">Antaganden och källor i regelkalkylatorn</caption>
+          <thead>
+            <tr class="border-b border-linje text-left">
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Vad</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Jag räknar med</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Källa eller antagande</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              antaganden.map((a) => (
+                <tr>
+                  <th scope="row" class:list={[CELL_KLASS, 'text-left font-normal']}>
+                    {a.storhet}
+                  </th>
+                  <td class={CELL_KLASS}>{a.varde}</td>
+                  <td class={CELL_KLASS}>
+                    {a.grund}.{' '}
+                    {a.url ? (
+                      <a href={a.url} rel={a.url.startsWith('/') ? undefined : 'nofollow'} class={LANK_KLASS}>
+                        {a.stod}
+                      </a>
+                    ) : (
+                      a.stod
+                    )}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </Tabellyta>
+
+      <p class="m-0 mt-6 text-brod lg:text-brod-lg">
+        Jämför du med materiallistan i guiden om innerväggen ser du att den landar på 6,2 löpmeter virke per meter
+        vägg, vilket är lite mindre än här. Guidens tal är en täthet, och den rymmer inte regeln i den sista
+        väggänden. Verktyget räknar reglarna en och en och hamnar därför någon regel högre på en kort vägg. Köp
+        efter verktygets tal. En regel för mycket kapar du alltid till kortlingar. Vill du veta hur jag läser
+        tillverkarnas tal finns det på sidan <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar jag</a>.
+      </p>
     </section>
 
-    {
-      visat.status === 'ok' && tal && (
-        <Faktaruta variant="kortsvar">
-          <p class="m-0 leading-6">Din vägg behöver {tal.reglar} stående reglar.</p>
-          <p class="m-0 leading-6">
-            Virket går på <Markering>{tal.virke} löpmeter</Markering>, och då är regeln längs golvet och regeln
-            under taket inräknade.
-          </p>
-          <p class="m-0 leading-6">
-            Det går åt {tal.skivor} gipsskivor, och du ska köpa {tal.skruvAttKopa} gipsskruv.
-          </p>
-          {tal.ull && <p class="m-0 leading-6">Till facken behöver du {tal.ull} kvm mineralull.</p>}
-        </Faktaruta>
-      )
-    }
-
-    <div class="linjerat mt-8 lg:grid lg:grid-cols-2 lg:gap-8">
-      {/* Formuläret ligger i src/components/kalkyl/InnervaggForm.astro, så att
-          <Kalkylator namn="innervagg" /> i en artikel visar exakt samma fält. */}
-      <InnervaggForm indata={indata} varden={varden} fel={fel} />
-
-      <div class="mt-8 border-t border-linje pt-6 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
-        {
-          visat.status === 'ok' && tal && (
-            <>
-              {resultat.status === 'ogiltig' && (
-                <p class="m-0 mb-2 text-liten text-varning">
-                  Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.
-                </p>
-              )}
-              {/* Beskedet står först: inköpslistan. Räkningen bakom står under
-                  verktyget. */}
-              <p class="m-0 font-sans text-h3 lg:text-h3-lg font-bold text-blyerts">
-                Köp {tal.antalLangder} reglar om {tal.handelslangd} m, {tal.skivorMedSpill} gipsskivor och{' '}
-                {tal.skruvAttKopa} gipsskruv.
-              </p>
-              <p class="m-0 mt-1 text-brod">
-                Det ger {tal.reglar} stående reglar när du kapat dem, och spillet på virke och skivor är inräknat.
-                {tal.ull && <> Ta med {tal.ull} kvm mineralull till facken.</>}
-              </p>
-
-              <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
-                Vägg på {tal.langd} m, {regelText}, {tal.cc} mm från regelmitt till regelmitt
-              </p>
-              {/* Enheten står på samma rad som talet, på talets baslinje
-                  (DESIGN.md avsnitt 5.8). Radbryter på smal skärm. */}
-              <p class="m-0 mt-1 flex flex-wrap items-baseline gap-x-2">
-                <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
-                  <Markering>{tal.reglar}</Markering>
-                </span>
-                <span class="text-ingress lg:text-ingress-lg">reglar</span>
-              </p>
-              <p class="m-0 mt-2 flex flex-wrap items-baseline gap-x-2">
-                <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">{tal.skivor}</span>
-                <span class="text-ingress lg:text-ingress-lg">gipsskivor</span>
-              </p>
-              <p class="m-0 mt-2 text-liten text-blyerts-2">
-                Reglarna kapar du till {tal.kapLangd} m, och skivorna är {formateraTal(SKIVA_BREDD_MM)} ×{' '}
-                {formateraTal(SKIVA_HOJD_MM)} mm.
-              </p>
-
-              <p class="m-0 mt-4 text-liten text-blyerts-2">
-                Hela räkningen, post för post, och vad du inte ska göra{' '}
-                <a href="#darfor-blev-svaret-sa" class={LANK_KLASS}>
-                  står under verktyget
-                </a>
-                .
-              </p>
-
-              <p class="m-0 mt-4">
-                <a href="#sa-raknar-vi" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
-                  Så räknar jag
-                </a>
-              </p>
-
-              {/* Dela. Uträkningen står i adressen, så ett skrivskyddat fält
-                  räcker: markera och kopiera fungerar utan en rad JavaScript. */}
-              <div class="mt-4 border-t border-linje pt-4">
-                <label for="dela" class={ETIKETT_KLASS}>
-                  Dela uträkningen
-                </label>
-                <input id="dela" type="text" readonly value={delaLank} class:list={[FALT_KLASS, 'border-blyerts-2']} />
-                <p class="m-0 mt-1 text-liten text-blyerts-2">
-                  Dina värden ligger i adressen. Markera den och kopiera, så får den du skickar länken till samma svar.
-                </p>
-              </div>
-            </>
-          )
-        }
-      </div>
-    </div>
-
-    {
-      visat.status === 'ok' && tal && (
-        <section>
-          <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
-          <ul class="m-0 p-0 list-none text-brod lg:text-brod-lg tabular-nums">
-            <li class="mb-4 border-l-2 border-linje pl-4">
-              <span class="block">
-                Virket är {tal.virke} löpmeter. {tal.syllHammarband} m av det är syll och hammarband, resten är
-                reglarna
-                {visat.avvaxlingM > 0 && <> och {tal.avvaxling} m avväxling över dörren</>}. Med spillet inräknat
-                blir det {tal.virkeMedSpill} löpmeter.
-                {visat.antalReglarDorr > 0 && <> {tal.reglarDorr} av reglarna står vid dörröppningarna.</>}
-              </span>
-              <span class="block text-liten text-blyerts-2">
-                Reglarna kapas 15 mm kortare än rumshöjden enligt Gyproc. Spillet på fem procent är mitt.
-              </span>
-            </li>
-            <li class="mb-4 border-l-2 border-linje pl-4">
-              <span class="block">
-                {tal.antalLangder} reglar om {tal.handelslangd} m är den handelslängd som spiller minst, {tal.spill}{' '}
-                procent.
-              </span>
-              <span class="block text-liten text-blyerts-2">
-                Längderna 2,4 till 4,8 m är de byggvaruhusen brukar lagerföra. Ingen publicerad standard.
-              </span>
-            </li>
-            <li class="mb-4 border-l-2 border-linje pl-4">
-              <span class="block">
-                Skivorna täcker {tal.skivyta} kvm, och med spillet blir det {tal.skivorMedSpill} skivor.
-              </span>
-              <span class="block text-liten text-blyerts-2">
-                Skivan på 1 200 × 2 500 mm är normalskivan hos Norgips och Gyproc. Spillet på tio procent är mitt.
-              </span>
-            </li>
-            <li class="mb-4 border-l-2 border-linje pl-4">
-              <span class="block">
-                Räknat går det åt {tal.skruv} gipsskruv, och jag rundar upp till {tal.skruvAttKopa}. {packRad} Skruven
-                ska vara {visat.skruvLangdText}.
-              </span>
-              <span class="block text-liten text-blyerts-2">
-                Skruvavstånden c 200 mm i kant och c 300 mm i fält är Norgips och Svenskt Träs. Längden kommer ur
-                Norgips tumregel om 20 mm ner i träet.
-              </span>
-            </li>
-            {tal.ull && (
-              <li class="mb-4 border-l-2 border-linje pl-4">
-                <span class="block">
-                  Ullen är {tal.ull} kvm mineralull i 45 mm tjocklek
-                  {tal.ullBredd ? <>, och den finns i {tal.ullBredd} mm bredd</> : <>, och den får du kapa själv</>}.
-                </span>
-                <span class="block text-liten text-blyerts-2">
-                  Bredderna 455 och 610 mm anger Norgips. För c 400 mm anger ingen tillverkare någon bredd.
-                </span>
-              </li>
-            )}
-          </ul>
-
-          {visat.gorInteDetHar.length > 0 && (
-            <>
-              <h3 id="gor-inte-det-har" class="m-0 mt-6 font-sans text-h3 lg:text-h3-lg text-blyerts">
-                Gör inte det här
-              </h3>
-              {visat.gorInteDetHar.map((rad) => (
-                <p class="m-0 mt-2 text-brod lg:text-brod-lg">{rad}</p>
-              ))}
-            </>
-          )}
-        </section>
-      )
-    }
-
-    <section>
+    <section class="max-w-lasbredd">
       <Pennstreck id="skruven-och-maskinen">Skruven och maskinen som räkningen pekar på</Pennstreck>
       <p class="m-0 mb-4 text-brod lg:text-brod-lg">
         {
@@ -506,7 +535,7 @@ const huvudbild = varumarke ?? illustration;
       </p>
     </section>
 
-    <section>
+    <section class="max-w-lasbredd">
       <Pennstreck id="materialatgang-innervagg">Materialåtgången till en innervägg, regel för regel</Pennstreck>
       <p class="m-0 text-brod lg:text-brod-lg">
         Grundtanken är att en vägg är samma sak om och om igen. Därför räknar jag allt per löpmeter vägg och multiplicerar
@@ -553,110 +582,17 @@ const huvudbild = varumarke ?? illustration;
       </p>
     </section>
 
-    <section>
-      <Pennstreck id="sa-raknar-vi">Så räknar jag</Pennstreck>
-      {
-        varumarke && illustration && (
-          <Illustration
-            namn="rakna/innervagg"
-            alt="Regelvägg framifrån med syll, hammarband, fem reglar, en gipsskiva och en måttbygel märkt c 450."
-            bildtext="Skissen visar det verktyget räknar på: väggens längd, regelavståndet mätt från mitt till mitt, och skruven var tjugonde centimeter i skivkanten."
-          />
-        )
-      }
-      <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg">
-        <li class="mb-2">
-          Väggens längd delar jag med c-måttet och avrundar uppåt. Sedan lägger jag till en regel för den sista
-          väggänden.
-        </li>
-        <li class="mb-2">Varje dörröppning lägger till två reglar och en avväxling över öppningen.</li>
-        <li class="mb-2">
-          Virket är syll och hammarband (väggens längd två gånger) plus reglarna kapade till rumshöjden minus
-          15 mm.
-        </li>
-        <li class="mb-2">
-          Varje handelslängd prövar jag mot kaplängden, och den som lämnar minst spill får du som förslag. Vid lika
-          spill vinner den kortaste.
-        </li>
-        <li class="mb-2">
-          Väggytan gånger två sidor gånger antalet lag ger skivytan, och den delar jag med skivans tre kvadratmeter.
-        </li>
-        <li class="mb-2">
-          Skivytan gånger skruvtätheten ger antalet skruv, och det talet rundar jag upp till hela hundratal.
-        </li>
-        <li>Väggytan en gång ger kvadratmetrarna mineralull, eftersom ullen ligger i facket mellan reglarna.</li>
-      </ol>
+    {
+      lasVidare.length > 0 && (
+        <section>
+          <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
+          <Artikelrutnat kort={lasVidare} visaBeskrivning={false} visaMeta={false} />
+        </section>
+      )
+    }
 
-      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad siffrorna vilar på</h3>
-      <Tabellyta kolumner={3} class="mt-4">
-        <table class="w-full border-collapse text-liten tabular-nums">
-          <caption class="sr-only">Antaganden och källor i regelkalkylatorn</caption>
-          <thead>
-            <tr class="border-b border-linje text-left">
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Vad</th>
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Jag räknar med</th>
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Källa eller antagande</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              antaganden.map((a) => (
-                <tr>
-                  <th scope="row" class:list={[CELL_KLASS, 'text-left font-normal']}>
-                    {a.storhet}
-                  </th>
-                  <td class={CELL_KLASS}>{a.varde}</td>
-                  <td class={CELL_KLASS}>
-                    {a.grund}.{' '}
-                    {a.url ? (
-                      <a
-                        href={a.url}
-                        rel={a.url.startsWith('/') ? undefined : 'nofollow'}
-                        class={LANK_KLASS}
-                      >
-                        {a.stod}
-                      </a>
-                    ) : (
-                      a.stod
-                    )}
-                  </td>
-                </tr>
-              ))
-            }
-          </tbody>
-        </table>
-      </Tabellyta>
-
-      <p class="m-0 mt-6 text-brod lg:text-brod-lg">
-        Jämför du med materiallistan i guiden om innerväggen ser du att den landar på 6,2 löpmeter virke per meter
-        vägg, vilket är lite mindre än här. Guidens tal är en täthet, och den rymmer inte regeln i den sista
-        väggänden. Verktyget räknar reglarna en och en och hamnar därför någon regel högre på en kort vägg. Köp
-        efter verktygets tal. En regel för mycket kapar du alltid till kortlingar. Vill du veta hur jag läser
-        tillverkarnas tal finns det på sidan <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar jag</a>.
-      </p>
-    </section>
-
-    <section>
-      <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
-      <ul class="m-0 p-0 list-none">
-        <li class="border-t border-linje">
-          <a href="/inomhus/bygga-innervagg/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Så bygger du innerväggen med reglar och gips, från syll till sista skivan
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/inomhus/gipsskruv/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Så väljer du gipsskruv med rätt längd och gänga
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/rakna/gipsskruv/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Räkna ut vilken gipsskruv din vägg behöver
-          </a>
-        </li>
-      </ul>
-    </section>
-
-    <Faq fragor={FRAGOR} />
-  </div>
-</Bas>
+    <div class="max-w-lasbredd">
+      <Faq fragor={FRAGOR} />
+    </div>
+  </Fragment>
+</Raknarsida>

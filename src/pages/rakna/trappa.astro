@@ -17,10 +17,10 @@
  */
 export const prerender = false;
 
-import Bas from '../../layouts/Bas.astro';
-/* Årtalet i länken till rotavdragsverktyget kommer från dess egen modul, så att
-   de två sidorna inte kan säga olika år. */
-import { ARET as ROT_ARET } from '../../lib/kalkyl/rotavdrag';
+import { artikelUrl, publicerade } from '../../lib/innehall';
+import { tillKortArtikel, type KortData } from '../../lib/kort';
+import { hittaKalkylator } from '../../lib/kalkyl/register';
+import { arPelare } from '../../lib/pelare';
 import {
   BFS,
   endecimal,
@@ -53,17 +53,17 @@ import {
   type TrappaIndata,
   type TrappaResultat,
 } from '../../lib/kalkyl/trappa';
-import { CELL_KLASS, ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
-import { verktyg } from '../../lib/strukturdata';
-import { verktygsDelningsbild, verktygsillustration, verktygsVarumarkesbild } from '../../lib/verktygsbild';
+import { CELL_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
+import { verktygsillustration } from '../../lib/verktygsbild';
 import TrappaForm from '../../components/kalkyl/TrappaForm.astro';
-import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Artikelrutnat from '../../components/ui/Artikelrutnat.astro';
 import Faq from '../../components/ui/Faq.astro';
 import Illustration from '../../components/ui/Illustration.astro';
-import Markering from '../../components/ui/Markering.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
-import StrukturData from '../../components/ui/StrukturData.astro';
+import Statusrad from '../../components/ui/Statusrad.astro';
+import Svarstal from '../../components/ui/Svarstal.astro';
 import Tabellyta from '../../components/ui/Tabellyta.astro';
+import Raknarsida from '../../components/vyer/Raknarsida.astro';
 
 Astro.locals.sidtyp = 'verktyg';
 
@@ -120,13 +120,6 @@ const SLAG_ETIKETT: Record<Slag, string> = {
   utforande: 'Utförandet',
 };
 
-const SLAG_RAM: Record<Slag, string> = {
-  matt: 'border-blyerts',
-  formel: 'border-blyerts',
-  boverket: 'border-blyerts-2',
-  utforande: 'border-linje',
-};
-
 /** Slug, namn och beskrivning på ett ställe: brödsmulan, og:image och WebApplication läser samma. */
 const SLUG = 'trappa';
 const VERKTYGSNAMN = 'Trappräknare';
@@ -134,14 +127,8 @@ const BESKRIVNING =
   'Skriv in våningshöjden, så får du antal steg, steghöjd och stegdjup ur trappformeln. Jag säger också ifrån när ett mått inte håller.';
 const titel = 'Räkna steghöjd och stegdjup till trappan';
 
+/** Skissen står i kortet Så räknar jag. Huvudet har ingen bild sedan fas C (DESIGN.md 5.8). */
 const illustration = verktygsillustration(SLUG);
-/**
- * Varumärkesbilden i sidhuvudet (docs/DESIGN.md avsnitt 7). Finns den står
- * skissen i stället i "Så räknar vi". Finns den inte visas skissen i
- * sidhuvudet, och saknas båda visas ingen bild alls.
- */
-const varumarke = verktygsVarumarkesbild(SLUG);
-const huvudbild = varumarke ?? illustration;
 
 const SVENSKT_TRA = 'https://www.byggbeskrivningar.se/utvandigt/trappor/';
 const STEPSTA = 'https://stepsta.se/trappformel-berakna-en-bekvam-trappa';
@@ -296,271 +283,211 @@ const FRAGOR = [
     svar: `Inga stegmått alls. Sedan ${NYA_REGLER_FRAN} ligger trappor i ${BFS}, och där står bara att trappan ska vara utformad så att personer kan förflytta sig säkert, eftersom varje trappa ska bedömas för sig. Det som står i siffror är säkerheten runt trappan: fri höjd på två meter, öppningar mellan plansteg på högst hundra millimeter och ledstänger. Stegdjupet på 250 millimeter som du hittar överallt är ett gammalt allmänt råd som inte gäller längre.`,
   },
 ];
+
+/*
+ * Svarsytan, fas C (spec-designlyft-c-2026-10-02 avsnitt 12). Statusraden bär
+ * sidans befintliga besked: ok när alla mått håller, varning annars. Ingen
+ * mätare, eftersom stegformeln är ett intervall och ingen gräns. Ny text är
+ * hantverkarens. Klartexten har platshållarna {hojd} (våningshöjden, mm),
+ * {antal} (antal steg), {steghojd} (mm, hel), {stegdjup} (mm) och {formel}
+ * (trappformelns summa, mm).
+ */
+const KLARTEXT =
+  'Med {hojd} mm i våningshöjd och {antal} steg blir steghöjden {steghojd} mm och stegdjupet {stegdjup} mm. Summan i trappformeln blir {formel} mm, och Svenskt Trä vill ha 600 till 650 mm.'; // trappa.klartext
+const klartext =
+  visat.status === 'ok'
+    ? KLARTEXT.replace('{hojd}', millimeter(visatIndata.vaningshojdMm))
+        .replace('{antal}', String(visat.antalSteg))
+        .replace('{steghojd}', String(visat.steghojdHelMm))
+        .replace('{stegdjup}', millimeter(visat.stegdjupMm))
+        .replace('{formel}', endecimal(visat.formelSummaMm))
+    : '';
+
+/** Läs vidare som kort, i den förra listans ordning. Räknarna får registrets namn som på hubben. */
+const LAS_VIDARE = [GUIDE, '/golv/renovera-trappa/', '/rakna/kvadratmeter/', '/rakna/rotavdrag/'];
+const artiklar = [...(await publicerade('guider')), ...(await publicerade('kunskap'))];
+const lasVidare: KortData[] = LAS_VIDARE.flatMap((href): KortData[] => {
+  const e = artiklar.find((a) => artikelUrl(a) === href);
+  if (e) {
+    const { niva: _niva, ...kort } = tillKortArtikel(e);
+    return [kort];
+  }
+  const k = hittaKalkylator(href.replace(/^\/rakna\/|\/$/g, ''));
+  const pelare = k?.pelare?.[0];
+  if (!k || !pelare || !arPelare(pelare)) return [];
+  return [
+    {
+      etikett: 'Räkna själv',
+      rubrik: k.namn,
+      beskrivning: k.rad,
+      pelare,
+      href,
+      // Artikelrutnat läser inte typen; kortet står varken i ett typfilter eller sorteras.
+      typ: 'kunskap',
+      sorteringsdatum: new Date(0),
+    },
+  ];
+});
 ---
 
-<Bas
-  title={titel}
-  description={BESKRIVNING}
-  reklam={false}
-  brodsmulor={[
-    { namn: 'Hantverkstips', href: '/' },
-    { namn: 'Räkna själv', href: '/rakna/' },
-    { namn: VERKTYGSNAMN },
-  ]}
-  bred={true}
-  ogBild={verktygsDelningsbild(SLUG)}
+<Raknarsida
+  slug={SLUG}
+  namn={VERKTYGSNAMN}
+  titel={titel}
+  beskrivning={BESKRIVNING}
+  rubrik="Räkna ut hur många steg trappan får, och om steghöjden och stegdjupet håller"
+  delaUrl={delaLank}
 >
-  <StrukturData
-    slot="head"
-    data={verktyg({ url: `/rakna/${SLUG}/`, namn: VERKTYGSNAMN, beskrivning: BESKRIVNING })}
-  />
+  <p slot="ingress">
+    En trappa är egentligen ett enda mått delat i lika stora bitar. Måttet är våningshöjden, från färdigt golv
+    till färdigt golv. Skriv in den, så får du antalet steg, steghöjden, stegdjupet enligt trappformeln,
+    lutningen och hur lång trappan blir på golvet. Håller ett mått inte står det i svaret, tillsammans med vem
+    som satt måttet.
+  </p>
 
-  <div class="mx-auto w-full max-w-lasbredd">
-    {/*
-      Sidhuvudet: rubrik och ingress till vänster i 7/12, bilden till höger i
-      5/12 på desktop, under ingressen på mobil. Bilden är dekorativ, H1 bär
-      betydelsen, därför tom alt. Den är sidans LCP-bild och laddas därför
-      eagert med fetchpriority.
-    */}
-    <section class="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-8">
-      <div class="lg:col-span-7">
-        <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">
-          Räkna ut hur många steg trappan får, och om steghöjden och stegdjupet håller
-        </h1>
-        <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
-          En trappa är egentligen ett enda mått delat i lika stora bitar. Måttet är våningshöjden, från färdigt golv
-          till färdigt golv. Skriv in den, så får du antalet steg, steghöjden, stegdjupet enligt trappformeln,
-          lutningen och hur lång trappan blir på golvet. Håller ett mått inte står det i svaret, tillsammans med vem
-          som satt måttet.
+  {/* Formuläret ligger i src/components/kalkyl/TrappaForm.astro, så att
+      <Kalkylator namn="trappa" /> i guiden visar exakt samma fält. */}
+  <TrappaForm slot="formular" indata={indata} varden={varden} fel={fel} />
+
+  {
+    visat.status === 'ok' && (
+      <Fragment slot="svar">
+        {resultat.status === 'ogiltig' && (
+          <p class="text-liten text-varning">Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.</p>
+        )}
+        <Svarstal tal={String(visat.steghojdHelMm)} enhet={`mm på ${visat.antalSteg} steg`} vad="Steghöjd" />
+        <p class="text-liten text-blyerts-2">
+          Exakt {endecimal(visat.steghojdMm)}&nbsp;mm. Alla steg lagda på varandra ska bli precis
+          våningshöjden, så runda inte av när du märker ut.
         </p>
-      </div>
+        <div class="text-brod">
+          <Statusrad ton={visat.uppfyller ? 'ok' : 'varning'} text={visat.beskedRubrik} />
+          <p class="mt-1!">{visat.beskedRad}</p>
+        </div>
+        <ul class="m-0 p-0 list-none text-brod tabular-nums">
+          <li class="border-t border-linje py-2">
+            Stegdjupet blir {millimeter(visat.stegdjupMm)}&nbsp;mm, och du bygger {visat.antalPlansteg} plansteg
+            {visat.lopp && ' plus vilplanet'}.
+          </li>
+          <li class="border-t border-linje py-2">
+            Trappan tar {endecimal(visat.langdIPlanMm / 1000)}&nbsp;m på golvet.
+          </li>
+          <li class="border-t border-linje py-2">Lutningen blir {endecimal(visat.lutningGrader)} grader.</li>
+          <li class="border-t border-linje py-2">
+            Två gånger steghöjden plus stegdjupet blir {endecimal(visat.formelSummaMm)}&nbsp;mm, och det ska
+            ligga mellan {TRAPPFORMEL_MIN_MM} och {TRAPPFORMEL_MAX_MM}.
+          </li>
+          {visat.lopp && (
+            <li class="border-t border-linje py-2">
+              Vilplanet delar trappan i {visat.lopp.ett} steg nedanför och {visat.lopp.tva} ovanför.
+            </li>
+          )}
+        </ul>
+        <p class="text-liten text-blyerts">{klartext}</p>
+      </Fragment>
+    )
+  }
 
-      {
-        huvudbild && (
-          <div class="lg:col-span-5">
-            <img
-              src={huvudbild.src}
-              alt=""
-              width={huvudbild.width}
-              height={huvudbild.height}
-              fetchpriority="high"
-              decoding="async"
-              class:list={['block h-auto w-full', !varumarke && 'rounded-sm border border-linje']}
-            />
-          </div>
-        )
-      }
-    </section>
-
-    <Faktaruta variant="kortsvar">
-      <p class="m-0 leading-6">
-        Stegdjupet följer av steghöjden. Två gånger höjden plus djupet ska bli {TRAPPFORMEL_MIN_MM} till{' '}
-        {TRAPPFORMEL_MAX_MM} mm, och det är det som kallas <Markering>trappformeln</Markering>.
-      </p>
-      <p class="m-0 leading-6">
-        Steghöjden ska ligga mellan {STEGHOJD_MIN_MM} och {STEGHOJD_MAX_MM} mm, och alla steg i samma trappa ska vara
-        exakt lika höga.
-      </p>
-      <p class="m-0 leading-6">De måtten kommer från branschen, för Boverket anger inga stegmått alls.</p>
-    </Faktaruta>
-
-    <div class="linjerat mt-8 lg:grid lg:grid-cols-2 lg:gap-8">
-      {/* Formuläret ligger i src/components/kalkyl/TrappaForm.astro, så att
-          <Kalkylator namn="trappa" /> i guiden visar exakt samma fält. */}
-      <TrappaForm indata={indata} varden={varden} fel={fel} />
-
-      <div class="mt-8 border-t border-linje pt-6 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
-        {
-          visat.status === 'ok' && (
-            <>
-              {resultat.status === 'ogiltig' && (
-                <p class="m-0 mb-2 text-liten text-varning">Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.</p>
-              )}
-              {/* Spalten bär svaret: beskedet, talet och länkarna. Måtten med
-                  källa och "Gör inte det här" står som egna H2 under verktyget. */}
-              <p class="m-0 font-sans text-h3 lg:text-h3-lg font-bold text-blyerts">{visat.beskedRubrik}</p>
-              <p class="m-0 mt-1 text-brod">{visat.beskedRad}</p>
-
-              <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">Steghöjd</p>
-              {/* Det stora talet är steghöjden, med resten av svaret på samma
-                  baslinje där enheten står på de andra kalkylatorerna. */}
-              <p class="m-0 mt-1 flex flex-wrap items-baseline gap-x-2">
-                <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
-                  <Markering>{visat.steghojdHelMm}</Markering>
-                </span>
-                <span class="text-ingress lg:text-ingress-lg">mm på {visat.antalSteg} steg</span>
-              </p>
-              <p class="m-0 mt-2 text-liten text-blyerts-2">
-                Exakt {endecimal(visat.steghojdMm)}&nbsp;mm. Alla steg lagda på varandra ska bli precis
-                våningshöjden, så runda inte av när du märker ut.
-              </p>
-
-              <ul class="m-0 mt-4 p-0 list-none text-brod tabular-nums">
-                <li class="border-t border-linje py-2">
-                  Stegdjupet blir {millimeter(visat.stegdjupMm)}&nbsp;mm, och du bygger {visat.antalPlansteg} plansteg
-                  {visat.lopp && ' plus vilplanet'}.
-                </li>
-                <li class="border-t border-linje py-2">
-                  Trappan tar {endecimal(visat.langdIPlanMm / 1000)}&nbsp;m på golvet.
-                </li>
-                <li class="border-t border-linje py-2">Lutningen blir {endecimal(visat.lutningGrader)} grader.</li>
-                <li class="border-t border-linje py-2">
-                  Två gånger steghöjden plus stegdjupet blir {endecimal(visat.formelSummaMm)}&nbsp;mm, och det ska
-                  ligga mellan {TRAPPFORMEL_MIN_MM} och {TRAPPFORMEL_MAX_MM}.
-                </li>
-                {visat.lopp && (
-                  <li class="border-t border-linje py-2">
-                    Vilplanet delar trappan i {visat.lopp.ett} steg nedanför och {visat.lopp.tva} ovanför.
-                  </li>
+  {
+    visat.status === 'ok' && (
+      <Fragment slot="darfor">
+        <Pennstreck id="darfor-blev-svaret-sa" utanLuft>
+          Därför blev svaret så
+        </Pennstreck>
+        <div class="darfor">
+          {visat.avvikelser.map((a) => (
+            <div>
+              <span class="block text-etikett lg:text-etikett-lg uppercase text-varning">Måttet håller inte</span>
+              <p>{a.text}</p>
+              <p>{a.kalla}</p>
+            </div>
+          ))}
+          {visat.regler.map((regel) => (
+            <div>
+              <span class="block text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
+                {SLAG_ETIKETT[regel.slag]}
+              </span>
+              <p>{regel.text}</p>
+              <p>
+                {regel.url ? (
+                  <a href={regel.url} rel={regel.url.startsWith('/') ? undefined : 'nofollow'} class={LANK_KLASS}>
+                    {regel.kalla}
+                  </a>
+                ) : (
+                  regel.kalla
                 )}
-              </ul>
-
-              <p class="m-0 mt-4 text-liten text-blyerts-2">
-                Varje mått med den som satt det, och det du inte ska göra,{' '}
-                <a href="#darfor-blev-svaret-sa" class={LANK_KLASS}>står under verktyget</a>.
               </p>
+            </div>
+          ))}
+        </div>
+      </Fragment>
+    )
+  }
 
-              <p class="m-0 mt-4">
-                <a href="#sa-raknar-vi" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
-                  Så räknar jag
-                </a>
-              </p>
+  {
+    visat.status === 'ok' && visat.gorInteDetHar.length > 0 && (
+      <Fragment slot="gorInte">
+        {/* Flera råd står i samma stycke efter "Gör inte det här.", vart och ett på egen rad. */}
+        {visat.gorInteDetHar.map((rad, i) => (
+          <span class:list={[i > 0 && 'mt-3 block']}>{rad}</span>
+        ))}
+      </Fragment>
+    )
+  }
 
-              {/* Dela. Svaret står i adressen, så ett skrivskyddat fält räcker:
-                  markera och kopiera fungerar utan en rad JavaScript. */}
-              <div class="mt-4 border-t border-linje pt-4">
-                <label for="dela" class={ETIKETT_KLASS}>
-                  Dela svaret
-                </label>
-                <input id="dela" type="text" readonly value={delaLank} class:list={[FALT_KLASS, 'border-blyerts-2']} />
-                <p class="m-0 mt-1 text-liten text-blyerts-2">Dina värden ligger i adressen. Markera den och kopiera, så får den du skickar länken till samma svar.</p>
-              </div>
-            </>
-          )
-        }
-      </div>
-    </div>
-
+  <Fragment slot="saRaknarJag">
     {
-      visat.status === 'ok' && (
-        <>
-          <section>
-            <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
-            {visat.avvikelser.length > 0 && (
-              <ul class="m-0 mb-6 p-0 list-none text-brod lg:text-brod-lg">
-                {visat.avvikelser.map((a) => (
-                  <li class="mb-4 border-l-2 border-varning pl-4">
-                    <span class="block text-etikett lg:text-etikett-lg uppercase text-varning">Måttet håller inte</span>
-                    <span class="block">{a.text}</span>
-                    <span class="block text-liten text-blyerts-2">{a.kalla}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-            <ul class="m-0 p-0 list-none text-brod lg:text-brod-lg">
-              {visat.regler.map((regel) => (
-                <li class:list={['mb-4 border-l-2 pl-4', SLAG_RAM[regel.slag]]}>
-                  <span class="block text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
-                    {SLAG_ETIKETT[regel.slag]}
-                  </span>
-                  <span class="block">{regel.text}</span>
-                  <span class="block text-liten text-blyerts-2">
-                    {regel.url ? (
-                      <a href={regel.url} rel={regel.url.startsWith('/') ? undefined : 'nofollow'} class={LANK_KLASS}>
-                        {regel.kalla}
-                      </a>
-                    ) : (
-                      regel.kalla
-                    )}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <section>
-            <Pennstreck id="gor-inte-det-har">Gör inte det här</Pennstreck>
-            {visat.gorInteDetHar.map((rad, i) => (
-              <p class:list={['m-0 text-brod lg:text-brod-lg', i > 0 && 'mt-4']}>{rad}</p>
-            ))}
-          </section>
-        </>
-      )
-    }
-
-    <section>
-      <Pennstreck id="trappformeln">Steghöjd och stegdjup mäts mot branschens tal, eftersom Boverket inte anger några stegmått</Pennstreck>
-      <p class="m-0 text-brod lg:text-brod-lg">
-        Myndigheten har inga stegmått. Sedan {NYA_REGLER_FRAN} ligger trappor i {BFS}, och hela kravet på hur en
-        trappa ska vara ryms i en mening: den ska vara utformad så att personer kan förflytta sig säkert. Ingen
-        steghöjd, inget stegdjup, ingen lutning. Boverket motiverar det med att varje trappa behöver sin egen
-        riskbedömning, och hänvisar vidare till standarder. Den standard som skrevs för ändamålet ligger bakom
-        betalvägg och jag har inte läst den, så jag kan inte mäta mot den heller.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Jag mäter i stället mot två andra saker och säger i varje svar vilken som är vilken. Den ena är branschens
-        tal. Det är trappformeln, två gånger steghöjden plus stegdjupet, och spannen för steghöjd och lutning. De
-        kommer från Svenskt Trä, och ingen myndighet har beslutat om dem. Den andra är två allmänna råd om stegdjup
-        ur de gamla byggreglerna. De gällde till {GAMLA_RADEN_TILL} och går inte längre att hänvisa till, men utan
-        dem hade jag inte kunnat säga något alls om stegdjupet, och det hjälper ingen som står med måttbandet i
-        handen.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Hela bygget, med hålet i bjälklaget, vangstyckena och fundamentet under en utetrappa, står i{' '}
-        <a href={GUIDE} class={LANK_KLASS}>
-          guiden om att bygga trappa
-        </a>
-        . Den räknar med samma tal som den här sidan.
-      </p>
-    </section>
-
-    <section>
-      <Pennstreck id="sa-raknar-vi">Så räknar jag</Pennstreck>
-      {
-        varumarke && illustration && (
+      illustration && (
+        <div class="pappersruta">
           <Illustration
             namn="rakna/trappa"
             alt="Trappa i genomskärning med steghöjden och stegdjupet måttsatta på ett steg och trappformeln utskriven ovanför"
             bildtext="Det enda du mäter själv är våningshöjden, här 2 700 mm. Steget får 169 mm i höjd och 292 mm i djup, och två gånger höjden plus djupet blir 630 mm."
+            class="my-0!"
           />
-        )
-      }
-      <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg">
-        <li class="mb-2">
-          Våningshöjden delas i ett helt antal lika höga steg. Jag letar bland de antal där steghöjden håller sig
-          mellan {STEGHOJD_MIN_MM} och {STEGHOJD_MAX_MM} millimeter.
-        </li>
-        <li class="mb-2">
-          Vilket antal det blir beror på vad som styr trappan. Har du bett om ett stegdjup väljs det antal som ger
-          ett djup närmast ditt önskemål. Har du en längd på golvet väljs det antal som får trappformeln närmast{' '}
-          {TRAPPFORMEL_MAL_MM} millimeter.
-        </li>
-        <li class="mb-2">
-          Steghöjden är våningshöjden delad med antalet steg, och den avrundas aldrig. Stegen ska bli exakt
-          våningshöjden tillsammans, annars hamnar felet i det nedersta eller det översta steget.
-        </li>
-        <li class="mb-2">
-          Stegdjupet kommer ur trappformeln, eller ur längden delad på planstegen, och avrundas nedåt till hel
-          millimeter. Nedåt, för det är måttet du kapar efter, och en trappa som blir en aning kortare får plats där
-          en som blir en aning längre inte gör det.
-        </li>
-        <li class="mb-2">
-          Längden på golvet är stegdjupet gånger de plansteg som bär längden. En rak trappa har ett plansteg mindre
-          än antalet steg, för det sista steget landar på golvet ovanför och byggs inte. Ett vilplan tar ett
-          stegs plats och {millimeter(TRAPPLAN_DJUP_MM)} millimeter i längdled.
-        </li>
-        <li>
-          Sist prövas måtten mot steghöjdens spann, stegdjupets undre gräns, trappformelns spann, lutningens spann
-          och antalet steg ute. Varje avvikelse står i svaret med den som satt måttet.
-        </li>
-      </ol>
+        </div>
+      )
+    }
+    <ol class="m-0 mt-4 pl-6 list-decimal text-brod">
+      <li class="mb-2">
+        Våningshöjden delas i ett helt antal lika höga steg. Jag letar bland de antal där steghöjden håller sig
+        mellan {STEGHOJD_MIN_MM} och {STEGHOJD_MAX_MM} millimeter.
+      </li>
+      <li class="mb-2">
+        Vilket antal det blir beror på vad som styr trappan. Har du bett om ett stegdjup väljs det antal som ger
+        ett djup närmast ditt önskemål. Har du en längd på golvet väljs det antal som får trappformeln närmast{' '}
+        {TRAPPFORMEL_MAL_MM} millimeter.
+      </li>
+      <li class="mb-2">
+        Steghöjden är våningshöjden delad med antalet steg, och den avrundas aldrig. Stegen ska bli exakt
+        våningshöjden tillsammans, annars hamnar felet i det nedersta eller det översta steget.
+      </li>
+      <li class="mb-2">
+        Stegdjupet kommer ur trappformeln, eller ur längden delad på planstegen, och avrundas nedåt till hel
+        millimeter. Nedåt, för det är måttet du kapar efter, och en trappa som blir en aning kortare får plats där
+        en som blir en aning längre inte gör det.
+      </li>
+      <li class="mb-2">
+        Längden på golvet är stegdjupet gånger de plansteg som bär längden. En rak trappa har ett plansteg mindre
+        än antalet steg, för det sista steget landar på golvet ovanför och byggs inte. Ett vilplan tar ett
+        stegs plats och {millimeter(TRAPPLAN_DJUP_MM)} millimeter i längdled.
+      </li>
+      <li>
+        Sist prövas måtten mot steghöjdens spann, stegdjupets undre gräns, trappformelns spann, lutningens spann
+        och antalet steg ute. Varje avvikelse står i svaret med den som satt måttet.
+      </li>
+    </ol>
 
-      <p class="m-0 mt-6 text-brod lg:text-brod-lg">
-        Jag räknar aldrig fram ett steg som bryter mot ett mått utan att säga det. Det är själva skälet till att
-        sidan finns. Att gränsen ute är {STEGDJUP_MIN_UTE_MM} millimeter och inne {STEGDJUP_MIN_INNE_MM} är också
-        bra att veta när du ritar, för det är skillnaden mellan en trappa som får plats och en som inte gör det.
-      </p>
+    <p class="m-0 mt-4 text-brod">
+      Jag räknar aldrig fram ett steg som bryter mot ett mått utan att säga det. Det är själva skälet till att
+      sidan finns. Att gränsen ute är {STEGDJUP_MIN_UTE_MM} millimeter och inne {STEGDJUP_MIN_INNE_MM} är också
+      bra att veta när du ritar, för det är skillnaden mellan en trappa som får plats och en som inte gör det.
+    </p>
+  </Fragment>
 
+  <Fragment slot="efter">
+    {/* Antagandetabellen i läsbredd, ur kortet Så räknar jag (spec-designlyft-c avsnitt 9). */}
+    <section class="max-w-lasbredd">
       <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad siffrorna vilar på</h3>
       <Tabellyta kolumner={3} class="mt-4">
         <table class="w-full border-collapse text-liten tabular-nums">
@@ -616,32 +543,43 @@ const FRAGOR = [
       </p>
     </section>
 
-    <section>
-      <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
-      <ul class="m-0 p-0 list-none">
-        <li class="border-t border-linje">
-          <a href={GUIDE} class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Bygga trappa, hela bygget från hålet i bjälklaget till sista steget
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/golv/renovera-trappa/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Renovera trappan du redan har, tre vägar med timmar och kronor
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/rakna/kvadratmeter/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Räkna ut kvadratmeter och hur mycket material som går åt
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/rakna/rotavdrag/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Räkna ut rotavdraget {ROT_ARET} på snickarens faktura
-          </a>
-        </li>
-      </ul>
+    <section class="max-w-lasbredd">
+      <Pennstreck id="trappformeln">Steghöjd och stegdjup mäts mot branschens tal, eftersom Boverket inte anger några stegmått</Pennstreck>
+      <p class="m-0 text-brod lg:text-brod-lg">
+        Myndigheten har inga stegmått. Sedan {NYA_REGLER_FRAN} ligger trappor i {BFS}, och hela kravet på hur en
+        trappa ska vara ryms i en mening: den ska vara utformad så att personer kan förflytta sig säkert. Ingen
+        steghöjd, inget stegdjup, ingen lutning. Boverket motiverar det med att varje trappa behöver sin egen
+        riskbedömning, och hänvisar vidare till standarder. Den standard som skrevs för ändamålet ligger bakom
+        betalvägg och jag har inte läst den, så jag kan inte mäta mot den heller.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Jag mäter i stället mot två andra saker och säger i varje svar vilken som är vilken. Den ena är branschens
+        tal. Det är trappformeln, två gånger steghöjden plus stegdjupet, och spannen för steghöjd och lutning. De
+        kommer från Svenskt Trä, och ingen myndighet har beslutat om dem. Den andra är två allmänna råd om stegdjup
+        ur de gamla byggreglerna. De gällde till {GAMLA_RADEN_TILL} och går inte längre att hänvisa till, men utan
+        dem hade jag inte kunnat säga något alls om stegdjupet, och det hjälper ingen som står med måttbandet i
+        handen.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Hela bygget, med hålet i bjälklaget, vangstyckena och fundamentet under en utetrappa, står i{' '}
+        <a href={GUIDE} class={LANK_KLASS}>
+          guiden om att bygga trappa
+        </a>
+        . Den räknar med samma tal som den här sidan.
+      </p>
     </section>
 
-    <Faq fragor={FRAGOR} />
-  </div>
-</Bas>
+    {
+      lasVidare.length > 0 && (
+        <section>
+          <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
+          <Artikelrutnat kort={lasVidare} kolumner={4} visaBeskrivning={false} visaMeta={false} />
+        </section>
+      )
+    }
+
+    <div class="max-w-lasbredd">
+      <Faq fragor={FRAGOR} />
+    </div>
+  </Fragment>
+</Raknarsida>

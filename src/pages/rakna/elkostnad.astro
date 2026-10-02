@@ -18,7 +18,7 @@
 export const prerender = false;
 
 import { ELPRIS_KALLA, ELPRIS_KR_PER_KWH } from '../../lib/antaganden';
-import { formateraPris, formateraTal } from '../../lib/format';
+import { antalOrd, formateraPris, formateraTal } from '../../lib/format';
 import { artikelUrl, kategoriUrl, publicerade } from '../../lib/innehall';
 import { tillKortArtikel, tillKortKategori, type KortData } from '../../lib/kort';
 import {
@@ -294,8 +294,9 @@ const tal =
         kwhPerLiter: visat.kwhPerLiter === null ? null : perLiter(visat.kwhPerLiter),
         krPerLiter: visat.krPerLiter === null ? null : perLiter(visat.krPerLiter),
         effekt: talText(visatIndata.effektW),
-        timmar: talText(visatIndata.timmarPerDygn),
-        dagar: talText(visatIndata.dagar),
+        /* Med ordet inräknat, i rätt numerus: "1 timme", "8 timmar" (spec-designlyft-c avsnitt 12). */
+        timmar: antalOrd(visatIndata.timmarPerDygn, 'timme', 'timmar'),
+        dagar: antalOrd(visatIndata.dagar, 'dag', 'dagar'),
         elpris: formateraTal(visatIndata.elprisKrPerKwh, 2),
         liter: visatIndata.literPerDygn === null ? null : talText(visatIndata.literPerDygn),
       }
@@ -362,7 +363,7 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
   },
   {
     storhet: 'Gångtiden per dygn',
-    varde: `${formateraTal(standard.timmarPerDygn)} timmar som standard`,
+    varde: `${antalOrd(standard.timmarPerDygn, 'timme', 'timmar')} som standard`,
     grund: 'Antagande',
     stod: 'Min gissning för en avfuktare på hygrostat i en källare som inte är genomblöt. Ingen har mätt drifttiden, och det är det tal som påverkar svaret mest',
   },
@@ -408,10 +409,12 @@ const illustration = verktygsillustration(SLUG);
  * hantverkarens. Klartexten i maskinläget har platshållarna {kwh} (kWh för
  * perioden), {kr} (kronor för perioden), {dagar}, {effekt} (W), {timmar}
  * (per dygn) och {elpris} (kr per kWh). I tvättläget är klartexten T10, som
- * redan har talen, villkoret och källan.
+ * redan har talen, villkoret och källan. {timmar} och {dagar} fylls i med
+ * ordet inräknat ("1 timme", "8 timmar", "1 dag"), så meningen har inget ord
+ * efter dem (spec-designlyft-c avsnitt 12).
  */
 const KLARTEXT =
-  'En maskin på {effekt} W som går {timmar} timmar om dygnet drar {kwh} kWh på {dagar} dagar, och med elpriset {elpris} kr per kWh kostar det {kr}.'; // elkostnad.klartext
+  'En maskin på {effekt} W som går {timmar} om dygnet drar {kwh} kWh på {dagar}, och med elpriset {elpris} kr per kWh kostar det {kr}.'; // elkostnad.klartext
 const klartext = tvattLage
   ? tvattTal
     ? tvattKortsvar(tvattTal.kg, tvattTal.torkningar, tvattTal.krAvfuktare, tvattTal.krVarmepump, tvattTal.krKondens)
@@ -503,7 +506,7 @@ for (const href of LAS_VIDARE) {
           </>
         ) : (
           <>
-            <Svarstal tal={tal.kwhPerPeriod} enhet="kWh" vad={`På ${tal.dagar} dagar`} />
+            <Svarstal tal={tal.kwhPerPeriod} enhet="kWh" vad={`På ${tal.dagar}`} />
             {/* Kronorna som andra rad, som förut, på samma baslinje som enheten. */}
             <p class="svarstal">
               <span class="font-serif text-h1">{tal.krPerPeriodTal}</span>
@@ -514,7 +517,7 @@ for (const href of LAS_VIDARE) {
             </p>
             <div class="text-brod">
               <p class="font-bold">
-                Räkna med {tal.krPerPeriod} för {tal.dagar} dagar, och {tal.krPerAr} om året.
+                Räkna med {tal.krPerPeriod} för {tal.dagar}, och {tal.krPerAr} om året.
               </p>
               <p>Det är en övre gräns, för jag räknar med att maskinen drar full effekt varje minut den går.</p>
             </div>
@@ -569,12 +572,12 @@ for (const href of LAS_VIDARE) {
           {/* Raden under talen i den förra resultatspalten. */}
           <div>
             <p>
-              Räknat på {tal.effekt} W i {tal.timmar} timmar per dygn och {tal.elpris} kr per kilowattimme.
+              Räknat på {tal.effekt} W i {tal.timmar} per dygn och {tal.elpris} kr per kilowattimme.
             </p>
           </div>
           <div>
             <p>
-              {tal.effekt} W i {tal.timmar} timmar ger {tal.kwhPerDygn} kWh per dygn, och med ditt elpris kostar
+              {tal.effekt} W i {tal.timmar} ger {tal.kwhPerDygn} kWh per dygn, och med ditt elpris kostar
               det {tal.krPerDygn} kr per dygn. Låter du maskinen gå lika mycket hela året blir det {tal.kwhPerAr}{' '}
               kWh och {tal.krPerAr}.
             </p>

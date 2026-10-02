@@ -13,6 +13,15 @@ export function formateraTal(n: number, decimaler = 0): string {
   return dec ? `${grupperat},${dec}` : grupperat;
 }
 
+/**
+ * Ett tal med ordet efter i rätt numerus: "1 timme", "8 timmar", "1,5 timmar".
+ * Singular bara när talet är exakt 1. Heltal skrivs utan decimal, andra tal med
+ * en; mellanslaget är hårt, som i formateraPris.
+ */
+export function antalOrd(n: number, en: string, flera: string): string {
+  return `${formateraTal(n, Number.isInteger(n) ? 0 : 1)}${HART}${n === 1 ? en : flera}`;
+}
+
 /** "4 990 kr". Ören visas aldrig. */
 export function formateraPris(kr: number): string {
   return `${formateraTal(Math.round(kr))}${HART}kr`;

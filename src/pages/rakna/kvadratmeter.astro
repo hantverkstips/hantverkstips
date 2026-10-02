@@ -15,7 +15,6 @@
  */
 export const prerender = false;
 
-import Bas from '../../layouts/Bas.astro';
 import { formateraTal } from '../../lib/format';
 import {
   BURKAR_LITER,
@@ -40,17 +39,20 @@ import {
   type KvadratmeterIndata,
   type KvadratmeterResultat,
 } from '../../lib/kalkyl/kvadratmeter';
-import { CELL_KLASS, ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
-import { verktyg } from '../../lib/strukturdata';
-import { verktygsDelningsbild, verktygsillustration, verktygsVarumarkesbild } from '../../lib/verktygsbild';
+import { artikelUrl, publicerade } from '../../lib/innehall';
+import { tillKortArtikel, type KortData } from '../../lib/kort';
+import { hittaKalkylator } from '../../lib/kalkyl/register';
+import { CELL_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
+import { arPelare } from '../../lib/pelare';
+import { verktygsillustration } from '../../lib/verktygsbild';
 import KvadratmeterForm from '../../components/kalkyl/KvadratmeterForm.astro';
-import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Artikelrutnat from '../../components/ui/Artikelrutnat.astro';
 import Faq from '../../components/ui/Faq.astro';
-import Markering from '../../components/ui/Markering.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
-import StrukturData from '../../components/ui/StrukturData.astro';
+import Svarstal from '../../components/ui/Svarstal.astro';
 import Tabellyta from '../../components/ui/Tabellyta.astro';
 import Illustration from '../../components/ui/Illustration.astro';
+import Raknarsida from '../../components/vyer/Raknarsida.astro';
 
 Astro.locals.sidtyp = 'verktyg';
 
@@ -370,303 +372,328 @@ const SLUG = 'kvadratmeter';
 const VERKTYGSNAMN = 'Kvadratmeterräknare';
 const BESKRIVNING =
   'Räkna ut kvadratmeter på golv, väggar och tak med dörren och fönstret avdragna, och se hur många liter färg, tapetrullar eller kvm golv du ska köpa.';
+/** Skissen står i kortet Så räknar jag. Huvudet har ingen bild sedan fas C (DESIGN.md 5.8). */
 const illustration = verktygsillustration(SLUG);
-/**
- * Varumärkesbilden i sidhuvudet, sedan 2026-09-19 (docs/DESIGN.md avsnitt 7).
- * Finns den står skissen i stället i "Så räknar vi", där måtten förklarar
- * räkningen. Finns den inte visas skissen i sidhuvudet som förut.
+
+/*
+ * Svarsytan, fas C (spec-designlyft-c-2026-10-02 avsnitt 12): golvytan är det
+ * första talet, och de andra ytorna och mängderna står som rader under
+ * beskedet. Ny text är hantverkarens. Klartexten har platshållarna {golv}
+ * (kvm), {langd}, {bredd} och {takhojd} (m), {vaggar} (kvm vägg efter
+ * avdrag) och {tak} (kvm).
  */
-const varumarke = verktygsVarumarkesbild(SLUG);
-const huvudbild = varumarke ?? illustration;
+const SVAR_VAD = 'golvytan i rummet'; // kvadratmeter.svar.vad
+const KLARTEXT =
+  'Ett rum på {langd} × {bredd} m med {takhojd} m i takhöjd har {golv} kvm golv, {tak} kvm tak och {vaggar} kvm vägg efter avdrag för dörr och fönster.'; // kvadratmeter.klartext
+const klartext = tal
+  ? KLARTEXT.replace('{golv}', tal.golv)
+      .replace('{langd}', tal.langd)
+      .replace('{bredd}', tal.bredd)
+      .replace('{takhojd}', tal.takhojd)
+      .replace('{vaggar}', tal.netto)
+      .replace('{tak}', tal.tak)
+  : '';
+
+/** Läs vidare som kort, i den förra listans ordning. Räknarna får registrets namn som på hubben. */
+const LAS_VIDARE = ['/rakna/fasadyta/', '/inomhus/bygga-innervagg/', '/kok/slipa-bankskiva/', '/rakna/innervagg/'];
+const artiklar = [...(await publicerade('guider')), ...(await publicerade('kunskap'))];
+const lasVidare: KortData[] = LAS_VIDARE.flatMap((href): KortData[] => {
+  const e = artiklar.find((a) => artikelUrl(a) === href);
+  if (e) {
+    const { niva: _niva, ...kort } = tillKortArtikel(e);
+    return [kort];
+  }
+  const k = hittaKalkylator(href.replace(/^\/rakna\/|\/$/g, ''));
+  const pelare = k?.pelare?.[0];
+  if (!k || !pelare || !arPelare(pelare)) return [];
+  return [
+    {
+      etikett: 'Räkna själv',
+      rubrik: k.namn,
+      beskrivning: k.rad,
+      pelare,
+      href,
+      // Artikelrutnat läser inte typen; kortet står varken i ett typfilter eller sorteras.
+      typ: 'kunskap',
+      sorteringsdatum: new Date(0),
+    },
+  ];
+});
 ---
 
-<Bas
-  title={titel}
-  description={BESKRIVNING}
-  reklam={false}
-  brodsmulor={[
-    { namn: 'Hantverkstips', href: '/' },
-    { namn: 'Räkna själv', href: '/rakna/' },
-    { namn: VERKTYGSNAMN },
-  ]}
-  bred={true}
-  ogBild={verktygsDelningsbild(SLUG)}
+<Raknarsida
+  slug={SLUG}
+  namn={VERKTYGSNAMN}
+  titel={titel}
+  beskrivning={BESKRIVNING}
+  rubrik="Räkna ut kvadratmeter så att färgen, tapeten eller golvet räcker"
+  delaUrl={delaLank}
 >
-  <StrukturData
-    slot="head"
-    data={verktyg({ url: `/rakna/${SLUG}/`, namn: VERKTYGSNAMN, beskrivning: BESKRIVNING })}
-  />
+  <p slot="ingress">
+    Mät rummets längd, bredd och takhöjd och skriv in dem här, så får du golvet, väggarna och taket i
+    kvadratmeter. Dörren och fönstret drar jag av, för de ska inte målas. Väljer du sedan vad ytan ska täckas
+    med får du också hur många liter färg, hur många tapetrullar eller hur mycket golv du ska köpa, med spill
+    inräknat. Åtgången kommer från färg- och golvtillverkarnas egna uppgifter.
+  </p>
 
-  <div class="mx-auto w-full max-w-lasbredd">
-    {/*
-      Sidhuvudet: rubrik och ingress till vänster i 7/12, bilden till höger i
-      5/12 på desktop, under ingressen på mobil. Bilden är dekorativ, H1 bär
-      betydelsen, därför tom alt. Den är sidans LCP-bild och laddas därför
-      eagert med fetchpriority. Varumärkesbilden har transparent bakgrund och
-      ligger som heron utan ram; skissen är ett urklipp och får ramen. Saknas
-      båda visas ingen bild alls.
-    */}
-    <section class="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-8">
-      <div class="lg:col-span-7">
-        <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">
-          Räkna ut kvadratmeter så att färgen, tapeten eller golvet räcker
-        </h1>
-        <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
-          Mät rummets längd, bredd och takhöjd och skriv in dem här, så får du golvet, väggarna och taket i
-          kvadratmeter. Dörren och fönstret drar jag av, för de ska inte målas. Väljer du sedan vad ytan ska täckas
-          med får du också hur många liter färg, hur många tapetrullar eller hur mycket golv du ska köpa, med spill
-          inräknat. Åtgången kommer från färg- och golvtillverkarnas egna uppgifter.
-        </p>
-      </div>
+  {/* Formuläret ligger i src/components/kalkyl/KvadratmeterForm.astro, så att
+      <Kalkylator namn="kvadratmeter" /> i en artikel visar exakt samma fält. */}
+  <KvadratmeterForm slot="formular" indata={indata} varden={varden} fel={fel} />
 
-      {
-        huvudbild && (
-          <div class="lg:col-span-5">
-            <img
-              src={huvudbild.src}
-              alt=""
-              width={huvudbild.width}
-              height={huvudbild.height}
-              fetchpriority="high"
-              decoding="async"
-              class:list={['block h-auto w-full', !varumarke && 'rounded-sm border border-linje']}
-            />
+  {
+    visat.status === 'ok' && tal && (
+      <Fragment slot="svar">
+        {resultat.status === 'ogiltig' && (
+          <p class="text-liten text-varning">
+            Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.
+          </p>
+        )}
+        <Svarstal tal={tal.golv} enhet="kvm" vad={SVAR_VAD} />
+        <div class="text-brod">
+          <p class="font-bold">{besked.rubrik}</p>
+          <p>{besked.rad}</p>
+        </div>
+        {/* De andra ytorna och mängderna, en rad var med talet först, som förut. */}
+        <div class="flex flex-col gap-1 tabular-nums">
+          <p class="text-liten text-blyerts-2">
+            Rum på {tal.langd} × {tal.bredd} m, takhöjd {tal.takhojd} m, {MATERIALTEXT[visatIndata.material]}
+          </p>
+          <p>
+            <span class="font-serif text-h2 text-blyerts">{tal.vald}</span>{' '}kvm {visat.valdNamn}
+          </p>
+          {visat.farg && (
+            <p>
+              <span class="font-serif text-h2 text-blyerts">{talText(visat.farg.literAttKopa)}</span>{' '}liter färg att köpa
+            </p>
+          )}
+          {visat.tapet && (
+            <p>
+              <span class="font-serif text-h2 text-blyerts">{formateraTal(visat.tapet.rullar)}</span>{' '}tapetrullar
+            </p>
+          )}
+          {visat.golv && (
+            <p>
+              <span class="font-serif text-h2 text-blyerts">{talText(visat.golv.kvmAttKopa)}</span>{' '}kvm golv att köpa
+            </p>
+          )}
+        </div>
+        <p class="text-liten text-blyerts">{klartext}</p>
+      </Fragment>
+    )
+  }
+
+  {
+    visat.status === 'ok' && tal && (
+      <Fragment slot="darfor">
+        <Pennstreck id="darfor-blev-svaret-sa" utanLuft>
+          Därför blev svaret så
+        </Pennstreck>
+        <div class="darfor tabular-nums">
+          <div>
+            <p>
+              Golvet mäter {tal.golv} kvm, och taket är lika stort. Omkretsen är {tal.omkrets} m, och gånger
+              takhöjden ger det {tal.brutto} kvm vägg före avdrag.
+            </p>
+            <p>Bara dina tre mått, multiplicerade med varandra.</p>
           </div>
-        )
-      }
-    </section>
+          <div>
+            <p>
+              {avdragRad(
+                visatIndata.dorrar,
+                { noll: 'Du har inte fyllt i någon dörr, så där blir det inget avdrag', ental: 'En dörr räknad', flertal: 'dörrar räknade' },
+                visatIndata.dorrBreddM,
+                visatIndata.dorrHojdM,
+              ) +
+                (visatIndata.dorrar > 0 ? ` ${tal.avdragDorr} kvm` : '') +
+                '. ' +
+                avdragRad(
+                  visatIndata.fonster,
+                  {
+                    noll: 'Du har inte fyllt i något fönster, så där blir det inget avdrag',
+                    ental: 'Ett fönster räknat',
+                    flertal: 'fönster räknade',
+                  },
+                  visatIndata.fonsterBreddM,
+                  visatIndata.fonsterHojdM,
+                ) +
+                (visatIndata.fonster > 0 ? ` ${tal.avdragFonster} kvm` : '') +
+                `. Väggarna efter avdrag blir ${tal.netto} kvm.`}
+            </p>
+            <p>
+              Dörrmåttet är Swedoors öppningsmått för den vanligaste innerdörren, avrundat. Fönstermåttet är min
+              gissning tills du skriver in ditt eget.
+            </p>
+          </div>
 
-    {
-      visat.status === 'ok' && tal && (
-        <Faktaruta variant="kortsvar">
-          <p class="m-0 leading-6">
-            Golvet i rummet är <Markering>{tal.golv} kvm</Markering>, och taket lika mycket.
-          </p>
-          <p class="m-0 leading-6">
-            Väggarna är {tal.brutto} kvm före avdrag, och dörren och fönstret tar bort {tal.avdrag} kvm av det.
-          </p>
-          <p class="m-0 leading-6">
-            Kvar att måla eller tapetsera är {tal.netto} kvm. Allt det här bygger på tre mått, längden, bredden och
-            takhöjden, så mät dem först.
-          </p>
-        </Faktaruta>
-      )
-    }
-
-    <div class="linjerat mt-8 lg:grid lg:grid-cols-2 lg:gap-8">
-      {/* Formuläret ligger i src/components/kalkyl/KvadratmeterForm.astro, så att
-          <Kalkylator namn="kvadratmeter" /> i en artikel visar exakt samma fält. */}
-      <KvadratmeterForm indata={indata} varden={varden} fel={fel} />
-
-      <div class="mt-8 border-t border-linje pt-6 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
-        {
-          visat.status === 'ok' && tal && (
+          {visat.farg && (
             <>
-              {resultat.status === 'ogiltig' && (
-                <p class="m-0 mb-2 text-liten text-varning">
-                  Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.
+              <div>
+                <p>
+                  Färgen ska täcka {talText(visat.farg.ytaKvm)} kvm, {visat.farg.ytaNamn}. {tal.strykningar}{' '}
+                  strykningar ger {talText(visat.farg.literRaknat)} liter räknat, och det blir{' '}
+                  {burkRad(visat.farg.burkar)} att köpa.
                 </p>
-              )}
-              {/* Beskedet står först: vad du ska köpa. Räkningen bakom står
-                  under verktyget. */}
-              <p class="m-0 font-sans text-h3 lg:text-h3-lg font-bold text-blyerts">{besked.rubrik}</p>
-              <p class="m-0 mt-1 text-brod">{besked.rad}</p>
-
-              <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
-                Rum på {tal.langd} × {tal.bredd} m, takhöjd {tal.takhojd} m, {MATERIALTEXT[visatIndata.material]}
-              </p>
-              {/* Enheten står på samma rad som talet, på talets baslinje
-                  (DESIGN.md avsnitt 5.8). Radbryter på smal skärm. */}
-              <p class="m-0 mt-1 flex flex-wrap items-baseline gap-x-2">
-                <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
-                  <Markering>{tal.vald}</Markering>
-                </span>
-                <span class="text-ingress lg:text-ingress-lg">kvm {visat.valdNamn}</span>
-              </p>
-
-              {visat.farg && (
-                <p class="m-0 mt-2 flex flex-wrap items-baseline gap-x-2">
-                  <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
-                    {talText(visat.farg.literAttKopa)}
-                  </span>
-                  <span class="text-ingress lg:text-ingress-lg">liter färg att köpa</span>
-                </p>
-              )}
-              {visat.tapet && (
-                <p class="m-0 mt-2 flex flex-wrap items-baseline gap-x-2">
-                  <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
-                    {formateraTal(visat.tapet.rullar)}
-                  </span>
-                  <span class="text-ingress lg:text-ingress-lg">tapetrullar</span>
-                </p>
-              )}
-              {visat.golv && (
-                <p class="m-0 mt-2 flex flex-wrap items-baseline gap-x-2">
-                  <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
-                    {talText(visat.golv.kvmAttKopa)}
-                  </span>
-                  <span class="text-ingress lg:text-ingress-lg">kvm golv att köpa</span>
-                </p>
-              )}
-
-              <p class="m-0 mt-4 text-liten text-blyerts-2">
-                Hela räkningen, avdrag för avdrag, och vad du inte ska göra{' '}
-                <a href="#darfor-blev-svaret-sa" class={LANK_KLASS}>
-                  står under verktyget
-                </a>
-                .
-              </p>
-
-              <p class="m-0 mt-4">
-                <a href="#sa-raknar-vi" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
-                  Så räknar jag
-                </a>
-              </p>
-
-              {/* Dela. Uträkningen står i adressen, så ett skrivskyddat fält
-                  räcker: markera och kopiera fungerar utan en rad JavaScript. */}
-              <div class="mt-4 border-t border-linje pt-4">
-                <label for="dela" class={ETIKETT_KLASS}>
-                  Dela uträkningen
-                </label>
-                <input id="dela" type="text" readonly value={delaLank} class:list={[FALT_KLASS, 'border-blyerts-2']} />
-                <p class="m-0 mt-1 text-liten text-blyerts-2">
-                  Dina värden ligger i adressen. Markera den och kopiera, så får den du skickar länken till samma svar.
+                <p>
+                  8 kvm per liter och strykning enligt Beckers, Alcro och Nordsjö. Valet av burkar är min regel om
+                  högst 30 procent över.
                 </p>
               </div>
-            </>
-          )
-        }
-      </div>
-    </div>
-
-    {
-      visat.status === 'ok' && tal && (
-        <section>
-          <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
-          <ul class="m-0 p-0 list-none text-brod lg:text-brod-lg tabular-nums">
-            <li class="mb-4 border-l-2 border-linje pl-4">
-              <span class="block">
-                Golvet mäter {tal.golv} kvm, och taket är lika stort. Omkretsen är {tal.omkrets} m, och gånger
-                takhöjden ger det {tal.brutto} kvm vägg före avdrag.
-              </span>
-              <span class="block text-liten text-blyerts-2">Bara dina tre mått, multiplicerade med varandra.</span>
-            </li>
-            <li class="mb-4 border-l-2 border-linje pl-4">
-              <span class="block">
-                {avdragRad(
-                  visatIndata.dorrar,
-                  { noll: 'Du har inte fyllt i någon dörr, så där blir det inget avdrag', ental: 'En dörr räknad', flertal: 'dörrar räknade' },
-                  visatIndata.dorrBreddM,
-                  visatIndata.dorrHojdM,
-                ) +
-                  (visatIndata.dorrar > 0 ? ` ${tal.avdragDorr} kvm` : '') +
-                  '. ' +
-                  avdragRad(
-                    visatIndata.fonster,
-                    {
-                      noll: 'Du har inte fyllt i något fönster, så där blir det inget avdrag',
-                      ental: 'Ett fönster räknat',
-                      flertal: 'fönster räknade',
-                    },
-                    visatIndata.fonsterBreddM,
-                    visatIndata.fonsterHojdM,
-                  ) +
-                  (visatIndata.fonster > 0 ? ` ${tal.avdragFonster} kvm` : '') +
-                  `. Väggarna efter avdrag blir ${tal.netto} kvm.`}
-              </span>
-              <span class="block text-liten text-blyerts-2">
-                Dörrmåttet är Swedoors öppningsmått för den vanligaste innerdörren, avrundat. Fönstermåttet är min
-                gissning tills du skriver in ditt eget.
-              </span>
-            </li>
-
-            {visat.farg && (
-              <>
-                <li class="mb-4 border-l-2 border-linje pl-4">
-                  <span class="block">
-                    Färgen ska täcka {talText(visat.farg.ytaKvm)} kvm, {visat.farg.ytaNamn}. {tal.strykningar}{' '}
-                    strykningar ger {talText(visat.farg.literRaknat)} liter räknat, och det blir{' '}
-                    {burkRad(visat.farg.burkar)} att köpa.
-                  </span>
-                  <span class="block text-liten text-blyerts-2">
-                    8 kvm per liter och strykning enligt Beckers, Alcro och Nordsjö. Valet av burkar är min regel om
-                    högst 30 procent över.
-                  </span>
-                </li>
-                <li class="mb-4 border-l-2 border-linje pl-4">
-                  <span class="block">
-                    Är underlaget obehandlat går det {talText(visat.farg.grundLiterRaknat)} liter grundfärg till, och
-                    det blir {burkRad(visat.farg.grundBurkar)}.
-                  </span>
-                  <span class="block text-liten text-blyerts-2">7 kvm per liter, mitten av Beckers 6 till 8.</span>
-                </li>
-              </>
-            )}
-
-            {visat.tapet && (
-              <>
-                <li class="mb-4 border-l-2 border-linje pl-4">
-                  <span class="block">
-                    {formateraTal(visat.tapet.antalVader)} våder täcker de {talText(visat.tapet.vaderBreddM)} m vägg
-                    som ska tapetseras (omkretsen utan dörröppningarna). Varje våd blir{' '}
-                    {talText(visat.tapet.vadLangdM)} m lång, så det går {formateraTal(visat.tapet.vaderPerRulle)}{' '}
-                    våder ur en rulle.
-                  </span>
-                  <span class="block text-liten text-blyerts-2">
-                    Rullen är 0,53 × 10,05 m enligt Boråstapeter. Påslaget 10 cm per våd är mitt.
-                  </span>
-                </li>
-                <li class="mb-4 border-l-2 border-linje pl-4">
-                  <span class="block">
-                    Ska mönstret passas blir våden {talText(visat.tapet.vadLangdMonsterM)} m, och då behöver du{' '}
-                    {formateraTal(visat.tapet.rullarMonster)} rullar.
-                  </span>
-                  <span class="block text-liten text-blyerts-2">
-                    Rapporten 53 cm är min gissning. Läs av din egen på rullen.
-                  </span>
-                </li>
-              </>
-            )}
-
-            {visat.golv && (
-              <li class="mb-4 border-l-2 border-linje pl-4">
-                <span class="block">
-                  Jag lägger på {formateraTal(visat.golv.spillProcent)} procent spill på golvets{' '}
-                  {talText(visat.golv.ytaKvm)} kvm.{' '}
-                  {visat.golv.antalPaket !== null && visat.golv.paketKvm !== null ? (
-                    <>
-                      Med paket om {talText(visat.golv.paketKvm)} kvm blir det {formateraTal(visat.golv.antalPaket)}{' '}
-                      paket, och {talText(visat.golv.kvmIPaketen ?? 0)} kvm hem.
-                    </>
-                  ) : (
-                    <>Fyll i hur många kvadratmeter det är i ett paket, så räknar jag om talet till antal paket.</>
-                  )}
-                </span>
-                <span class="block text-liten text-blyerts-2">
-                  {visatIndata.material === 'klinker'
-                    ? 'Spillet är Kakelgigantens, 10 procent rakt och 15 diagonalt.'
-                    : 'Spillet är Kährs och Pergos, cirka 5 procent rakt och upp till 10 diagonalt.'}
-                </span>
-              </li>
-            )}
-          </ul>
-
-          {visat.gorInteDetHar.length > 0 && (
-            <>
-              <h3 id="gor-inte-det-har" class="m-0 mt-6 font-sans text-h3 lg:text-h3-lg text-blyerts">
-                Gör inte det här
-              </h3>
-              {visat.gorInteDetHar.map((rad) => (
-                <p class="m-0 mt-2 text-brod lg:text-brod-lg">{rad}</p>
-              ))}
+              <div>
+                <p>
+                  Är underlaget obehandlat går det {talText(visat.farg.grundLiterRaknat)} liter grundfärg till, och
+                  det blir {burkRad(visat.farg.grundBurkar)}.
+                </p>
+                <p>7 kvm per liter, mitten av Beckers 6 till 8.</p>
+              </div>
             </>
           )}
-        </section>
+
+          {visat.tapet && (
+            <>
+              <div>
+                <p>
+                  {formateraTal(visat.tapet.antalVader)} våder täcker de {talText(visat.tapet.vaderBreddM)} m vägg
+                  som ska tapetseras (omkretsen utan dörröppningarna). Varje våd blir{' '}
+                  {talText(visat.tapet.vadLangdM)} m lång, så det går {formateraTal(visat.tapet.vaderPerRulle)}{' '}
+                  våder ur en rulle.
+                </p>
+                <p>Rullen är 0,53 × 10,05 m enligt Boråstapeter. Påslaget 10 cm per våd är mitt.</p>
+              </div>
+              <div>
+                <p>
+                  Ska mönstret passas blir våden {talText(visat.tapet.vadLangdMonsterM)} m, och då behöver du{' '}
+                  {formateraTal(visat.tapet.rullarMonster)} rullar.
+                </p>
+                <p>Rapporten 53 cm är min gissning. Läs av din egen på rullen.</p>
+              </div>
+            </>
+          )}
+
+          {visat.golv && (
+            <div>
+              <p>
+                Jag lägger på {formateraTal(visat.golv.spillProcent)} procent spill på golvets{' '}
+                {talText(visat.golv.ytaKvm)} kvm.{' '}
+                {visat.golv.antalPaket !== null && visat.golv.paketKvm !== null ? (
+                  <>
+                    Med paket om {talText(visat.golv.paketKvm)} kvm blir det {formateraTal(visat.golv.antalPaket)}{' '}
+                    paket, och {talText(visat.golv.kvmIPaketen ?? 0)} kvm hem.
+                  </>
+                ) : (
+                  <>Fyll i hur många kvadratmeter det är i ett paket, så räknar jag om talet till antal paket.</>
+                )}
+              </p>
+              <p>
+                {visatIndata.material === 'klinker'
+                  ? 'Spillet är Kakelgigantens, 10 procent rakt och 15 diagonalt.'
+                  : 'Spillet är Kährs och Pergos, cirka 5 procent rakt och upp till 10 diagonalt.'}
+              </p>
+            </div>
+          )}
+        </div>
+      </Fragment>
+    )
+  }
+
+  {
+    visat.status === 'ok' && visat.gorInteDetHar.length > 0 && (
+      <Fragment slot="gorInte">
+        {/* Flera råd står i samma stycke efter "Gör inte det här.", vart och ett på egen rad. */}
+        {visat.gorInteDetHar.map((rad, i) => (
+          <span class:list={[i > 0 && 'mt-3 block']}>{rad}</span>
+        ))}
+      </Fragment>
+    )
+  }
+
+  <Fragment slot="saRaknarJag">
+    {
+      illustration && (
+        <div class="pappersruta">
+          <Illustration
+            namn="rakna/kvadratmeter"
+            alt="Ett rum sett uppifrån med två måttbyglar, kvadratmetertalet mitt på golvet och en dörr och ett fönster i väggen."
+            bildtext="Skissen visar det verktyget räknar på: ett rum på fyra gånger tre meter ger tolv kvadratmeter golv, och dörren och fönstret dras av från väggarna."
+            class="my-0!"
+          />
+        </div>
       )
     }
+    <ol class="m-0 mt-4 pl-6 list-decimal text-brod">
+      <li class="mb-2">Längden gånger bredden ger golvet, och taket får samma tal.</li>
+      <li class="mb-2">Längden plus bredden gånger två ger omkretsen, och omkretsen gånger takhöjden ger väggarna.</li>
+      <li class="mb-2">
+        Varje dörr och varje fönster drar jag av med sin egen yta, och du kan skriva in egna mått i stället för
+        mina.
+      </li>
+      <li class="mb-2">
+        Färgen räknar jag på ytan gånger antalet strykningar, delat med tillverkarnas åtgång per liter.
+      </li>
+      <li class="mb-2">
+        Litertalet rundar jag upp till burkar. Minsta antalet burkar vinner, men bara bland dem som lämnar högst
+        30 procent över.
+      </li>
+      <li class="mb-2">
+        Tapeten räknar jag i våder. Omkretsen minus dörrarnas bredd delar jag med rullens bredd och avrundar
+        uppåt.
+      </li>
+      <li class="mb-2">
+        Vådens längd är takhöjden plus påslaget, och med mönsterpassning rundar jag upp den till en hel rapport.
+      </li>
+      <li>Golvet får sitt spillpåslag efter material och läggning, och sedan rundar jag upp till hela paket.</li>
+    </ol>
+  </Fragment>
 
-    <section>
+  <Fragment slot="efter">
+    {/* Antagandetabellen i läsbredd, ur kortet Så räknar jag (spec-designlyft-c avsnitt 9). */}
+    <section class="max-w-lasbredd">
+      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad siffrorna vilar på</h3>
+      <Tabellyta kolumner={3} class="mt-4">
+        <table class="w-full border-collapse text-liten tabular-nums">
+          <caption class="sr-only">Antaganden och källor i kvadratmeterräknaren</caption>
+          <thead>
+            <tr class="border-b border-linje text-left">
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Vad</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Jag räknar med</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Källa eller antagande</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              antaganden.map((a) => (
+                <tr>
+                  <th scope="row" class:list={[CELL_KLASS, 'text-left font-normal']}>
+                    {a.storhet}
+                  </th>
+                  <td class={CELL_KLASS}>{a.varde}</td>
+                  <td class={CELL_KLASS}>
+                    {a.grund}.{' '}
+                    {a.url ? (
+                      <a href={a.url} rel={a.url.startsWith('/') ? undefined : 'nofollow'} class={LANK_KLASS}>
+                        {a.stod}
+                      </a>
+                    ) : (
+                      a.stod
+                    )}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </Tabellyta>
+
+      <p class="m-0 mt-6 text-brod lg:text-brod-lg">
+        Allt i tabellen som är märkt Antagande går att skriva över i formuläret utom burkstorlekarna. Fönstret har
+        egna fält, och mönsterrapporten läser du av på rullen innan du bestämmer dig. Modulsystemet för fönster är
+        en standard hos alla svenska tillverkare, men ingen publicerar vilket mått som sitter i flest bostäder, så
+        1,2 × 1,2 m är en gissning jag gärna får rättad av dig. När du är nöjd med svaret ligger hela uträkningen i
+        adressfältet, så du kan skicka länken till den som ska handla. Hur jag hämtar tal från tillverkarna står på
+        sidan <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar jag</a>.
+      </p>
+    </section>
+
+    <section class="max-w-lasbredd">
       <Pennstreck id="rakna-ut-kvadratmeter">Räkna ut kvadratmeter på ett rum med dörr och fönster</Pennstreck>
       <p class="m-0 text-brod lg:text-brod-lg">
         Rummet i exemplet är fyra gånger tre meter med takhöjden 2,5&nbsp;m, en dörr och ett fönster. Golvet är det
@@ -725,113 +752,17 @@ const huvudbild = varumarke ?? illustration;
       </p>
     </section>
 
-    <section>
-      <Pennstreck id="sa-raknar-vi">Så räknar jag</Pennstreck>
-      {
-        varumarke && illustration && (
-          <Illustration
-            namn="rakna/kvadratmeter"
-            alt="Ett rum sett uppifrån med två måttbyglar, kvadratmetertalet mitt på golvet och en dörr och ett fönster i väggen."
-            bildtext="Skissen visar det verktyget räknar på: ett rum på fyra gånger tre meter ger tolv kvadratmeter golv, och dörren och fönstret dras av från väggarna."
-          />
-        )
-      }
-      <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg">
-        <li class="mb-2">Längden gånger bredden ger golvet, och taket får samma tal.</li>
-        <li class="mb-2">Längden plus bredden gånger två ger omkretsen, och omkretsen gånger takhöjden ger väggarna.</li>
-        <li class="mb-2">
-          Varje dörr och varje fönster drar jag av med sin egen yta, och du kan skriva in egna mått i stället för
-          mina.
-        </li>
-        <li class="mb-2">
-          Färgen räknar jag på ytan gånger antalet strykningar, delat med tillverkarnas åtgång per liter.
-        </li>
-        <li class="mb-2">
-          Litertalet rundar jag upp till burkar. Minsta antalet burkar vinner, men bara bland dem som lämnar högst
-          30 procent över.
-        </li>
-        <li class="mb-2">
-          Tapeten räknar jag i våder. Omkretsen minus dörrarnas bredd delar jag med rullens bredd och avrundar
-          uppåt.
-        </li>
-        <li class="mb-2">
-          Vådens längd är takhöjden plus påslaget, och med mönsterpassning rundar jag upp den till en hel rapport.
-        </li>
-        <li>Golvet får sitt spillpåslag efter material och läggning, och sedan rundar jag upp till hela paket.</li>
-      </ol>
+    {
+      lasVidare.length > 0 && (
+        <section>
+          <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
+          <Artikelrutnat kort={lasVidare} kolumner={4} visaBeskrivning={false} visaMeta={false} />
+        </section>
+      )
+    }
 
-      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad siffrorna vilar på</h3>
-      <Tabellyta kolumner={3} class="mt-4">
-        <table class="w-full border-collapse text-liten tabular-nums">
-          <caption class="sr-only">Antaganden och källor i kvadratmeterräknaren</caption>
-          <thead>
-            <tr class="border-b border-linje text-left">
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Vad</th>
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Jag räknar med</th>
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Källa eller antagande</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              antaganden.map((a) => (
-                <tr>
-                  <th scope="row" class:list={[CELL_KLASS, 'text-left font-normal']}>
-                    {a.storhet}
-                  </th>
-                  <td class={CELL_KLASS}>{a.varde}</td>
-                  <td class={CELL_KLASS}>
-                    {a.grund}.{' '}
-                    {a.url ? (
-                      <a href={a.url} rel={a.url.startsWith('/') ? undefined : 'nofollow'} class={LANK_KLASS}>
-                        {a.stod}
-                      </a>
-                    ) : (
-                      a.stod
-                    )}
-                  </td>
-                </tr>
-              ))
-            }
-          </tbody>
-        </table>
-      </Tabellyta>
-
-      <p class="m-0 mt-6 text-brod lg:text-brod-lg">
-        Allt i tabellen som är märkt Antagande går att skriva över i formuläret utom burkstorlekarna. Fönstret har
-        egna fält, och mönsterrapporten läser du av på rullen innan du bestämmer dig. Modulsystemet för fönster är
-        en standard hos alla svenska tillverkare, men ingen publicerar vilket mått som sitter i flest bostäder, så
-        1,2 × 1,2 m är en gissning jag gärna får rättad av dig. När du är nöjd med svaret ligger hela uträkningen i
-        adressfältet, så du kan skicka länken till den som ska handla. Hur jag hämtar tal från tillverkarna står på
-        sidan <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar jag</a>.
-      </p>
-    </section>
-
-    <section>
-      <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
-      <ul class="m-0 p-0 list-none">
-        <li class="border-t border-linje">
-          <a href="/rakna/fasadyta/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Räkna ut fasadytan på ett helt hus, med gavelspetsarna
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/inomhus/bygga-innervagg/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Så bygger du en innervägg med reglar och gips
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/kok/slipa-bankskiva/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Så slipar och oljar du bänkskivan
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/rakna/innervagg/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Räkna ut reglar, gipsskivor och skruv till innerväggen
-          </a>
-        </li>
-      </ul>
-    </section>
-
-    <Faq fragor={FRAGOR} />
-  </div>
-</Bas>
+    <div class="max-w-lasbredd">
+      <Faq fragor={FRAGOR} />
+    </div>
+  </Fragment>
+</Raknarsida>

@@ -135,3 +135,30 @@ Meningar ur de borttagna Kort svar-rutorna står i UX-rapporten för steg 2. Han
 - `dranering.klartext`: "Med {lopmeter} löpmeter runt huset och {djup} meters schaktdjup kostar arbetet {lag} till {hog} kr, räknat på Villaägarnas {krPerMeter} kr per löpmeter."
 - Källaren: tejptestets avläsning och "Köp ingenting förrän plasten har svarat" ur den borttagna Kort svar-rutan står nu i regeln för ej gjort tejptest i `kallare.ts` (Därför blev svaret så).
 - Daggpunkten: "tabellen nedanför" är nu "tabellen ovanför".
+
+### Steg 3, innervägg, gipsplugg, gipsskruv, kvadratmeter, trappa
+
+Nycklarna (`[slug].klartext` med platshållare, och `gipsplugg.matare.etikett` om mätaren byggs) fylls i här efter utvecklarens leverans. Ändring i steg 2: i `elkostnad.klartext` fyller koden nu i `{timmar}` och `{dagar}` med ordet inräknat ("1 timme", "8 timmar"). Ordet efter platshållaren i hantverkarens mening ska därför bort.
+
+| Nyckel | Fil | Var | Platshållare | Längd |
+|---|---|---|---|---|
+| `innervagg.klartext` | `src/pages/rakna/innervagg.astro` | sist i svarsytan: talet, villkoret och källan | `{reglar}`, `{skivor}` (utan spill), `{langd}`, `{hojd}` (m), `{regel}` ("45 × 70 mm"), `{cc}` (mm) | högst 200 tecken |
+| `gipsplugg.klartext` | `src/pages/rakna/gipsplugg.astro` | samma | `{svar}` (fästet i ord), `{vikt}` (kg), `{punkter}`, `{last}` (kg per punkt), `{skiva}` | högst 200 tecken |
+| `gipsskruv.klartext` | `src/pages/rakna/gipsskruv.astro` | samma | `{langd}` ("41 mm"), `{skiva}`, `{lag}`, `{regel}`, `{iRegeln}` ("28,5 mm") | högst 200 tecken |
+| `kvadratmeter.svar.vad` | `src/pages/rakna/kvadratmeter.astro` | raden under "kvm" bredvid det stora talet: att talet är golvytan | inga | högst 30 tecken |
+| `kvadratmeter.klartext` | samma | sist i svarsytan | `{golv}`, `{vaggar}` (efter avdrag), `{tak}` (kvm), `{langd}`, `{bredd}`, `{takhojd}` (m) | högst 200 tecken |
+| `trappa.klartext` | `src/pages/rakna/trappa.astro` | sist i svarsytan | `{hojd}` (mm), `{antal}` (steg), `{steghojd}`, `{stegdjup}`, `{formel}` (2 × höjd + djup, mm) | högst 200 tecken |
+
+På gipsplugg står svaret ("Regeln"), en förklarande rad och beskedet ("Skruva fast den i regeln bakom skivan.") nu under varandra i svarsytan och säger nästan samma sak två gånger. Hantverkaren avgör om raden eller beskedet ska kortas.
+
+### Fas C steg 3, skrivet av hantverkaren 2026-10-02
+
+- `innervagg.klartext`: "En vägg på {langd} × {hojd} m med reglar {regel} på c {cc} mm behöver {reglar} stående reglar och {skivor} gipsskivor utan spill, räknat med Gyprocs och Norgips mått."
+- `gipsplugg.klartext`: "Med {last} kg per bärande punkt i {skiva} blir svaret ”{svar}”, räknat på att saken väger {vikt} kg och på tillverkarnas rekommenderade last per infästning."
+- `gipsskruv.klartext`: "Till {skiva} gips i {lag} på en {regel} behöver du {langd} gipsskruv, och den går {iRegeln} in i regeln. Längden följer Norgips tumregel, gipsets tjocklek plus 20 mm in i trä eller 10 mm genom stål."
+- `kvadratmeter.svar.vad`: "golvytan i rummet"
+- `kvadratmeter.klartext`: "Ett rum på {langd} × {bredd} m med {takhojd} m i takhöjd har {golv} kvm golv, {tak} kvm tak och {vaggar} kvm vägg efter avdrag för dörr och fönster."
+- `trappa.klartext`: "Med {hojd} mm i våningshöjd och {antal} steg blir steghöjden {steghojd} mm och stegdjupet {stegdjup} mm. Summan i trappformeln blir {formel} mm, och Svenskt Trä vill ha 600 till 650 mm."
+- Gipsplugg, upprepningen: det stora ordet och resten är nu "Krok räcker", "Plugg i skivan räcker", "Regeln bakom skivan" och "Kortling mellan två reglar" (`SVAR_DELAR` i gipsplugg.ts). Beskeden för plugg och regel säger nu "Välj en plugg i tabellen som klarar lasten." och "Skruva fast saken i regeln med träskruv.". Raden om hur lasten fördelas står bara i Därför blev svaret så, inte två gånger.
+- Gipsplugg, ur Kort svar-rutan: gränsen över 20 kg, tv på svängarm och skåp med lucka står nu i källraden under svaret i Därför blev svaret så. "Ingen källa, bara erfarenhet" är "Det här har jag ingen källa på. Det är mitt eget råd".
+- Innervägg, gipsskruv, kvadratmeter och trappa: Kort svar-rutornas tal står redan i svarsytan eller i Därför blev svaret så; gipsskruvens tumregel och trappformelns spann står nu också i klartexten.

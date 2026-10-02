@@ -114,3 +114,19 @@ Godkänt i stort. Fyra ändringar innan steget räknas som klart. Samma regler g
 4. **Radioknappar med hjälprad.** I `DraneringForm` ritas alternativ med en hjälprad under inte som knappar. Det blir likadant i andra formulär med samma markup. Lös det i CSS om det går: knappen ska omfatta både etiketten och hjälpraden. Annars gör du en minimal ändring i formulärets markup och skriver vilken. Kontrollera alla formulär som har hjälprader under radioknapparna.
 
 Avfuktarens nya H2 "Därför blev svaret så", med resultatspaltens tre rader, godtas. Läs vidare-kortens etikett "Räkna själv" för räknarna godtas. Meningar som inte längre har någon plats går till hantverkaren via koordinatorn.
+
+## 12. Steg 3: innervagg, gipsplugg, gipsskruv, kvadratmeter, trappa
+
+Mönstret är avsnitt 3, 7, 9 och 11 (Därför som stycken, spann i mellanstorlek, smala fält med enheten bredvid).
+
+- **innervagg**: `Svarstal` med sidans första stora tal (antal reglar) och skivorna i beskedet eller som en andra rad, som sidan visar dem i dag. Ingen mätare.
+- **gipsplugg**: svaret är ett fäste i ord ("Plugg", "Regel"). Svarsytan bär det i `font-serif text-h2`, som källaren. Har formelmodulen sakens vikt och fästets tillåtna last ur en källa, visar en `Matare` vikten mot lasten (etikett `gipsplugg.matare.etikett`). Annars blir det ingen mätare. Infästningstabellen står kvar i svaret som i dag; den är själva svaret.
+- **gipsskruv**: `Svarstal` med skruvlängden i mm. Ingen mätare.
+- **kvadratmeter**: `Svarstal` med golvytan som första tal. Övriga ytor och mängder står som rader under beskedet, som i dag. Ingen mätare.
+- **trappa**: `Svarstal` med steghöjden i mm. `Statusrad` med `ok` när alla mått håller och `varning` när ett mått inte håller, med sidans befintliga besked. Ingen mätare, eftersom stegformeln är ett intervall och ingen gräns.
+
+För varje räknare: `[slug].klartext` som `TEXT SAKNAS` med platshållare, `[slug].svar.vad` bara där mallen behöver den. Meningar som inte längre har någon plats listas.
+
+**Böjningshjälp.** I `src/lib/format.ts` finns `antalOrd(n: number, en: string, flera: string): string`, som ger "1 timme", "2 timmar" och "1,5 timmar" (singular bara när n är exakt 1). Använd den på elkostnadssidan överallt där ett tal står före "timmar", "timme", "dagar" eller "dag", också när talet fylls i i `elkostnad.klartext` (där fyller koden i `{timmar}` och `{dagar}` med ordet inräknat). Hantverkarens text ändras därför så att ordet efter platshållaren tas bort: koordinatorn meddelar hantverkaren. Ändra inget i formelmodulen.
+
+Kontroller som i avsnitt 4, för de fem sidorna och deras vanliga adresser: gipsplugg med en tung sak, trappa med ett mått som inte håller och kvadratmeter standard. Lägg till elkostnaden med `?timmar=1&dagar=1`, eller sidans motsvarande nycklar.

@@ -15,8 +15,9 @@
  */
 export const prerender = false;
 
-import Bas from '../../layouts/Bas.astro';
 import { formateraTal } from '../../lib/format';
+import { artikelUrl, publicerade } from '../../lib/innehall';
+import { tillKortArtikel, type KortData } from '../../lib/kort';
 import {
   GRANS_REGEL_KG,
   MAXLAST_AVSTAND_MM,
@@ -29,21 +30,18 @@ import {
   SVANGARM_FAKTOR,
   TAK_MAX_KG,
   tolkaQuery,
-  XKROK_KG,
   type GipspluggIndata,
   type GipspluggResultat,
 } from '../../lib/kalkyl/gipsplugg';
-import { CELL_KLASS, ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
-import { verktyg } from '../../lib/strukturdata';
-import { verktygsDelningsbild, verktygsillustration, verktygsVarumarkesbild } from '../../lib/verktygsbild';
+import { CELL_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
+import { verktygsillustration } from '../../lib/verktygsbild';
 import GipspluggForm from '../../components/kalkyl/GipspluggForm.astro';
-import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Artikelrutnat from '../../components/ui/Artikelrutnat.astro';
 import Faq from '../../components/ui/Faq.astro';
-import Markering from '../../components/ui/Markering.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
-import StrukturData from '../../components/ui/StrukturData.astro';
 import Tabellyta from '../../components/ui/Tabellyta.astro';
 import Illustration from '../../components/ui/Illustration.astro';
+import Raknarsida from '../../components/vyer/Raknarsida.astro';
 
 Astro.locals.sidtyp = 'verktyg';
 
@@ -109,9 +107,9 @@ const punktText = (n: number) => (n === 1 ? 'en punkt' : `${n} punkter`);
 
 /** Beskedet överst i spalten: vad du ska göra. */
 const BESKED_RUBRIK = {
-  krok: 'Häng den i en X-krok eller på en klisterremsa.',
-  plugg: 'Sätt en plugg i skivan, det räcker.',
-  regel: 'Skruva fast den i regeln bakom skivan.',
+  krok: 'Häng saken i en X-krok eller på en klisterremsa.',
+  plugg: 'Välj en plugg i tabellen som klarar lasten.',
+  regel: 'Skruva fast saken i regeln med träskruv.',
   kortling: 'Öppna väggen och sätt in en kortling.',
 } as const;
 
@@ -294,340 +292,240 @@ const SLUG = 'gipsplugg';
 const VERKTYGSNAMN = 'Vad håller i gipsväggen';
 const BESKRIVNING =
   'Fyll i vikten och skivans tjocklek, så säger verktyget om en plugg räcker i gipsväggen, om saken ska sitta i regeln eller om du behöver en kortling.';
+/** Skissen står i kortet Så bedömer jag. Huvudet har ingen bild sedan fas C (DESIGN.md 5.8). */
 const illustration = verktygsillustration(SLUG);
-/**
- * Varumärkesbilden i sidhuvudet, sedan 2026-09-19 (docs/DESIGN.md avsnitt 7).
- * Finns den står skissen i stället i "Så bedömer vi", där måtten förklarar
- * räkningen. Finns den inte visas skissen i sidhuvudet som förut.
+
+/*
+ * Svarsytan, fas C (spec-designlyft-c-2026-10-02 avsnitt 12): svaret är ett
+ * fäste i ord, som källarens diagnos. Ingen mätare: gränsen på 20 kg är
+ * sajtens egen (GRANS_REGEL_KG, ANTAGANDE), och beskedet pekar inte ut ett
+ * enda fäste vars last läsaren kan jämföra med; tabellen gör det rad för
+ * rad. Ny text är hantverkarens. Klartexten har platshållarna {svar} (fästet i
+ * ord, SVAR_RUBRIK), {vikt} (kg), {punkter} (antal), {last} (kg per bärande
+ * punkt) och {skiva} (skivan i ord, SKIVA_TEXT).
  */
-const varumarke = verktygsVarumarkesbild(SLUG);
-const huvudbild = varumarke ?? illustration;
+const KLARTEXT =
+  'Med {last} kg per bärande punkt i {skiva} blir svaret ”{svar}”, räknat på att saken väger {vikt} kg och på tillverkarnas rekommenderade last per infästning.'; // gipsplugg.klartext
+const klartext =
+  visat.status === 'ok'
+    ? KLARTEXT.replace('{svar}', visat.svarRubrik)
+        .replace('{vikt}', talText(visatIndata.viktKg))
+        .replace('{punkter}', String(visatIndata.punkter))
+        .replace('{last}', talText(visat.lastPerPunktKg))
+        .replace('{skiva}', SKIVA_TEXT[visatIndata.skiva])
+    : '';
+
+/** Läs vidare som kort, i den förra listans ordning. */
+const LAS_VIDARE = ['/inomhus/gipsplugg/', '/inomhus/skruva-i-gipsvagg/', '/inomhus/hanga-tavla-gipsvagg/', '/inomhus/gipsskruv/'];
+const artiklar = [...(await publicerade('guider')), ...(await publicerade('kunskap'))];
+const lasVidare: KortData[] = LAS_VIDARE.flatMap((href): KortData[] => {
+  const e = artiklar.find((a) => artikelUrl(a) === href);
+  if (!e) return [];
+  const { niva: _niva, ...kort } = tillKortArtikel(e);
+  return [kort];
+});
 ---
 
-<Bas
-  title={titel}
-  description={BESKRIVNING}
-  reklam={false}
-  brodsmulor={[
-    { namn: 'Hantverkstips', href: '/' },
-    { namn: 'Räkna själv', href: '/rakna/' },
-    { namn: VERKTYGSNAMN },
-  ]}
-  bred={true}
-  ogBild={verktygsDelningsbild(SLUG)}
+<Raknarsida
+  slug={SLUG}
+  namn={VERKTYGSNAMN}
+  titel={titel}
+  beskrivning={BESKRIVNING}
+  rubrik="Vad håller i gipsväggen? Välj plugg efter vikten"
+  delaUrl={delaLank}
+  saRaknarRubrik="Så bedömer jag"
+  saRaknarId="sa-bedomer-vi"
 >
-  <StrukturData
-    slot="head"
-    data={verktyg({ url: `/rakna/${SLUG}/`, namn: VERKTYGSNAMN, beskrivning: BESKRIVNING })}
-  />
+  <p slot="ingress">
+    En gipsvägg tål mer än folk tror, men det är vikten per skruv som räknas, inte vikten på saken. Fyll i
+    vikten, vad det är och hur många punkter den hänger i, så säger jag om det räcker med en krok, en plugg i
+    skivan, en skruv i regeln eller en kortling bakom gipset. En kortling är en träbit du sätter in vågrätt
+    mellan två reglar. Över 20 kg går min gräns för vad som får hänga i skivan alls.
+  </p>
 
-  <div class="mx-auto w-full max-w-lasbredd">
-    {/*
-      Sidhuvudet: rubrik och ingress till vänster i 7/12, bilden till höger i
-      5/12 på desktop, under ingressen på mobil. Bilden är dekorativ, H1 bär
-      betydelsen, därför tom alt. Den är sidans LCP-bild och laddas därför
-      eagert med fetchpriority. Varumärkesbilden har transparent bakgrund och
-      ligger som heron utan ram; skissen är ett urklipp och får ramen. Saknas
-      båda visas ingen bild alls.
-    */}
-    <section class="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-8">
-      <div class="lg:col-span-7">
-        <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">Vad håller i gipsväggen? Välj plugg efter vikten</h1>
-        <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
-          En gipsvägg tål mer än folk tror, men det är vikten per skruv som räknas, inte vikten på saken. Fyll i
-          vikten, vad det är och hur många punkter den hänger i, så säger jag om det räcker med en krok, en plugg i
-          skivan, en skruv i regeln eller en kortling bakom gipset. En kortling är en träbit du sätter in vågrätt
-          mellan två reglar. Över 20 kg går min gräns för vad som får hänga i skivan alls.
-        </p>
-      </div>
+  {/* Formuläret ligger i src/components/kalkyl/GipspluggForm.astro, så att
+      <Kalkylator namn="gipsplugg" /> i artikeln visar exakt samma fält. */}
+  <GipspluggForm slot="formular" indata={indata} varden={varden} fel={fel} />
 
-      {
-        huvudbild && (
-          <div class="lg:col-span-5">
-            <img
-              src={huvudbild.src}
-              alt=""
-              width={huvudbild.width}
-              height={huvudbild.height}
-              fetchpriority="high"
-              decoding="async"
-              class:list={['block h-auto w-full', !varumarke && 'rounded-sm border border-linje']}
-            />
-          </div>
-        )
-      }
-    </section>
-
-    <Faktaruta variant="kortsvar">
-      <p class="m-0 leading-6">Väg saken och dela vikten på antalet skruvar eller krokar den hänger i.</p>
-      <p class="m-0 leading-6">
-        Under {XKROK_KG} kg per punkt räcker en X-krok eller en klisterremsa, och upp till 8 kg per punkt tar en
-        självborrande plugg i skivan.
-      </p>
-      <p class="m-0 leading-6">
-        Väger saken över <Markering>20 kg</Markering> ska den sitta i regeln eller i en kortling.
-      </p>
-      <p class="m-0 leading-6">Ett tv-fäste med svängarm och ett skåp med lucka ska alltid i regeln, oavsett vikt.</p>
-    </Faktaruta>
-
-    <div class="linjerat mt-8 lg:grid lg:grid-cols-2 lg:gap-8">
-      {/* Formuläret ligger i src/components/kalkyl/GipspluggForm.astro, så att
-          <Kalkylator namn="gipsplugg" /> i artikeln visar exakt samma fält. */}
-      <GipspluggForm indata={indata} varden={varden} fel={fel} />
-
-      <div class="mt-8 border-t border-linje pt-6 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
-        {
-          visat.status === 'ok' && (
-            <>
-              {resultat.status === 'ogiltig' && (
-                <p class="m-0 mb-2 text-liten text-varning">
-                  Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.
-                </p>
-              )}
-              {/* Beskedet står först: vad du ska göra. Tabellen och skälen
-                  står under verktyget. */}
-              <p class="m-0 font-sans text-h3 lg:text-h3-lg font-bold text-blyerts">{BESKED_RUBRIK[visat.svar]}</p>
-              <p class="m-0 mt-1 text-brod">{visat.lastText}</p>
-
-              <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
-                {SAK_TEXT[visatIndata.sak]} på {talText(visatIndata.viktKg)} kg i {punktText(visatIndata.punkter)},{' '}
-                {SKIVA_TEXT[visatIndata.skiva]} {REGEL_TEXT[visatIndata.regel]}
-              </p>
-              <p class="m-0 mt-1 flex flex-wrap items-baseline gap-x-2">
-                <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
-                  <Markering>{visat.svarOrd}</Markering>
-                </span>
-                <span class="text-ingress lg:text-ingress-lg">{visat.svarRest}</span>
-              </p>
-              <p class="m-0 mt-2 text-liten text-blyerts-2">
-                Varje punkt som bär får {talText(visat.lastPerPunktKg)} kg på sig.
-              </p>
-
-              <p class="m-0 mt-4 text-liten text-blyerts-2">
-                Varför det blev så, vilka pluggar som klarar lasten och vad du inte ska göra{' '}
-                <a href="#darfor-blev-svaret-sa" class={LANK_KLASS}>
-                  står under verktyget
-                </a>
-                .
-              </p>
-
-              <p class="m-0 mt-4">
-                <a href="#sa-bedomer-vi" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
-                  Så bedömer jag
-                </a>
-              </p>
-
-              {/* Dela. Svaret står i adressen, så ett skrivskyddat fält räcker:
-                  markera och kopiera fungerar utan en rad JavaScript. */}
-              <div class="mt-4 border-t border-linje pt-4">
-                <label for="dela" class={ETIKETT_KLASS}>
-                  Dela svaret
-                </label>
-                <input id="dela" type="text" readonly value={delaLank} class:list={[FALT_KLASS, 'border-blyerts-2']} />
-                <p class="m-0 mt-1 text-liten text-blyerts-2">
-                  Dina värden ligger i adressen. Markera den och kopiera, så får den du skickar länken till samma svar.
-                </p>
-              </div>
-            </>
-          )
-        }
-      </div>
-    </div>
-
-    {
-      visat.status === 'ok' && (
-        <section>
-          <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
-          <ul class="m-0 p-0 list-none text-brod lg:text-brod-lg">
-            <li class="mb-4 border-l-2 border-linje pl-4">
-              <span class="block">{visat.svarText}</span>
-              <span class="block text-liten text-blyerts-2">
-                {visat.kraverRegel
-                  ? 'Gränsen 20 kg och regeln om arm och lucka är mina. Norgips skriver bara "tyngre saker" utan tal.'
-                  : 'Talen per infästning är tillverkarnas rekommenderade last, inte brottlast.'}
-              </span>
-            </li>
-            <li class="mb-4 border-l-2 border-linje pl-4">
-              <span class="block">{visat.lastText}</span>
-              <span class="block text-liten text-blyerts-2">
-                Att den övre raden bär allt på en hylla, och faktorn 1,5 på en svängarm, är mina antaganden.
-              </span>
-            </li>
-            <li class="mb-4 border-l-2 border-linje pl-4">
-              <span class="block">
-                Det jag inte vet är hur din vägg mår. Skivan kan vara skadad sedan förut, hålet kan redan vara
-                urborrat, och det kan ligga en elkabel bakom. Borra aldrig rakt över eller rakt under ett uttag eller
-                en strömbrytare, och kör en regelsökare över ytan innan borren går i.
-              </span>
-              <span class="block text-liten text-blyerts-2">Ingen källa, bara erfarenhet.</span>
-            </li>
-          </ul>
-
-          {/* Tabellen: infästningarna som gäller för den här saken, enklast
-              först. Det som inte räcker står kvar gråmarkerat, så att läsaren
-              ser hur långt ifrån det är. */}
-          <h3 class="m-0 mt-6 font-sans text-h3 lg:text-h3-lg text-blyerts">
-            Infästningar som klarar {talText(visat.lastPerPunktKg)} kg per punkt i {SKIVA_TEXT[visatIndata.skiva]}
-          </h3>
-          <Tabellyta kolumner={3} class="mt-4">
-            <table class="w-full border-collapse text-liten tabular-nums">
-              <caption class="sr-only">
-                Infästningar som klarar {talText(visat.lastPerPunktKg)} kg per punkt, enklast först
-              </caption>
-              <thead>
-                <tr class="border-b border-linje text-left">
-                  <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">
-                    Infästning
-                  </th>
-                  <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2 whitespace-nowrap">
-                    Bär, kg
-                  </th>
-                  <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2 whitespace-nowrap">
-                    Räcker
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {visat.infastningar.map((rad) => (
-                  <tr class:list={[!rad.klarar && 'text-blyerts-2']}>
-                    <th scope="row" class:list={[CELL_KLASS, 'text-left font-normal', !rad.klarar && 'text-blyerts-2']}>
-                      {rad.namn}
-                      {rad.anm && <span class="block text-blyerts-2">{rad.anm}</span>}
-                    </th>
-                    <td class:list={[CELL_KLASS, !rad.klarar && 'text-blyerts-2']}>{talText(rad.kapacitetKg ?? 0)}</td>
-                    <td class:list={[CELL_KLASS, !rad.klarar && 'text-blyerts-2']}>{rad.klarar ? 'Ja' : 'Nej'}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </Tabellyta>
-          <p class="m-0 mt-2 text-liten text-blyerts-2">
-            Talen är tillverkarens rekommenderade last per infästning, inte brottlast. Källor:{' '}
-            {tabellKallor.map((k, i) => (
-              <>
-                {i > 0 && ', '}
-                <a href={k.url} rel="nofollow" class={LANK_KLASS}>
-                  {k.kalla}
-                </a>
-              </>
-            ))}
-            .
+  {
+    visat.status === 'ok' && (
+      <Fragment slot="svar">
+        {resultat.status === 'ogiltig' && (
+          <p class="text-liten text-varning">
+            Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.
           </p>
-          {visat.ingenKlarar && (
-            <p class="m-0 mt-4 text-brod lg:text-brod-lg text-varning">
-              Ingen infästning i tabellen är märkt för din last per punkt. Fler infästningspunkter sänker lasten,
-              men över min gräns hjälper inte det heller. Då ska saken i regeln eller i en kortling.
+        )}
+        {/* Svaret är ett fäste i ord: det står i Zilla Slab i stället för det stora talet. */}
+        <div>
+          <p class="text-liten text-blyerts-2 first-letter:uppercase">
+            {SAK_TEXT[visatIndata.sak]} på {talText(visatIndata.viktKg)} kg i {punktText(visatIndata.punkter)},{' '}
+            {SKIVA_TEXT[visatIndata.skiva]} {REGEL_TEXT[visatIndata.regel]}
+          </p>
+          <p class="flex flex-wrap items-baseline gap-x-2 text-blyerts">
+            <span class="font-serif text-h2">{visat.svarOrd}</span>
+            <span class="text-brod">{visat.svarRest}</span>
+          </p>
+        </div>
+        <p class="text-liten text-blyerts-2">Varje punkt som bär får {talText(visat.lastPerPunktKg)} kg på sig.</p>
+        <div class="text-brod">
+          <p class="font-bold">{BESKED_RUBRIK[visat.svar]}</p>
+        </div>
+        <p class="text-liten text-blyerts">{klartext}</p>
+      </Fragment>
+    )
+  }
+
+  {
+    visat.status === 'ok' && (
+      <Fragment slot="darfor">
+        <Pennstreck id="darfor-blev-svaret-sa" utanLuft>
+          Därför blev svaret så
+        </Pennstreck>
+        <div class="darfor">
+          <div>
+            <p>{visat.svarText}</p>
+            <p>
+              {visat.kraverRegel
+                ? 'Gränsen på 20 kg och regeln om svängarm och skåp med lucka är mina. Norgips skriver bara ”tyngre saker” utan tal.'
+                : 'Talen per infästning är tillverkarnas rekommenderade last, inte brottlast. Väger saken över 20 kg, eller är den en tv på svängarm eller ett skåp med lucka, ska den sitta i regeln. Den gränsen är min.'}
             </p>
-          )}
-          {visat.utelamnade && <p class="m-0 mt-4 text-brod lg:text-brod-lg">{visat.utelamnade}</p>}
-        </section>
-      )
-    }
+          </div>
+          <div>
+            <p>{visat.lastText}</p>
+            <p>Att den övre raden bär allt på en hylla, och faktorn 1,5 på en svängarm, är mina antaganden.</p>
+          </div>
+          <div>
+            <p>
+              Det jag inte vet är hur din vägg mår. Skivan kan vara skadad sedan förut, hålet kan redan vara
+              urborrat, och det kan ligga en elkabel bakom. Borra aldrig rakt över eller rakt under ett uttag eller
+              en strömbrytare, och kör en regelsökare över ytan innan borren går i.
+            </p>
+            <p>Det här har jag ingen källa på. Det är mitt eget råd.</p>
+          </div>
+        </div>
 
-    {/* Råden står i läsbredd direkt under verktyget, inte i spalten: en läsare
-        som just fått ett besked läser svaret, inte motiveringarna bredvid
-        formuläret. Se SPEC-SIDMALLAR.md 4.7. */}
-    {
-      visat.status === 'ok' && visat.gorInteDetHar.length > 0 && (
-        <section>
-          <Pennstreck id="gor-inte-det-har">Gör inte det här</Pennstreck>
-          {visat.gorInteDetHar.map((rad, i) => (
-            <p class:list={['m-0 text-brod lg:text-brod-lg', i > 0 && 'mt-4']}>{rad}</p>
+        {/* Tabellen: infästningarna som gäller för den här saken, enklast
+            först. Det som inte räcker står kvar gråmarkerat, så att läsaren
+            ser hur långt ifrån det är. Den är själva svaret och står kvar här
+            som förut (spec-designlyft-c avsnitt 12). */}
+        <h3 class="m-0 mt-6 font-sans text-h3 lg:text-h3-lg text-blyerts">
+          Infästningar som klarar {talText(visat.lastPerPunktKg)} kg per punkt i {SKIVA_TEXT[visatIndata.skiva]}
+        </h3>
+        <Tabellyta kolumner={3} class="mt-4">
+          <table class="w-full border-collapse text-liten tabular-nums">
+            <caption class="sr-only">
+              Infästningar som klarar {talText(visat.lastPerPunktKg)} kg per punkt, enklast först
+            </caption>
+            <thead>
+              <tr class="border-b border-linje text-left">
+                <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">
+                  Infästning
+                </th>
+                <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2 whitespace-nowrap">
+                  Bär, kg
+                </th>
+                <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2 whitespace-nowrap">
+                  Räcker
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {visat.infastningar.map((rad) => (
+                <tr class:list={[!rad.klarar && 'text-blyerts-2']}>
+                  <th scope="row" class:list={[CELL_KLASS, 'text-left font-normal', !rad.klarar && 'text-blyerts-2']}>
+                    {rad.namn}
+                    {rad.anm && <span class="block text-blyerts-2">{rad.anm}</span>}
+                  </th>
+                  <td class:list={[CELL_KLASS, !rad.klarar && 'text-blyerts-2']}>{talText(rad.kapacitetKg ?? 0)}</td>
+                  <td class:list={[CELL_KLASS, !rad.klarar && 'text-blyerts-2']}>{rad.klarar ? 'Ja' : 'Nej'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </Tabellyta>
+        <p class="m-0 mt-2 text-liten text-blyerts-2">
+          Talen är tillverkarens rekommenderade last per infästning, inte brottlast. Källor:{' '}
+          {tabellKallor.map((k, i) => (
+            <>
+              {i > 0 && ', '}
+              <a href={k.url} rel="nofollow" class={LANK_KLASS}>
+                {k.kalla}
+              </a>
+            </>
           ))}
-        </section>
-      )
-    }
+          .
+        </p>
+        {visat.ingenKlarar && (
+          <p class="m-0 mt-4 text-varning">
+            Ingen infästning i tabellen är märkt för din last per punkt. Fler infästningspunkter sänker lasten,
+            men över min gräns hjälper inte det heller. Då ska saken i regeln eller i en kortling.
+          </p>
+        )}
+        {visat.utelamnade && <p class="m-0 mt-4">{visat.utelamnade}</p>}
+      </Fragment>
+    )
+  }
 
-    <section>
-      <Pennstreck id="plugg-i-gipsvagg">Hur mycket en plugg i gipsvägg håller innan 20 kilo blir för mycket</Pennstreck>
-      <p class="m-0 text-brod lg:text-brod-lg">
-        En gipsskiva bär mer än folk tror och mycket mindre än de hoppas. Det som avgör är sällan hur tung saken är,
-        utan hur tung den är per skruv. En vägghylla på 80 cm väger några kilo tom, men fyll den med kokböcker och
-        du ligger på 25 kg. Hänger den i fyra punkter blir det ändå drygt 6 kg på varje.
-        Gipstillverkaren Norgips sätter gränsen för en skruv med plugg direkt i skivan vid som mest{' '}
-        {NORGIPS_SKIVAN_KG}&nbsp;kg, så den hyllan är fortfarande inom vad väggen klarar per punkt.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Två avstånd följer med varje plugg. Två infästningar ska aldrig sitta tätare än {MIN_AVSTAND_MM}&nbsp;mm
-        från varandra, och ska var och en bära sin maxlast vill Norgips att du går upp till{' '}
-        {MAXLAST_AVSTAND_MM}&nbsp;mm. Skälet är att pluggarna delar på samma gips. Sätter du fyra pluggar inom en handflata bryter de
-        loss ett enda stycke skiva tillsammans, oavsett vad var och en var märkt för.
-      </p>
+  {
+    visat.status === 'ok' && visat.gorInteDetHar.length > 0 && (
+      <Fragment slot="gorInte">
+        {/* Flera råd står i samma stycke efter "Gör inte det här.", vart och ett på egen rad. */}
+        {visat.gorInteDetHar.map((rad, i) => (
+          <span class:list={[i > 0 && 'mt-3 block']}>{rad}</span>
+        ))}
+      </Fragment>
+    )
+  }
 
-      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Hänga tungt i gipsvägg utan att öppna den</h3>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Det andra skivlaget är värt mer än pluggen. Samma molly går från 38 till 70 kilo bara för att det finns
-        dubbelt så mycket gips att ta spjärn mot, enligt tidningen Gör Det Själv. Det är därför verktyget frågar
-        efter tjockleken innan det svarar. Det är också därför en plugg gjord för ett lag är fel i en dubbelgipsad
-        vägg, för den når aldrig igenom och viker därför aldrig ut sig. Vet du inte hur tjock din vägg är skruvar
-        du loss ett eluttag, med strömmen bruten, och mäter i kanten på hålet.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Min gräns går ändå vid {GRANS_REGEL_KG}&nbsp;kg. Över den ska saken sitta i regeln bakom gipset eller i en
-        kortling. Regeln är den stående trä- eller stålbiten som skivan är skruvad fast i. Pluggarna i tabellen är
-        märkta för mer än så, men tillverkarens tal gäller en vikt som hänger stilla i en hel skiva. Gränsen är
-        min, den är medvetet försiktig, och den gäller tills jag har belastat pluggarna själv.
-      </p>
-
-      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Varför armen på tv-fästet ändrar hela räkningen</h3>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Ska du montera tv på gipsvägg och den sitter platt mot väggen är vikten sällan det som avgör. Borra
-        fästplattan så att skruvarna går in i två reglar, använd träskruv, och du är klar. Problemet är fästena
-        med arm. Dra ut tv:n en halvmeter från väggen och vikten hänger inte längre rakt ner, den bänder. Den övre
-        skruvraden dras utåt ur väggen medan den nedre pressas in, och det är den övre raden som ger sig först.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Ingen tillverkare jag hittat anger hur mycket armen ökar lasten i den övre raden. Verktyget räknar därför
-        med mitt eget antagande, att den raden ensam får bära hela vikten gånger {komma(SVANGARM_FAKTOR)}, och
-        talet står märkt som ett antagande i tabellen längre ner. Beskedet blir ändå detsamma vilken faktor jag
-        väljer. Ett fäste med svängarm skruvas i regeln, aldrig i en plugg. Träffar du inte två reglar öppnar du
-        väggen och sätter en kortling. En tv som faller framåt gör det över soffan.
-      </p>
-    </section>
-
-    <section>
-      <Pennstreck id="sa-bedomer-vi">Så bedömer jag</Pennstreck>
-      {
-        varumarke && illustration && (
+  <Fragment slot="saRaknarJag">
+    {
+      illustration && (
+        <div class="pappersruta">
           <Illustration
             namn="rakna/gipsplugg"
             alt="Genomskärning av en gipsvägg med hålrum bakom, en plugg som viker ut sina armar mot skivans baksida och en vikt i skruven."
             bildtext="Skissen visar det verktyget bedömer: en skiva på 12,5 millimeter, vikten per infästning och pluggens armar som tar spjärn mot skivans baksida."
+            class="my-0!"
           />
-        )
-      }
-      <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg">
-        <li class="mb-2">Lasten fördelas på de infästningspunkter som faktiskt bär den.</li>
-        <li class="mb-2">
-          En hylla och ett skåp får hela lasten på den övre raden, eftersom de vrider sig ut från väggen. Den övre
-          raden räknas som halva antalet punkter, avrundat nedåt.
-        </li>
-        <li class="mb-2">
-          På ett tv-fäste med svängarm multiplicerar jag dessutom vikten med {komma(SVANGARM_FAKTOR)} innan jag fördelar den.
-          Jag har satt den faktorn själv, eftersom ingen tillverkare anger någon.
-        </li>
-        <li class="mb-2">
-          Väger saken mer än {GRANS_REGEL_KG}&nbsp;kg blir svaret regel eller kortling, oavsett vad tabellen säger.
-          Samma sak gäller allt som sitter på en arm eller skiftar, som svängarmen och skåpet med lucka.
-        </li>
-        <li class="mb-2">
-          Sedan prövar jag lasten per punkt mot varje infästning som finns angiven för den skiva du valt. Raden som
-          inte når upp står kvar i grått, så att du ser hur långt ifrån den är.
-        </li>
-        <li class="mb-2">
-          Krokar och klisterremsor får bara vara med för en tavla eller en spegel. En hyllkonsol eller ett tv-fäste
-          skruvas fast och kan inte hänga i en krok.
-        </li>
-        <li class="mb-2">
-          I tak räknar jag bara infästningar som viker ut sig bakom skivan, och där kapar jag varje tillverkarvärde
-          vid {TAK_MAX_KG}&nbsp;kg per fästpunkt enligt Norgips.
-        </li>
-        <li>
-          Räcker ingen infästning i din skiva blir svaret kortling. Fler punkter sänker lasten per punkt, och det
-          är ofta den enklaste vägen.
-        </li>
-      </ol>
+        </div>
+      )
+    }
+    <ol class="m-0 mt-4 pl-6 list-decimal text-brod">
+      <li class="mb-2">Lasten fördelas på de infästningspunkter som faktiskt bär den.</li>
+      <li class="mb-2">
+        En hylla och ett skåp får hela lasten på den övre raden, eftersom de vrider sig ut från väggen. Den övre
+        raden räknas som halva antalet punkter, avrundat nedåt.
+      </li>
+      <li class="mb-2">
+        På ett tv-fäste med svängarm multiplicerar jag dessutom vikten med {komma(SVANGARM_FAKTOR)} innan jag fördelar den.
+        Jag har satt den faktorn själv, eftersom ingen tillverkare anger någon.
+      </li>
+      <li class="mb-2">
+        Väger saken mer än {GRANS_REGEL_KG}&nbsp;kg blir svaret regel eller kortling, oavsett vad tabellen säger.
+        Samma sak gäller allt som sitter på en arm eller skiftar, som svängarmen och skåpet med lucka.
+      </li>
+      <li class="mb-2">
+        Sedan prövar jag lasten per punkt mot varje infästning som finns angiven för den skiva du valt. Raden som
+        inte når upp står kvar i grått, så att du ser hur långt ifrån den är.
+      </li>
+      <li class="mb-2">
+        Krokar och klisterremsor får bara vara med för en tavla eller en spegel. En hyllkonsol eller ett tv-fäste
+        skruvas fast och kan inte hänga i en krok.
+      </li>
+      <li class="mb-2">
+        I tak räknar jag bara infästningar som viker ut sig bakom skivan, och där kapar jag varje tillverkarvärde
+        vid {TAK_MAX_KG}&nbsp;kg per fästpunkt enligt Norgips.
+      </li>
+      <li>
+        Räcker ingen infästning i din skiva blir svaret kortling. Fler punkter sänker lasten per punkt, och det
+        är ofta den enklaste vägen.
+      </li>
+    </ol>
+  </Fragment>
 
+  <Fragment slot="efter">
+    {/* Antagandetabellen i läsbredd, ur kortet Så bedömer jag (spec-designlyft-c avsnitt 9). */}
+    <section class="max-w-lasbredd">
       <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad siffrorna vilar på</h3>
       <Tabellyta kolumner={3} class="mt-4">
         <table class="w-full border-collapse text-liten tabular-nums">
@@ -678,32 +576,64 @@ const huvudbild = varumarke ?? illustration;
       </p>
     </section>
 
-    <section>
-      <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
-      <ul class="m-0 p-0 list-none">
-        <li class="border-t border-linje">
-          <a href="/inomhus/gipsplugg/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Gipsplugg, vilken typ som håller bäst i din vägg
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/inomhus/skruva-i-gipsvagg/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Så skruvar du i gipsvägg så att hyllan, tv:n och skåpet sitter kvar
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/inomhus/hanga-tavla-gipsvagg/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Så hänger du en tavla på gipsvägg, med rätt krok för vikten
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/inomhus/gipsskruv/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Så väljer du gipsskruv med rätt längd och gänga
-          </a>
-        </li>
-      </ul>
+    <section class="max-w-lasbredd">
+      <Pennstreck id="plugg-i-gipsvagg">Hur mycket en plugg i gipsvägg håller innan 20 kilo blir för mycket</Pennstreck>
+      <p class="m-0 text-brod lg:text-brod-lg">
+        En gipsskiva bär mer än folk tror och mycket mindre än de hoppas. Det som avgör är sällan hur tung saken är,
+        utan hur tung den är per skruv. En vägghylla på 80 cm väger några kilo tom, men fyll den med kokböcker och
+        du ligger på 25 kg. Hänger den i fyra punkter blir det ändå drygt 6 kg på varje.
+        Gipstillverkaren Norgips sätter gränsen för en skruv med plugg direkt i skivan vid som mest{' '}
+        {NORGIPS_SKIVAN_KG}&nbsp;kg, så den hyllan är fortfarande inom vad väggen klarar per punkt.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Två avstånd följer med varje plugg. Två infästningar ska aldrig sitta tätare än {MIN_AVSTAND_MM}&nbsp;mm
+        från varandra, och ska var och en bära sin maxlast vill Norgips att du går upp till{' '}
+        {MAXLAST_AVSTAND_MM}&nbsp;mm. Skälet är att pluggarna delar på samma gips. Sätter du fyra pluggar inom en handflata bryter de
+        loss ett enda stycke skiva tillsammans, oavsett vad var och en var märkt för.
+      </p>
+
+      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Hänga tungt i gipsvägg utan att öppna den</h3>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Det andra skivlaget är värt mer än pluggen. Samma molly går från 38 till 70 kilo bara för att det finns
+        dubbelt så mycket gips att ta spjärn mot, enligt tidningen Gör Det Själv. Det är därför verktyget frågar
+        efter tjockleken innan det svarar. Det är också därför en plugg gjord för ett lag är fel i en dubbelgipsad
+        vägg, för den når aldrig igenom och viker därför aldrig ut sig. Vet du inte hur tjock din vägg är skruvar
+        du loss ett eluttag, med strömmen bruten, och mäter i kanten på hålet.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Min gräns går ändå vid {GRANS_REGEL_KG}&nbsp;kg. Över den ska saken sitta i regeln bakom gipset eller i en
+        kortling. Regeln är den stående trä- eller stålbiten som skivan är skruvad fast i. Pluggarna i tabellen är
+        märkta för mer än så, men tillverkarens tal gäller en vikt som hänger stilla i en hel skiva. Gränsen är
+        min, den är medvetet försiktig, och den gäller tills jag har belastat pluggarna själv.
+      </p>
+
+      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Varför armen på tv-fästet ändrar hela räkningen</h3>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Ska du montera tv på gipsvägg och den sitter platt mot väggen är vikten sällan det som avgör. Borra
+        fästplattan så att skruvarna går in i två reglar, använd träskruv, och du är klar. Problemet är fästena
+        med arm. Dra ut tv:n en halvmeter från väggen och vikten hänger inte längre rakt ner, den bänder. Den övre
+        skruvraden dras utåt ur väggen medan den nedre pressas in, och det är den övre raden som ger sig först.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Ingen tillverkare jag hittat anger hur mycket armen ökar lasten i den övre raden. Verktyget räknar därför
+        med mitt eget antagande, att den raden ensam får bära hela vikten gånger {komma(SVANGARM_FAKTOR)}, och
+        talet står märkt som ett antagande i tabellen längre ner. Beskedet blir ändå detsamma vilken faktor jag
+        väljer. Ett fäste med svängarm skruvas i regeln, aldrig i en plugg. Träffar du inte två reglar öppnar du
+        väggen och sätter en kortling. En tv som faller framåt gör det över soffan.
+      </p>
     </section>
 
-    <Faq fragor={FRAGOR} />
-  </div>
-</Bas>
+    {
+      lasVidare.length > 0 && (
+        <section>
+          <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
+          <Artikelrutnat kort={lasVidare} kolumner={4} visaBeskrivning={false} visaMeta={false} />
+        </section>
+      )
+    }
+
+    <div class="max-w-lasbredd">
+      <Faq fragor={FRAGOR} />
+    </div>
+  </Fragment>
+</Raknarsida>

@@ -154,10 +154,10 @@ export const SVAR_RUBRIK: Record<Svar, string> = {
 
 /** Ordet i sifferstorlek och resten av beskedet på samma baslinje. */
 export const SVAR_DELAR: Record<Svar, { ord: string; rest: string }> = {
-  krok: { ord: 'Krok', rest: 'klisterkrok eller X-krok räcker' },
-  plugg: { ord: 'Plugg', rest: 'en plugg i skivan räcker' },
-  regel: { ord: 'Regeln', rest: 'sätt den i regeln bakom skivan' },
-  kortling: { ord: 'Kortling', rest: 'öppna väggen och sätt en kortling' },
+  krok: { ord: 'Krok', rest: 'räcker' },
+  plugg: { ord: 'Plugg', rest: 'i skivan räcker' },
+  regel: { ord: 'Regeln', rest: 'bakom skivan' },
+  kortling: { ord: 'Kortling', rest: 'mellan två reglar' },
 };
 
 export const SAK_VAL: { varde: Sak; etikett: string; kort: string }[] = [
