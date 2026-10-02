@@ -130,3 +130,20 @@ För varje räknare: `[slug].klartext` som `TEXT SAKNAS` med platshållare, `[sl
 **Böjningshjälp.** I `src/lib/format.ts` finns `antalOrd(n: number, en: string, flera: string): string`, som ger "1 timme", "2 timmar" och "1,5 timmar" (singular bara när n är exakt 1). Använd den på elkostnadssidan överallt där ett tal står före "timmar", "timme", "dagar" eller "dag", också när talet fylls i i `elkostnad.klartext` (där fyller koden i `{timmar}` och `{dagar}` med ordet inräknat). Hantverkarens text ändras därför så att ordet efter platshållaren tas bort: koordinatorn meddelar hantverkaren. Ändra inget i formelmodulen.
 
 Kontroller som i avsnitt 4, för de fem sidorna och deras vanliga adresser: gipsplugg med en tung sak, trappa med ett mått som inte håller och kvadratmeter standard. Lägg till elkostnaden med `?timmar=1&dagar=1`, eller sidans motsvarande nycklar.
+
+## 13. Steg 4: bygglov-altan, grannemedgivande, altan, kontrollplan, mala-ute, fasadyta
+
+Mönstret står i avsnitt 3, 7, 9 och 11, med det som tillkom i avsnitt 12. Inget av de här verktygen har en gräns ur en källa som kan visas som mätare, så steg 4 har inga mätare.
+
+- **bygglov-altan**: svaret i ord ("Nej", "Ja", "Anmälan") i `font-serif text-h2` som på källaren, med beskedet och paragrafen. `Statusrad` med `ok` vid "behöver inte bygglov" och `varning` när lov eller grannens medgivande krävs, med sidans befintliga besked.
+- **grannemedgivande**: svaret i ord som ovan. Blanketterna (`GrannemedgivandeBlankett`, `data-utskrift`) och utskriftsreglerna ändras inte. Blanketten står i `efter` direkt efter resonemanget, och `print:hidden` sitter kvar på allt annat på sidan. Kontrollera utskriften med Edge `--print-to-pdf`, på `/rakna/grannemedgivande/?grans=2&jarnvag=1` och på standardadressen.
+- **altan**: `Svarstal` med sidans första stora tal (löpmeter trall), och inköpslistan under beskedet som i dag.
+- **kontrollplan**: svaret är planen. I svarsytan står antalet kontroller som `Svarstal`, och beskedet. Själva planen (`KontrollplanPlan`, `kp-*`) står i `efter` direkt efter resonemanget, oförändrad. `print:hidden` och utskriften (`@page kontrollplan`, `kp-skarm`, `kp-utskrift`) ska fungera exakt som förut, så kontrollera med `--print-to-pdf`. Radioknapparna med hjälprad har redan knappform genom regeln i steg 2.
+- **mala-ute**: `Svarstal` med klockslaget ("kl 16") och `Statusrad`: `ok` när det går att måla och `varning` när det inte gör det, med sidans befintliga besked.
+- **fasadyta**: `Svarstal` med väggytan i m², och burkarna under beskedet som i dag.
+
+För varje räknare: `[slug].klartext` som `TEXT SAKNAS` med platshållare, och `[slug].svar.vad` bara där den behövs. Meningar som inte längre har någon plats listas. Grannemedgivandets och kontrollplanens delningsrad visar adressen precis som de andra.
+
+Kontrollera också gipspluggens svarsyta: hantverkaren har strukit `lastText` ur den. Det får inte stå kvar några tomma element eller onödiga marginaler. Rätta markupen om det behövs, utan att röra texterna.
+
+Kontroller enligt avsnitt 4, med utskriftsproven ovan. Adresser: bygglov-altan standard och med ett lovpliktigt mått, grannemedgivande standard och `?grans=2&jarnvag=1`, kontrollplan standard och med flera åtgärder, mala-ute standard och med ett nej.

@@ -18,7 +18,10 @@
  */
 export const prerender = false;
 
-import Bas from '../../layouts/Bas.astro';
+import { artikelUrl, publicerade } from '../../lib/innehall';
+import { tillKortArtikel, type KortData } from '../../lib/kort';
+import { hittaKalkylator } from '../../lib/kalkyl/register';
+import { arPelare } from '../../lib/pelare';
 import {
   ANSVAR_LAGRUM,
   ANTAGANDEN,
@@ -38,18 +41,17 @@ import {
   type RegelNyckel,
   type TextNyckel,
 } from '../../lib/kalkyl/kontrollplan';
-import { ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
-import { verktyg } from '../../lib/strukturdata';
-import { verktygsDelningsbild, verktygsillustration, verktygsVarumarkesbild } from '../../lib/verktygsbild';
+import { LANK_KLASS } from '../../lib/kalkyl/stil';
+import { verktygsillustration } from '../../lib/verktygsbild';
 import KontrollplanForm from '../../components/kalkyl/KontrollplanForm.astro';
 import KontrollplanPlan from '../../components/kalkyl/KontrollplanPlan.astro';
-import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Artikelrutnat from '../../components/ui/Artikelrutnat.astro';
 import Faq from '../../components/ui/Faq.astro';
 import Illustration from '../../components/ui/Illustration.astro';
-import Markering from '../../components/ui/Markering.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
-import StrukturData from '../../components/ui/StrukturData.astro';
+import Svarstal from '../../components/ui/Svarstal.astro';
 import Tabellyta from '../../components/ui/Tabellyta.astro';
+import Raknarsida from '../../components/vyer/Raknarsida.astro';
 
 Astro.locals.sidtyp = 'verktyg';
 
@@ -71,29 +73,8 @@ const H1 = 'Kontrollplan som fylls i efter det du ska bygga';
 /* Ingressen under H1. */
 const INGRESS =
   'Byggnadsnämnden vill ha ett förslag till kontrollplan innan du får startbesked, och många mallar på nätet hänvisar fortfarande till Boverkets gamla byggregler, BBR, som inte gäller i nya ärenden. Kryssa i vad du ska bygga eller ändra, så ställer jag upp kontrollerna med krav, metod och vem som gör dem, efter reglerna från 1 juli 2026. Bygger du till behövs dessutom som huvudregel en kontrollansvarig, en certifierad person som hjälper dig med planen och ser till att den följs. Planen är gratis att skriva ut, och ingen e-post behövs.';
-/*
- * Kortsvaret, ett stycke per rad: vad en kontrollplan ska innehålla, att man
- * väljer åtgärd och skriver ut, och att nämnden fastställer den. Markeringen
- * står runt nyckeltalet i det stycke som har det.
- */
-const KORTSVAR: { fore: string; markering?: string; efter?: string }[] = [
-  {
-    fore: 'En kontrollplan är listan över kontrollerna under bygget, och du behöver en när det du bygger kräver bygglov eller anmälan.',
-  },
-  {
-    fore: 'Enligt plan- och bygglagen ska den innehålla ',
-    markering: 'fyra saker',
-    efter:
-      ': vilka kontroller som görs och mot vilka krav, vem som gör dem och hur, vilka anmälningar du gör till byggnadsnämnden och vilka arbetsplatsbesök nämnden bör göra.',
-  },
-  {
-    fore: 'Sedan 1 juli 2026 ska avfallet redovisas i en separat avfallshanteringsplan, och den kommer med sist i utskriften.',
-  },
-];
 /* Knappen i det fulla formuläret. */
 const KNAPP = 'Visa kontrollplanen';
-/* Etiketten över det skrivskyddade fältet med den delbara adressen, i spalten. */
-const DELA_ETIKETT = 'Dela planen';
 /*
  * Stegen under "Så räknar jag", ett per steg i specen 2.7 steg 3 till 10:
  * raderna per åtgärd, de delade raderna, numreringen och kravet, KA och
@@ -177,9 +158,6 @@ const FRAGOR = [
   },
 ];
 
-/* Gränssnittstext, ordagrant ur specen och skillen nytt-verktyg. */
-const DELATEXT = 'Dina värden ligger i adressen. Markera den och kopiera, så får den du skickar länken till samma svar.';
-
 const { indata } = tolkaQuery(Astro.url.searchParams);
 const resultat = genereraKontrollplan(indata);
 const fel = resultat.status === 'ogiltig' ? resultat.fel : {};
@@ -215,137 +193,171 @@ for (const k of [...ANTAGANDEN.flatMap((a) => a.kallor), ...KALLOR_FORFATTNINGAR
  */
 const fastighetsvariabel = `:root{--kp-fastighet:${cssStrang(TEXT['utskrift.falt.fastighet'])}}`;
 
+/** Skissen står i kortet Hur jag ställer upp planen. Huvudet har ingen bild sedan fas C (DESIGN.md 5.8). */
 const illustration = verktygsillustration(SLUG);
-/** Varumärkesbilden i sidhuvudet (docs/DESIGN.md avsnitt 7). Finns den står skissen i "Så räknar jag". */
-const varumarke = verktygsVarumarkesbild(SLUG);
-const huvudbild = varumarke ?? illustration;
 
-/** Regellistan: klasserna på <ul>, som i u-värdesräknaren. Lagrummet står som etikett. */
-const REGEL_LISTA_KLASS =
-  'm-0 p-0 list-none text-brod lg:text-brod-lg [&>li]:mb-4 [&>li]:border-l-2 [&>li]:border-blyerts-2 [&>li]:pl-4 [&_span]:block [&_span:first-child]:text-etikett lg:[&_span:first-child]:text-etikett-lg [&_span:first-child]:uppercase [&_span:first-child]:text-blyerts-2';
+/*
+ * Svarsytan, fas C (spec-designlyft-c-2026-10-02 avsnitt 13): antalet
+ * kontroller som det stora talet och beskedet; själva planen står i efter,
+ * direkt efter resonemanget. Ny text är hantverkarens. Klartexten har
+ * platshållarna {antal} (kontroller i planen) och {atgarder} (de valda
+ * åtgärderna med planens namn, "Ny altan, Nybyggnad av komplementbyggnad",
+ * små bokstäver efter den första).
+ */
+const KLARTEXT =
+  'Planen har {antal} kontroller. Enligt plan- och bygglagen 10 kap. 6 § ska den visa vad som kontrolleras och av vem, vilka anmälningar som görs och nämndens besök. Avfallet får en egen plan.'; // kontrollplan.klartext
+const klartext =
+  visat?.status === 'ok'
+    ? KLARTEXT.replace('{antal}', String(visat.punkter.length)).replace(
+        '{atgarder}',
+        visat.indata.atgarder
+          .map((a, i) => {
+            const namn = TEXT[`atgard.${a}.plan` as TextNyckel];
+            return i === 0 ? namn : namn.charAt(0).toLowerCase() + namn.slice(1);
+          })
+          .join(', '),
+      )
+    : '';
+
+/**
+ * Läs vidare: artiklarna som artikelkort, räknarna med registrets namn som på
+ * hubben, i den förra listans ordning.
+ */
+const artiklar = [...(await publicerade('guider')), ...(await publicerade('kunskap'))];
+const lasVidare: KortData[] = [];
+const lasVidareLankar: { href: string; text: string }[] = [];
+for (const l of LAS_VIDARE) {
+  const e = artiklar.find((a) => artikelUrl(a) === l.href);
+  if (e) {
+    const { niva: _niva, ...kort } = tillKortArtikel(e);
+    lasVidare.push(kort);
+    continue;
+  }
+  const k = hittaKalkylator(l.href.replace(/^\/rakna\/|\/$/g, ''));
+  const pelare = k?.pelare?.[0];
+  if (k && pelare && arPelare(pelare)) {
+    lasVidare.push({
+      etikett: 'Räkna själv',
+      rubrik: k.namn,
+      beskrivning: k.rad,
+      pelare,
+      href: l.href,
+      // Artikelrutnat läser inte typen; kortet står varken i ett typfilter eller sorteras.
+      typ: 'kunskap',
+      sorteringsdatum: new Date(0),
+    });
+    continue;
+  }
+  lasVidareLankar.push(l);
+}
 /** Antagandetabellen, cellklasserna en gång på <table>. */
 const TABELL_KLASS =
   'w-full border-collapse text-liten [&_th]:p-2 [&_td]:p-2 [&_th]:align-top [&_td]:align-top [&_th]:text-left [&_tbody_th]:[font-weight:inherit] [&_tr]:border-b [&_tr]:border-linje [&_th]:text-blyerts [&_td]:text-blyerts [&_thead_th]:text-etikett [&_thead_th]:uppercase [&_thead_th]:text-blyerts-2';
 ---
 
-<Bas
-  title={titel}
-  description={BESKRIVNING}
-  reklam={false}
-  brodsmulor={[
-    { namn: 'Hantverkstips', href: '/' },
-    { namn: 'Räkna själv', href: '/rakna/' },
-    { namn: VERKTYGSNAMN },
-  ]}
-  bred={true}
-  ogBild={verktygsDelningsbild(SLUG)}
+<Raknarsida
+  slug={SLUG}
+  namn={VERKTYGSNAMN}
+  titel={titel}
+  beskrivning={BESKRIVNING}
+  rubrik={H1}
+  delaUrl={adress ?? undefined}
+  saRaknarRubrik={STALLS_UPP_RUBRIK}
+  saRaknarId="sa-stalls-planen-upp"
+  utskriftEfter
 >
-  <StrukturData
-    slot="head"
-    data={verktyg({ url: `/rakna/${SLUG}/`, namn: VERKTYGSNAMN, beskrivning: BESKRIVNING })}
-  />
   {adress && <style is:inline slot="head" set:html={fastighetsvariabel} />}
 
-  <div class="mx-auto w-full max-w-lasbredd">
-    <section class="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-8 print:hidden">
-      <div class="lg:col-span-7">
-        <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">{H1}</h1>
-        <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">{INGRESS}</p>
-      </div>
-      {
-        huvudbild && (
-          <div class="lg:col-span-5">
-            <img
-              src={huvudbild.src}
-              alt=""
-              width={huvudbild.width}
-              height={huvudbild.height}
-              fetchpriority="high"
-              decoding="async"
-              class:list={['block h-auto w-full', !varumarke && 'rounded-sm border border-linje']}
-            />
+  <p slot="ingress">{INGRESS}</p>
+
+  <KontrollplanForm slot="formular" indata={indata} fel={fel} knappText={KNAPP} />
+
+  <Fragment slot="svar">
+    {/* Beskedsräknare: vid ogiltigt värde står bara varningen, ingen plan (specen 12.8, varv 3 K1). */}
+    {ogiltig && <p class="text-liten text-varning">{TEXT['spalt.beskedsvarning']}</p>}
+    {
+      visat?.status === 'ok' && (
+        <>
+          <Svarstal tal={String(visat.punkter.length)} enhet={TEXT['spalt.enhet']} />
+          <div class="text-brod">
+            <p class="font-bold">{TEXT[`besked.${visat.besked}`]}</p>
+            <p class="mt-1!">{medLagrum(TEXT['spalt.ansvar'], ANSVAR_LAGRUM)}</p>
           </div>
-        )
-      }
-    </section>
-
-    <div class="print:hidden">
-      <Faktaruta variant="kortsvar">
-        {
-          KORTSVAR.map((s) => (
-            <p class="m-0 leading-6">
-              {s.fore}{s.markering && <Markering>{s.markering}</Markering>}{s.efter}
-            </p>
-          ))
-        }
-      </Faktaruta>
-    </div>
-
-    <div class="linjerat mt-8 lg:grid lg:grid-cols-2 lg:gap-8 print:hidden">
-      <KontrollplanForm indata={indata} fel={fel} knappText={KNAPP} />
-
-      <div class="mt-8 border-t border-linje pt-6 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
-        {ogiltig && <p class="m-0 mb-2 text-liten text-varning">{TEXT['spalt.beskedsvarning']}</p>}
-
-        {visat && (
-          <>
-        {
-          visat.status === 'ok' ? (
-            <>
-              <p class="m-0 font-sans text-h3 lg:text-h3-lg font-bold text-blyerts">{TEXT[`besked.${visat.besked}`]}</p>
-              <p class="m-0 mt-1 text-brod">
-                {medLagrum(TEXT['spalt.ansvar'], ANSVAR_LAGRUM)}
-              </p>
-              <p class="m-0 mt-6 flex flex-wrap items-baseline gap-x-2">
-                <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
-                  <Markering>{visat.punkter.length}</Markering>
-                </span>
-                <span class="text-ingress lg:text-ingress-lg">{TEXT['spalt.enhet']}</span>
-              </p>
-              <p class="m-0 mt-2 text-liten text-blyerts-2">
-                {medLagrum(TEXT[`ka.${visat.ka}`], KA_LAGRUM[visat.ka])}
-              </p>
-            </>
-          ) : (
-            <>
-              <p class="m-0 font-sans text-h3 lg:text-h3-lg font-bold text-blyerts">{TEXT['besked.aldre-regler']}</p>
-              {visat.regler.map((n) => (
-                <p class="m-0 mt-2 text-brod">
-                  {medLagrum(TEXT[`regel.${n}`], lagrum(n))}
-                </p>
-              ))}
-            </>
-          )
-        }
-
-        {visat.status === 'ok' && <p class="m-0 mt-4 text-brod">{TEXT['spalt.pekrad']}</p>}
-        {visat.status === 'ok' && <p class="m-0 mt-2 text-liten text-blyerts-2">{TEXT['skarm.handskrift']}</p>}
-        <p class="m-0 mt-2 text-liten text-blyerts-2">{TEXT['spalt.utskrift']}</p>
-        {
-          visat.status === 'ok' && (
-            <p class="m-0 mt-2">
+          <p class="text-liten text-blyerts-2">{medLagrum(TEXT[`ka.${visat.ka}`], KA_LAGRUM[visat.ka])}</p>
+          <div>
+            <p class="text-brod">{TEXT['spalt.pekrad']}</p>
+            <p class="mt-2! text-liten text-blyerts-2">{TEXT['skarm.handskrift']}</p>
+            <p class="mt-2! text-liten text-blyerts-2">{TEXT['spalt.utskrift']}</p>
+            <p class="mt-1!">
               <a href="#planen" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>Till planen</a>
             </p>
-          )
-        }
-        <p class="m-0">
-          <a href="#sa-stalls-planen-upp" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>{STALLS_UPP_RUBRIK}</a>
-        </p>
-          </>
-        )}
+          </div>
+          <p class="text-liten text-blyerts">{klartext}</p>
+        </>
+      )
+    }
+    {
+      visat && visat.status !== 'ok' && (
+        <>
+          <p class="text-brod font-bold">{TEXT['besked.aldre-regler']}</p>
+          {visat.regler.map((n) => (
+            <p class="text-brod">{medLagrum(TEXT[`regel.${n}`], lagrum(n))}</p>
+          ))}
+          <p class="text-liten text-blyerts-2">{TEXT['spalt.utskrift']}</p>
+        </>
+      )
+    }
+  </Fragment>
 
-        {
-          adress && (
-            <div class="mt-4 border-t border-linje pt-4">
-              <label for="dela" class={ETIKETT_KLASS}>{DELA_ETIKETT}</label>
-              <input id="dela" type="text" readonly value={adress} class:list={[FALT_KLASS, 'border-blyerts-2']} />
-              <p class="m-0 mt-1 text-liten text-blyerts-2">{DELATEXT}</p>
+  {
+    visat?.status === 'ok' && (
+      <Fragment slot="darfor">
+        <Pennstreck id="darfor-blev-svaret-sa" utanLuft>
+          Därför blev svaret så
+        </Pennstreck>
+        <div class="darfor">
+          {visat.regler.map((n) => (
+            <div>
+              <span class="block text-etikett lg:text-etikett-lg uppercase text-blyerts-2">{lagrum(n)}</span>
+              <p>{TEXT[`regel.${n}`]}</p>
             </div>
-          )
-        }
-      </div>
-    </div>
+          ))}
+        </div>
+      </Fragment>
+    )
+  }
 
+  {
+    visat?.status === 'ok' && visat.gorInteDetHar.length > 0 && (
+      <Fragment slot="gorInte">
+        {/* Flera råd står i samma stycke efter "Gör inte det här.", vart och ett på egen rad. */}
+        {visat.gorInteDetHar.map((g, i) => (
+          <span class:list={[i > 0 && 'mt-3 block']}>{medLagrum(TEXT[`gorInte.${g}`], GOR_INTE_LAGRUM[g])}</span>
+        ))}
+      </Fragment>
+    )
+  }
+
+  <Fragment slot="saRaknarJag">
+    {
+      illustration && (
+        <div class="pappersruta">
+          <Illustration namn="rakna/kontrollplan" alt={SKISS_ALT} bildtext={SKISS_BILDTEXT} class="my-0!" />
+        </div>
+      )
+    }
+    <ol class="m-0 mt-4 pl-6 list-decimal text-brod">
+      {STEG.map((s) => <li class="mb-2">{s}</li>)}
+    </ol>
+  </Fragment>
+
+  <Fragment slot="efter">
+    {/*
+      Planen, direkt efter resonemanget (spec-designlyft-c avsnitt 13), och det
+      enda på sidan som skrivs ut. Allt annat i efter har print:hidden;
+      huvudet, räknaren och resonemanget döljs av Raknarsida (utskriftEfter).
+      Utskriftsreglerna står i blocket Kontrollplanen i global.css.
+    */}
     {
       visat?.status === 'ok' && adress && (
         <section id="planen" class="kp-sektion">
@@ -355,53 +367,8 @@ const TABELL_KLASS =
       )
     }
 
-    {visat?.status === 'ok' && (
-    <section class="print:hidden">
-      <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
-      <ul class={REGEL_LISTA_KLASS}>
-        {
-          visat.regler.map((n) => (
-            <li>
-              <span>{lagrum(n)}</span>
-              <span>{TEXT[`regel.${n}`]}</span>
-            </li>
-          ))
-        }
-      </ul>
-    </section>
-    )}
-
-    {
-      visat?.status === 'ok' && (
-        <section class="print:hidden">
-          <Pennstreck id="gor-inte-det-har">Gör inte det här</Pennstreck>
-          {visat.gorInteDetHar.map((g, i) => (
-            <p class:list={['m-0 text-brod lg:text-brod-lg', i > 0 && 'mt-4']}>
-              {medLagrum(TEXT[`gorInte.${g}`], GOR_INTE_LAGRUM[g])}
-            </p>
-          ))}
-        </section>
-      )
-    }
-
-    {/* Varv 3, K18: i alla tillstånd, också vid ogiltigt värde och äldre regler. */}
-    <section class="print:hidden">
-      <Pennstreck id="andrat-1-juli-2026">{ANDRAT_RUBRIK}</Pennstreck>
-      {ANDRAT_STYCKEN.map((p, i) => <p class:list={['m-0 text-brod lg:text-brod-lg', i > 0 && 'mt-4']}>{p}</p>)}
-    </section>
-
-    <section class="print:hidden">
-      <Pennstreck id="nar-behovs-ingen-kontrollplan">{INGEN_PLAN_RUBRIK}</Pennstreck>
-      {INGEN_PLAN_STYCKEN.map((p, i) => <p class:list={['m-0 text-brod lg:text-brod-lg', i > 0 && 'mt-4']}>{p}</p>)}
-    </section>
-
-    <section class="print:hidden">
-      <Pennstreck id="sa-stalls-planen-upp">{STALLS_UPP_RUBRIK}</Pennstreck>
-      {varumarke && illustration && <Illustration namn="rakna/kontrollplan" alt={SKISS_ALT} bildtext={SKISS_BILDTEXT} />}
-      <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg">
-        {STEG.map((s) => <li class="mb-2">{s}</li>)}
-      </ol>
-
+    {/* Antagandetabellen i läsbredd, ur kortet Hur jag ställer upp planen (spec-designlyft-c avsnitt 9). */}
+    <section class="max-w-lasbredd print:hidden">
       <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">{BYGGER_PA_RUBRIK}</h3>
       <Tabellyta kolumner={3} class="mt-4">
         <table class={TABELL_KLASS}>
@@ -435,23 +402,37 @@ const TABELL_KLASS =
       </ul>
     </section>
 
+    {/* Varv 3, K18: i alla tillstånd, också vid ogiltigt värde och äldre regler. */}
+    <section class="max-w-lasbredd print:hidden">
+      <Pennstreck id="andrat-1-juli-2026">{ANDRAT_RUBRIK}</Pennstreck>
+      {ANDRAT_STYCKEN.map((p, i) => <p class:list={['m-0 text-brod lg:text-brod-lg', i > 0 && 'mt-4']}>{p}</p>)}
+    </section>
+
+    <section class="max-w-lasbredd print:hidden">
+      <Pennstreck id="nar-behovs-ingen-kontrollplan">{INGEN_PLAN_RUBRIK}</Pennstreck>
+      {INGEN_PLAN_STYCKEN.map((p, i) => <p class:list={['m-0 text-brod lg:text-brod-lg', i > 0 && 'mt-4']}>{p}</p>)}
+    </section>
+
     <section class="print:hidden">
       <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
-      <ul class="m-0 p-0 list-none">
-        {
-          LAS_VIDARE.map((l) => (
+      {lasVidare.length > 0 && (
+        <Artikelrutnat kort={lasVidare} kolumner={4} visaBeskrivning={false} visaMeta={false} />
+      )}
+      {lasVidareLankar.length > 0 && (
+        <ul class="m-0 mt-4 p-0 list-none max-w-lasbredd">
+          {lasVidareLankar.map((l) => (
             <li class="border-t border-linje">
               <a href={l.href} class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
                 {l.text}
               </a>
             </li>
-          ))
-        }
-      </ul>
+          ))}
+        </ul>
+      )}
     </section>
 
-    <div class="print:hidden">
+    <div class="max-w-lasbredd print:hidden">
       <Faq fragor={FRAGOR} />
     </div>
-  </div>
-</Bas>
+  </Fragment>
+</Raknarsida>

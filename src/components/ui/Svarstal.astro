@@ -10,6 +10,7 @@
 interface Props {
   /** Färdigformaterat, med decimalkomma och hårda mellanslag i talen. */
   tal: string;
+  /** Tom när svaret bär sin enhet själv, som klockslaget "kl 16": då ritas inget enhetsspann. */
   enhet: string;
   /** Vad talet är, i 14 px blyerts-2 under enheten. */
   vad?: string;
@@ -32,17 +33,19 @@ const sistaOrd = sista === -1 ? tal : tal.slice(sista + 1);
   sista === -1 ? (
     <p class="svarstal">
       <span class={talKlass}>{tal}</span>
-      <span>
-        <span class="font-serif text-h2">{enhet}</span>
-        {vad && <span class="text-liten text-blyerts-2">{vad}</span>}
-      </span>
+      {(enhet || vad) && (
+        <span>
+          {enhet && <span class="font-serif text-h2">{enhet}</span>}
+          {vad && <span class="text-liten text-blyerts-2">{vad}</span>}
+        </span>
+      )}
     </p>
   ) : (
     <p class="svarstal">
       <span class={talKlass}>
         {fore}
         <span class="whitespace-nowrap">
-          {sistaOrd}&nbsp;<span class="text-h2">{enhet}</span>
+          {sistaOrd}{enhet && <>&nbsp;<span class="text-h2">{enhet}</span></>}
         </span>
       </span>
       {vad && (

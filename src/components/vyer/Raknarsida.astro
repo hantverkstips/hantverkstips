@@ -11,7 +11,8 @@
  *
  * Slottar: ingress (ett <p>), forval, formular, svar, rad (<li> per råd),
  * darfor, gorInte (texten efter "Gör inte det här."), saRaknarJag, efter.
- * rad och gorInte renderas bara när de har innehåll.
+ * rad och gorInte renderas bara när de har innehåll. head skickas vidare till
+ * Bas för en sida som behöver något i <head> utöver den strukturerade datan.
  */
 import Bas from '../../layouts/Bas.astro';
 import { pelareForKategori } from '../../lib/kort';
@@ -38,8 +39,13 @@ interface Props {
   rubrik: string;
   reklam?: boolean;
   butikNamn?: string;
-  /** Den kanoniska adressen med räknarens tolkade värden. */
-  delaUrl: string;
+  /**
+   * Den kanoniska adressen med räknarens tolkade värden. Utelämnad visas ingen
+   * delningsrad: beskedsräknarna visar ingen adress när ett fält är ogiltigt,
+   * eftersom det då inte finns något svar att dela
+   * (spec-kalkyl-grannemedgivande 12.13 punkt 1).
+   */
+  delaUrl?: string;
   /**
    * Rubriken på kortet Så räknar jag när räknaren redan har en egen, som
    * "Så bedömer jag" på källaren, och ankaret som länkar in till sidan pekar
@@ -48,6 +54,13 @@ interface Props {
    */
   saRaknarRubrik?: string;
   saRaknarId?: string;
+  /**
+   * Sant på en sida som skrivs ut som dokument ur slotten efter, i dag bara
+   * kontrollplanen: huvudet, räknaren och resonemanget får print:hidden, och
+   * sidan sätter print:hidden på sina egna avsnitt i efter (docs/ARKITEKTUR.md,
+   * stycket Utskrift).
+   */
+  utskriftEfter?: boolean;
 }
 
 const {
@@ -61,6 +74,7 @@ const {
   delaUrl,
   saRaknarRubrik = 'Så räknar jag',
   saRaknarId = 'sa-raknar-vi',
+  utskriftEfter = false,
 } = Astro.props;
 
 const raknare = hittaKalkylator(slug);
@@ -92,8 +106,9 @@ const forval = Astro.slots.has('forval') ? (await Astro.slots.render('forval')).
   ogBild={verktygsDelningsbild(slug)}
 >
   <StrukturData slot="head" data={verktyg({ url: `/rakna/${slug}/`, namn, beskrivning })} />
+  <slot name="head" slot="head" />
 
-  <div class="sidram pt-7">
+  <div class:list={['sidram pt-7', utskriftEfter && 'print:hidden']}>
     <Brodsmulor lista={brodsmulor} />
     <p class="etikett mt-6 text-penna">Räkna själv{pelare && ` · ${pelare.kort}`}</p>
     <h1 class="m-0 mt-2.5 max-w-3xl font-serif text-h1 lg:text-h1-lg">{rubrik}</h1>
@@ -117,7 +132,7 @@ const forval = Astro.slots.has('forval') ? (await Astro.slots.render('forval')).
             </div>
           )
         }
-        <Delningsrad url={delaUrl} />
+        {delaUrl && <Delningsrad url={delaUrl} />}
       </div>
 
       <div class="raknare-form blad">
@@ -127,7 +142,7 @@ const forval = Astro.slots.has('forval') ? (await Astro.slots.render('forval')).
     </div>
   </div>
 
-  <div class="sidram resonemang mt-14">
+  <div class:list={['sidram resonemang mt-14', utskriftEfter && 'print:hidden']}>
     <div class="text-brod lg:text-brod-lg">
       <slot name="darfor" />
       {

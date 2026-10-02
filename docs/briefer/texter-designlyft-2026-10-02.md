@@ -162,3 +162,31 @@ På gipsplugg står svaret ("Regeln"), en förklarande rad och beskedet ("Skruva
 - Gipsplugg, upprepningen: det stora ordet och resten är nu "Krok räcker", "Plugg i skivan räcker", "Regeln bakom skivan" och "Kortling mellan två reglar" (`SVAR_DELAR` i gipsplugg.ts). Beskeden för plugg och regel säger nu "Välj en plugg i tabellen som klarar lasten." och "Skruva fast saken i regeln med träskruv.". Raden om hur lasten fördelas står bara i Därför blev svaret så, inte två gånger.
 - Gipsplugg, ur Kort svar-rutan: gränsen över 20 kg, tv på svängarm och skåp med lucka står nu i källraden under svaret i Därför blev svaret så. "Ingen källa, bara erfarenhet" är "Det här har jag ingen källa på. Det är mitt eget råd".
 - Innervägg, gipsskruv, kvadratmeter och trappa: Kort svar-rutornas tal står redan i svarsytan eller i Därför blev svaret så; gipsskruvens tumregel och trappformelns spann står nu också i klartexten.
+
+### Steg 4, bygglov-altan, grannemedgivande, altan, kontrollplan, måla ute, fasadyta
+
+| Nyckel | Fil | Platshållare | Längd |
+|---|---|---|---|
+| `bygglov-altan.klartext` | `src/pages/rakna/bygglov-altan.astro` | `{svar}`, `{hojd}` och `{avstand}` (m), `{plan}` ("inom detaljplan", "utanför detaljplan" eller "svaret för båda fallen"), `{lagrum}` | högst 200 tecken |
+| `grannemedgivande.klartext` | `src/pages/rakna/grannemedgivande.astro` | `{svar}`, `{atgard}`, `{grans}` (m), `{lagrum}` | högst 200 tecken |
+| `altan.klartext` | `src/pages/rakna/altan.astro` | `{trall}` (löpmeter utan spill), `{langd}` och `{bredd}` (m), `{trallbredd}` och `{cc}` (mm), `{regel}`, `{spannvidd}` (m) | högst 200 tecken |
+| `kontrollplan.klartext` | `src/pages/rakna/kontrollplan.astro` | `{antal}` (kontroller), `{atgarder}` (planens namn) | högst 200 tecken |
+| `mala-ute.klartext` | `src/pages/rakna/mala-ute.astro` | `{svar}`, `{farg}`, `{temp}` och `{natt}` (grader), `{rf}` (procent), `{daggpunkt}`, `{sol}` ("kl 20") | högst 200 tecken |
+| `fasadyta.klartext` | `src/pages/rakna/fasadyta.astro` | `{yta}` (m²), `{langd}`, `{bredd}` och `{hojd}` (m), `{liter}`, `{burkar}` (tom när burkar saknas) | högst 200 tecken |
+
+Viktigt för fasadytan: Kort svar-rutan som ströks innehöll sidans enda förklaring av gavelspetsen. Den behöver in igen, i klartextmeningen eller i Därför blev svaret så.
+
+### Fas C steg 4, skrivet av hantverkaren 2026-10-02
+
+- `bygglov-altan.klartext`: "Med golvet {hojd} m över marken och {avstand} m till närmaste byggnad blir svaret ”{svar}”, enligt reglerna i plan- och bygglagens nionde kapitel."
+- `grannemedgivande.klartext`: "För ”{atgard}” blir svaret ”{svar}”. Plan- och bygglagen kräver grannens skriftliga medgivande för lovfria byggen närmare tomtgränsen än 4,5 m. Det står i 9 kap. 34 och 35 §§."
+- `altan.klartext`: "En altan på {langd} × {bredd} m med {trallbredd} mm trall på reglar {regel} c {cc} mm tar {trall} löpmeter trall före spill. Regeln klarar {spannvidd} m mellan stöden, enligt Svenskt Trä."
+- `kontrollplan.klartext`: "Planen har {antal} kontroller. Enligt plan- och bygglagen 10 kap. 6 § ska den visa vad som kontrolleras och av vem, vilka anmälningar som görs och nämndens besök. Avfallet får en egen plan."
+- `mala-ute.klartext`: "Med {farg} vid {temp} grader och {rf} procent luftfuktighet, och en natt som går ner till {natt} grader, blir svaret ”{svar}”. Över 80 procent luftfuktighet ska du inte måla alls, enligt Nordsjö."
+- `fasadyta.klartext`: "Ett hus på {langd} × {bredd} m med {hojd} m upp till takfoten har {yta} m² fasadyta, med gavelspetsarna medräknade och fönster och dörrar avdragna." ({liter} och {burkar} används inte, eftersom de kan vara tomma och meningen då går sönder; litern och burkarna står i svarsytan.)
+- Fasadytan: förklaringen av gavelspetsen står nu i regeln för sadeltak i Därför blev svaret så (`TEXT.regel['gavel-sadel']` i fasadyta.ts), och klartexten säger att gavelspetsarna är medräknade.
+- Bygglov altan: 1,8 och 1,2 m och skärmtaket står i reglerna i Därför blev svaret så när de avgör svaret; klartexten upprepar dem inte.
+- Altan: plintar, reglar och skruv står i inköpslistan i svarsytan.
+- Kontrollplan: planens fyra delar och den separata avfallsplanen står nu i klartexten.
+- Måla ute: natten och daggen står i svarsytans rader, 80 procent i klartexten med Nordsjö som källa.
+- Grannemedgivande: regeln om 4,5 m med lagrum står i klartexten; vem som skriver under står i mottagarlistan när medgivande krävs.

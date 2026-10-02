@@ -992,7 +992,7 @@ export const TEXT = {
       kallor: [],
     },
     'gavel-sadel': {
-      text: 'Varje gavelspets är en triangel, gavelns bredd gånger höjden till nocken delat med två. Med två gavlar blir det bredden gånger höjden. Har du fyllt i vinkeln räknar jag först fram höjden ur den.',
+      text: 'Gavelspetsen är den del av gaveln som går upp i en spets mellan takfoten och nocken. Den är en triangel, så ytan är gavelns bredd gånger höjden till nocken delat med två, och med två gavlar blir det bredden gånger höjden. Har du fyllt i vinkeln räknar jag först fram höjden ur den.',
       kallor: [],
     },
     'gavel-pulpet': {

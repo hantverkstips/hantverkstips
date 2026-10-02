@@ -15,8 +15,11 @@
  */
 export const prerender = false;
 
-import Bas from '../../layouts/Bas.astro';
 import { formateraTal } from '../../lib/format';
+import { artikelUrl, publicerade } from '../../lib/innehall';
+import { tillKortArtikel, type KortData } from '../../lib/kort';
+import { hittaKalkylator } from '../../lib/kalkyl/register';
+import { arPelare } from '../../lib/pelare';
 import {
   DAGG_MARGINAL_H,
   FARGER,
@@ -36,17 +39,17 @@ import {
   type MalaUteResultat,
   type RegelUtfall,
 } from '../../lib/kalkyl/mala-ute';
-import { CELL_KLASS, ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
-import { verktyg } from '../../lib/strukturdata';
-import { verktygsDelningsbild, verktygsillustration, verktygsVarumarkesbild } from '../../lib/verktygsbild';
+import { CELL_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
+import { verktygsillustration } from '../../lib/verktygsbild';
 import MalaUteForm from '../../components/kalkyl/MalaUteForm.astro';
-import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Artikelrutnat from '../../components/ui/Artikelrutnat.astro';
 import Faq from '../../components/ui/Faq.astro';
-import Markering from '../../components/ui/Markering.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
-import StrukturData from '../../components/ui/StrukturData.astro';
+import Statusrad from '../../components/ui/Statusrad.astro';
+import Svarstal from '../../components/ui/Svarstal.astro';
 import Tabellyta from '../../components/ui/Tabellyta.astro';
 import Illustration from '../../components/ui/Illustration.astro';
+import Raknarsida from '../../components/vyer/Raknarsida.astro';
 
 Astro.locals.sidtyp = 'verktyg';
 
@@ -310,303 +313,229 @@ const SLUG = 'mala-ute';
 const VERKTYGSNAMN = 'Måla ute i dag';
 const BESKRIVNING =
   'Skriv in dagens väder och nattens prognos, så får du veta om du kan måla ute i dag, hur kallt det får vara och när du senast ska sluta innan daggen faller.';
+/** Skissen står i kortet Så räknar jag. Huvudet har ingen bild sedan fas C (DESIGN.md 5.8). */
 const illustration = verktygsillustration(SLUG);
-/**
- * Varumärkesbilden i sidhuvudet, sedan 2026-09-19 (docs/DESIGN.md avsnitt 7).
- * Finns den står skissen i stället i "Så räknar vi", där måtten förklarar
- * räkningen. Finns den inte visas skissen i sidhuvudet som förut.
+
+/*
+ * Svarsytan, fas C (spec-designlyft-c-2026-10-02 avsnitt 13): klockslaget,
+ * "Ja" eller "Vänta" som det stora talet, och statusraden med sidans besked
+ * (utfallets rubrik): ok när det går att måla, varning när det inte gör det.
+ * Ny text är hantverkarens. Klartexten har platshållarna {svar} (utfallets
+ * rubrik, "Ja, men sluta senast kl 16"), {farg} ("akrylatfärg"), {temp} och
+ * {natt} (grader, minus som ord), {rf} (procent), {daggpunkt} (grader) och
+ * {sol} (klockslaget då solen går ner, "kl 20").
  */
-const varumarke = verktygsVarumarkesbild(SLUG);
-const huvudbild = varumarke ?? illustration;
+const KLARTEXT =
+  'Med {farg} vid {temp} grader och {rf} procent luftfuktighet, och en natt som går ner till {natt} grader, blir svaret ”{svar}”. Över 80 procent luftfuktighet ska du inte måla alls, enligt Nordsjö.'; // mala-ute.klartext
+const klartext =
+  visat.status === 'ok'
+    ? KLARTEXT.replace('{svar}', visat.utfallRubrik)
+        .replace('{farg}', FARGTEXT[visatIndata.fargtyp])
+        .replace('{temp}', gradText(visatIndata.luftTempC))
+        .replace('{natt}', gradText(visatIndata.nattMinC))
+        .replace('{rf}', formateraTal(visatIndata.rfProcent))
+        .replace('{daggpunkt}', gradText(visat.daggpunktC))
+        .replace('{sol}', `kl ${visatIndata.solnedgangTimme}`)
+    : '';
+
+/**
+ * Läs vidare: artiklarna som artikelkort, räknarna med registrets namn som på
+ * hubben, i den förra listans ordning.
+ */
+const LAS_VIDARE = [
+  { href: '/rakna/fasadyta/', text: 'Räkna ut hur mycket färg fasaden tar, i liter och burkar' },
+  { href: '/fasad/tvatta-fasad/', text: 'Tvätta fasaden och mät om den är torr nog att måla' },
+  { href: '/fasad/mala-om-huset/', text: 'Vad det kostar att måla om huset, och när vädret tillåter' },
+  { href: '/fasad/dreva-fonster/', text: 'Dreva fönster, så blir spalten tät inne och öppen ute' },
+  { href: '/fukt/luftfuktighet-inomhus/', text: 'Rätt luftfuktighet inomhus, daggpunkten och fuktkvoten i virket' },
+  { href: '/rakna/daggpunkt/', text: 'Räkna ut daggpunkten och se om väggen blir våt' },
+];
+const artiklar = [...(await publicerade('guider')), ...(await publicerade('kunskap'))];
+const lasVidare: KortData[] = [];
+const lasVidareLankar: { href: string; text: string }[] = [];
+for (const l of LAS_VIDARE) {
+  const e = artiklar.find((a) => artikelUrl(a) === l.href);
+  if (e) {
+    const { niva: _niva, ...kort } = tillKortArtikel(e);
+    lasVidare.push(kort);
+    continue;
+  }
+  const k = l.href.startsWith('/rakna/') ? hittaKalkylator(l.href.replace(/^\/rakna\/|\/$/g, '')) : undefined;
+  const pelare = k?.pelare?.[0];
+  if (k && pelare && arPelare(pelare)) {
+    lasVidare.push({
+      etikett: 'Räkna själv',
+      rubrik: k.namn,
+      beskrivning: k.rad,
+      pelare,
+      href: l.href,
+      // Artikelrutnat läser inte typen; kortet står varken i ett typfilter eller sorteras.
+      typ: 'kunskap',
+      sorteringsdatum: new Date(0),
+    });
+    continue;
+  }
+  lasVidareLankar.push(l);
+}
 ---
 
-<Bas
-  title={titel}
-  description={BESKRIVNING}
-  reklam={false}
-  brodsmulor={[
-    { namn: 'Hantverkstips', href: '/' },
-    { namn: 'Räkna själv', href: '/rakna/' },
-    { namn: VERKTYGSNAMN },
-  ]}
-  bred={true}
-  ogBild={verktygsDelningsbild(SLUG)}
+<Raknarsida
+  slug={SLUG}
+  namn={VERKTYGSNAMN}
+  titel={titel}
+  beskrivning={BESKRIVNING}
+  rubrik="Kan du måla ute i dag? Se om färgen hinner torka innan daggen faller"
+  delaUrl={delaLank}
 >
-  <StrukturData
-    slot="head"
-    data={verktyg({ url: `/rakna/${SLUG}/`, namn: VERKTYGSNAMN, beskrivning: BESKRIVNING })}
-  />
+  <p slot="ingress">
+    Fyll i temperaturen och luftfuktigheten just nu, nattens lägsta enligt prognosen och när solen går ner, så
+    räknar jag ut om färgen hinner bli klibbfri innan daggen faller. Jag prövar också dagen mot
+    färgtillverkarnas egna gränser för kyla, fukt, regn och sol, och skriver ut vem som säger vad. Svaret blir
+    ja, ja men sluta senast ett visst klockslag, eller vänta.
+  </p>
 
-  <div class="mx-auto w-full max-w-lasbredd">
-    {/*
-      Sidhuvudet: rubrik och ingress till vänster i 7/12, bilden till höger i
-      5/12 på desktop, under ingressen på mobil. Bilden är dekorativ, H1 bär
-      betydelsen, därför tom alt. Den är sidans LCP-bild och laddas därför
-      eagert med fetchpriority. Varumärkesbilden har transparent bakgrund och
-      ligger som heron utan ram; skissen är ett urklipp och får ramen. Saknas
-      båda visas ingen bild alls.
-    */}
-    <section class="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-8">
-      <div class="lg:col-span-7">
-        <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">
-          Kan du måla ute i dag? Se om färgen hinner torka innan daggen faller
-        </h1>
-        <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
-          Fyll i temperaturen och luftfuktigheten just nu, nattens lägsta enligt prognosen och när solen går ner, så
-          räknar jag ut om färgen hinner bli klibbfri innan daggen faller. Jag prövar också dagen mot
-          färgtillverkarnas egna gränser för kyla, fukt, regn och sol, och skriver ut vem som säger vad. Svaret blir
-          ja, ja men sluta senast ett visst klockslag, eller vänta.
+  {/* Formuläret ligger i src/components/kalkyl/MalaUteForm.astro, så att
+      <Kalkylator namn="mala-ute" /> i en artikel visar exakt samma fält. */}
+  <MalaUteForm slot="formular" indata={indata} varden={varden} fel={fel} />
+
+  {
+    visat.status === 'ok' && (
+      <Fragment slot="svar">
+        {resultat.status === 'ogiltig' && (
+          <p class="text-liten text-varning">Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.</p>
+        )}
+        <div>
+          <p class="text-liten text-blyerts-2 first-letter:uppercase">
+            {FARGTEXT[visatIndata.fargtyp]} vid {gradText(visatIndata.luftTempC)}&nbsp;°C och{' '}
+            {formateraTal(visatIndata.rfProcent)}&nbsp;% luftfuktighet, natten ner till{' '}
+            {gradText(visatIndata.nattMinC)}&nbsp;°C
+          </p>
+          {/* Det stora talet är klockslaget, eller ordet Ja eller Vänta. Det bär sin enhet själv. */}
+          <Svarstal tal={visat.stortTal} enhet="" vad={svarRest} />
+        </div>
+        <div class="text-brod">
+          <Statusrad ton={visat.utfall === 'vanta' ? 'varning' : 'ok'} text={visat.utfallRubrik} />
+          <p class="mt-1! text-liten text-blyerts-2">
+            Du börjar kl {visatIndata.startTimme}, och solen går ner kl {visatIndata.solnedgangTimme}.
+          </p>
+        </div>
+        <ul class="m-0 p-0 list-none text-brod tabular-nums">
+          <li class="border-t border-linje py-2">
+            Daggpunkten ligger på {gradText(visat.daggpunktC)}&nbsp;°C, räknad med Magnus-formeln.
+          </li>
+          <li class="border-t border-linje py-2">
+            Ytan går ner till {gradText(visat.ytTempNattC)}&nbsp;°C i natt, och det är{' '}
+            {visat.marginalC >= 0 ? `${gradText(visat.marginalC)}${HART}°C över` : `${gradText(-visat.marginalC)}${HART}°C under`}{' '}
+            daggpunkten.
+          </li>
+          <li class="border-t border-linje py-2">
+            Färgens gräns går vid {visat.farg.minTempC}&nbsp;°C enligt {visat.farg.kalla}.
+          </li>
+          <li class="border-t border-linje py-2">
+            Färgen blir klibbfri på {timText(visat.klibbfriIdagH)} i dag, mot {timText(visat.farg.klibbfriH)} i
+            tillverkarens datablad, som gäller vid {TORKTID_REFERENS_C}&nbsp;°C och {TORKTID_REFERENS_RF}&nbsp;%.
+          </li>
+          <li class="border-t border-linje py-2">
+            Den går att måla över efter {timText(visat.overmalningsbarIdagH)}, det vill säga{' '}
+            {visat.overmalningsbarKl < 24 ? `kl ${Math.floor(visat.overmalningsbarKl)}` : 'först i morgon'}.
+          </li>
+          <li class="border-t border-linje py-2">
+            Sluta måla senast {visat.senasteSlutText}. Det är solnedgången minus {DAGG_MARGINAL_H} timmar minus
+            torktiden till klibbfri.
+          </li>
+        </ul>
+        <p class="text-liten text-blyerts">{klartext}</p>
+      </Fragment>
+    )
+  }
+
+  {
+    visat.status === 'ok' && (
+      <Fragment slot="darfor">
+        <Pennstreck id="darfor-blev-svaret-sa" utanLuft>
+          Därför blev svaret så
+        </Pennstreck>
+        <div class="darfor">
+          {visat.regler.map((regel) => (
+            <div>
+              <span
+                class:list={[
+                  'block text-etikett lg:text-etikett-lg uppercase',
+                  regel.utfall === 'stopp' ? 'text-varning' : 'text-blyerts-2',
+                ]}
+              >
+                {UTFALL_ETIKETT[regel.utfall]}
+              </span>
+              <p>{regel.text}</p>
+              <p>{regel.kalla}</p>
+            </div>
+          ))}
+        </div>
+        <p class="m-0 mt-4">
+          Svaret bygger på att luften i kväll är samma som nu, och det är det enda jag inte kan se härifrån.
+          Byter vädret luft, med en front eller en vind som vänder, gäller inte daggpunkten längre. Titta på
+          prognosen för luftfuktigheten i kväll och inte bara på temperaturen.
         </p>
-      </div>
+      </Fragment>
+    )
+  }
 
-      {
-        huvudbild && (
-          <div class="lg:col-span-5">
-            <img
-              src={huvudbild.src}
-              alt=""
-              width={huvudbild.width}
-              height={huvudbild.height}
-              fetchpriority="high"
-              decoding="async"
-              class:list={['block h-auto w-full', !varumarke && 'rounded-sm border border-linje']}
-            />
-          </div>
-        )
-      }
-    </section>
+  {
+    visat.status === 'ok' && visat.gorInteDetHar.length > 0 && (
+      <Fragment slot="gorInte">
+        {/* Flera råd står i samma stycke efter "Gör inte det här.", vart och ett på egen rad. */}
+        {visat.gorInteDetHar.map((rad, i) => (
+          <span class:list={[i > 0 && 'mt-3 block']}>{rad}</span>
+        ))}
+      </Fragment>
+    )
+  }
 
+  <Fragment slot="saRaknarJag">
     {
-      visat.status === 'ok' && (
-        <Faktaruta variant="kortsvar">
-          <p class="m-0 leading-6">
-            Titta på natten först. Fasadfärg vill ha <Markering>minst 7 grader</Markering> på yta och luft ända tills
-            den torkat, och en kall natt kan stoppa hela dagen.
-          </p>
-          <p class="m-0 leading-6">Över 80 procent luftfuktighet ska du inte måla alls.</p>
-          <p class="m-0 leading-6">
-            Färgen ska vara klibbfri två timmar före solnedgången, för sedan faller daggen, och i svalt väder tar
-            torkningen dubbelt så lång tid som burken säger.
-          </p>
-        </Faktaruta>
-      )
-    }
-
-    <div class="linjerat mt-8 lg:grid lg:grid-cols-2 lg:gap-8">
-      {/* Formuläret ligger i src/components/kalkyl/MalaUteForm.astro, så att
-          <Kalkylator namn="mala-ute" /> i en artikel visar exakt samma fält. */}
-      <MalaUteForm indata={indata} varden={varden} fel={fel} />
-
-      <div class="mt-8 border-t border-linje pt-6 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
-        {
-          visat.status === 'ok' && (
-            <>
-              {resultat.status === 'ogiltig' && (
-                <p class="m-0 mb-2 text-liten text-varning">Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.</p>
-              )}
-              <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
-                {FARGTEXT[visatIndata.fargtyp]} vid {gradText(visatIndata.luftTempC)}&nbsp;°C och{' '}
-                {formateraTal(visatIndata.rfProcent)}&nbsp;% luftfuktighet, natten ner till{' '}
-                {gradText(visatIndata.nattMinC)}&nbsp;°C
-              </p>
-              {/* Det stora talet är klockslaget eller ordet Vänta, med resten av
-                  svaret på samma baslinje där enheten står på de andra kalkylatorerna. */}
-              <p class="m-0 mt-1 flex flex-wrap items-baseline gap-x-2">
-                <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
-                  <Markering>{visat.stortTal}</Markering>
-                </span>
-                <span class="text-ingress lg:text-ingress-lg">{svarRest}</span>
-              </p>
-              <p class="m-0 mt-2 text-liten text-blyerts-2">
-                {visat.utfallRubrik}. Du börjar kl {visatIndata.startTimme}, och solen går ner kl{' '}
-                {visatIndata.solnedgangTimme}.
-              </p>
-
-              <ul class="m-0 mt-4 p-0 list-none text-brod tabular-nums">
-                <li class="border-t border-linje py-2">
-                  Daggpunkten ligger på {gradText(visat.daggpunktC)}&nbsp;°C, räknad med Magnus-formeln.
-                </li>
-                <li class="border-t border-linje py-2">
-                  Ytan går ner till {gradText(visat.ytTempNattC)}&nbsp;°C i natt, och det är{' '}
-                  {visat.marginalC >= 0 ? `${gradText(visat.marginalC)}${HART}°C över` : `${gradText(-visat.marginalC)}${HART}°C under`}{' '}
-                  daggpunkten.
-                </li>
-                <li class="border-t border-linje py-2">
-                  Färgens gräns går vid {visat.farg.minTempC}&nbsp;°C enligt {visat.farg.kalla}.
-                </li>
-                <li class="border-t border-linje py-2">
-                  Färgen blir klibbfri på {timText(visat.klibbfriIdagH)} i dag, mot {timText(visat.farg.klibbfriH)} i
-                  tillverkarens datablad, som gäller vid {TORKTID_REFERENS_C}&nbsp;°C och {TORKTID_REFERENS_RF}&nbsp;%.
-                </li>
-                <li class="border-t border-linje py-2">
-                  Den går att måla över efter {timText(visat.overmalningsbarIdagH)}, det vill säga{' '}
-                  {visat.overmalningsbarKl < 24 ? `kl ${Math.floor(visat.overmalningsbarKl)}` : 'först i morgon'}.
-                </li>
-                <li class="border-t border-linje py-2">
-                  Sluta måla senast {visat.senasteSlutText}. Det är solnedgången minus {DAGG_MARGINAL_H} timmar minus
-                  torktiden till klibbfri.
-                </li>
-              </ul>
-
-              {/* Reglerna med källa och "Gör inte det här" står som egna H2
-                  under verktyget. Spalten pekar dit med en rad. */}
-              <p class="m-0 mt-4 text-liten text-blyerts-2">
-                Varför svaret blev så, och det du inte ska göra,{' '}
-                <a href="#darfor-blev-svaret-sa" class={LANK_KLASS}>står under verktyget</a>.
-              </p>
-
-              <p class="m-0 mt-4">
-                <a href="#sa-raknar-vi" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
-                  Så räknar jag
-                </a>
-              </p>
-
-              {/* Dela. Svaret står i adressen, så ett skrivskyddat fält räcker:
-                  markera och kopiera fungerar utan en rad JavaScript. */}
-              <div class="mt-4 border-t border-linje pt-4">
-                <label for="dela" class={ETIKETT_KLASS}>
-                  Dela svaret
-                </label>
-                <input id="dela" type="text" readonly value={delaLank} class:list={[FALT_KLASS, 'border-blyerts-2']} />
-                <p class="m-0 mt-1 text-liten text-blyerts-2">Dina värden ligger i adressen. Markera den och kopiera, så får den du skickar länken till samma svar.</p>
-              </div>
-            </>
-          )
-        }
-      </div>
-    </div>
-
-    {/* Reglerna med källa och råden står i läsbredd direkt under verktyget,
-        inte i spalten: en läsare som just fått ett svar läser talet, inte
-        femton motiveringar bredvid formuläret. Se SPEC-SIDMALLAR.md 4.7. */}
-    {
-      visat.status === 'ok' && (
-        <>
-          <section>
-            <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
-            <ul class="m-0 p-0 list-none text-brod lg:text-brod-lg">
-              {visat.regler.map((regel) => (
-                <li
-                  class:list={[
-                    'mb-4 border-l-2 pl-4',
-                    regel.utfall === 'stopp' ? 'border-varning' : regel.utfall === 'ok' ? 'border-linje' : 'border-blyerts-2',
-                  ]}
-                >
-                  <span class="block text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
-                    {UTFALL_ETIKETT[regel.utfall]}
-                  </span>
-                  <span class="block">{regel.text}</span>
-                  <span class="block text-liten text-blyerts-2">{regel.kalla}</span>
-                </li>
-              ))}
-            </ul>
-            <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-              Svaret bygger på att luften i kväll är samma som nu, och det är det enda jag inte kan se härifrån.
-              Byter vädret luft, med en front eller en vind som vänder, gäller inte daggpunkten längre. Titta på
-              prognosen för luftfuktigheten i kväll och inte bara på temperaturen.
-            </p>
-          </section>
-
-          <section>
-            <Pennstreck id="gor-inte-det-har">Gör inte det här</Pennstreck>
-            {visat.gorInteDetHar.map((rad, i) => (
-              <p class:list={['m-0 text-brod lg:text-brod-lg', i > 0 && 'mt-4']}>{rad}</p>
-            ))}
-          </section>
-        </>
-      )
-    }
-
-    <section>
-      <Pennstreck id="mala-ute-temperatur">Temperaturen avgör om du får måla ute, och natten avgör om färgen torkar</Pennstreck>
-      <p class="m-0 text-brod lg:text-brod-lg">
-        Frågan om du kan måla ute i dag har två svar, och de flesta kollar bara det ena. Termometern på eftermiddagen
-        säger om färgen får läggas på. Prognosen för natten säger om den hinner torka. Färgtillverkarna är tydliga med
-        att det är det andra svaret som gäller, för gränsen för temperaturen ska hålla hela dygnet och inte bara medan
-        du står med penseln.
-      </p>
-      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">
-        Hur kallt får det vara när man målar ute?
-      </h3>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Färgtillverkarna Beckers och Alcro sätter gränsen vid 7&nbsp;grader för en fasadfärg, och den gäller både
-        ytan och luften. Slamfärg klarar sig från 5&nbsp;grader enligt Falu Rödfärg, och en träolja till trallen vill
-        ha 10&nbsp;grader. Det viktiga ordet i tillverkarnas texter är dygnet. Temperaturen ska hålla sig över gränsen
-        tills färgen torkat, och en akrylat som går att måla över efter fyra timmar i värme behöver tolv timmar en
-        sval septemberdag. Går natten under gränsen medan färgen fortfarande torkar blir den klibbig, får blåsor och
-        blir flammig i kulören, skriver Alcro. Luftfuktigheten har också en gräns. Under 80&nbsp;procent får du måla,
-        över den ska du låta bli. Nordsjö skriver ut talet, och Beckers och Alcro säger samma sak i ord.
-      </p>
-      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Varför daggen är farligare än kylan</h3>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Daggpunkten är den temperatur där luften inte kan bära mer vatten, och allt som är kallare än så blir vått.
-        En dag på 15&nbsp;grader med 65&nbsp;procent luftfuktighet har daggpunkten 8,5&nbsp;grader, och den följer
-        med luften in i kvällen. Panelen blir dessutom kallare än luften när himlen är klar, för den strålar ut sin
-        värme mot natthimlen, och jag räknar med två grader. En natt som prognosen sätter till 8&nbsp;grader ger en
-        panel på 6, och den ligger under daggpunkten. Daggen lägger sig i färgen innan den bildat film, och du får
-        matta fläckar och en yta som fäster sämre. Tillverkarna vill därför att färgen är klibbfri i god tid före
-        kvällen, och Beckers skriver två timmar. Jag räknar baklänges från solnedgången, minus två timmar, minus
-        torktiden till klibbfri vid dagens väder, och där står klockslaget du senast måste sluta.
-      </p>
-      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Måla ute på våren och hösten</h3>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Våren har torr luft och långa dagar, och det är den bästa tiden för slamfärg enligt Falu Rödfärg. Det som
-        stoppar är nätterna och virket. En panel som stått i vinterväta ligger ofta över 16&nbsp;procent fuktkvot i
-        veckor, och det är gränsen hos både branschorganisationen Svenskt Trä och färgtillverkarna. Mät innan du
-        börjar, med en resistansmätare på skuggsidan. Hösten är tvärtom. Dagarna kan vara varma, men luften är
-        fuktig, solen går ner tidigt och daggen faller varje klar natt. En akrylat som blir klibbfri på en timme i
-        värme behöver närmare tre timmar en dag på 12&nbsp;grader, så går solen ner klockan sju är sista penseldraget
-        vid tvåtiden. Hur luften och virket hänger ihop står i{' '}
-        <a href="/fukt/luftfuktighet-inomhus/" class={LANK_KLASS}>
-          artikeln om luftfuktighet och daggpunkt
-        </a>
-        , och fönstren du ska måla runt drevar du först enligt{' '}
-        <a href="/fasad/dreva-fonster/" class={LANK_KLASS}>
-          guiden om att dreva fönster
-        </a>
-        .
-      </p>
-    </section>
-
-    <section>
-      <Pennstreck id="sa-raknar-vi">Så räknar jag</Pennstreck>
-      {
-        varumarke && illustration && (
+      illustration && (
+        <div class="pappersruta">
           <Illustration
             namn="rakna/mala-ute"
             alt="Liggande träpanel som stryks med en pensel medan solen går ner, märkt 15 grader, 65 procent och daggpunkt 8,5 grader"
             bildtext="Det jag räknar på är värmen, fukten och tiden som är kvar till solnedgången."
+            class="my-0!"
           />
-        )
-      }
-      <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg">
-        <li class="mb-2">
-          Daggpunkten räknas ur temperaturen och luftfuktigheten nu med Magnus-formeln, samma som i
-          daggpunktskalkylatorn.
-        </li>
-        <li class="mb-2">
-          Ytans temperatur i natt är prognosens lägsta minus {YTAVDRAG_NATT_C} grader. Ligger den på eller under
-          daggpunkten faller dagg.
-        </li>
-        <li class="mb-2">
-          Torktiden till klibbfri och till övermålningsbar tas ur databladet för vald färg och räknas om till dagens
-          väder, dubbel för varje {FORDUBBLING_PER_C} grader under {TORKTID_REFERENS_C} och gånger {komma(FUKT_FAKTOR)}{' '}
-          över {FUKT_GRANS_RF} procent luftfuktighet.
-        </li>
-        <li class="mb-2">
-          Senaste klockslaget att sluta är solnedgången minus {DAGG_MARGINAL_H} timmar minus torktiden till klibbfri.
-        </li>
-        <li class="mb-2">
-          Sedan prövas dagen i ordning: temperaturen nu mot färgens gräns, luftfuktigheten mot {RF_STOPP_PROCENT}{' '}
-          procent, nattens lägsta mot gränsen när färgen torkar över natten, om du börjar för sent, daggen, regn inom
-          ett dygn och direkt sol.
-        </li>
-        <li>
-          Ett stopp ger vänta. Dagg utan stopp ger ett klockslag att sluta senast. Ingetdera ger ja, med klockslaget
-          som råd.
-        </li>
-      </ol>
+        </div>
+      )
+    }
+    <ol class="m-0 mt-4 pl-6 list-decimal text-brod">
+      <li class="mb-2">
+        Daggpunkten räknas ur temperaturen och luftfuktigheten nu med Magnus-formeln, samma som i
+        daggpunktskalkylatorn.
+      </li>
+      <li class="mb-2">
+        Ytans temperatur i natt är prognosens lägsta minus {YTAVDRAG_NATT_C} grader. Ligger den på eller under
+        daggpunkten faller dagg.
+      </li>
+      <li class="mb-2">
+        Torktiden till klibbfri och till övermålningsbar tas ur databladet för vald färg och räknas om till dagens
+        väder, dubbel för varje {FORDUBBLING_PER_C} grader under {TORKTID_REFERENS_C} och gånger {komma(FUKT_FAKTOR)}{' '}
+        över {FUKT_GRANS_RF} procent luftfuktighet.
+      </li>
+      <li class="mb-2">
+        Senaste klockslaget att sluta är solnedgången minus {DAGG_MARGINAL_H} timmar minus torktiden till klibbfri.
+      </li>
+      <li class="mb-2">
+        Sedan prövas dagen i ordning: temperaturen nu mot färgens gräns, luftfuktigheten mot {RF_STOPP_PROCENT}{' '}
+        procent, nattens lägsta mot gränsen när färgen torkar över natten, om du börjar för sent, daggen, regn inom
+        ett dygn och direkt sol.
+      </li>
+      <li>
+        Ett stopp ger vänta. Dagg utan stopp ger ett klockslag att sluta senast. Ingetdera ger ja, med klockslaget
+        som råd.
+      </li>
+    </ol>
+  </Fragment>
 
+  <Fragment slot="efter">
+    {/* Antagandetabellen i läsbredd, ur kortet Så räknar jag (spec-designlyft-c avsnitt 9). */}
+    <section class="max-w-lasbredd">
       <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad siffrorna vilar på</h3>
       <Tabellyta kolumner={3} class="mt-4">
         <table class="w-full border-collapse text-liten tabular-nums">
@@ -660,42 +589,86 @@ const huvudbild = varumarke ?? illustration;
       </p>
     </section>
 
-    <section>
-      <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
-      <ul class="m-0 p-0 list-none">
-        <li class="border-t border-linje">
-          <a href="/rakna/fasadyta/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Räkna ut hur mycket färg fasaden tar, i liter och burkar
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/fasad/tvatta-fasad/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Tvätta fasaden och mät om den är torr nog att måla
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/fasad/mala-om-huset/" class:list={["flex min-h-11 items-center py-2", LANK_KLASS]}>
-            Vad det kostar att måla om huset, och när vädret tillåter
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/fasad/dreva-fonster/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Dreva fönster, så blir spalten tät inne och öppen ute
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/fukt/luftfuktighet-inomhus/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Rätt luftfuktighet inomhus, daggpunkten och fuktkvoten i virket
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/rakna/daggpunkt/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Räkna ut daggpunkten och se om väggen blir våt
-          </a>
-        </li>
-      </ul>
+    <section class="max-w-lasbredd">
+      <Pennstreck id="mala-ute-temperatur">Temperaturen avgör om du får måla ute, och natten avgör om färgen torkar</Pennstreck>
+      <p class="m-0 text-brod lg:text-brod-lg">
+        Frågan om du kan måla ute i dag har två svar, och de flesta kollar bara det ena. Termometern på eftermiddagen
+        säger om färgen får läggas på. Prognosen för natten säger om den hinner torka. Färgtillverkarna är tydliga med
+        att det är det andra svaret som gäller, för gränsen för temperaturen ska hålla hela dygnet och inte bara medan
+        du står med penseln.
+      </p>
+      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">
+        Hur kallt får det vara när man målar ute?
+      </h3>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Färgtillverkarna Beckers och Alcro sätter gränsen vid 7&nbsp;grader för en fasadfärg, och den gäller både
+        ytan och luften. Slamfärg klarar sig från 5&nbsp;grader enligt Falu Rödfärg, och en träolja till trallen vill
+        ha 10&nbsp;grader. Det viktiga ordet i tillverkarnas texter är dygnet. Temperaturen ska hålla sig över gränsen
+        tills färgen torkat, och en akrylat som går att måla över efter fyra timmar i värme behöver tolv timmar en
+        sval septemberdag. Går natten under gränsen medan färgen fortfarande torkar blir den klibbig, får blåsor och
+        blir flammig i kulören, skriver Alcro. Luftfuktigheten har också en gräns. Under 80&nbsp;procent får du måla,
+        över den ska du låta bli. Nordsjö skriver ut talet, och Beckers och Alcro säger samma sak i ord.
+      </p>
+      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Varför daggen är farligare än kylan</h3>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Daggpunkten är den temperatur där luften inte kan bära mer vatten, och allt som är kallare än så blir vått.
+        En dag på 15&nbsp;grader med 65&nbsp;procent luftfuktighet har daggpunkten 8,5&nbsp;grader, och den följer
+        med luften in i kvällen. Panelen blir dessutom kallare än luften när himlen är klar, för den strålar ut sin
+        värme mot natthimlen, och jag räknar med två grader. En natt som prognosen sätter till 8&nbsp;grader ger en
+        panel på 6, och den ligger under daggpunkten. Daggen lägger sig i färgen innan den bildat film, och du får
+        matta fläckar och en yta som fäster sämre. Tillverkarna vill därför att färgen är klibbfri i god tid före
+        kvällen, och Beckers skriver två timmar. Jag räknar baklänges från solnedgången, minus två timmar, minus
+        torktiden till klibbfri vid dagens väder, och där står klockslaget du senast måste sluta.
+      </p>
+      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Måla ute på våren och hösten</h3>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Våren har torr luft och långa dagar, och det är den bästa tiden för slamfärg enligt Falu Rödfärg. Det som
+        stoppar är nätterna och virket. En panel som stått i vinterväta ligger ofta över 16&nbsp;procent fuktkvot i
+        veckor, och det är gränsen hos både branschorganisationen Svenskt Trä och färgtillverkarna. Mät innan du
+        börjar, med en resistansmätare på skuggsidan. Hösten är tvärtom. Dagarna kan vara varma, men luften är
+        fuktig, solen går ner tidigt och daggen faller varje klar natt. En akrylat som blir klibbfri på en timme i
+        värme behöver närmare tre timmar en dag på 12&nbsp;grader, så går solen ner klockan sju är sista penseldraget
+        vid tvåtiden. Hur luften och virket hänger ihop står i{' '}
+        <a href="/fukt/luftfuktighet-inomhus/" class={LANK_KLASS}>
+          artikeln om luftfuktighet och daggpunkt
+        </a>
+        , och fönstren du ska måla runt drevar du först enligt{' '}
+        <a href="/fasad/dreva-fonster/" class={LANK_KLASS}>
+          guiden om att dreva fönster
+        </a>
+        .
+      </p>
     </section>
 
-    <Faq fragor={FRAGOR} />
-  </div>
-</Bas>
+    {
+      (lasVidare.length > 0 || lasVidareLankar.length > 0) && (
+        <section>
+          <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
+          {lasVidare.length > 0 && (
+            <Artikelrutnat
+              kort={lasVidare}
+              kolumner={lasVidare.length === 4 ? 4 : 3}
+              visaBeskrivning={false}
+              visaMeta={false}
+            />
+          )}
+          {lasVidareLankar.length > 0 && (
+            <ul class="m-0 mt-4 p-0 list-none max-w-lasbredd">
+              {lasVidareLankar.map((l) => (
+                <li class="border-t border-linje">
+                  <a href={l.href} class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
+                    {l.text}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      )
+    }
+
+    <div class="max-w-lasbredd">
+      <Faq fragor={FRAGOR} />
+    </div>
+  </Fragment>
+</Raknarsida>
