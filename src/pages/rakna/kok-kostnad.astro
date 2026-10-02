@@ -25,6 +25,7 @@ import {
   kokAntagandenFor,
   kokBeskedVarden,
   kokDelbarQuery,
+  kokKortsvarVarden,
   kokRegelKallor,
   kokRotavdragQuery,
   KOK_STANDARD,
@@ -87,8 +88,17 @@ const LAS_VIDARE = [
   { href: '/kok/byta-bankskiva/', text: 'Kapa, foga och fäst en ny bänkskiva själv' },
 ];
 
+/* Exemplen ur den gamla Kort svar-rutan, räknade med KOK_STANDARD (SOKORDSANALYS 13). */
+const exempel = kokKortsvarVarden();
+const forsta = (s: string): string => s.split(/\s+till\s+/)[0] ?? s;
+const sista = (s: string): string => s.split(/\s+till\s+/).pop() ?? s;
+
 /* Tre till fem frågor. */
 const FRAGOR = [
+  {
+    fraga: 'Vad kostar en ny bänkskiva eller ett helt nytt kök?',
+    svar: `En ny bänkskiva i laminat kostar ${forsta(exempel.bankskiva4.foreRot)} till ${sista(exempel.bankskiva5.foreRot)} kr för 4 till 5 meter, och där räknar jag utan rotavdrag. Ett helt nytt kök på den enklaste nivån, med skåp för samma längd och ett paket vitvaror, kostar ${forsta(exempel.nytt4.attBetala)} till ${sista(exempel.nytt5.attBetala)} kr efter rotavdraget. Skåpen och luckorna har Ikeas priser, och priset för arbetet kommer från Totalbyggarna och offertförmedlare.`,
+  },
   {
     fraga: 'Gäller priserna ett Ikeakök eller vilket kök som helst?',
     svar: 'Ett helt nytt kök räknas med Ikeas billigaste skåp och luckor och med en byggfirmas pris för att montera ett Ikeakök. Ett annat märke eller en dyrare serie kostar mer, och vad ditt kök kostar får du veta när köksbutiken har ritat det och gett dig ett pris. Byter du bara luckorna kommer priserna i stället från Vedums prislista. Har du ett Ikeakök i serien Metod kan du köpa Ikeas egna luckor, och de billigaste av dem kostar mindre än Vedums, så räknarens svar blir då något för högt.',
@@ -210,10 +220,10 @@ const varumarke = verktygsVarumarkesbild(SLUG);
  * luckor) och {meter} (bänkskivans längd, m).
  */
 const KLARTEXT =
-  'Det du har valt kostar {betala} kr efter rotavdraget och {fore} kr före, räknat med tillverkarnas, byggfirmornas och offertförmedlarnas priser.'; // kok-kostnad.klartext
+  'Det du har valt kostar {betala} kr efter rotavdraget och {fore} kr före, räknat med Vedums och Ikeas prislistor och Totalbyggarnas priser för arbetet, hämtade 2026.'; // kok-kostnad.klartext
 /* Bänkskivan utan rotavdrag (villkor): det stora talet är summan före avdrag. */
 const KLARTEXT_VILLKOR =
-  'En ny bänkskiva på {meter} m kostar {betala} kr. Jag räknar utan rotavdrag, eftersom Skatteverket inte nämner ett byte av bara skivan.';
+  'En ny bänkskiva på {meter} m kostar {betala} kr med Kitchens.se:s och Totalbyggarnas priser från 2026. Jag räknar utan rotavdrag, eftersom Skatteverket inte nämner ett byte av bara skivan.';
 const klartext = (villkor ? KLARTEXT_VILLKOR : KLARTEXT).replace('{betala}', stortTal)
   .replace('{fore}', bv.foreRot)
   .replace('{rot}', bv.rot)

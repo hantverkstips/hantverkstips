@@ -1139,6 +1139,32 @@ Christian har godkänt en ny form för alla sidor (`docs/briefer/spec-designlyft
    - **På räknarna** ska svarsytan i standardläget, utan query, innehålla en mening i klartext med talet, villkoret och källan, renderad på servern. Det är stycket en AI lyfter, och utan den separata Kort svar-rutan får det inte bli bara ett tal.
    - **Bilden som försvinner ur räknarens huvud** får inte ta med sig delningsbilden. `og:image` och förhandsbilden står kvar, och `WebApplication` ändras inte.
 
+**Kontroll efter bygget, 2026-10-02.** Jämförelsen gjordes mellan 70a704b och b6d2ede i dist, och räknarna i dev. Den visade att följande är oförändrat på alla 119 sidor och 22 räknare:
+
+- title, description och canonical (utan query också på förvalsadresserna)
+- og-taggarna
+- JSON-LD-typerna med datum, frågor, led och poster
+- exakt en H1 på varje sida
+- sitemapen med 140 adresser
+
+Undantaget är listsidan `/guider/typ/kategori/`, som har bytt "Bäst i test" mot "Granskade produktgrupper". Det är i linje med beslut 2.
+
+Sidfoten har tolv länkar enligt beslut 1, och alla räknare har minst fem innehållssidor som länkar dit.
+
+Bylinen stämmer med JSON-LD på alla artiklar. Hubblänken under Läs vidare har försvunnit, men hubben står kvar i brödsmulan och i ämnesraden. Det är godkänt.
+
+Fyra punkter gick tillbaka till UX:
+
+- **Elpriset i elkostnadens svarsyta saknar källa.**
+- **Källan nämns bara som en grupp** på räknarna för badrum, kök, takbyte och gipsplugg.
+- **Tal och regeländringar som bara fanns i den gamla Kort svar-rutan är borta:**
+  - scenarierna för badrum, kök och takbyte
+  - avdraget i kvadratmeterräknaren
+  - rot och rut högst 75 000 kr
+  - grannemedgivandet skriftligt sedan 1 december 2025
+  - avfallshanteringsplanen sedan 1 juli 2026
+- **Bylinens namn är ingen länk** på testerna och jämförelsen.
+
 
 Sökresultat och sidor lästa 2026-09-16. Volymer från `docs/data/keyword-stats-2026-09-16.csv` (Google Ads, Sverige, sep 2024 till aug 2026).
 

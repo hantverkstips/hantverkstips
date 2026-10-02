@@ -415,12 +415,14 @@ const illustration = verktygsillustration(SLUG);
  */
 const KLARTEXT =
   'En maskin på {effekt} W som går {timmar} om dygnet drar {kwh} kWh på {dagar}, och med elpriset {elpris} kr per kWh kostar det {kr}.'; // elkostnad.klartext
+/* Utan eget elpris i adressen räknar sidan med SCB:s pris, och då står källan i meningen (SOKORDSANALYS 13). */
+const KLARTEXT_SCB = `En maskin på {effekt} W som går {timmar} om dygnet drar {kwh} kWh på {dagar}. Med hushållens snittpris för ${ELPRIS_KALLA.period} enligt SCB, {elpris} kr per kWh, kostar det {kr}.`;
 const klartext = tvattLage
   ? tvattTal
     ? tvattKortsvar(tvattTal.kg, tvattTal.torkningar, tvattTal.krAvfuktare, tvattTal.krVarmepump, tvattTal.krKondens)
     : ''
   : tal
-    ? KLARTEXT.replace('{kwh}', tal.kwhPerPeriod)
+    ? (q.has('elpris') ? KLARTEXT : KLARTEXT_SCB).replace('{kwh}', tal.kwhPerPeriod)
         .replace('{kr}', tal.krPerPeriod)
         .replace('{dagar}', tal.dagar)
         .replace('{effekt}', tal.effekt)

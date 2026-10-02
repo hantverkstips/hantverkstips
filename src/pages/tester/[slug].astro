@@ -1,21 +1,17 @@
 ---
 /**
  * Produkttest eller granskning. En produkt, ett omdöme, egna siffror.
- * Ingen poängskala, inga stjärnor. Se docs/SPEC-SIDMALLAR.md avsnitt 4.4.
+ * Ingen poängskala, inga stjärnor. Formen är artikelmallens: huvudet med
+ * byline, sidospalten från 1024 px och Läs vidare som band.
+ * Se docs/SPEC-SIDMALLAR.md avsnitt 4.4, docs/DESIGN.md 5.7 och
+ * docs/briefer/spec-designlyft-d-2026-10-02.md avsnitt 2.
  */
 import { getEntry, render } from 'astro:content';
 import Bas from '../../layouts/Bas.astro';
 import { delningsbild } from '../../lib/delningsbild';
 import { formateraDatum, isoDatum } from '../../lib/format';
-import {
-  arPublicerad,
-  artikelUrl,
-  kategoriUrl,
-  publicerade,
-  slugify,
-  testUrl,
-  typEtikett,
-} from '../../lib/innehall';
+import { arPublicerad, kategoriUrl, lasminuter, publicerade, slugify, testUrl, typEtikett } from '../../lib/innehall';
+import { tillKortArtikel, type KortData } from '../../lib/kort';
 import { nivaEtikett } from '../../lib/niva';
 import {
   billigasteErbjudande,
@@ -27,18 +23,23 @@ import {
   varnaSaknadProdukt,
 } from '../../lib/produkter';
 import { produkt as produktData } from '../../lib/strukturdata';
+import Artikelrutnat from '../../components/ui/Artikelrutnat.astro';
 import Brodsmulor from '../../components/ui/Brodsmulor.astro';
+import Byline from '../../components/ui/Byline.astro';
 import Faktaruta from '../../components/ui/Faktaruta.astro';
 import Faq from '../../components/ui/Faq.astro';
-import Forfattarruta from '../../components/ui/Forfattarruta.astro';
 import Illustration from '../../components/ui/Illustration.astro';
 import Innehallsforteckning from '../../components/ui/Innehallsforteckning.astro';
 import Jamforelsetabell from '../../components/ui/Jamforelsetabell.astro';
 import Kalkylator from '../../components/ui/Kalkylator.astro';
+import Kallor from '../../components/ui/Kallor.astro';
 import Kopknapp from '../../components/ui/Kopknapp.astro';
+import Kortsvarstext from '../../components/ui/Kortsvarstext.astro';
 import Markering from '../../components/ui/Markering.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
 import Produktkort from '../../components/ui/Produktkort.astro';
+import Rubrikrad from '../../components/ui/Rubrikrad.astro';
+import Sidospalt from '../../components/ui/Sidospalt.astro';
 import StrukturData from '../../components/ui/StrukturData.astro';
 import Varning from '../../components/ui/Varning.astro';
 import Verktygskort from '../../components/ui/Verktygskort.astro';
@@ -70,8 +71,9 @@ const namn = produkt ? produktNamn(produkt) : d.produkt;
 const forfattare = await getEntry('forfattare', d.forfattare);
 const forfattareNamn = forfattare?.data.namn ?? 'Christian';
 
-// Etiketten "Vårt val" bara när produkten är kategorifilens första val.
-const vartVal = kategori?.data.val[0]?.produkt === d.produkt;
+// Valets etikett för varje produkt i kategorifilens val. Valen är likställda.
+// Se spec-designlyft-d-2026-10-02.md avsnitt 7 punkt 1.
+const valEtikett = kategori?.data.val.find((v) => v.produkt === d.produkt)?.etikett;
 
 const alternativ = d.alternativ;
 
@@ -109,20 +111,50 @@ function markerar(m: (typeof d.matningar)[number], kolumn: 'vi' | 'tillverkaren'
   return kolumn === 'vi' ? viFinns : !viFinns;
 }
 
-const EGEN_RUBRIK_SA_TESTADE = headings.some((h) => h.depth === 2 && /^så\s+(testade|granskade)\s+vi$/i.test(h.text));
+// Standardavsnittet om metoden utgår när innehållet har en egen H2 om den.
+// Se spec-designlyft-d-2026-10-02.md avsnitt 6 punkt 2.
+const EGEN_RUBRIK_SA_TESTADE = headings.some(
+  (h) => h.depth === 2 && /^(så\s+(testade|granskade)\s+(vi|jag)|underlaget\b)/i.test(h.text),
+);
+
+// Ordet test står aldrig om en granskning (SEO avsnitt 13): rubriken över
+// metoden har en egen nyckel för granskningen.
+const METOD_RUBRIK = arTest ? 'Så testade vi' : 'Så granskade jag'; // granskning.metod.rubrik
 
 const rubriker = [
   ...headings.filter((h) => h.depth === 2).map((h) => ({ slug: h.slug, text: h.text })),
   ...(alternativ.length > 0 ? [{ slug: slugify('Alternativ'), text: 'Alternativ' }] : []),
   { slug: slugify('Specifikationer'), text: 'Specifikationer' },
-  ...(EGEN_RUBRIK_SA_TESTADE ? [] : [{ slug: slugify('Så testade vi'), text: 'Så testade vi' }]),
+  ...(EGEN_RUBRIK_SA_TESTADE ? [] : [{ slug: slugify(METOD_RUBRIK), text: METOD_RUBRIK }]),
 ];
 
-// Relaterat: guider och kunskap i samma kategori.
-const relaterat = [
-  ...(await publicerade('guider')).filter((e) => e.data.kategori === d.kategori),
-  ...(await publicerade('kunskap')).filter((e) => e.data.kategori === d.kategori),
-].map((e) => ({ etikett: typEtikett(e.data.typ), namn: e.data.title, href: artikelUrl(e) }));
+/**
+ * Verktygskortet i spalten: kategorins räknare, när den inte redan står
+ * inbäddad eller som kort i brödtexten. En sida har aldrig två.
+ */
+const kropp = entry.body ?? '';
+const raknare = kategori?.data.kalkylator;
+const visaRaknare =
+  raknare !== undefined &&
+  !kropp.includes(`<Kalkylator namn="${raknare}"`) &&
+  !kropp.includes(`<Verktygskort kalkylator="${raknare}"`);
+
+// Sidospaltens lista: produkten själv och alternativen. Bara alternativen har
+// ett kort på sidan att hoppa till.
+const sidoprodukter = [
+  { slug: d.produkt, ankare: false },
+  ...alternativ.map((a) => ({ slug: a.produkt, etikett: a.etikett, forVem: a.varfor, ankare: true })),
+];
+
+// Läs vidare: guider och kunskap i samma kategori, de senaste först, högst tre.
+// Etiketten är bara typen. Färre än två: bandet utgår, som i artikelmallen.
+const utanNiva = ({ niva: _niva, ...k }: KortData): KortData => k;
+const lasVidare: KortData[] = [...(await publicerade('guider')), ...(await publicerade('kunskap'))]
+  .filter((e) => e.data.kategori === d.kategori)
+  .sort((a, b) => b.data.publicerad.getTime() - a.data.publicerad.getTime())
+  .slice(0, 3)
+  .map((e) => utanNiva(tillKortArtikel(e)));
+const visaLasVidare = lasVidare.length >= 2;
 
 const brodsmulor = [
   { namn: 'Hantverkstips', href: '/' },
@@ -158,299 +190,250 @@ const strukturdata = produkt
   butikNamn={butik?.namn}
   brodsmulor={brodsmulor}
   brodsmulorIVy={true}
-  bred={true}
+  galleri={true}
 >
   {strukturdata && <StrukturData slot="head" data={strukturdata} />}
 
-  <div class="tvaspalt tvaspalt-rad">
-    <div class="min-w-0">
+  <div class:list={['sidram pt-8', !visaLasVidare && 'pb-16 lg:pb-24']}>
+    <div class="tvaspalt">
       <Brodsmulor lista={brodsmulor} />
 
-      <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts">
-        {typEtikett('test', d.etikett)} · {nivaEtikett(d.niva)}
+      <p class="etikett mt-6 text-penna">
+        {typEtikett('test', d.etikett)} · {nivaEtikett(d.niva)}{kategoriPost && ` · ${kategoriPost.data.namn}`}
       </p>
-      <h1 class="m-0 mt-2 font-serif text-h1 lg:text-h1-lg">{d.title}</h1>
-      <p class="m-0 mt-3 text-liten text-blyerts-2">
+      <h1 class="m-0 mt-3.5 max-w-3xl font-serif text-h1 lg:text-h1-lg">{d.title}</h1>
+      <div class="mt-3.5">
+        <Byline forfattare={d.forfattare} publicerad={d.publicerad} uppdaterad={d.uppdaterad} minuter={lasminuter(kropp)} />
         {
           arTest && d.testad && (
-            <>
-              Testad <time datetime={isoDatum(d.testad)}>{formateraDatum(d.testad)}</time> ·{' '}
-            </>
+            <p class="m-0 mt-2 text-liten text-blyerts-2">
+              Testad <time datetime={isoDatum(d.testad)}>{formateraDatum(d.testad)}</time>
+            </p>
           )
-        }Publicerad <time datetime={isoDatum(d.publicerad)}>{formateraDatum(d.publicerad)}</time>{
-          d.uppdaterad && (
-            <>
-              , uppdaterad <time datetime={isoDatum(d.uppdaterad)}>{formateraDatum(d.uppdaterad)}</time>
-            </>
-          )
-        } · Av {forfattareNamn}
-      </p>
+        }
+      </div>
 
-      <section class="mt-8 border border-linje rounded-sm bg-papper p-4 lg:p-6">
-        {
-          (
+      <div class="tvaspalt-rad mt-7">
+        <div class="min-w-0">
+          {d.kortSvar && <Kortsvarstext text={d.kortSvar} plats={testUrl(entry)} />}
+
+          <section class:list={['kort p-5.5 lg:p-6', d.kortSvar && 'mt-7']}>
             <div class="lg:flex lg:gap-6">
               <div class="lg:w-2/5 shrink-0">
-                {bild ? (
-                  <div class="bg-vit border border-linje rounded-sm p-2">
-                    <img
-                      src={bild}
-                      alt={namn}
-                      width="400"
-                      height="300"
-                      decoding="async"
-                      class="block w-full aspect-4/3 h-auto object-contain"
-                    />
-                  </div>
-                ) : (
-                  <div class="bg-papper-2 border border-linje rounded-sm w-full aspect-4/3 flex flex-col items-center justify-center gap-1 p-2 text-center">
-                    <span class="text-etikett uppercase text-blyerts-2">{produkt?.marke ?? namn}</span>
-                    {!produkt && <span class="text-liten text-blyerts-2">Produktdata saknas i bygget</span>}
-                  </div>
-                )}
+                {
+                  bild ? (
+                    <div class="bg-vit border border-linje rounded-sm p-2">
+                      <img
+                        src={bild}
+                        alt={namn}
+                        width="400"
+                        height="300"
+                        decoding="async"
+                        class="block w-full aspect-4/3 h-auto object-contain"
+                      />
+                    </div>
+                  ) : (
+                    <div class="bg-papper-2 border border-linje rounded-sm w-full aspect-4/3 flex flex-col items-center justify-center gap-1 p-2 text-center">
+                      <span class="text-etikett uppercase text-blyerts-2">{produkt?.marke ?? namn}</span>
+                      {!produkt && <span class="text-liten text-blyerts-2">Produktdata saknas i bygget</span>}
+                    </div>
+                  )
+                }
               </div>
 
               <div class="mt-4 lg:mt-0 min-w-0 flex-1">
-                {vartVal && <p class="m-0 mb-1 text-etikett lg:text-etikett-lg uppercase text-penna">Mitt val</p>}
+                {valEtikett && <p class="chip-gul m-0 mb-2.5">{valEtikett}</p>}
                 <p class="m-0 text-ingress lg:text-ingress-lg">{d.omdome}</p>
 
-                {d.matningar.length > 0 && (
-                  <table class="mt-4 w-full border-collapse text-liten tabular-nums">
-                    <caption class="sr-only">Mätvärden för {namn}</caption>
-                    <thead>
-                      <tr class="border-b border-linje text-left">
-                        <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">
-                          Egenskap
-                        </th>
-                        {arTest && (
-                          <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">
-                            Jag mätte
-                          </th>
-                        )}
-                        <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">
-                          {kallRubrik}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {d.matningar.map((m) => (
-                        <tr class="border-b border-linje">
-                          <th scope="row" class="p-2 text-left font-normal text-blyerts-2">
-                            {m.etikett}
-                            {m.enhet ? `, ${m.enhet}` : ''}
-                          </th>
-                          {arTest && (
-                            <td class="p-2 text-blyerts">
-                              {m.vi === undefined ? (
-                                <span class="text-blyerts-2">ej mätt</span>
-                              ) : markerar(m, 'vi') ? (
-                                <Markering>{m.vi}</Markering>
+                {
+                  d.matningar.length > 0 && (
+                    <table class="ramtabell mt-4">
+                      <caption class="sr-only">{arTest ? `Mätvärden för ${namn}` : `Tillverkarens uppgifter för ${namn}`}</caption>
+                      <thead class="[&_th]:text-etikett [&_th]:uppercase [&_th]:text-blyerts-2">
+                        <tr>
+                          <th scope="col">Egenskap</th>
+                          {arTest && <th scope="col">Jag mätte</th>}
+                          <th scope="col">{kallRubrik}</th>
+                        </tr>
+                      </thead>
+                      <tbody class="[&_th]:font-normal [&_th]:text-blyerts-2 [&_td]:text-blyerts">
+                        {d.matningar.map((m) => (
+                          <tr>
+                            <th scope="row">
+                              {m.etikett}
+                              {m.enhet ? `, ${m.enhet}` : ''}
+                            </th>
+                            {arTest && (
+                              <td>
+                                {m.vi === undefined ? (
+                                  <span class="text-blyerts-2">ej mätt</span>
+                                ) : markerar(m, 'vi') ? (
+                                  <Markering>{m.vi}</Markering>
+                                ) : (
+                                  m.vi
+                                )}
+                              </td>
+                            )}
+                            <td>
+                              {m.tillverkaren === undefined ? (
+                                <span class="text-blyerts-2">ej angivet</span>
+                              ) : markerar(m, 'tillverkaren') ? (
+                                <Markering>{m.tillverkaren}</Markering>
                               ) : (
-                                m.vi
+                                m.tillverkaren
                               )}
                             </td>
-                          )}
-                          <td class="p-2 text-blyerts">
-                            {m.tillverkaren === undefined ? (
-                              <span class="text-blyerts-2">ej angivet</span>
-                            ) : markerar(m, 'tillverkaren') ? (
-                              <Markering>{m.tillverkaren}</Markering>
-                            ) : (
-                              m.tillverkaren
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                )}
-
-                {/* Köp om och Köp inte om står direkt i omdömeskortet, utan
-                    linjerat papper: ett kort i ett kort blir en ruta för mycket. */}
-                <div class="mt-6 grid gap-4 lg:grid-cols-2">
-                  <div>
-                    <p class="m-0 mb-1 text-etikett lg:text-etikett-lg uppercase text-blyerts">Köp om</p>
-                    <p class="m-0 text-brod">{d.kopOm}</p>
-                  </div>
-                  <div>
-                    <p class="m-0 mb-1 text-etikett lg:text-etikett-lg uppercase text-blyerts">Köp inte om</p>
-                    <p class="m-0 text-brod">{d.kopInteOm}</p>
-                  </div>
-                </div>
-
-                {produkt && (
-                  <div class="mt-6">
-                    <Kopknapp
-                      produkt={produkt.slug}
-                      modul="kort_full"
-                      bredd="full"
-                      pris={erbjudande?.pris ?? null}
-                      prisDatum={erbjudande?.uppdaterad ?? null}
-                      butikNamn={erbjudande?.butikNamn}
-                      lager={lagerlage(erbjudande)}
-                    />
-                  </div>
-                )}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )
+                }
               </div>
             </div>
-          )
-        }
-      </section>
 
-      <Innehallsforteckning rubriker={rubriker} variant="hopfallbar" />
-
-      <div class="prosa mt-8">
-        <Content
-          components={{
-            h2: Pennstreck,
-            Faktaruta,
-            Illustration,
-            Varning,
-            Verktygskort,
-            Kalkylator,
-            Markering,
-            Kopknapp,
-            Produktkort,
-            Jamforelsetabell,
-            Faq,
-          }}
-        />
-      </div>
-
-      {
-        alternativ.length > 0 && (
-          <section>
-            <Pennstreck id={slugify('Alternativ')}>Alternativ</Pennstreck>
-            {/* varfor är en mening och renderas som brödtext, inte som etikett:
-                en hel mening i versaler är ingen etikett. Etiketten är valfri och
-                skrivs av redaktören (granskningen 2026-09-16 punkt 5.6). */}
-            <div class="grid gap-4">
-              {alternativ.map((a) => (
-                <Produktkort
-                  produkt={a.produkt}
-                  variant="kompakt"
-                  etikett={a.etikett}
-                  forVem={a.varfor}
-                  modul="kort_kompakt"
-                />
-              ))}
+            <div class="yta mt-6 grid gap-4 p-4 lg:grid-cols-2 lg:gap-6 lg:p-5">
+              <div>
+                <p class="etikett mb-1 text-blyerts">Köp om</p>
+                <p class="m-0 text-brod">{d.kopOm}</p>
+              </div>
+              <div>
+                <p class="etikett mb-1 text-blyerts">Köp inte om</p>
+                <p class="m-0 text-brod">{d.kopInteOm}</p>
+              </div>
             </div>
-          </section>
-        )
-      }
 
-      <section>
-        <Pennstreck id={slugify('Specifikationer')}>Specifikationer</Pennstreck>
-        <table class="w-full border-collapse text-liten tabular-nums">
-          <caption class="sr-only">Specifikationer för {namn}</caption>
-          <tbody>
             {
-              specs.map((s) => (
-                <tr class="border-b border-linje">
-                  <th scope="row" class="p-3 text-left align-top font-normal text-blyerts-2">
-                    {s.etikett}
-                    {s.enhet ? `, ${s.enhet}` : ''}
-                  </th>
-                  <td class="p-3 align-top text-blyerts">
-                    {produkt && produkt.specs[s.nyckel] !== undefined && produkt.specs[s.nyckel] !== null ? (
-                      String(produkt.specs[s.nyckel])
-                    ) : (
-                      <span class="text-blyerts-2">ej angivet</span>
-                    )}
-                  </td>
-                </tr>
-              ))
+              produkt && (
+                <div class="mt-6">
+                  <Kopknapp
+                    produkt={produkt.slug}
+                    modul="kort_full"
+                    bredd="full"
+                    pris={erbjudande?.pris ?? null}
+                    prisDatum={erbjudande?.uppdaterad ?? null}
+                    butikNamn={erbjudande?.butikNamn}
+                    lager={lagerlage(erbjudande)}
+                  />
+                </div>
+              )
             }
-          </tbody>
-        </table>
-      </section>
-
-      {
-        !EGEN_RUBRIK_SA_TESTADE && (
-          <section>
-            <Pennstreck id={slugify('Så testade vi')}>Så testade vi</Pennstreck>
-            <p class="m-0 text-brod lg:text-brod-lg">
-              Metoden i sin helhet står på sidan{' '}
-              <a
-                href="/om/sa-testar-vi/"
-                class="lank"
-              >
-                Så testar jag
-              </a>
-              .
-            </p>
           </section>
-        )
-      }
 
-      {
-        d.kallor.length > 0 && (
-          <section>
-            <Pennstreck id={slugify('Källor')}>Källor</Pennstreck>
-            <ol class="m-0 pl-6 list-decimal text-brod text-blyerts-2">
-              {d.kallor.map((k) => (
-                <li class="mb-2">
-                  {k.url ? (
-                    <a
-                      href={k.url}
-                      rel="nofollow"
-                      class="lank"
-                    >
-                      {k.titel}
-                    </a>
-                  ) : (
-                    k.titel
-                  )}
-                </li>
-              ))}
-            </ol>
-          </section>
-        )
-      }
+          <Innehallsforteckning rubriker={rubriker} variant="hopfallbar" />
 
-      {
-        produkt && (
-          <div class="mt-12">
-            <Kopknapp
-              produkt={produkt.slug}
-              modul="avslut"
-              pris={erbjudande?.pris ?? null}
-              prisDatum={erbjudande?.uppdaterad ?? null}
-              butikNamn={erbjudande?.butikNamn}
-              lager={lagerlage(erbjudande)}
+          <div class="prosa mt-7">
+            <Content
+              components={{
+                h2: Pennstreck,
+                Faktaruta,
+                Illustration,
+                Varning,
+                Verktygskort,
+                Kalkylator,
+                Markering,
+                Kopknapp,
+                Produktkort,
+                Jamforelsetabell,
+                Faq,
+              }}
             />
           </div>
-        )
-      }
 
-      {
-        relaterat.length > 0 && (
+          {
+            alternativ.length > 0 && (
+              <section>
+                <Pennstreck id={slugify('Alternativ')}>Alternativ</Pennstreck>
+                <div class="grid gap-4">
+                  {alternativ.map((a) => (
+                    <Produktkort
+                      produkt={a.produkt}
+                      etikett={a.etikett ?? a.varfor}
+                      forVem={a.etikett ? a.varfor : undefined}
+                      modul="kort_kompakt"
+                    />
+                  ))}
+                </div>
+              </section>
+            )
+          }
+
           <section>
-            <Pennstreck id={slugify('Läs vidare')}>Läs vidare</Pennstreck>
-            <ul class="m-0 p-0 list-none">
-              {relaterat.map((r) => (
-                <li class="border-t border-linje py-3">
-                  <p class="m-0 text-etikett uppercase text-blyerts">{r.etikett}</p>
-                  <a
-                    href={r.href}
-                    class="inline-flex min-h-11 items-center lank"
-                  >
-                    {r.namn}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <Pennstreck id={slugify('Specifikationer')}>Specifikationer</Pennstreck>
+            <table class="ramtabell">
+              <caption class="sr-only">Specifikationer för {namn}</caption>
+              <tbody class="[&_th]:font-normal [&_th]:text-blyerts-2 [&_td]:text-blyerts">
+                {
+                  specs.map((s) => (
+                    <tr>
+                      <th scope="row">
+                        {s.etikett}
+                        {s.enhet ? `, ${s.enhet}` : ''}
+                      </th>
+                      <td>
+                        {produkt && produkt.specs[s.nyckel] !== undefined && produkt.specs[s.nyckel] !== null ? (
+                          String(produkt.specs[s.nyckel])
+                        ) : (
+                          <span class="text-blyerts-2">ej angivet</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
           </section>
-        )
-      }
 
-      <Forfattarruta forfattare={d.forfattare} publicerad={d.publicerad} uppdaterad={d.uppdaterad} />
-    </div>
+          {
+            !EGEN_RUBRIK_SA_TESTADE && (
+              <section>
+                <Pennstreck id={slugify(METOD_RUBRIK)}>{METOD_RUBRIK}</Pennstreck>
+                <p class="m-0 text-brod lg:text-brod-lg">
+                  Metoden i sin helhet står på sidan{' '}
+                  <a href="/om/sa-testar-vi/" class="lank">
+                    Så testar jag
+                  </a>
+                  .
+                </p>
+              </section>
+            )
+          }
 
-    <aside class="hidden lg:block">
-      <div class="sticky top-20">
-        <Innehallsforteckning rubriker={rubriker} variant="sidospalt" />
+          <Kallor kallor={d.kallor} />
+
+          {
+            produkt && (
+              <div class="mt-12">
+                <Kopknapp
+                  produkt={produkt.slug}
+                  modul="avslut"
+                  pris={erbjudande?.pris ?? null}
+                  prisDatum={erbjudande?.uppdaterad ?? null}
+                  butikNamn={erbjudande?.butikNamn}
+                  lager={lagerlage(erbjudande)}
+                />
+              </div>
+            )
+          }
+        </div>
+
+        <Sidospalt
+          rubriker={rubriker}
+          produkter={sidoprodukter}
+          kalkylator={visaRaknare ? raknare : undefined}
+        />
       </div>
-    </aside>
+    </div>
   </div>
+
+  {
+    visaLasVidare && (
+      <section class="band mt-14">
+        <div class="sidram py-12 lg:py-14">
+          <Rubrikrad id="las-vidare" rubrik="Läs vidare" />
+          <Artikelrutnat kort={lasVidare} visaBeskrivning={false} visaMeta={false} />
+        </div>
+      </section>
+    )
+  }
 </Bas>

@@ -384,13 +384,14 @@ const illustration = verktygsillustration(SLUG);
  */
 const SVAR_VAD = 'golvytan i rummet'; // kvadratmeter.svar.vad
 const KLARTEXT =
-  'Ett rum på {langd} × {bredd} m med {takhojd} m i takhöjd har {golv} kvm golv, {tak} kvm tak och {vaggar} kvm vägg efter avdrag för dörr och fönster.'; // kvadratmeter.klartext
+  'Ett rum på {langd} × {bredd} m med {takhojd} m i takhöjd har {golv} kvm golv och lika mycket tak. Dörr och fönster tar bort {avdrag} kvm, så väggarna blir {vaggar} kvm.'; // kvadratmeter.klartext
 const klartext = tal
   ? KLARTEXT.replace('{golv}', tal.golv)
       .replace('{langd}', tal.langd)
       .replace('{bredd}', tal.bredd)
       .replace('{takhojd}', tal.takhojd)
       .replace('{vaggar}', tal.netto)
+      .replace('{avdrag}', tal.avdrag)
       .replace('{tak}', tal.tak)
   : '';
 

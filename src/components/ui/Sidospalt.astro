@@ -1,0 +1,119 @@
+---
+/**
+ * Sidospalten i artikelmallen, testsidan och jämförelsen: innehållsförteckningen
+ * (sidospaltsvarianten), "Produkterna jag nämner" med pris och fotrad,
+ * Verktygskort i variant liten och Så jobbar jag-rutan.
+ * Spec: docs/DESIGN.md 5.3, docs/briefer/spec-designlyft-b-2026-10-02.md 4.3 och 10,
+ * docs/briefer/spec-designlyft-d-2026-10-02.md 1.
+ *
+ * Produktlistan: en rad per produkt som finns i databasen, med redaktörens
+ * etikett (eller för vem) och billigaste pris. Raden är en ankarlänk till
+ * produktens kort när `ankare` är sant, alltså när kortet står på sidan. Ett
+ * datum som står för flera priser är det äldsta erbjudandets, och butiken är
+ * dess butik med samma reserv som köpknappen (fas B avsnitt 10.2 och 10.3). En
+ * produkt som inte går att köpa får "senast" före priset och sitt lagerläge
+ * under namnet, med köpknappens ord (avsnitt 10.4).
+ *
+ * `kalkylator` skickas bara när räknaren inte redan står i brödtexten; anroparen
+ * avgör det. En sida har aldrig två.
+ */
+import { butikNamnEllerReserv } from '../../lib/affiliate';
+import { formateraDatumKort, formateraPris } from '../../lib/format';
+import {
+  arSlut,
+  billigasteErbjudande,
+  hamtaProdukt,
+  lagerlage,
+  produktNamn,
+  type Erbjudande,
+  type Lagerlage,
+} from '../../lib/produkter';
+import Innehallsforteckning from './Innehallsforteckning.astro';
+import Verktygskort from './Verktygskort.astro';
+
+interface Props {
+  rubriker: { slug: string; text: string }[];
+  produkter: { slug: string; etikett?: string | undefined; forVem?: string | undefined; ankare: boolean }[];
+  kalkylator?: string | undefined;
+}
+
+const { rubriker, produkter, kalkylator } = Astro.props;
+
+const LAGERORD: Record<Lagerlage, string | null> = {
+  kopbar: null,
+  restnoterad: 'Restnoterad',
+  slut: 'Slut i lager',
+  ej_bestallningsbar: 'Ej beställningsbar',
+};
+const sidoprodukter = (
+  await Promise.all(
+    produkter.map(async (p) => {
+      const produkt = await hamtaProdukt(p.slug);
+      if (!produkt) return null;
+      const erbjudande = billigasteErbjudande(produkt);
+      return {
+        ref: p,
+        namn: produktNamn(produkt),
+        erbjudande,
+        slut: arSlut(erbjudande),
+        lager: LAGERORD[lagerlage(erbjudande)],
+      };
+    }),
+  )
+).filter((p) => p !== null);
+const aldst = sidoprodukter
+  .map((p) => p.erbjudande)
+  .reduce<Erbjudande | null>(
+    (a, b) => (b && (a === null || b.uppdaterad.getTime() < a.uppdaterad.getTime()) ? b : a),
+    null,
+  );
+const PRODUKTER_FOT = 'Priserna kommer från {butik}, och det äldsta av dem läste jag den {datum}.'; // artikel.produkter.fot, med {butik} och {datum}
+const produkterFot = aldst
+  ? PRODUKTER_FOT.replace('{butik}', butikNamnEllerReserv(aldst.butikNamn)).replace(
+      '{datum}',
+      formateraDatumKort(aldst.uppdaterad),
+    )
+  : PRODUKTER_FOT;
+const JOBBAR_TEXT = 'Siffrorna för maskinerna kommer från tillverkarna, och jag har läst databladen men inte haft dem hos mig. Reklamen på sidan är märkt och styr inte vilka maskiner jag väljer.'; // artikel.jobbar.text
+---
+
+<aside class="mt-12 flex flex-col gap-5 lg:mt-0 lg:sticky lg:top-6">
+  <Innehallsforteckning rubriker={rubriker} variant="sidospalt" />
+
+  {
+    sidoprodukter.length > 0 && (
+      <div class="kort sidolista">
+        <p class="etikett text-blyerts-2">Produkterna jag nämner</p>
+        {sidoprodukter.map((p) => {
+          const roll = p.ref.etikett ?? p.ref.forVem;
+          const pris = p.erbjudande?.pris;
+          const innehall = (
+            <>
+              <span>
+                {p.namn}
+                {roll && <span>{roll}</span>}
+                {p.lager && <span>{p.lager}</span>}
+              </span>
+              {typeof pris === 'number' && pris > 0 && (
+                <span>
+                  {p.slut && 'senast '}
+                  {formateraPris(pris)}
+                </span>
+              )}
+            </>
+          );
+          return p.ref.ankare ? <a href={`#produkt-${p.ref.slug}`}>{innehall}</a> : <div>{innehall}</div>;
+        })}
+        <p>{produkterFot}</p>
+      </div>
+    )
+  }
+
+  {kalkylator && <Verktygskort kalkylator={kalkylator} variant="liten" iRutnat />}
+
+  <div class="yta border-0 px-5.5 py-4 text-liten text-blyerts-2 flex flex-col gap-1.5">
+    <p class="etikett text-blyerts">Så jobbar jag</p>
+    <p class="m-0">{JOBBAR_TEXT}</p>
+    <a href="/om/sa-testar-vi/" class="lank self-start">Så testar jag</a>
+  </div>
+</aside>

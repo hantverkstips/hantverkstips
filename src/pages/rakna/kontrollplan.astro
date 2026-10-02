@@ -205,7 +205,7 @@ const illustration = verktygsillustration(SLUG);
  * små bokstäver efter den första).
  */
 const KLARTEXT =
-  'Planen har {antal} kontroller. Enligt plan- och bygglagen 10 kap. 6 § ska den visa vad som kontrolleras och av vem, vilka anmälningar som görs och nämndens besök. Avfallet får en egen plan.'; // kontrollplan.klartext
+  'Planen har {antal} kontroller. Enligt plan- och bygglagen 10 kap. 6 § ska planen visa vad som kollas och av vem, anmälningarna och nämndens besök. Sedan den 1 juli 2026 har avfallet en egen plan.'; // kontrollplan.klartext
 const klartext =
   visat?.status === 'ok'
     ? KLARTEXT.replace('{antal}', String(visat.punkter.length)).replace(

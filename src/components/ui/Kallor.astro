@@ -1,0 +1,33 @@
+---
+/**
+ * Källor sist i textspalten: H2 "Källor" i 22 px utan pennstreck och den
+ * numrerade listan. Delas av artikelmallen, testsidan och jämförelsen.
+ * Spec: docs/DESIGN.md avsnitt 6 (Källor), docs/briefer/spec-designlyft-d-2026-10-02.md 1.
+ */
+interface Props {
+  kallor: { titel: string; url?: string | undefined }[];
+}
+
+const { kallor } = Astro.props;
+---
+
+{
+  kallor.length > 0 && (
+    <section>
+      <h2 id="kallor" class="mt-10 mb-2.5 font-serif text-kortrubrik-lg">Källor</h2>
+      <ol class="kallor">
+        {kallor.map((k) => (
+          <li>
+            {k.url ? (
+              <a href={k.url} rel="nofollow" class="lank">
+                {k.titel}
+              </a>
+            ) : (
+              k.titel
+            )}
+          </li>
+        ))}
+      </ol>
+    </section>
+  )
+}

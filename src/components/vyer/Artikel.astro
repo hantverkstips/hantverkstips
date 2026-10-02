@@ -9,7 +9,6 @@ import { Image } from 'astro:assets';
 import { getEntry, render } from 'astro:content';
 import Bas from '../../layouts/Bas.astro';
 import { delningsbild } from '../../lib/delningsbild';
-import { formateraDatumKort, formateraPris } from '../../lib/format';
 import {
   arPublicerad,
   artikelUrl,
@@ -23,17 +22,7 @@ import {
 import { tillKortArtikel, tillKortKategori, type KortData } from '../../lib/kort';
 import { nivaEtikett } from '../../lib/niva';
 import { hittaPelare } from '../../lib/pelare';
-import { butikNamnEllerReserv } from '../../lib/affiliate';
-import {
-  arSlut,
-  billigasteErbjudande,
-  hamtaButik,
-  hamtaProdukt,
-  lagerlage,
-  produktNamn,
-  type Erbjudande,
-  type Lagerlage,
-} from '../../lib/produkter';
+import { hamtaButik, hamtaProdukt, produktNamn } from '../../lib/produkter';
 import { artikel as artikelData } from '../../lib/strukturdata';
 import Artikelrutnat from '../ui/Artikelrutnat.astro';
 import Brodsmulor from '../ui/Brodsmulor.astro';
@@ -45,12 +34,14 @@ import Illustration from '../ui/Illustration.astro';
 import Innehallsforteckning from '../ui/Innehallsforteckning.astro';
 import Jamforelsetabell from '../ui/Jamforelsetabell.astro';
 import Kalkylator from '../ui/Kalkylator.astro';
+import Kallor from '../ui/Kallor.astro';
 import Kopknapp from '../ui/Kopknapp.astro';
 import Kortsvarstext from '../ui/Kortsvarstext.astro';
 import Markering from '../ui/Markering.astro';
 import Pennstreck from '../ui/Pennstreck.astro';
 import Produktkort from '../ui/Produktkort.astro';
 import Rubrikrad from '../ui/Rubrikrad.astro';
+import Sidospalt from '../ui/Sidospalt.astro';
 import StrukturData from '../ui/StrukturData.astro';
 import Varning from '../ui/Varning.astro';
 import Verktygskort from '../ui/Verktygskort.astro';
@@ -113,55 +104,21 @@ const pelare = hittaPelare(d.pelare);
 const brodsmulor = await brodsmulorForArtikel(entry);
 
 /**
- * Sidospaltens produktlista: en rad per produkt som finns i databasen, med
- * redaktörens etikett (eller för vem) och billigaste pris. Raden är en
- * ankarlänk till produktens kort när kortet står sist på sidan. Ett datum som
- * står för flera priser är det äldsta erbjudandets, och butiken är dess butik
- * med samma reserv som köpknappen (spec-designlyft-b avsnitt 10.2 och 10.3).
- * En produkt som inte går att köpa får "senast" före priset och sitt
- * lagerläge under namnet, med köpknappens ord (avsnitt 10.4).
+ * Köpguidens val som chips i Kort svar: etiketten och produktens namn. Poster
+ * utan produkt i databasen hoppas över. Sidospaltens produktlista bor i
+ * Sidospalt.astro.
  */
-const LAGERORD: Record<Lagerlage, string | null> = {
-  kopbar: null,
-  restnoterad: 'Restnoterad',
-  slut: 'Slut i lager',
-  ej_bestallningsbar: 'Ej beställningsbar',
-};
-const sidoprodukter = (
-  await Promise.all(
-    produkter.map(async (p) => {
-      const produkt = await hamtaProdukt(p.slug);
-      if (!produkt) return null;
-      const erbjudande = billigasteErbjudande(produkt);
-      return {
-        ref: p,
-        namn: produktNamn(produkt),
-        erbjudande,
-        slut: arSlut(erbjudande),
-        lager: LAGERORD[lagerlage(erbjudande)],
-      };
-    }),
-  )
-).filter((p) => p !== null);
-const aldst = sidoprodukter
-  .map((p) => p.erbjudande)
-  .reduce<Erbjudande | null>(
-    (a, b) => (b && (a === null || b.uppdaterad.getTime() < a.uppdaterad.getTime()) ? b : a),
-    null,
-  );
-const PRODUKTER_FOT = 'Priserna kommer från {butik}, och det äldsta av dem läste jag den {datum}.'; // artikel.produkter.fot, med {butik} och {datum}
-const produkterFot = aldst
-  ? PRODUKTER_FOT.replace('{butik}', butikNamnEllerReserv(aldst.butikNamn)).replace(
-      '{datum}',
-      formateraDatumKort(aldst.uppdaterad),
-    )
-  : PRODUKTER_FOT;
-const JOBBAR_TEXT = 'Siffrorna för maskinerna kommer från tillverkarna, och jag har läst databladen men inte haft dem hos mig. Reklamen på sidan är märkt och styr inte vilka maskiner jag väljer.'; // artikel.jobbar.text
-
-/** Köpguidens val som chips i Kort svar: etiketten och produktens namn. */
 const val =
   typ === 'kopguide'
-    ? sidoprodukter.flatMap((p) => (p.ref.etikett ? [{ etikett: p.ref.etikett, namn: p.namn }] : []))
+    ? (
+        await Promise.all(
+          produkter.map(async (p) => {
+            if (!p.etikett) return [];
+            const produkt = await hamtaProdukt(p.slug);
+            return produkt ? [{ etikett: p.etikett, namn: produktNamn(produkt) }] : [];
+          }),
+        )
+      ).flat()
     : [];
 
 /**
@@ -310,68 +267,14 @@ const strukturdata = artikelData({
 
           {typ === 'projektguide' && <DetHarBehoverDu verktyg={behover.verktyg} material={behover.material} />}
 
-          {
-            d.kallor.length > 0 && (
-              <section>
-                <h2 id="kallor" class="mt-10 mb-2.5 font-serif text-kortrubrik-lg">Källor</h2>
-                <ol class="kallor">
-                  {d.kallor.map((k) => (
-                    <li>
-                      {k.url ? (
-                        <a href={k.url} rel="nofollow" class="lank">
-                          {k.titel}
-                        </a>
-                      ) : (
-                        k.titel
-                      )}
-                    </li>
-                  ))}
-                </ol>
-              </section>
-            )
-          }
+          <Kallor kallor={d.kallor} />
         </div>
 
-        <aside class="mt-12 flex flex-col gap-5 lg:mt-0 lg:sticky lg:top-6">
-          <Innehallsforteckning rubriker={rubriker} variant="sidospalt" />
-
-          {
-            sidoprodukter.length > 0 && (
-              <div class="kort sidolista">
-                <p class="etikett text-blyerts-2">Produkterna jag nämner</p>
-                {sidoprodukter.map((p) => {
-                  const roll = p.ref.etikett ?? p.ref.forVem;
-                  const pris = p.erbjudande?.pris;
-                  const innehall = (
-                    <>
-                      <span>
-                        {p.namn}
-                        {roll && <span>{roll}</span>}
-                        {p.lager && <span>{p.lager}</span>}
-                      </span>
-                      {typeof pris === 'number' && pris > 0 && (
-                        <span>
-                          {p.slut && 'senast '}
-                          {formateraPris(pris)}
-                        </span>
-                      )}
-                    </>
-                  );
-                  return visaProdukterna ? <a href={`#produkt-${p.ref.slug}`}>{innehall}</a> : <div>{innehall}</div>;
-                })}
-                <p>{produkterFot}</p>
-              </div>
-            )
-          }
-
-          {visaRaknare && raknare && <Verktygskort kalkylator={raknare} variant="liten" iRutnat />}
-
-          <div class="yta border-0 px-5.5 py-4 text-liten text-blyerts-2 flex flex-col gap-1.5">
-            <p class="etikett text-blyerts">Så jobbar jag</p>
-            <p class="m-0">{JOBBAR_TEXT}</p>
-            <a href="/om/sa-testar-vi/" class="lank self-start">Så testar jag</a>
-          </div>
-        </aside>
+        <Sidospalt
+          rubriker={rubriker}
+          produkter={produkter.map((p) => ({ slug: p.slug, etikett: p.etikett, forVem: p.forVem, ankare: visaProdukterna }))}
+          kalkylator={visaRaknare ? raknare : undefined}
+        />
       </div>
     </div>
   </div>

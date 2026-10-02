@@ -26,6 +26,7 @@ import {
   delbarQuery,
   KALLOR,
   krText,
+  kortsvarVarden,
   kvmText,
   raknaBadrumKostnad,
   regelKallor,
@@ -84,8 +85,15 @@ const LAS_VIDARE = [
   { href: '/badrum/golvvarme-badrum/', text: 'Välj mellan el och vatten för golvvärmen' },
 ];
 
+/* Exemplen ur den gamla Kort svar-rutan, räknade med STANDARD (SOKORDSANALYS 13). */
+const exempel = kortsvarVarden();
+
 /* Tre till fem frågor. */
 const FRAGOR = [
+  {
+    fraga: 'Vad kostar ett badrum på 4 eller 5 kvm?',
+    svar: `Med inredning i standardutförande kostar ett badrum med 5 kvm golv ${exempel.enkel5.attBetala} kr efter rotavdraget, och med dyrare blandare, badkar och möbler ${exempel.mellan5.attBetala} kr. Med 4 kvm golv blir det ${exempel.enkel4.attBetala} kr med den enklare inredningen och ${exempel.mellan4.attBetala} kr med den dyrare. Arbetet är ${exempel.andelArbete5} procent av summan. Kalkylen bakom de flesta posterna är Badrumsexperternas från 2024, och den är inte uppräknad till dagens nivå, så ett badrum i dag kan kosta mer.`,
+  },
   {
     fraga: 'Varför skiljer sig offerterna för badrummet så mycket?',
     svar: 'Oftast beror det på att de inte innehåller samma saker. En offert har rivningen och containern med, en annan inte, och en tredje räknar med att du köper porslin och blandare själv. Timpriset skiljer sig också åt, och byggstädningen står ibland med och ibland inte. Be varje firma dela upp priset på samma poster som i räknaren. Då syns det direkt var skillnaden sitter.',
@@ -200,10 +208,10 @@ const illustration = verktygsillustration(SLUG);
  * (rotavdraget, kr). Utanför intervallet står bara {yta} ifylld.
  */
 const KLARTEXT =
-  'Ett badrum med {yta} kvm golv kostar {betala} kr efter rotavdraget och {fore} kr före, räknat med offertförmedlarnas och en byggfirmas priser.'; // badrum-kostnad.klartext
+  'Ett badrum med {yta} kvm golv kostar {betala} kr efter rotavdraget och {fore} kr före, räknat främst med Badrumsexperternas kalkyl från 2024 och en byggfirmas timpris.'; // badrum-kostnad.klartext
 /* Utanför intervallet finns inget belopp, så meningen är en annan och bär bara {yta}. */
 const KLARTEXT_UTANFOR =
-  'Ett badrum på {yta} kvm ligger utanför de storlekar som offertförmedlarnas och en byggfirmas priser gäller för, så här ger jag inget belopp.';
+  'Ett badrum på {yta} kvm ligger utanför de storlekar som Badrumsexperternas kalkyl från 2024 och en byggfirmas priser gäller för, så här ger jag inget belopp.';
 const klartext = (visat.utfall === 'utanfor' ? KLARTEXT_UTANFOR : KLARTEXT).replace(
   '{betala}',
   visat.utfall === 'utanfor'

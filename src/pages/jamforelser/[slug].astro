@@ -1,38 +1,42 @@
 ---
 /**
- * Jämförelse, X mot Y. Tabellen är svaret och ligger direkt efter metaraden.
- * Se docs/SPEC-SIDMALLAR.md avsnitt 4.5.
+ * Jämförelse, X mot Y. Tabellen är svaret och står direkt efter Kort svar.
+ * Formen är artikelmallens: huvudet med byline, sidospalten från 1024 px och
+ * Läs vidare som band. Se docs/SPEC-SIDMALLAR.md avsnitt 4.5 och
+ * docs/briefer/spec-designlyft-d-2026-10-02.md avsnitt 3.
  */
 import { getEntry, render } from 'astro:content';
 import Bas from '../../layouts/Bas.astro';
 import { delningsbild } from '../../lib/delningsbild';
-import { formateraDatum, isoDatum } from '../../lib/format';
 import {
   arPublicerad,
-  artikelUrl,
   jamforelseUrl,
   kategoriUrl,
+  lasminuter,
   normaliseraProdukter,
   publicerade,
-  slugify,
-  typEtikett,
 } from '../../lib/innehall';
+import { tillKortArtikel, type KortData } from '../../lib/kort';
 import { nivaEtikett } from '../../lib/niva';
 import { hamtaButik } from '../../lib/produkter';
 import { artikel as artikelData } from '../../lib/strukturdata';
+import Artikelrutnat from '../../components/ui/Artikelrutnat.astro';
 import Brodsmulor from '../../components/ui/Brodsmulor.astro';
+import Byline from '../../components/ui/Byline.astro';
 import Faktaruta from '../../components/ui/Faktaruta.astro';
 import Faq from '../../components/ui/Faq.astro';
-import Forfattarruta from '../../components/ui/Forfattarruta.astro';
 import Illustration from '../../components/ui/Illustration.astro';
 import Innehallsforteckning from '../../components/ui/Innehallsforteckning.astro';
 import Jamforelsetabell from '../../components/ui/Jamforelsetabell.astro';
 import Kalkylator from '../../components/ui/Kalkylator.astro';
+import Kallor from '../../components/ui/Kallor.astro';
 import Kopknapp from '../../components/ui/Kopknapp.astro';
 import Kortsvarstext from '../../components/ui/Kortsvarstext.astro';
 import Markering from '../../components/ui/Markering.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
 import Produktkort from '../../components/ui/Produktkort.astro';
+import Rubrikrad from '../../components/ui/Rubrikrad.astro';
+import Sidospalt from '../../components/ui/Sidospalt.astro';
 import StrukturData from '../../components/ui/StrukturData.astro';
 import Varning from '../../components/ui/Varning.astro';
 import Verktygskort from '../../components/ui/Verktygskort.astro';
@@ -65,13 +69,29 @@ const forfattareNamn = forfattare?.data.namn ?? 'Christian';
 
 const rubriker = [
   ...headings.filter((h) => h.depth === 2).map((h) => ({ slug: h.slug, text: h.text })),
-  ...(produkter.length > 0 ? [{ slug: slugify('Produkterna vi nämner'), text: 'Produkterna vi nämner' }] : []),
+  ...(produkter.length > 0 ? [{ slug: 'produkterna-jag-namner', text: 'Produkterna jag nämner' }] : []),
 ];
 
-const relaterat = [
-  ...(await publicerade('guider')).filter((e) => e.data.kategori === d.kategori),
-  ...(await publicerade('kunskap')).filter((e) => e.data.kategori === d.kategori),
-].map((e) => ({ etikett: typEtikett(e.data.typ), namn: e.data.title, href: artikelUrl(e) }));
+/**
+ * Verktygskortet i spalten: kategorins räknare, när den inte redan står
+ * inbäddad eller som kort i brödtexten. En sida har aldrig två.
+ */
+const kropp = entry.body ?? '';
+const raknare = kategori?.data.kalkylator;
+const visaRaknare =
+  raknare !== undefined &&
+  !kropp.includes(`<Kalkylator namn="${raknare}"`) &&
+  !kropp.includes(`<Verktygskort kalkylator="${raknare}"`);
+
+// Läs vidare: guider och kunskap i samma kategori, de senaste först, högst tre.
+// Etiketten är bara typen. Färre än två: bandet utgår, som i artikelmallen.
+const utanNiva = ({ niva: _niva, ...k }: KortData): KortData => k;
+const lasVidare: KortData[] = [...(await publicerade('guider')), ...(await publicerade('kunskap'))]
+  .filter((e) => e.data.kategori === d.kategori)
+  .sort((a, b) => b.data.publicerad.getTime() - a.data.publicerad.getTime())
+  .slice(0, 3)
+  .map((e) => utanNiva(tillKortArtikel(e)));
+const visaLasVidare = lasVidare.length >= 2;
 
 /**
  * Delningsbilden i 1200 × 630, ritad ur titeln och sidans första illustration
@@ -102,124 +122,87 @@ const strukturdata = artikelData({
   butikNamn={butik?.namn}
   brodsmulor={brodsmulor}
   brodsmulorIVy={true}
-  bred={true}
+  galleri={true}
 >
   <StrukturData slot="head" data={strukturdata} />
 
-  <div class="tvaspalt">
-    <div class="lg:max-w-lasbredd">
+  <div class:list={['sidram pt-8', !visaLasVidare && 'pb-16 lg:pb-24']}>
+    <div class="tvaspalt">
       <Brodsmulor lista={brodsmulor} />
 
-      <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts">Jämförelse · {nivaEtikett(d.niva)}</p>
-      <h1 class="m-0 mt-2 font-serif text-h1 lg:text-h1-lg">{d.title}</h1>
-      <p class="m-0 mt-3 text-liten text-blyerts-2">
-        Publicerad <time datetime={isoDatum(d.publicerad)}>{formateraDatum(d.publicerad)}</time>{
-          d.uppdaterad && (
-            <>
-              , uppdaterad <time datetime={isoDatum(d.uppdaterad)}>{formateraDatum(d.uppdaterad)}</time>
-            </>
-          )
-        } · Av {forfattareNamn}
+      <p class="etikett mt-6 text-penna">
+        Jämförelse · {nivaEtikett(d.niva)}{kategoriPost && ` · ${kategoriPost.data.namn}`}
       </p>
+      <h1 class="m-0 mt-3.5 max-w-3xl font-serif text-h1 lg:text-h1-lg">{d.title}</h1>
+      <div class="mt-3.5">
+        <Byline forfattare={d.forfattare} publicerad={d.publicerad} uppdaterad={d.uppdaterad} minuter={lasminuter(kropp)} />
+      </div>
 
-      {
-        d.kortSvar && (
-          <Faktaruta variant="kortsvar">
-            <Kortsvarstext text={d.kortSvar} plats={jamforelseUrl(entry)} />
-          </Faktaruta>
-        )
-      }
+      <div class="tvaspalt-rad mt-7">
+        <div class="min-w-0">
+          {d.kortSvar && <Kortsvarstext text={d.kortSvar} plats={jamforelseUrl(entry)} />}
 
-      <Innehallsforteckning rubriker={rubriker} variant="hopfallbar" />
-    </div>
+          <Innehallsforteckning rubriker={rubriker} variant="hopfallbar" />
 
-    <Jamforelsetabell produkter={produkter.map((p) => p.slug)} kategori={d.kategori} />
+          <Jamforelsetabell produkter={produkter.map((p) => p.slug)} kategori={d.kategori} />
 
-    <div class="lg:max-w-lasbredd">
-    <div class="prosa mt-8">
-      <Content
-        components={{
-          h2: Pennstreck,
-          Faktaruta,
-          Illustration,
-          Varning,
-          Verktygskort,
-          Kalkylator,
-          Markering,
-          Kopknapp,
-          Produktkort,
-          Jamforelsetabell,
-          Faq,
-        }}
-      />
-    </div>
-
-    {
-      produkter.length > 0 && (
-        <section>
-          <Pennstreck id={slugify('Produkterna vi nämner')}>Produkterna vi nämner</Pennstreck>
-          <div class="grid gap-4">
-            {produkter.map((p) => (
-              <Produktkort
-                produkt={p.slug}
-                variant="kompakt"
-                etikett={p.etikett}
-                forVem={p.forVem}
-                modul="avslut"
-              />
-            ))}
+          <div class="prosa">
+            <Content
+              components={{
+                h2: Pennstreck,
+                Faktaruta,
+                Illustration,
+                Varning,
+                Verktygskort,
+                Kalkylator,
+                Markering,
+                Kopknapp,
+                Produktkort,
+                Jamforelsetabell,
+                Faq,
+              }}
+            />
           </div>
-        </section>
-      )
-    }
 
-    {
-      d.kallor.length > 0 && (
-        <section>
-          <Pennstreck id={slugify('Källor')}>Källor</Pennstreck>
-          <ol class="m-0 pl-6 list-decimal text-brod text-blyerts-2">
-            {d.kallor.map((k) => (
-              <li class="mb-2">
-                {k.url ? (
-                  <a
-                    href={k.url}
-                    rel="nofollow"
-                    class="lank"
-                  >
-                    {k.titel}
-                  </a>
-                ) : (
-                  k.titel
-                )}
-              </li>
-            ))}
-          </ol>
-        </section>
-      )
-    }
+          {
+            produkter.length > 0 && (
+              <section>
+                <Pennstreck id="produkterna-jag-namner">Produkterna jag nämner</Pennstreck>
+                <div class="grid gap-4">
+                  {produkter.map((p) => (
+                    <Produktkort
+                      produkt={p.slug}
+                      etikett={p.etikett}
+                      forVem={p.forVem}
+                      svaghet={p.svaghet}
+                      modul="avslut"
+                    />
+                  ))}
+                </div>
+              </section>
+            )
+          }
 
-    {
-      relaterat.length > 0 && (
-        <section>
-          <Pennstreck id={slugify('Läs vidare')}>Läs vidare</Pennstreck>
-          <ul class="m-0 p-0 list-none">
-            {relaterat.map((r) => (
-              <li class="border-t border-linje py-3">
-                <p class="m-0 text-etikett uppercase text-blyerts">{r.etikett}</p>
-                <a
-                  href={r.href}
-                  class="inline-flex min-h-11 items-center lank"
-                >
-                  {r.namn}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )
-    }
+          <Kallor kallor={d.kallor} />
+        </div>
 
-      <Forfattarruta forfattare={d.forfattare} publicerad={d.publicerad} uppdaterad={d.uppdaterad} />
+        <Sidospalt
+          rubriker={rubriker}
+          produkter={produkter.map((p) => ({ slug: p.slug, etikett: p.etikett, forVem: p.forVem, ankare: true }))}
+          kalkylator={visaRaknare ? raknare : undefined}
+        />
+      </div>
     </div>
   </div>
+
+  {
+    visaLasVidare && (
+      <section class="band mt-14">
+        <div class="sidram py-12 lg:py-14">
+          <Rubrikrad id="las-vidare" rubrik="Läs vidare" />
+          <Artikelrutnat kort={lasVidare} visaBeskrivning={false} visaMeta={false} />
+        </div>
+      </section>
+    )
+  }
 </Bas>

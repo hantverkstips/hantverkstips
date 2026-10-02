@@ -27,6 +27,7 @@ import {
   harBelopp,
   KALLOR,
   kallradRegel,
+  kortsvarVarden,
   kronor,
   m2Text,
   meterText,
@@ -89,8 +90,15 @@ const LAS_VIDARE = [
   { href: '/rakna/fasadyta/', text: 'Färgen till fasaden och gavelspetsarna' },
 ];
 
+/* Exemplen ur den gamla Kort svar-rutan, räknade med STANDARD (SOKORDSANALYS 13). */
+const exempel = kortsvarVarden();
+
 /* Tre till fem frågor. */
 const FRAGOR = [
+  {
+    fraga: 'Vad kostar tegel och plåt jämfört med betongpannor?',
+    svar: `På ett hus med ${exempel.bottenyta} m² bottenyta och ${exempel.takarea} m² tak betalar du ${exempel.betong.attBetala} kr efter rotavdraget med betongpannor för ${exempel.betong.prisKvm} kr per kvadratmeter. Tegelpannor för ${exempel.tegel.prisKvm} kr per kvadratmeter ger ${exempel.tegel.attBetala} kr, och bandtäckt plåt för ${exempel.bandplat.prisKvm} kr per kvadratmeter landar på ${exempel.bandplat.attBetala} kr. Pannpriserna kommer från Takexperter och plåtpriset från Hantverkskollen och Totalbyggarna, alla hämtade 2026.`,
+  },
   {
     fraga: 'Går det att räkna på ett valmat tak?',
     svar: 'Inte här. Priserna jag har gäller sadeltak, och två av källorna skriver att ett valmat tak eller ett mansardtak blir dyrare, men inte hur mycket. Ytan går att räkna ut på samma sätt om alla takfall lutar lika mycket, men beloppet skulle bli för lågt, så för ett valmat tak är en offert det enda som ger ett riktigt tal.',
@@ -179,7 +187,7 @@ const illustration = verktygsillustration(SLUG);
  * Utan belopp (utanför eller för flack lutning) är {pris} tom.
  */
 const KLARTEXT =
-  'Ett hus på {langd} × {bredd} m med {vinkel} graders taklutning har {takarea} m² tak, och ett nytt tak kostar {pris} kr efter rotavdraget, räknat med offertförmedlares och leverantörers priser.'; // takbyte.klartext
+  'Ett hus på {langd} × {bredd} m med {vinkel} graders taklutning har {takarea} m² tak, och ett nytt tak kostar {pris} kr efter rotavdraget, räknat med bland annat Takexperters priser för 2026.'; // takbyte.klartext
 /* Utan belopp (utanför eller för flack lutning) står bara takarean. */
 const KLARTEXT_UTAN_PRIS =
   'Ett hus på {langd} × {bredd} m med {vinkel} graders taklutning har {takarea} m² tak längs lutningen, räknat från husets mått och takutsprången.';

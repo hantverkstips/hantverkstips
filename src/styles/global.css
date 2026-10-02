@@ -256,39 +256,6 @@ body {
     box-decoration-break: clone;
   }
 
-  /* Linjerat papper. Bakgrund för faktarutor, "Kort svar" och kalkylatorer:
-     papper-2 med en linje var 24:e px och en röd marginallinje till vänster.
-     Texten sätts med radavstånd 24 px så att raderna landar på linjerna.
-     Innehållet börjar till höger om marginallinjen. */
-  .linjerat {
-    background-color: var(--color-papper-2);
-    background-image:
-      linear-gradient(
-        to right,
-        color-mix(in srgb, var(--color-penna) 35%, transparent) 0,
-        color-mix(in srgb, var(--color-penna) 35%, transparent) 1px,
-        transparent 1px
-      ),
-      repeating-linear-gradient(
-        to bottom,
-        transparent 0,
-        transparent 23px,
-        var(--color-linje) 23px,
-        var(--color-linje) 24px
-      );
-    background-repeat: no-repeat, repeat;
-    background-position: 24px 0, 0 16px;
-    padding: 16px 16px 16px 40px;
-    line-height: 24px;
-    border-radius: var(--radius-sm);
-  }
-  @media (min-width: 64rem) {
-    .linjerat {
-      background-position: 32px 0, 0 0;
-      padding: 24px 24px 24px 48px;
-    }
-  }
-
   /*
     Artikelkortet. Ett kort (.kort nedan) med bilden i en pappersruta. Hela
     kortet är klickbart genom att rubrikens länk får en ::after som täcker
@@ -1293,14 +1260,6 @@ body {
   .prosa li + li {
     margin-top: 8px;
   }
-  /* Inuti linjerat papper går alla avstånd i multiplar av 24 px, annars
-     glider texten av linjerna. Se DESIGN.md avsnitt 2, sista punkten. */
-  .linjerat .prosa > * + * {
-    margin-top: 24px;
-  }
-  .linjerat .prosa li + li {
-    margin-top: 0;
-  }
   .prosa h3 {
     font-family: var(--font-sans);
     font-size: var(--text-h3);
@@ -1406,13 +1365,14 @@ body {
      scrollar den i behållaren som förut. fit-content med min-width 100% gör att
      smala tabeller ser ut precis som förut. */
   @media (min-width: 64rem) {
-    .tvaspalt-rad .prosa .brodtabell-block {
+    .tvaspalt-rad .prosa .brodtabell-block,
+    .tvaspalt-rad .tabell-block {
       width: fit-content;
       min-width: 100%;
       max-width: calc(100% + 3rem);
     }
     /* En tabell inne i en faktaruta stannar i rutan. */
-    .linjerat .prosa .brodtabell-block,
+    .blad .tabell-block,
     .blad .prosa .brodtabell-block {
       width: auto;
       min-width: 0;
@@ -1492,6 +1452,25 @@ body {
   .prosa .brodtabell thead th {
     background-color: var(--color-papper-2);
     font-weight: 700;
+  }
+  /* Testsidans omdömes- och specifikationstabell: samma yta som brödtabellerna,
+     1 px linje runt varje cell och tabellhuvudet i papper-2. De står utanför
+     .prosa och får därför en egen klass. Spec: spec-designlyft-d avsnitt 2. */
+  .ramtabell {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-liten);
+    line-height: var(--text-liten--line-height);
+    font-variant-numeric: tabular-nums;
+  }
+  .ramtabell :is(th, td) {
+    padding: 12px;
+    text-align: left;
+    vertical-align: top;
+    border: 1px solid var(--color-linje);
+  }
+  .ramtabell thead th {
+    background-color: var(--color-papper-2);
   }
   /* Jämförelsetabellen: samma ram runt varje cell (fas B 1.2). Dess behållare
      har ramen runt hela tabellen, så tabellens yttre kant döljs. */
