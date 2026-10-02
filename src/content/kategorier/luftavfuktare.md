@@ -40,12 +40,15 @@ val:
   - produkt: woods-sw39fw
     etikett: Källare som håller 15 grader
     forVem: En källare på upp till 40 kvm som håller minst 15 grader och har 60 till 70 procent luftfuktighet, men ingen golvbrunn. Tanken rymmer 11,4 liter och töms för hand.
+    svaghet: "Butiken anger 19 liter per dygn men inte vid vilken temperatur och luftfuktighet, och vid 15 grader blir det enligt min räkning knappt 6 liter."
   - produkt: acetec-evodry-6h-2
     etikett: Källare under 10 grader
     forVem: En källare som är kallare än 10 grader under de fuktiga månaderna. Maskinen blåser ut den fuktiga luften genom en slang, så du behöver ta upp ett hål i ytterväggen.
+    svaghet: "Den drar 530 W, och slangen på 1,5 meter kräver ett hål på cirka 70 mm i en yttervägg nära maskinen."
   - produkt: woods-mdk21
     etikett: Källare med golvbrunn
     forVem: En källare som håller minst 15 grader och har golvbrunn. Tanken rymmer bara 4 liter, så vattnet behöver gå i slang till brunnen. Maskinen kostar mindre än Wood's SW39FW.
+    svaghet: "Den slutar avfukta under plus 5 grader, och kylkretsen innehåller propan, så rummet får inte värmas med elelement eller värmefläkt."
 kopguide: /fukt/avfuktare-kallare/
 kalkylator: avfuktare
 forfattare: christian

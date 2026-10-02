@@ -35,12 +35,15 @@ val:
   - produkt: bosch-gll-2-10
     etikett: Kryss för en vägg i taget
     forVem: Kakel eller en rad överskåp på en vägg inomhus, där lasern står högst 10 meter från väggen.
+    svaghet: "Den saknar läge för en mottagare, så räckvidden stannar vid 10 meter även ute."
   - produkt: bosch-advancedlevel-360
     etikett: Linje runt hela rummet
     forVem: Skåp runt hela köket eller en höjdlinje för ett undertak, i ett rum där ingen vägg ligger mer än 12 meter från lasern.
+    svaghet: "Noggrannheten är 0,4 mm per meter, något sämre än hos de flesta lasrarna i jämförelsen, och lasern saknar läge för en mottagare."
   - produkt: bosch-gcl-2-50-g
     etikett: Kryss med lodpunkter
     forVem: Den som bygger en innervägg. Punkterna visar var regeln i taket ska sitta, rakt ovanför regeln på golvet, och de gröna linjerna syns även i ett ljust rum.
+    svaghet: "Lodpunkterna har en noggrannhet på 0,7 mm per meter, sämre än linjernas, och någon drifttid för batteriet har jag inte hittat hos Bosch."
 forfattare: christian
 uppdaterad: 2026-09-30
 utkast: false
