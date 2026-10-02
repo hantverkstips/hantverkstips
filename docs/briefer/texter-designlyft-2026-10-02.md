@@ -111,3 +111,27 @@ Spec: `docs/briefer/spec-designlyft-c-2026-10-02.md`. Räknarnas svarsyta ersät
 - `daggpunkt.matare.etikett`: "Luften intill ytan"
 - `daggpunkt.klartext`: "Vid {temp} grader och {rf} procent luftfuktighet är daggpunkten {daggpunkt} grader, räknat med Magnus-formeln. Den kallaste ytan håller {kalla} grader."
 - Därtill: `KORT_SVAR_YTA` i statusraden säger nu "än daggpunkten" i stället för "än så", eftersom raden står under mätaren och inte längre efter daggpunktsmeningen. Så räknar jag-stycket säger att osäkerheten står "i tabellen nedanför".
+
+### Steg 2, avfuktare, elkostnad, u-värde, källaren, dränering
+
+| Nyckel | Fil | Var och vad | Platshållare | Längd |
+|---|---|---|---|---|
+| `avfuktare.svar.vad` | `src/pages/rakna/avfuktare.astro` | Raden under "liter per dygn" bredvid det stora talet: vad talet är (ersätter etiketten "Minst") | inga | högst 30 tecken |
+| `avfuktare.klartext` | samma | Meningen sist i svarsytan med talet, villkoret och källan | `{liter}`, `{typ}` (kondensavfuktare eller sorptionsavfuktare), `{volym}` (m³), `{temp}` (grader) | högst 200 tecken |
+| `elkostnad.klartext` | `src/pages/rakna/elkostnad.astro` | Samma, maskinläget (tvättläget har redan sin mening) | `{kwh}`, `{kr}`, `{dagar}`, `{effekt}` (W), `{timmar}` per dygn, `{elpris}` kr per kWh | högst 200 tecken |
+| `u-varde.klartext` | `src/pages/rakna/u-varde.astro` | Samma | `{u}`, `{del}`, `{krav}`, `{ytan}` (m²) | högst 200 tecken |
+| `kallare.klartext` | `src/pages/rakna/kallare.astro` | Samma, med diagnosen i stället för ett tal | `{orsak}`, `{grans}` (75 % RF) | högst 200 tecken |
+| `dranering.klartext` | `src/pages/rakna/dranering.astro` | Samma | `{lag}` och `{hog}` (arbetet i kr), `{lopmeter}`, `{krPerMeter}`, `{djup}` (m) | högst 200 tecken |
+
+Meningar ur de borttagna Kort svar-rutorna står i UX-rapporten för steg 2. Hantverkaren avgör om något av det ska in i klartextmeningen eller i Därför blev svaret så. Stycket "Själva formeln har jag inte räknat fram själv …" på daggpunkten står nu under tabellen, och dess hänvisning behöver skrivas om.
+
+### Fas C steg 2, skrivet av hantverkaren 2026-10-02
+
+- `avfuktare.svar.vad`: "lägsta märkning på lådan"
+- `avfuktare.klartext`: "Ett utrymme på {volym} m³ vid {temp} grader behöver en {typ} som är märkt för minst {liter} liter per dygn, för att hålla 55 procent luftfuktighet i augusti, räknat med SMHI:s tal för uteluften."
+- `elkostnad.klartext`: "En maskin på {effekt} W som går {timmar} timmar om dygnet drar {kwh} kWh på {dagar} dagar, och med elpriset {elpris} kr per kWh kostar det {kr}."
+- `u-varde.klartext`: "U-värdet blir {u} W/m²K, och Boverkets krav för den här delen av huset är {krav} W/m²K vid en ombyggnad, enligt de nya reglerna."
+- `kallare.klartext`: "Bedömningen ”{orsak}” bygger på tecknen du kryssat i och på tejptestet, om du har gjort det. Hygrometerns tal jämförs med Boverkets gräns på {grans} procent för fukt i väggar och trä."
+- `dranering.klartext`: "Med {lopmeter} löpmeter runt huset och {djup} meters schaktdjup kostar arbetet {lag} till {hog} kr, räknat på Villaägarnas {krPerMeter} kr per löpmeter."
+- Källaren: tejptestets avläsning och "Köp ingenting förrän plasten har svarat" ur den borttagna Kort svar-rutan står nu i regeln för ej gjort tejptest i `kallare.ts` (Därför blev svaret så).
+- Daggpunkten: "tabellen nedanför" är nu "tabellen ovanför".

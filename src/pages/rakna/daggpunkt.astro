@@ -678,13 +678,6 @@ const lasVidare: KortData[] = LAS_VIDARE.flatMap((href) => {
         letar jag upp den yttemperatur som ger 75 procent med den luft du har i dag.
       </li>
     </ol>
-
-    <p class="m-0 mt-4 text-liten text-blyerts-2">
-      Själva formeln har jag inte räknat fram själv. Den är hämtad rakt av från Lawrence 2005, och osäkerheten på 0,35 grader i
-      tabellen nedanför är också hans. De tre yttemperaturerna i hjälptexten är däremot mina egna antaganden och inga mätningar,
-      så mät din egen vägg med en IR-termometer om du kan. Hur jag skiljer på läst och mätt står på sidan{' '}
-      <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar jag</a>.
-    </p>
   </Fragment>
 
   <Fragment slot="efter">
@@ -723,6 +716,14 @@ const lasVidare: KortData[] = LAS_VIDARE.flatMap((href) => {
           </tbody>
         </table>
       </Tabellyta>
+
+      {/* Ur kortet Så räknar jag, direkt under tabellen (spec-designlyft-c avsnitt 10). Hänvisningen skrivs om av hantverkaren. */}
+      <p class="m-0 mt-4 text-liten text-blyerts-2">
+        Själva formeln har jag inte räknat fram själv. Den är hämtad rakt av från Lawrence 2005, och osäkerheten på 0,35 grader i
+        tabellen ovanför är också hans. De tre yttemperaturerna i hjälptexten är däremot mina egna antaganden och inga mätningar,
+        så mät din egen vägg med en IR-termometer om du kan. Hur jag skiljer på läst och mätt står på sidan{' '}
+        <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar jag</a>.
+      </p>
     </section>
 
     {

@@ -10,8 +10,9 @@
  */
 export const prerender = false;
 
-import Bas from '../../layouts/Bas.astro';
 import { formateraTal } from '../../lib/format';
+import { artikelUrl, kategoriUrl, publicerade } from '../../lib/innehall';
+import { tillKortArtikel, tillKortKategori, type KortData } from '../../lib/kort';
 import {
   fuktnivaEtikett,
   raknaAvfuktare,
@@ -20,19 +21,19 @@ import {
   type AvfuktareResultat,
 } from '../../lib/kalkyl/avfuktare';
 import { produktForval, raknaElkostnad, STANDARD as EL_STANDARD } from '../../lib/kalkyl/elkostnad';
-import { CELL_KLASS, ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
+import { CELL_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
 import { hamtaButik, lagstaPris, produktNamn, produkterIKategori } from '../../lib/produkter';
-import { verktyg } from '../../lib/strukturdata';
-import { verktygsDelningsbild, verktygsillustration, verktygsVarumarkesbild } from '../../lib/verktygsbild';
+import { verktygsillustration } from '../../lib/verktygsbild';
 import AvfuktareForm from '../../components/kalkyl/AvfuktareForm.astro';
+import Artikelrutnat from '../../components/ui/Artikelrutnat.astro';
 import Faktaruta from '../../components/ui/Faktaruta.astro';
 import Faq from '../../components/ui/Faq.astro';
-import Markering from '../../components/ui/Markering.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
 import Produktkort from '../../components/ui/Produktkort.astro';
-import StrukturData from '../../components/ui/StrukturData.astro';
+import Svarstal from '../../components/ui/Svarstal.astro';
 import Tabellyta from '../../components/ui/Tabellyta.astro';
 import Illustration from '../../components/ui/Illustration.astro';
+import Raknarsida from '../../components/vyer/Raknarsida.astro';
 
 Astro.locals.sidtyp = 'verktyg';
 
@@ -241,153 +242,232 @@ const SLUG = 'avfuktare';
 const VERKTYGSNAMN = 'Avfuktarkalkylator';
 const BESKRIVNING =
   'Räkna ut hur många liter per dygn din avfuktare måste klara i just ditt utrymme, och se vilka maskiner som klarar det när källaren är sval.';
+/** Skissen står i kortet Så räknar jag. Huvudet har ingen bild sedan fas C (DESIGN.md 5.8). */
 const illustration = verktygsillustration(SLUG);
-/**
- * Varumärkesbilden i sidhuvudet, sedan 2026-09-19 (docs/DESIGN.md avsnitt 7).
- * Finns den står skissen i stället i "Så räknar vi", där måtten förklarar
- * räkningen. Finns den inte visas skissen i sidhuvudet som förut.
+
+/*
+ * Svarsytan, fas C (spec-designlyft-c-2026-10-02 avsnitt 10). Ny text är
+ * hantverkarens. Klartexten har platshållarna {liter} (märkt kapacitet),
+ * {typ} (kondensavfuktare eller sorptionsavfuktare), {volym} (m³) och {temp}
+ * (graderna räkningen gjordes vid).
  */
-const varumarke = verktygsVarumarkesbild(SLUG);
-const huvudbild = varumarke ?? illustration;
+const SVAR_VAD = 'lägsta märkning på lådan'; // avfuktare.svar.vad
+const KLARTEXT =
+  'Ett utrymme på {volym} m³ vid {temp} grader behöver en {typ} som är märkt för minst {liter} liter per dygn, för att hålla 55 procent luftfuktighet i augusti, räknat med SMHI:s tal för uteluften.'; // avfuktare.klartext
+const klartext =
+  visat.status === 'ok'
+    ? KLARTEXT.replace('{liter}', String(visat.marktKapacitetLiter))
+        .replace('{typ}', visat.typ === 'kondens' ? 'kondensavfuktare' : 'sorptionsavfuktare')
+        .replace('{volym}', formateraTal(visat.volymM3, 1))
+        .replace('{temp}', String(visat.temperaturC))
+    : '';
+
+/**
+ * Läs vidare som kort: sidorna den förra listan pekade på, i samma ordning.
+ * Kategorisidan får kategorikortet, artiklarna artikelkortet.
+ */
+const LAS_VIDARE = ['/luftavfuktare/', '/fukt/avfuktare-kallare/', '/fukt/sorptionsavfuktare/', '/fukt/avfuktare-garage/'];
+const artiklar = [...(await publicerade('guider')), ...(await publicerade('kunskap'))];
+const kategorier = await publicerade('kategorier');
+const lasVidare: KortData[] = [];
+for (const href of LAS_VIDARE) {
+  const k = kategorier.find((e) => kategoriUrl(e.id) === href);
+  if (k) {
+    lasVidare.push(await tillKortKategori(k));
+    continue;
+  }
+  const e = artiklar.find((a) => artikelUrl(a) === href);
+  if (!e) continue;
+  const { niva: _niva, ...kort } = tillKortArtikel(e);
+  lasVidare.push(kort);
+}
 ---
 
-<Bas
-  title={titel}
-  description={BESKRIVNING}
+<Raknarsida
+  slug={SLUG}
+  namn={VERKTYGSNAMN}
+  titel={titel}
+  beskrivning={BESKRIVNING}
+  rubrik="Hur stor avfuktare behöver du?"
   reklam={true}
   butikNamn={butik?.namn}
-  brodsmulor={[
-    { namn: 'Hantverkstips', href: '/' },
-    { namn: 'Räkna själv', href: '/rakna/' },
-    { namn: VERKTYGSNAMN },
-  ]}
-  bred={true}
-  ogBild={verktygsDelningsbild(SLUG)}
+  delaUrl={delaLank}
+  saRaknarRubrik="Så räknar jag om märkt kapacitet till verklig"
 >
-  <StrukturData
-    slot="head"
-    data={verktyg({ url: `/rakna/${SLUG}/`, namn: VERKTYGSNAMN, beskrivning: BESKRIVNING })}
-  />
+  <p slot="ingress">
+    Storleken på avfuktaren hänger på hur mycket vatten som kommer in i utrymmet varje dygn, och det räknar
+    jag ut åt dig ur golvytan, takhöjden och hur fuktigt det är i dag. Svaret får du som liter per dygn, och
+    jag räknar om det till talet som ska stå på lådan, eftersom tillverkaren mäter i ett klimat som en svensk
+    källare aldrig har. Ta det som ett minsta krav med marginal.
+  </p>
 
-  <div class="mx-auto w-full max-w-lasbredd">
-    {/*
-      Sidhuvudet: rubrik och ingress till vänster i 7/12, bilden till höger i
-      5/12 på desktop, under ingressen på mobil. Bilden är dekorativ, H1 bär
-      betydelsen, därför tom alt. Den är sidans LCP-bild och laddas därför
-      eagert med fetchpriority. Varumärkesbilden har transparent bakgrund och
-      ligger som heron utan ram; skissen är ett urklipp och får ramen. Saknas
-      båda visas ingen bild alls.
-    */}
-    <section class="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-8">
-      <div class="lg:col-span-7">
-        <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">Hur stor avfuktare behöver du?</h1>
-        <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
-          Storleken på avfuktaren hänger på hur mycket vatten som kommer in i utrymmet varje dygn, och det räknar
-          jag ut åt dig ur golvytan, takhöjden och hur fuktigt det är i dag. Svaret får du som liter per dygn, och
-          jag räknar om det till talet som ska stå på lådan, eftersom tillverkaren mäter i ett klimat som en svensk
-          källare aldrig har. Ta det som ett minsta krav med marginal.
+  {/* Formuläret ligger i src/components/kalkyl/AvfuktareForm.astro, så att
+      <Kalkylator namn="avfuktare" /> i en artikel visar exakt samma fält. */}
+  <AvfuktareForm slot="formular" indata={indata} varden={{ yta: ytaVarde, takhojd: takhojdVarde }} fel={fel} />
+
+  {
+    resultat.status === 'utanfor' ? (
+      /* Utanför intervall: beskedet i stället för talet (DESIGN.md 5.8). */
+      <Fragment slot="svar">
+        <p class="text-brod">{resultat.text}</p>
+        <p>
+          <a href="/fukt/" class={LANK_KLASS}>Läs mer om fukt i huset</a>
         </p>
-      </div>
-
-      {
-        huvudbild && (
-          <div class="lg:col-span-5">
-            <img
-              src={huvudbild.src}
-              alt=""
-              width={huvudbild.width}
-              height={huvudbild.height}
-              fetchpriority="high"
-              decoding="async"
-              class:list={['block h-auto w-full', !varumarke && 'rounded-sm border border-linje']}
-            />
+      </Fragment>
+    ) : (
+      visat.status === 'ok' && (
+        <Fragment slot="svar">
+          {resultat.status === 'ogiltig' && (
+            <p class="text-liten text-varning">
+              Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.
+            </p>
+          )}
+          <Svarstal tal={String(visat.marktKapacitetLiter)} enhet="liter per dygn" vad={SVAR_VAD} />
+          <div class="text-brod">
+            <p class="font-bold">{beskedRubrik}</p>
+            <p>{beskedRad}</p>
           </div>
-        )
-      }
+          <p class="text-liten text-blyerts">{klartext}</p>
+        </Fragment>
+      )
+    )
+  }
+
+  {
+    visat.status === 'ok' && (
+      <Fragment slot="darfor">
+        <Pennstreck id="darfor-blev-svaret-sa" utanLuft>
+          Därför blev svaret så
+        </Pennstreck>
+        <div class="darfor">
+          {/* Raderna under talet i den förra resultatspalten. */}
+          <div>
+            <p>
+              Det är talet på lådan, som tillverkaren mätt vid {visat.kapacitetVillkor}. I ditt utrymme vid{' '}
+              {visat.temperaturC} grader motsvarar det ungefär {visat.literPerDygnVerklig} liter om dygnet.
+            </p>
+          </div>
+          <div>
+            <p>
+              Räknat på {formateraTal(visat.volymM3, 1)} m³ och{' '}
+              {fuktnivaEtikett(visatIndata.fuktniva).split(',')[0]} i dag.
+            </p>
+          </div>
+          <div>
+            <p>
+              Omräkningen från lådans siffra till din källare är det osäkraste i hela räkningen, så läs talet
+              som {visat.marktIntervall[0]} till {visat.marktIntervall[1]} liter.
+            </p>
+          </div>
+        </div>
+      </Fragment>
+    )
+  }
+
+  <Fragment slot="saRaknarJag">
+    {
+      illustration && (
+        <div class="pappersruta">
+          <Illustration
+            namn="rakna/avfuktare"
+            alt="Källare i genomskärning med måttsatt takhöjd, droppar på väggen och en avfuktare på golvet."
+            bildtext="Skissen visar det verktyget räknar på: rummets volym med 2,2 meter i tak, fukten som kommer in genom väggen och in med luften, och maskinen på golvet som ska ta bort den."
+            class="my-0!"
+          />
+        </div>
+      )
+    }
+    <p class="m-0 mt-4 text-brod">
+      Det första att förstå är att luften som redan står i rummet inte är problemet. En källare på 96 m³ vid 15
+      grader och 75 procent luftfuktighet bär 0,9 liter vatten, och att ta ner den till 55 procent betyder ett par
+      deciliter för maskinen, en gång. Storleken styrs i stället av vattnet som kommer in varje dygn, genom väggen
+      och med uteluften. Så jag räknar på augusti, som är den värsta månaden, och så här går det till.
+    </p>
+    <ol class="m-0 mt-4 pl-6 list-decimal text-brod">
+      <li class="mb-2">
+        Golvytan gånger takhöjden ger volymen. 40 kvm med 2,4 meter i tak blir 96 m³.
+      </li>
+      <li class="mb-2">
+        Temperaturen du valde sätter vilken temperatur jag räknar på, 15 grader för ett uppvärmt utrymme och 10
+        för ett ouppvärmt. Magnus-formeln säger hur mycket vatten luften rymmer vid den temperaturen, och målet är
+        att ligga på 55 procent av det.
+      </li>
+      <li class="mb-2">
+        Först tar jag ut det vatten som redan står i luften. Det är skillnaden mellan din fuktnivå och 55
+        procent, ett par deciliter som tas en gång.
+      </li>
+      <li class="mb-2">
+        Sedan uteluften. Ett halvt luftbyte i timmen bär in augustiluft med 10 gram vatten per kubikmeter, och ju
+        kallare utrymmet är, desto mer av det vattnet blir över när luften kylts. Det är därför ett kallt utrymme
+        blir fuktigare av att du vädrar det på sommaren.
+      </li>
+      <li class="mb-2">
+        Sedan marken. Varje kvadratmeter golv släpper upp 10, 40 eller 100 gram per dygn beroende på vilken
+        fuktnivå du valde.
+      </li>
+      <li class="mb-2">
+        De tre posterna lägger jag ihop och multiplicerar med 1,3, så att maskinen klarar dygnets vatten på
+        ungefär 18 timmar och hygrostaten hinner stänga av den emellanåt.
+      </li>
+      <li>
+        Till sist räknar jag om talet till det som står på lådan. Tillverkarna mäter en kondensmaskin vid 30
+        grader och 80 procent luftfuktighet, och så är det aldrig i en svensk källare. Vid 15 grader ger en
+        kondensmaskin ungefär 30 procent av sin märkta kapacitet. En sorptionsmaskin mäts vid 20 grader och 60
+        procent, och den ger ungefär 80 procent av sin siffra vid 10 grader. Så när du väljer mellan sorption
+        och kondens är det temperaturen i utrymmet du ska titta på.
+      </li>
+    </ol>
+  </Fragment>
+
+  <Fragment slot="efter">
+    {/* Antagandetabellen i läsbredd, ur kortet Så räknar jag (spec-designlyft-c avsnitt 9). */}
+    <section class="max-w-lasbredd">
+      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad siffrorna vilar på</h3>
+      <Tabellyta kolumner={3} class="mt-4">
+        <table class="w-full border-collapse text-liten tabular-nums">
+          <caption class="sr-only">Antaganden och källor i avfuktarkalkylatorn</caption>
+          <thead>
+            <tr class="border-b border-linje text-left">
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Vad</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Jag räknar med</th>
+              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Källa eller antagande</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              antaganden.map((a) => (
+                <tr>
+                  <th scope="row" class:list={[CELL_KLASS, 'text-left font-normal']}>
+                    {a.storhet}
+                  </th>
+                  <td class={CELL_KLASS}>{a.varde}</td>
+                  <td class={CELL_KLASS}>
+                    {a.grund}.{' '}
+                    {a.url ? (
+                      <a href={a.url} rel="nofollow" class={LANK_KLASS}>
+                        {a.stod}
+                      </a>
+                    ) : (
+                      a.stod
+                    )}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </Tabellyta>
+
+      <p class="m-0 mt-6 text-brod lg:text-brod-lg">
+        I höst står en avfuktare i en riktig källare i sju dygn, med liter i tanken och elmätaren avlästa varje
+        morgon. Det är det enda sättet att få veta om marginalen 1,3 är rätt, och om fukten upp ur marken verkligen
+        ligger på de 10 och 40 gram jag gissat. Tills dess är de två raderna, och kondensmaskinens 30 procent vid 15
+        grader, räkningens svagaste punkter. Läs mer om vad som är läst och vad som är mätt på sidan{' '}
+        <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar jag</a>.
+      </p>
     </section>
 
-    <div class="linjerat mt-8 lg:grid lg:grid-cols-2 lg:gap-8">
-      {/* Formuläret ligger i src/components/kalkyl/AvfuktareForm.astro, så att
-          <Kalkylator namn="avfuktare" /> i en artikel visar exakt samma fält. */}
-      <AvfuktareForm indata={indata} varden={{ yta: ytaVarde, takhojd: takhojdVarde }} fel={fel} />
-
-      <div class="mt-8 border-t border-linje pt-6 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
-        {
-          resultat.status === 'utanfor' ? (
-            /* Ingen rubrik: rutan står före sidans första H2 och en H3 här
-               skulle ge fel rubrikordning. */
-            <Faktaruta>
-              <p class="m-0 leading-6">{resultat.text}</p>
-              <p class="m-0 leading-6">
-                <a href="/fukt/">Läs mer om fukt i huset</a>
-              </p>
-            </Faktaruta>
-          ) : (
-            visat.status === 'ok' && (
-              <>
-                {resultat.status === 'ogiltig' && (
-                  <p class="m-0 mb-2 text-liten text-varning">
-                    Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.
-                  </p>
-                )}
-                {/* Beskedet står först: vilken maskin du ska köpa. Räkningen
-                    bakom står under verktyget. */}
-                <p class="m-0 font-sans text-h3 lg:text-h3-lg font-bold text-blyerts">{beskedRubrik}</p>
-                <p class="m-0 mt-1 text-brod">{beskedRad}</p>
-
-                <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">Minst</p>
-                {/* Enheten står på samma rad som talet, på talets baslinje
-                    (DESIGN.md avsnitt 5.8). Radbryter på smal skärm. */}
-                <p class="m-0 mt-1 flex flex-wrap items-baseline gap-x-2">
-                  <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
-                    <Markering>{visat.marktKapacitetLiter}</Markering>
-                  </span>
-                  <span class="text-ingress lg:text-ingress-lg">liter per dygn</span>
-                </p>
-                <p class="m-0 mt-2 text-liten text-blyerts-2">
-                  Det är talet på lådan, som tillverkaren mätt vid {visat.kapacitetVillkor}. I ditt utrymme vid{' '}
-                  {visat.temperaturC} grader motsvarar det ungefär {visat.literPerDygnVerklig} liter om dygnet.
-                </p>
-                <p class="m-0 mt-1 text-liten text-blyerts-2">
-                  Räknat på {formateraTal(visat.volymM3, 1)} m³ och{' '}
-                  {fuktnivaEtikett(visatIndata.fuktniva).split(',')[0]} i dag.
-                </p>
-                <p class="m-0 mt-4 text-brod">
-                  Omräkningen från lådans siffra till din källare är det osäkraste i hela räkningen, så läs talet
-                  som {visat.marktIntervall[0]} till {visat.marktIntervall[1]} liter.
-                </p>
-                <p class="m-0 mt-2">
-                  <a href="#sa-raknar-vi" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
-                    Så räknar jag
-                  </a>
-                </p>
-
-                {/* Dela. Uträkningen står i adressen, så ett skrivskyddat fält
-                    räcker: markera och kopiera fungerar utan en rad JavaScript.
-                    En kopieringsknapp kan komma senare som React-ö. */}
-                <div class="mt-4 border-t border-linje pt-4">
-                  <label for="dela" class={ETIKETT_KLASS}>
-                    Dela uträkningen
-                  </label>
-                  <input
-                    id="dela"
-                    type="text"
-                    readonly
-                    value={delaLank}
-                    class:list={[FALT_KLASS, 'border-blyerts-2']}
-                  />
-                  <p class="m-0 mt-1 text-liten text-blyerts-2">
-                    Dina värden ligger i adressen. Markera den och kopiera, så får den du skickar länken till samma svar.
-                  </p>
-                </div>
-              </>
-            )
-          )
-        }
-      </div>
-    </div>
-
-    <section>
+    <section class="max-w-lasbredd">
       <Pennstreck id="produkter-som-klarar-det">Produkter som klarar det</Pennstreck>
       {
         traffar.length > 0 ? (
@@ -435,129 +515,17 @@ const huvudbild = varumarke ?? illustration;
       </p>
     </section>
 
-    <section>
-      <Pennstreck id="sa-raknar-vi">Så räknar jag om märkt kapacitet till verklig</Pennstreck>
-      {
-        varumarke && illustration && (
-          <Illustration
-            namn="rakna/avfuktare"
-            alt="Källare i genomskärning med måttsatt takhöjd, droppar på väggen och en avfuktare på golvet."
-            bildtext="Skissen visar det verktyget räknar på: rummets volym med 2,2 meter i tak, fukten som kommer in genom väggen och in med luften, och maskinen på golvet som ska ta bort den."
-          />
-        )
-      }
-      <p class="m-0 text-brod lg:text-brod-lg">
-        Det första att förstå är att luften som redan står i rummet inte är problemet. En källare på 96 m³ vid 15
-        grader och 75 procent luftfuktighet bär 0,9 liter vatten, och att ta ner den till 55 procent betyder ett par
-        deciliter för maskinen, en gång. Storleken styrs i stället av vattnet som kommer in varje dygn, genom väggen
-        och med uteluften. Så jag räknar på augusti, som är den värsta månaden, och så här går det till.
-      </p>
-      <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg">
-        <li class="mb-2">
-          Golvytan gånger takhöjden ger volymen. 40 kvm med 2,4 meter i tak blir 96 m³.
-        </li>
-        <li class="mb-2">
-          Temperaturen du valde sätter vilken temperatur jag räknar på, 15 grader för ett uppvärmt utrymme och 10
-          för ett ouppvärmt. Magnus-formeln säger hur mycket vatten luften rymmer vid den temperaturen, och målet är
-          att ligga på 55 procent av det.
-        </li>
-        <li class="mb-2">
-          Först tar jag ut det vatten som redan står i luften. Det är skillnaden mellan din fuktnivå och 55
-          procent, ett par deciliter som tas en gång.
-        </li>
-        <li class="mb-2">
-          Sedan uteluften. Ett halvt luftbyte i timmen bär in augustiluft med 10 gram vatten per kubikmeter, och ju
-          kallare utrymmet är, desto mer av det vattnet blir över när luften kylts. Det är därför ett kallt utrymme
-          blir fuktigare av att du vädrar det på sommaren.
-        </li>
-        <li class="mb-2">
-          Sedan marken. Varje kvadratmeter golv släpper upp 10, 40 eller 100 gram per dygn beroende på vilken
-          fuktnivå du valde.
-        </li>
-        <li class="mb-2">
-          De tre posterna lägger jag ihop och multiplicerar med 1,3, så att maskinen klarar dygnets vatten på
-          ungefär 18 timmar och hygrostaten hinner stänga av den emellanåt.
-        </li>
-        <li>
-          Till sist räknar jag om talet till det som står på lådan. Tillverkarna mäter en kondensmaskin vid 30
-          grader och 80 procent luftfuktighet, och så är det aldrig i en svensk källare. Vid 15 grader ger en
-          kondensmaskin ungefär 30 procent av sin märkta kapacitet. En sorptionsmaskin mäts vid 20 grader och 60
-          procent, och den ger ungefär 80 procent av sin siffra vid 10 grader. Så när du väljer mellan sorption
-          och kondens är det temperaturen i utrymmet du ska titta på.
-        </li>
-      </ol>
+    {
+      lasVidare.length > 0 && (
+        <section>
+          <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
+          <Artikelrutnat kort={lasVidare} kolumner={4} visaBeskrivning={false} visaMeta={false} />
+        </section>
+      )
+    }
 
-      <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad siffrorna vilar på</h3>
-      <Tabellyta kolumner={3} class="mt-4">
-        <table class="w-full border-collapse text-liten tabular-nums">
-          <caption class="sr-only">Antaganden och källor i avfuktarkalkylatorn</caption>
-          <thead>
-            <tr class="border-b border-linje text-left">
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Vad</th>
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Jag räknar med</th>
-              <th scope="col" class="p-2 text-etikett uppercase text-blyerts-2">Källa eller antagande</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              antaganden.map((a) => (
-                <tr>
-                  <th scope="row" class:list={[CELL_KLASS, 'text-left font-normal']}>
-                    {a.storhet}
-                  </th>
-                  <td class={CELL_KLASS}>{a.varde}</td>
-                  <td class={CELL_KLASS}>
-                    {a.grund}.{' '}
-                    {a.url ? (
-                      <a href={a.url} rel="nofollow" class={LANK_KLASS}>
-                        {a.stod}
-                      </a>
-                    ) : (
-                      a.stod
-                    )}
-                  </td>
-                </tr>
-              ))
-            }
-          </tbody>
-        </table>
-      </Tabellyta>
-
-      <p class="m-0 mt-6 text-brod lg:text-brod-lg">
-        I höst står en avfuktare i en riktig källare i sju dygn, med liter i tanken och elmätaren avlästa varje
-        morgon. Det är det enda sättet att få veta om marginalen 1,3 är rätt, och om fukten upp ur marken verkligen
-        ligger på de 10 och 40 gram jag gissat. Tills dess är de två raderna, och kondensmaskinens 30 procent vid 15
-        grader, räkningens svagaste punkter. Läs mer om vad som är läst och vad som är mätt på sidan{' '}
-        <a href="/om/sa-testar-vi/" class={LANK_KLASS}>Så testar jag</a>.
-      </p>
-    </section>
-
-    <section>
-      <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
-      <ul class="m-0 p-0 list-none">
-        <li class="border-t border-linje">
-          <a href="/luftavfuktare/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Alla luftavfuktare jag granskat, med tal ur databladen
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/fukt/avfuktare-kallare/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Så väljer du avfuktare till källaren
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/fukt/sorptionsavfuktare/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Därför tappar kondensavfuktaren farten när det blir kallt
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/fukt/avfuktare-garage/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Vilken avfuktare garaget behöver, kallt eller uppvärmt
-          </a>
-        </li>
-      </ul>
-    </section>
-
-    <Faq fragor={FRAGOR} />
-  </div>
-</Bas>
+    <div class="max-w-lasbredd">
+      <Faq fragor={FRAGOR} />
+    </div>
+  </Fragment>
+</Raknarsida>

@@ -16,8 +16,11 @@
  */
 export const prerender = false;
 
-import Bas from '../../layouts/Bas.astro';
 import { ELPRIS_KALLA } from '../../lib/antaganden';
+import { artikelUrl, publicerade } from '../../lib/innehall';
+import { tillKortArtikel, type KortData } from '../../lib/kort';
+import { hittaKalkylator } from '../../lib/kalkyl/register';
+import { arPelare } from '../../lib/pelare';
 import {
   antagandenFor,
   beskedKontext,
@@ -42,17 +45,18 @@ import {
   type RegelNyckel,
   type UVardeIndata,
 } from '../../lib/kalkyl/u-varde';
-import { ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
-import { verktyg } from '../../lib/strukturdata';
-import { verktygsDelningsbild, verktygsillustration, verktygsVarumarkesbild } from '../../lib/verktygsbild';
+import { LANK_KLASS } from '../../lib/kalkyl/stil';
+import { verktygsillustration } from '../../lib/verktygsbild';
 import UVardeForm from '../../components/kalkyl/UVardeForm.astro';
-import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Artikelrutnat from '../../components/ui/Artikelrutnat.astro';
 import Faq from '../../components/ui/Faq.astro';
 import Illustration from '../../components/ui/Illustration.astro';
-import Markering from '../../components/ui/Markering.astro';
+import Matare from '../../components/ui/Matare.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
-import StrukturData from '../../components/ui/StrukturData.astro';
+import Statusrad from '../../components/ui/Statusrad.astro';
+import Svarstal from '../../components/ui/Svarstal.astro';
 import Tabellyta from '../../components/ui/Tabellyta.astro';
+import Raknarsida from '../../components/vyer/Raknarsida.astro';
 
 Astro.locals.sidtyp = 'verktyg';
 
@@ -69,17 +73,6 @@ const titel = 'Beräkna U-värde och vad mer isolering sparar';
 const H1 = 'Klarar vinden eller väggen Boverkets krav på U-värde?';
 const INGRESS =
   'Du har mätt ullen på vinden, eller du vet ungefär vad väggen består av, och undrar om det lönar sig att lägga på mer. Välj materialen som sitter där, med början närmast rummet, skriv hur tjocka de är och välj sedan det du vill lägga till. Då ser du U-värdet före och efter, om det klarar Boverkets krav och vad tillägget sparar i kilowattimmar och kronor om året. Om det inte räcker får du veta hur många millimeter till som behövs. Ett U-värde du redan känner till, till exempel ett fönsters, skriver du in direkt.';
-/** Kortsvaret, ett stycke per rad. Markeringen står runt nyckeltalet i det stycke som har det. */
-const KORTSVAR: { fore: string; markering?: string; efter?: string }[] = [
-  {
-    fore: 'Jag går igenom vinden eller väggen lager för lager och räknar ut U-värdet, som säger hur mycket värme som tar sig ut genom varje kvadratmeter. Sedan jämför jag talet med Boverkets krav, som vid en ombyggnad är 0,13 W/m²K för ett vindsbjälklag och 0,18 för en yttervägg.',
-  },
-  {
-    fore: 'Formuläret är ifyllt med en vind som har 200 mm gammal ull och U-värdet 0,216. Med 300 mm lösull ovanpå kommer U-värdet ner till ',
-    markering: '0,085 W/m²K',
-    efter: ', och vinden klarar kravet med god marginal. På 100 kvadratmeter i Mellansverige sparar det 2 801 kr om året med direktverkande el.',
-  },
-];
 const SKISS_ALT = 'Ett vindsbjälklag i genomskärning, med ett lager gammal ull och ett tjockare lager ny lösull ovanpå.';
 /*
  * Skissen visas bara för vindsbjälklaget, i båda lägena (specen 12.38). Skissens
@@ -123,11 +116,8 @@ const STEG_FONSTER_DORR = [
   'Kilowattimmarna räknas som för en vägg: skillnaden i Uw gånger fönstrets eller dörrens yta gånger gradtimmarna för din del av landet, delat med 1 000. Elpriset gör dem till kronor, och med värmepump blir kronorna färre, eftersom jag först delar med pumpens SCOP.',
   'Återbetalningstiden får du genom att dela priset i offerten med kronorna om året. Den räkningen gör du själv, för priser på fönster och dörrar har jag inte.',
 ];
-const LAS_VIDARE = [
-  { href: '/el/u-varde/', text: 'Vad U-värdet betyder, med hela uträkningen för en sjuttiotalsvägg' },
-  { href: '/el/tillaggsisolera-vind/', text: 'Tilläggsisolera vinden själv, och varför tätningen kommer först' },
-  { href: '/rakna/daggpunkt/', text: 'Räkna ut daggpunkten och se om det blir kondens på väggen' },
-];
+/** Läs vidare som kort, i den förra listans ordning. Räknaren får etiketten den har på hubben. */
+const LAS_VIDARE = ['/el/u-varde/', '/el/tillaggsisolera-vind/', '/rakna/daggpunkt/'];
 const FRAGOR = [
   {
     fraga: 'Hur räknar jag med en tegelfasad?',
@@ -143,9 +133,8 @@ const FRAGOR = [
   },
 ];
 
-/* Gränssnittstext, ordagrant ur specen och skillen nytt-verktyg. */
+/* Gränssnittstext, ordagrant ur specen och skillen nytt-verktyg. Delatexten står i Delningsrad. */
 const STANDARDVARNING = 'Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.';
-const DELATEXT = 'Dina värden ligger i adressen. Markera den och kopiera, så får den du skickar länken till samma svar.';
 
 const q = Astro.url.searchParams;
 const { indata, bytta } = tolkaQuery(q);
@@ -206,9 +195,6 @@ const delaLank = new URL(`/rakna/u-varde/?${delbarQuery(visatIndata).toString()}
  */
 const TABELL_KLASS =
   'w-full border-collapse text-liten tabular-nums [&_th]:p-2 [&_td]:p-2 [&_th]:align-top [&_td]:align-top [&_th]:text-left [&_tbody_th]:[font-weight:inherit] [&_tr]:border-b [&_tr]:border-linje [&_th]:text-blyerts [&_td]:text-blyerts [&_thead_th]:text-etikett [&_thead_th]:uppercase [&_thead_th]:text-blyerts-2';
-/** Regellistan: klasserna på <ul>, bara ramfärgen per slag står på <li>. */
-const REGEL_LISTA_KLASS =
-  'm-0 p-0 list-none text-brod lg:text-brod-lg [&>li]:mb-4 [&>li]:border-l-2 [&>li]:pl-4 [&_span]:block [&_span:first-child]:text-etikett lg:[&_span:first-child]:text-etikett-lg [&_span:first-child]:uppercase [&_span:first-child]:text-blyerts-2 [&_span:last-child]:text-liten [&_span:last-child]:text-blyerts-2';
 
 /** Boverkets krav: en rad när kolumnerna är lika (vägg, vindsbjälklag, golv), annars två (specen 12.15). */
 const [kolumnFore, kolumnEfter] = visat.jamforelse;
@@ -258,12 +244,6 @@ const SLAG_ETIKETT: Record<Slag, string> = {
   besparing: TEXT.darfor['slag-besparing'],
   begransning: TEXT.darfor['slag-begransning'],
 };
-const SLAG_RAM: Record<Slag, string> = {
-  formel: 'border-blyerts',
-  boverket: 'border-blyerts-2',
-  besparing: 'border-blyerts-2',
-  begransning: 'border-linje',
-};
 
 /** Raderna i skikttabellen. Tomma celler för Rsi, Rse och summorna. */
 interface Tabellrad {
@@ -312,13 +292,8 @@ if (visat.detaljer) {
   }
 }
 
+/** Skissen står i kortet Så räknar jag. Huvudet har ingen bild sedan fas C (DESIGN.md 5.8). */
 const illustration = verktygsillustration(SLUG);
-/**
- * Varumärkesbilden i sidhuvudet (docs/DESIGN.md avsnitt 7). Finns den står
- * skissen i stället i "Så räknar jag".
- */
-const varumarke = verktygsVarumarkesbild(SLUG);
-const huvudbild = varumarke ?? illustration;
 
 /** Stegen under ”Så räknar jag” efter läge och del (specen 12.38). */
 const steg =
@@ -341,230 +316,208 @@ const gorInte = visat.gorInteDetHar.map((g) => {
     ? { fore: delar[0], lank, efter: delar[1] }
     : { fore: `${text} `, lank, efter: '' };
 });
+
+/*
+ * Svarsytan, fas C (spec-designlyft-c-2026-10-02 avsnitt 10). Mätaren visar
+ * U-värdet mot kravet i de nya reglerna för den valda delen, ur
+ * jämförelsen i formelmodulen; etiketten är delens namn. Statusraderna är
+ * jämförelsen med Boverket, en per kolumn som förut. Ny text är
+ * hantverkarens. Klartexten har platshållarna {u} (U-värdet i svaret), {del}
+ * (delens namn), {krav} (kravet) och {ytan} (m²).
+ */
+const krav = kolumnEfter;
+const uVisat = uText(visat.uSlut, visat.del);
+const KLARTEXT = 'U-värdet blir {u} W/m²K, och Boverkets krav för den här delen av huset är {krav} W/m²K vid en ombyggnad, enligt de nya reglerna.'; // u-varde.klartext
+const klartext = KLARTEXT.replace('{u}', uVisat)
+  .replace('{del}', TEXT.del[visat.del])
+  .replace('{krav}', komma(krav.grans))
+  .replace('{ytan}', komma(visat.ytaM2));
+
+/** Läs vidare: artiklarna som artikelkort, räknaren med registrets namn som på hubben. */
+const artiklar = [...(await publicerade('guider')), ...(await publicerade('kunskap'))];
+const lasVidare: KortData[] = LAS_VIDARE.flatMap((href): KortData[] => {
+  const e = artiklar.find((a) => artikelUrl(a) === href);
+  if (e) {
+    const { niva: _niva, ...kort } = tillKortArtikel(e);
+    return [kort];
+  }
+  const k = hittaKalkylator(href.replace(/^\/rakna\/|\/$/g, ''));
+  const pelare = k?.pelare?.[0];
+  if (!k || !pelare || !arPelare(pelare)) return [];
+  return [
+    {
+      etikett: 'Räkna själv',
+      rubrik: k.namn,
+      beskrivning: k.rad,
+      pelare,
+      href,
+      // Artikelrutnat läser inte typen; kortet står varken i ett typfilter eller sorteras.
+      typ: 'kunskap',
+      sorteringsdatum: new Date(0),
+    },
+  ];
+});
 ---
 
-<Bas
-  title={titel}
-  description={BESKRIVNING}
-  reklam={false}
-  brodsmulor={[
-    { namn: 'Hantverkstips', href: '/' },
-    { namn: 'Räkna själv', href: '/rakna/' },
-    { namn: VERKTYGSNAMN },
-  ]}
-  bred={true}
-  ogBild={verktygsDelningsbild(SLUG)}
+<Raknarsida
+  slug={SLUG}
+  namn={VERKTYGSNAMN}
+  titel={titel}
+  beskrivning={BESKRIVNING}
+  rubrik={H1}
+  delaUrl={delaLank}
+  saRaknarId="sa-raknar-jag"
 >
-  <StrukturData
-    slot="head"
-    data={verktyg({ url: `/rakna/${SLUG}/`, namn: VERKTYGSNAMN, beskrivning: BESKRIVNING })}
-  />
+  <p slot="ingress">{INGRESS}</p>
 
-  <div class="mx-auto w-full max-w-lasbredd">
-    {/* Sidhuvudet: rubrik och ingress i 7/12, bilden i 5/12 från lg, under ingressen på mobil. */}
-    <section class="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-8">
-      <div class="lg:col-span-7">
-        <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">{H1}</h1>
-        <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">{INGRESS}</p>
-      </div>
+  {/* Formuläret ligger i src/components/kalkyl/UVardeForm.astro, så att
+      <Kalkylator namn="u-varde" /> i artikeln visar samma fält. */}
+  <UVardeForm slot="formular" indata={indata} varden={varden} fel={fel} bytLageHref={bytLageHref} />
 
-      {
-        huvudbild && (
-          <div class="lg:col-span-5">
-            <img
-              src={huvudbild.src}
-              alt=""
-              width={huvudbild.width}
-              height={huvudbild.height}
-              fetchpriority="high"
-              decoding="async"
-              class:list={['block h-auto w-full', !varumarke && 'rounded-sm border border-linje']}
-            />
-          </div>
-        )
-      }
-    </section>
-
-    <Faktaruta variant="kortsvar">
-      {
-        KORTSVAR.map((s) => (
-          <p class="m-0 leading-6">
-            {s.fore}{s.markering && <Markering>{s.markering}</Markering>}{s.efter}
-          </p>
-        ))
-      }
-    </Faktaruta>
-
-    <div class="linjerat mt-8 lg:grid lg:grid-cols-2 lg:gap-8">
-      {/* Formuläret ligger i src/components/kalkyl/UVardeForm.astro, så att
-          <Kalkylator namn="u-varde" /> i artikeln visar samma fält. */}
-      <UVardeForm indata={indata} varden={varden} fel={fel} bytLageHref={bytLageHref} />
-
-      <div class="mt-8 border-t border-linje pt-6 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
-        {resultat.status === 'ogiltig' && <p class="m-0 mb-2 text-liten text-varning">{STANDARDVARNING}</p>}
-
-        <p class="m-0 font-sans text-h3 lg:text-h3-lg font-bold text-blyerts">{rubrik}</p>
-        <p class="m-0 mt-1 text-brod">{TEXT.besked[visat.besked].rad(beskedKontext(visat))}</p>
-
-        <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">{TEXT.spalt['etikett-u']}</p>
-        <p class="m-0 mt-1 flex flex-wrap items-baseline gap-x-2">
-          <span class="font-serif text-siffra lg:text-siffra-lg text-blyerts">
-            <Markering>{uText(visat.uSlut, visat.del)}</Markering>
-          </span>
-          <span class="text-ingress lg:text-ingress-lg">W/m²K</span>
-        </p>
-        {
-          visat.uEfter !== null && (
-            <p class="m-0 mt-2 text-liten text-blyerts-2">{TEXT.spalt['rad-u-fore'](uText(visat.uFore, visat.del))}</p>
-          )
-        }
-
-        <ul class="m-0 mt-4 p-0 list-none text-brod tabular-nums">
-          {
-            jamforRader.map((j) => (
-              <li class="flex flex-wrap justify-between gap-x-2 border-t border-linje py-2">
-                <span>{j.etikett}</span>
-                <span class="ml-auto">
-                  {komma(j.grans)}&nbsp;W/m²K, {j.klarar ? TEXT.klarar : TEXT.klararInte}
-                </span>
-              </li>
-            ))
-          }
-        </ul>
-
-        {
-          visat.besparing && (
-            <>
-              <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
-                {TEXT.spalt['etikett-sparar']}
-              </p>
-              <p class="m-0 mt-1 font-serif text-h1 lg:text-h1-lg text-blyerts tabular-nums">
-                {heltal(visat.besparing.krPerAr)}&nbsp;kr
-              </p>
-              <p class="m-0 mt-1 text-liten text-blyerts-2">
-                {TEXT.spalt['rad-kwh'](
-                  heltal(visat.besparing.kwhPerAr),
-                  TEXT.region[visat.region],
-                  ELPRIS_KALLA.period,
-                )}
-              </p>
-              <ul class="m-0 mt-4 p-0 list-none text-brod tabular-nums">
-                {visat.besparing.varmepump.map((v) => (
-                  <li class="border-t border-linje py-2">
-                    {TEXT.spalt['rad-vp'](TEXT.vp[v.typ], heltal(v.krMin), heltal(v.krMax))}
-                  </li>
-                ))}
-              </ul>
-            </>
-          )
-        }
-
-        <p class="m-0 mt-4 text-brod">
-          {
-            visat.aterbetalning
-              ? TEXT.spalt['rad-aterbetalning'](
-                  endecimal(visat.aterbetalning.ar),
-                  heltal(visat.aterbetalning.kostnadKr),
-                )
-              : visat.aterbetalningSaknas && TEXT.aterbetalningSaknas[visat.aterbetalningSaknas]
-          }
-        </p>
-
-        <p class="m-0 mt-4 text-liten text-blyerts-2">
-          <a href="#darfor-blev-svaret-sa" class={LANK_KLASS}>{TEXT.spalt.pekrad}</a>
-        </p>
-        <p class="m-0 mt-2">
-          <a href="#sa-raknar-jag" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>Så räknar jag</a>
-        </p>
-
-        {/* Dela. Svaret står i adressen, så ett skrivskyddat fält räcker. */}
-        <div class="mt-4 border-t border-linje pt-4">
-          <label for="dela" class={ETIKETT_KLASS}>{TEXT.spalt['dela-etikett']}</label>
-          <input id="dela" type="text" readonly value={delaLank} class:list={[FALT_KLASS, 'border-blyerts-2']} />
-          <p class="m-0 mt-1 text-liten text-blyerts-2">{DELATEXT}</p>
-        </div>
-      </div>
-    </div>
-
-    <section>
-      <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
-      {
-        tabell.length > 0 && (
-          <Tabellyta kolumner={4} class="mb-6">
-            <table class={TABELL_KLASS}>
-              <caption class="sr-only">{TEXT.darfor['tabell-caption']}</caption>
-              <thead>
-                <tr>
-                  <th scope="col">{TEXT.darfor['tabell-skikt']}</th>
-                  <th scope="col">{TEXT.darfor['tabell-tjocklek']}</th>
-                  <th scope="col">{TEXT.darfor['tabell-lambda']}</th>
-                  <th scope="col">{TEXT.darfor['tabell-r']}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {tabell.map((rad) => (
-                  <tr class={rad.summa ? 'font-bold' : undefined}>
-                    <th scope="row">{rad.etikett}</th>
-                    <td>{rad.tjocklek}</td>
-                    <td>{rad.lambda}</td>
-                    <td>{rad.r}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </Tabellyta>
-        )
-      }
-      <ul class={REGEL_LISTA_KLASS}>
-        {
-          visat.regler.map((nyckel) => {
-            const regel: { text: string; kalla: { titel: string; url: string; lank?: false } } = TEXT.regel[nyckel];
-            const slag = SLAG[nyckel];
-            return (
-              <li class={SLAG_RAM[slag]}>
-                <span>{SLAG_ETIKETT[slag]}</span>
-                <span>{regel.text}</span>
-                <span>
-                  {regel.kalla.lank === false ? (
-                    regel.kalla.titel
-                  ) : (
-                    <a href={regel.kalla.url} rel="nofollow" class={LANK_KLASS}>
-                      {regel.kalla.titel}
-                    </a>
-                  )}
-                </span>
-              </li>
-            );
-          })
-        }
-      </ul>
-    </section>
-
+  <Fragment slot="svar">
+    {resultat.status === 'ogiltig' && <p class="text-liten text-varning">{STANDARDVARNING}</p>}
+    <Svarstal tal={uVisat} enhet="W/m²K" vad={TEXT.spalt['etikett-u']} />
     {
-      gorInte.length > 0 && (
-        <section>
-          <Pennstreck id="gor-inte-det-har">Gör inte det här</Pennstreck>
-          {gorInte.map((g, i) => (
-            <p class:list={['m-0 text-brod lg:text-brod-lg', i > 0 && 'mt-4']}>
-              {/* På en rad, så att inget mellanslag hamnar runt länken. */}
-              {g.fore}{g.lank && <a href={g.lank.href} class={LANK_KLASS}>{g.lank.text}</a>}{g.efter}
-            </p>
-          ))}
-        </section>
+      visat.uEfter !== null && (
+        <p class="text-liten text-blyerts-2">{TEXT.spalt['rad-u-fore'](uText(visat.uFore, visat.del))}</p>
       )
     }
-
-    <section>
-      <Pennstreck id="sa-raknar-jag">Så räknar jag</Pennstreck>
+    <div class="text-brod">
+      <p class="font-bold">{rubrik}</p>
+      <p>{TEXT.besked[visat.besked].rad(beskedKontext(visat))}</p>
+    </div>
+    <Matare
+      etikett={TEXT.del[visat.del]}
+      varde={visat.uSlut}
+      grans={krav.grans}
+      gransVisat={komma(krav.grans)}
+      enhet="W/m²K"
+      visat={`${uVisat} W/m²K`}
+    />
+    {
+      jamforRader.map((j) => (
+        <Statusrad
+          ton={j.klarar ? 'ok' : 'varning'}
+          text={`${j.etikett}: ${komma(j.grans)} W/m²K, ${j.klarar ? TEXT.klarar : TEXT.klararInte}`}
+        />
+      ))
+    }
+    {
+      visat.besparing && (
+        <div>
+          <p class="etikett text-blyerts-2">{TEXT.spalt['etikett-sparar']}</p>
+          <p class="mt-1! font-serif text-h1 lg:text-h1-lg text-blyerts tabular-nums">
+            {heltal(visat.besparing.krPerAr)}&nbsp;kr
+          </p>
+          <p class="mt-1! text-liten text-blyerts-2">
+            {TEXT.spalt['rad-kwh'](heltal(visat.besparing.kwhPerAr), TEXT.region[visat.region], ELPRIS_KALLA.period)}
+          </p>
+          <ul class="m-0 mt-2 p-0 list-none text-brod tabular-nums">
+            {visat.besparing.varmepump.map((v) => (
+              <li class="border-t border-linje py-2">
+                {TEXT.spalt['rad-vp'](TEXT.vp[v.typ], heltal(v.krMin), heltal(v.krMax))}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+    <p class="text-brod">
       {
-        varumarke && illustration && visat.del === 'tak' && (
-          <Illustration namn="rakna/u-varde" alt={SKISS_ALT} bildtext={SKISS_BILDTEXT} />
-        )
+        visat.aterbetalning
+          ? TEXT.spalt['rad-aterbetalning'](endecimal(visat.aterbetalning.ar), heltal(visat.aterbetalning.kostnadKr))
+          : visat.aterbetalningSaknas && TEXT.aterbetalningSaknas[visat.aterbetalningSaknas]
       }
-      <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg">
-        {steg.map((s) => <li class="mb-2">{s}</li>)}
-      </ol>
+    </p>
+    <p class="text-liten text-blyerts">{klartext}</p>
+  </Fragment>
 
+  <Fragment slot="darfor">
+    <Pennstreck id="darfor-blev-svaret-sa" utanLuft>
+      Därför blev svaret så
+    </Pennstreck>
+    {
+      tabell.length > 0 && (
+        <Tabellyta kolumner={4} class="mt-4 mb-6">
+          <table class={TABELL_KLASS}>
+            <caption class="sr-only">{TEXT.darfor['tabell-caption']}</caption>
+            <thead>
+              <tr>
+                <th scope="col">{TEXT.darfor['tabell-skikt']}</th>
+                <th scope="col">{TEXT.darfor['tabell-tjocklek']}</th>
+                <th scope="col">{TEXT.darfor['tabell-lambda']}</th>
+                <th scope="col">{TEXT.darfor['tabell-r']}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tabell.map((rad) => (
+                <tr class={rad.summa ? 'font-bold' : undefined}>
+                  <th scope="row">{rad.etikett}</th>
+                  <td>{rad.tjocklek}</td>
+                  <td>{rad.lambda}</td>
+                  <td>{rad.r}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </Tabellyta>
+      )
+    }
+    <div class="darfor">
+      {
+        visat.regler.map((nyckel) => {
+          const regel: { text: string; kalla: { titel: string; url: string; lank?: false } } = TEXT.regel[nyckel];
+          const slag = SLAG[nyckel];
+          return (
+            <div>
+              <span class="block text-etikett lg:text-etikett-lg uppercase text-blyerts-2">{SLAG_ETIKETT[slag]}</span>
+              <p>{regel.text}</p>
+              <p>
+                {regel.kalla.lank === false ? (
+                  regel.kalla.titel
+                ) : (
+                  <a href={regel.kalla.url} rel="nofollow" class={LANK_KLASS}>
+                    {regel.kalla.titel}
+                  </a>
+                )}
+              </p>
+            </div>
+          );
+        })
+      }
+    </div>
+  </Fragment>
+
+  {
+    gorInte.length > 0 && (
+      <Fragment slot="gorInte">
+        {/* Flera råd står i samma stycke efter "Gör inte det här.", vart och ett på egen rad. */}
+        {gorInte.map((g, i) => (
+          <span class:list={[i > 0 && 'mt-3 block']}>
+            {/* På en rad, så att inget mellanslag hamnar runt länken. */}
+            {g.fore}{g.lank && <a href={g.lank.href} class={LANK_KLASS}>{g.lank.text}</a>}{g.efter}
+          </span>
+        ))}
+      </Fragment>
+    )
+  }
+
+  <Fragment slot="saRaknarJag">
+    {
+      illustration && visat.del === 'tak' && (
+        <div class="pappersruta">
+          <Illustration namn="rakna/u-varde" alt={SKISS_ALT} bildtext={SKISS_BILDTEXT} class="my-0!" />
+        </div>
+      )
+    }
+    <ol class="m-0 mt-4 pl-6 list-decimal text-brod">
+      {steg.map((s) => <li class="mb-2">{s}</li>)}
+    </ol>
+  </Fragment>
+
+  <Fragment slot="efter">
+    {/* Antagandetabellen i läsbredd, ur kortet Så räknar jag (spec-designlyft-c avsnitt 9). */}
+    <section class="max-w-lasbredd">
       <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad siffrorna vilar på</h3>
       <Tabellyta kolumner={3} class="mt-4">
         <table class={TABELL_KLASS}>
@@ -602,21 +555,17 @@ const gorInte = visat.gorInteDetHar.map((g) => {
       </ul>
     </section>
 
-    <section>
-      <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
-      <ul class="m-0 p-0 list-none">
-        {
-          LAS_VIDARE.map((l) => (
-            <li class="border-t border-linje">
-              <a href={l.href} class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-                {l.text}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </section>
+    {
+      lasVidare.length > 0 && (
+        <section>
+          <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
+          <Artikelrutnat kort={lasVidare} visaBeskrivning={false} visaMeta={false} />
+        </section>
+      )
+    }
 
-    <Faq fragor={FRAGOR} />
-  </div>
-</Bas>
+    <div class="max-w-lasbredd">
+      <Faq fragor={FRAGOR} />
+    </div>
+  </Fragment>
+</Raknarsida>

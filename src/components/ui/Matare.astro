@@ -15,16 +15,21 @@ interface Props {
   enhet: string;
   /** Värdet som det ska stå i raden, formaterat av sidan: "83 %". */
   visat: string;
+  /**
+   * Gränsen som den ska stå i raden, formaterad av sidan: "0,13". Utelämnad:
+   * gränsen i heltal. U-värdets krav har decimaler (spec-designlyft-c avsnitt 10).
+   */
+  gransVisat?: string;
   /** Stapelns aria-label. Utelämnad: raden ovanför i ord. */
   ariaText?: string;
 }
 
-const { etikett, varde, grans, enhet, visat, ariaText } = Astro.props;
+const { etikett, varde, grans, enhet, visat, gransVisat, ariaText } = Astro.props;
 
 /** Gränssnitt, samma på alla räknare med mätare. */
 const GRANS_ORD = 'gränsen'; // matare.grans
 
-const gransText = `${GRANS_ORD} ${formateraTal(grans)} ${enhet}`;
+const gransText = `${GRANS_ORD} ${gransVisat ?? formateraTal(grans)} ${enhet}`;
 const fyllning = Math.max(0, Math.min(100, (varde / (grans * 1.33)) * 100));
 ---
 

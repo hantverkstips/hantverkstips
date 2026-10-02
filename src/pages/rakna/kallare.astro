@@ -17,7 +17,10 @@
  */
 export const prerender = false;
 
-import Bas from '../../layouts/Bas.astro';
+import { artikelUrl, publicerade } from '../../lib/innehall';
+import { tillKortArtikel, type KortData } from '../../lib/kort';
+import { hittaKalkylator } from '../../lib/kalkyl/register';
+import { arPelare } from '../../lib/pelare';
 import {
   AVFUKTARE_KR,
   bedomKallare,
@@ -41,18 +44,16 @@ import {
   type KallareResultat,
   type Steg,
 } from '../../lib/kalkyl/kallare';
-import { CELL_KLASS, ETIKETT_KLASS, FALT_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
-import { verktyg } from '../../lib/strukturdata';
-import { verktygsDelningsbild, verktygsillustration, verktygsVarumarkesbild } from '../../lib/verktygsbild';
+import { CELL_KLASS, LANK_KLASS } from '../../lib/kalkyl/stil';
+import { verktygsillustration } from '../../lib/verktygsbild';
 import KallareForm from '../../components/kalkyl/KallareForm.astro';
-import Faktaruta from '../../components/ui/Faktaruta.astro';
+import Artikelrutnat from '../../components/ui/Artikelrutnat.astro';
 import Faq from '../../components/ui/Faq.astro';
 import Illustration from '../../components/ui/Illustration.astro';
-import Markering from '../../components/ui/Markering.astro';
 import Pennstreck from '../../components/ui/Pennstreck.astro';
-import StrukturData from '../../components/ui/StrukturData.astro';
 import Tabellyta from '../../components/ui/Tabellyta.astro';
 import Verktygskort from '../../components/ui/Verktygskort.astro';
+import Raknarsida from '../../components/vyer/Raknarsida.astro';
 
 Astro.locals.sidtyp = 'verktyg';
 
@@ -93,13 +94,6 @@ const STEG_ETIKETT: Record<Steg, string> = {
   tejpa: 'Tejpa',
   mat: 'Mät',
   atgarda: 'Åtgärda',
-};
-
-const STEG_RAM: Record<Steg, string> = {
-  titta: 'border-linje',
-  tejpa: 'border-blyerts-2',
-  mat: 'border-blyerts-2',
-  atgarda: 'border-blyerts',
 };
 
 const titel = 'Besiktiga källaren själv och hitta vattnet';
@@ -307,264 +301,182 @@ const SLUG = 'kallare';
 const VERKTYGSNAMN = 'Självbesiktning av källaren';
 const BESKRIVNING =
   'Kryssa i vad du ser i källaren och vad hygrometern visar, så får du veta om det är markfukt, kondens eller ett läckage, och vad du gör härnäst.';
+/** Skissen står i kortet Så bedömer jag. Huvudet har ingen bild sedan fas C (DESIGN.md 5.8). */
 const illustration = verktygsillustration(SLUG);
-/**
- * Varumärkesbilden i sidhuvudet, sedan 2026-09-19 (docs/DESIGN.md avsnitt 7).
- * Finns den står skissen i stället i "Så bedömer vi". Finns den inte visas
- * skissen i sidhuvudet som förut, och saknas båda visas ingen bild alls.
+
+/*
+ * Svarsytan, fas C (spec-designlyft-c-2026-10-02 avsnitt 10): svaret är en
+ * diagnos i ord, inget tal. Ny text är hantverkarens. Klartexten har
+ * platshållarna {orsak} (diagnosen som i svarsytan) och {grans} (Boverkets
+ * gräns i procent relativ luftfuktighet).
  */
-const varumarke = verktygsVarumarkesbild(SLUG);
-const huvudbild = varumarke ?? illustration;
+const KLARTEXT =
+  'Bedömningen ”{orsak}” bygger på tecknen du kryssat i och på tejptestet, om du har gjort det. Hygrometerns tal jämförs med Boverkets gräns på {grans} procent för fukt i väggar och trä.'; // kallare.klartext
+const klartext =
+  visat.status === 'ok' ? KLARTEXT.replace('{orsak}', visat.beskedRubrik).replace('{grans}', String(KRITISK_RF)) : '';
+
+/** Läs vidare: artiklarna som artikelkort, räknaren med registrets namn som på hubben. */
+const LAS_VIDARE = ['/fukt/fukt-i-kallaren/', '/fukt/luftfuktighet-inomhus/', '/grund/inreda-kallare/', '/rakna/dranering/'];
+const artiklar = [...(await publicerade('guider')), ...(await publicerade('kunskap'))];
+const lasVidare: KortData[] = LAS_VIDARE.flatMap((href): KortData[] => {
+  const e = artiklar.find((a) => artikelUrl(a) === href);
+  if (e) {
+    const { niva: _niva, ...kort } = tillKortArtikel(e);
+    return [kort];
+  }
+  const k = hittaKalkylator(href.replace(/^\/rakna\/|\/$/g, ''));
+  const pelare = k?.pelare?.[0];
+  if (!k || !pelare || !arPelare(pelare)) return [];
+  return [
+    {
+      etikett: 'Räkna själv',
+      rubrik: k.namn,
+      beskrivning: k.rad,
+      pelare,
+      href,
+      // Artikelrutnat läser inte typen; kortet står varken i ett typfilter eller sorteras.
+      typ: 'kunskap',
+      sorteringsdatum: new Date(0),
+    },
+  ];
+});
 ---
 
-<Bas
-  title={titel}
-  description={BESKRIVNING}
-  reklam={false}
-  brodsmulor={[
-    { namn: 'Hantverkstips', href: '/' },
-    { namn: 'Räkna själv', href: '/rakna/' },
-    { namn: VERKTYGSNAMN },
-  ]}
-  bred={true}
-  ogBild={verktygsDelningsbild(SLUG)}
+<Raknarsida
+  slug={SLUG}
+  namn={VERKTYGSNAMN}
+  titel={titel}
+  beskrivning={BESKRIVNING}
+  rubrik="Gå igenom källaren själv och få veta varifrån vattnet kommer"
+  delaUrl={delaLank}
+  saRaknarRubrik="Så bedömer jag"
+  saRaknarId="sa-bedomer-vi"
 >
-  <StrukturData
-    slot="head"
-    data={verktyg({ url: `/rakna/${SLUG}/`, namn: VERKTYGSNAMN, beskrivning: BESKRIVNING })}
-  />
+  <p slot="ingress">
+    Vattnet i en källare kommer från ett av tre håll. Markfukt går genom väggen, kondens fälls ut ur luften i
+    rummet, och ett läckage tar sig in genom en otäthet när det regnar. En avfuktare löser bara det mittersta,
+    och mot de andra två är den bortkastade pengar. Kryssa i vad du ser, vad hygrometern visar och vad
+    tejptestet gav. Tejptestet är en bit plastfolie som suttit tätt mot väggen i två dygn. Då får du en trolig
+    orsak, nästa steg och det du inte ska göra.
+  </p>
 
-  <div class="mx-auto w-full max-w-lasbredd">
-    {/*
-      Sidhuvudet: rubrik och ingress till vänster i 7/12, bilden till höger i
-      5/12 på desktop, under ingressen på mobil. Bilden är dekorativ, H1 bär
-      betydelsen, därför tom alt. Den är sidans LCP-bild och laddas därför
-      eagert med fetchpriority. Varumärkesbilden har transparent bakgrund och
-      ligger som heron utan ram; skissen är ett urklipp och får ramen.
-    */}
-    <section class="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-8">
-      <div class="lg:col-span-7">
-        <h1 class="m-0 font-serif text-h1 lg:text-h1-lg">
-          Gå igenom källaren själv och få veta varifrån vattnet kommer
-        </h1>
-        <p class="m-0 mt-4 text-ingress lg:text-ingress-lg">
-          Vattnet i en källare kommer från ett av tre håll. Markfukt går genom väggen, kondens fälls ut ur luften i
-          rummet, och ett läckage tar sig in genom en otäthet när det regnar. En avfuktare löser bara det mittersta,
-          och mot de andra två är den bortkastade pengar. Kryssa i vad du ser, vad hygrometern visar och vad
-          tejptestet gav. Tejptestet är en bit plastfolie som suttit tätt mot väggen i två dygn. Då får du en trolig
-          orsak, nästa steg och det du inte ska göra.
+  {/* Formuläret ligger i src/components/kalkyl/KallareForm.astro, så att
+      <Kalkylator namn="kallare" /> i en artikel visar exakt samma fält. */}
+  <KallareForm slot="formular" indata={indata} varden={varden} fel={fel} />
+
+  {
+    visat.status === 'ok' && (
+      <Fragment slot="svar">
+        {resultat.status === 'ogiltig' && (
+          <p class="text-liten text-varning">
+            Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.
+          </p>
+        )}
+        {/* Svaret är en diagnos i ord: den står i Zilla Slab i stället för det stora talet. */}
+        <div>
+          <p class="text-liten text-blyerts-2">Trolig orsak</p>
+          <p class="font-serif text-h2 text-blyerts">{visat.beskedRubrik}</p>
+        </div>
+        <p class="text-brod">{visat.beskedRad}</p>
+        <div class="text-brod">
+          <p class="font-bold">Nästa steg</p>
+          <p>{visat.nastaStegText}</p>
+          <p>
+            <a href={visat.nastaStegLank.href} class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
+              {visat.nastaStegLank.text}
+            </a>
+          </p>
+        </div>
+        <p class="text-liten text-blyerts">{klartext}</p>
+      </Fragment>
+    )
+  }
+
+  {
+    visat.status === 'ok' && (
+      <Fragment slot="darfor">
+        <Pennstreck id="darfor-blev-svaret-sa" utanLuft>
+          Därför blev svaret så
+        </Pennstreck>
+        <p class="m-0 mt-4 mb-4">
+          Raderna står i den ordning du går igenom källaren. Titta först, tejpa sedan, mät, och åtgärda sist.
         </p>
-      </div>
+        <div class="darfor">
+          {visat.regler.map((regel) => (
+            <div>
+              <span class="block text-etikett lg:text-etikett-lg uppercase text-blyerts-2">{STEG_ETIKETT[regel.steg]}</span>
+              <p>{regel.text}</p>
+              <p>{regel.kalla}</p>
+            </div>
+          ))}
+        </div>
+      </Fragment>
+    )
+  }
 
-      {
-        huvudbild && (
-          <div class="lg:col-span-5">
-            <img
-              src={huvudbild.src}
-              alt=""
-              width={huvudbild.width}
-              height={huvudbild.height}
-              fetchpriority="high"
-              decoding="async"
-              class:list={['block h-auto w-full', !varumarke && 'rounded-sm border border-linje']}
-            />
-          </div>
-        )
-      }
-    </section>
+  {
+    visat.status === 'ok' && visat.gorInteDetHar.length > 0 && (
+      <Fragment slot="gorInte">
+        {/* Flera råd står i samma stycke efter "Gör inte det här.", vart och ett på egen rad. */}
+        {visat.gorInteDetHar.map((rad, i) => (
+          <span class:list={[i > 0 && 'mt-3 block']}>{rad}</span>
+        ))}
+      </Fragment>
+    )
+  }
 
-    <Faktaruta variant="kortsvar">
-      <p class="m-0 leading-6">
-        Vattnet kommer från <Markering>marken, luften eller ett läckage</Markering>, och de tre kräver helt olika
-        saker av dig.
-      </p>
-      <p class="m-0 leading-6">
-        Salt och färg som flagnar på nedersta halvmetern pekar mot marken, och imma på kallvattenrören pekar mot
-        luften.
-      </p>
-      <p class="m-0 leading-6">
-        Tejpa en bit plastfolie tätt mot den våtaste väggen och vänta {TEJPTEST_DYGN} dygn. Är plasten våt mot väggen
-        är det markfukt, är den våt mot rummet är det kondens.
-      </p>
-      <p class="m-0 leading-6">Köp ingenting förrän plasten har svarat.</p>
-    </Faktaruta>
-
-    <div class="linjerat mt-8 lg:grid lg:grid-cols-2 lg:gap-8">
-      {/* Formuläret ligger i src/components/kalkyl/KallareForm.astro, så att
-          <Kalkylator namn="kallare" /> i en artikel visar exakt samma fält. */}
-      <KallareForm indata={indata} varden={varden} fel={fel} />
-
-      <div class="mt-8 border-t border-linje pt-6 lg:mt-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
-        {
-          visat.status === 'ok' && (
-            <>
-              {resultat.status === 'ogiltig' && (
-                <p class="m-0 mb-2 text-liten text-varning">Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.</p>
-              )}
-              {/* Spalten bär svaret: beskedet, en rad, nästa steg och länkarna.
-                  Motiveringen står som egna avsnitt under verktyget. */}
-              <p class="m-0 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">Trolig orsak</p>
-              <p class="m-0 mt-1 font-serif text-siffra lg:text-siffra-lg text-blyerts">
-                <Markering>{visat.beskedRubrik}</Markering>
-              </p>
-              <p class="m-0 mt-2 text-brod lg:text-brod-lg">{visat.beskedRad}</p>
-
-              <p class="m-0 mt-6 text-etikett lg:text-etikett-lg uppercase text-blyerts-2">Nästa steg</p>
-              <p class="m-0 mt-1 text-brod lg:text-brod-lg">{visat.nastaStegText}</p>
-              <p class="m-0 mt-1">
-                <a href={visat.nastaStegLank.href} class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
-                  {visat.nastaStegLank.text}
-                </a>
-              </p>
-
-              <p class="m-0 mt-4 text-liten text-blyerts-2">
-                Varför svaret blev så, och det du inte ska göra,{' '}
-                <a href="#darfor-blev-svaret-sa" class={LANK_KLASS}>står under verktyget</a>.
-              </p>
-
-              <p class="m-0 mt-4">
-                <a href="#sa-bedomer-vi" class:list={['inline-flex min-h-11 items-center', LANK_KLASS]}>
-                  Så bedömer jag
-                </a>
-              </p>
-
-              {/* Dela. Svaret står i adressen, så ett skrivskyddat fält räcker:
-                  markera och kopiera fungerar utan en rad JavaScript. */}
-              <div class="mt-4 border-t border-linje pt-4">
-                <label for="dela" class={ETIKETT_KLASS}>
-                  Dela svaret
-                </label>
-                <input id="dela" type="text" readonly value={delaLank} class:list={[FALT_KLASS, 'border-blyerts-2']} />
-                <p class="m-0 mt-1 text-liten text-blyerts-2">Dina värden ligger i adressen. Markera den och kopiera, så får den du skickar länken till samma svar.</p>
-              </div>
-            </>
-          )
-        }
-      </div>
-    </div>
-
-    {visat.status === 'ok' && visat.visaAvfuktare && <Verktygskort kalkylator="avfuktare" />}
-    {visat.status === 'ok' && visat.visaDranering && <Verktygskort kalkylator="dranering" />}
-
+  <Fragment slot="saRaknarJag">
     {
-      visat.status === 'ok' && (
-        <>
-          <section>
-            <Pennstreck id="darfor-blev-svaret-sa">Därför blev svaret så</Pennstreck>
-            <p class="m-0 mb-4 text-brod lg:text-brod-lg">
-              Raderna står i den ordning du går igenom källaren. Titta först, tejpa sedan, mät, och åtgärda sist.
-            </p>
-            <ul class="m-0 p-0 list-none text-brod lg:text-brod-lg">
-              {visat.regler.map((regel) => (
-                <li class:list={['mb-4 border-l-2 pl-4', STEG_RAM[regel.steg]]}>
-                  <span class="block text-etikett lg:text-etikett-lg uppercase text-blyerts-2">
-                    {STEG_ETIKETT[regel.steg]}
-                  </span>
-                  <span class="block">{regel.text}</span>
-                  <span class="block text-liten text-blyerts-2">{regel.kalla}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <section>
-            <Pennstreck id="gor-inte-det-har">Gör inte det här</Pennstreck>
-            {visat.gorInteDetHar.map((rad, i) => (
-              <p class:list={['m-0 text-brod lg:text-brod-lg', i > 0 && 'mt-4']}>{rad}</p>
-            ))}
-          </section>
-        </>
-      )
-    }
-
-    <section>
-      <Pennstreck id="tre-orsaker">Varför bara en av de tre orsakerna löses med en avfuktare</Pennstreck>
-      <p class="m-0 text-brod lg:text-brod-lg">
-        Markfukt, kondens och läckage kräver tre olika åtgärder, och maskinen du kan köpa på vägen hem hjälper bara
-        mot en av dem. Det är hela skälet till att jag säger vänta med plånboken tills plasten på väggen har svarat.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Markfukten går rakt genom betongen. Boverket beskriver det som att vattnet sugs upp genom porerna, som i en
-        sockerbit i kaffet, och ibland vandrar det som ånga tvärs genom materialet. Det går så långsamt att det kan ta
-        många år innan du märker något. Skyddet mot markfukt hör hemma på utsidan av väggen, och det är därför en
-        avfuktare inne i rummet är fel maskin. Luften torkar, mer vatten dunstar ur väggen, och betongen suger efter
-        mer från marken.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Av samma skäl ska ytskiktet inne i källaren släppa igenom vattenånga. Målar du med en tät färg stannar
-        vattnet i betongen och trycker upp färgen i sjok. Det är det kryssrutan om färg som bubblar handlar om.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Kondensen vädrar du in själv. En källarvägg håller gärna 12&nbsp;grader, och luften du släpper in en varm
-        eftermiddag i augusti börjar fälla ut vatten redan vid 14,4&nbsp;grader. Det talet gäller luft på
-        20&nbsp;grader och 70&nbsp;procent relativ luftfuktighet, en helt vanlig sommardag. Väggen blir våt i
-        samma stund som du ställer upp fönstret. Det här är det enda av de tre fallen där en avfuktare gör jobbet,
-        och hur stor den behöver vara beror på rummets volym och hur fuktig luften är.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Läckaget kommer med regnet. Det tar sig in på ett ställe, ser ut som rinnmärken eller en pöl snarare än en
-        jämnt fuktig vägg, och det är det enda av de tre som kan bli bråttom. Följ vattnet uppåt och utåt. Oftast
-        hittar du en rörgenomföring som aldrig tätades, en spricka efter en sättning, en fönsterbrunn full av löv
-        eller ett stuprör som slutar en halvmeter från grunden.
-      </p>
-      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
-        Att gissa fel kostar mer än några hundralappar. En avfuktare mot markfukt är {kronor(AVFUKTARE_KR)}&nbsp;kr
-        som inte gör någon nytta alls, och en dränering som inte behövdes är tjugo gånger den summan. Två dygn med
-        en bit plast på väggen skyddar dig mot båda. Hela testet, med bild på båda utfallen,
-        står i{' '}
-        <a href="/fukt/fukt-i-kallaren/" class={LANK_KLASS}>
-          guiden om fukt i källaren
-        </a>
-        .
-      </p>
-    </section>
-
-    <section>
-      <Pennstreck id="sa-bedomer-vi">Så bedömer jag</Pennstreck>
-      {
-        varumarke && illustration && (
+      illustration && (
+        <div class="pappersruta">
           <Illustration
             namn="rakna/kallare"
             alt="Källare i genomskärning med tre numrerade stopp: flagnande färg på väggen, en tejpad plastbit och en hygrometer på hyllan"
             bildtext="Stopp ett är väggen med salt och flagnande färg nedtill. Stopp två är plasten, tejpad över alla fyra hörnen. Stopp tre är hygrometern, som här visar över 75 procent relativ luftfuktighet. Så fuktig luft för med tiden trä och väggar över Boverkets gräns."
+            class="my-0!"
           />
-        )
-      }
-      <ol class="m-0 mt-4 pl-6 list-decimal text-brod lg:text-brod-lg">
-        <li class="mb-2">
-          Läckaget väger tyngst. Har du kryssat i rinnmärken eller en pöl efter regn pekas det ut oavsett vad du
-          svarat i övrigt. Det är den enda av de tre orsakerna som kan bli bråttom, och den enda tejptestet aldrig
-          ser, för plasten sitter på en vägg och vattnet kommer vid en genomföring.
-        </li>
-        <li class="mb-2">
-          Sedan kommer tejptestet, eftersom det är en mätning och inte ett intryck. Vått mot väggen är markfukt, vått
-          mot rummet är kondens, och torrt på båda sidor betyder att plasten satt på fel vägg.
-        </li>
-        <li class="mb-2">
-          Sedan det du ser. Varje kryssruta hör till en rad i min tabell över symptom och trolig orsak. Pekar två
-          rader åt olika håll lämnar jag frågan öppen i stället för att gissa.
-        </li>
-        <li class="mb-2">
-          Hygrometern kommer sist. Den säger att luften är fuktig, aldrig varifrån vattnet kommer, så den kan aldrig
-          flytta svaret från markfukt till kondens. Talet vägs mot {KRITISK_RF} procent relativ luftfuktighet. Den
-          gränsen sätter Boverket för trä och väggar, och luften ska ligga under den för att materialen inte ska nå dit.
-        </li>
-        <li class="mb-2">
-          Årstiden och vad källaren används till ändrar inte diagnosen. De lägger till en rad var. Kondens är ett
-          sommarproblem, och Villaägarnas {KAN_HALLA_AR} år för en dränering gäller en källare som används som
-          källare.
-        </li>
-        <li>
-          Sist kommer åtgärden, med källan på raden. Ordningen är min, och den går från det gratis till det billiga
-          och först därefter till grävmaskinen.
-        </li>
-      </ol>
+        </div>
+      )
+    }
+    <ol class="m-0 mt-4 pl-6 list-decimal text-brod">
+      <li class="mb-2">
+        Läckaget väger tyngst. Har du kryssat i rinnmärken eller en pöl efter regn pekas det ut oavsett vad du
+        svarat i övrigt. Det är den enda av de tre orsakerna som kan bli bråttom, och den enda tejptestet aldrig
+        ser, för plasten sitter på en vägg och vattnet kommer vid en genomföring.
+      </li>
+      <li class="mb-2">
+        Sedan kommer tejptestet, eftersom det är en mätning och inte ett intryck. Vått mot väggen är markfukt, vått
+        mot rummet är kondens, och torrt på båda sidor betyder att plasten satt på fel vägg.
+      </li>
+      <li class="mb-2">
+        Sedan det du ser. Varje kryssruta hör till en rad i min tabell över symptom och trolig orsak. Pekar två
+        rader åt olika håll lämnar jag frågan öppen i stället för att gissa.
+      </li>
+      <li class="mb-2">
+        Hygrometern kommer sist. Den säger att luften är fuktig, aldrig varifrån vattnet kommer, så den kan aldrig
+        flytta svaret från markfukt till kondens. Talet vägs mot {KRITISK_RF} procent relativ luftfuktighet. Den
+        gränsen sätter Boverket för trä och väggar, och luften ska ligga under den för att materialen inte ska nå dit.
+      </li>
+      <li class="mb-2">
+        Årstiden och vad källaren används till ändrar inte diagnosen. De lägger till en rad var. Kondens är ett
+        sommarproblem, och Villaägarnas {KAN_HALLA_AR} år för en dränering gäller en källare som används som
+        källare.
+      </li>
+      <li>
+        Sist kommer åtgärden, med källan på raden. Ordningen är min, och den går från det gratis till det billiga
+        och först därefter till grävmaskinen.
+      </li>
+    </ol>
 
-      <p class="m-0 mt-6 text-brod lg:text-brod-lg">
-        Att läckaget går före plasten, plasten före ögonen och ögonen före hygrometern har jag bestämt själv. Ingen
-        källa jag hittat rangordnar dem mot varandra, så den raden står märkt som antagande i tabellen nedan.
-      </p>
+    <p class="m-0 mt-4 text-brod">
+      Att läckaget går före plasten, plasten före ögonen och ögonen före hygrometern har jag bestämt själv. Ingen
+      källa jag hittat rangordnar dem mot varandra, så den raden står märkt som antagande i tabellen nedan.
+    </p>
+  </Fragment>
 
+  <Fragment slot="efter">
+    {/* Antagandetabellen i läsbredd, ur kortet Så bedömer jag (spec-designlyft-c avsnitt 9). */}
+    <section class="max-w-lasbredd">
       <h3 class="m-0 mt-8 font-sans text-h3 lg:text-h3-lg text-blyerts">Vad siffrorna vilar på</h3>
       <Tabellyta kolumner={3} class="mt-4">
         <table class="w-full border-collapse text-liten tabular-nums">
@@ -629,32 +541,68 @@ const huvudbild = varumarke ?? illustration;
       </p>
     </section>
 
-    <section>
-      <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
-      <ul class="m-0 p-0 list-none">
-        <li class="border-t border-linje">
-          <a href="/fukt/fukt-i-kallaren/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Hela guiden om fukt i källaren, med tejptestet och de tre orsakerna
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/fukt/luftfuktighet-inomhus/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Vad talet på hygrometern faktiskt betyder
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/grund/inreda-kallare/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Inreda källaren, fuktkraven och byggreglerna i rätt ordning
-          </a>
-        </li>
-        <li class="border-t border-linje">
-          <a href="/rakna/dranering/" class:list={['flex min-h-11 items-center py-2', LANK_KLASS]}>
-            Räkna på vad det kostar att dränera om huset
-          </a>
-        </li>
-      </ul>
+    {
+      visat.status === 'ok' && (visat.visaAvfuktare || visat.visaDranering) && (
+        <div class="max-w-lasbredd">
+          {visat.visaAvfuktare && <Verktygskort kalkylator="avfuktare" />}
+          {visat.visaDranering && <Verktygskort kalkylator="dranering" />}
+        </div>
+      )
+    }
+
+    <section class="max-w-lasbredd">
+      <Pennstreck id="tre-orsaker">Varför bara en av de tre orsakerna löses med en avfuktare</Pennstreck>
+      <p class="m-0 text-brod lg:text-brod-lg">
+        Markfukt, kondens och läckage kräver tre olika åtgärder, och maskinen du kan köpa på vägen hem hjälper bara
+        mot en av dem. Det är hela skälet till att jag säger vänta med plånboken tills plasten på väggen har svarat.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Markfukten går rakt genom betongen. Boverket beskriver det som att vattnet sugs upp genom porerna, som i en
+        sockerbit i kaffet, och ibland vandrar det som ånga tvärs genom materialet. Det går så långsamt att det kan ta
+        många år innan du märker något. Skyddet mot markfukt hör hemma på utsidan av väggen, och det är därför en
+        avfuktare inne i rummet är fel maskin. Luften torkar, mer vatten dunstar ur väggen, och betongen suger efter
+        mer från marken.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Av samma skäl ska ytskiktet inne i källaren släppa igenom vattenånga. Målar du med en tät färg stannar
+        vattnet i betongen och trycker upp färgen i sjok. Det är det kryssrutan om färg som bubblar handlar om.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Kondensen vädrar du in själv. En källarvägg håller gärna 12&nbsp;grader, och luften du släpper in en varm
+        eftermiddag i augusti börjar fälla ut vatten redan vid 14,4&nbsp;grader. Det talet gäller luft på
+        20&nbsp;grader och 70&nbsp;procent relativ luftfuktighet, en helt vanlig sommardag. Väggen blir våt i
+        samma stund som du ställer upp fönstret. Det här är det enda av de tre fallen där en avfuktare gör jobbet,
+        och hur stor den behöver vara beror på rummets volym och hur fuktig luften är.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Läckaget kommer med regnet. Det tar sig in på ett ställe, ser ut som rinnmärken eller en pöl snarare än en
+        jämnt fuktig vägg, och det är det enda av de tre som kan bli bråttom. Följ vattnet uppåt och utåt. Oftast
+        hittar du en rörgenomföring som aldrig tätades, en spricka efter en sättning, en fönsterbrunn full av löv
+        eller ett stuprör som slutar en halvmeter från grunden.
+      </p>
+      <p class="m-0 mt-4 text-brod lg:text-brod-lg">
+        Att gissa fel kostar mer än några hundralappar. En avfuktare mot markfukt är {kronor(AVFUKTARE_KR)}&nbsp;kr
+        som inte gör någon nytta alls, och en dränering som inte behövdes är tjugo gånger den summan. Två dygn med
+        en bit plast på väggen skyddar dig mot båda. Hela testet, med bild på båda utfallen,
+        står i{' '}
+        <a href="/fukt/fukt-i-kallaren/" class={LANK_KLASS}>
+          guiden om fukt i källaren
+        </a>
+        .
+      </p>
     </section>
 
-    <Faq fragor={FRAGOR} />
-  </div>
-</Bas>
+    {
+      lasVidare.length > 0 && (
+        <section>
+          <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
+          <Artikelrutnat kort={lasVidare} kolumner={4} visaBeskrivning={false} visaMeta={false} />
+        </section>
+      )
+    }
+
+    <div class="max-w-lasbredd">
+      <Faq fragor={FRAGOR} />
+    </div>
+  </Fragment>
+</Raknarsida>

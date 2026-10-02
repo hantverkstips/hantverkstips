@@ -498,7 +498,7 @@ export function bedomKallare(i: KallareIndata): KallareResultat {
   } else {
     tejpa.push({
       steg: 'tejpa',
-      text: `Du har inte gjort tejptestet än, och det är den enda mätning som skiljer markfukt från kondens. Tejpa en bit plastfolie på 50 gånger 50 cm tätt mot den våtaste väggen och vänta minst ${TEJPTEST_DYGN} dygn.`,
+      text: `Du har inte gjort tejptestet än, och det är den enda mätning som skiljer markfukt från kondens. Tejpa en bit plastfolie på 50 gånger 50 cm tätt mot den våtaste väggen och vänta minst ${TEJPTEST_DYGN} dygn. Är plasten våt på väggsidan är det markfukt, och är den våt på rumssidan är det kondens. Köp ingenting förrän plasten har svarat.`,
       kalla: 'Tidningen Gör Det Själv säger två veckor, en målerifirma ett till två dygn. Min gräns ligger däremellan',
     });
   }

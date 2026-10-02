@@ -40,9 +40,28 @@ interface Props {
   butikNamn?: string;
   /** Den kanoniska adressen med räknarens tolkade värden. */
   delaUrl: string;
+  /**
+   * Rubriken på kortet Så räknar jag när räknaren redan har en egen, som
+   * "Så bedömer jag" på källaren, och ankaret som länkar in till sidan pekar
+   * på. Utelämnade: "Så räknar jag" och sa-raknar-vi. Spec-designlyft-c
+   * avsnitt 10.
+   */
+  saRaknarRubrik?: string;
+  saRaknarId?: string;
 }
 
-const { slug, namn, titel, beskrivning, rubrik, reklam = false, butikNamn, delaUrl } = Astro.props;
+const {
+  slug,
+  namn,
+  titel,
+  beskrivning,
+  rubrik,
+  reklam = false,
+  butikNamn,
+  delaUrl,
+  saRaknarRubrik = 'Så räknar jag',
+  saRaknarId = 'sa-raknar-vi',
+} = Astro.props;
 
 const raknare = hittaKalkylator(slug);
 if (!raknare) throw new Error(`[Raknarsida] Okänd räknare "${slug}". Lägg den i src/lib/kalkyl/register.ts.`);
@@ -123,7 +142,7 @@ const forval = Astro.slots.has('forval') ? (await Astro.slots.render('forval')).
       }
     </div>
     <div class="kort sa-raknar">
-      <h2 id="sa-raknar-vi" class="etikett-h2">Så räknar jag</h2>
+      <h2 id={saRaknarId} class="etikett-h2">{saRaknarRubrik}</h2>
       <slot name="saRaknarJag" />
     </div>
   </div>

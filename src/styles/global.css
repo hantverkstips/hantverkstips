@@ -1686,6 +1686,32 @@ body {
   .falt:has(+ span) {
     padding-right: 4.5rem;
   }
+  /*
+    Smala fält (spec-designlyft-c avsnitt 11.3): under cirka 10 rem ryms inte
+    enheten inne i fältet, och då står den bredvid som förut, 8 px från fältet
+    (radens gap-2). Två fall: raden själv är smal (en cell i ett rutnät, en rad
+    med max-w-28), som omslagets container query fångar, och fältet är smalt i
+    en bred rad (max-w-24 till max-w-32), som klassen på fältet fångar.
+  */
+  div:has(> .falt + span) {
+    container-type: inline-size;
+  }
+  .falt:is(.max-w-24, .max-w-28, .max-w-32) + span {
+    width: auto;
+    margin-left: 0;
+  }
+  .falt:is(.max-w-24, .max-w-28, .max-w-32):has(+ span) {
+    padding-right: calc(var(--spacing) * 3);
+  }
+  @container (max-width: 10rem) {
+    .falt + span {
+      width: auto;
+      margin-left: 0;
+    }
+    .falt:has(+ span) {
+      padding-right: calc(var(--spacing) * 3);
+    }
+  }
 
   .val:has(> input[type="radio"], > input[type="checkbox"]) {
     min-height: 46px;
@@ -2676,5 +2702,58 @@ body {
   }
   .flex:has(> .val) {
     column-gap: 8px;
+  }
+
+  /*
+    Radioknappar och kryssrutor med etiketten i ett eget spann, ofta med en
+    hjälprad under (Dränering, Källare, Trappa, Kontrollplan): samma knapp som
+    .val, men knappen omfattar både etiketten och hjälpraden, och rutan står
+    vid första raden (spec-designlyft-c avsnitt 11.4). Här i verktygslagret
+    eftersom formulären sätter py-1, gap-2, text-brod och mt-1.5 som verktyg.
+  */
+  label:has(> input:is([type="radio"], [type="checkbox"]) + span) {
+    min-height: 46px;
+    align-items: flex-start;
+    padding: 12px 14px;
+    gap: 10px;
+    background-color: var(--color-vit);
+    border: 1px solid var(--color-blyerts-2);
+    border-radius: var(--radius-sm);
+    font-size: 0.9375rem;
+    line-height: 1.3;
+  }
+  label > input:is([type="radio"], [type="checkbox"]):has(+ span) {
+    accent-color: var(--color-penna);
+    width: 18px;
+    height: 18px;
+    margin: 1px 0 0;
+    flex-shrink: 0;
+  }
+  label:has(> input:is([type="radio"], [type="checkbox"]):checked + span) {
+    border: 2px solid var(--color-blyerts);
+    padding: 11px 13px;
+    font-weight: 700;
+  }
+  /* Hjälpraden står kvar i normal vikt när knappen är vald. */
+  label:has(> input:checked + span) > span > span {
+    font-weight: 400;
+  }
+  label:has(> input:is([type="radio"], [type="checkbox"]):focus-visible + span) {
+    outline: 3px solid var(--color-penna);
+    outline-offset: 2px;
+  }
+  label > input:is([type="radio"], [type="checkbox"]):focus-visible:has(+ span) {
+    outline: none;
+  }
+  :is(div, fieldset):has(> label > input:is([type="radio"], [type="checkbox"]) + span) {
+    display: grid;
+    gap: 8px;
+  }
+  .flex:has(> label > input:is([type="radio"], [type="checkbox"]) + span) {
+    display: flex;
+    column-gap: 8px;
+  }
+  .flex > label:has(> input:is([type="radio"], [type="checkbox"]) + span) {
+    flex: 1 1 auto;
   }
 }

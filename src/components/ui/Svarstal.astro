@@ -2,23 +2,54 @@
 /**
  * Räknarens svar som bild: det stora talet och enheten i en stapel bredvid,
  * med vad talet är under enheten. Ingen markering; ytan och storleken är
- * markeringen. docs/DESIGN.md 5.8, spec-designlyft-c-2026-10-02 avsnitt 2.
+ * markeringen. docs/DESIGN.md 5.8, spec-designlyft-c-2026-10-02 avsnitt 2 och 11.2.
+ *
+ * Ett spann ("120 000 till 240 000") sätts i mellanstorlek, och enheten följer
+ * då sista talet med ett hårt mellanslag så att den aldrig står ensam på en rad.
  */
 interface Props {
-  /** Färdigformaterat, med decimalkomma. */
+  /** Färdigformaterat, med decimalkomma och hårda mellanslag i talen. */
   tal: string;
   enhet: string;
   /** Vad talet är, i 14 px blyerts-2 under enheten. */
   vad?: string;
+  /** Standard `stor`; `mellan` väljs själv när talet är längre än 9 tecken. */
+  storlek?: 'stor' | 'mellan';
 }
 
 const { tal, enhet, vad } = Astro.props;
+const storlek = Astro.props.storlek ?? (tal.length > 9 ? 'mellan' : 'stor');
+const talKlass =
+  storlek === 'mellan' ? 'font-serif text-siffra lg:text-siffra-lg' : 'font-serif text-siffra-lg lg:text-siffra-xl';
+
+/** Flera ord (ett spann): sista ordet och enheten hålls ihop. Talen själva har hårda mellanslag. */
+const sista = tal.lastIndexOf(' ');
+const fore = sista === -1 ? '' : tal.slice(0, sista + 1);
+const sistaOrd = sista === -1 ? tal : tal.slice(sista + 1);
 ---
 
-<p class="svarstal">
-  <span class="font-serif text-siffra-lg lg:text-siffra-xl">{tal}</span>
-  <span>
-    <span class="font-serif text-h2">{enhet}</span>
-    {vad && <span class="text-liten text-blyerts-2">{vad}</span>}
-  </span>
-</p>
+{
+  sista === -1 ? (
+    <p class="svarstal">
+      <span class={talKlass}>{tal}</span>
+      <span>
+        <span class="font-serif text-h2">{enhet}</span>
+        {vad && <span class="text-liten text-blyerts-2">{vad}</span>}
+      </span>
+    </p>
+  ) : (
+    <p class="svarstal">
+      <span class={talKlass}>
+        {fore}
+        <span class="whitespace-nowrap">
+          {sistaOrd}&nbsp;<span class="text-h2">{enhet}</span>
+        </span>
+      </span>
+      {vad && (
+        <span>
+          <span class="text-liten text-blyerts-2">{vad}</span>
+        </span>
+      )}
+    </p>
+  )
+}

@@ -87,3 +87,30 @@ Godkänt med två ändringar, som också gäller mönstret i steg 2 till 5:
 2. **Produktkortet** (koordinatorn): reservfallet där testets `kopInteOm` visas som svaghet tas bort i `src/components/ui/Produktkort.astro`. Utan `svaghet` visas bara granskningsmeningen.
 
 Svar på arbetarens frågor: de tre raderna från den gamla resultatspalten står rätt först i Därför blev svaret så; Läs vidare får ha fyra kort när den gamla listan hade fyra länkar (`kolumner={4}`, aldrig fler); vid ogiltig indata står varningsraden först och statusraden visar standardvärdenas bedömning, och DESIGN.md 5.8 ändras till det. Enhetens placering med negativ marginal i stället för absolut placering godtas.
+
+## 10. Steg 2: avfuktare, elkostnad, u-varde, kallare, dranering
+
+Mönstret är avsnitt 3 och 7 med granskningen i avsnitt 9. Per räknare:
+
+- **avfuktare**: `Svarstal` med märkt kapacitet i liter per dygn. Ingen mätare (behovet har ingen gräns ur en källa). Produktkorten efter svaret i `efter`, med reklambandet som i dag (`reklam` och `butikNamn` till `Raknarsida`). Utanför intervall: svarsytan visar beskedet i stället för talet, som i DESIGN.md 5.8.
+- **elkostnad**: `Svarstal` med sidans första stora tal (kWh) och kronorna i beskedet eller som andra rad, som sidan visar dem i dag. Förvalen (plats, typ, produkt) som chips om sidan har en förvalsrad. Ingen mätare. Tvättvarianten (`typ=tvatt`) följer samma mall.
+- **u-varde**: `Svarstal` med U-värdet. `Matare` med U-värdet mot Boverkets krav för den valda byggnadsdelen (kravet ur formelmodulen, inte hårdkodat), där ett värde över kravet fyller förbi gränsstrecket. `Statusrad` med `ok` när kravet klaras och `varning` annars, med sidans befintliga besked.
+- **kallare**: svaret är en diagnos i ord, inget tal: svarsytan bär diagnosen i Zilla Slab (`font-serif text-h2`) i stället för `Svarstal`, beskedet och nästa steg. Ingen mätare. Verktygskorten till avfuktare och dränering står kvar i `efter`.
+- **dranering**: `Svarstal` med kostnadsspannet som sidan visar det ("120 000 till 240 000 kr"). Ingen mätare.
+
+För varje räknare: klartextmeningen som `TEXT SAKNAS` med nyckeln `[slug].klartext` och platshållare för talet och de värden det räknas på (arbetaren väljer platshållarna och listar dem i leveransen, och de läggs in i textlistan). Andra nya rader i svarsytan (`[slug].svar.vad`, `[slug].matare.etikett`) bara där mallen behöver dem. Den gamla Kort svar-rutan tas bort som på daggpunkten, och meningar som inte längre har någon plats listas.
+
+Dessutom på daggpunkten: stycket "Själva formeln har jag inte räknat fram själv …" flyttar ur Så räknar jag-kortet och står direkt under antagandetabellen. Orden ändras inte; hantverkaren skriver om hänvisningen.
+
+Kontroller som avsnitt 4, för de fem sidorna och deras vanliga adresser (avfuktare med 400 kvm, elkostnad med `typ=tvatt` och `produkt=`, u-varde för vind och vägg, kallare med ett fynd, dranering standard). Före- och eftermätning i dev, `og:image` och JSON-LD byte för byte oförändrade.
+
+## 11. Granskning av steg 2, 2026-10-02
+
+Godkänt i stort. Fyra ändringar innan steget räknas som klart. Samma regler gäller i steg 3 till 5.
+
+1. **Därför blev svaret så skrivs som stycken.** På u-varde, kallare och dranering står Därför fortfarande som en lista med färgad vänsterlinje. En vänsterlinje är förbehållen Varning (DESIGN.md avsnitt 6). Gör om dem som på daggpunkten: varje punkt blir ett stycke i brödtext, med källraden under i `text-liten text-blyerts-2`. Orden ändras inte.
+2. **Ett spann som tal.** `Svarstal` får propen `storlek?: 'stor' | 'mellan'`. Standard är `stor` (`text-siffra-lg lg:text-siffra-xl`). Med `mellan` blir talet `text-siffra lg:text-siffra-lg`. Komponenten väljer `mellan` själv när `tal` innehåller ett mellanslag mellan två tal, till exempel "120 000 till 240 000" (regeln: mer än 9 tecken utan enheten). Enheten får aldrig hamna ensam på en rad: lägg ett hårt mellanslag mellan sista talet och enheten, eller låt enhetsspannet ha `white-space: nowrap` tillsammans med sista ordet.
+3. **Smala fält får enheten bredvid.** Fält som är smalare än cirka 10 rem (tjocklekarna på u-varde, fälten med `max-w-28` och `max-w-32`) har inte plats för enheten inne i fältet. I `global.css`: omslaget `div:has(> .falt + span)` får `container-type: inline-size`. Under `@container (max-width: 10rem)` står enheten utanför fältet som förut, i flexraden med 8 px mellanrum, och fältet saknar extra högerinnermarginal. Kontrollera u-varde (alla skikt), grannemedgivande och elkostnad (dagar, elpris) på 375 och 1280.
+4. **Radioknappar med hjälprad.** I `DraneringForm` ritas alternativ med en hjälprad under inte som knappar. Det blir likadant i andra formulär med samma markup. Lös det i CSS om det går: knappen ska omfatta både etiketten och hjälpraden. Annars gör du en minimal ändring i formulärets markup och skriver vilken. Kontrollera alla formulär som har hjälprader under radioknapparna.
+
+Avfuktarens nya H2 "Därför blev svaret så", med resultatspaltens tre rader, godtas. Läs vidare-kortens etikett "Räkna själv" för räknarna godtas. Meningar som inte längre har någon plats går till hantverkaren via koordinatorn.
