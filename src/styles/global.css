@@ -1633,14 +1633,15 @@ body {
   */
   .falt {
     width: 100%;
-    min-height: calc(var(--spacing) * 12);
+    /* Fas C: vit, 50 px, 18 px text (var papper, 48 px, 17 px). */
+    min-height: 50px;
     border-radius: var(--radius-sm);
     border-style: var(--tw-border-style, solid);
     border-width: 1px;
-    background-color: var(--color-papper);
+    background-color: var(--color-vit);
     padding-inline: calc(var(--spacing) * 3);
-    font-size: var(--text-brod);
-    line-height: var(--tw-leading, var(--text-brod--line-height));
+    font-size: var(--text-brod-lg);
+    line-height: var(--tw-leading, var(--text-brod-lg--line-height));
     color: var(--color-blyerts);
     --tw-numeric-spacing: tabular-nums;
     font-variant-numeric: var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacing,) var(--tw-numeric-fraction,);
@@ -1652,6 +1653,78 @@ body {
     gap: calc(var(--spacing) * 2);
     font-size: var(--text-brod);
     line-height: var(--tw-leading, var(--text-brod--line-height));
+  }
+
+  /*
+    Designlyftet fas C (spec-designlyft-c-2026-10-02 avsnitt 1, docs/DESIGN.md
+    avsnitt 6 Formulärfält): enheten inne i fältet till höger, och radioknappar
+    och kryssrutor som knappar. Formulären ändras inte; reglerna slår igenom på
+    alla räknare och de inbäddade. Enhetens storlek och mellanrummet i en
+    flexrad står i @layer utilities sist i filen, eftersom formulären sätter
+    text-brod och gap-x-4 som verktyg, och verktygen annars vinner.
+  */
+  /*
+    Enheten dras in över fältets högra innermarginal med negativ marginal i
+    stället för absolut position mot raden: flera fält är smalare än raden
+    (max-w-32 och liknande), och då hamnade enheten långt till höger om fältet.
+    Raderna är flex items-center gap-2, så -4,5 rem minus gapet lägger enhetens
+    högerkant 12 px innanför fältets.
+  */
+  .falt + span {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    /* Fast bredd, högerställd: en lång enhet ("kr per kWh") växer åt vänster
+       in i fältet, aldrig ut över ramen. */
+    flex: none;
+    width: calc(4.5rem - 12px);
+    min-width: 0;
+    margin-left: calc(-4.5rem - 0.5rem);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .falt:has(+ span) {
+    padding-right: 4.5rem;
+  }
+
+  .val:has(> input[type="radio"], > input[type="checkbox"]) {
+    min-height: 46px;
+    padding-inline: 14px;
+    gap: 10px;
+    background-color: var(--color-vit);
+    border: 1px solid var(--color-blyerts-2);
+    border-radius: var(--radius-sm);
+    font-size: 0.9375rem;
+    line-height: 1.3;
+  }
+  .val > input:is([type="radio"], [type="checkbox"]) {
+    accent-color: var(--color-penna);
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    flex-shrink: 0;
+  }
+  .val:has(> :checked) {
+    border: 2px solid var(--color-blyerts);
+    padding-inline: 13px;
+    font-weight: 700;
+  }
+  /* Ringen runt hela knappen, inte runt den lilla rutan inuti. */
+  .val:has(> :focus-visible) {
+    outline: 3px solid var(--color-penna);
+    outline-offset: 2px;
+  }
+  .val > input:focus-visible {
+    outline: none;
+  }
+  /* En grupp knappar står under varandra med 8 px emellan. En grupp som är en
+     flexrad (kompakt läge) förblir en rad som bryts, och knapparna delar bredden. */
+  :is(div, fieldset):has(> .val + .val) {
+    display: grid;
+    gap: 8px;
+  }
+  .flex > .val {
+    flex: 1 1 auto;
   }
 
   /*
@@ -2090,6 +2163,231 @@ body {
   }
 
   /*
+    Designlyftet fas C: räknarmallen (Raknarsida.astro) och dess delar.
+    Spec: docs/briefer/spec-designlyft-c-2026-10-02.md avsnitt 2, docs/DESIGN.md
+    5.8 och avsnitt 6 (Mätare, Delningsrad, Gör inte det här, Steg, Chip).
+  */
+  .raknare-ingress > p {
+    margin: 10px 0 0;
+    max-width: 48rem;
+    font-size: var(--text-ingress);
+    line-height: var(--text-ingress--line-height);
+    color: var(--color-blyerts-2);
+  }
+
+  /* Svarsspalten först i källkoden; från 1024 px står formuläret till vänster. */
+  .raknare {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+  .raknare-form {
+    padding: 22px;
+  }
+  .raknare-svar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+  }
+  @media (width >= 64rem) {
+    .raknare {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: start;
+    }
+    .raknare-form {
+      grid-column: 1;
+      grid-row: 1;
+      padding: 26px 28px;
+    }
+  }
+
+  /* Förvalen ovanför fälten: etiketten och chipsen. */
+  .raknare-forval {
+    margin-bottom: 18px;
+  }
+  .raknare-forval ul {
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .chip[aria-current] {
+    background-color: var(--color-blyerts);
+    border-color: var(--color-blyerts);
+    color: var(--color-papper);
+  }
+
+  /* Svarsytan: färgad yta, 14 px mellan delarna. */
+  .svarsyta {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 24px;
+  }
+  .svarsyta p {
+    margin: 0;
+  }
+  @media (width >= 64rem) {
+    .svarsyta {
+      padding: 26px;
+    }
+  }
+
+  /* Det stora talet med enheten i en stapel bredvid. */
+  .svarstal {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin: 0;
+  }
+  .svarstal > span:last-child {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Mätaren: stapeln från 0 till gränsen gånger 1,33, gränsen vid 75 procent. */
+  .matare {
+    position: relative;
+    height: 14px;
+    margin-block: 8px 6px;
+    background-color: var(--color-papper);
+    border: 1px solid var(--color-linje);
+    border-radius: var(--radius-full);
+  }
+  .matare > span {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background-color: var(--color-tumstock);
+    border-radius: var(--radius-full) 0 0 var(--radius-full);
+  }
+  .matare > span + span {
+    top: -7px;
+    bottom: -7px;
+    width: 3px;
+    background-color: var(--color-penna);
+    border-radius: 0;
+    transform: translateX(-50%);
+  }
+
+  .statusrad {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-weight: 700;
+  }
+
+  /* Det här gör du: ett kort med råden som numrerade steg i 26 px. */
+  .rad-kort {
+    padding: 20px 22px;
+  }
+  .rad-kort > ol {
+    margin: 10px 0 0;
+  }
+  .steg-liten > li {
+    align-items: flex-start;
+  }
+  .steg-liten > li + li {
+    margin-top: 12px;
+  }
+  .steg-liten > li::before {
+    width: 26px;
+    height: 26px;
+    font-size: 0.8125rem;
+  }
+
+  /* Delningsraden: adressen som text som markeras med ett klick. */
+  .delningsrad {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 10px;
+    row-gap: 4px;
+    padding: 12px 16px;
+    border: 1px dashed var(--color-linje);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-liten);
+    line-height: var(--text-liten--line-height);
+    color: var(--color-blyerts-2);
+  }
+  .dela-url {
+    flex: 1 1 12rem;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    user-select: all;
+    color: var(--color-blyerts);
+  }
+  .delningsrad > span:last-child {
+    flex-basis: 100%;
+  }
+
+  /* Resonemanget: Därför blev svaret så till vänster, Så räknar jag till höger. */
+  .resonemang {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+  }
+  @media (width >= 64rem) {
+    .resonemang {
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      align-items: start;
+    }
+  }
+  .darfor > div {
+    margin-top: 16px;
+  }
+  .darfor p {
+    margin: 0;
+  }
+  .darfor p + p {
+    font-size: var(--text-liten);
+    line-height: var(--text-liten--line-height);
+    color: var(--color-blyerts-2);
+  }
+  .gor-inte {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-top: 24px;
+    padding: 18px 22px;
+  }
+  .gor-inte p {
+    margin: 0;
+  }
+  .sa-raknar {
+    padding: 22px;
+  }
+  .sa-raknar .pappersruta {
+    border: 1px solid var(--color-linje);
+    border-radius: var(--radius-sm);
+  }
+  @media (width >= 64rem) {
+    .sa-raknar {
+      padding: 26px;
+    }
+  }
+  /* H2 i etikett-stil utan pennstreck, som Källor en undantagen H2. */
+  .etikett-h2 {
+    margin: 0 0 14px;
+    font-family: var(--font-sans);
+    font-size: var(--text-etikett);
+    line-height: var(--text-etikett--line-height);
+    letter-spacing: var(--text-etikett--letter-spacing);
+    font-weight: var(--text-etikett--font-weight);
+    text-transform: uppercase;
+  }
+  @media (width >= 64rem) {
+    .etikett-h2 {
+      font-size: var(--text-etikett-lg);
+      line-height: var(--text-etikett-lg--line-height);
+    }
+  }
+
+  /*
     H2:ans typografi och luft, en gång här i stället för på varje rubrik
     (Pennstreck.astro; spec-skal-budget-2026-09-28 avsnitt 13.1, 5.0). Samma
     värden som font-serif text-h2 lg:text-h2-lg mb-3 text-blyerts mt-12
@@ -2363,4 +2661,20 @@ body {
   .kp-avfallstabell td { padding: 1.5mm; text-align: left; border: 0.5pt solid var(--color-blyerts); }
   .kp-avfallstabell tr { height: 9mm; }
   .kp-sidfot { margin: 3mm 0 0; font-size: 8pt; overflow-wrap: anywhere; break-before: avoid; }
+}
+
+/*
+  Formulärens enhet och knappgrupper, fas C (spec-designlyft-c-2026-10-02
+  avsnitt 1). I verktygslagret med högre företräde än ett verktyg, eftersom
+  formulären sätter text-brod text-blyerts-2 på enheten och gap-x-4 på en
+  knapprad, och formulären inte ändras för det här.
+*/
+@layer utilities {
+  .falt + span {
+    font-size: 0.9375rem;
+    color: var(--color-blyerts-2);
+  }
+  .flex:has(> .val) {
+    column-gap: 8px;
+  }
 }

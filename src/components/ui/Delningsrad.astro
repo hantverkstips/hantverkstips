@@ -1,0 +1,22 @@
+---
+/**
+ * Delningsraden under räknarens råd: adressen med läsarens värden som text som
+ * markeras med ett klick (user-select: all), utan knapp och utan fält, eftersom
+ * kopiering kräver JavaScript. docs/DESIGN.md avsnitt 6, Delningsrad.
+ */
+import Ikon from './Ikon.astro';
+
+interface Props {
+  /** Den kanoniska adressen med räknarens tolkade värden. */
+  url: string;
+}
+
+const { url } = Astro.props;
+const visad = url.replace(/^https?:\/\//, '');
+---
+
+<div class="delningsrad">
+  <Ikon namn="lank" storlek={18} />
+  <span class="dela-url">{visad}</span>
+  <span>Dina värden ligger i adressen. Markera den och kopiera, så får den du skickar länken till samma svar.</span>
+</div>

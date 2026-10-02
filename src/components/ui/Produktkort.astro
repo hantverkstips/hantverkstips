@@ -36,7 +36,7 @@ interface Props {
   /** Redaktörens etikett, till exempel "Kallt enkelgarage". En gul chip. */
   etikett?: string | undefined;
   forVem?: string | undefined;
-  /** En mening om det som talar emot produkten. Annars testets "Köp inte om". */
+  /** En mening om det som talar emot produkten. Utan den visas bara granskningsmeningen. */
   svaghet?: string | undefined;
   modul?: KlickModul;
   /** Bland valen: ytan ruta. */
@@ -69,7 +69,7 @@ const namn = produkt ? produktNamn(produkt) : slug;
 const bild = produkt ? lokalBild(produkt) : null;
 
 /** Svagheten, och meningen om att det är en granskning när vi inte har haft produkten. */
-const svaghet = Astro.props.svaghet ?? test?.data.kopInteOm;
+const svaghet = Astro.props.svaghet;
 const granskning = !test || test.data.etikett !== 'test';
 const svaghetsrad = [svaghet, granskning ? 'Jag har läst databladet men inte provat den.' : undefined]
   .filter(Boolean)

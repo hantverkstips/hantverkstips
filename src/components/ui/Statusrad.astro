@@ -1,0 +1,26 @@
+---
+/**
+ * Statusraden sist i svarsytan: fetstil med ikonen check i ok eller varning i
+ * varning före texten. Färgen ensam säger ingenting; texten bär beskedet.
+ * docs/DESIGN.md 5.8, spec-designlyft-c-2026-10-02 avsnitt 2.
+ */
+import Ikon from './Ikon.astro';
+
+interface Props {
+  ton: 'ok' | 'varning';
+  text: string;
+}
+
+const { ton, text } = Astro.props;
+---
+
+<p class="statusrad">
+  {
+    ton === 'ok' ? (
+      <Ikon namn="check" storlek={22} class="text-ok" />
+    ) : (
+      <Ikon namn="varning" storlek={22} class="text-varning" />
+    )
+  }
+  <span>{text}</span>
+</p>

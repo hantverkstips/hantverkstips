@@ -1,0 +1,134 @@
+---
+/**
+ * Räknarmallen: den delade layouten för sidorna under /rakna/, så att varje
+ * räknare bara bär sina fält, sitt svar och sin text. Formen står i
+ * docs/DESIGN.md 5.8 och docs/SPEC-SIDMALLAR.md 4.7.0, props och slottar i
+ * docs/briefer/spec-designlyft-c-2026-10-02.md avsnitt 2.
+ *
+ * Sidan behåller sin frontmatter, sin cache-header och sin räkning; layouten
+ * ritar huvudet, de två spalterna (svaret först i källkoden, formuläret till
+ * vänster från 1024 px), resonemanget och ramen runt räknarens egna avsnitt.
+ *
+ * Slottar: ingress (ett <p>), forval, formular, svar, rad (<li> per råd),
+ * darfor, gorInte (texten efter "Gör inte det här."), saRaknarJag, efter.
+ * rad och gorInte renderas bara när de har innehåll.
+ */
+import Bas from '../../layouts/Bas.astro';
+import { pelareForKategori } from '../../lib/kort';
+import { hittaKalkylator } from '../../lib/kalkyl/register';
+import { hittaPelare } from '../../lib/pelare';
+import { verktyg } from '../../lib/strukturdata';
+import { verktygsDelningsbild } from '../../lib/verktygsbild';
+import Brodsmulor from '../ui/Brodsmulor.astro';
+import Delningsrad from '../ui/Delningsrad.astro';
+import Ikon from '../ui/Ikon.astro';
+import StrukturData from '../ui/StrukturData.astro';
+
+interface Props {
+  slug: string;
+  /**
+   * Verktygsnamnet i brödsmulan och i WebApplication ("Daggpunktskalkylator").
+   * Registrets namn är kortets rubrik och ett annat; brödsmulan och den
+   * strukturerade datan ska vara oförändrade (spec avsnitt 0).
+   */
+  namn: string;
+  titel: string;
+  beskrivning: string;
+  /** H1. */
+  rubrik: string;
+  reklam?: boolean;
+  butikNamn?: string;
+  /** Den kanoniska adressen med räknarens tolkade värden. */
+  delaUrl: string;
+}
+
+const { slug, namn, titel, beskrivning, rubrik, reklam = false, butikNamn, delaUrl } = Astro.props;
+
+const raknare = hittaKalkylator(slug);
+if (!raknare) throw new Error(`[Raknarsida] Okänd räknare "${slug}". Lägg den i src/lib/kalkyl/register.ts.`);
+
+/** Pelaren är den första i registret, eller kategorins pelare när räknaren bara har en kategori. */
+const pelareSlug = raknare.pelare?.[0] ?? (raknare.kategori ? await pelareForKategori(raknare.kategori) : undefined);
+const pelare = pelareSlug ? hittaPelare(pelareSlug) : undefined;
+
+const brodsmulor = [{ namn: 'Hantverkstips', href: '/' }, { namn: 'Räkna själv', href: '/rakna/' }, { namn }];
+
+/*
+ * Slottar som bara får synas när de har innehåll. Renderas först, eftersom ett
+ * villkor som blir false i slotten ändå räknas som en slot.
+ */
+const rad = Astro.slots.has('rad') ? (await Astro.slots.render('rad')).trim() : '';
+const gorInte = Astro.slots.has('gorInte') ? (await Astro.slots.render('gorInte')).trim() : '';
+const forval = Astro.slots.has('forval') ? (await Astro.slots.render('forval')).trim() : '';
+---
+
+<Bas
+  title={titel}
+  description={beskrivning}
+  reklam={reklam}
+  butikNamn={butikNamn}
+  brodsmulor={brodsmulor}
+  galleri
+  brodsmulorIVy
+  ogBild={verktygsDelningsbild(slug)}
+>
+  <StrukturData slot="head" data={verktyg({ url: `/rakna/${slug}/`, namn, beskrivning })} />
+
+  <div class="sidram pt-7">
+    <Brodsmulor lista={brodsmulor} />
+    <p class="etikett mt-6 text-penna">Räkna själv{pelare && ` · ${pelare.kort}`}</p>
+    <h1 class="m-0 mt-2.5 max-w-3xl font-serif text-h1 lg:text-h1-lg">{rubrik}</h1>
+    <div class="raknare-ingress">
+      <slot name="ingress" />
+    </div>
+
+    <div id="raknaren" class="raknare mt-7">
+      <div class="raknare-svar">
+        <div class="yta svarsyta">
+          <p class="etikett">Kort svar</p>
+          <slot name="svar" />
+        </div>
+        {
+          rad !== '' && (
+            <div class="kort rad-kort">
+              <p class="etikett">Det här gör du</p>
+              <ol class="steg steg-liten">
+                <Fragment set:html={rad} />
+              </ol>
+            </div>
+          )
+        }
+        <Delningsrad url={delaUrl} />
+      </div>
+
+      <div class="raknare-form blad">
+        {forval !== '' && <div class="raknare-forval"><Fragment set:html={forval} /></div>}
+        <slot name="formular" />
+      </div>
+    </div>
+  </div>
+
+  <div class="sidram resonemang mt-14">
+    <div class="text-brod lg:text-brod-lg">
+      <slot name="darfor" />
+      {
+        gorInte !== '' && (
+          <div class="yta gor-inte">
+            <Ikon namn="stang" storlek={26} class="text-varning" />
+            <p>
+              <strong>Gör inte det här.</strong> <Fragment set:html={gorInte} />
+            </p>
+          </div>
+        )
+      }
+    </div>
+    <div class="kort sa-raknar">
+      <h2 id="sa-raknar-vi" class="etikett-h2">Så räknar jag</h2>
+      <slot name="saRaknarJag" />
+    </div>
+  </div>
+
+  <div class="sidram pb-16 lg:pb-24">
+    <slot name="efter" />
+  </div>
+</Bas>

@@ -1,0 +1,40 @@
+---
+/**
+ * Mätaren i svarsytan: hur nära läsarens värde ligger en gräns. Skalan går från
+ * 0 till gränsen gånger 1,33, så att gränsen står vid 75 procent av bredden, och
+ * fyllningen stannar vid kanten. Raden ovanför bär informationen; stapeln är en
+ * bild med samma ord i aria-label. Statisk. docs/DESIGN.md avsnitt 6, Mätare.
+ */
+import { formateraTal } from '../../lib/format';
+
+interface Props {
+  /** Vad som mäts, till vänster i raden. */
+  etikett: string;
+  varde: number;
+  grans: number;
+  enhet: string;
+  /** Värdet som det ska stå i raden, formaterat av sidan: "83 %". */
+  visat: string;
+  /** Stapelns aria-label. Utelämnad: raden ovanför i ord. */
+  ariaText?: string;
+}
+
+const { etikett, varde, grans, enhet, visat, ariaText } = Astro.props;
+
+/** Gränssnitt, samma på alla räknare med mätare. */
+const GRANS_ORD = 'gränsen'; // matare.grans
+
+const gransText = `${GRANS_ORD} ${formateraTal(grans)} ${enhet}`;
+const fyllning = Math.max(0, Math.min(100, (varde / (grans * 1.33)) * 100));
+---
+
+<div>
+  <p class="flex justify-between gap-3 text-liten text-blyerts-2">
+    <span>{etikett}</span>
+    <span><strong class="text-blyerts">{visat}</strong> · {gransText}</span>
+  </p>
+  <div class="matare" role="img" aria-label={ariaText ?? `${etikett}: ${visat} · ${gransText}`}>
+    <span style={`width: ${fyllning.toFixed(1)}%`}></span>
+    <span style="left: 75%"></span>
+  </div>
+</div>

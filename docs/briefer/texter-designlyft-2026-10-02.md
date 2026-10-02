@@ -90,3 +90,24 @@ Spec: `docs/briefer/spec-designlyft-b-2026-10-02.md`.
 | `guider.typ.kategori.plural` | `src/lib/kort.ts` | Samma i plural, H1 och title på /guider/typ/kategori/ | högst 40 tecken | förut "Bäst i test" |
 
 Utöver nycklarna: produktkortet visar ett nytt valfritt fält `svaghet` (en mening om det som talar emot produkten), i artiklarnas `produkter` och i kategorifilernas `val`. Det står inte som TEXT SAKNAS; kortet visar testets "Köp inte om" eller ingenting tills fältet är ifyllt.
+
+## Fas C
+
+Spec: `docs/briefer/spec-designlyft-c-2026-10-02.md`. Räknarnas svarsyta ersätter den separata Kort svar-rutan, och SEO kräver att den alltid har en mening i klartext med talet, villkoret och källan (`[slug].klartext`). Platshållarna fylls i av koden med räknarens aktuella värden.
+
+### Steg 1, daggpunkten
+
+| Nyckel | Fil | Var och vad | Längd | I skissen |
+|---|---|---|---|---|
+| `matare.grans` | `src/components/ui/Matare.astro` | Ordet före gränsvärdet i mätarens rad, på alla räknare med mätare: "83 % · {ordet} 75 %" | ett ord | "gränsen" |
+| `daggpunkt.svar.vad` | `src/pages/rakna/daggpunkt.astro` | Raden under "grader" bredvid det stora talet: vad talet är | högst 30 tecken | "daggpunkten i ditt rum" |
+| `daggpunkt.matare.etikett` | samma | Vad mätaren mäter, till vänster i raden ovanför stapeln | högst 30 tecken | "Luften intill ytan" |
+| `daggpunkt.klartext` | samma | En mening i svarsytan med talet, villkoret och källan. Platshållare: `{daggpunkt}`, `{temp}`, `{rf}`, `{kalla}` (ytans temperatur) | högst 200 tecken | |
+
+### Fas C steg 1, skrivet av hantverkaren 2026-10-02
+
+- `matare.grans`: "gränsen"
+- `daggpunkt.svar.vad`: "daggpunkten i ditt rum"
+- `daggpunkt.matare.etikett`: "Luften intill ytan"
+- `daggpunkt.klartext`: "Vid {temp} grader och {rf} procent luftfuktighet är daggpunkten {daggpunkt} grader, räknat med Magnus-formeln. Den kallaste ytan håller {kalla} grader."
+- Därtill: `KORT_SVAR_YTA` i statusraden säger nu "än daggpunkten" i stället för "än så", eftersom raden står under mätaren och inte längre efter daggpunktsmeningen. Så räknar jag-stycket säger att osäkerheten står "i tabellen nedanför".

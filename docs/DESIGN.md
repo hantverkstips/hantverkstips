@@ -528,7 +528,7 @@ URL `/rakna/[slug]/`, exemplet daggpunkt. Formuläret skickas med GET till samma
 
 **Delningsraden.** Under rådskortet (avsnitt 6, Delningsrad): adressen med räknarens värden, som text som markeras med ett klick.
 
-**Resonemanget.** Från 1024 px två spalter 1,3/1 med 40 px emellan, 56 px ovanför. Vänster i läsbredd: H2 "Därför blev svaret så" med räknarens regler och källor i löptext, och "Gör inte det här" som färgad yta med ikon (avsnitt 6) sist i spalten. Höger: kortet "Så räknar jag" med etiketten, räknarens skiss i en pappersruta, antagandetabellen (två kolumner, ram runt cellerna, 15 px) och en rad i 14 px blyerts-2 om var källorna står. Mobil: staplat, kortet efter Gör inte det här.
+**Resonemanget.** Från 1024 px två spalter 1,3/1 med 40 px emellan, 56 px ovanför. Vänster i läsbredd: H2 "Därför blev svaret så" med räknarens regler och källor i löptext, och "Gör inte det här" som färgad yta med ikon (avsnitt 6) sist i spalten. Höger: kortet "Så räknar jag" med etiketten, räknarens skiss i en pappersruta och stegen i ord. Antagandetabellen står direkt efter resonemanget i läsbredd, eftersom tre spalter inte ryms i kortet. Mobil: staplat, kortet efter Gör inte det här.
 
 **Resten**, i läsbredd eller sidbredd för tabeller: räknarens egna avsnitt (daggpunktstabellen, typfallen), produktkort efter svaret när räkningen pekar ut en produktegenskap (aldrig före svaret, och då med reklamband), H2 "Läs vidare" i 26 px med tre Artikelkort (pappersruta, etikett med bara typen, rubrik), och Vanliga frågor sist.
 
@@ -538,7 +538,7 @@ URL `/rakna/[slug]/`, exemplet daggpunkt. Formuläret skickas med GET till samma
 |---|---|
 | Utan adress | Standardvärdena står i fälten och svaret för dem är räknat. Sidan ser klar ut |
 | Med adress | Värdena ur adressen står i fälten, svaret för dem i ytan, delningsraden visar adressen |
-| Ogiltig indata | Fältet får ram i `varning` och en rad text under i `varning` 14 px, kopplad med `aria-describedby`. Svarsytan visar standardvärdenas svar och statusraden säger att fälten ska rättas |
+| Ogiltig indata | Fältet får ram i `varning` och en rad text under i `varning` 14 px, kopplad med `aria-describedby`. Svarsytan börjar med en rad i `varning` om att ett fält inte gick att läsa och visar sedan standardvärdenas svar med deras statusrad |
 | Utanför intervall | Svarsytan ersätter talet med beskedet om vad som gäller i stället, och mätaren utgår |
 | Inga produkter matchar | Färgad yta med en mening och länk till kategorisidan |
 
