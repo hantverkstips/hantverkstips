@@ -71,8 +71,10 @@ Kolumnen "Så skriver sidan" är den formulering i sak som alla sidor ska hålla
 | T55 | 1929–1975 | Blåbetong tillverkades | SSM, Radonkällor i inomhusluften; Blåbetong (fråga och svar) | 2026-09-30 |
 | T56 | 5 000–200 000 Bq/m³ | Typisk radonhalt i markluften | SSM, Radonkällor | 2026-09-30 |
 | T57 | närmare 400 000 bostäder | Bostäder i Sverige över referensnivån. Ordet är "närmare", ordagrant på SSM:s Radon i småhus och Att mäta radon (båda uppdaterade 2026-09-04), rättat 2026-09-30 ur `kunskap-radon.md` avsnitt 3 | SSM, Radon i småhus | 2026-09-30 |
+| T58 | 10 l/s; 15 l/s eller 10 l/s med forcering till 30 l/s | Frånluft i badrum med / utan öppningsbart fönster. **Upphävt sedan 2006-07-01.** Var krav i NR (BFS 1988:18) 4:1 från 1989-01-01; sedan allmänt råd för **mekanisk** frånluft i BBR 1–11 (BFS 1993:57 6:232, BFS 1998:38). Över 5 m² golv +1 l/s per m². Gäller inte i dag | Boverket, utdrag för OVK ur äldre byggregler: NR <https://www.boverket.se/contentassets/3108c5069a60495380949c906e9c6f0b/nr-ovk.pdf>, BBR 1 <https://www.boverket.se/contentassets/3108c5069a60495380949c906e9c6f0b/bbr-1-ovk.pdf>, BBR 10 <https://www.boverket.se/contentassets/3108c5069a60495380949c906e9c6f0b/bbr-10-ovk.pdf>, BBR 12 (tabellen borta) <https://www.boverket.se/contentassets/3108c5069a60495380949c906e9c6f0b/bbr-12-ovk.pdf>; underlag `guider-svartmogel-badrum.md` S7–S10 och 3.2 | 2026-10-04 |
+| T59 | 15 l/s | Frånluft i badrum, rekommenderat minimivärde. **Remiss juni 2026, inte krav**, inte antagen. Bygger på REHVA/Nordic Ventilation Group-modellen och kategori II i SS-EN 16798-1:2019 (standarden inte läst) | Svensk Ventilation, Branschrekommendation Luft, remiss v1.0 (2026-06-16/17), bilaga 2, <https://www.svenskventilation.se/app/uploads/2026/06/Branschrekommendation-Luft_remiss-2026-06-17.pdf>; underlag `guider-svartmogel-badrum.md` S15 | 2026-10-04 |
 
-57 tal. Avvikelser på befintliga sidor: avsnitt 10.
+59 tal. Avvikelser på befintliga sidor: avsnitt 10.
 
 ---
 
@@ -329,6 +331,8 @@ Tabell 2 i Mikroorganismer, "Ungefärliga fuktkvoter vid 20 °C för olika värd
 > Ventilationssystem för rum i bostäder ska vara utformade för ett uteluftsflöde på minst 4,0 l/s per person.
 
 > 6 § I bostäder ska det finnas möjlighet till ökad luftväxling om det inte är obehövligt. Luftföroreningar från matlagning ska kunna tas om hand i anslutning till föroreningskällan.
+>
+> Oacceptabla tryckskillnader över byggnadsdelar får inte uppstå vid ökad luftväxling.
 
 - Gäller hur systemet ska vara **utformat** vid byggande och ändring.
 
@@ -560,6 +564,7 @@ Beställt av koordinatorn för UX-agentens spec `docs/briefer/spec-daggpunkt-rum
 - RF direkt efter duschen som mätserie. "Nära 100 procent" finns bara som tumregel (B9) och på lead- och hantverkarsidor.
 - **Hur snabbt RF sjunker med fungerande frånluft.** Ingen svensk eller nordisk mätserie hittad. "Under 60 procent inom 30 minuter" och "imman borta inom 15 minuter enligt Boverkets riktlinjer" (ventilation.se, totalbyggarna.se m.fl.) har ingen källa, och Boverket säger det inte i BFS 2024:8 eller i den arkiverade vägledningen. **Upprepas inte.**
 - "BBR kräver 15 l/s i badrum" (lead-sidor) står inte i BFS 2024:8. **Upprepas inte** som svensk regel.
+- Varifrån 10 och 15 l/s kommer: T58 (NR 1989 och BBR allmänt råd, upphävt 2006-07-01) och T59 (Svensk Ventilation, remiss juni 2026, inte krav). Gällande svensk siffra för badrum: **saknas** (tillagt 2026-10-04, underlag `guider-svartmogel-badrum.md` 3).
 - Tillverkarnas mätdata: Fresh Intellivent-produktbladet (via Bevego) har fuktstyrning med två fartlägen och eftergång 5, 15 eller 30 minuter, men inga RF-gränser och ingen mätning. PAX: bara butikstext ("60–70 %", "15–30 minuter"), ingen tillverkarmätning hittad.
 - Säker Vatten: inga tal om rumsluft eller ventilation hittade.
 - Kakel mot yttervägg som kallaste yta: ingen källa. Fönstret och ytterväggen finns redan i klustret: glaset räknas med `glasTemperatur` (spec avsnitt 2), ytterväggen i ett äldre hus 12–15 °C (`TYPISKA_YTOR`, ANTAGANDE, redan publicerat).
