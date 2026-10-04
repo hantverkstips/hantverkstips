@@ -576,3 +576,21 @@ Godkänd av hantverkaren 2026-10-04.
 - Ändrat efter läsaren, varv 2: rättelserna ovan.
 - Ändrat efter korrekturen: 29 rader och två egna småändringar.
 - Sidan står kvar som utkast.
+
+## Hantverkaren, efter SEO och manualkontrollen
+
+- **Description:** nu "i Energimyndighetens test", och andra meningen lyder "Ett kallt rum kräver en annan sort." Den är 155 tecken.
+- **MDX14:s bruksanvisning** (rev. 2020-01-20, s. 15–16 och 20) är läst av underlag 2026-10-04:
+  - R290 står där.
+  - Kravet på golvyta över 2 m² står där.
+  - Förbudet står där: "får inte förvaras i ett rum med antändningskällor som är aktiva (till exempel ... en elektrisk värmare".
+  - Under TIPS föreslår bruksanvisningen en varmluftsfläkt.
+  - Bruksanvisningen säger också: "Installera inte apparaten nära radiatorer eller andra värmekällor."
+- **Stycket om värme i källaravsnittet är omskrivet:**
+  - Förbudet gäller nu båda bruksanvisningarna, med MDX14:s ordalydelse "som är igång".
+  - Fläkttipset nämns, och stycket säger varför varningen gäller ändå.
+  - Det står att avfuktaren inte ska stå precis intill elementet.
+- **MDK21:s slang:** sidan anger ingen diameter, bara "ingår enligt produktbladet". Inget att ändra.
+- `npm run kontrollera`: 0 fel, 0 varningar.
+
+Godkänd av hantverkaren 2026-10-04. Ändrat: description och stycket om värme med R290.
