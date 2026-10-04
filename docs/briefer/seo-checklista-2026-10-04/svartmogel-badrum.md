@@ -10,6 +10,8 @@ Tre saker styr sidan:
 2. **Ventilationen med tal.** Ingen i topp 5 anger vilket luftflöde badrummet ska ha. Sidan anger kravet med källa i en mening och länkar till `/fukt/badrumsflakt/` (D2), som äger fläkten och tabellen.
 3. **Inga produkter och inget reklamband.** Mögeltvätt och fogmassa nämns som ämnen, inte som köp. Kemikaliesäkerheten finns redan på `/badrum/fogar-badrum/`.
 
+**Rättat 2026-10-04 efter D3:s faktablad (`docs/briefer/faktablad/kunskap-sjalvdrag.md`, S6, S20 och S42):** det finns inget krav på frånluft per rum i dag. BFS 2024:8 har bara kraven för hela bostaden, 0,35 l/s per m² och 4 l/s per person. Folkhälsomyndigheten har inga riktvärden för badrum (S6). Talen per rum, 10 l/s i badrum med öppningsbart fönster och 10 l/s med forcering till 30 l/s, eller 15 l/s, utan fönster, var allmänna råd till BBR 1994 till 2006 och är borttagna (S20). `/fukt/sjalvdrag/` skriver redan så, och D1 och D2 ska säga samma sak. Där checklistan nedan säger "kravet på frånluft i badrum i l/s" gäller i stället: vad som gäller i dag med källa, att det saknas krav per rum, de historiska talen märkta som historiska och som det branschen fortfarande brukar räkna med (bara om en källa säger det), och SWESIAQ:s 15 till 30 minuter för imman på spegeln (S42) som provet läsaren gör själv.
+
 ---
 
 ## /fukt/svartmogel-badrum/

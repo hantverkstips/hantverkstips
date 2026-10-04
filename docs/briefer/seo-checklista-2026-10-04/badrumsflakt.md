@@ -12,7 +12,9 @@ Underlaget är SERP-läsningen 2026-09-30 (SOKORDSANALYS 12.3, raderna "badrumsf
 - **A4.** Kategorin `badrumsflakt` i databasen med spec-nycklarna `flode_ls_fri`, `flode_ls_tryck`, `max_tryck_pa`, `ljud_dba_3m`, `effekt_w`, `fuktstyrning`, `kanal_mm`, `ip_klass` och `garanti_ar`.
 - **A5.** Lagrummet för fast elanslutning, med Elsäkerhetsverket som källa: elsäkerhetslagen och vad en privatperson får göra själv.
 
-Checklistan kan användas för skrivningen redan nu. Punkt 6 H2 2 och 4 och punkt 11 krav 1 och 2 kan inte skrivas klart förrän A1 till A3 finns.
+Checklistan kan användas för skrivningen redan nu.
+
+**Rättat 2026-10-04 efter D3:s faktablad (`docs/briefer/faktablad/kunskap-sjalvdrag.md`, S6, S20 och S42):** det finns inget krav på frånluft per rum i dag. BFS 2024:8 har bara kraven för hela bostaden, 0,35 l/s per m² och 4 l/s per person. Folkhälsomyndigheten har inga riktvärden för badrum (S6). Talen per rum, 10 l/s i badrum med öppningsbart fönster och 10 l/s med forcering till 30 l/s, eller 15 l/s, utan fönster, var allmänna råd till BBR 1994 till 2006 och är borttagna (S20). `/fukt/sjalvdrag/` skriver redan så, och D1 och D2 ska säga samma sak, och A1 hämtar inget nytt krav utan bekräftar läget. Där checklistan nedan säger "kravet på frånluft i badrum i l/s" gäller i stället: vad som gäller i dag med källa, att det saknas krav per rum, de historiska talen märkta som historiska och som det branschen fortfarande brukar räkna med (bara om en källa säger det), och SWESIAQ:s 15 till 30 minuter för imman på spegeln (S42) som provet läsaren gör själv. Punkt 6 H2 2 och 4 och punkt 11 krav 1 och 2 kan inte skrivas klart förrän A1 till A3 finns.
 
 ---
 

@@ -128,3 +128,51 @@ Det ettan har som vi måste behålla eller överträffa: en kort definition för
 - **FTX-besparing** står bara med källa och villkor. FläktGroups "kW/år" och oredovisade återbetalningstider upprepas inte.
 - **0,4 l/s per m²** och **"0,35 liter per kvadratmeter"** står inte.
 - **Länkar i Faq-svar** fungerar inte.
+
+---
+
+## Kontroll efter skrivningen, 2026-10-04
+
+SEO och GEO-agenten har läst `src/content/kunskap/fukt/sjalvdrag.mdx` (utkast) mot punkt 1 till 12. **Godkänd av SEO och GEO**, med två små ändringar och ett val för hantverkaren.
+
+- **Metadata.**
+  - seoTitle "Självdragsventilation, frånluft eller FTX" (41 tecken) är godkänd. H1 "Hur självdraget i ett äldre hus fungerar och när det behöver hjälp" är sidans löfte och delar inte de tre första orden med seoTitle. Skillnaden är avsiktlig: title bär sökordet, och H1 talar som Christian.
+  - Description (153) är godkänd.
+- **Sidofraserna.**
+  - Spaltventil, ventilation ovanför fönster och mekanisk frånluftsventilation står i brödtexten under rätt H2.
+  - FTX har en egen H2, och frånluftsvärmepumpen bärs av H2:n om frånluft.
+  - OVK har en egen H2.
+- **Bättre än ettan 1 till 4 är uppfyllda.**
+  - Kraven står med beteckning i brödtexten, BFS 2024:8 och FoHMFS 2014:18, och skillnaden mellan regel och allmänt råd är förklarad.
+  - Det tätare huset slutar i en åtgärd, med Fresh 100 Thermo ur datablad och en överslagsräkning.
+  - OVK står med BFS 2011:16 och plan- och byggförordningen.
+  - Systemtabellen uppfyller krav 4, som sa "systemtabellen eller priserna".
+- **Priserna får saknas.** Ingen källa av rang fanns, och regeln om tal utan källa väger tyngre än kortSvarets punkt om kostnad. Punkten utgår.
+- **Bra utöver checklistan:**
+  - tabellen över draget i pascal ur Boverkets handbok från 1995
+  - skorstenen efter pannbytet
+  - radonet efter bytet till fläkt, med länk
+  - beskedet att det inte finns något krav per rum, med de historiska talen förklarade
+
+  Det sista är ett tal ingen konkurrent har rätt.
+- **Länkarna ut** är sju: vinden, luftfuktighet inomhus, hygrometern, kondens på fönster, kallras, tilläggsisolera vind och radon. Platshållaren för `/fukt/badrumsflakt/` ersätts när D2 publiceras. Ankaret ska säga fläkten i badrummet.
+- **Strukturerad data.** `Article`, `BreadcrumbList` och `FAQPage` med svar i ren text. Canonical sätts av bygget. När bilden kommer har förslaget till `bildAlt` "Självdrag" först och är under 125 tecken.
+
+**Ändras:**
+
+1. **kortSvar, rad 14:** talet 0,35 liter per sekund och kvadratmeter står utan källa i det stycke som AI-svaren lyfter. Lägg till vem som säger det, till exempel "enligt Boverkets regler för nya hus och Folkhälsomyndighetens råd för befintliga". Hantverkaren formulerar.
+2. **Rad 90:** "Av husen med mögel på vinden hade 84 procent självdrag" har ingen källa i meningen. `/fukt/fukt-pa-vinden/` rad 90 har ett annat tal för nästan samma sak (Anticimex: tre av fyra skadade vindar). Skriv att talet kommer från Boverkets inventering, så att de två sidorna inte ser ut att motsäga varandra.
+
+**Valfritt, H2 1:** läsaren har rätt i att ingen säger "självdragsventilation". Ordet bär huvudfrasen (590), och står i dag bara i seoTitle och H2 1. Hantverkaren väljer ett av två sätt:
+
+- H2:n står kvar som den är.
+- H2:n blir "Så fungerar självdraget", och ordet självdragsventilation står i stället en gång i första stycket under den, till exempel som "självdragsventilation, eller bara självdrag".
+
+Båda är godkända.
+
+**Inlänkar** när D publiceras (fukt-6-D.md avsnitt 2):
+
+- `/fukt/kallras/`, H2 "Låt ventilen ovanför fönstret vara öppen"
+- `/fukt/kondens-pa-fonster/` rad 149
+- `/fukt/fukt-pa-vinden/` rad 88
+- `/grund/inreda-kallare/` rad 176

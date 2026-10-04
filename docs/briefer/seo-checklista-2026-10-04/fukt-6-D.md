@@ -15,7 +15,7 @@ Summa 18 580 i månaden. Underlaget är SERP-läsningen 2026-09-30 för D1, D2 o
 ## 1. Ordningen inom omgången
 
 1. **D1 svartmögel i badrummet** skrivs först. Checklistan är klar, och hantverkaren har påbörjat faktabladet. Sidan bygger på mögelbladet från omgång C.
-2. **Ett gemensamt tal hämtas en gång:** kravet på frånluft i badrum i l/s, för nya hus (BFS 2024:8 3 kap.) och för befintliga (Folkhälsomyndigheten eller Boverket). Affiliate beställer det som A1 till D2. Talet läggs i `fukt-gemensamma-tal.md` som nytt T-nummer, och D1 och D2 använder samma tal.
+2. **Frånluften i badrummet, samma besked på tre sidor (rättat 2026-10-04):** det finns inget krav per rum i dag. D3:s faktablad (S6, S20, S42) visar att talen per rum var allmänna råd 1994 till 2006 och är borttagna. D1, D2 och D3 säger detsamma. Affiliate A1 bekräftar läget och lägger S20 och S42 i `fukt-gemensamma-tal.md` som T-nummer.
 3. **D3 självdrag och D5 torpargrund** skrivs parallellt när deras faktablad finns. Inget av dem väntar på affiliate.
 4. **D2 badrumsfläkten och D4 tvättstugan** skrivs när affiliate har levererat. Texten utan korten kan påbörjas före.
 5. Publicering sker samlat när alla fem är godkända.
