@@ -462,6 +462,10 @@ const TILLATNA_DOKUMENTVAGAR: { vard: string; sokvag?: string }[] = [
   { vard: "pm-asset.azureedge.net", sokvag: "/api/asset-download" },
   { vard: "media.hornbach.se" },
   { vard: "img.bygghemma.se" },
+  // Weber: produktspecifikationer hos Beijer, Webers egen adress svarar 403 (beslut 2026-10-04, docs/AFFILIATE.md).
+  { vard: "www.beijerbygg.se", sokvag: "/wcsstore/beijercas/hpmassets/" },
+  // Clas Ohlsons egna märke Cotech: bruksanvisningen finns bara hos Clas Ohlson (beslut 2026-10-04).
+  { vard: "www.clasohlson.com", sokvag: "/medias/sys_master/" },
 ];
 
 /** Sant när adressen är ett tillverkardokument på en butiks server som får länkas. */

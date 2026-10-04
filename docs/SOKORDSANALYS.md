@@ -1102,6 +1102,15 @@ Startlista 5 gick ut samma dag: `/krysslaser/`, `/el/isolera-tak/` och `/fukt/fu
 
 **Omgång C, publiceras senast 20 december:** C0 `/rakna/fuktkvot/` (ny räknare, formel och konstanter med källa före specen), C1 `/fuktmatare/` (kategorisida, granskning på datablad, åtta modeller och tre val enligt affiliatebeslutet), C2 `/fukt/fuktkvot/`, C3 `/fukt/svartmogel/`, C4 `/fukt/mogel-i-huset/` och C5 `/fukt/mogellukt/`. SERP är oläst för C0, C2, C4 och C5 och läses innan checklistan skrivs. Mögel är YMYL: hälsan bygger bara på Folkhälsomyndigheten, Boverket och 1177. När C publiceras läggs de länkar in som väntar på C: hygrometern och hussvampen till `/fuktmatare/`, och hussvampen och luftfuktighetssidans snickartabell till `/fukt/fuktkvot/`.
 
+#### Status 2026-10-04, checklistorna för omgång C
+
+SERP lästes 2026-10-04 för C0, C2, C4 och C5. Checklistorna och omgångens ordning, länkar och gränser står i `docs/briefer/seo-checklista-2026-10-04/`, med översikten i `fukt-6-C.md`.
+
+- **Vinnbarheten efter läsningen:** C0 räknaren 4 (ettan är en forumtråd, ingen svensk räknare finns), C2 fuktkvoten 4 (ingen i topp 9 har en mögelgräns i fuktkvot med källa), C4 mögel i huset 3 (Folksam etta; tre olika SERP:ar för "mögel i hus", "mögel symptom" och "mögeltest"), C5 mögellukten 4 (Anticimex etta, ingen kemi med källa). Ingen myndighet och inte 1177 i topp 9 på mögelfraserna.
+- **Ägandet rättas:** "fuktkvot trä" (110) ägs av `/fukt/fuktkvot/`, inte av räknaren som tabellen i 12.6 sa. Räknaren äger "räkna ut fuktkvot", "fuktkvot formel" och "jämviktsfuktkvot", alla utan data.
+- **Ordningen:** räknarunderlaget och ett gemensamt mögelfaktablad först, sedan C0, C1 och C2 parallellt, sedan C3, C4 och C5.
+- **Hälsan** på mögelsidorna bygger på Folkhälsomyndigheten, 1177, Boverket och Arbetsmiljöverket.
+
 ### 12.8 Kontroll av kannibalisering
 
 Ingen av de nya sidorna delar de tre första orden i title med en befintlig. Gränser som checklistorna ska hålla:
