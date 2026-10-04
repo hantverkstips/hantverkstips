@@ -232,7 +232,7 @@ const BORASTAPETER = 'https://www.borastapeter.com/guider-sjalvhjalp/tapetkalkyl
 const KAHRS = 'https://www.kahrs.com/se/b2b/fragor-och-svar/fragor-om-golv';
 const PERGO =
   'https://www.pergogolv.se/sv-se/vanliga-fragor/laminatgolv/lagga/hur-mycket-golv-behover-jag-till-mitt-rum';
-const KAKELGIGANTEN = 'https://kakelgiganten.se/riktlinjer';
+const HOGANAS = 'https://www.hoganaskakel.se/faq-renovering-montering/';
 const SWEDOOR = 'https://www.swedoor.se/tips-och-rad/mattabeller-innerdorrar';
 
 const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande'; stod: string; url?: string }[] = [
@@ -327,8 +327,8 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     storhet: 'Spill på kakel och klinker',
     varde: `${formateraTal(SPILL_KLINKER.rak * 100)} och ${formateraTal(SPILL_KLINKER.diagonal * 100)} procent`,
     grund: 'Källa',
-    stod: 'Kakelleverantören Kakelgiganten anger 10 procent rakt lagt och 15 procent i mönster eller diagonalt',
-    url: KAKELGIGANTEN,
+    stod: 'Plattillverkaren Höganäs anger 10 till 15 procent spill. Det övre talet tar jag när plattorna läggs diagonalt, för då kapas varje rad i båda ändar',
+    url: HOGANAS,
   },
   {
     storhet: 'Dörröppningens mått',
@@ -586,7 +586,7 @@ const lasVidare: KortData[] = LAS_VIDARE.flatMap((href): KortData[] => {
               </p>
               <p>
                 {visatIndata.material === 'klinker'
-                  ? 'Spillet är Kakelgigantens, 10 procent rakt och 15 diagonalt.'
+                  ? 'Höganäs anger 10 till 15 procent spill, och jag tar 10 rakt och 15 diagonalt.'
                   : 'Spillet är Kährs och Pergos, cirka 5 procent rakt och upp till 10 diagonalt.'}
               </p>
             </div>
@@ -738,8 +738,8 @@ const lasVidare: KortData[] = LAS_VIDARE.flatMap((href): KortData[] => {
       <p class="m-0 mt-4 text-brod lg:text-brod-lg">
         Golvytan vet du redan, 12&nbsp;kvm, men beställ aldrig exakt det talet. Golvtillverkaren Kährs anger cirka
         fem procent spill vid rak läggning, och sju till tio procent när golvet läggs i mönster eller diagonalt.
-        Kakelleverantören Kakelgiganten anger tio procent för klinker och femton när plattorna läggs diagonalt, för
-        då kapas varje rad i båda ändar. Tolv kvadratmeter parkett blir alltså 12,6 att köpa, och tolv kvadratmeter
+        För klinker anger plattillverkaren Höganäs tio till femton procent. Jag tar femton när plattorna läggs
+        diagonalt, för då kapas varje rad i båda ändar. Tolv kvadratmeter parkett blir alltså 12,6 att köpa, och tolv kvadratmeter
         klinker blir 13,2. Fyller du i paketstorleken avrundar jag uppåt till hela paket, och det är det talet som
         stämmer med kvittot. Bänkskivans yta räknar du för sig, det står i{' '}
         <a href="/kok/slipa-bankskiva/" class={LANK_KLASS}>

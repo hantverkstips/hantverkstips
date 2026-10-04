@@ -14,6 +14,7 @@
  * en artikel och en riktig H3 skulle kunna ge fel rubrikordning.
  */
 import { forvalFranAdress as daggpunktForval } from '../../lib/kalkyl/daggpunkt';
+import { forvalFranAdress as fuktkvotForval } from '../../lib/kalkyl/fuktkvot';
 import {
   forvalFranAdress as elkostnadForval,
   produktForval,
@@ -30,6 +31,8 @@ import BygglovAltanForm from '../kalkyl/BygglovAltanForm.astro';
 import DaggpunktForm from '../kalkyl/DaggpunktForm.astro';
 import DraneringForm from '../kalkyl/DraneringForm.astro';
 import FasadytaForm from '../kalkyl/FasadytaForm.astro';
+import FuktkvotForm from '../kalkyl/FuktkvotForm.astro';
+import FuktkvotForm from '../kalkyl/FuktkvotForm.astro';
 import ElkostnadForm from '../kalkyl/ElkostnadForm.astro';
 import GipspluggForm from '../kalkyl/GipspluggForm.astro';
 import GrannemedgivandeForm from '../kalkyl/GrannemedgivandeForm.astro';
@@ -105,6 +108,7 @@ interface Props {
 const MED_FORMULAR = [
   'avfuktare',
   'daggpunkt',
+  'fuktkvot',
   'elkostnad',
   'innervagg',
   'bygglov-altan',
@@ -147,9 +151,28 @@ if (visaSvar && svarTal === undefined) {
 }
 const SVAR_RAD = 'En yta som är kallare än så blir våt. Fyll i ditt eget rum och räkna om.'; // rakna.prova.rad
 
-if (forval !== undefined && namn !== 'grannemedgivande' && namn !== 'elkostnad' && namn !== 'daggpunkt') {
-  throw new Error(`[Kalkylator] Förval finns bara för grannemedgivandet, elkostnaden och daggpunkten, inte för "${namn}".`);
+if (
+  forval !== undefined &&
+  namn !== 'grannemedgivande' &&
+  namn !== 'elkostnad' &&
+  namn !== 'daggpunkt' &&
+  namn !== 'fuktkvot'
+) {
+  throw new Error(
+    `[Kalkylator] Förval finns bara för grannemedgivandet, elkostnaden, daggpunkten och fuktkvoten, inte för "${namn}".`,
+  );
 }
+/**
+ * Fuktkvotens förval, med samma nycklar som verktygets adress, till exempel
+ * "lage=vikt" eller "rum=krypgrund" (forvalFranAdress i src/lib/kalkyl/fuktkvot.ts,
+ * docs/briefer/spec-kalkyl-fuktkvot-2026-10-04.md avsnitt 5).
+ */
+const fkForval = namn === 'fuktkvot' && forval !== undefined ? fuktkvotForval(forval) : undefined;
+if (fkForval?.status === 'fel') {
+  throw new Error(`[Kalkylator] Förvalet "${forval}" till fuktkvoten går inte att räkna: ${fkForval.fel}`);
+}
+const fkIndata = fkForval?.status === 'ok' ? fkForval.indata : undefined;
+const fkVarden = fkForval?.status === 'ok' ? fkForval.varden : undefined;
 /** Daggpunktens förval, tolkat och prövat som adressen på verktygssidan. */
 const dpForval = namn === 'daggpunkt' && forval !== undefined ? daggpunktForval(forval) : undefined;
 if (dpForval?.status === 'fel') {
@@ -233,6 +256,7 @@ const prefix = `${k.slug}-inbaddad-`;
       )}
     </DaggpunktForm>
   )}
+  {namn === 'fuktkvot' && <FuktkvotForm kompakt={true} indata={fkIndata} varden={fkVarden} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'avfuktare' && <AvfuktareForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'elkostnad' && <ElkostnadForm kompakt={true} indata={elIndata} varden={elVarden} typ={elTyp} produktSlug={elProduktSlug} plats={elPlats} tvattFalt={elTvattFalt} idPrefix={prefix} knappText="Räkna ut" />}
   {namn === 'innervagg' && <InnervaggForm kompakt={true} idPrefix={prefix} knappText="Räkna ut" />}

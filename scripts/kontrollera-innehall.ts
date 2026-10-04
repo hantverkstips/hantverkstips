@@ -449,7 +449,7 @@ for (const f of filer) {
 }
 
 // ---------------------------------------------------------------------------
-// Källor som pekar på en butik. Tillagt 2026-09-30, se BUTIKSDOMANER. VARNING tills svepet är klart (docs/AFFILIATE.md, "/go/-rutten"); då byter koordinatorn varna mot felet.
+// Källor som pekar på en butik. Tillagt 2026-09-30, se BUTIKSDOMANER. Var en varning tills svepet var klart; fel sedan 2026-10-04, när ingen källa längre pekade på en butik (docs/AFFILIATE.md, "/go/-rutten").
 
 /**
  * Undantaget: tillverkarens dokument på en butiks server (docs/AFFILIATE.md,
@@ -521,7 +521,7 @@ for (const f of filer) {
     }
     if (rad >= 0) anvanda.add(rad);
     const plats = rad >= 0 ? `${f.sokvag}:${rad + 1}` : f.sokvag;
-    varna(plats, `källan "${strang(post.titel) ?? ''}" pekar på butiken ${butik}. Källhänvisningar till en butik står utan url.`);
+    felet(plats, `källan "${strang(post.titel) ?? ''}" pekar på butiken ${butik}. Källhänvisningar till en butik står utan url.`);
   }
 }
 

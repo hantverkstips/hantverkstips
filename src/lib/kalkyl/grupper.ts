@@ -22,7 +22,7 @@ export const RAKNEGRUPPER: readonly Raknegrupp[] = [
     id: 'fukt',
     rubrik: 'Fukt och kondens', // grupper.fukt.rubrik
     rad: 'Hitta orsaken först och räkna på maskinen sist.', // grupper.fukt.rad
-    slugs: ['daggpunkt', 'avfuktare', 'kallare', 'elkostnad'],
+    slugs: ['daggpunkt', 'fuktkvot', 'avfuktare', 'kallare', 'elkostnad'],
   },
   {
     id: 'el',

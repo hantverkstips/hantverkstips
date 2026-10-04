@@ -293,6 +293,11 @@ const ROCKWOOL_VIND: KallaRef = {
   url: 'https://www.rockwool.com/se/produkter-och-konstruktioner/takisolering/vind/',
   last: '2026-09-24',
 };
+const ROCKWOOL_VINDSULL_PRODUKTBLAD: KallaRef = {
+  titel: 'Rockwool, Produktblad Vindsull',
+  url: 'https://brandportal.rockwool.com/original/gallery/39052/files/original/1a730595-e64a-48c8-afe1-1b5eab1d4d6e.pdf',
+  last: '2026-09-30',
+};
 const BAUHAUS_VINDSULL: KallaRef = {
   titel: 'Bauhaus, Rockwool Vindsull 20 kg',
   url: 'https://www.bauhaus.se/losull-rockwool-roxull-vindsull-20kg',
@@ -590,11 +595,14 @@ export const BOVERKET: Record<Kolumn, Record<Byggnadsdel, number>> = {
 const KOLUMNER: [Kolumn, Kolumn] = ['till-2026-09-30', 'fran-2026-10-01'];
 
 /**
- * Rockwool Vindsull, kr per m² och mm: 19,95 kr/kg gånger 0,042 kg per m² och mm.
- * Källa: Bauhaus, Rockwool Vindsull 20 kg, 19,95 kr/kg och ≥ 42 kg/m³,
+ * Rockwool Vindsull, kr per m² och mm: 19,95 kr/kg gånger 0,045 kg per m² och mm.
+ * Källa, densiteten: Rockwools produktblad Vindsull, löst utlagd 45 kg/m³,
+ * https://brandportal.rockwool.com/original/gallery/39052/files/original/1a730595-e64a-48c8-afe1-1b5eab1d4d6e.pdf ,
+ * läst 2026-09-30.
+ * Källa, priset: Bauhaus, Rockwool Vindsull 20 kg, 19,95 kr/kg,
  * https://www.bauhaus.se/losull-rockwool-roxull-vindsull-20kg , hämtat 2026-09-24.
  */
-export const PRIS_VINDSULL_KR_M2_MM = 19.95 * 0.042;
+export const PRIS_VINDSULL_KR_M2_MM = 19.95 * 0.045;
 
 /**
  * Rockwool Flexibatts 45 mm, kr per m² och mm.
@@ -1380,7 +1388,7 @@ export const ANTAGANDEN: AntagandeRad[] = [
     nyckel: 'pris-vindsull',
     varde: `${komma(avrunda(PRIS_VINDSULL_KR_M2_MM, 4))} ${KR_M2_MM}`,
     typ: 'Källa',
-    kallor: [BAUHAUS_VINDSULL],
+    kallor: [BAUHAUS_VINDSULL, ROCKWOOL_VINDSULL_PRODUKTBLAD],
   },
   {
     nyckel: 'pris-flexibatts-45',

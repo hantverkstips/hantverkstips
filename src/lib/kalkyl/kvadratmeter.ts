@@ -206,9 +206,10 @@ export const TAPET_RAPPORT_M = 0.53;
 export const SPILL_GOLV: Record<Laggning, number> = { rak: 0.05, diagonal: 0.1 };
 
 /**
- * Spill på kakel och klinker. Källa: Kakelgiganten anger 10 procent som vanlig
- * rekommendation och 15 procent vid mönster eller diagonal läggning. GDS anger
- * också 10 procent.
+ * Spill på kakel och klinker. Källa: CC Höganäs Byggkeramik anger 10 till 15
+ * procent (https://www.hoganaskakel.se/faq-renovering-montering/, 2025-10-17).
+ * Den nedre änden gäller rak läggning och den övre diagonal, där varje rad kapas
+ * i båda ändar. GDS anger också 10 procent.
  */
 export const SPILL_KLINKER: Record<Laggning, number> = { rak: 0.1, diagonal: 0.15 };
 

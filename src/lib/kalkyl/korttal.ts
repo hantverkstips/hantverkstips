@@ -16,6 +16,7 @@ import { raknaAltan, STANDARD as ALTAN } from './altan.ts';
 import { raknaAvfuktare, STANDARD as AVFUKTARE } from './avfuktare.ts';
 import { raknaDaggpunkt, STANDARD as DAGGPUNKT } from './daggpunkt.ts';
 import { raknaDranering, STANDARD as DRANERING } from './dranering.ts';
+import { raknaFuktkvot, STANDARD as FUKTKVOT } from './fuktkvot.ts';
 import { raknaElkostnad, STANDARD as ELKOSTNAD } from './elkostnad.ts';
 import { raknaFasadyta, STANDARD as FASADYTA } from './fasadyta.ts';
 import { raknaGipsskruv, STANDARD as GIPSSKRUV } from './gipsskruv.ts';
@@ -69,6 +70,10 @@ const TAL: Record<string, { tal: () => string; villkor: string }> = {
   daggpunkt: {
     tal: () => `${formateraTal(ok(raknaDaggpunkt(DAGGPUNKT), 'daggpunkt').daggpunktC, 1)}${H}grader`,
     villkor: 'vid 20 grader och 50 % luftfuktighet', // korttal.daggpunkt
+  },
+  fuktkvot: {
+    tal: () => `${formateraTal(falt(raknaFuktkvot(FUKTKVOT), 'fuktkvot', 'fuktkvot'), 1)}${H}%`,
+    villkor: 'TEXT SAKNAS', // korttal.fuktkvot
   },
   avfuktare: {
     tal: () => `${falt(raknaAvfuktare(AVFUKTARE), 'marktKapacitetLiter', 'avfuktare')}${H}liter per dygn`,

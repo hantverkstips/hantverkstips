@@ -52,6 +52,15 @@ export const KALKYLATORER: Kalkylator[] = [
     plats: 'luften',
   },
   {
+    // Spec: docs/briefer/spec-kalkyl-fuktkvot-2026-10-04.md avsnitt 5. Utan plats: Hela huset på hubben.
+    slug: 'fuktkvot',
+    svar: 'TEXT SAKNAS', // register.fuktkvot.svar
+    namn: 'TEXT SAKNAS', // register.fuktkvot.namn
+    rad: 'TEXT SAKNAS', // register.fuktkvot.rad
+    sasong: [9, 10],
+    pelare: ['fukt'],
+  },
+  {
     slug: 'avfuktare',
     svar: 'liter per dygn', // register.avfuktare.svar
     namn: 'Hur stor avfuktare behöver du?',

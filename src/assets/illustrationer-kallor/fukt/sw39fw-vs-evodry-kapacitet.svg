@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Stapeldiagram med liter per dygn vid 15, 10 och 5 grader för Wood's SW39FW (5,7, 3,8 och under 1) och Acetec EvoDry 6H 2.0 (6,7, 5,9 och 4,8), vår omräkning ur tillverkarnas märkkapacitet.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Stapeldiagram med liter per dygn vid 15, 10 och 5 grader för Wood's SW39FW (5,7 och 3,8, inget tal vid 5 grader) och Acetec EvoDry 6H 2.0 (6,7, 5,9 och 4,8), vår omräkning ur tillverkarnas märkkapacitet.">
   <!-- Diagram i Anteckningsbokens hand. SW39FW (kondens) i blyerts 2 px, EvoDry (sorption) i penna 2,5 px,
        etiketter i Atkinson Hyperlegible 22, en enda anteckning i Caveat 26 i penna.
-       Liter per dygn: SW39FW 19 × 0,30 = 5,7, 19 × 0,20 = 3,8, under 1 (Meacos andel vid 5 °C, butiksuppgift);
+       Liter per dygn: SW39FW 19 × 0,30 = 5,7, 19 × 0,20 = 3,8, inget tal vid 5 °C;
        EvoDry 7,4 × 0,90 = 6,7, 7,4 × 0,80 = 5,9, 7,4 × 0,65 = 4,8. Faktorer ur underlag-kalkyl-avfuktare.md.
        Skala 25 px per liter, nollinje y=300. Nyckeltalet 5,9 markerat.
        Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
@@ -39,11 +39,10 @@
     <text x="408" y="97">EvoDry, sorption</text>
   </g>
 
-  <!-- SW39FW i blyerts: 15 °C 5,7 (y 157,5), 10 °C 3,8 (y 205), 5 °C under 1 streckad (y 277,5) -->
+  <!-- SW39FW i blyerts: 15 °C 5,7 (y 157,5), 10 °C 3,8 (y 205), ingen stapel vid 5 °C -->
   <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M115,303 Q114,230 115.5,157.5 H165 Q166,230 165,303"/>
     <path d="M275,303 Q274,254 275.5,205 H325 Q326,254 325,303"/>
-    <path d="M435,303 Q434.5,290 435.5,277.5 H485 Q486,290 485,303" stroke-dasharray="5 5"/>
   </g>
   <!-- EvoDry i snickarpenna: 15 °C 6,7 (y 132,5), 10 °C 5,9 (y 152,5), 5 °C 4,8 (y 180) -->
   <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -63,13 +62,12 @@
     <text x="360" y="142">5,9</text>
     <text x="520" y="172">4,8</text>
   </g>
-  <text x="460" y="270" font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="22" fill="#625a50" text-anchor="middle">under 1</text>
 
   <!-- Temperaturerna under grupperna -->
   <g font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="22" fill="#2a2521" text-anchor="middle">
     <text x="170" y="330">15 °C</text>
     <text x="330" y="330">10 °C</text>
-    <text x="490" y="330">5 °C</text>
+    <text x="520" y="330">5 °C</text>
   </g>
   <text x="330" y="354" font-family="'Atkinson Hyperlegible', system-ui, sans-serif" font-size="22" fill="#625a50" text-anchor="middle">i källaren, vid 55 % luftfuktighet</text>
 

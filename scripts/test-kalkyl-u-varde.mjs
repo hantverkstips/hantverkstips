@@ -265,8 +265,8 @@ test('fall 6a: skiktläge, vind med 300 mm Vindsull', () => {
   uNara(r.uEfter, 0.07848, 'uEfter');
   kwhNara(r.besparing.kwhPerAr, 893.76, 'kWh');
   krNara(r.besparing.krPerAr, 2145.01, 'kr');
-  krNara(r.aterbetalning.kostnadKr, 25137, 'kostnad');
-  arNara(r.aterbetalning.ar, 11.7, 'år');
+  krNara(r.aterbetalning.kostnadKr, 26932.5, 'kostnad');
+  arNara(r.aterbetalning.ar, 12.6, 'år');
   assert.equal(r.besked, 'klarar');
   assert.equal(r.detaljer.fore.rsi, 0.1);
   assert.equal(r.detaljer.fore.rse, 0.04);
@@ -663,7 +663,7 @@ test('konstanterna mot underlaget', () => {
     'till-2026-09-30': { tak: 0.13, vagg: 0.18, golv: 0.15, fonster: 1.2, dorr: 1.2 },
     'fran-2026-10-01': { tak: 0.13, vagg: 0.18, golv: 0.15, fonster: 1.1, dorr: 1.1 },
   });
-  nara(PRIS_VINDSULL_KR_M2_MM, 0.8379, 1e-9, 'Vindsull');
+  nara(PRIS_VINDSULL_KR_M2_MM, 0.89775, 1e-9, 'Vindsull');
   nara(PRIS_FLEXIBATTS_45_KR_M2_MM, 0.99889, 0.000005, 'Flexibatts 45');
   nara(PRIS_FLEXIBATTS_95_KR_M2_MM, 0.89421, 0.000005, 'Flexibatts 95');
   assert.equal(FLEXIBATTS_GRANS_MM, 70);
@@ -956,9 +956,9 @@ test('fall 14 (12.18, 12.24): standardvärdena är vindsbjälklaget utan reglar 
     krNara(v.krMin, vantat[v.typ][0], `${v.typ} min`);
     krNara(v.krMax, vantat[v.typ][1], `${v.typ} max`);
   }
-  krNara(r.aterbetalning.kostnadKr, 25137, 'kostnad');
-  nara(r.aterbetalning.ar, 8.976, 0.0005, 'år');
-  assert.equal(endecimal(r.aterbetalning.ar), '9');
+  krNara(r.aterbetalning.kostnadKr, 26932.5, 'kostnad');
+  nara(r.aterbetalning.ar, 9.617, 0.0005, 'år');
+  assert.equal(endecimal(r.aterbetalning.ar), '9,6');
   assert.deepEqual(r.gorInteDetHar, ['glom-termostaten']);
   const antaganden = antagandenFor(r).map((a) => a.nyckel);
   assert.ok(!antaganden.includes('regelandel'));
@@ -1391,7 +1391,7 @@ test('12.32: från standardvinden till läget uvarde följer skikten med oförä
 test('12.34 och 12.45: återbetalning för vinden, orsaken bara-vind för vägg och golv', () => {
   const vind = ok(urAdress('del=tak'));
   assert.notEqual(vind.aterbetalning, null);
-  assert.equal(endecimal(vind.aterbetalning.ar), '9');
+  assert.equal(endecimal(vind.aterbetalning.ar), '9,6');
   for (const del of ['vagg', 'golv']) {
     const r = ok(urAdress(`del=${del}`));
     assert.equal(r.aterbetalning, null, del);
@@ -1419,7 +1419,7 @@ test('12.35: det som sitter där klarade redan, skiktläget', () => {
   assert.equal(r.besked, 'klarar');
   krNara(r.besparing.krPerAr, 489.95, 'kr');
   assert.equal(heltal(r.besparing.krPerAr), '490');
-  arNara(r.aterbetalning.ar, 17.1, 'år');
+  arNara(r.aterbetalning.ar, 18.3, 'år');
   const v = beskedVarden(r);
   assert.equal(v.klaradeFore, true);
   const rubrik = TEXT.besked.klarar.rubrik(v);

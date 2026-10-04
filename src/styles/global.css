@@ -2284,6 +2284,42 @@ body {
     font-weight: 700;
   }
 
+  /*
+    Bedömningslistan i fuktkvoträknarens svarsyta: en rad per användning med
+    etiketten i fetstil, gränsen och utfallet med ikon, 1 px linje mellan raderna,
+    15 px. Spec: docs/briefer/spec-kalkyl-fuktkvot-2026-10-04.md avsnitt 4.
+  */
+  .bedomningar {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.9375rem;
+    line-height: 1.4;
+  }
+  .bedomningar > li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 12px;
+    row-gap: 2px;
+    padding-block: 8px;
+  }
+  .bedomningar > li + li {
+    border-top: 1px solid var(--color-linje);
+  }
+  .bedomningar > li > span:first-child {
+    flex: 1 1 8rem;
+    font-weight: 700;
+  }
+  .bedomningar > li > span:nth-child(2) {
+    color: var(--color-blyerts-2);
+  }
+  .bedomningar > li > span:last-child {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
   /* Det här gör du: ett kort med råden som numrerade steg i 26 px. */
   .rad-kort {
     padding: 20px 22px;
