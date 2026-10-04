@@ -122,3 +122,36 @@ Det ettan har som vi måste behålla eller överträffa: skillnaden mot krypgrun
 - **"Torpargrund kallades förr krypgrund"** och liknande påståenden från avfuktningsfirmor står inte som fakta.
 - **Salt på marken** (LFS, 4 kg per 10 m²) och firmornas RF-tal utan källa upprepas inte.
 - **Länkar i Faq-svar** fungerar inte.
+
+---
+
+## Kontroll efter skrivningen, 2026-10-04
+
+SEO och GEO-agenten har läst `src/content/guider/fukt/torpargrund.mdx` (utkast, sju H2) mot punkt 1 till 12. **Godkänd av SEO och GEO**, med två ändringar som gäller källorna i sommar- och ventilationsavsnitten.
+
+- **Metadata och fraser.**
+  - seoTitle "Fuktig torpargrund, så åtgärdar du den" (38 tecken) är godkänd. "Fuktig torpargrund" och "torpargrund fukt" är samma sökning (12.1), och det är huvudfrasen i 12.4. Det beställningen kallade "torpargrund" är inte mätt som eget ord.
+  - H1 "Den gamla torpargrunden blir fuktig när huset och tomten ändras" delar inte de tre första orden med title.
+  - Description (151) är godkänd.
+  - "krypgrund vs torpargrund", "ventilera torpargrund" och "avfuktare torpargrund" bärs av var sin H2.
+- **Bättre än ettan 1, 2 och 4 är uppfyllda.**
+  - Jämförelsetabellen har källa och oenigheten redovisad: byggnadsvårdare mot byggare, mullbänksgrunden och den moderna blockgrunden med länk. Höjden saknas eftersom ingen källa av rang finns, och det är rätt.
+  - Gränstabellen har BFS 2024:8 och TräGuiden.
+  - Mätningen i en grund man inte kommer in i och åtgärderna i ordning har byggnadsvårdens varningar.
+- **Avvikelsen från punkt 6.4 och Bättre än ettan 3 godkänns.** Checklistan sa "stäng ventilerna på sommaren" utifrån en sammanfattning av SERP:en. Faktabladet läste källorna och fann att de säger emot varandra:
+  - Fuktcentrum (Svensson, Bygg & teknik 5/01) förordar mindre ventilation på vintern och mer på sommaren.
+  - SP säger att minskad ventilation på sommaren inte är någon bra lösning.
+  - Bara Slöjd & Byggnadsvård råder att stänga på sommaren.
+
+  Sidans råd följer de två forskningskällorna och redovisar oenigheten öppet: stryp på vintern, öppet resten av året, stängt på sommaren bara med avfuktare. Det är bättre än checklistans råd och starkare för GEO.
+
+  Kärnan i krav 3 är sommarbeskedet med källa och räkneexemplet. Räkneexemplet finns (20 grader och 70 procent blir 95 procent vid 15 grader). Kravet är uppfyllt när ändring 1 och 2 är gjorda.
+- **Länkarna ut** är elva. Köpguiden för krypgrund länkas två gånger men i olika H2, vilket regeln tillåter. Förvalen `rum=krypgrund` och `plats=krypgrund` är rätt. Faq-svaren har inga länkar. Det finns inga produkter och inget reklamband, och TrygghetsVakten nämns utan länk.
+- **Strukturerad data.** `Article`, `BreadcrumbList` och `FAQPage` med svar i ren text. Canonical sätts av bygget. Förslaget till `bildAlt` börjar med "Torpargrund" och är under 125 tecken.
+
+**Ändras:**
+
+1. **H2 "När sommarluften möter den kalla marken":** sommarbeskedet saknar källa i texten. Fuktcentrum står bara under jämförelsetabellen och i `kallor`. Skriv i texten att det är Fuktcentrums slutsats att den uteluftsventilerade grunden är fuktigast på sommaren (myt eller fakta, 2015). Skriv också att räkneexemplet är egen räkning med samma formel som daggpunktsräknaren.
+2. **H2 "Ventilera torpargrunden efter årstiden":** stycket om sommaren nämner Slöjd & Byggnadsvård och SP, men inte källan som rådet bygger på. Lägg till Fuktcentrum (Svensson, Bygg & teknik 5/01): mindre ventilation på vintern och mer på sommaren. Då står alla tre källorna, och läsaren ser att Christians råd följer två av dem.
+
+**Inlänkar** när D publiceras (fukt-6-D.md avsnitt 2): `/fukt/avfuktare-krypgrund/`, `/fukt/fukt-i-krypgrund/` och `/grund/isolera-krypgrund/`. Krypgrundssidans H2 "Varm sommarluft blir vatten i en kall grund" är rätt plats, eftersom samma mekanism beskrivs där.
