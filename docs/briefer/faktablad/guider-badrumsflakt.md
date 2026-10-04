@@ -463,3 +463,20 @@ Hittade i PM:s produktsitemap (blob-filerna `proffs-se_sv-se_sitemap_products_1�
 - Pax tillbehörsmanual (dokument 55) är bara bilder; inte avläst.
 - Bauhaus och Biltema: lager per varuhus hämtas med skript; inte läst.
 - Sidor som inte gick att läsa i tillägget: PM `/sok?q=` (404); Rörfokus, Stuvbutiken, Elbutik och Bragross för 54002 (404); Luftbutiken 54002 (302 till utgångna produkter); Bygghemma 54002 (308 till kategorin); Bauhaus `kallrasskydd-fresh-100mm` (404, gissad adress).
+
+## Omläsning före publicering, 2026-10-04
+
+Proffsmagasinet, en curl per adress utan -L, läst 2026-10-04 19:17. Fält ur `__INIT_STATE__`: `Price.ListPrice.AmountWithTax`, `Status.Availability.B2C` (status, `Quantity`, `StockText`, `AvailableForPurchase`), `GtmStockStatus`. Fälten `Discount`, `SalePrice` och `LowestHistoricalPrice` finns inte på någon av sidorna. Basadress `https://www.proffsmagasinet.se/vvs-inomhusklimat/`.
+
+| Nr | Produkt (PM art.nr) | Pris förra läsningen | Pris nu | Kampanj | Lager och leveranstext (B2C) | HTTP | Ändring |
+|---|---|---|---|---|---|---|---|
+| 1 | Fresh Intellivent P (4059558) | 1 649 | 1 649 | nej | OutOfStock / Gtm BackOrder, 0 st, AvailableForPurchase true, "Skickas 2026-10-08" (leverantörsbekräftat, 350 st väntas) | 200, ingen omdirigering | oförändrat |
+| 2 | Fresh Intellivent Sky (2819285) | 1 887 | 1 887 | nej | InStock, 180, "Skickas inom 24 timmar!" | 200, ingen omdirigering | oförändrat |
+| 3 | Pax Levante 00 (3129291) | 1 076 | 1 076 | nej | InStock, 98, "Skickas inom 24 timmar!" | 200, ingen omdirigering | oförändrat |
+| 4 | Pax Levante 40 (3131191) | 1 499 | 1 499 | nej | InStock, 5, "Skickas inom 24 timmar!" | 200, ingen omdirigering | oförändrat (lågt lager) |
+| 5 | Fresh 669801 kallrasskydd (3141281), `ventilation/flaktar/tillbehor-flaktar/fresh-669801-kallrasskydd-3141281` | 110 | 110 | nej | InStock, 229, "Skickas inom 24 timmar!" | 200, ingen omdirigering | oförändrat |
+| 6 | Woods MDX14 (4063682) | 1 690 | 1 690 | nej | InStock, 527, "Skickas inom 24 timmar!" | 200, ingen omdirigering | oförändrat |
+| 7 | Eeese Adam 20 l (2920263) | 2 756 | 2 756 | nej | InStock, 18, "Skickas inom 24 timmar!" | 200, ingen omdirigering | oförändrat |
+| 8 | Woods MDK21 (VS57632) | 3 118 | 3 118 | nej | InStock, 27, "Skickas inom 24 timmar!" | 200, ingen omdirigering | oförändrat |
+
+Pris i kronor med moms. På sida 3 finns även syskonvarianten Levante 30 (1 496 kr); den är inte nr 3:s pris.
