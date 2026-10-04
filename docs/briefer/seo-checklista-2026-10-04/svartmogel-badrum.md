@@ -78,7 +78,7 @@ Mål **1 500 till 2 100 ord**. Topp 5 ligger på 800 till 1 800 ord enligt läsn
 - `/fukt/mogel-i-huset/` i stycket före Faq eller i H2 6.
 - `/fukt/hygrometer/` i H2 4.
 
-**In**, krav senast när omgången publiceras (fukt-6-D.md avsnitt 2): `/fukt/svartmogel/` (stycket om badrummet under borttagningen, rad 124), `/fukt/mogel-i-huset/` (badrumsraden i platstabellen, rad 93, som i dag saknar länk), `/fukt/mogellukt/` (badrumsraden i lukttabellen) och `/badrum/fogar-badrum/` (H2 "Mögel på fogen eller fukt i väggen").
+**In**, krav senast när omgången publiceras (fukt-6-D.md avsnitt 2): `/fukt/svartmogel/` (stycket om badrummet under borttagningen, rad 122), `/fukt/mogel-i-huset/` (badrumsraden i platstabellen, rad 93, där målet byts från fogsidan till D1), `/fukt/mogellukt/` (badrumsraden i lukttabellen) och `/badrum/fogar-badrum/` (H2 "Mögel på fogen eller fukt i väggen").
 
 ### 10. Strukturerad data och komponenter
 

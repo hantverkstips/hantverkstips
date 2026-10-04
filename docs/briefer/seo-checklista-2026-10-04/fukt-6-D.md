@@ -26,11 +26,11 @@ En länk till ett utkast stoppar bygget, så inlänkarna läggs i samma commit s
 
 | Fil | Var | Länk till | Ankare, förslag |
 |---|---|---|---|
-| `src/content/kunskap/fukt/svartmogel.mdx` | H2 "Ta bort svartmögel från trä, tapet och fogar", rad 124: "I badrummet kan det räcka att städa och vädra oftare" | `/fukt/svartmogel-badrum/` | "I badrummet" eller "svartmögel i badrummet" |
+| `src/content/kunskap/fukt/svartmogel.mdx` | H2 "Ta bort svartmögel från trä, tapet och fogar", rad 122: "I badrummet kan det räcka att städa och vädra oftare" | `/fukt/svartmogel-badrum/` | "I badrummet" eller "svartmögel i badrummet" |
 | `src/content/kunskap/fukt/svartmogel.mdx` | samma stycke: "Mycket påväxt kan betyda att ventilationen behöver ses över" | `/fukt/badrumsflakt/` | "ventilationen" |
-| `src/content/guider/fukt/mogel-i-huset.mdx` | H2 "Var möglet brukar sitta", badrumsraden i tabellen (rad 93, sista kolumnen tom) | `/fukt/svartmogel-badrum/` | "fogen eller fukten bakom kaklet" |
+| `src/content/guider/fukt/mogel-i-huset.mdx` | H2 "Var möglet brukar sitta", badrumsraden i tabellen (rad 93). Kolumnen "Mer om platsen" länkar i dag till `/badrum/fogar-badrum/`. Byt målet, eftersom de andra raderna länkar till platssidan och fogsidan redan har sin inlänk från svartmögelsidan rad 122 | `/fukt/svartmogel-badrum/` i stället för fogsidan | "fogen eller fukten bakom kaklet" |
 | `src/content/guider/fukt/mogellukt.mdx` | H2 med lukttabellen, badrumsraden: "Instängt och fuktigt i badrummet" | `/fukt/svartmogel-badrum/` | i kolumnen "Så kontrollerar du" |
-| `src/content/guider/badrum/fogar-badrum.mdx` | H2 "Mögel på fogen eller fukt i väggen" | `/fukt/svartmogel-badrum/` | "om möglet sitter i fogen eller i väggen" |
+| `src/content/guider/badrum/fogar-badrum.mdx` | H2 "Mögel på fogen eller fukt i väggen", som byter namn och kortas enligt avsnitt 3 | `/fukt/svartmogel-badrum/` | "om möglet sitter i fogen eller i väggen" |
 | `src/content/kunskap/fukt/luftfuktighet-inomhus.mdx` | rad 159, H2 "Normal luftfuktighet inomhus, rum för rum": "det är frånluftens jobb att ta topparna" | `/fukt/badrumsflakt/` | "frånluftens jobb" |
 | `src/content/guider/fukt/kallras.mdx` | rad 128, H2 "Låt ventilen ovanför fönstret vara öppen": "Ordet kallrasskydd betyder något annat" | `/fukt/badrumsflakt/` | "kallrasskydd" |
 | `src/content/guider/fukt/kallras.mdx` | samma H2, om ventilen ovanför fönstret | `/fukt/sjalvdrag/` | "ventilen ovanför fönstret" (bara en länk per mening; kallrasskyddet står i ett eget stycke) |
@@ -51,7 +51,12 @@ Länkarna mellan omgångens egna sidor står i varje checklista under punkt 9.
 **Mot `/badrum/fogar-badrum/`** (äger "mögel i fogarna i duschen" 170, "mögel i fogar badrum" 70, "svartmögel i fogar" 40, fogmassa, rengöring och fogbyte, och kemikalievarningen):
 
 - D1 har diagnosen (fog, ventilation, fukt bakom), beslutet och en länk. Den har inga steg för tvätt eller byte och ingen H2 som heter "Mögel i fogarna".
-- Fogsidans H2 "Mögel på fogen eller fukt i väggen" behåller sitt korta stycke och får länken till D1.
+- **Beslut 2026-10-04: D1:s title står kvar, och fogsidans avsnitt kortas.** Fogsidans H2 "Mögel på fogen eller fukt i väggen" är D1 i liten skala och ligger för nära D1:s title ("Svartmögel i badrummet, fogen eller fukten"). Det är D1 som äger frågan fog eller fukt, eftersom det är D1:s huvudfras (1 900) och avsikten. Fogsidan äger fogen. Vid publiceringen av D:
+  - Fogsidans H2 byter namn till en rubrik om fogen, till exempel "När möglet kommer tillbaka på fogen". Rubriken får inte innehålla "fukt i väggen".
+  - Första stycket står kvar. Det säger att mögel som kommer tillbaka på en gammal fog betyder att fogen är slut.
+  - Stycket om fukt i väggen kortas till en eller två meningar. Det slutar i länken till D1 med ankaret "om möglet sitter i fogen eller i väggen". Länken till tätskiktssidan står kvar.
+  - Fogsidans seoTitle "Fogar i badrum med mögel, tvätta eller byta" ändras inte.
+  Hantverkaren som lägger inlänkarna gör ändringen i samma commit.
 - D1:s title börjar med "Svartmögel i badrummet" och fogsidans med "Fogar i badrum med mögel".
 
 **Mot `/badrum/tatskikt-badrum/`:** tätskiktet och reglerna stannar där. D1 och D2 länkar dit. "fuktskada badrum" (210) får ingen H2 i omgången och väntar på en egen sida i Badrum (12.4, Utanför planen).

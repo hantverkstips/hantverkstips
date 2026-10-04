@@ -96,7 +96,7 @@ Målet är **1 800 till 2 500 ord** utöver korten. Topp 10 är butiker och buti
 - `/fukt/luftfuktighet-inomhus/` rad 159, "det är frånluftens jobb att ta topparna"
 - `/fukt/kallras/` rad 128, om kallrasskyddet
 - `/fukt/svartmogel-badrum/` (D1)
-- `/fukt/svartmogel/` rad 124, där ventilationen nämns
+- `/fukt/svartmogel/` rad 122, där ventilationen nämns
 
 ### 10. Strukturerad data och komponenter
 
