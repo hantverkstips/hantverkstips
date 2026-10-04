@@ -114,3 +114,48 @@ Länkarna mellan omgångens egna sidor står i varje checklista under punkt 9.
 
 - Dag 10 i indexeringsplanen (SOKORDSANALYS avsnitt 10) begärs av Christian i den här ordningen: `/fukt/badrumsflakt/`, `/fukt/sjalvdrag/`, `/fukt/svartmogel-badrum/`, `/fukt/avfuktare-tvattstuga/`, `/fukt/torpargrund/` och `/fukt/` (begärs om).
 - En månad efter publiceringen frågas en AI om "badrumsfläkt krav", "självdrag" och "svartmögel badrum", och svaret antecknas i 12.7.
+
+## 6. Beslut och villkor för publicering, 2026-10-04
+
+### Samma regelbesked på D1, D2 och D3
+
+`/fukt/badrumsflakt/` (D2) äger "ventilation badrum regler" och hela regelhistorien. D1 och D3 säger samma sak kort och länkar till D2.
+
+- **D1 kortas vid publiceringen.** Den långa regelversionen blir en eller två meningar:
+  - det finns inget krav per rum i dag
+  - fläkten bör klara 10 l/s med fönster och 15 utan
+  - länk till D2 med ankaret "hur mycket luft badrummet ska ha ut"
+
+  "Minst 15" för alla badrum stryks, eftersom det motsäger D2. Branschens förslag om 15 nämns bara på D2.
+- **D3, `sjalvdrag.mdx` runt rad 102:** "10 i köket och 15 i badrummet" rättas mot T58 och T59 (10 med fönster, 15 utan). Det är redan beställt av koordinatorn.
+
+### Villkor för att publicera D1 till D5 i en commit
+
+1. **D1 är kontrollerad av SEO och GEO** mot `svartmogel-badrum.md` innan den sätts till `utkast: false`. Den kontrollen återstår.
+2. **Rättelserna från kontrollerna är gjorda:**
+   - **D1:** regelstycket kortat enligt ovan.
+   - **D3:** källan i kortSvar, källan för 84 procent på rad 90, och rad 102 enligt T58 och T59.
+   - **D4:** Energimyndigheten i description.
+   - **D5:** Fuktcentrum i sommaravsnittet och i ventilationsavsnittet.
+3. **Alla kommentarer om länkar är ersatta med länkar:**
+   - D2 till D1 och D3
+   - D3 till D2
+   - D4 till D2 och D3
+   - D1:s länkar till D2 och fogsidan
+4. **Alla inlänkar i avsnitt 2 ligger i samma commit:**
+   - fogsidans H2 har bytt namn och är kortad enligt avsnitt 3
+   - badrumsradens länk i mögel i huset går till D1
+   - inga länkar står i Faq-svar
+5. **Produkterna finns:**
+   - D2:s två Fresh-fläktar och D4:s tre avfuktare finns i databasen som bygget läser.
+   - Priser och lager är lästa samma dag som publiceringen.
+   - Korten visar sina fakta. UX har avgjort hur det sker för D2.
+6. **`utkast: false` på alla fem samtidigt.**
+7. **Kontroll och bygge:**
+   - `npm run kontrollera` ger 0 fel.
+   - `npm run build` är grönt i ren kopia.
+   - Budgeten är grön.
+
+   Inget pushas före det.
+8. **Skisserna stoppar inte publiceringen.** En sida utan bild har inget `bildAlt`. Kommer bilden senare får den sitt alt enligt checklistan.
+9. **Efter publiceringen** för SEO och GEO in dag 10 i SOKORDSANALYS avsnitt 10 och status D i 12.7.

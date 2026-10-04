@@ -125,3 +125,30 @@ Det ettan har som vi måste behålla eller överträffa: produkter med pris och 
 - **Självdrag och FTX** ägs av D3.
 - **Ett kort för en fläkt som säljs för fast installation** står inte utan att samma avsnitt säger vem som får ansluta den.
 - **Flödestal utan villkor** (tryck, kanal) står inte i korten.
+
+---
+
+## Kontroll efter skrivningen, 2026-10-04
+
+SEO och GEO-agenten har läst `src/content/guider/fukt/badrumsflakt.mdx` (utkast) mot punkt 1 till 12. **Godkänd av SEO och GEO.** Inget i texten ska ändras. Publiceringen har villkor som gäller korten.
+
+- **Metadata.** seoTitle "Badrumsfläkt, flödet badrummet behöver" (38 tecken) och description (154) är godkända. H1 "Badrummet behöver en fläkt som orkar trycka luften genom kanalen" delar inte de tre första orden med title.
+- **Sidofraserna.** Varje fras bärs av en egen H2:
+  - "ventilation badrum" och "regler": H2 1
+  - "fuktstyrd": H2 3
+  - "kallrasskydd": H2 4
+  - "avfuktare badrum": den sista H2:n
+
+  "frånluft badrum" och "luftfuktighet badrum" står i brödtexten.
+- **Regelhistorien stämmer med rättelsen 2026-10-04.** Det finns inget krav per rum i dag. Talen 10 l/s med fönster och 15 l/s utan är det borttagna rådet från 1994 till 2006 i 1998 års lydelse, och branschens förslag från 2026 står med årtal. KortSvar säger det i klartext. Talen är T58 och T59 i det gemensamma faktabladet. D1 och D3 ska säga samma sak, se fukt-6-D.md avsnitt 6.
+- **Kallrasskyddet godkänns som sakändring.** Fresh, Klimatfabriken och Pax avråder från skyddet i takkanal, och Pax kallar det skadligt i en kanal med självdrag. Sidan säger därför att skyddet hör hemma bakom en fläkt i ytterväggen. Frasen "kallrasskydd" (880) får fortfarande ett rakt svar på vad skyddet är, var det hör hemma och vad det kostar, med datum. Det är bättre än butikerna, som säljer skyddet utan att säga det. Bilden ritar takkanalen utan skydd.
+- **Bättre än ettan 1 till 4 är uppfyllda:**
+  1. Kravet är omformulerat efter rättelsen: läget i dag med källa, de historiska talen märkta som historiska, och spegelprovet med SWESIAQ.
+  2. Ekodesigntabellen visar flödet vid 20 Pa för alla fabrikat hos Proffsmagasinet, och Freshs tryck- och flödeskurva står med. Ingen konkurrent har den.
+  3. Elsäkerhetsverket citeras ordagrant om fast anslutning i våtrum.
+  4. Kallrasskyddet skiljs från kallras, med länk och pris med datum.
+- **Korten.** Bara de två Fresh-fläktar som enligt tillverkaren ger mer än 10 l/s vid 20 Pa har kort. Kortens etikett och forVem är konkreta, och sidan säger "har jag inte haft i händerna". Ordet test används inte om oss.
+- **Länkarna ut** är fem: hygrometern, luftfuktighet inomhus, kallras, tätskiktet och elkostnaden. Kommentarerna för D1 och D3 ersätts när D publiceras. Faq-svaren har inga länkar.
+- **Strukturerad data.** `Article`, `BreadcrumbList` och `FAQPage` med svar i ren text. Canonical sätts av bygget. Korten och köpknapparna går via `/go/` med `rel="sponsored nofollow"`, och reklambandet sätts av köpguidemallen. Det kontrolleras i bygget.
+
+**Villkor för publicering:** de två produkterna `fresh-intellivent-p` och `fresh-intellivent-sky` ska finnas i databasen som bygget läser, med pris och lager lästa samma dag som publiceringen. Korten ska visa sina tre fakta. Om `kategori: badrumsflakt` ska sättas, eller om korten får sina fakta på annat sätt, avgör UX. Utan produkter i databasen publiceras inte sidan.
