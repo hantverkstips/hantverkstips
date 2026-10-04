@@ -219,10 +219,18 @@ const TUMLARE: TvattMetod[] = ['varmepumpstumlare', 'kondenstumlare'];
 function tvattRubrik(_krAvfuktare: string, _krVarmepump: string): string {
   return 'Ska du köpa nytt för tvättens skull är en tumlare med värmepump billigast att driva.';
 }
-/** T7: raden under beskedet. */
-function tvattRad(kgPerAr: string, _krKondens: string): string {
-  return `Står det redan en avfuktare i tvättstugan kan du använda den, men stäng av den när tvätten är torr. Du torkar ${kgPerAr} kg tvätt om året.`;
+/**
+ * T7: raden under beskedet. Länken på "en avfuktare i tvättstugan" är SEO:s
+ * inlänk till /fukt/avfuktare-tvattstuga/ (fukt-6-D.md avsnitt 2 rad 14).
+ */
+function tvattRad(kgPerAr: string, _krKondens: string): { fore: string; lank: string; efter: string } {
+  return {
+    fore: 'Står det redan ',
+    lank: 'en avfuktare i tvättstugan',
+    efter: ` kan du använda den, men stäng av den när tvätten är torr. Du torkar ${kgPerAr} kg tvätt om året.`,
+  };
 }
+const tvattRadDelar = tvattTal ? tvattRad(tvattTal.kgPerAr, tvattTal.krKondens) : null;
 /** T8: etiketten ovanför det stora talet, avfuktarens kr per år. */
 const TVATT_TAL_ETIKETT = 'Avfuktaren, kr per år';
 /** T9: metodernas namn. */
@@ -492,7 +500,9 @@ for (const href of LAS_VIDARE) {
             <Svarstal tal={tvattTal.krAvfuktareTal} enhet="kr" vad={TVATT_TAL_ETIKETT} />
             <div class="text-brod">
               <p class="font-bold">{tvattRubrik(tvattTal.krAvfuktare, tvattTal.krVarmepump)}</p>
-              <p>{tvattRad(tvattTal.kgPerAr, tvattTal.krKondens)}</p>
+              {tvattRadDelar && (
+                <p>{tvattRadDelar.fore}<a href="/fukt/avfuktare-tvattstuga/" class="lank">{tvattRadDelar.lank}</a>{tvattRadDelar.efter}</p>
+              )}
             </div>
             {/* En rad per tumlare: namnet till vänster, kronorna till höger. */}
             <ul class="m-0 list-none p-0 text-brod">
