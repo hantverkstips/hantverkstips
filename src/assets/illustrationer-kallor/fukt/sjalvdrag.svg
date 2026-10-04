@@ -24,11 +24,11 @@
     <!-- mark -->
     <path d="M44,312 Q320,313.5 596,312"/>
     <!-- vänster vägg: in- och utsida, bruten vid fönstren och ventilen -->
-    <path d="M212,146 Q211.6,158 212,170 M212,204 Q211.6,221 212,238 M212,252 Q212.3,257 212,262 M212,300 Q212.3,307 212,314 M220,146 Q220.4,158 220,170 M220,204 Q220.4,221 220,238 M220,252 Q219.7,257 220,262 M220,300 Q219.7,307 220,314"/>
+    <path d="M212,146 Q211.6,158 212,170 M212,204 Q211.6,218 212,232 M212,244 Q212.3,253 212,262 M212,300 Q212.3,307 212,314 M220,146 Q220.4,158 220,170 M220,204 Q220.4,218 220,232 M220,244 Q219.7,253 220,262 M220,300 Q219.7,307 220,314"/>
     <!-- fönstren: karm överst, glas, bröstning med bleck ut -->
     <path d="M212,170 H220 M216,170 V204 M207,204 H220 M212,262 H220 M216,262 V300 M207,300 H220"/>
     <!-- ventilen: galler i väggen -->
-    <path d="M212,238 H220 M212,252 H220"/>
+    <path d="M212,232 H220 M212,244 H220"/>
     <!-- höger vägg -->
     <path d="M512,146 Q512.8,229 512,314 M520,146 Q520.8,229 520,314"/>
     <!-- bjälklaget mellan våningarna, med trapphålet, och vindsbjälklaget -->
@@ -50,7 +50,7 @@
   </g>
 
   <!-- Gallrets spjälor i ventilen -->
-  <path d="M212,242.5 H220 M212,247.5 H220" fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round"/>
+  <path d="M212,236 H220 M212,240 H220" fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round"/>
 
   <!-- Sommardagen: samma hus förenklat, med sol och korta streckade pilar -->
   <path d="M50,12 Q125,11.4 202,12 M200,10 Q200.6,70 200,130 M202,128 Q125,128.6 48,128 M50,130 Q49.4,70 50,10" fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round"/>
@@ -70,14 +70,14 @@
 
   <!-- Snickarpenna: luftens väg, in vid ventilen, genom bottenvåningen och upp genom kanalerna -->
   <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M120,245 Q171,244.4 222,245 C258,246 284,252 300,260 S344,272 380,272 S438,272 452,270 Q465,268 465,256 Q466.5,170 465,60"/>
+    <path d="M120,238 Q171,237.6 224,238 C256,239 284,252 300,260 S344,272 380,272 S438,272 452,270 Q465,268 465,256 Q466.5,170 465,60"/>
     <path d="M300,260 C312,248 318,236 320,222 S330,194 352,192 S396,190 410,192 Q433,194 433,176 Q434.5,113 433,51"/>
-    <path d="M188,238 L202,245 L188,252 M458,74 L465,60 L472,74 M426,65 L433,51 L440,65"/>
+    <path d="M188,231 L202,238 L188,245 M458,74 L465,60 L472,74 M426,65 L433,51 L440,65"/>
   </g>
 
   <!-- Handskrift (Caveat) -->
   <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
-    <text x="104" y="232">uteluft in</text>
+    <text x="126" y="226">uteluft in</text>
     <text x="300" y="36">ut genom kanalen</text>
     <text x="236" y="72">vinter</text>
     <text x="58" y="38" fill="#625a50">sommar</text>
