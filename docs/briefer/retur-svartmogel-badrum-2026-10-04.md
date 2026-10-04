@@ -418,3 +418,18 @@ Läst 2026-10-04 mot `docs/briefer/seo-checklista-2026-10-04/svartmogel-badrum.m
 - npm run kontrollera: 0 fel med sidan körd som publicerad. Den enda varningen är saknad inlänk, som förväntat.
 
 Godkänd av hantverkaren 2026-10-04: omskrivning efter varv 1, kirurgiska rättningar efter varv 2 (betyg 4 och 4), alla 13 korrekturrader och rubriken för luktfraserna från steg 5. Sidan står kvar som utkast tills omgången publiceras med D2-länken och inlänkarna.
+
+## Hantverkaren, samkörning med D3 (självdrag), 2026-10-04
+
+- Stycket om luftflödet i avsnittet om fläkten säger nu samma sak som /fukt/sjalvdrag/:
+  - Det finns inget krav på frånluft per rum.
+  - Ett nytt hus ska ha 0,35 l/s per m² enligt BFS 2024:8.
+  - Hus som redan står gäller samma tal enligt FoHMFS 2014:18.
+  - Folkhälsomyndigheten har inget riktvärde för badrum.
+  - 10 och 15 l/s var ett allmänt råd i BBR från 1994 till 2006 och gällde bara frånluft med fläkt. Rådet är borttaget.
+  - "Från 1989" och NR är strukna.
+- Nytt prov för läsaren: imman på spegeln bör vara borta inom 15 till 30 minuter. Källa: SWESIAQ, Utredning av självdragssystem i bostad (2023-05-15), s. 33.
+- Tre nya rader i källistan: FoHMFS 2014:18, Svensk Ventilations sammanställning (2019) och SWESIAQ (2023).
+- npm run kontrollera: 0 fel. Den enda varningen gäller saknad inlänk.
+
+Godkänd av hantverkaren 2026-10-04 även efter samkörningen med D3.
