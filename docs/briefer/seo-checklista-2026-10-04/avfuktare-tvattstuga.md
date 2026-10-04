@@ -110,3 +110,39 @@ Det ettan har som vi måste behålla eller överträffa: konkreta maskiner med p
 - **Test, testvinnare och bäst i test** används inte om oss.
 - **"avfuktare badrum"** ägs av D2.
 - **Länkar i Faq-svar** fungerar inte.
+
+---
+
+## Kontroll efter skrivningen, 2026-10-04
+
+SEO och GEO-agenten har läst `src/content/guider/fukt/avfuktare-tvattstuga.mdx` (utkast) mot punkt 1 till 12. **Godkänd av SEO och GEO**, med en ändring i description.
+
+- **Metadata.** seoTitle "Avfuktare i tvättstugan mot torktumlaren" (40 tecken) börjar som 12.8 kräver. H1 "En avfuktare torkar tvätten men drar mer el än en tumlare" är sidans löfte och delar inte de tre första orden med title.
+- **Sidofraserna.** "Avfuktare eller torktumlare" bärs av första H2, torkrummet och tvättstugan av tredje, och den kalla källaren av fjärde.
+- **Bättre än ettan 1 till 4 är uppfyllda:**
+  - Energimyndighetens test med år, i en tabell med sex metoder, omräknat till kronor. Räknaren är inbäddad med tvättläget (841 mot 604 kr, med SCB:s elpris och halvår).
+  - Restfukten ur energietiketten.
+  - Tre kort med kapacitet vid tillverkarens villkor och effekt ur datablad. Ordningen är affiliates, och ingen modell påstås vara mätt av oss.
+  - Gränserna 15 och 10 grader, med Fricos tal som exempel.
+- **Bra utöver checklistan.** Tvättlägena jämförs (vad som stänger av maskinen), varningen för ett helt dygn i drift har Energimyndigheten som källa, och köldmediet R290 står med rumsstorlek. Ingen konkurrent har dem.
+- **Faq 1, inställd luftfuktighet, står kvar.** Svaret hittar inte på något målvärde. Det säger att tvättläget inte låter läsaren välja, att MDK21 stannar vid 40 procent enligt tillverkaren, och att luften efteråt ska ligga som i resten av huset. Det är ett ärligt svar med källa på frågan som butikerna besvarar med tal utan källa, och den uppfyller checklistans villkor. Frågan utgår inte.
+- **"woods avfuktare tvättstuga"** (110) står i korten, tabellen och två H3 ("Wood's MDX14 …", "Wood's MDK21 …") på en sida om tvättstugan. Det räcker. Säljmeningen behövs inte.
+- **Länkarna ut** är fem plus räknaren:
+  - hygrometern
+  - kategorisidan för luftavfuktare
+  - sorptionsavfuktaren
+  - köpguiden för källaren
+  - fukt i källaren
+
+  Platshållarna för D2 och D3 ersätts när D publiceras. Reklamband och `/go/` sätts av köpguidemallen. Faq-svaren har inga länkar.
+- **Strukturerad data.** `Article`, `BreadcrumbList` och `FAQPage` med svar i ren text. Canonical sätts av bygget.
+
+**Ändras:**
+
+1. **Description:** "i ett test" ska bli "i Energimyndighetens test". Myndighetens namn är det som skiljer sidan från butikerna i sökresultatet, och det är det första tecknet på att talet har källa. Ryms inte meningen inom 155 tecken, kortas andra meningen. Exempel: "Ett kallt rum kräver en annan sorts avfuktare." Hantverkaren formulerar.
+
+**Inlänkar** när D publiceras (fukt-6-D.md avsnitt 2):
+
+- `/fukt/avfuktare-krypgrund/` rad 83
+- Så väljer du på `/luftavfuktare/`
+- tvättlägets text i `/rakna/elkostnad/`
