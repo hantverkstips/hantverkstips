@@ -58,8 +58,8 @@ Kolumnen "Så skriver sidan" är den formulering i sak som alla sidor ska hålla
 | T42 | 80 % RF över 0 °C | Standardens mått för beräknad "time of wetness", inte rostgräns | ISO 9223:2012 bilaga B, via `guider-avfuktare-garage.md` | 2026-09-29 |
 | T43 | 0,35 l/s per m² golvarea | Minsta uteluftsflöde, bostad | BFS 2024:8 3 kap. 5 § (krav vid byggande); FoHMFS 2014:18 (allmänt råd, befintliga) | 2026-09-30 |
 | T44 | 4,0 l/s per person | Minsta uteluftsflöde per rum i bostad | BFS 2024:8 3 kap. 5 § | 2026-09-30 |
-| T45 | 1 000 ppm CO₂ | Över detta tyder på otillräcklig ventilation | Folkhälsomyndigheten, Vägledning om ventilation | 2026-09-30, UTDRAG |
-| T46 | 0,5 luftomsättningar/h | I bostäder bör luftomsättningen inte understiga 0,5 rumsvolymer per timme (samma som 0,35 l/s per m² × 3,6 / 2,5 m takhöjd, formel i 7.3) | Folkhälsomyndigheten, FoHMFS 2014:18 (PDF), tillagt 2026-09-30 ur `kunskap-lag-luftfuktighet.md` 1.3; tidigare **EGEN** | 2026-09-30 |
+| T45 | 1 000 ppm CO₂ | Över detta tyder på otillräcklig ventilation | Folkhälsomyndigheten, FoHMFS 2014:18 (meningen står i stycket om skolor och barnomsorg) och Vägledning om ventilation, tabell 1 (tillämpar den på bostäder) | 2026-09-30; ordagrant ur FoHMFS 2014:18 (PDF) 2026-10-04, se `kunskap-sjalvdrag.md` avsnitt 6 och 7 |
+| T46 | 0,5 luftomsättningar/h | I bostäder bör luftomsättningen inte understiga 0,5 rumsvolymer per timme (samma som 0,35 l/s per m² × 3,6 / 2,5 m takhöjd, formel i 7.3) | Folkhälsomyndigheten, FoHMFS 2014:18 (PDF), tillagt 2026-09-30 ur `kunskap-lag-luftfuktighet.md` 1.3; tidigare **EGEN** | 2026-09-30; ordagrant ur FoHMFS 2014:18 (PDF) 2026-10-04: "I bostäder bör det specifika luftflödet (luftomsättningen) inte understiga 0,5 rumsvolymer per timme (rv/h)." (`kunskap-sjalvdrag.md` avsnitt 7) |
 | T47 | 200 Bq/m³ | Referensnivå för radon i bostäder, allmänna lokaler och arbetsplatser, årlig genomsnittlig aktivitetskoncentration. Skyldigheten att åtgärda står inte här utan i strålskyddslagen (2018:396) 3 kap. 6 §: fastighetsägaren "ska" hålla halten så låg som möjligt och rimligt | Strålskyddsförordningen (2018:506) 3 kap. 6 §, kontrollerad ordagrant i riksdagens text t.o.m. SFS 2026:1336; lagen t.o.m. SFS 2026:1590 (`kunskap-radon.md` 2.1–2.2) | 2026-09-30 |
 | T48 | 200 Bq/m³ | Gränsvärde (årsmedelvärde) i nya byggnader, utrymmen där människor vistas mer än tillfälligt | BFS 2024:8 3 kap. 2 § | 2026-09-30 |
 | T49 | 100 Bq/l / 1 000 Bq/l | Radon i dricksvatten, allmän vattentäkt (gränsvärde, LIVSFS 2022:12) / egen brunn (otjänligt) | SSM, Referensnivå och gränsvärden | 2026-09-30 |
@@ -339,7 +339,7 @@ Tabell 2 i Mikroorganismer, "Ungefärliga fuktkvoter vid 20 °C för olika värd
 ### 7.2 Folkhälsomyndigheten, FoHMFS 2014:18
 
 - Vägledning om ventilation, <https://www.folkhalsomyndigheten.se/regler-och-tillsyn/tillsynsvagledning-och-stod/halsoskydd-vagledning-och-tillsyn/vagledning-om-ventilation/>, uppdaterad 12 december 2024, läst 2026-09-30 (UTDRAG): uteluftsflöde "Minst 0,35 l/kvadratmeter och s eller minst 4 l/s person"; koldioxid "Högst 1 000 ppm"; fukttillskott "Högst 3 g/kubikmeter".
-- FoHMFS 2014:18 i PDF: <https://www.folkhalsomyndigheten.se/contentassets/641784832543443ea4eebe9b300c244e/fohmfs-2014-18.pdf> (ej läst).
+- FoHMFS 2014:18 i PDF: <https://www.folkhalsomyndigheten.se/contentassets/641784832543443ea4eebe9b300c244e/fohmfs-2014-18.pdf>, läst ordagrant 2026-10-04 (citaten i `kunskap-sjalvdrag.md` avsnitt 7). Talen 0,35 l/s per m², 4 l/s per person, 0,5 rv/h, 3 g/m³ och 1 000 ppm stämmer med vägledningen ovan.
 - Allmänt råd för befintliga byggnader (hälsoskydd), samma tal som BFS 2024:8. På en sida om befintligt hus är FoHMFS 2014:18 rätt källa; om byggkravet är BFS 2024:8 rätt. Båda får stå.
 
 ### 7.3 Egen räkning (T46)
@@ -481,7 +481,7 @@ Obs: granskningen av SW39FW räknar själv kapaciteten vid 15 grader och skriver
 ## 11. Osäkert och saknas
 
 - **Saknas:** riktvärde för badrum; årstidsvärde för källare; RF-gräns för garage från myndighet; formel för jämviktsfuktkvot ur RF och temperatur (behövs till `/rakna/fuktkvot/`, beställs som räknarunderlag); SSM:s metodbeskrivning (PDF gav inloggningssida).
-- **UTDRAG, bör läsas ordagrant innan citat:** Folkhälsomyndighetens två vägledningar (talen stämmer med tidigare ordagranna läsningar), Dantherm, Ljungby Fuktkontroll, Astma- och Allergiförbundet, Alingsås 6 %-exemplet, strålskyddsförordningens paragraf 3 kap. 6 §, SSM:s "400 000 bostäder", Stålbyggnadsinstitutet (tidigare läst ordagrant 2026-09-29).
+- **UTDRAG, bör läsas ordagrant innan citat:** Folkhälsomyndighetens vägledning om fukt och mikroorganismer (FoHMFS 2014:18 och dess tal i T45 och T46 är lästa ordagrant 2026-10-04), Dantherm, Ljungby Fuktkontroll, Astma- och Allergiförbundet, Alingsås 6 %-exemplet, strålskyddsförordningens paragraf 3 kap. 6 §, SSM:s "400 000 bostäder", Stålbyggnadsinstitutet (tidigare läst ordagrant 2026-09-29).
 - **Inte lästa om i dag, tagna ur tidigare faktablad:** Lawrence 2005, SMHI:s ånghaltkonstant, Villaägarna, Intab, Greenspan/OIML, Corroventa, Meaco via Elgiganten, Acetec, ISO 9223.
 - Boverkets sida om luftfuktighet (2.1) gav tom text i WebFetch; läst med curl ur HTML.
 
@@ -562,7 +562,7 @@ Beställt av koordinatorn för UX-agentens spec `docs/briefer/spec-daggpunkt-rum
 
 - Lufttemperaturen i ett svenskt badrum under och direkt efter dusch. Bara B9 (tumregel från tillverkare) och B6 (ett extremvärde).
 - RF direkt efter duschen som mätserie. "Nära 100 procent" finns bara som tumregel (B9) och på lead- och hantverkarsidor.
-- **Hur snabbt RF sjunker med fungerande frånluft.** Ingen svensk eller nordisk mätserie hittad. "Under 60 procent inom 30 minuter" och "imman borta inom 15 minuter enligt Boverkets riktlinjer" (ventilation.se, totalbyggarna.se m.fl.) har ingen källa, och Boverket säger det inte i BFS 2024:8 eller i den arkiverade vägledningen. **Upprepas inte.**
+- **Hur snabbt RF sjunker med fungerande frånluft.** Ingen svensk eller nordisk mätserie hittad. "Under 60 procent inom 30 minuter" och "imman borta inom 15 minuter enligt Boverkets riktlinjer" (ventilation.se, totalbyggarna.se m.fl.) tillskrivs fel källa: Boverket säger det inte i BFS 2024:8 eller i den arkiverade vägledningen, och **upprepas inte som Boverkets**. Källan som finns är SWESIAQ (ideell förening för innemiljöutredare): imman på badrumsspegeln efter dusch "bör försvinna efter högst 15-30 min", *Utredning av självdragssystem i bostad*, 2023-05-15, s. 33, <https://swesiaq.se/onewebmedia/Dokument/Sj%C3%A4lvdrag%20230515.pdf>, läst 2026-10-04 (`kunskap-sjalvdrag.md` S42). Får användas som 15 till 30 minuter med SWESIAQ som källa. "Under 60 procent inom 30 minuter" saknar fortfarande källa.
 - "BBR kräver 15 l/s i badrum" (lead-sidor) står inte i BFS 2024:8. **Upprepas inte** som svensk regel.
 - Varifrån 10 och 15 l/s kommer: T58 (NR 1989 och BBR allmänt råd, upphävt 2006-07-01) och T59 (Svensk Ventilation, remiss juni 2026, inte krav). Gällande svensk siffra för badrum: **saknas** (tillagt 2026-10-04, underlag `guider-svartmogel-badrum.md` 3).
 - Tillverkarnas mätdata: Fresh Intellivent-produktbladet (via Bevego) har fuktstyrning med två fartlägen och eftergång 5, 15 eller 30 minuter, men inga RF-gränser och ingen mätning. PAX: bara butikstext ("60–70 %", "15–30 minuter"), ingen tillverkarmätning hittad.

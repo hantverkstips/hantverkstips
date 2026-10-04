@@ -326,3 +326,12 @@ Värmeväxlartabellen har ingen kolumn för vilken sort som är vanlig i villor,
 `npm run kontrollera`: 0 fel, 0 varningar. Ingen räknare har rörts.
 
 Godkännandet väntar på SEO-kontrollen (steg 5). Sedan skriver jag raden "Godkänd av hantverkaren".
+
+## SEO-kontrollen, rättning 2026-10-04
+
+- kortSvar: 0,35 liter per sekund och kvadratmeter har fått sin källa i samma stycke ("Det kräver Boverkets regler av nya hus, och Folkhälsomyndigheten råder samma sak för äldre").
+- Stycket om övertrycket mot vinden: 84 procent tillskrivs nu Boverkets inventering, så att det inte blandas ihop med Anticimex tre av fyra på fukt-på-vinden-sidan.
+- H2 1 står kvar som "Så fungerar självdragsventilation". Frasen bärs av rubriken, och det valfria bytet skulle kräva en ny mening i första stycket som inte gör texten bättre.
+- `npm run kontrollera`: 0 fel, 0 varningar.
+
+Godkänd av hantverkaren 2026-10-04: sidan har skrivits om efter läsarens två varv (3, sedan 4 av 5), rättats efter korrekturens två varv (42 rader, sedan 1 fel och 6 tveksamma), och fått SEO:s två ändringar ovan. bildAlt och bildtext skrivs när UX:s skiss finns, och då tas YAML-kommentaren bort.
