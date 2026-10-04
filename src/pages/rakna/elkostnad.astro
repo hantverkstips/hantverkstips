@@ -146,7 +146,7 @@ let produktRad: string | null = null;
 if (produktSlug !== null) {
   if (produkt && forval.effektW !== null) {
     const namn = produktNamn(produkt);
-    produktRad = `Jag räknar på ${namn}, som drar ${talText(forval.effektW)} W enligt butiken. Har du egna tal, skriv in dem i stället.`;
+    produktRad = `Jag räknar på ${namn}, som drar ${talText(forval.effektW)} W enligt tillverkaren. Har du egna tal, skriv in dem i stället.`;
   } else {
     produktRad =
       'Maskinen i länken finns inte i min produktdatabas, eller så saknar den uppgift om effekt. Fälten står därför på standardvärdena.';
@@ -322,7 +322,7 @@ const ELTABELL_HORN = 'Plats och maskin';
 const ELTABELL_CAPTION = 'Avfuktarens effekt, provklimat, el per dygn och kostnad per år för varje plats';
 /** E7: källorna till effekterna, 8 timmar per dygn och elpriset med perioden. */
 function eltabellKallrad(period: string, elpris: string): string {
-  return `Effekterna och provklimaten kommer ur tillverkarnas datablad och bruksanvisningar och ur butikens produktsidor. Att maskinen går 8 timmar om dygnet är mitt antagande. Elpriset ${elpris} kr per kWh är SCB:s genomsnitt för hushåll, ${period}.`;
+  return `Effekterna och provklimaten kommer ur tillverkarnas datablad och bruksanvisningar, för Wood's maskiner ur Wood's egen bruksanvisning. Att maskinen går 8 timmar om dygnet är mitt antagande. Elpriset ${elpris} kr per kWh är SCB:s genomsnitt för hushåll, ${period}.`;
 }
 /** Talen med högst två decimaler och utan nollor på slutet: 2,56, 2,8, 2,2. */
 const kortTal = (n: number): string => String(Math.round(n * 100) / 100).replace('.', ',');

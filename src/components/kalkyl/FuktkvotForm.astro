@@ -1,0 +1,163 @@
+---
+/**
+ * Formuläret till fuktkvoträknaren. Ett ställe: sidan /rakna/fuktkvot/ renderar
+ * det i fullt format, och <Kalkylator namn="fuktkvot" /> i en artikel renderar
+ * samma fält i kompakt format med action till verktygssidan.
+ *
+ * Ingen klient-JavaScript. Lägena står som radioknappar överst. Alla tre lägenas
+ * fält renderas, men fälten för ett läge som inte är valt ligger i ett
+ * <fieldset disabled>, så att de inte skickas och läsaren ser vad som gäller.
+ * Läsaren byter läge med radioknappen och Räkna ut. Det kompakta formuläret visar
+ * bara det valda lägets fält. Spec: docs/briefer/spec-kalkyl-fuktkvot-2026-10-04.md
+ * avsnitt 3.
+ *
+ * Texterna är hantverkarens (docs/briefer/texter-fuktkvot-2026-10-04.md).
+ */
+import { formVarden, STANDARD, type Falt, type FuktkvotIndata, type Lage, type Vilket } from '../../lib/kalkyl/fuktkvot';
+import { ETIKETT_KLASS, FALT_KLASS, FEL_KLASS, HJALP_KLASS, KNAPP_KLASS, ramKlass, VAL_KLASS } from '../../lib/kalkyl/stil';
+
+interface Props {
+  /** Läget och valen som ska vara ikryssade. Standardvärdena när propen utelämnas. */
+  indata?: FuktkvotIndata;
+  /** Talen som de skrevs i adressen, så att ett felskrivet värde går att rätta. */
+  varden?: { temp: string; rf: string; vat: string; torr: string; tal: string };
+  fel?: Partial<Record<Falt, string>>;
+  /** Inbäddad i en artikel: bara lägesknapparna och det valda lägets fält, inga hjälprader. */
+  kompakt?: boolean;
+  /** Prefix på id-attributen, så att två formulär på samma sida inte krockar. */
+  idPrefix?: string;
+  knappText?: string;
+}
+
+const {
+  indata = STANDARD,
+  varden = formVarden(STANDARD),
+  fel = {},
+  kompakt = false,
+  idPrefix = '',
+  knappText = 'Räkna ut',
+} = Astro.props;
+
+const id = (namn: string) => `${idPrefix}${namn}`;
+const radioKlass = kompakt ? 'flex flex-wrap gap-x-4' : '';
+
+const LAGE_LEGEND = 'Vad du utgår från'; // fuktkvot.lage.legend
+const LAGE_ETIKETT: Record<Lage, string> = {
+  luft: 'Luften runt träet', // fuktkvot.lage.luft
+  vikt: 'Vikt före och efter', // fuktkvot.lage.vikt
+  halt: 'Fukthalt eller fuktkvot', // fuktkvot.lage.halt
+};
+const VILKET_LEGEND = 'Vilket tal du har'; // fuktkvot.vilket.legend
+const VILKET_ETIKETT: Record<Vilket, string> = {
+  fukthalt: 'Fukthalt', // fuktkvot.vilket.fukthalt
+  fuktkvot: 'Fuktkvot', // fuktkvot.vilket.fuktkvot
+};
+const HJALP_VIKT = 'Torrvikten är vikten efter torkning i 103 grader tills biten inte längre blir lättare. Så beskriver standarden SS-EN 13183-1 metoden.'; // fuktkvot.hjalp.vikt
+const LAGEN: Lage[] = ['luft', 'vikt', 'halt'];
+const VILKA: Vilket[] = ['fukthalt', 'fuktkvot'];
+
+interface Talfalt {
+  namn: 'temp' | 'rf' | 'vat' | 'torr' | 'tal';
+  etikett: string;
+  enhet: string;
+  varde: string;
+  fel: string | undefined;
+}
+
+const FALT: Record<Lage, Talfalt[]> = {
+  luft: [
+    { namn: 'temp', etikett: 'Temperatur vid träet', enhet: '°C', varde: varden.temp, fel: fel.tempC }, // fuktkvot.falt.temp
+    { namn: 'rf', etikett: 'Luftfuktighet vid träet', enhet: '%', varde: varden.rf, fel: fel.rfProcent }, // fuktkvot.falt.rf
+  ],
+  vikt: [
+    { namn: 'vat', etikett: 'Vikt före torkning', enhet: 'g', varde: varden.vat, fel: fel.vatG }, // fuktkvot.falt.vat
+    { namn: 'torr', etikett: 'Vikt efter torkning', enhet: 'g', varde: varden.torr, fel: fel.torrG }, // fuktkvot.falt.torr
+  ],
+  halt: [{ namn: 'tal', etikett: 'Ditt tal', enhet: '%', varde: varden.tal, fel: fel.tal }], // fuktkvot.falt.tal
+};
+
+/** Fälten som renderas: alla lägen på sidan, bara det valda i det kompakta formuläret. */
+const synliga = kompakt ? [indata.lage] : LAGEN;
+const hjalpId = id('vikt-hjalp');
+/** aria-describedby: felraden när fältet har ett fel, och hjälpraden för vikterna. */
+function beskrivs(f: Talfalt): string | undefined {
+  const delar = [f.fel ? id(`${f.namn}-fel`) : null, !kompakt && (f.namn === 'vat' || f.namn === 'torr') ? hjalpId : null];
+  const ut = delar.filter((d): d is string => d !== null).join(' ');
+  return ut === '' ? undefined : ut;
+}
+---
+
+<form method="get" action="/rakna/fuktkvot/">
+  <fieldset class="m-0 mb-6 p-0 border-0">
+    <legend class:list={[ETIKETT_KLASS, 'p-0']}>{LAGE_LEGEND}</legend>
+    <div class={radioKlass}>
+      {
+        LAGEN.map((l) => (
+          <label class={VAL_KLASS}>
+            <input type="radio" name="lage" value={l} checked={indata.lage === l} />
+            {LAGE_ETIKETT[l]}
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  {
+    synliga.map((l) => (
+      <fieldset
+        class="m-0 mb-2 p-0 border-0 disabled:opacity-60"
+        disabled={l !== indata.lage}
+      >
+        <legend class="sr-only">{LAGE_ETIKETT[l]}</legend>
+        <div class:list={[FALT[l].length > 1 && 'sm:grid sm:grid-cols-2 sm:gap-4']}>
+          {FALT[l].map((f) => (
+            <div class="mb-4">
+              <label for={id(f.namn)} class={ETIKETT_KLASS}>
+                {f.etikett}
+              </label>
+              <div class="flex items-center gap-2">
+                <input
+                  id={id(f.namn)}
+                  name={f.namn}
+                  type="text"
+                  inputmode="decimal"
+                  value={f.varde}
+                  aria-describedby={beskrivs(f)}
+                  class:list={[FALT_KLASS, ramKlass(Boolean(f.fel))]}
+                />
+                <span class="text-brod text-blyerts-2">{f.enhet}</span>
+              </div>
+              {f.fel && (
+                <p id={id(`${f.namn}-fel`)} class={FEL_KLASS}>
+                  {f.fel}
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+        {l === 'vikt' && !kompakt && (
+          <p id={hjalpId} class:list={[HJALP_KLASS, 'mb-4']}>
+            {HJALP_VIKT}
+          </p>
+        )}
+        {l === 'halt' && (
+          <fieldset class="m-0 mb-4 p-0 border-0">
+            <legend class:list={[ETIKETT_KLASS, 'p-0']}>{VILKET_LEGEND}</legend>
+            <div class={radioKlass}>
+              {VILKA.map((v) => (
+                <label class={VAL_KLASS}>
+                  <input type="radio" name="vilket" value={v} checked={indata.vilket === v} />
+                  {VILKET_ETIKETT[v]}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        )}
+      </fieldset>
+    ))
+  }
+
+  <div class="mt-4">
+    <button type="submit" class={KNAPP_KLASS}>{knappText}</button>
+  </div>
+</form>

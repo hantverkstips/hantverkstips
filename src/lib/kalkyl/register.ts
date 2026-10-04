@@ -54,9 +54,9 @@ export const KALKYLATORER: Kalkylator[] = [
   {
     // Spec: docs/briefer/spec-kalkyl-fuktkvot-2026-10-04.md avsnitt 5. Utan plats: Hela huset på hubben.
     slug: 'fuktkvot',
-    svar: 'TEXT SAKNAS', // register.fuktkvot.svar
-    namn: 'TEXT SAKNAS', // register.fuktkvot.namn
-    rad: 'TEXT SAKNAS', // register.fuktkvot.rad
+    svar: 'fuktkvot och fukthalt', // register.fuktkvot.svar
+    namn: 'Räkna ut fuktkvoten ur vikt eller luft', // register.fuktkvot.namn
+    rad: 'Ger fuktkvoten ur vikt eller luft och vad talet betyder.', // register.fuktkvot.rad
     sasong: [9, 10],
     pelare: ['fukt'],
   },

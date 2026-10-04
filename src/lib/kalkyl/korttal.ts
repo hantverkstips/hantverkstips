@@ -73,7 +73,7 @@ const TAL: Record<string, { tal: () => string; villkor: string }> = {
   },
   fuktkvot: {
     tal: () => `${formateraTal(falt(raknaFuktkvot(FUKTKVOT), 'fuktkvot', 'fuktkvot'), 1)}${H}%`,
-    villkor: 'TEXT SAKNAS', // korttal.fuktkvot
+    villkor: 'trä i 20 °C och 65 % luftfuktighet', // korttal.fuktkvot
   },
   avfuktare: {
     tal: () => `${falt(raknaAvfuktare(AVFUKTARE), 'marktKapacitetLiter', 'avfuktare')}${H}liter per dygn`,

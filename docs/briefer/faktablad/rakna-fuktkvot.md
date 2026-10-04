@@ -135,7 +135,7 @@ Ekvationen räknad med konstanterna ovan, mot tabellens tal:
 | 37,8 | 50 % | 8,68 | 8,7 |
 | 37,8 | 90 % | 19,48 | 19,5 |
 
-Alla stämmer på avrundningen. Konstanterna är rätt avlästa.
+Alla stämmer på avrundningen utom 21,1 °C och 85 %, där ekvationens 17,95 avrundas till 18,0 mot tabellens 17,9: den punkten avviker med 0,05 på grund av avrundningen. Konstanterna är rätt avlästa.
 
 ### 4.4 Kontroll mot TräGuiden (**EGEN** räkning; TräGuidens tal ordagranna)
 

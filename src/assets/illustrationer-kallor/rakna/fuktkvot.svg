@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Skiss av en bräda och en hygrometer i luft med 20 grader och 65 procent luftfuktighet, där brädan går mot 12 procent fuktkvot.">
+  <!-- Anteckningsboken, verktygsskiss för /rakna/fuktkvot/. Ett rum i snitt: ytterväggen till höger
+       med isoleringens skraffering, innertak och golv med marken skrafferad under. En stående bräda
+       till vänster med ändträet och tre årsringar synliga överst, en hygrometer på väggens insida
+       till höger. Blyerts 2 px för rum, bräda och hygrometer, blyerts-2 för skraffering, årsringar
+       och hygrometerns skala. Snickarpennan bara för de två pilarna mellan luften och brädan, en in
+       och en ut (den enda pennsaken). Tumstock bakom nyckeltalet.
+       Etiketterna är utlagda för upp till 22 tecken i Caveat 24 px (ungefär 200 px, 240 px fritt):
+       luft högerställd x 236–476, tal och trä vänsterställda x 190–430.
+       Den gula markeringen är satt efter platshållarens bredd och justeras när talet är skrivet.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2: väggens isolering och marken under golvet -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M558,58 l10,10 M558,102 l10,10 M558,146 l10,10 M558,190 l10,10 M558,234 l10,10 M558,278 l10,10"/>
+    <path d="M574,80 l10,10 M574,124 l10,10 M574,168 l10,10 M574,212 l10,10 M574,256 l10,10"/>
+    <path d="M56,306 l10,10 M78,322 l10,10 M100,306 l10,10 M122,322 l10,10 M144,306 l10,10 M166,322 l10,10 M188,306 l10,10 M210,322 l10,10 M232,306 l10,10 M254,322 l10,10 M276,306 l10,10 M298,322 l10,10 M320,306 l10,10 M342,322 l10,10 M364,306 l10,10 M386,322 l10,10 M408,306 l10,10 M430,322 l10,10 M452,306 l10,10 M474,322 l10,10 M496,306 l10,10 M518,322 l10,10 M540,306 l10,10 M562,322 l10,10"/>
+  </g>
+
+  <!-- Blyerts: ytterväggen i snitt, innertaket och golvet -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M552,38 Q550,170 552,302"/>
+    <path d="M590,38 Q592,170 590,302"/>
+    <path d="M550,40 Q571,38 592,40"/>
+    <path d="M46,56 Q300,58 554,56"/>
+    <path d="M46,300 Q320,302 594,300"/>
+  </g>
+
+  <!-- Blyerts: den stående brädan, framsida, kantsida och ändträet överst -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M110,108 Q108,203 110,300"/>
+    <path d="M172,108 Q174,203 172,300"/>
+    <path d="M107,110 Q141,108 175,110"/>
+    <path d="M110,110 L126,84"/>
+    <path d="M172,110 L188,84"/>
+    <path d="M123,84 Q157,82 191,84"/>
+    <path d="M188,84 Q190,186 188,288 L174,299"/>
+  </g>
+  <!-- Blyerts-2: årsringarna i ändträet, bågar kring en märg som ligger utanför brädan -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M125,109 Q126,99 117,98"/>
+    <path d="M142,109 Q145,90 124,87"/>
+    <path d="M160,109 Q164,90 148,85"/>
+  </g>
+
+  <!-- Blyerts: hygrometern på väggens insida -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M538,114 Q545,113 552,114"/>
+    <circle cx="512" cy="114" r="26"/>
+    <path d="M512,114 L524,98"/>
+    <circle cx="512" cy="114" r="2.5"/>
+  </g>
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M495,120 l-5,2 M497,104 l-5,-3 M507,95 l-1,-5 M519,96 l2,-5 M528,105 l5,-3 M530,120 l5,2"/>
+  </g>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="186" y="234" width="134" height="26" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 253 247)"/>
+
+  <!-- Snickarpenna: fukten mellan luften och brädan, en pil in och en pil ut -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M470,150 Q330,138 204,158 M217,149 L203,158 L217,166"/>
+    <path d="M204,196 Q330,212 470,198 M456,190 L471,198 L457,206"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <!-- skiss.fuktkvot.luft: luftens temperatur och RF (20 °C, 65 %), vid hygrometern -->
+    <text x="476" y="102" text-anchor="end" fill="#625a50">luften 20 °C, 65 %</text>
+    <!-- skiss.fuktkvot.tal: nyckeltalet, 12 % fuktkvot, med gul markering -->
+    <text x="190" y="255">12 % fuktkvot</text>
+    <!-- skiss.fuktkvot.tra: vid brädan -->
+    <text x="190" y="287" fill="#625a50">i brädan</text>
+  </g>
+</svg>

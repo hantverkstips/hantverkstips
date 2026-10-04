@@ -1,0 +1,647 @@
+---
+/**
+ * Fuktkvoträknaren. Formuläret skickas som GET till samma sida och beräkningen
+ * sker på servern, så sidan fungerar utan ett enda byte klient-JS. Kostnaden är
+ * en serverfunktion per anrop, och den hålls nere med CDN-cache.
+ * Se docs/SPEC-SIDMALLAR.md avsnitt 4.7.
+ *
+ * Formeln och alla konstanter ligger i src/lib/kalkyl/fuktkvot.ts. Sidan räknar
+ * ingenting själv, den visar resultatet och redovisar källorna.
+ *
+ * Ingen produkt följer av räkningen, så sidan har inga produktkort och inget
+ * reklamband. Spec: docs/briefer/spec-kalkyl-fuktkvot-2026-10-04.md avsnitt 4.
+ * Texterna är hantverkarens (docs/briefer/texter-fuktkvot-2026-10-04.md); nyckeln
+ * står i kommentaren på raden.
+ */
+export const prerender = false;
+
+import { formateraTal } from '../../lib/format';
+import { artikelUrl, publicerade } from '../../lib/innehall';
+import { tillKortArtikel, tillKortKategori, type KortData } from '../../lib/kort';
+import {
+  delbarQuery,
+  FIBERMATTNAD_OVER,
+  FORVAL,
+  forvalNyckel,
+  formVarden,
+  GOLV_MAX,
+  GOLV_MIN,
+  INBYGGNAD_MAX,
+  jamviktsTabell,
+  MALNING_MAX,
+  MOGEL_FUKTKVOT,
+  MOGEL_RF,
+  raknaFuktkvot,
+  ROTA_ETABLERAD,
+  ROTA_LITEN_RISK,
+  STANDARD,
+  TABELL_MAX_RF,
+  TABELL_MIN_TEMP_C,
+  tolkaQuery,
+  VED_FOR_TORR,
+  VED_LAGOM_MAX,
+  VED_LAGOM_MIN,
+  WH_K,
+  WH_K1,
+  WH_K2,
+  WH_W,
+  type Anvandning,
+  type FuktkvotIndata,
+  type FuktkvotResultat,
+  type Lage,
+} from '../../lib/kalkyl/fuktkvot';
+import { hittaKalkylator } from '../../lib/kalkyl/register';
+import { LANK_KLASS } from '../../lib/kalkyl/stil';
+import { arPelare } from '../../lib/pelare';
+import { verktygsillustration } from '../../lib/verktygsbild';
+import FuktkvotForm from '../../components/kalkyl/FuktkvotForm.astro';
+import Artikelrutnat from '../../components/ui/Artikelrutnat.astro';
+import Faq from '../../components/ui/Faq.astro';
+import Ikon from '../../components/ui/Ikon.astro';
+import Illustration from '../../components/ui/Illustration.astro';
+import Matare from '../../components/ui/Matare.astro';
+import Pennstreck from '../../components/ui/Pennstreck.astro';
+import Svarstal from '../../components/ui/Svarstal.astro';
+import Tabellyta from '../../components/ui/Tabellyta.astro';
+import Raknarsida from '../../components/vyer/Raknarsida.astro';
+
+/** Slug, namn och beskrivning på ett ställe: brödsmulan, og:image och WebApplication läser samma. */
+const SLUG = 'fuktkvot';
+const VERKTYGSNAMN = 'Fuktkvotskalkylator'; // fuktkvot.verktygsnamn
+const BESKRIVNING = 'Räkna ut fuktkvoten ur vikten före och efter torkning eller ur luftens fuktighet, och se vad den betyder för ved, målning, golv, mögel och röta.'; // fuktkvot.beskrivning
+const titel = 'Räkna ut fuktkvoten ur vikt eller luft'; // fuktkvot.titel
+const H1 = 'Räkna ut fuktkvoten ur vikt, luft eller fukthalt'; // fuktkvot.h1
+
+Astro.locals.sidtyp = 'verktyg';
+
+Astro.response.headers.set('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+
+const { indata } = tolkaQuery(Astro.url.searchParams);
+const resultat = raknaFuktkvot(indata);
+
+const fel = resultat.status === 'ogiltig' ? resultat.fel : {};
+// Vid ogiltig indata visas standardvärdenas svar i samma läge, med en rad som säger det.
+const visatIndata: FuktkvotIndata = resultat.status === 'ogiltig' ? { ...STANDARD, lage: indata.lage } : indata;
+const visat: Exclude<FuktkvotResultat, { status: 'ogiltig' }> =
+  resultat.status === 'ogiltig'
+    ? (raknaFuktkvot(visatIndata) as Exclude<FuktkvotResultat, { status: 'ogiltig' }>)
+    : resultat;
+
+/**
+ * Fältens värden kommer från query-strängen som den skrevs, inte från de tolkade
+ * talen, så att ett felskrivet värde går att rätta.
+ */
+const tolkat = formVarden(indata);
+const faltVarde = (nyckel: keyof typeof tolkat): string => Astro.url.searchParams.get(nyckel) ?? tolkat[nyckel];
+const varden = {
+  temp: faltVarde('temp'),
+  rf: faltVarde('rf'),
+  vat: faltVarde('vat'),
+  torr: faltVarde('torr'),
+  tal: faltVarde('tal'),
+};
+
+/** Delbar länk, byggd av de tolkade värdena så att den ger samma svar som skärmen. */
+const delaLank = new URL(`/rakna/fuktkvot/?${delbarQuery(visatIndata).toString()}`, Astro.site ?? Astro.url).toString();
+
+/*
+ * Texterna i svarsytan (specen avsnitt 4, svar). Klartexterna har
+ * platshållarna {fuktkvot}, {temp}, {rf} (luft), {fuktkvot}, {fukthalt}, {vat},
+ * {torr} (vikt) och {tal}, {vilket}, {annat} (halt).
+ */
+const STANDARDVARNING = 'Ett av fälten gick inte att läsa, så jag visar standardvärdena tills du rättat det.';
+const SVAR_VAD: Record<Lage | 'halt-fukthalt', string> = {
+  luft: 'fuktkvot som träet går mot', // fuktkvot.svar.vad.luft
+  vikt: 'fuktkvot i biten du vägde', // fuktkvot.svar.vad.vikt
+  halt: 'fuktkvot ur din fukthalt', // fuktkvot.svar.vad.halt
+  'halt-fukthalt': 'fukthalt ur din fuktkvot', // fuktkvot.svar.vad.halt-fukthalt
+};
+const SVAR_ANDRA = 'Fukthalten är {tal} %.'; // fuktkvot.svar.andra
+/* Raden när det stora talet är fukthalten och raden därför bär fuktkvoten (hantverkaren 2026-10-04). */
+const SVAR_ANDRA_KVOT = 'Fuktkvoten är {tal} %.';
+const BESKED_FIBERMATTNAD = 'Luften är så fuktig att träet närmar sig fibermättnad, omkring 30 procent fuktkvot, och där ger modellen inget säkert tal.'; // fuktkvot.besked.fibermattnad
+const BESKED_EXTRAPOLERAD = 'Under minus 1,1 grader räknar jag utanför Wood Handbooks tabell, så ta talet som en uppskattning.'; // fuktkvot.besked.extrapolerad
+const MATARE_ETIKETT = 'Fuktkvot mot röta'; // fuktkvot.matare.etikett
+const ANVANDNING: Record<Anvandning, string> = {
+  ved: 'Ved', // fuktkvot.anv.ved
+  malning: 'Målning', // fuktkvot.anv.malning
+  inbyggnad: 'Inbyggnad', // fuktkvot.anv.inbyggnad
+  golv: 'Golvbräder', // fuktkvot.anv.golv
+  mogel: 'Mögel', // fuktkvot.anv.mogel
+  rota: 'Röta', // fuktkvot.anv.rota
+};
+const UTFALL = {
+  ok: 'Inom gränsen', // fuktkvot.utfall.ok
+  varning: 'Utanför gränsen', // fuktkvot.utfall.varning
+} as const;
+const KLARTEXT: Record<Lage, string> = {
+  luft: 'Trä i luft med {temp} grader och {rf} procent luftfuktighet går mot ungefär {fuktkvot} procent fuktkvot, räknat med ekvationen i USDA:s Wood Handbook från 2021.', // fuktkvot.klartext.luft
+  vikt: 'En bit som väger {vat} gram före och {torr} gram efter torkning har {fuktkvot} procent fuktkvot och {fukthalt} procent fukthalt, räknat med TräGuidens definitioner.', // fuktkvot.klartext.vikt
+  halt: 'En {vilket} på {tal} procent är samma sak som {annat} procent {andra}. Fuktkvoten räknas på det torra träets vikt och fukthalten på det våta, enligt TräGuiden.', // fuktkvot.klartext.halt
+};
+
+/* Därför blev svaret så, Gör inte det här och Så räknar jag (specen avsnitt 4). */
+const DARFOR_RUBRIK = 'Därför blev svaret så'; // fuktkvot.darfor.rubrik
+const DARFOR_TEXT: Record<Lage, string> = {
+  luft: 'Trä tar upp och avger fukt tills det står i jämvikt med luften omkring, och det är jämviktsfuktkvoten som räknas fram här. Vid din temperatur når träet 16 procent, gränsen för målning, när luften håller {rf16} procent. Gränsen för inbyggnad, 18 procent, når det vid {rf18} procent. Talet är ett ungefär, för trä som torkar ligger lite högre än trä som fuktas upp, och vid 50 procents luftfuktighet kan skillnaden vara 1 till 4 procentenheter. Skriv in temperatur och luftfuktighet vid träet. En syll i en krypgrund är kallare än luften, och intill den är luftfuktigheten högre än hygrometern visar.', // fuktkvot.darfor.text.luft
+  vikt: 'Fuktkvoten räknas på det torra träets vikt och fukthalten på det våta, så samma bit får två olika tal. En fuktmätare för trä visar fuktkvot, medan Naturvårdsverket anger vedens fuktighet som fukthalt. Har biten inte torkat klart blir torrvikten för hög och fuktkvoten för låg.', // fuktkvot.darfor.text.vikt
+  halt: 'Fukthalt och fuktkvot är två sätt att räkna samma vatten. Fuktkvoten delar vattnet med det torra träets vikt och fukthalten med det våta, och därför är fuktkvoten alltid det större talet. Naturvårdsverket anger vedens fuktighet som fukthalt, och en fuktmätare för trä visar fuktkvot, så räkna om innan du jämför.', // fuktkvot.darfor.text.halt
+};
+const DARFOR_KALLA = 'Ekvationen kommer ur kapitel 4 i USDA:s Wood Handbook från 2021. Definitionerna, gränserna och skillnaden mellan uppfuktning och uttorkning kommer ur TräGuiden, och gränserna för ved från Naturvårdsverket.'; // fuktkvot.darfor.kalla
+const GOR_INTE = 'En stiftmätare i kallt trä visar för lågt, 1 till 1,6 procentenheter per 10 grader under 20 enligt SP Trä, och omkring 0,9 enligt Wood Handbook. En syll på 0 grader som visar 16 procent kan alltså ligga på 18 eller 19, så mät på flera ställen innan du bygger in. Ingen källa jag har läst säger heller hur lång tid det tar för träet att nå jämviktstalet, så räkna inte med att det redan är där.'; // fuktkvot.gorinte
+const SKISS_ALT = 'Skiss av en bräda och en hygrometer i ett rum, med pilar för fukten som går mellan luften och träet.'; // fuktkvot.skiss.alt
+const SKISS_BILDTEXT = 'Luften håller 20 grader och 65 procent luftfuktighet, och brädan tar upp eller avger fukt tills den står i jämvikt på ungefär 12 procent fuktkvot. Talet är räknat med ekvationen i Wood Handbook och ligger i nedre änden av TräGuidens 12 till 13 procent för gran och furu.'; // fuktkvot.skiss.bildtext
+const STEG = [
+  'Väg biten, torka den i 103 grader tills vikten slutar sjunka och väg den igen. Skillnaden är vattnet, och vattnet delat med torrvikten gånger 100 är fuktkvoten.', // fuktkvot.steg.1
+  'Fukthalten delar samma vatten med vikten före torkning i stället. Mellan talen räknar jag om med u = w / (1 − w) och w = u / (1 + u), med talen som decimaltal.', // fuktkvot.steg.2
+  'När du utgår från luften räknar jag med ekvation 4-5 i USDA:s Wood Handbook, där fyra konstanter beror på temperaturen. Den ger samma tal som bokens tabell 4-2 och skiljer sig högst 0,6 procentenheter från TräGuidens tabell vid 20 grader.', // fuktkvot.steg.3
+  'Sist jämför jag talet med gränserna: högst 16 procent före målning och 18 före inbyggnad, liten risk för röta under 20 och röta som etablerar sig över 30, enligt TräGuiden. För ved gäller 15 till 20 procents fukthalt enligt Naturvårdsverket.', // fuktkvot.steg.4
+];
+
+/* Förvalen (specen avsnitt 4, forval). */
+const FORVAL_ETIKETT = 'Typiska tal för'; // fuktkvot.forval.etikett
+const FORVAL_ARIA = 'Fyll i typiska tal för en plats'; // fuktkvot.forval.aria
+const FORVAL_CHIP: Record<string, string> = {
+  'bostad-vinter': 'Bostad, vinter', // fuktkvot.forval.bostad-vinter
+  'bostad-sommar': 'Bostad, sommar', // fuktkvot.forval.bostad-sommar
+  krypgrund: 'Krypgrund', // fuktkvot.forval.krypgrund
+  kallare: 'Källare', // fuktkvot.forval.kallare
+  vind: 'Kallvind', // fuktkvot.forval.vind
+  'ute-sommar': 'Ute, sommar', // fuktkvot.forval.ute-sommar
+  'ute-vinter': 'Ute, vinter', // fuktkvot.forval.ute-vinter
+};
+
+/** Platshållarna i en mall byts mot talen. */
+function fyll(mall: string, tal: Record<string, string>): string {
+  return Object.entries(tal).reduce((s, [k, v]) => s.replaceAll(`{${k}}`, v), mall);
+}
+const en = (n: number): string => formateraTal(n, 1);
+/** Grader och tal ur adressen: heltal utan decimal, annars en, minus som tecken (U+2212). */
+const talUrIndata = (n: number): string => formateraTal(n, Number.isInteger(n) ? 0 : 1).replace(/^-/, '−');
+
+/*
+ * Svaret. I läge halt är det stora talet det andra talet: fuktkvoten när läsaren
+ * skrev en fukthalt och tvärtom. Raden under bär det tal som inte står stort.
+ */
+const lage = visatIndata.lage;
+const haltAnnat = lage === 'halt' && visatIndata.vilket === 'fuktkvot';
+const ok = visat.status === 'ok' ? visat : null;
+const storttal = ok ? en(haltAnnat ? ok.fukthalt : ok.fuktkvot) : `över ${FIBERMATTNAD_OVER}`;
+const vad = haltAnnat ? SVAR_VAD['halt-fukthalt'] : SVAR_VAD[lage];
+const andraTal = ok && lage !== 'luft' ? en(haltAnnat ? ok.fuktkvot : ok.fukthalt) : null;
+
+const klartext = ok
+  ? lage === 'luft'
+    ? fyll(KLARTEXT.luft, {
+        fuktkvot: en(ok.fuktkvot),
+        temp: talUrIndata(visatIndata.tempC),
+        rf: talUrIndata(visatIndata.rfProcent),
+      })
+    : lage === 'vikt'
+      ? fyll(KLARTEXT.vikt, {
+          fuktkvot: en(ok.fuktkvot),
+          fukthalt: en(ok.fukthalt),
+          vat: talUrIndata(visatIndata.vatG),
+          torr: talUrIndata(visatIndata.torrG),
+        })
+      : fyll(KLARTEXT.halt, {
+          tal: talUrIndata(visatIndata.tal),
+          vilket: visatIndata.vilket,
+          andra: visatIndata.vilket === 'fukthalt' ? 'fuktkvot' : 'fukthalt',
+          annat: en(haltAnnat ? ok.fukthalt : ok.fuktkvot),
+        })
+  : '';
+
+/** RF för 16 och 18 procent vid läsarens temperatur, bara i läge luft. */
+const rfForGranser = visat.status === 'fibermattnad' ? visat.rfForGranser : (ok?.rfForGranser ?? null);
+const darforText =
+  lage === 'luft' && rfForGranser
+    ? fyll(DARFOR_TEXT.luft, { rf16: formateraTal(rfForGranser.rf16, 0), rf18: formateraTal(rfForGranser.rf18, 0) })
+    : DARFOR_TEXT[lage];
+
+/** Mätaren mot röta, 20 procent. Vid fibermättnad står talet över skalan. */
+const matareVarde = ok ? ok.fuktkvot : FIBERMATTNAD_OVER;
+const matareVisat = ok ? `${en(ok.fuktkvot)} %` : `över ${FIBERMATTNAD_OVER} %`;
+
+const extrapolerad = visat.extrapolerad;
+
+/** Skissen står i kortet Så räknar jag när filen finns (src/lib/verktygsbild.ts). */
+const illustration = verktygsillustration(SLUG);
+
+/*
+ * Antagandetabellen (specen avsnitt 4, efter punkt 1). Titlarna är källornas
+ * egna, ur faktabladet avsnitt 1. Värdena står som konstanterna i modulen.
+ */
+const KALLOR = {
+  WH4: {
+    titel: 'Moisture Relations and Physical Properties of Wood',
+    url: 'https://research.fs.usda.gov/download/treesearch/62243.pdf',
+  },
+  'TG-S': {
+    titel: 'Fuktinnehåll och sorptionskurvor',
+    url: 'https://www.traguiden.se/om-tra/byggfysik/fukt/fukt/fuktinnehall-och-sorptionskurvor/',
+  },
+  'TG-M': {
+    titel: 'Mikroorganismer',
+    url: 'https://www.traguiden.se/om-tra/materialet-tra/traets-egenskaper-och-kvalitet/bestandighet1/mikroorganismer1/',
+  },
+  'TG-FM': {
+    titel: 'Fuktkvot och mätning',
+    url: 'https://www.traguiden.se/om-tra/byggfysik/fukt/fukt/fuktkvot-och-matning/',
+  },
+  'TG-TF': {
+    titel: 'Trä och fukt',
+    url: 'https://www.traguiden.se/om-tra/materialet-tra/traets-egenskaper-och-kvalitet/fuktegenskaper1/tra-och-fukt/',
+  },
+  NV: {
+    titel: 'Elda med ved i kamin, spis och ugn',
+    url: 'https://www.naturvardsverket.se/vagledning-och-stod/luft-och-klimat/vedeldning/elda-med-ved-i-kamin-spis-och-ugn/',
+  },
+  /* Förvalens källor utanför faktabladets avsnitt 1, som i daggpunktens förval (src/lib/kalkyl/daggpunkt.ts). */
+  OLSSON: { titel: 'Lars Olsson, SP, Bygg & teknik 8/06', url: undefined },
+  VILLAAGARNA: { titel: 'Villaägarna', url: undefined },
+  LTH: { titel: 'Harderup och Arfvidsson, LTH, Bygg & teknik 4/07', url: undefined },
+} as const;
+type KallKod = keyof typeof KALLOR;
+
+const ANTAGANDE_KOLUMN = {
+  vad: 'Vad', // fuktkvot.antaganden.kol.vad
+  varde: 'Jag räknar med', // fuktkvot.antaganden.kol.varde
+  grund: 'Källa eller antagande', // fuktkvot.antaganden.kol.grund
+};
+const ANTAGANDEN_RUBRIK = 'Vad siffrorna vilar på'; // fuktkvot.antaganden.rubrik
+const ANTAGANDEN_CAPTION = 'Konstanter, gränser och förval i fuktkvotskalkylatorn, med källa eller antagande'; // fuktkvot.antaganden.caption
+
+const P = ' %';
+const komma = (n: number): string => String(n).replace('.', ',');
+/** "349 + 1,29T + 0,0135T²" ur konstanterna, med riktigt minustecken. */
+const polynom = (namn: string, c: readonly [number, number, number]): string =>
+  `${namn} = ${komma(c[0])} ${c[1] < 0 ? '−' : '+'} ${komma(Math.abs(c[1]))}T ${c[2] < 0 ? '−' : '+'} ${komma(Math.abs(c[2]))}T²`;
+const forval = (rum: string): string =>
+  FORVAL.filter((f) => f.rum === rum)
+    .map((f) => `${komma(f.rfProcent)}${P}`)
+    .join(', ');
+
+const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande'; kalla?: KallKod }[] = [
+  {
+    storhet: 'Konstanterna i ekvation 4-5 för jämviktsfuktkvoten, med T i grader', // fuktkvot.antaganden.rad.ekvation
+    varde: [polynom('W', WH_W), polynom('K', WH_K), polynom('K1', WH_K1), polynom('K2', WH_K2)].join(', '),
+    grund: 'Källa',
+    kalla: 'WH4',
+  },
+  {
+    storhet: 'Lägsta temperatur i Wood Handbooks tabell 4-2. Kallare än så är talet en uppskattning.', // fuktkvot.antaganden.rad.lagsta-temp
+    varde: `${talUrIndata(TABELL_MIN_TEMP_C)} °C`,
+    grund: 'Källa',
+    kalla: 'WH4',
+  },
+  {
+    storhet: 'Högsta luftfuktighet i samma tabell', // fuktkvot.antaganden.rad.hogsta-rf
+    varde: `${TABELL_MAX_RF}${P} RF`,
+    grund: 'Källa',
+    kalla: 'WH4',
+  },
+  {
+    storhet: 'Svaret när luften är fuktigare än 95 procent', // fuktkvot.antaganden.rad.over-24
+    varde: `${FIBERMATTNAD_OVER}${P}`,
+    grund: 'Antagande',
+  },
+  {
+    storhet: 'Fuktkvoten ur vikten före och efter torkning', // fuktkvot.antaganden.rad.fuktkvot-formel
+    varde: 'u = (m_våt − m_torr) / m_torr × 100',
+    grund: 'Källa',
+    kalla: 'WH4',
+  },
+  {
+    storhet: 'Fukthalten ur samma vikter', // fuktkvot.antaganden.rad.fukthalt-formel
+    varde: 'w = (m_våt − m_torr) / m_våt × 100',
+    grund: 'Källa',
+    kalla: 'TG-TF',
+  },
+  {
+    storhet: 'Omräkningen mellan fukthalt och fuktkvot, härledd ur definitionerna', // fuktkvot.antaganden.rad.omrakning
+    varde: 'u = w / (1 − w), w = u / (1 + u)',
+    grund: 'Källa',
+    kalla: 'TG-TF',
+  },
+  {
+    storhet: 'Högsta ytfuktkvot före målning', // fuktkvot.antaganden.rad.malning
+    varde: `${MALNING_MAX}${P}`,
+    grund: 'Källa',
+    kalla: 'TG-FM',
+  },
+  {
+    storhet: 'Högsta ytfuktkvot före inbyggnad', // fuktkvot.antaganden.rad.inbyggnad
+    varde: `${INBYGGNAD_MAX}${P}`,
+    grund: 'Källa',
+    kalla: 'TG-FM',
+  },
+  {
+    storhet: 'Fuktkvot för golvbräder inne, den spridning ett parti med målfuktkvoten 8 procent får ha', // fuktkvot.antaganden.rad.golv
+    varde: `${formateraTal(GOLV_MIN, 1)} till ${formateraTal(GOLV_MAX, 1)}${P}`,
+    grund: 'Källa',
+    kalla: 'TG-S',
+  },
+  {
+    storhet: 'Luftfuktighet under vilken mögel inte kan växa', // fuktkvot.antaganden.rad.mogel-rf
+    varde: `${MOGEL_RF}${P} RF`,
+    grund: 'Källa',
+    kalla: 'TG-M',
+  },
+  {
+    storhet: 'Fuktkvot som svarar mot 75 procents luftfuktighet vid 20 grader', // fuktkvot.antaganden.rad.mogel-fuktkvot
+    varde: `${MOGEL_FUKTKVOT}${P}`,
+    grund: 'Källa',
+    kalla: 'TG-M',
+  },
+  {
+    storhet: 'Fuktkvot under vilken risken för röta är liten', // fuktkvot.antaganden.rad.rota
+    varde: `${ROTA_LITEN_RISK}${P}`,
+    grund: 'Källa',
+    kalla: 'TG-M',
+  },
+  {
+    storhet: 'Fuktkvot över vilken rötsvampar etablerar sig', // fuktkvot.antaganden.rad.rota-etablerad
+    varde: `${ROTA_ETABLERAD}${P}`,
+    grund: 'Källa',
+    kalla: 'TG-M',
+  },
+  {
+    storhet: 'Fukthalt för lagom torr ved', // fuktkvot.antaganden.rad.ved
+    varde: `${VED_LAGOM_MIN} till ${VED_LAGOM_MAX}${P}`,
+    grund: 'Källa',
+    kalla: 'NV',
+  },
+  {
+    storhet: 'Fukthalt under vilken veden är för torr', // fuktkvot.antaganden.rad.ved-for-torr
+    varde: `${VED_FOR_TORR}${P}`,
+    grund: 'Källa',
+    kalla: 'NV',
+  },
+  {
+    storhet: 'Luftfuktigheten i ett uppvärmt hus vinter och sommar, övre gränsen', // fuktkvot.antaganden.rad.forval-bostad
+    varde: forval('bostad'),
+    grund: 'Källa',
+    kalla: 'TG-TF',
+  },
+  {
+    storhet: 'Luftfuktigheten ute sommar och vinter, övre gränsen', // fuktkvot.antaganden.rad.forval-ute
+    varde: forval('ute'),
+    grund: 'Källa',
+    kalla: 'TG-TF',
+  },
+  {
+    storhet: 'Luftfuktigheten i en krypgrund, den säkra nivån', // fuktkvot.antaganden.rad.forval-krypgrund
+    varde: forval('krypgrund'),
+    grund: 'Källa',
+    kalla: 'OLSSON',
+  },
+  {
+    storhet: 'Luftfuktigheten i en källare, i genomsnitt', // fuktkvot.antaganden.rad.forval-kallare
+    varde: forval('kallare'),
+    grund: 'Källa',
+    kalla: 'VILLAAGARNA',
+  },
+  {
+    storhet: 'Luftfuktigheten på en kallvind vintertid', // fuktkvot.antaganden.rad.forval-vind
+    varde: forval('vind'),
+    grund: 'Källa',
+    kalla: 'LTH',
+  },
+  {
+    storhet: 'Temperaturen vid träet i förvalen, mitt val', // fuktkvot.antaganden.rad.forval-temp
+    varde: FORVAL.map((f) => `${talUrIndata(f.tempC)} °C`).join(', '),
+    grund: 'Antagande',
+  },
+];
+
+/* Tabellen vid 20 °C (specen avsnitt 4, efter punkt 2). */
+const TABELL_RUBRIK = 'Jämviktsfuktkvot vid 20 grader och olika luftfuktighet'; // fuktkvot.tabell.rubrik
+const TABELL_CAPTION = 'Fuktkvoten trä går mot vid 20 grader, enligt Wood Handbook och TräGuiden'; // fuktkvot.tabell.caption
+const TABELL_KOLUMN = {
+  rf: 'RF, %', // fuktkvot.tabell.kol.rf
+  wh: 'Wood Handbook, %', // fuktkvot.tabell.kol.wh
+  tg: 'TräGuiden, %', // fuktkvot.tabell.kol.tg
+};
+const TABELL_KALLA = 'Wood Handbooks kolumn är räknad med ekvation 4-5 och avrundad till en decimal. TräGuidens tal kommer ur sidan om mikroorganismer och, vid 65 procent, ur sidan om sorptionskurvor för gran och furu.'; // fuktkvot.tabell.kalla
+const tabellrader = jamviktsTabell();
+const traguidenCell = (t: { lagst: number; hogst: number } | null): string =>
+  t === null ? '' : t.lagst === t.hogst ? String(t.lagst) : `${t.lagst} till ${t.hogst}`;
+
+/**
+ * Cellklasserna en gång på <table>, som på daggpunkten (budgeten).
+ */
+const TABELL_KLASS =
+  'w-full border-collapse text-liten tabular-nums [&_th]:p-2 [&_td]:p-2 [&_th]:align-top [&_td]:align-top [&_th]:text-left [&_tbody_th]:[font-weight:inherit] [&_tr]:border-b [&_tr]:border-linje [&_th]:text-blyerts [&_td]:text-blyerts [&_thead_th]:text-etikett [&_thead_th]:uppercase [&_thead_th]:text-blyerts-2';
+const TAL_TABELL_KLASS = `${TABELL_KLASS} [&_td]:text-right [&_thead_th+th]:text-right`;
+
+/**
+ * Läs vidare som kort (specen avsnitt 4, efter punkt 3). Artiklar och
+ * kategorisidor visas bara när de är publicerade; räknaren med registrets namn.
+ */
+const LAS_VIDARE = ['/fukt/fuktkvot/', '/fuktmatare/', '/rakna/daggpunkt/', '/fukt/hussvamp/'];
+const artiklar = [...(await publicerade('guider')), ...(await publicerade('kunskap'))];
+const kategorier = await publicerade('kategorier');
+const lasVidare: KortData[] = (
+  await Promise.all(
+    LAS_VIDARE.map(async (href): Promise<KortData[]> => {
+      const e = artiklar.find((a) => artikelUrl(a) === href);
+      if (e) {
+        const { niva: _niva, ...kort } = tillKortArtikel(e);
+        return [kort];
+      }
+      const kat = kategorier.find((k) => `/${k.id}/` === href);
+      if (kat) return [await tillKortKategori(kat)];
+      const k = hittaKalkylator(href.replace(/^\/rakna\/|\/$/g, ''));
+      const pelare = k?.pelare?.[0];
+      if (!href.startsWith('/rakna/') || !k || !pelare || !arPelare(pelare)) return [];
+      return [
+        {
+          etikett: 'Räkna själv',
+          rubrik: k.namn,
+          beskrivning: k.rad,
+          pelare,
+          href,
+          // Artikelrutnat läser inte typen; kortet står varken i ett typfilter eller sorteras.
+          typ: 'kunskap',
+          sorteringsdatum: new Date(0),
+        },
+      ];
+    }),
+  )
+).flat();
+
+/** Frågorna skriver hantverkaren. En tom lista renderar ingenting. */
+const FRAGOR: { fraga: string; svar: string; lank?: { text: string; href: string } }[] = [];
+---
+
+<Raknarsida slug={SLUG} namn={VERKTYGSNAMN} titel={titel} beskrivning={BESKRIVNING} rubrik={H1} delaUrl={delaLank}>
+  <p slot="ingress">Har du vägt en träbit före och efter torkning, läst av en hygrometer eller fått ett tal för veden, räknar verktyget ut fuktkvoten. Svaret säger också vad talet betyder när du ska elda, måla, lägga golv eller bygga in, och när mögel och röta blir en risk.{/* fuktkvot.ingress */}</p>
+
+  {
+    indata.lage === 'luft' && (
+      <nav slot="forval" aria-label={FORVAL_ARIA}>
+        <p class="etikett text-blyerts-2">{FORVAL_ETIKETT}</p>
+        <ul class="flex flex-wrap gap-2">
+          {FORVAL.map((f) => (
+            <li>
+              <a
+                class="chip"
+                href={`/rakna/fuktkvot/?lage=luft&rum=${f.rum}${f.arstid ? `&arstid=${f.arstid}` : ''}#raknaren`}
+                aria-current={indata.rum === f.rum && indata.arstid === f.arstid ? 'true' : undefined}
+              >
+                {FORVAL_CHIP[forvalNyckel(f)]}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )
+  }
+
+  <FuktkvotForm slot="formular" indata={indata} varden={varden} fel={fel} />
+
+  <Fragment slot="svar">
+    {resultat.status === 'ogiltig' && <p class="text-liten text-varning">{STANDARDVARNING}</p>}
+    <Svarstal tal={storttal} enhet="%" vad={vad} />
+    {andraTal && <p class="text-liten text-blyerts">{fyll(haltAnnat ? SVAR_ANDRA_KVOT : SVAR_ANDRA, { tal: andraTal })}</p>}
+    {visat.status === 'fibermattnad' && <p class="font-bold">{BESKED_FIBERMATTNAD}</p>}
+    {extrapolerad && <p class="text-liten text-blyerts">{BESKED_EXTRAPOLERAD}</p>}
+    <Matare etikett={MATARE_ETIKETT} varde={matareVarde} grans={ROTA_LITEN_RISK} enhet="%" visat={matareVisat} />
+    {
+      ok && (
+        <ul class="bedomningar">
+          {ok.bedomningar.map((b) => (
+            <li>
+              <span>{ANVANDNING[b.anvandning]}</span>
+              <span>{b.grans}</span>
+              <span>
+                {b.utfall === 'ok' ? (
+                  <Ikon namn="check" storlek={18} class="text-ok" />
+                ) : (
+                  <Ikon namn="varning" storlek={18} class="text-varning" />
+                )}
+                {UTFALL[b.utfall]}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+    {klartext !== '' && <p class="text-liten text-blyerts">{klartext}</p>}
+  </Fragment>
+
+  <Fragment slot="darfor">
+    <Pennstreck id="darfor-blev-svaret-sa" utanLuft>
+      {DARFOR_RUBRIK}
+    </Pennstreck>
+    <div class="darfor">
+      <div>
+        <p>{darforText}</p>
+        <p>{DARFOR_KALLA}</p>
+      </div>
+    </div>
+  </Fragment>
+
+  <Fragment slot="gorInte">{GOR_INTE}</Fragment>
+
+  <Fragment slot="saRaknarJag">
+    {
+      illustration && (
+        <div class="pappersruta">
+          <Illustration namn="rakna/fuktkvot" alt={SKISS_ALT} bildtext={SKISS_BILDTEXT} class="my-0!" />
+        </div>
+      )
+    }
+    <p class="m-0 mt-4 text-brod tabular-nums">
+      u = (m<sub>våt</sub> − m<sub>torr</sub>) / m<sub>torr</sub> × 100
+    </p>
+    <ol class="m-0 mt-4 pl-6 list-decimal text-brod">
+      {STEG.map((s, n) => <li class:list={[n < STEG.length - 1 && 'mb-2']}>{s}</li>)}
+    </ol>
+  </Fragment>
+
+  <Fragment slot="efter">
+    <section class="max-w-lasbredd">
+      <h3 class="m-0 mt-8 font-sans text-h3 text-blyerts">{ANTAGANDEN_RUBRIK}</h3>
+      <Tabellyta kolumner={3} class="mt-4">
+        <table class={TABELL_KLASS}>
+          <caption class="sr-only">{ANTAGANDEN_CAPTION}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{ANTAGANDE_KOLUMN.vad}</th>
+              <th scope="col">{ANTAGANDE_KOLUMN.varde}</th>
+              <th scope="col">{ANTAGANDE_KOLUMN.grund}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              antaganden.map((a) => {
+                const k = a.kalla ? KALLOR[a.kalla] : undefined;
+                return (
+                  <tr>
+                    <th scope="row">{a.storhet}</th>
+                    <td>{a.varde}</td>
+                    <td>
+                      {a.grund}
+                      {k && '. '}
+                      {k &&
+                        (k.url ? (
+                          <a href={k.url} rel="nofollow" class={LANK_KLASS}>
+                            {k.titel}
+                          </a>
+                        ) : (
+                          k.titel
+                        ))}
+                    </td>
+                  </tr>
+                );
+              })
+            }
+          </tbody>
+        </table>
+      </Tabellyta>
+    </section>
+
+    <section class="max-w-lasbredd">
+      <Pennstreck id="tabell-20-grader">{TABELL_RUBRIK}</Pennstreck>
+      <Tabellyta kolumner={3} class="mt-4">
+        <table class={TAL_TABELL_KLASS}>
+          <caption class="sr-only">{TABELL_CAPTION}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{TABELL_KOLUMN.rf}</th>
+              <th scope="col">{TABELL_KOLUMN.wh}</th>
+              <th scope="col">{TABELL_KOLUMN.tg}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              tabellrader.map((r) => (
+                <tr>
+                  <th scope="row">{r.rf}</th>
+                  <td>{en(r.modell)}</td>
+                  <td>{traguidenCell(r.traguiden)}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </Tabellyta>
+      <p class="m-0 mt-2 text-liten text-blyerts-2">{TABELL_KALLA}</p>
+    </section>
+
+    {
+      lasVidare.length > 0 && (
+        <section>
+          <Pennstreck id="las-vidare">Läs vidare</Pennstreck>
+          <Artikelrutnat kort={lasVidare} kolumner={4} visaBeskrivning={false} visaMeta={false} />
+        </section>
+      )
+    }
+
+    <div class="max-w-lasbredd">
+      <Faq fragor={FRAGOR} />
+    </div>
+  </Fragment>
+</Raknarsida>
