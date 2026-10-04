@@ -114,3 +114,34 @@ Det ettan har som vi måste behålla eller överträffa: definitionen, målfuktk
 - **Krypgrundens åtgärder** står på krypgrundssidan. Här finns krypgrunden som exempel och förval.
 - **Instrumentvalet** står på `/fuktmatare/`. Här finns en länk och ingen modell.
 - **Räknarens formel** skrivs inte om med andra tal än de räknaren använder.
+
+---
+
+## Kontroll efter skrivningen, 2026-10-04
+
+SEO och GEO-agenten har läst `src/content/kunskap/fukt/fuktkvot.mdx` (utkast, cirka 1 850 ord med Faq) mot punkt 1 till 12. **Godkänd av SEO och GEO**, med en punkt som rättas.
+
+- **Metadata.** seoTitle "Fuktkvot i trä, gränserna för mögel och röta" (44) och description (151) är godkända. H1 "Hur fuktigt träet får vara när du målar, bygger in eller eldar" delar inte de tre första orden med seoTitle.
+- **Sidofraserna.** "fuktkvot trä mögel" bärs av H2:n "Vid vilken fuktkvot trä möglar", och "kritiskt fukttillstånd" står i brödtexten där, böjt, bredvid Boverkets "högsta tillåtna fukttillstånd". Det räcker. Jämviktsfuktkvoten har en egen H2. Målning och ved står i tabellen, i brödtexten och i H2:n "Gränserna för målning, inbyggnad, golv och ved", och det räcker för "fuktkvot trä målning" (20) och "fuktkvot ved" (20). Fukthalten har en egen H2.
+- **kortSvar.** Den är citerbar och har talen, villkoret och källan. Inget att ändra.
+- **Bättre än ettan.** Punkt 1, 2 och 4 är uppfyllda: gränstabellen har en källa per rad, mögelsvaret anger RF, tid och temperatur och förklarar Boverkets regel, och mätfelet och felkällorna har en egen H2. Punkt 3 är uppfylld när räknaren bäddas in där kommentaren på rad 118 står.
+- **Rötgränsen 24 är struken.** Det är godkänt. 24 i jämviktstabellen (95 procents RF) är ett annat tal och står kvar.
+- **De två lärobokssanningarna kräver inget nytt underlag.** Fibermättnaden runt 30 procent står i TräGuiden ("Fuktkvot och mätning") och i Wood Handbook kapitel 4, och båda finns i `kallor`. Att kyld luft stiger i RF är samma fysik som daggpunktsräknaren bygger på, och exemplet stämmer: 20 grader och 70 procent har daggpunkten 14,4 grader.
+- **Länkarna ut** går till hygrometern, krypgrunden, hussvampen och husmålningen, och Verktygskortet går till daggpunkten. Det räcker för regeln om tre länkar redan nu.
+
+**Rättas:**
+
+1. **`bildAlt` saknar "fuktkvot"** (checklistan punkt 8). Förslag på 124 tecken: "En bräda där fuktkvoten mäts med tre par stift tätt intill varandra en bit in från änden, och ett snitt med ytan och kärnan."
+
+**Väntar på räknaren, inget att ändra i dag:** länken på rad 64 med ankaret "räknaren för fuktkvot", och `<Kalkylator namn="fuktkvot" forval="rum=krypgrund">` på rad 118. Förvalet ska ha samma `rum=`-värde som daggpunkten. Länken till `/fuktmatare/` på rad 149 med ankaret "genomgången av fuktmätare" är godkänd. Om svartmögelsidan (C3) blir klar i samma omgång får H2:n om mögel gärna en länk dit, men det är inget krav.
+
+**Villkor för `utkast: false`:** sidan publiceras i samma commit som `/fuktmatare/` och `/rakna/fuktkvot/`, med de tre kommentarerna ersatta av länkarna och kalkylatorn.
+
+**Inlänkar till `/fukt/fuktkvot/`**, alla med fil, H2 och ankare:
+
+1. `src/content/kunskap/fukt/hussvamp.mdx`, H2 "Svampen kom för att träet har varit blött länge", rad 142. Ankare: "Fuktkvoten" i "Fuktkvoten, det tal som en fuktkvotsmätare visar".
+2. `src/content/kunskap/fukt/luftfuktighet-inomhus.mdx`, H2 "Snickarens gräns för virke, betong, färg och gips", rad 240. Ankare: "fuktkvot" i "Trä mäts i fuktkvot".
+3. `src/content/guider/fukt/fukt-pa-vinden.mdx`, H2 "Fukt på vinden i besiktningsprotokollet", rad 163. Ankare: "Mät fuktkvoten" i "Mät fuktkvoten i råsponten i stället".
+4. `src/content/kategorier/fuktmatare.md`, H2 "Vad 16, 18 och 20 procent betyder för virket", rad 107. Ankare: "gränserna för fuktkvot i trä".
+
+Räknarens egna inlänkar, `hussvamp.mdx` rad 153 och `fukt-i-krypgrund.mdx` rad 138, läggs med C0.

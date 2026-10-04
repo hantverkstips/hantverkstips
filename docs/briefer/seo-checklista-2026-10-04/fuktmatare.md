@@ -118,3 +118,28 @@ Det ettan har som vi måste behålla eller överträffa:
 - **Gränsvärdena för krypgrunden** ägs av `/fukt/fukt-i-krypgrund/`.
 - **"fuktmätare betong"** (390) ägs av `/fukt/fuktmatning-betong/` (E5). Här står betongen i tre meningar.
 - Proffsmagasinets egna guider och kundbetyg är ingen källa för kvalitet; deras produktsidor används för pris.
+
+---
+
+## Kontroll efter skrivningen, 2026-10-04
+
+SEO och GEO-agenten har läst `src/content/kategorier/fuktmatare.md` (utkast) mot punkt 1 till 12. **Godkänd av SEO och GEO**, med två punkter som rättas och villkor för publicering.
+
+- **Metadata.** seoTitle "Fuktmätare för trä, jämförda på datablad" (40) och description (148) är godkända. H1 "Vilken fuktmätare som räcker till veden, virket och krypgrunden" saknar ordet datablad, men etiketten "Granskad på datablad" och seoTitle säger det. Det godkänns, och H1 delar inte de tre första orden med seoTitle.
+- **Sidofraserna.** "fuktmätare trä" står i första H2, ved i första H2 och i valet, och fuktkvotsmätare i ingressen. Stift och stiftlös har en egen H2. "bäst i test" står i klartext i det sista avsnittet som det sidan inte är, och "test" står där med samma ärlighet.
+- **Bättre än ettan.** Punkt 1, 2, 4 och 5 är uppfyllda: tabellen med 15 rader, temperaturavsnittet med spannet och en egen tabell (räkningen stämmer, 0,9 till 3,0 procentenheter mellan 10 och 0 grader), SP-rapporten från 2012 med namn och Boschs och Testos förbehåll, och skälet till ved för cirka 500 kronor. Punkt 3 är uppfylld först när länken till räknaren finns.
+- **Ingen Faq** och inga ord om egna mätningar. Inget att ändra.
+
+**Rättas:**
+
+1. **Länken till `/fukt/fuktkvot/` flyttas.** Kommentaren på rad 119 föreslår ankaret "golvbrädor levereras med 8 procent fuktkvot", som pekar på en detalj. Lägg länken på rad 107, "Gränserna nedan kommer från TräGuiden", med ett ankare som säger vad sidan ger, till exempel "gränserna för fuktkvot i trä". Kommentaren på rad 119 stryks.
+2. **`kalkylator: fuktkvot`** läggs i frontmatter när räknaren är publicerad (fältet finns i schemat). Länken på rad 65 med ankaret "18 till 25 procent fuktkvot" står kvar som den är föreslagen.
+
+**Villkor för `utkast: false`:** sidan publiceras först i samma commit som `/fukt/fuktkvot/` och `/rakna/fuktkvot/`, med båda länkarna lagda. Fröet ska vara inläst, och priser och lager ska läsas om samma dag.
+
+**Inlänkar till `/fuktmatare/`**, alla med fil, H2 och ankare:
+
+1. `src/content/kunskap/fukt/hygrometer.mdx`, H2 "Vilken hygrometer som passar var i huset", rad 139. Ankare: "en fuktmätare för trä" i "behöver du en fuktmätare för trä".
+2. `src/content/guider/fukt/fukt-i-krypgrund.mdx`, H2 "Mät fukten i krypgrunden själv", rad 119. Ankare: "fuktkvotsmätare" i "Fuktmätaren för träet i krypgrunden kallas fuktkvotsmätare".
+3. `src/content/guider/fukt/fukt-pa-vinden.mdx`, H2 "Hygrometern och fuktkvotsmätaren visar hur fuktig vinden är", rad 118. Ankare: "Fuktkvotsmätaren" i "Fuktkvotsmätaren har två stift".
+4. `src/content/kunskap/fukt/fuktkvot.mdx`, H2 "Mät tre gånger och räkna med marginalen", rad 149. Ankare: "genomgången av fuktmätare" (kommentaren på rad 151).

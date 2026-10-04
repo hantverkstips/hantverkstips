@@ -111,3 +111,43 @@ Det ettan har som vi måste behålla eller överträffa: artnamnet med en källa
 - **Röta och hussvamp** ägs av `/fukt/hussvamp/`.
 - **Mögelgränser på 68 eller 72 procent** upprepas inte.
 - **Inga recept** för egna saneringsmedel utan källa.
+
+---
+
+## Kontroll efter skrivningen, 2026-10-04
+
+SEO och GEO-agenten har läst `src/content/kunskap/fukt/svartmogel.mdx` (utkast) mot punkt 1 till 12. **Godkänd av SEO och GEO**, med en punkt som rättas.
+
+- **Metadata.** seoTitle "Svartmögel och vitmögel, när det är farligt" (43 tecken) och description (147) är godkända. H1 "Svarta prickar på väggen och vad de betyder för familjen" börjar inte med "Svartmögel i". Ingen bild: det är godkänt, och tabellen bär igenkänningen.
+- **Sidofraserna.**
+  - H2:er: "Är svartmögel farligt?", "Vitmögel kan också vara röta eller salt", "Mögel kommer aldrig utan fukt" och "Ta bort svartmögel från trä, tapet och fogar".
+  - **"mögel ättika"** står som H3 under borttagningen. Det är godkänt: frasen är 110, och en egen H2 vore tunn eftersom svaret är att det saknas belägg.
+  - "Är fukt och mögel samma sak" besvaras i brödtexten.
+- **Stachybotrys-meningen får stå.** "I vardagsspråk syftar det ofta på" är ett påstående om språkbruk och inte om hälsa. Det är försiktigt formulerat och följs direkt av "lika gärna vilken svart påväxt som helst". Artens fuktkrav har WHO som källa, och kopplingen mellan ordet och arten är en entitetssignal som AI-svaren använder. Samma sak gäller kortSvar.
+- **Hantverkarens avvikelser är godkända:**
+  - två länkar under vitmögel (till hussvampen och till krypgrunden)
+  - länken till `/badrum/fogar-badrum/`, som håller badrummet på en mening i väntan på D1
+  - den strukna externa länken till 1177
+  - `niva: enkel`
+- **Hälsan** bygger bara på Folkhälsomyndigheten, Boverket, 1177 och Arbetsmiljöverket, och WHO och IVL används för biologin. "Upp till sex år" stämmer med 1177.
+- **Bättre än ettan 1 till 4 är uppfyllda:**
+  - myndighetens besked om hälsan
+  - tabellen över påväxterna, med saltet
+  - TräGuidens tabell per material
+  - borttagningen med Folkhälsomyndigheten, Arbetsmiljöverket och IVL-försöket
+- **Strukturerad data.** `Article`, `BreadcrumbList` och `FAQPage` med samma text som syns. Canonical sätts av bygget.
+
+**Rättas:**
+
+1. **Platshållaren på rad 151 kan inte bli en länk.** Faq-svaren är ren text (`src/components/ui/Faq.astro`), så en länk i svaret om försäkringen skulle stå som hakparenteser på sidan. Stryk kommentaren. Länken till `/fukt/mogel-i-huset/` på rad 83 räcker.
+
+**Platshållare som ska bli länkar:**
+
+- Rad 83, "huset som ger besvären" → `/fukt/mogel-i-huset/`.
+- Rad 144, punkten "det luktar mögel men inget syns" → `/fukt/mogellukt/`.
+
+**Inlänkar till `/fukt/svartmogel/`:**
+
+1. `src/content/guider/fukt/fukt-i-kallaren.mdx`, H2 "Lukt i källaren kommer före fläcken", meningen "Svart påväxt över stora ytor sanerar du inte själv". Ankare: "Svart påväxt".
+2. `src/content/kunskap/fukt/luftfuktighet-inomhus.mdx`, H2 "Vid daggpunkten blir den kallaste ytan våt", meningen "Mögel kan börja växa på trä …". Ankare: "Mögel kan börja växa på trä".
+3. `src/content/guider/fukt/mogel-i-huset.mdx`, H2 "Symptomen som mögel och fukt i bostaden kan ge", platshållaren på rad 119. Ankare: "vad svartmögel är och hur mycket fukt det kräver".

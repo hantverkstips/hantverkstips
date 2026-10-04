@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Skiss av ett enplanshus i genomskärning där lukten från en mögelfläck i krypgrunden går upp genom hålen för rören.">
+  <!-- Anteckningsboken, samma hand som kallare.svg. Enplanshus i genomskärning med gaveln bortskuren: krypgrund,
+       ett rum med tvättställ och eluttag, kallvind med isolering och ventil i den bortre gaveln. Mögelfläcken
+       skrafferad på blindbottens undersida, och lukten som pilar i blyerts upp genom hålen för avloppsröret
+       och elröret. På vinden en fläck under råsponten och en pil i blyerts ut genom gavelventilen. Snickarpennan
+       bara för pilen till avloppsrörets hål med etiketten (enda pennsaken). Inga mått, ingen markering.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2 1,25: mark och isolering, fläckarna -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M48,248l10,10M70,248l10,10M92,248l10,10M59,270l10,10M81,270l10,10M48,292l10,10M70,292l10,10M92,292l10,10M59,314l10,10M81,314l10,10M48,336l10,10M70,336l10,10M92,336l10,10"/>
+    <path d="M498,248l10,10M520,248l10,10M542,248l10,10M564,248l10,10M509,270l10,10M531,270l10,10M553,270l10,10M575,270l10,10M498,292l10,10M520,292l10,10M542,292l10,10M564,292l10,10M509,314l10,10M531,314l10,10M553,314l10,10M575,314l10,10M498,336l10,10M520,336l10,10M542,336l10,10M564,336l10,10"/>
+    <path d="M126,296l10,10M148,296l10,10M170,296l10,10M192,296l10,10M214,296l10,10M236,296l10,10M258,296l10,10M280,296l10,10M302,296l10,10M324,296l10,10M346,296l10,10M368,296l10,10M390,296l10,10M412,296l10,10M434,296l10,10M456,296l10,10M137,318l10,10M159,318l10,10M181,318l10,10M203,318l10,10M225,318l10,10M247,318l10,10M269,318l10,10M291,318l10,10M313,318l10,10M335,318l10,10M357,318l10,10M379,318l10,10M401,318l10,10M423,318l10,10M445,318l10,10M126,340l10,10M148,340l10,10M170,340l10,10M192,340l10,10M214,340l10,10M236,340l10,10M258,340l10,10M280,340l10,10M302,340l10,10M324,340l10,10M346,340l10,10M368,340l10,10M390,340l10,10M412,340l10,10M434,340l10,10M456,340l10,10"/>
+    <path d="M144,98l10,10M166,98l10,10M188,98l10,10M210,98l10,10M232,98l10,10M254,98l10,10M276,98l10,10M298,98l10,10M320,98l10,10M342,98l10,10M364,98l10,10M386,98l10,10M408,98l10,10M430,98l10,10"/>
+    <path d="M246,220 q20,6 44,3 q26,-3 50,2 q14,4 12,10 q-30,8 -58,4 q-28,-4 -46,-6 q-8,-6 -2,-13 M250,221 l12,12 M258,220 l14,14 M268,222 l14,14 M278,222 l14,14 M288,222 l14,14 M298,221 l14,14 M308,221 l14,14 M318,222 l14,14 M328,223 l13,13 M338,224 l10,10 M346,227 l5,5"/>
+    <path d="M206,68 q10,-6 22,-11 q8,4 6,10 q-12,8 -24,9 q-6,-3 -4,-8 M208,68 l7,7 M214,64 l9,9 M220,60 l10,10 M227,58 l6,6"/>
+  </g>
+
+  <!-- Blyerts 2: huset, rören och luftens väg -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M90,118 Q196,74 300,30 Q404,74 510,118"/>
+    <path d="M124,110 Q212,73 300,36 Q388,73 476,110"/>
+    <path d="M107,110 Q300,111.5 493,110"/>
+    <path d="M110,108 Q109,158 110,208 M490,108 Q491,158 490,208"/>
+    <path d="M107,206 H186 M214,206 H390 M414,206 H493"/>
+    <path d="M124,218 H186 M214,218 H390 M414,218 H476 M110,206 V218 H124 V206 M490,206 V218 H476 V206"/>
+    <path d="M110,218 Q109,258 110,300 M122,218 Q123,258 122,300 M478,218 Q477,258 478,300 M490,218 Q491,258 490,300"/>
+    <path d="M122,288 Q300,289.5 478,288"/>
+    <path d="M44,240 Q77,239 110,240 M490,240 Q541,239 592,240"/>
+    <path d="M286,52 H314 V72 H286 Z M290,58 H310 M290,63 H310 M290,68 H310"/>
+    <path d="M168,140 Q200,143 232,140 Q226,154 200,155 Q174,154 168,140 M194,155 V330 M206,155 V330"/>
+    <path d="M394,160 H408 V174 H394 Z M399,174 V228 Q399,234 405,234 H476 M404,174 V222 Q404,229 410,229 H476"/>
+    <path d="M262,236 Q236,252 214,240 Q186,230 188,216 Q188,200 182,190 Q178,182 166,178 M176,174 L165,178 L172,187"/>
+    <path d="M338,238 Q366,250 384,238 Q410,228 410,214 Q410,200 418,190 Q424,182 438,178 M429,173 L439,178 L431,187"/>
+    <path d="M222,74 Q244,64 258,66 Q272,68 284,62 M276,57 L285,62 L277,68"/>
+  </g>
+
+  <!-- Snickarpenna: pilen till avloppsrörets hål -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M262,144 Q232,168 216,200 M213,188 L215,201 L226,195"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="252" y="138" fill="#ad3519">lukten tar sig upp här</text>
+    <text x="48" y="50">sprids sällan ner</text>
+  </g>
+</svg>

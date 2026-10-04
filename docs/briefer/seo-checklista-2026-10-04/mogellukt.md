@@ -115,3 +115,39 @@ Det ettan har som vi måste behålla eller överträffa: bredden av lukter med t
 - **"Mögellukt bör klassas som toxisk"**, "40 procent av villabeståndet" och andra tal utan källa upprepas inte.
 - **Ozon, luftrenare och doftmedel** står inte som lösning.
 - **Radonet** luktar inte. En mening med länk, ingen H2.
+
+---
+
+## Kontroll efter skrivningen, 2026-10-04
+
+SEO och GEO-agenten har läst `src/content/guider/fukt/mogellukt.mdx` (utkast) mot punkt 1 till 12. **Inte godkänd än.** Tre punkter ska rättas. När de är gjorda godkänns sidan utan ny läsning, så länge inget annat har ändrats.
+
+- **Metadata.** seoTitle "Hur luktar mögel? Så hittar du källan" (37 tecken), description (155, på gränsen men inom den) och `bildAlt` (103) är godkända. H1 "När det luktar mögel i huset går lukten ofta att följa till fukten" delar inte de tre första orden med `/fukt/mogel-i-huset/`.
+- **Bättre än ettan 1 till 4 är uppfyllda:**
+  - Lukttabellen har tio rader med källa per rad och länkar till platssidorna.
+  - Kemin har Karolinska Institutet, AMM och Kemikalieinspektionens register med åren 1977 och 1978.
+  - Sex steg för att spåra lukten själv.
+  - Folkhälsomyndighetens besked att lukten kan vara tecken på en dold fuktskada.
+- **Bra utöver checklistan.** Ingen konkurrent har champinjonraden med Folksams motbesked eller laboratoriepriset för pentaklorfenol.
+- **Företagen.** Ocab står bara i `kallor` och nämns som "en av de större saneringsfirmorna". Det är godkänt.
+- **Strukturerad data.** `Article`, `BreadcrumbList` och `FAQPage` med samma text som syns. Canonical sätts av bygget.
+
+**Rättas:**
+
+1. **Länken i Faq-svaret om radon fungerar inte.** Faq-svaren är ren text (`src/components/ui/Faq.astro`), så `[mäta radonhalten](/fukt/radon/)` blir hakparenteser på sidan, och samma sträng hamnar i `FAQPage`. Gör svaret till ren text. Länken till radonsidan kan stå i brödtexten om hantverkaren vill, men den är inget krav. Samma fel finns på `src/content/kunskap/tak/papptak.mdx` rad 151, utanför omgången.
+2. **"unken lukt i hus" (90, näst största frasen) saknar H2.** Checklistan punkt 2 kräver den i en H2. Låt H2:n över tabellen bära den, till exempel "Unken lukt i huset och var den brukar komma ifrån". Hantverkaren formulerar. "unken lukt" och "huset" ska stå i rubriken.
+3. **H2:n "Är mögellukt farlig?" är bara en mening och en länk.** Frågan är en egen sökavsikt och ett stycke som AI-svaren lyfter, och checklistan punkt 6 H2 5 kräver myndighetens besked. Lägg till två eller tre meningar ur det gemensamma mögelbladet före länken:
+   - Folkhälsomyndigheten säger att fuktproblem ökar risken för besvär i luftvägarna.
+   - Det finns inga hälsobaserade riktvärden.
+   - Lukten är en indikation på fuktskada och inte ett mått på risken.
+
+   Kloranisolens "olägenhet" står redan i avsnittet ovanför och behöver inte upprepas.
+
+**Platshållare som ska bli länk:** rad 124, "vilka symptom fukt och mögel kan ge och när det är dags att söka vård" → `/fukt/mogel-i-huset/`.
+
+**Inlänkar till `/fukt/mogellukt/`:**
+
+1. `src/content/guider/fukt/fukt-i-krypgrund.mdx`, H2 "Tecken på fukt och mögel i krypgrunden", meningen "Lukten märks ofta före allt annat". Ankare: "Lukten märks ofta före allt annat".
+2. `src/content/guider/fukt/fukt-pa-vinden.mdx`, H2 "Tecknen syns på undersidan av yttertaket", meningen "… det luktar unket på vinden och ibland nere i huset". Ankare: "luktar unket".
+3. `src/content/kunskap/fukt/svartmogel.mdx`, rad 144, punkten "det luktar mögel men inget syns".
+4. `src/content/guider/fukt/mogel-i-huset.mdx`, rad 127, "var lukten kommer ifrån".

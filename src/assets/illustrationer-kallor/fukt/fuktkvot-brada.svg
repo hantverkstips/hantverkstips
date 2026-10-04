@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="En bräda där fuktkvoten mäts med tre par stift tätt ihop en bit in från änden, och ett tvärsnitt som visar ytan och kärnan.">
+  <!-- Anteckningsboken, skiss för /kunskap/fuktkvot/. En hyvlad bräda sedd snett från sidan med
+       änden till vänster: ovansidan som parallellogram (djupet går upp åt vänster så att ändträet
+       syns), framkanten under och ett brott till höger där brädan fortsätter. Brädan och tvärsnittet
+       fyller x 60–578 (86 procent av bredden) och står mitt i höjden. Fibrerna antydda på ovansidan
+       och årsringarna på ändträet i blyerts-2. Mätstället vid x ≈ 340.
+       Tre stiftpar tätt ihop, inget mått mellan dem, varje stift med ett litet huvud, ingen bygel:
+       två par tvärs över fibrerna (stiften efter varandra i djupled), korta, bara i ytan; ett par
+       längs fibrerna vid framkanten, inslaget djupare (streckat i framkanten).
+       Måttbygel i blyerts-2 från änden till mätstället, tumstock bakom nyckeltalet 300 mm.
+       Snickarpennan bara för pilen mot stiftparen (enda pennsaken).
+       Till höger brädans tvärsnitt, lodrätt centrerat mot brädan: ett tunt ytskikt streckat
+       innanför konturen, inga tal.
+       Handskrift i Caveat 500, 24 px, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2: fibrerna på ovansidan och årsringarna på ändträet -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M86,142 Q160,140 236,142"/>
+    <path d="M104,157 Q180,159 262,157"/>
+    <path d="M98,172 Q170,170 250,172"/>
+    <path d="M63,150 Q68,160 66,170"/>
+    <path d="M66,152 Q74,168 70,186"/>
+    <path d="M72,180 Q82,196 80,214"/>
+  </g>
+
+  <!-- Blyerts: brädan, ovansida, framkant, ändträ och brottet till höger -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M60,128 Q235,126 410,128"/>
+    <path d="M84,186 Q259,184 434,186"/>
+    <path d="M84,228 Q259,230 434,228"/>
+    <path d="M84,186 Q83,207 84,228"/>
+    <path d="M60,128 L84,186"/>
+    <path d="M60,128 Q59,149 60,170 L84,228"/>
+    <path d="M410,128 Q418,144 416,156 Q424,170 434,186 Q438,200 432,208 Q434,218 434,228"/>
+  </g>
+
+  <!-- Blyerts: stiften med huvud. Två par tvärs över fibrerna bara i ytan, ett par längs fibrerna djupare in -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round">
+    <path d="M302,178 V156 M297,156 H307 M296,164 V142 M291,142 H301"/>
+    <path d="M340,178 V156 M335,156 H345 M334,164 V142 M329,142 H339"/>
+    <path d="M378,183 V161 M373,161 H383 M391,183 V161 M386,161 H396"/>
+  </g>
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 3">
+    <path d="M378,190 V222 M391,190 V222"/>
+  </g>
+
+  <!-- Blyerts-2: måttbygel från änden till mätstället -->
+  <g fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round">
+    <path d="M84,236 V282 M340,236 V282"/>
+    <path d="M84,276 Q212,275 340,276"/>
+    <path d="M80,280 l8,-8 M336,280 l8,-8"/>
+  </g>
+
+  <!-- Blyerts: tvärsnittet av brädan, blyerts-2 streckat för ytskiktets gräns -->
+  <path d="M464,150 Q520,148 578,150 Q580,179 578,208 Q520,210 462,208 Q460,179 464,148" fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M472,158 H570 V200 H470 Z" fill="none" stroke="#625a50" stroke-width="1.25" stroke-dasharray="5 4" stroke-linecap="round"/>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="172" y="289" width="80" height="26" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 212 302)"/>
+
+  <!-- Snickarpenna: pilen mot stiftparen -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M212,56 Q262,76 284,134 M272,126 L285,136 L289,120"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="320" y="124" text-anchor="middle">ytan</text>
+    <text x="372" y="258">längs fibrerna</text>
+    <text x="212" y="308" text-anchor="middle" fill="#625a50">300 mm</text>
+    <text x="520" y="140" text-anchor="middle">ytan</text>
+    <text x="520" y="186" text-anchor="middle">kärnan</text>
+  </g>
+</svg>

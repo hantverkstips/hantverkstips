@@ -116,3 +116,43 @@ Det ettan har som vi måste behålla eller överträffa: försäkringens villkor
 - **Inga företagsnamn med länk i brödtext.** Anticimex, Ocab, Polygon och de andra står i `kallor`, och deras priser som deras uppgift.
 - **Mögeltest bäst i test** besvaras inte med ett val. Sidan säger varför testet sällan behövs.
 - **Ozon och luftrenare** som lösning står inte som råd. Behövs ett ord om ozon kommer det från Arbetsmiljöverket.
+
+---
+
+## Kontroll efter skrivningen, 2026-10-04
+
+SEO och GEO-agenten har läst `src/content/guider/fukt/mogel-i-huset.mdx` (utkast) mot punkt 1 till 12. **Godkänd av SEO och GEO.** Inget ska ändras före publicering utom platshållarna.
+
+- **Metadata.** seoTitle "Mögel i huset, symptom, test och sanering" (41 tecken), description (145) och `bildAlt` (119, med "mögel i huset") är godkända. H1 "Har det börjat mögla hemma ska du leta efter fukten först" delar inte de tre första orden med seoTitle eller med syskonsidorna.
+- **Sidofraserna.** De bärs av H2:erna:
+  - "Symptomen som mögel och fukt i bostaden kan ge"
+  - "Behöver du ett mögeltest?"
+  - "Mögelhunden och besiktningen behövs när skadan inte syns"
+  - "Mögelsanering betyder att byta det som har möglat"
+  - "Vem som betalar när det har möglat", med H3 för villaförsäkringen och hyresrätten
+
+  "mögeltest hemma", "mögelsanering pris" och "mögel efter vattenskada" (Faq) står i brödtexten.
+- **kortSvar** är citerbar, med Folkhälsomyndighetens besked om provtagning, vårdcentralen och försäkringen. Det är sidans viktigaste stycke för GEO.
+- **Bättre än ettan 1 till 5 är uppfyllda:**
+  - Folkhälsomyndigheten om provtagning och hälsorisk.
+  - 1177 om allergin och när man söker vård.
+  - Testtabellen med åtta prov från tre laboratorier, pris med moms och svarstid.
+  - Platstabellen med en länk per rad.
+  - Hyresrätten med jordabalken och kommunens miljö- och hälsoskydd.
+- **Företagen** nämns utan länk och med sitt pris som sin egen uppgift (Ocab, Trygghetsvakten, Anticimex). Det stämmer med fukt-6-C.md avsnitt 4. Kontrollen varnar inte för `kallor`.
+- **Den externa länken till 1177** i symptomavsnittet är godkänd (en per H2, samma adress i `kallor`).
+- **Strukturerad data.** Faq finns, så `FAQPage` byggs med samma text, tillsammans med `Article` och `BreadcrumbList`. Canonical sätts av bygget.
+
+**Rekommendation, inget krav:** raden för badrummet i platstabellen kan länka till `/badrum/fogar-badrum/`, som svartmögelsidan gör, tills D1 finns.
+
+**Platshållare som ska bli länkar:**
+
+- Rad 119, "vad svartmögel är och hur mycket fukt det kräver" → `/fukt/svartmogel/`.
+- Rad 127, "var lukten kommer ifrån" → `/fukt/mogellukt/`.
+
+**Inlänkar till `/fukt/mogel-i-huset/`:**
+
+1. `src/content/guider/fukt/fukt-i-kallaren.mdx`, H2 "Lukt i källaren kommer före fläcken", meningen "… inga hälsobaserade riktvärden för mikrobiella exponeringar". Ankare: "vad mögel i huset gör med hälsan".
+2. `src/content/guider/fukt/fukt-i-krypgrund.mdx`, H2 "Vad du gör vid varje mätvärde", meningen "Har det vuxit mögel ska orsaken hittas och det skadade materialet bytas …". Ankare: "det skadade materialet bytas". **Det ersätter Faq-raden i fukt-6-C.md avsnitt 2**, eftersom Faq-svar inte kan ha länkar.
+3. `src/content/kunskap/fukt/svartmogel.mdx`, rad 83, "huset som ger besvären".
+4. `src/content/guider/fukt/mogellukt.mdx`, rad 124, "vilka symptom fukt och mögel kan ge och när det är dags att söka vård".
