@@ -32,7 +32,6 @@ import DaggpunktForm from '../kalkyl/DaggpunktForm.astro';
 import DraneringForm from '../kalkyl/DraneringForm.astro';
 import FasadytaForm from '../kalkyl/FasadytaForm.astro';
 import FuktkvotForm from '../kalkyl/FuktkvotForm.astro';
-import FuktkvotForm from '../kalkyl/FuktkvotForm.astro';
 import ElkostnadForm from '../kalkyl/ElkostnadForm.astro';
 import GipspluggForm from '../kalkyl/GipspluggForm.astro';
 import GrannemedgivandeForm from '../kalkyl/GrannemedgivandeForm.astro';
@@ -151,16 +150,8 @@ if (visaSvar && svarTal === undefined) {
 }
 const SVAR_RAD = 'En yta som är kallare än så blir våt. Fyll i ditt eget rum och räkna om.'; // rakna.prova.rad
 
-if (
-  forval !== undefined &&
-  namn !== 'grannemedgivande' &&
-  namn !== 'elkostnad' &&
-  namn !== 'daggpunkt' &&
-  namn !== 'fuktkvot'
-) {
-  throw new Error(
-    `[Kalkylator] Förval finns bara för grannemedgivandet, elkostnaden, daggpunkten och fuktkvoten, inte för "${namn}".`,
-  );
+if (forval !== undefined && namn !== 'grannemedgivande' && namn !== 'elkostnad' && namn !== 'daggpunkt' && namn !== 'fuktkvot') {
+  throw new Error(`[Kalkylator] Förval finns bara för grannemedgivandet, elkostnaden, daggpunkten och fuktkvoten, inte för "${namn}".`);
 }
 /**
  * Fuktkvotens förval, med samma nycklar som verktygets adress, till exempel

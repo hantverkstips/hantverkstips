@@ -36,7 +36,7 @@ interface Props {
   /** Redaktörens etikett, till exempel "Kallt enkelgarage". En gul chip. */
   etikett?: string | undefined;
   forVem?: string | undefined;
-  /** En mening om det som talar emot produkten. Utan den visas bara granskningsmeningen. */
+  /** En mening om det som talar emot produkten. Utan den visas inget stycke. */
   svaghet?: string | undefined;
   modul?: KlickModul;
   /** Bland valen: ytan ruta. */
@@ -68,12 +68,11 @@ const erbjudande = produkt ? billigasteErbjudande(produkt) : null;
 const namn = produkt ? produktNamn(produkt) : slug;
 const bild = produkt ? lokalBild(produkt) : null;
 
-/** Svagheten, och meningen om att det är en granskning när vi inte har haft produkten. */
+/**
+ * Bara svagheten. Att produkten är granskad på datablad står en gång per sida,
+ * i sidospaltens Så jobbar jag (spec-rester-2026-10-04 A.2).
+ */
 const svaghet = Astro.props.svaghet;
-const granskning = !test || test.data.etikett !== 'test';
-const svaghetsrad = [svaghet, granskning ? 'Jag har läst databladet men inte provat den.' : undefined]
-  .filter(Boolean)
-  .join(' ');
 
 /**
  * Utan effekt i databladet finns inget att räkna på, och länken utgår. Den
@@ -123,7 +122,7 @@ const kortKlass = ['kort produktkort', rekommenderad && 'bg-ruta'];
             ))}
           </dl>
         )}
-        {svaghetsrad && <p>{svaghetsrad}</p>}
+        {svaghet && <p>{svaghet}</p>}
         <Kopknapp
           produkt={produkt.slug}
           modul={modul}

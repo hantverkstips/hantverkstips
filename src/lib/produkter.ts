@@ -244,10 +244,14 @@ export async function hamtaButik(slug = 'proffsmagasinet'): Promise<Butik | null
   return butiker.get(slug) ?? null;
 }
 
-/** Namn som visas i kort och tabeller: märke och modell, annars namn. */
+/**
+ * Namn som visas i kort, tabeller och strukturerad data: produktens namn, och
+ * märke plus modell bara när namnet saknas (spec-rester-2026-10-04 A.4).
+ */
 export function produktNamn(p: Produkt): string {
-  const sammansatt = [p.marke, p.modell].filter(Boolean).join(' ').trim();
-  return sammansatt || p.namn;
+  const namn = p.namn?.trim();
+  if (namn) return namn;
+  return [p.marke, p.modell].filter(Boolean).join(' ').trim();
 }
 
 /** Leverantörsbilder hotlinkas aldrig. Bara lokala filer under /bilder/ renderas. */

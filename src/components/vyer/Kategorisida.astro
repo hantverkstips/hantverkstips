@@ -31,9 +31,9 @@ import Markering from '../ui/Markering.astro';
 import Pennstreck from '../ui/Pennstreck.astro';
 import Produktkort from '../ui/Produktkort.astro';
 import Rubrikrad from '../ui/Rubrikrad.astro';
+import Sidospalt from '../ui/Sidospalt.astro';
 import StrukturData from '../ui/StrukturData.astro';
 import Varning from '../ui/Varning.astro';
-import Verktygskort from '../ui/Verktygskort.astro';
 
 interface Props {
   entry: CollectionEntry<'kategorier'>;
@@ -63,7 +63,6 @@ const fler: KortData[] = [
 ];
 const FLER_RUBRIK = 'Mer att läsa om samma ämne'; // kategori.fler.rubrik
 const flerRubrik = FLER_RUBRIK.replace('{namn}', d.namn);
-const JOBBAR_TEXT = 'Siffrorna för maskinerna kommer från tillverkarna, och jag har läst databladen men inte haft dem hos mig. Reklamen på sidan är märkt och styr inte vilka maskiner jag väljer.'; // artikel.jobbar.text
 
 const valSlugs = d.val.map((v) => v.produkt);
 const etiketter: Record<string, string> = Object.fromEntries(d.val.map((v) => [v.produkt, v.etikett]));
@@ -215,15 +214,7 @@ const brodsmulor = [{ namn: 'Hantverkstips', href: '/' }, { namn: d.namn }];
         </div>
       </div>
 
-      <aside class="mt-12 flex flex-col gap-5 lg:mt-0 lg:sticky lg:top-6">
-        <Innehallsforteckning rubriker={rubriker} variant="sidospalt" />
-        {d.kalkylator && <Verktygskort kalkylator={d.kalkylator} variant="liten" iRutnat />}
-        <div class="yta border-0 px-5.5 py-4 text-liten text-blyerts-2 flex flex-col gap-1.5">
-          <p class="etikett text-blyerts">Så jobbar jag</p>
-          <p class="m-0">{JOBBAR_TEXT}</p>
-          <a href="/om/sa-testar-vi/" class="lank self-start">Så testar jag</a>
-        </div>
-      </aside>
+      <Sidospalt rubriker={rubriker} produkter={[]} kalkylator={d.kalkylator} />
     </div>
   </div>
 

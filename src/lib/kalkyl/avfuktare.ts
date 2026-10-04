@@ -102,8 +102,18 @@ interface Temperaturlage {
   /**
    * Omräkning från märkt kapacitet till verklig vid dimTempC och 55 % RF.
    * Källa för mätpunkterna: Meacos blogg (10L, 20L, 30L, 40L, DD8L), Corroventa
-   * CTR STD-TT och Wood's produktsidor via Proffsmagasinet. Mittvärdet räknar vi med,
-   * ytterlägena blir intervallet vi visar.
+   * CTR STD-TT och Wood's egna dokument. DSC50FM: Wood's bruksanvisning för DSC50,
+   * engelska tabellen, 13,5 l vid 30 °C och 80 % mot 8,0 l vid 20 °C och 70 %,
+   * https://woods.se/wp-content/uploads/2024/12/woods_manual_dsc50_alla_sprak.pdf
+   * (läst 2026-09-30, faktablad/kunskap-sorptionsavfuktare.md). SW59FM: 41 l enligt
+   * Wood's produktsida, https://woods.se/en/products/dehumidifiers/woods-sw59fm/
+   * (underlag-fakta-avfuktare-kallare.md). SW59FM: 25 l vid 20 °C och 70 % och
+   * 41 l vid 30 °C och 80 % enligt Wood's bruksanvisning för SW-serien, tabellen
+   * "Technical specifications SW series", kolumnen SW59, pdf-sidan 2,
+   * https://woods.se/wp-content/uploads/2024/10/sw-manual-sw20_22_38_42_59_may22_ok.pdf
+   * (läst 2026-10-04; produktsidan för SW59FM länkar den manualen). Wood's punkter är en kontroll; faktorerna
+   * nedan bygger på Meacos och Corroventas (faktablad/rakna-avfuktare.md).
+   * Mittvärdet räknar vi med, ytterlägena blir intervallet vi visar.
    */
   faktor: number;
   faktorMin: number;

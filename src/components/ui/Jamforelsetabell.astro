@@ -129,14 +129,14 @@ function kolumnKlass(slug: string): string {
             {harEtiketter && (
               <tr class="border-b border-linje">
                 <th scope="row">
-                  Vårt omdöme
+                  Mitt val
                 </th>
+                {/* Tom cell för produkter som inte är bland valen
+                    (spec-rester-2026-10-04 A.1). */}
                 {produkter.map((p) => (
                   <td class:list={[kolumnKlass(p.slug)]}>
-                    {etiketter[p.slug] ? (
+                    {etiketter[p.slug] && (
                       <span class="text-etikett uppercase text-penna">{etiketter[p.slug]}</span>
-                    ) : (
-                      <span class="text-blyerts-2">ej angivet</span>
                     )}
                   </td>
                 ))}

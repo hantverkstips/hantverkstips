@@ -532,3 +532,25 @@ Min–max enligt bruksanvisningen. Fotnot: värden över 80 % visas som "> 80 %"
 - https://elma.dk/produkter/elma-dt125 (404; rätt adress elma.dk/produkter/elma-dt125-fugtmaaler-m-naaleelektroder läst)
 - https://laserliner.com/en/products/moisture-measurement/dampmaster-compact-plus/ (404)
 - https://standards.iteh.ai/catalog/standards/cen/c04b1bc8-0dd6-4669-9ac6-4a1cc375369d/en-13183-2-2002 (renderas med JavaScript; förhandsvisningens PDF hittad via sökning och läst)
+
+## Prisomläsning /fuktmatare/, 2026-10-04
+
+Beställt av affiliateagenten 2026-10-04, hämtat 2026-10-04. Samma metod som i varv 2: en `curl` per adress utan att följa omdirigering, sedan PM:s `__INIT_STATE__` för produktens egen variant (`Price.ListPrice.AmountWithTax`, `Price.Discount`, `Campaigns`, `GtmStockInfo.StockStatus`/`StockQuantity`, `Status` med `Availability.B2C`). Adresserna står i tabell B1 ovan.
+
+| Slug | Pris 30/9 | Pris i dag (ListPrice) | Kampanjpris i dag (`Discount.SalePrice`) | Rabatt / lägsta pris (`LowestHistoricalPrice`) | Kampanj | StockStatus | Antal | Leveranstext ordagrant | AvailableForPurchase | Produktstatus | HTTP |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| bosch-universalhumid | 504 kr | 504 kr | **428 kr** | 15,08 % / 504 kr | "Laser & mät" (/laser-matkampanj) | InStock | 4 | "Skickas inom 24 timmar!" | fältet finns inte (i lager) | Active | 200, ingen omdirigering |
+| testo-606-1 | 1 609 kr | 1 609 kr | – | – | ingen | InStock | 3 | "Skickas inom 24 timmar!" | fältet finns inte (i lager) | Active | 200, ingen omdirigering |
+| elma-dt125 | 1 680 kr | 1 680 kr | **1 428 kr** | 15 % / 1 680 kr | "Laser & mät" | InStock | 4 | "Skickas inom 24 timmar!" | fältet finns inte (i lager) | Active | 200, ingen omdirigering |
+| bosch-gmp-2-15 | 2 147 kr | 2 147 kr | **2 082 kr** | 3,03 % / 2 147 kr | "Laser & mät" | InStock | 7 | "Skickas inom 24 timmar!" | fältet finns inte (i lager) | Active | 200, ingen omdirigering |
+| flir-mr55 | 2 990 kr | 2 990 kr | **2 317 kr** | 15,03 % / **2 727 kr** | "Laser & mät" | BackOrder (B2C `OutOfStock`) | 0 (leverantörsbekräftat 2 st till 2026-10-05) | "Skickas 2026-10-05" | true | Active | 200, ingen omdirigering |
+| bosch-gmm-1-15 | 3 217 kr | 3 217 kr | **3 023 kr** | 6,03 % / 3 217 kr | "Laser & mät" | OutOfStock | 0 | "Skickas om 8-10 dagar" | true | Active | 200, ingen omdirigering |
+| laserliner-dampmaster-compact-plus | 5 236 kr | 5 236 kr | – | – | ingen | InStock | 7 | "Skickas inom 24 timmar!" | fältet finns inte (i lager) | Active | 200, ingen omdirigering |
+| protimeter-surveymaster | 9 695 kr | 9 695 kr | – | – | ingen | InStock | 2 | "Skickas inom 24 timmar!" | fältet finns inte (i lager) | Active | 200, ingen omdirigering |
+
+- Ordinarie pris (ListPrice) är oförändrat för alla åtta mot 30/9.
+- Fem av åtta har kampanjpris i dag, alla i PM:s "Laser- & mätkampanj" (/laser-matkampanj). Kampanjens slutdatum finns **inte** i `__INIT_STATE__`; okänt hur länge priserna gäller.
+- Flir MR55: `LowestHistoricalPrice` är 2 727 kr, lägre än ListPrice 2 990 kr. Det betyder att PM har sålt den för 2 727 kr tidigare under den period fältet avser; vilken period det är står inte i datan. För övriga sju är lägsta pris lika med ListPrice.
+- Bosch GMM 1-15: leveranstexten har ändrats från "Skickas om 8-12 dagar" (30/9) till "Skickas om 8-10 dagar". `StoredInOurWarehouse` false.
+- Lagerantal har ändrats: UniversalHumid 5→4, Testo 4→3, Elma 9→4, GMP 2-15 3→7, Laserliner 9→7, Protimeter 3→2.
+- `AvailableForPurchase` finns i datan bara för varor som inte är i lager; för InStock-varor saknas fältet och köpbarheten framgår av `InStock`.

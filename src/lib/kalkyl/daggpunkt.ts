@@ -274,7 +274,8 @@ export const NORMALT_PER_RUM: Record<Rum, Record<Arstid, Normalt>> = {
     vinter: { lagst: null, hogst: 75, kalla: 'villaagarna' },
     sommar: { lagst: null, hogst: 75, kalla: 'villaagarna' },
   },
-  // Källa: Lars Olsson, SP, Bygg & teknik 8/06, "sänka RF till säkra nivåer (cirka 75 procent)" (faktablad/guider-fukt-i-krypgrund.md 1.3).
+  // Källa: Lars Olsson, SP, "Lösningar för krypgrundsproblematiken", Bygg & teknik 8/06 s. 12–16, "sänka RF till säkra nivåer (cirka 75 procent)" (faktablad/guider-fukt-i-krypgrund.md 1.3),
+  // https://www.fuktcentrum.lth.se/fileadmin/fuktcentrum/Publikationer/Bygg-Teknik/8_06_12.pdf (läst 2026-10-04).
   krypgrund: {
     vinter: { lagst: null, hogst: 75, kalla: 'olsson-sp' },
     sommar: { lagst: null, hogst: 75, kalla: 'olsson-sp' },

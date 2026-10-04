@@ -67,9 +67,13 @@ export type ElkostnadResultat =
 const DAGAR_PER_AR = 365;
 
 /**
- * Standardvärdena. ANTAGANDE i varje rad utom elpriset, som är SCB-statistik.
- * 320 W är Wood's SW39FW enligt Proffsmagasinet, alltså en vanlig
- * villakällaravfuktare, och åtta timmar per dygn är vårt antagande för
+ * Standardvärdena. ANTAGANDE i varje rad utom elpriset, som är SCB-statistik,
+ * och effekten. 320 W är Wood's SW39FW, alltså en vanlig villakällaravfuktare.
+ * Källa: Wood's bruksanvisning "SW series", tabellen "Technical specifications
+ * SW series", kolumn SW38: "Power at 20°C and 70% r.h. ... 320W", alltså
+ * systermodellen SW38FW med samma tal (FORVAL_PER_PLATS.kallare nedan).
+ * https://woods.se/wp-content/uploads/2024/12/sw-manual-sw20_22_38_42_59_2025_v1.pdf
+ * (läst 2026-09-30). Åtta timmar per dygn är vårt antagande för
  * hygrostatstyrd drift i en källare som inte är genomblöt.
  */
 export const STANDARD: ElkostnadIndata = {
@@ -185,10 +189,12 @@ export interface PlatsForval {
  */
 export const FORVAL_PER_PLATS: Record<Plats, PlatsForval> = {
   /*
-   * Källa: Proffsmagasinets produktsida, 320 W (`faktablad/guider-avfuktare-kallare.md`
-   * rad 104). Wood's bruksanvisning för systermodellen SW38F: 320 W vid 20 °C och
-   * 70 % (`faktablad/guider-avfuktare-garage.md` rad 74). Förstavalet i köpguiden
-   * för källaren.
+   * Källa: Wood's bruksanvisning "SW series", tabellen "Technical specifications
+   * SW series", kolumn SW38: "Power at 20°C and 70% r.h. ... 320W". Talet gäller
+   * systermodellen SW38FW, som har samma tal; Wood's har inget dokument för SW39FW.
+   * https://woods.se/wp-content/uploads/2024/12/sw-manual-sw20_22_38_42_59_2025_v1.pdf
+   * (läst 2026-09-30, `faktablad/butikskallor-C-2026-09-30.md` rad 71). Förstavalet
+   * i köpguiden för källaren.
    */
   kallare: {
     maskin: "Wood's SW39FW",
