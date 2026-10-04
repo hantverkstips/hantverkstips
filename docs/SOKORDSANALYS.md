@@ -753,8 +753,9 @@ Sitemapen `https://www.hantverkstips.se/sitemap-index.xml` svarade 200 och lista
 | 6 | De äldre hubbarna som inte redan är begärda: `/fukt/`, `/inomhus/`, `/golv/`, `/el/`, `/grund/`, `/fasad/`, `/altan/`, samt `/`, `/fasad/renovera-fonster/`, `/fasad/mala-om-huset/` |
 | 7 | Tillagd 2026-09-30 för sidorna i startlista 5 och fuktomgångarna A och B, i prioritetsordning: `/fukt/lag-luftfuktighet/` (luftfuktare 18 100, topp i februari), `/fukt/radon/` (12 100, topp i oktober, mätsäsongen har börjat), `/fukt/hygrometer/` (4 400), `/krysslaser/` (3 600), `/fukt/fuktslukare/` (topp i november), `/fukt/kondens-pa-fonster/` (ny huvudfras, topp i november, begärs om), `/luftavfuktare/` (ny huvudfras "avfuktare" 9 900, begärs om), `/fukt/luftfuktighet-inomhus/` (utbyggd med vintern, topp i januari, begärs om), `/fukt/hussvamp/` (topp i november), `/fukt/kallras/` (topp i januari) |
 | 8 | `/fukt/avfuktare-vind/` (topp i november och december), `/fukt/fukt-pa-vinden/`, `/fukt/fukt-i-krypgrund/`, `/el/isolera-tak/`, `/rakna/daggpunkt/` (förval och tabell, begärs om), `/rakna/elkostnad/` (förval och tvättläge, begärs om), `/fukt/` (hubben ordnad efter plats, begärs om) |
+| 9 | Tillagd 2026-10-04 för fukt omgång C (publicerad i d81e42c), i prioritetsordning: `/fukt/svartmogel/` (4 400, toppar i september och oktober, alltså nu), `/fuktmatare/` (6 600, jämn), `/fukt/mogel-i-huset/` (mögeltest och mögel symptom 390 vardera, topp i september och oktober), `/fukt/mogellukt/` (hur luktar mögel 390), `/fukt/fuktkvot/` (fuktkvot trä 110), `/rakna/fuktkvot/` och `/fukt/` (hubben har fått sex nya sidor, begärs om) |
 
-Resten följer via sitemapen: övriga räknare, grund-, fasad-, inomhus- och altansidor med mindre volym, testerna, jämförelsen, om-sidorna, författarsidan. Listsidorna under `/guider/` (typ, nivå, sida 2 och 3) och `/amnen/` begärs aldrig. Två veckor efter dag 6 läses rapporten Sidindexering; det som står som "Upptäckt, inte indexerad" begärs då. Dag 7 och 8 körs direkt efter dag 6, eller samma dag om kvoten räcker. "Begärs om" gäller sidor som redan är begärda men har fått ny huvudfras eller nytt innehåll, och den begäran görs även om URL-inspektionen säger att adressen finns på Google. Alla sidor i startlista 5 och i omgång A och B står i dag 7 och 8. Två veckor efter dag 8 läses rapporten Sidindexering för fuktsidorna.
+Resten följer via sitemapen: övriga räknare, grund-, fasad-, inomhus- och altansidor med mindre volym, testerna, jämförelsen, om-sidorna, författarsidan. Listsidorna under `/guider/` (typ, nivå, sida 2 och 3) och `/amnen/` begärs aldrig. Två veckor efter dag 6 läses rapporten Sidindexering; det som står som "Upptäckt, inte indexerad" begärs då. Dag 7 och 8 körs direkt efter dag 6, eller samma dag om kvoten räcker. "Begärs om" gäller sidor som redan är begärda men har fått ny huvudfras eller nytt innehåll, och den begäran görs även om URL-inspektionen säger att adressen finns på Google. Alla sidor i startlista 5 och i omgång A och B står i dag 7 och 8. Två veckor efter dag 8 läses rapporten Sidindexering för fuktsidorna. Dag 9 begärs av Christian själv i Search Console, och rapporten för omgång C läses två veckor efter den dagen.
 
 ## 11. Startlista 5 och krysslasern, 2026-09-30
 
@@ -1110,6 +1111,42 @@ SERP lästes 2026-10-04 för C0, C2, C4 och C5. Checklistorna och omgångens ord
 - **Ägandet rättas:** "fuktkvot trä" (110) ägs av `/fukt/fuktkvot/`, inte av räknaren som tabellen i 12.6 sa. Räknaren äger "räkna ut fuktkvot", "fuktkvot formel" och "jämviktsfuktkvot", alla utan data.
 - **Ordningen:** räknarunderlaget och ett gemensamt mögelfaktablad först, sedan C0, C1 och C2 parallellt, sedan C3, C4 och C5.
 - **Hälsan** på mögelsidorna bygger på Folkhälsomyndigheten, 1177, Boverket och Arbetsmiljöverket.
+
+#### Status 2026-10-04, omgång C publicerad
+
+Omgång C publicerades och pushades 2026-10-04 i commit d81e42c, och delningsbilderna kom i d71535b. Det var två och en halv månad före deadline. Varje sida gick igenom checklistan, läsaren, korrekturen och SEO-kontrollen. Besluten står i `docs/briefer/seo-checklista-2026-10-04/`.
+
+| # | Sida | Huvudfras | Publicerad |
+|---|---|---|---|
+| C0 | `/rakna/fuktkvot/`, ny räknare med tre lägen: vikt, luft (jämviktsfuktkvot) och fukthalt, med samma förval `rum=` som daggpunkten | räkna ut fuktkvot | 2026-10-04 |
+| C1 | `/fuktmatare/`, granskning på datablad: åtta modeller och tre val | fuktmätare 6 600 | 2026-10-04 |
+| C2 | `/fukt/fuktkvot/`, med räknaren inbäddad | fuktkvot trä 110 | 2026-10-04 |
+| C3 | `/fukt/svartmogel/` | svartmögel 4 400 | 2026-10-04 |
+| C4 | `/fukt/mogel-i-huset/` | mögel i hus 210 (sidan äger 2 390) | 2026-10-04 |
+| C5 | `/fukt/mogellukt/` | hur luktar mögel 390 | 2026-10-04 |
+
+Alla inlänkar i `fukt-6-C.md` avsnitt 2 är lagda. Svartmögelsidan har fem inlänkar. Tre av dem pekar på avsnittet om fukt och tid, med ankarna "Mögel", "Hur fuktigt olika material måste vara för att mögla" och "gränserna för gips, mineralull och betong". De godkändes, eftersom tabellen per material bara finns där och inget av ankarna tar en fras som en annan sida äger. Nästa inlänk till svartmögelsidan ska ha svartmögel eller svart mögel i ankaret. Indexeringen står i avsnitt 10, dag 9.
+
+Två beslut från kontrollen gäller fler sidor än de här:
+
+- **Faq-svar kan inte ha länkar.** Komponenten visar ren text, och en länk blir hakparenteser både på sidan och i `FAQPage`. Inlänkar som var tänkta i ett Faq-svar läggs i brödtexten.
+- **`kalkylator:` i frontmatter finns bara på kategorisidor.** På kunskapssidor och guider bäddas räknaren in med `<Kalkylator>` i brödtexten.
+
+GEO-kontrollen görs i november: fråga en AI om "svartmögel farligt", "mögeltest" och "fuktkvot trä", och anteckna här om sajten nämns.
+
+#### Nästa: omgång D, publiceras senast 31 januari
+
+Omgång D står som i tabellen ovan, och ordningen ändras inte. Badrummet och tvättstugan toppar i september och oktober och ska vara indexerade långt före hösten 2027. Torpargrunden binder ihop krypgrundssidorna.
+
+| # | Sida | Typ | Volym | Vinn | Före skrivningen |
+|---|---|---|---|---|---|
+| D1 | `/fukt/svartmogel-badrum/` | problemguide | 3 270 | 4 | SERP läst 2026-09-30. Tar emot länkar från badrumsraderna på svartmögelsidan och på mögel i huset, och D1 länkar till `/badrum/fogar-badrum/` |
+| D2 | `/fukt/badrumsflakt/` | köpguide | 6 920 | 2 | Affiliates underlag: tryck- och flödeskurvor och kravet på frånluftsflöde i l/s med källa. Äger "luftfuktighet badrum" och "avfuktare badrum" |
+| D3 | `/fukt/sjalvdrag/` | kunskap | 6 360 | ej läst; ftx 2 | SERP läses först |
+| D4 | `/fukt/avfuktare-tvattstuga/` | köpguide | 1 660 | 4 | Affiliates produkturval (beställs i december). Energimyndighetens test finns i `fukt-gemensamma-tal.md` avsnitt 14 och i elkostnadens tvättläge |
+| D5 | `/fukt/torpargrund/` | problemguide | 370 | ej läst | SERP läses först |
+
+Summa 18 580 i månaden. Inget verktyg är nytt i D. Tvättstugan och fläkten använder elkostnadens förval, och D2 får en tabell över flödena i stället för en räknare (12.6). Checklistorna skrivs i `docs/briefer/seo-checklista-[datum]/fukt-6-D.md` när SERP är läst för D3 och D5.
 
 ### 12.8 Kontroll av kannibalisering
 
