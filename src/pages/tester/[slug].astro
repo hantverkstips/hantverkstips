@@ -9,7 +9,7 @@
 import { getEntry, render } from 'astro:content';
 import Bas from '../../layouts/Bas.astro';
 import { delningsbild } from '../../lib/delningsbild';
-import { formateraDatum, isoDatum } from '../../lib/format';
+import { formateraDatum, formateraSpecVarde, isoDatum } from '../../lib/format';
 import { arPublicerad, kategoriUrl, lasminuter, publicerade, slugify, testUrl, typEtikett } from '../../lib/innehall';
 import { tillKortArtikel, type KortData } from '../../lib/kort';
 import { nivaEtikett } from '../../lib/niva';
@@ -372,7 +372,7 @@ const strukturdata = produkt
                       </th>
                       <td>
                         {produkt && produkt.specs[s.nyckel] !== undefined && produkt.specs[s.nyckel] !== null ? (
-                          String(produkt.specs[s.nyckel])
+                          formateraSpecVarde(produkt.specs[s.nyckel])
                         ) : (
                           <span class="text-blyerts-2">ej angivet</span>
                         )}

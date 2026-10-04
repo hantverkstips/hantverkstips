@@ -6,7 +6,7 @@
  */
 import { getEntry } from 'astro:content';
 import type { KlickModul } from '../../lib/affiliate';
-import { formateraPris } from '../../lib/format';
+import { formateraPris, formateraSpecVarde } from '../../lib/format';
 import {
   billigasteErbjudande,
   hamtaProdukter,
@@ -71,7 +71,7 @@ function bastaSlugs(nyckel: string, bast: 'hogst' | 'lagst' | undefined): Set<st
 function varde(p: Produkt, nyckel: string): string | null {
   const v = p.specs[nyckel];
   if (v === undefined || v === null || v === '') return null;
-  return String(v);
+  return formateraSpecVarde(v);
 }
 
 function kolumnKlass(slug: string): string {

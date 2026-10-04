@@ -17,7 +17,7 @@ import { getCollection } from 'astro:content';
 import type { KlickModul } from '../../lib/affiliate';
 import { ELKOSTNAD_KATEGORIER, produktForval } from '../../lib/kalkyl/elkostnad';
 import { publicerade, testUrl } from '../../lib/innehall';
-import { treFakta } from '../../lib/produktfakta';
+import { SPECS_UTAN_KATEGORISIDA, treFakta } from '../../lib/produktfakta';
 import {
   billigasteErbjudande,
   hamtaProdukt,
@@ -53,13 +53,15 @@ if (!produkt) varnaSaknadProdukt(slug, Astro.url.pathname);
 /**
  * Kategorin slås upp i samlingen, inte med getEntry: databasen har kategorier
  * utan kategorisida (färgborttagare, högtryckstvättar), och getEntry varnar i
- * bygget för varje sådan produkt. Utan fil blir det inga fakta.
+ * bygget för varje sådan produkt. Utan fil tas specerna ur
+ * SPECS_UTAN_KATEGORISIDA; står kategorin inte där heller blir det inga fakta.
  * Spec: docs/briefer/spec-bilder-fasad-2026-09-28.md avsnitt 7.5.
  */
 const kategori = produkt?.kategoriSlug
   ? (await getCollection('kategorier')).find((k) => k.id === produkt.kategoriSlug)
   : undefined;
-const fakta = produkt ? treFakta(produkt.kategoriSlug, kategori?.data.specs ?? [], produkt.specs) : [];
+const specs = kategori?.data.specs ?? SPECS_UTAN_KATEGORISIDA[produkt?.kategoriSlug ?? ''] ?? [];
+const fakta = produkt ? treFakta(produkt.kategoriSlug, specs, produkt.specs) : [];
 
 const tester = await publicerade('tester');
 const test = produkt ? tester.find((t) => t.data.produkt === produkt.slug) : undefined;

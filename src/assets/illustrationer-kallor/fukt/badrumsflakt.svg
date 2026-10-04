@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Badrumsfläkt i taket med kanal och böj upp genom yttertaket, och luft som kommer in under dörren.">
+  <!-- Anteckningsboken, samma hand som sjalvdrag.svg och svartmogel-badrum.svg. Badrum i genomskärning: golv,
+       innervägg med dörr till vänster, yttervägg till höger, innertak med bjälklag, vind och yttertak. Fläkten
+       sitter i innertaket; kanalen går upp genom bjälklaget, gör en tydlig böj på vinden, löper en bit åt höger och
+       går ut genom yttertaket. Inget kallrasskydd i takkanalen. Luften ut som streckad pil i blyerts genom kanalen,
+       tilluften som kort pil i blyerts genom springan under dörren. Snickarpennan (enda pennsaken): bygel längs
+       kanalen med pil mot böjen. Rutan uppe till vänster: fläkt i yttervägg med kallrasskyddets två spjällblad i
+       väggröret, i blyerts. Nyckeltal 20 Pa med gul markering vid fläkten. Inte skalenlig.
+       Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2 1,25: golvets betong och isoleringen i bjälklaget -->
+  <path d="M46,326 l10,10 M57,340 l10,10 M68,326 l10,10 M79,340 l10,10 M90,326 l10,10 M101,340 l10,10 M112,326 l10,10 M123,340 l10,10 M134,326 l10,10 M145,340 l10,10 M156,326 l10,10 M167,340 l10,10 M178,326 l10,10 M189,340 l10,10 M200,326 l10,10 M211,340 l10,10 M222,326 l10,10 M233,340 l10,10 M244,326 l10,10 M255,340 l10,10 M266,326 l10,10 M277,340 l10,10 M288,326 l10,10 M299,340 l10,10 M310,326 l10,10 M321,340 l10,10 M332,326 l10,10 M343,340 l10,10 M354,326 l10,10 M365,340 l10,10 M376,326 l10,10 M387,340 l10,10 M398,326 l10,10 M409,340 l10,10 M420,326 l10,10 M431,340 l10,10 M442,326 l10,10 M453,340 l10,10 M464,326 l10,10 M475,340 l10,10 M486,326 l10,10 M497,340 l10,10 M508,326 l10,10 M519,340 l10,10 M530,326 l10,10 M541,340 l10,10 M552,326 l10,10 M563,340 l10,10 M574,326 l10,10 M585,340 l10,10 M246,188 l10,10 M268,188 l10,10 M290,188 l10,10 M312,188 l10,10 M400,188 l10,10 M422,188 l10,10 M444,188 l10,10 M466,188 l10,10 M488,188 l10,10 M510,188 l10,10 M532,188 l10,10 M554,188 l10,10" fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round"/>
+
+  <!-- Gul markering bakom nyckeltalet -->
+  <rect x="393" y="217" width="60" height="28" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 423 231)"/>
+
+  <!-- Blyerts: golv, väggar, dörr, bjälklag, tak, fläkt, kanal och toalett -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- golvet -->
+    <path d="M44,322 Q320,323.5 596,322"/>
+    <!-- innerväggen ovanför dörren, dörrbladet och handtaget; springan under bladet -->
+    <path d="M290,200 V226 M298,200 V226 M288,226 H300 M291,229 Q290.7,271 291,314 H297 Q297.3,271 297,229 Z"/>
+    <!-- ytterväggen -->
+    <path d="M572,132 Q572.8,227 572,323 M580,139 Q580.8,231 580,323"/>
+    <!-- innertaket, brutet vid fläkten, och bjälklagets ovansida, bruten vid kanalen -->
+    <path d="M236,200 Q290,200.6 344,200 M376,200 Q474,200.8 574,200 M236,186 Q292,186.6 349,186 M371,186 Q472,185.3 574,186"/>
+    <!-- yttertaket med takfoten, brutet vid kanalen -->
+    <path d="M232,198 Q340,108 440,20 Q450,28.6 460,37 M482,55.9 Q540,104 598,154"/>
+    <!-- fläkten: hus i bjälklaget och front under innertaket -->
+    <path d="M344,186 V200 M376,186 V200 M333,200 Q360,199.4 387,200 L387,207 Q360,207.6 333,207 Z M342,204 h36"/>
+    <!-- kanalen: upp genom bjälklaget, böjen, en bit åt höger och upp genom yttertaket -->
+    <path d="M349,186 Q348.6,168 349,150 A42,42 0 0 1 391,108 Q415,107.4 440,108 A20,20 0 0 0 460,88 Q459.6,56 460,22"/>
+    <path d="M371,186 Q371.4,168 371,150 A20,20 0 0 1 391,130 Q415,130.6 440,130 A42,42 0 0 0 482,88 Q482.4,56 482,22"/>
+    <path d="M457,22 H485"/>
+    <!-- toaletten vid ytterväggen -->
+    <path d="M548,260 Q558,259.5 568,260 V292 H548 Z M552,284 H518 Q513,285 516,292 Q521,306 534,308 L536,322 M548,292 Q546,306 548,322"/>
+  </g>
+
+  <!-- Blyerts: luften ut genom kanalen (streckad) och luften in under dörren -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M360,196 V150 A31,31 0 0 1 391,119 H440 A31,31 0 0 0 471,88 V10" stroke-dasharray="7 5"/>
+    <path d="M465,14 L471,4 L477,14"/>
+    <path d="M232,318 Q280,318.6 326,318 M318,312 L328,318 L318,324"/>
+  </g>
+
+  <!-- Rutan uppe till vänster: fläkt i yttervägg med kallrasskydd i väggröret -->
+  <path d="M52,12 Q144,11.4 236,12 L236,146 Q144,146.6 52,146 Z" fill="#f5efe3" stroke="#625a50" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M182,26 l10,10 M182,94 l10,10 M182,110 l10,10 M182,126 l10,10" fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round"/>
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- ytterväggen, bruten vid röret -->
+    <path d="M180,20 Q180.4,36 180,52 M180,86 Q179.6,113 180,140 M204,20 Q203.6,36 204,52 M204,86 Q204.4,113 204,140"/>
+    <!-- väggröret med galler ute -->
+    <path d="M168,52 Q192,51.6 216,52 M168,86 Q192,86.4 216,86 M216,48 V90"/>
+    <!-- fläkten på insidan -->
+    <path d="M138,40 Q153,39.6 168,40 V98 Q153,98.4 138,98 Z"/>
+    <path d="M153,69 m-11,0 a11,11 0 1,0 22,0 a11,11 0 1,0 -22,0 M153,69 Q158,61 153,59 M153,69 Q161,73 162,70 M153,69 Q147,74 146,71"/>
+    <!-- kallrasskyddets två spjällblad på en axel -->
+    <path d="M191,69 L198,55.5 M191,69 L198,82.5"/>
+    <!-- luften ut -->
+    <path d="M221,69 H232 M227,65 L232,69 L227,73"/>
+  </g>
+  <circle cx="191" cy="69" r="2.5" fill="#2a2521"/>
+  <path d="M150,114 Q174,106 192,90" fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Snickarpenna: bygel längs kanalen med pil mot böjen -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M482,136 V150 M482,143 Q440,144 404,143 Q388,142.5 383,134"/>
+    <path d="M379,146 L382,133 L392,141"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="398" y="239">20 Pa</text>
+    <text x="383" y="175" fill="#ad3519">kanal och böj bromsar</text>
+    <text x="62" y="134">kallrasskydd</text>
+    <text x="66" y="306">luft in under dörren</text>
+  </g>
+</svg>

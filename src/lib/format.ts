@@ -14,6 +14,20 @@ export function formateraTal(n: number, decimaler = 0): string {
 }
 
 /**
+ * Ett värde ur databasens specs med decimalkomma: 13.2 och "13.2" blir "13,2",
+ * 1250 blir "1 250". Talet behåller sina decimaler, högst två. Allt annat,
+ * som "IP44" eller "12–13 dB(A)", returneras oförändrat.
+ */
+export function formateraSpecVarde(v: unknown): string {
+  let n: number | null = null;
+  if (typeof v === 'number' && Number.isFinite(v)) n = v;
+  else if (typeof v === 'string' && /^-?\d+\.\d+$/.test(v)) n = Number(v);
+  if (n === null) return String(v);
+  const dec = /\.(\d+)$/.exec(String(n))?.[1]?.length ?? 0;
+  return formateraTal(n, Math.min(dec, 3));
+}
+
+/**
  * Ett tal med ordet efter i rätt numerus: "1 timme", "8 timmar", "1,5 timmar".
  * Singular bara när talet är exakt 1. Heltal skrivs utan decimal, andra tal med
  * en; mellanslaget är hårt, som i formateraPris.
