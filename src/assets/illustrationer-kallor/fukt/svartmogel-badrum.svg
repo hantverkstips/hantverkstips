@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Duschhörnet i ett badrum i genomskärning, med svarta prickar på fogarna framför kaklet och tätskiktet bakom.">
+  <!-- Anteckningsboken. Duschhörnet i genomskärning: väggen till vänster i fyra band, väggskivan, tätskiktet,
+       fästmassan och kaklet, framför den skrafferade väggen. Golvet med klinkern, fästmassan, tätskiktet och betongen,
+       golvbrunnen som en skål under golvet med klämringen ovanpå, frånluftsventilen i taket och dörren till höger med
+       springan under. Blyerts 2 px för plattorna, tätskiktet, brunnen, ventilen, dörren och tilluftens pil, blyerts-2
+       för skraffering, väggskivan, fästmassans prickar, fogarnas streck och ledaren. De svarta prickarna på fogarna och
+       i silikonfogen är det enda som är fyllt. Snickarpennan bara för bygeln från tätskiktet ut till ytan (enda
+       pennsaken). Tumstock bakom nyckeltalet. Inte skalenlig: skikten är förstorade. Handskrift i Caveat 500,
+       konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="314" y="232" width="154" height="26" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 391 245)"/>
+
+  <!-- Blyerts-2: väggen bakom väggskivan, bjälklaget, väggen ovanför dörren och betongen skrafferade -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M48,4l10,10M70,4l10,10M92,4l10,10M114,4l10,10M136,4l10,10"/>
+    <path d="M59,26l10,10M81,26l10,10M103,26l10,10M125,26l10,10M147,26l10,10"/>
+    <path d="M48,48l10,10M70,48l10,10M92,48l10,10M114,48l10,10M136,48l10,10"/>
+    <path d="M59,70l10,10M81,70l10,10M103,70l10,10M125,70l10,10M147,70l10,10"/>
+    <path d="M48,92l10,10M70,92l10,10M92,92l10,10M114,92l10,10M136,92l10,10"/>
+    <path d="M59,158l10,10M81,158l10,10M103,158l10,10M125,158l10,10M147,158l10,10"/>
+    <path d="M48,180l10,10M70,180l10,10M92,180l10,10M114,180l10,10M136,180l10,10"/>
+    <path d="M59,202l10,10M81,202l10,10M103,202l10,10M125,202l10,10M147,202l10,10"/>
+    <path d="M48,224l10,10M70,224l10,10M92,224l10,10M114,224l10,10M136,224l10,10"/>
+    <path d="M59,246l10,10M81,246l10,10M103,246l10,10M125,246l10,10M147,246l10,10"/>
+    <path d="M48,268l10,10M70,268l10,10M92,268l10,10M114,268l10,10M136,268l10,10"/>
+    <path d="M59,290l10,10M81,290l10,10M103,290l10,10M125,290l10,10M147,290l10,10"/>
+    <path d="M240,4l10,10M262,4l10,10M284,4l10,10M306,4l10,10M328,4l10,10M350,4l10,10M372,4l10,10M394,4l10,10M416,4l10,10M438,4l10,10M504,4l10,10M526,4l10,10M548,4l10,10M570,4l10,10"/>
+    <path d="M251,26l10,10M273,26l10,10M295,26l10,10M317,26l10,10M339,26l10,10M361,26l10,10M383,26l10,10M405,26l10,10M427,26l10,10M493,26l10,10M515,26l10,10M537,26l10,10M559,26l10,10M581,26l10,10"/>
+    <path d="M582,48l10,10"/>
+    <path d="M48,316l10,10M70,316l10,10M92,316l10,10M114,316l10,10M136,316l10,10M158,316l10,10M180,316l10,10M202,316l10,10M224,316l10,10M246,316l10,10M268,316l10,10M290,316l10,10M312,316l10,10M444,316l10,10M466,316l10,10M488,316l10,10M510,316l10,10M532,316l10,10M554,316l10,10M576,316l10,10"/>
+    <path d="M59,338l10,10M81,338l10,10M103,338l10,10M125,338l10,10M147,338l10,10M169,338l10,10M191,338l10,10M213,338l10,10M235,338l10,10M257,338l10,10M279,338l10,10M301,338l10,10M323,338l10,10M455,338l10,10M477,338l10,10M499,338l10,10M521,338l10,10M543,338l10,10M565,338l10,10M587,338l10,10"/>
+  </g>
+
+  <!-- Blyerts-2: väggskivan, fästmassans prickar, cementfogarnas tvärstreck, ledaren till klämringen -->
+  <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round">
+    <path d="M172,-2Q173,153 172,313" stroke-width="1.5"/>
+    <path d="M178,10h10M184,28h10M178,46h10M184,64h10M178,82h10M184,100h10M178,118h10M184,136h10M178,154h10M184,172h10M178,190h10M184,208h10M178,226h10M184,244h10M178,262h10M184,280h10M178,298h10"/>
+    <path d="M214,44h1.5M223,44h1.5M218,53h1.5M228,53h1.5M214,62h1.5M223,62h1.5M218,71h1.5M228,71h1.5M214,80h1.5M223,80h1.5M218,89h1.5M228,89h1.5M214,98h1.5M223,98h1.5M218,107h1.5M228,107h1.5M214,116h1.5M223,116h1.5M218,125h1.5M228,125h1.5M214,134h1.5M223,134h1.5M218,143h1.5M228,143h1.5M214,152h1.5M223,152h1.5M218,161h1.5M228,161h1.5M214,170h1.5M223,170h1.5M218,179h1.5M228,179h1.5M214,188h1.5M223,188h1.5M218,197h1.5M228,197h1.5M214,206h1.5M223,206h1.5M218,215h1.5M228,215h1.5M214,224h1.5M223,224h1.5M218,233h1.5M228,233h1.5M214,242h1.5M223,242h1.5M218,251h1.5M228,251h1.5M214,260h1.5M223,260h1.5M218,269h1.5M228,269h1.5M214,278h1.5M223,278h1.5M218,287h1.5M228,287h1.5M214,296h1.5M223,296h1.5M222,301h1.5M234,303h1.5M246,301h1.5M258,303h1.5M270,301h1.5M282,303h1.5M294,301h1.5M306,303h1.5M318,301h1.5M330,303h1.5M450,303h1.5M462,301h1.5M474,303h1.5M486,301h1.5M498,303h1.5M510,301h1.5M522,303h1.5M534,301h1.5M546,303h1.5M558,301h1.5M570,303h1.5M582,301h1.5M594,303h1.5"/>
+    <path d="M248,98l-1,4M261,98l-1,4M274,98l-1,4M248,158l-1,4M261,158l-1,4M274,158l-1,4M248,218l-1,4M261,218l-1,4M274,218l-1,4"/>
+    <path d="M336,286l1,10M490,286l1,10M554,286l1,10"/>
+    <path d="M376,262L360,291"/>
+  </g>
+
+  <!-- Blyerts: tätskiktet, kaklet, taket, klinkern, silikonfogen, brunnen med klämringen, ventilen, dörren, tilluftens pil -->
+  <g fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M202,-2Q203,150 202,300Q202,309 214,309Q290,310 352,309M428,309Q520,310 602,309"/>
+    <path d="M210,-2Q211,150 210,302"/>
+    <path d="M234,40Q235,159 234,278M288,40Q289,159 288,278"/>
+    <path d="M232,98Q261,99 290,98M232,102Q261,101 290,102M232,158Q261,159 290,158M232,162Q261,161 290,162M232,218Q261,219 290,218M232,222Q261,221 290,222M232,278Q261,279 290,278"/>
+    <path d="M232,40Q344,41 456,40M484,40Q533,41 582,40"/>
+    <path d="M236,284Q292,283 350,284M430,284Q516,285 602,284M236,298Q292,299 350,298M430,298Q516,297 602,298M234,282Q233,290 234,300"/>
+    <path d="M334,284V298M340,284V298M488,284V298M494,284V298M552,284V298M558,284V298"/>
+    <path d="M288,264Q290,281 306,284"/>
+    <path d="M350,282Q351,291 350,300M430,282Q429,291 430,300"/>
+    <path d="M352,294H372V306H352ZM408,294H428V306H408Z"/>
+    <path d="M374,292h6m5,0h6m5,0h6m5,0h4"/>
+    <path d="M340,312H356M424,312H440M356,312Q355,344 384,346H396Q425,344 424,312"/>
+    <path d="M384,346Q385,354 384,362M396,346Q395,354 396,362"/>
+    <path d="M458,-2Q459,22 458,46M482,-2Q481,22 482,46M458,46Q470,47 482,46"/>
+    <path d="M438,54Q470,51 502,54Q503,59 498,60Q470,61 442,60Q437,59 438,54M466,46V52M474,46V52"/>
+    <path d="M580,38Q581,72 580,106M600,106Q589,107 578,106"/>
+    <path d="M568,108Q569,188 568,268M578,108Q579,188 578,268M566,268Q573,269 580,268M566,106H580"/>
+    <path d="M598,276Q560,277 522,276M530,270L522,276L530,282"/>
+  </g>
+
+  <!-- Blyerts, fyllt: prickarna på ytan -->
+  <path d="M288.6,95a2.4,2.4 0 1 0 4.8,0a2.4,2.4 0 1 0 -4.8,0M292.2,99a2.8,2.8 0 1 0 5.6,0a2.8,2.8 0 1 0 -5.6,0M288.9,103a2.6,2.6 0 1 0 5.2,0a2.6,2.6 0 1 0 -5.2,0M293.8,106a2.2,2.2 0 1 0 4.4,0a2.2,2.2 0 1 0 -4.4,0M297,102a2,2 0 1 0 4,0a2,2 0 1 0 -4,0M288.6,155a2.4,2.4 0 1 0 4.8,0a2.4,2.4 0 1 0 -4.8,0M292.2,159a2.8,2.8 0 1 0 5.6,0a2.8,2.8 0 1 0 -5.6,0M288.9,163a2.6,2.6 0 1 0 5.2,0a2.6,2.6 0 1 0 -5.2,0M293.8,166a2.2,2.2 0 1 0 4.4,0a2.2,2.2 0 1 0 -4.4,0M297,162a2,2 0 1 0 4,0a2,2 0 1 0 -4,0M288.6,215a2.4,2.4 0 1 0 4.8,0a2.4,2.4 0 1 0 -4.8,0M292.2,219a2.8,2.8 0 1 0 5.6,0a2.8,2.8 0 1 0 -5.6,0M288.9,223a2.6,2.6 0 1 0 5.2,0a2.6,2.6 0 1 0 -5.2,0M293.8,226a2.2,2.2 0 1 0 4.4,0a2.2,2.2 0 1 0 -4.4,0M297,222a2,2 0 1 0 4,0a2,2 0 1 0 -4,0M289.6,262a2.4,2.4 0 1 0 4.8,0a2.4,2.4 0 1 0 -4.8,0M291.2,270a2.8,2.8 0 1 0 5.6,0a2.8,2.8 0 1 0 -5.6,0M296.4,276a2.6,2.6 0 1 0 5.2,0a2.6,2.6 0 1 0 -5.2,0M302.6,280a2.4,2.4 0 1 0 4.8,0a2.4,2.4 0 1 0 -4.8,0M288.8,276a2.2,2.2 0 1 0 4.4,0a2.2,2.2 0 1 0 -4.4,0M294,281a2,2 0 1 0 4,0a2,2 0 1 0 -4,0M288,268a2,2 0 1 0 4,0a2,2 0 1 0 -4,0M332.4,280a2.6,2.6 0 1 0 5.2,0a2.6,2.6 0 1 0 -5.2,0M338.8,279.5a2.2,2.2 0 1 0 4.4,0a2.2,2.2 0 1 0 -4.4,0M335.6,276a2.4,2.4 0 1 0 4.8,0a2.4,2.4 0 1 0 -4.8,0M342.2,277a1.8,1.8 0 1 0 3.6,0a1.8,1.8 0 1 0 -3.6,0M486.4,280a2.6,2.6 0 1 0 5.2,0a2.6,2.6 0 1 0 -5.2,0M492.8,279.5a2.2,2.2 0 1 0 4.4,0a2.2,2.2 0 1 0 -4.4,0M489.6,276a2.4,2.4 0 1 0 4.8,0a2.4,2.4 0 1 0 -4.8,0M496.2,277a1.8,1.8 0 1 0 3.6,0a1.8,1.8 0 1 0 -3.6,0M550.4,280a2.6,2.6 0 1 0 5.2,0a2.6,2.6 0 1 0 -5.2,0M556.8,279.5a2.2,2.2 0 1 0 4.4,0a2.2,2.2 0 1 0 -4.4,0M553.6,276a2.4,2.4 0 1 0 4.8,0a2.4,2.4 0 1 0 -4.8,0M560.2,277a1.8,1.8 0 1 0 3.6,0a1.8,1.8 0 1 0 -3.6,0" fill="#2a2521"/>
+
+  <!-- Papperslapp bakom etiketten i väggen -->
+  <rect x="54" y="113" width="147" height="34" fill="#f5efe3"/>
+
+  <!-- Snickarpenna: bygeln från tätskiktet ut till ytan -->
+  <g fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M210,114Q210,130 211,146M288,114Q289,130 288,146M210,130Q249,127 288,130"/>
+  </g>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="199" y="138" text-anchor="end">bakom tätskiktet</text>
+    <text x="296" y="138">ytan</text>
+    <text x="391" y="252" text-anchor="middle">37 % av läckorna</text>
+    <text x="434" y="62" text-anchor="end">frånluft</text>
+    <text x="478" y="266">tilluft</text>
+  </g>
+</svg>
