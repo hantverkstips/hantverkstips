@@ -117,3 +117,57 @@ Det ettan har som vi måste behålla eller överträffa: konkreta råd om rengö
 - **Ozon, mögelspray och "ättika dödar 80 procent"** (Totalbyggarna, körning 3) står inte som råd.
 - **Länkar i Faq-svar** går inte. Lägg dem i brödtexten.
 - **"fuktskada badrum"** (210) får ingen H2 här.
+
+---
+
+## Kontroll efter skrivningen, 2026-10-04
+
+SEO och GEO-agenten har läst `src/content/guider/fukt/svartmogel-badrum.mdx` (utkast, med regelstycket kortat på rad 140) mot punkt 1 till 12. **Godkänd av SEO och GEO**, med en länk som ska läggas till och källor som ska strykas.
+
+- **Metadata.** seoTitle "Svartmögel i badrummet, fogen eller fukten" (42 tecken) och description (145) är godkända. H1 "Mögel i badrummet sitter oftast bara på ytan" bär "mögel badrum" (1 000) och delar inte de tre första orden med title eller med `/fukt/mogel-i-huset/`.
+- **Sidofraserna.** De bärs av H2:erna:
+  - "Därför får badrummet svartmögel på fogarna"
+  - "Svartmögel i duschen som kommer tillbaka"
+  - "När det luktar mögel eller unket i badrummet"
+- **Bättre än ettan 1 till 4 är uppfyllda.**
+  - Folkhälsomyndighetens besked står i kortSvar och H2 1.
+  - Diagnostabellen har sex rader och källa per rad.
+  - Ventilationen har läget i dag, det gamla rådet med årtal och länk till D2, plus spegelprovet med SWESIAQ.
+  - Branschreglerna avgör när det är en fackmans sak (BBV 26:1, inte borra själv).
+- **Regelstycket på rad 140** säger samma sak som D2 (10 l/s med fönster, 15 utan, inget krav i dag). "Minst 15" och 0,35 är borta. Inget att ändra.
+- **Gränserna håller.** Fogsidan får beslutet och två länkar men inga steg, hälsan står i en Faq och en länk, och "fuktskada badrum" har ingen H2. Vattenskaderapporten 2025 står med siffror och datum. Anticimex, Ocab och Svensk Besiktning nämns utan länk.
+- **Strukturerad data.** `Article`, `BreadcrumbList` och `FAQPage` med svar i ren text. Canonical sätts av bygget. `bildAlt` har "svartmögel" och "badrum" och är under 125 tecken.
+
+**Ändras:**
+
+1. **Länken till `/badrum/tatskikt-badrum/` saknas.** Checklistan punkt 9 kräver den. Lägg den i H2 "Tecknen som skiljer fogen från en fuktskada", där tätskiktet förklaras ("Vattnet stoppas av tätskiktet, ett tunt vattentätt lager …"). Ankare: "tätskiktet".
+
+**Källor som stryks ur `kallor`,** eftersom texten inte längre citerar dem:
+
+- Svensk Ventilation, Branschrekommendation Luft, remissversion 1.0 (juni 2026). Branschförslaget står bara på D2.
+- Svensk Ventilation, Tidigare allmänna råd till BBR om ventilationsflöden (2019).
+- Boverket, äldre regler för OVK (NR, BBR 1, BBR 10, BBR 12).
+- Folkhälsomyndigheten, allmänna råd om ventilation, FoHMFS 2014:18.
+- Boverket, PBL kunskapsbanken, utformning av ventilation.
+- SWESIAQ, råd för utredning av mikrobiell påväxt, version 16 (2014).
+- Folkhälsomyndigheten, Miljöhälsorapport 2021.
+
+**Källor som står kvar:**
+
+- **BFS 2024:8.** Den bär "något krav på frånluften i ett badrum finns inte i dag".
+- **BBR 10 (BFS 2002:19) avsnitt 6:232.** Den bär rådet "fram till 2006".
+- **SWESIAQ:s självdragsbilaga 2023, s. 33.** Den bär spegelprovet.
+- **Boverket, luftfuktighet, luftrörelser och drag.** Den bär hygrometerns 10 procentenheter.
+- **Folkhälsomyndighetens tre sidor och FoHMFS 2014:14,** och resten av listan.
+
+### Sakpåståenden i de nya inlänkarna, lästa mot D4 och D5
+
+| Fil och rad | Påståendet | Besked |
+|---|---|---|
+| `src/content/kategorier/luftavfuktare.md` rad 73 | Tvättstugans avfuktare ska torka tvätten och inte bara hålla rummet torrt | Stämmer med D4 (tvättläget, Energimyndighetens försök). Inget att ändra |
+| `src/content/guider/fukt/avfuktare-krypgrund.mdx` rad 99 | En torpargrund med stenfot utan bruk är så otät att en avfuktare inte gör nytta förrän grunden är tätad | **För absolut.** D5 säger att sorptions- och kondensavfuktare kräver en tät grund (SP, tillverkarna), men att termiska avfuktare fungerar med öppna gluggar. Skriv "att en vanlig avfuktare, sorption eller kondens, inte gör nytta förrän grunden är tätad", eller motsvarande |
+| `src/content/guider/fukt/fukt-i-krypgrund.mdx` rad 96 | Samma sak händer i en äldre torpargrund, där uteluften kommer in genom små gluggar i stenfoten | Stämmer med D5 (kattgluggarna, sommarmekanismen). Inget att ändra |
+| `src/content/guider/grund/isolera-krypgrund.mdx` rad 76 | Golvet vilar på en mur av staplad sten och luften kommer in genom gluggar mellan stenarna | **Rättas i sak.** Enligt D5 vilar huset, syllen, på stenfoten, och golvbjälkarna på bärlinor som står på staplade stenar. Skriv till exempel "där huset vilar på en stenfot av staplad sten utan bruk" |
+| `src/content/guider/fukt/avfuktare-tvattstuga.mdx` rad 111 | Hänger tvätten i badrummet ska badrumsfläkten föra ut en del av fukten | Stämmer med D2 (fläkten byter luften, avfuktaren byter den inte). Inget att ändra |
+
+Ankaret i badrumsraden på mögel i huset, "om det är fogen eller fukten bakom kaklet", är godkänt.
