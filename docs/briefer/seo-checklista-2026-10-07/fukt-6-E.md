@@ -98,3 +98,16 @@ Dag 11 i indexeringsplanen (SOKORDSANALYS avsnitt 10) begärs av Christian i den
 6. `/fukt/` (begärs om)
 
 En månad efter publiceringen frågas en AI om "radonsug", "fuktskada försäkring" och "fuktmätning betong", och svaret antecknas i 12.7.
+
+## 6. Tillägg 2026-10-07: husköpet och mönstret i title
+
+**Husköpet står på tre sidor, och det ska bli en sida plus två korta stycken.** E3 (`/fukt/fuktskada/`, H2 "När du köper hus är det du som ska hitta fukten") äger undersökningsplikten, dolt fel enligt jordabalken 4 kap. 19 § och fuktkontrollen.
+
+De två platssidorna behåller sina H2, eftersom de äger egna fraser. `/fukt/fukt-i-krypgrund/` äger "köpa hus med fukt i krypgrund" (40) och "krypgrund besiktning" (50). `/fukt/fukt-pa-vinden/` äger "köpa hus med mögel på vinden" (30). Vid publiceringen, i samma commit:
+
+- **`src/content/guider/fukt/fukt-i-krypgrund.mdx`, H2 "Fukt i krypgrunden när du köper hus":** det som gäller alla hus (undersökningsplikten, att felet sällan godtas som dolt) krymper till en mening. Meningen länkar till `/fukt/fuktskada/` med ankaret "undersökningsplikten och dolt fel". Det som gäller krypgrunden står kvar: fuktkvoten i syllen, luckan, stuprören och att Folkhälsomyndigheten kallar krypgrunden en riskkonstruktion.
+- **`src/content/guider/fukt/fukt-pa-vinden.mdx`, H2 "Fukt på vinden i besiktningsprotokollet":** det allmänna om försäkringen och långtidspåverkan krymper till en mening. Meningen länkar till `/fukt/fuktskada/` med ankaret "vad försäkringen säger om långsamma skador". Det som gäller vinden står kvar: fläckarna, fuktkvoten i råsponten, frågorna till säljaren och offerten. Kommentaren om länken till E2 på rad 84 ersätts som tabellen ovan säger.
+
+De här två ersätter raden för `fukt-i-krypgrund.mdx` i tabellen i avsnitt 2, och en ny inlänk från fukt-pa-vinden kommer till.
+
+**Mönstret i title och description:** beslutet står i `fuktskada.md`, under kontrollen efter skrivningen. På E-sidorna har högst två seoTitle i formen "Ämne, A och B", och ingen description har "Se …" som andra mening. De publicerade sidorna rörs inte nu.

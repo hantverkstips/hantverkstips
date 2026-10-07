@@ -144,3 +144,33 @@ Sidan har alltså fyra krav. Ordningen i underlagets sökanalys (avsnitt 9, Duck
 - **Tidsfristerna i jordabalken** står bara som lagtexten säger. Inga juridiska bedömningar.
 - **Firmornas tal** (24 timmar till mögel, priser per m²) står inte utan källa.
 - **Länkar i Faq-svar** fungerar inte.
+
+---
+
+## Kontroll efter skrivningen, 2026-10-07
+
+SEO och GEO-agenten har läst `src/content/kunskap/fukt/fuktskada.mdx` (utkast, 2 892 ord med Faq) mot punkt 1 till 12. **Godkänd av SEO och GEO**, med ny seoTitle och description enligt beslutet om mönstret nedan.
+
+- **Krav 1 till 4 är uppfyllda.**
+  1. Tecken-tabellen per yta har Folkhälsomyndighetens indikationer ordagrant.
+  2. Fuktkontrollen har innehåll och pris.
+  3. Boverkets gränsmening och "långtidspåverkan" står ordagrant ur villkoren.
+  4. Jordabalken 4 kap. 19 § står ordagrant.
+- **Längden 2 892 ord godkänns.** Stegen för den som har en fläck i dag och pristabellen kom på läsarens begäran och svarar på frågor läsaren faktiskt har. Topp 5 går upp till 3 700 ord. Det som ska bort är upprepning mellan sidorna, inte längd här (se husköpet nedan).
+- **"fuktbesiktning" (70) i brödtexten godkänns.** H2:n "Vad en fuktkontroll visar och vad den kostar" bär den större frasen (140 till 160). Första stycket under den har "fuktbesiktning", och det räcker.
+- **Huvudbilden: hantverkarens förslag godkänns.** Bilden blir en vägg med en droppande koppling i tre skeden. Den skiljer sidan från husets genomskärning på mögel i huset och visar det sidan handlar om, att skadan växer med tiden. UX avgör formen. `bildAlt` ska ha "fuktskada" och vara högst 125 tecken.
+- **Länkarna ut** är elva, och tabellen har en länk per rad. Faq-svaren har inga länkar. Länkkommentaren till E4 ersätts vid publiceringen.
+- **Strukturerad data.** `Article`, `BreadcrumbList` och `FAQPage` med svar i ren text. Canonical sätts av bygget.
+
+**Beslut om mönstret i title och description, för alla sidor i omgång E:**
+
+Läsaren har rätt. 27 av 28 fuktsidor har seoTitle i formen "Ämne, A och B" (eller "A eller B"), och 17 av 106 descriptions på sajten har "Se …" som andra mening. Varje title står ensam i sökresultatet, så mönstret skadar inte ranking. Men det är en mall som AI-modeller och läsare känner igen över sajten, och "tecknen och" står nu två gånger (hussvamp och E3).
+
+- **seoTitle:** huvudfrasen står tidigt, men inte nödvändigtvis först och inte nödvändigtvis följd av komma. På E-sidorna får högst två ha formen "Ämne, A och B". De andra får en fråga, en fras utan komma eller en "när"- eller "så"-sats.
+  - **E3** byter till "Fuktskada på vägg, golv och tak" (31 tecken). Den bär också "fuktskada vägg" (140), golv och tak. Hantverkaren får formulera om, men bara utan kommamönstret.
+  - **E2** "Mögel på vinden, sanera eller låta vara" står kvar.
+  - **E1, E4 och E5:** hantverkarna väljer, och högst en av dem behåller kommamönstret.
+- **description:** på E-sidorna börjar andra meningen inte med "Se". Den skrivs som ett påstående i Christians röst. E3:s description skrivs om enligt det. E2:s andra mening ("Se när råsponten …") skrivs om före publiceringen.
+- De publicerade sidorna ändras inte nu. Frågan tas upp när Search Console har två månaders data, eftersom en ändrad title på en indexerad sida kostar en omindexering.
+
+**Husköpet på tre sidor, beslut:** se fukt-6-E.md avsnitt 2, sista stycket.
