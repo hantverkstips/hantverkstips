@@ -4,7 +4,7 @@ Sida: `src/content/guider/grund/dranera-hus.mdx` (publicerad, `uppdaterad: 2026-
 
 ## Det som är nytt
 - **H2 "Källare, platta på mark och krypgrund dräneras inte lika"**, direkt efter ingressen. Tabell över grundtyperna med källa per rad, och länkar till fuktmatning-betong, fukt-i-krypgrund, isolera-krypgrund och torpargrund.
-- **H2 "Dräneringens livslängd och tecknen på att den är slut"**, före "Offerten, årstiden och väntetiden". Livslängdstabell med fyra källor, försäkringens undantag, tecknen, rensbrunnarna, filmning i stället för spolning, en egen tumregel för översyn och dolt fel med länk till fuktskada.
+- **H2 "Hur ofta huset behöver dräneras om och hur du ser att det är dags" (bytt 2026-10-08 efter SEO, hette först "Dräneringens livslängd och tecknen på att den är slut")**, före "Offerten, årstiden och väntetiden". Livslängdstabell med fyra källor, försäkringens undantag, tecknen, rensbrunnarna, filmning i stället för spolning, en egen tumregel för översyn och dolt fel med länk till fuktskada.
 - **12 nya källor i `kallor`.**
 - **`{/* LÄNK NÄR SIDAN FINNS: grund/draneringsror */}`** på två ställen: efter rörstycket i "Röret, stenen och duken" och i livslängdsavsnittet.
 
@@ -54,3 +54,10 @@ De har källa var för sig:
 - När /grund/draneringsror/ publiceras ska de två platshållarna bli länkar. Livslängdstalen här ska stämmas av mot F1, så att inget tal skiljer sig.
 
 Godkänd av hantverkaren 2026-10-08. Ändrat sedan första versionen: båda nya avsnitten är omskrivna efter läsaren, 14 rättelser från korrekturen, marklutningen och Villaägarnas djupmått står nu med respektive källa, och krypgrundsmeningen i gränsavsnittet är rättad.
+
+## Tillägg 2026-10-08, efter commit
+- Ingressens första stycke är omskrivet, eftersom "de två första [momenten] handlar inte om att gräva" sa emot steg 2 i listan. Det står nu "består av åtta moment …, men två saker ska vara gjorda innan du börjar gräva". Samma stycke har också fått de rättelser korrekturen föreslog: "ha tagit reda på", "Därefter kommer maskinen" och "gräver du ut". Korrekturen hittade 6 fel, och alla är rättade.
+- Rubrik B har bytts efter SEO:s godkännande, så att den innehåller "hur ofta". Den nya rubriken undviker mönstret "X, och Y".
+- `npm run kontrollera` är grön.
+
+Godkänd av hantverkaren 2026-10-08, också efter tillägget.
