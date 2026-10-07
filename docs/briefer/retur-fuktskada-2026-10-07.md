@@ -415,3 +415,9 @@ Det här lät jag stå, och varför:
 - Huvudbilden: eftersom läsaren skriver att huset i genomskärning blir mögelsidans bild en gång till, föreslår frontmattern ett annat motiv (en vägg med en droppande koppling i tre skeden). UX och SEO avgör.
 
 Läsarens betyg 4 gäller versionen före korrekturens två varv och de sju punkträttningarna efter varv 2. Alla ändringar efter det är kirurgiska. Godkännandet skriver jag efter SEO:s kontroll mot checklistan (steg 5).
+
+## Efter SEO:s kontroll
+
+SEO godkände sidan med två ändringar, och båda är gjorda. seoTitle är nu "Fuktskada på vägg, golv och tak". Den andra meningen i description är ett påstående: "Tecknen syns på vägg, golv och tak, och försäkringen ersätter sällan det som en fuktkontroll hittar." (153 tecken). bildAlt läggs till när skissen och etiketterna finns och ska innehålla "fuktskada". `npm run kontrollera`: 0 fel.
+
+Godkänd av hantverkaren 2026-10-07. Ändrat efter läsarens varv 2: korrekturens 43 plus 4 rader med korrekturens lydelse, de fyra nya punkterna från läsaren, sju punkträttningar, och seoTitle och description efter SEO.
