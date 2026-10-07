@@ -361,3 +361,12 @@ Utanför grammatiken, en rad eftersom kortfattat inte får bli felaktigt: rad 15
 `npm run kontrollera`: 0 fel med sidan tillfälligt publicerad; enda varning är saknad inlänk. Sidan står som `utkast: true`.
 
 Godkännandet ("Godkänd av hantverkaren") skrivs efter SEO:s kontroll mot checklistan.
+
+## Hantverkaren, SEO:s två ändringar, 2026-10-07
+
+1. RBK-avsnittet: meningen om uttaget prov säger nu att den som erbjuder att borra ut en kärna eller ta ut bitar och mäta RF på dem, ett så kallat uttaget prov, inte gör en RBK-mätning av betong, och att manualen inte längre använder metoden i betong eftersom den visar för lågt i tät betong (RBK flik 2, version 7, 2.7.2).
+2. Rubriken "Plastfolie eller luftspaltsmatta under ett flytande golv" heter nu "Fuktspärr eller ångspärr under ett flytande golv". Brödtexten under den förklarar redan Golvbranschens skillnad och är orörd.
+
+`npm run kontrollera`: 0 fel med sidan tillfälligt publicerad. Enda varningen är den saknade inlänken, som inlänkshantverkaren lägger. Sidan står kvar som `utkast: true`.
+
+Godkänd av hantverkaren. Sedan läsarens betyg 4 i varv 2 har jag ändrat följande: korrekturens 27 rader enligt varv 1 och 2, golvvärmeraden i mätdjupstabellen, seoTitle och description enligt SEO:s regel för omgång E, samt SEO:s två ändringar ovan.
