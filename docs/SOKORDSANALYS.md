@@ -756,8 +756,9 @@ Sitemapen `https://www.hantverkstips.se/sitemap-index.xml` svarade 200 och lista
 | 9 | Tillagd 2026-10-04 för fukt omgång C (publicerad i d81e42c), i prioritetsordning: `/fukt/svartmogel/` (4 400, toppar i september och oktober, alltså nu), `/fuktmatare/` (6 600, jämn), `/fukt/mogel-i-huset/` (mögeltest och mögel symptom 390 vardera, topp i september och oktober), `/fukt/mogellukt/` (hur luktar mögel 390), `/fukt/fuktkvot/` (fuktkvot trä 110), `/rakna/fuktkvot/` och `/fukt/` (hubben har fått sex nya sidor, begärs om) |
 | 10 | Tillagd 2026-10-04 för fukt omgång D (publicerad i 5365911), i prioritetsordning: `/fukt/badrumsflakt/` (badrumsfläkt 4 400, topp i september till november), `/fukt/sjalvdrag/` (6 360 med spaltventil och ftx), `/fukt/svartmogel-badrum/` (1 900, topp i oktober), `/fukt/avfuktare-tvattstuga/` (1 300, topp i september), `/fukt/torpargrund/` och `/fukt/` (hubben har fått fem nya sidor, begärs om). Två sidor fick nya inlänkar och ny text och begärs om: `/badrum/fogar-badrum/` (H2:n om fukt i väggen är omdöpt och kortad) och `/luftavfuktare/` |
 | 11 | Tillagd 2026-10-07 för fukt omgång E (publicerad i f74ad4a), i prioritetsordning: `/fukt/fuktskada/` (480, topp i april), `/fukt/radonsug/` (720, topp i mars), `/fukt/fuktmatning-betong/` (fuktmätare betong 390), `/fukt/vattenskada/` (vattenskada försäkring och hyra avfuktare, 260 vardera), `/fukt/mogel-pa-vinden/` och `/fukt/` (begärs om). Begärs också om, eftersom de fått ändrade tal eller nya avsnitt: `/golv/golv-i-kallare/`, `/golv/lagga-klickgolv/`, `/grund/inreda-kallare/` (folien till 90 procent, 60-procentsgränsen) och `/fukt/fukt-i-krypgrund/` (husköpet kortat) |
+| 12 | Tillagd 2026-10-08 för fukt omgång F (publicerad i a5a2fef), i prioritetsordning: `/grund/draneringsror/` (ny, dräneringsrör 2 900, topp i april), `/grund/dranera-hus/` (utbyggd, begärs om), `/fukt/fukt-i-kallaren/` (utbyggd, begärs om), `/grund/isolera-krypgrund/` (utbyggd, begärs om), `/fukt/avfuktare-garage/` (utbyggd, begärs om), `/grund/` och `/fukt/` (hubbar, begärs om) |
 
-Resten följer via sitemapen: övriga räknare, grund-, fasad-, inomhus- och altansidor med mindre volym, testerna, jämförelsen, om-sidorna, författarsidan. Listsidorna under `/guider/` (typ, nivå, sida 2 och 3) och `/amnen/` begärs aldrig. Två veckor efter dag 6 läses rapporten Sidindexering; det som står som "Upptäckt, inte indexerad" begärs då. Dag 7 och 8 körs direkt efter dag 6, eller samma dag om kvoten räcker. "Begärs om" gäller sidor som redan är begärda men har fått ny huvudfras eller nytt innehåll, och den begäran görs även om URL-inspektionen säger att adressen finns på Google. Alla sidor i startlista 5 och i omgång A och B står i dag 7 och 8. Två veckor efter dag 8 läses rapporten Sidindexering för fuktsidorna. Dag 9 begärs av Christian själv i Search Console, och rapporten för omgång C läses två veckor efter den dagen. Dag 10 begärs på samma sätt. Rapporten för omgång D läses två veckor efter dag 10. Dag 11 begärs på samma sätt, och rapporten för omgång E läses två veckor efter den.
+Resten följer via sitemapen: övriga räknare, grund-, fasad-, inomhus- och altansidor med mindre volym, testerna, jämförelsen, om-sidorna, författarsidan. Listsidorna under `/guider/` (typ, nivå, sida 2 och 3) och `/amnen/` begärs aldrig. Två veckor efter dag 6 läses rapporten Sidindexering; det som står som "Upptäckt, inte indexerad" begärs då. Dag 7 och 8 körs direkt efter dag 6, eller samma dag om kvoten räcker. "Begärs om" gäller sidor som redan är begärda men har fått ny huvudfras eller nytt innehåll, och den begäran görs även om URL-inspektionen säger att adressen finns på Google. Alla sidor i startlista 5 och i omgång A och B står i dag 7 och 8. Två veckor efter dag 8 läses rapporten Sidindexering för fuktsidorna. Dag 9 begärs av Christian själv i Search Console, och rapporten för omgång C läses två veckor efter den dagen. Dag 10 begärs på samma sätt. Rapporten för omgång D läses två veckor efter dag 10. Dag 11 begärs på samma sätt, och rapporten för omgång E läses två veckor efter den. Dag 12 begärs på samma sätt.
 
 ## 11. Startlista 5 och krysslasern, 2026-09-30
 
@@ -1213,7 +1214,63 @@ Omgång E är vårbenet, och den står som i tabellen ovan. Radonsugen toppar i 
 
 Summa 5 190 i månaden, den minsta omgången i volym. Inget verktyg är nytt i omgången. Radonsugen får ett förval i `/rakna/elkostnad/` när effekten finns. Checklistorna skrivs i `docs/briefer/seo-checklista-[datum]/fukt-6-E.md` när SERP är läst för E2 till E5.
 
-#### Nästa: omgång F, publiceras senast 31 mars, sista omgången i startlista 6
+#### Status 2026-10-08, omgång F publicerad. Startlista 6 är klar
+
+Omgång F publicerades och pushades 2026-10-08 i commit a5a2fef, och delningsbilderna kom i aa5aee5. Det var nästan sex månader före deadline. Checklistorna och besluten står i `docs/briefer/seo-checklista-2026-10-07/`, och översikten och krockarna mellan F1 och F2 står i `fukt-6-F.md`.
+
+| # | Sida | Ändring | Huvudfras |
+|---|---|---|---|
+| F1 | `/grund/draneringsror/` | ny, seoTitle "Dräneringsrör och brunnar till husgrunden" | dräneringsrör 2 900, sidan äger 3 660 |
+| F2 | `/grund/dranera-hus/` | två nya H2: grundtyperna, och hur ofta och hur länge | dränera hus 1 000, sidan äger 2 710 |
+| F3 | `/fukt/fukt-i-kallaren/` | två nya H2: mögel och luftfuktighet per årstid, och mögellukten i rubriken | fukt i källaren 480, sidan äger 2 210 |
+| F4 | `/grund/isolera-krypgrund/` | ny H2: underifrån | krypgrund isolering 480, sidan äger 1 110 |
+| F5 | `/fukt/avfuktare-garage/` | ny H2: förråd, sommarstuga och jordkällare, och ventilationen i rubriken | avfuktare garage 320, sidan äger 740 |
+
+Beslut som gäller fler sidor:
+
+- **F1 äger materialet, F2 arbetet.** "isodränskivor" ligger på F2. Fall, dimension, duk och strumpa är samordnade mellan sidorna: Wavin minst 3 ‰ och Isodrän 5 mm per meter, 110 mm efter Pipelife, och duk efter jordart.
+- **Utbyggnaderna behöll title och H1.** Description ändrades bara där innehållet ändrats i sak (F4).
+- **`/grund/dranera-hus/` ligger på 65,7 kB, 300 byte under sidbudgeten.** UX har frågan. Nya avsnitt läggs inte på den sidan förrän budgeten är löst. Det som hör till materialet går till F1.
+
+**Startlista 6 är klar 2026-10-08.** Alla sex omgångar, A till F, är publicerade, och alla före deadline. Fukt har nu 29 artiklar, tre kategorisidor, två tester, en jämförelse och sex räknare. Grund har fått en ny sida och två utbyggnader. Volymen i planen var 106 700 i månaden enligt summorna per omgång i tabellen ovan. B räknades med luftfuktaren, som blev en kunskapssida.
+
+#### Fram till startlista 7
+
+Inga nya fuktsidor skrivs innan Search Console har data. Det här gäller under tiden.
+
+1. **Indexeringen.** Christian begär dag 7 till 12 i avsnitt 10. Två veckor efter varje dag läses rapporten Sidindexering för den dagens adresser, alltså runt 21 oktober för A och B och runt 22 oktober för C till F. Det som står som "Upptäckt, inte indexerad" eller "Genomsökt, inte indexerad" begärs en gång till. Står en sida kvar där efter fyra veckor läser SEO och GEO-agenten den mot ettan igen.
+2. **GEO-kontrollen i november, för omgång C till F.** Fråga en AI om sjutton fraser och anteckna i 12.7 om sajten nämns eller citeras:
+   - svartmögel farligt
+   - mögeltest
+   - fuktkvot trä
+   - badrumsfläkt krav
+   - självdrag
+   - svartmögel badrum
+   - radonsug
+   - fuktskada försäkring
+   - fuktmätning betong
+   - dräneringsrör
+   - hur ofta dränera hus
+   - kondens på fönster
+   - luftfuktighet inomhus
+   - hygrometer
+   - radon
+   - fuktslukare
+   - luftfuktare
+3. **Search Console efter två hela månader, i mitten av december 2026.**
+   - **Sidor med visningar men låg klickfrekvens (under 1 procent på plats 1 till 10).** Titeln prövas. Det är här mönstret "Ämne, A och B" på de publicerade sidorna tas upp (beslutet i `seo-checklista-2026-10-07/fuktskada.md`).
+   - **Frågor som rankar på fel sida.** Två sidor som delar visningar på samma fråga är kannibalisering. Gränserna i 12.8, fukt-6-C till fukt-6-F, avgör vilken sida som ska äga frågan.
+   - **Frågor som ger visningar men saknar sida.** Det blir kandidater till startlista 7.
+   - **Platserna 8 till 20 på de största orden** (avfuktare, radon, svartmögel, hygrometer, badrumsfläkt, dräneringsrör). Där kan en utbyggnad ge mest.
+4. **Startlista 7 skrivs i januari 2027.** Kandidaterna, som väntar sedan 12.4:
+   - `/fukt/lackagebrytare/` (760, växer)
+   - `/badrum/fuktskada-badrum/` (450), som skrivs om Search Console visar att `/badrum/tatskikt-badrum/` inte rankar på frasen
+   - `/fukt/ftx-ventilation/`, som skrivs om självdragssidan rankar på ftx utan att svara
+   - det Search Console visar i punkt 3
+
+   `/luftfuktare/` som kategorisida omprövas av affiliate i augusti 2027. Volymerna hämtas igen i Keyword Planner före startlista 7, med september 2026 till augusti 2027 som period.
+
+#### Omgång F, planen som den skrevs 2026-10-07
 
 Klustret är inte färdigt förrän F är publicerad. F är en ny sida och fyra utbyggnader, och tre av de fem ligger i pelaren Grund. Den tar källaren och grunden före vårtoppen för dränering (april) och före sommarkondensen i källaren. Ordningen ovan gäller.
 
