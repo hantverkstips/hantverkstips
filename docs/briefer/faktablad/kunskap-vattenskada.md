@@ -765,3 +765,91 @@ Hantverkskollen (V26), Zmarta (V36), Swedbank (V37), Ramirent (V34), Rentor (V32
 - Hyrpriser hos minst två uthyrare med läsdatum: sex med pris (6.1). TrygghetsVaktens pris bekräftat: 189 kr per dygn inkl. moms. **Klart.**
 - Torktid och metoder bara med källa: 4.3, 4.4. Hantverkskollens tider som deras uppgift: 4.4. **Klart.**
 - Svensk Försäkrings överenskommelse om gradvis uppkommen vattenskada: **inte läsbar** (2.7, 13).
+
+---
+
+## 17. Tillägg 2026-10-07: fyra råd i listan för första timmen
+
+Beställt av hantverkaren 2026-10-07. Gäller fem påståenden i listan i `src/content/kunskap/fukt/vattenskada.mdx` (punkt 1, 2 och 6 i listan). Allt nedan läst 2026-10-07. Inget annat i bladet är ändrat.
+
+### 17.1 Nya källor
+
+| # | Källa | Rang | Adress | Datum på sidan | Läst |
+|---|---|---|---|---|---|
+| V38 | Säker Vatten AB, Branschregler Säker Vatteninstallation 2026:1 (PDF, lågupplöst) | branschregler | <https://sakervatten.se/wp-content/uploads/2025/10/branschregler-saker-vatteninstallation-2026-web-v2-lagupplost.pdf> | "gäller från den 1 januari 2026" | 2026-10-07, ORDAGRANT (pdftotext) |
+| V39 | Säker Vatten AB, "Säkra köket mot vattenskador" (konsumentbroschyr, länkad från <https://sakervatten.se/bygga-ratt/konsumenter/>) | branschorgan | <https://sakervatten.se/wp-content/uploads/2024/02/sakra-koket-mot-vattenskador.pdf> | "framtagen 2016 med utgångspunkt från då gällande branschregler" | 2026-10-07, ORDAGRANT (pdftotext) |
+| V40 | Vattenskadecentrum, "Vattenskadecentrums checklista för köket" | branschgemensam | <https://www.vattenskadecentrum.se/download/151-C8F600F63385CC20CFE37A7E3D8A90E8/Vattenskadecentrums-checklista-for-koket.pdf> (länken på tips-och-rad pekar på roxx.se, som gav "Runtime Error") | odaterad | 2026-10-07, ORDAGRANT (pdftotext) |
+| V41 | Folksam, Skydda dig mot vattenskador | försäkringsbolag, **SÄLJER** | <https://www.folksam.se/forsakringar/hemforsakring/skydda-hemmet/skydda-dig-mot-vattenskador> | odaterad | 2026-10-07, ORDAGRANT (WebFetch) |
+| V42 | Lilla Edets kommun, Vattenmätare | VA-huvudman (kommun) | <https://www.lillaedet.se/bygga-bo-och-miljo/vatten-och-avlopp/vattenmatare> | 2026-08-24 | 2026-10-07, ORDAGRANT (WebFetch) |
+| V43 | Tingsryds kommun, Vattenmätare och avläsning | VA-huvudman (kommun) | <https://tingsryd.se/bygga-bo-och-miljo/vatten-och-avlopp/kommunalt-vatten-och-avlopp/vattenmatare-och-avlasning/> | uppdaterad 2026-09-21 | 2026-10-07, ORDAGRANT (WebFetch) |
+| V44 | Karlstads kommun, Vattenmätare | VA-huvudman (kommun) | <https://karlstad.se/bygga-bo-och-leva-hallbart/vatten-och-avlopp/vattenmatare> | senast uppdaterad 2026-04-02 | 2026-10-07, ORDAGRANT (WebFetch) |
+| V45 | Höganäs kommun, Vattenmätare | VA-huvudman (kommun) | <https://www.hoganas.se/boende-trafik--miljo/vatten-och-avlopp/vattenmatare.html> | 2026-01-02 | 2026-10-07, ORDAGRANT (WebFetch) |
+| V46 | NSVA (Nordvästra Skånes Vatten och Avlopp AB), Vattenläcka på din fastighet | VA-huvudman (kommunalt bolag) | <https://nsva.se/mitt-vatten/om-nagot-gar-snett/vattenlacka/vattenlacka-pa-din-fastighet/> | odaterad | 2026-10-07, ORDAGRANT (WebFetch) |
+| V47 | MittSverige Vatten och Avfall, Vattenläcka (villa, radhus och fritidshus) | VA-huvudman (kommunalt bolag) | <https://msva.se/vatten-och-avlopp/villa-radhus-och-fritidshus/om-nagot-gar-snett/vattenlacka> | odaterad | 2026-10-07, ORDAGRANT (WebFetch) |
+| V48 | Elsäkerhetsverket, Vid åska, ras eller översvämning | myndighet | <https://www.elsakerhetsverket.se/privatpersoner/du-ar-ansvarig-for-elen/vid-aska-ras-eller-oversvamning/> | senast granskad 2025-03-31 | 2026-10-07, ORDAGRANT (WebFetch) |
+| V49 | Elsäkerhetsverket, Förhindra skador vid översvämning och ras | myndighet | <https://www.elsakerhetsverket.se/privatpersoner/din-elanlaggning/om-du-ager-din-bostad/forhindra-skador-vid-oversvamning-och-ras/> | senast granskad 2026-02-03 | 2026-10-07, ORDAGRANT (WebFetch) |
+| V50 | Elsäkerhetsverket, nyhet "Risker med el vid översvämning" | myndighet | <https://www.elsakerhetsverket.se/om-oss/press/nyheter/2023/risker-med-el-vid-oversvamning/> | 2023-08-08 | 2026-10-07, ORDAGRANT (WebFetch) |
+
+WebFetch-citaten är sidtext som verktyget återgav på begäran "ordagrant". Kontrollera mot sidan innan citattecken sätts på vår sida.
+
+### 17.2 Avstängningsventil vid diskbänk, diskmaskin, tvättmaskin (sidans "sitter det ofta en avstängningsventil på röret i närheten")
+
+**Stöd, men som krav på installationen, inte som beskrivning av alla hus.**
+
+- Säker Vatten (V38), 4.3.1 Diskmaskin, ORDAGRANT: "Diskmaskinen ska förses med en avstängningsventil med lätt åtkomlig manöveranordning."
+- V38, 4.2.2 Tvättmaskin, ORDAGRANT: "Vattenanslutning till tvättmaskin ska ha en avstängningsventil med manöveranordning som är synligt placerad och lätt åtkomlig."
+- V38, 4.2.3 WC med inbyggd spolcistern, ORDAGRANT: "Vattenanslutningen till en inbyggd spolcistern ska vara försedd med en lätt åtkomlig avstängningsventil."
+- V38, omfattning (1.1), ORDAGRANT: "Branschregler Säker Vatteninstallation gäller för nya byggnader, ombyggnader, ändringar samt utbyte av produkter." **Alltså inget om hus som inte byggts om.**
+- V39 (2016), ORDAGRANT: "Vattenanslutning till diskmaskin ska enligt byggregler ha avstängningsventil som är synlig och lätt åtkomlig, och enligt branschregler ska manöveranordning vara placerad ovan bänk." och "Andra vattenanslutna apparater, till exempel ismaskin eller kaffebryggare, ska ha avstängningsventil med lätt åtkomlig manöveranordning". Vilken BBR-paragraf "enligt byggregler" syftar på står inte; **inte kontrollerat** mot BBR eller mot BFS 2024:8/2024:9.
+- Vattenskadecentrum (V40), köket, ORDAGRANT: "Diskmaskinavstängningen ska vara stängd när diskmaskinen inte används."
+- Folksam (V41, SÄLJER), ORDAGRANT: "Stäng av vatten till disk- och tvättmaskin och sätt absolut inte igång en disk innan du lämnar hemmet."
+- **Diskbänkens blandare:** ingen källa säger att det sitter en avstängningsventil på röret till själva blandaren. Kraven ovan gäller diskmaskin, tvättmaskin, spolcistern och andra vattenanslutna apparater. EGEN: "vid diskbänken" har stöd bara som diskmaskinsavstängningen, som enligt V39 sitter ovan bänk.
+- "Ofta": ingen källa ger en andel. EGEN slutsats: kravet gäller vid ny installation, ombyggnad och byte; i ett hus där maskinen kopplats in enligt branschreglerna finns ventilen.
+- If (V8), Trygg-Hansa, LF: inget om ventil vid maskin på de sidor som lästs (V8 läst om 2026-10-07). Dina Försäkringar och Moderna: **inte lästa** (inga sidor hittade i sökningen).
+
+### 17.3 Stängs medsols (sidans "vrida en av dem medsols tills det tar stopp")
+
+**Inget stöd hittat** hos källa av rang.
+
+- Lästa utan att riktning nämns: Säker Vatten V38 och V39, Vattenskadecentrum V40, Folksam V41, If V7 och V8, LF V10, Lilla Edet V42, Tingsryd V43, Karlstad V44, Höganäs V45, NSVA V46 och NSVA:s ventilsida <https://nsva.se/mitt-vatten/vattenmatare/sa-kontrollerar-du-avstangningsventilerna/>, MSVA V47, Lerums kommun <https://lerum.se/bygga-bo-och-trafik/vatten-och-avlopp/avgifter-kommunalt-vatten-och-avlopp-abonnemang/vattenmatare> (2026-04-22), WBAB <https://www.wbab.se/sidor/vattenochavlopp/dinvattenmatare.4.7c2ca726177cdb671db6bc.html> (odaterad).
+- "Medurs" finns bara i sökutdrag från forum (byggahus.se) och firmabloggar (doneservices.se, hagerstenvvs.se); inte källor.
+- **Osäkert i sak:** sökutdrag (forum, RS-online) beskriver kulventiler vid mätaren som stängs med ett kvarts varv, handtaget tvärs mot röret. Ingen källa av rang hittad för det heller. Stämmer det är "medsols tills det tar stopp" fel för en kulventil. EGEN: om sidan ska ange riktning behövs en källa; utan källa kan sidan säga "stäng ventilen" och hänvisa till kontrollen (Tingsryd V43, ORDAGRANT: "Kontrollera ventilen någon gång per år för att se att den går att stänga av om behovet skulle uppstå.").
+
+### 17.4 Huvudkranen sitter vid vattenmätaren, där ledningen kommer in
+
+**Stöd, från fem VA-huvudmän.** Ersätter "ingen källa av rang" i 2.2 och 13 för placeringen.
+
+- Lilla Edet (V42), ORDAGRANT: "Vattenmätaren sitter på inkommande vattenledning, oftast i källaren, tvättstugan, köket eller under varmvattenberedaren." / "Vid en akut läcka eller översvämning behöver vattnet till fastigheten omedelbart stängas av. Ventilen för vattenavstängning sitter vid vattenmätaren." / "Vet du var vattenmätaren finns så hittar du snabbt fram och kan stänga av vattnet." / "Som fastighetsägare är det viktigt att känna till var vattenmätaren sitter."
+- Tingsryd (V43), ORDAGRANT: "Vattenmätaren sitter på inkommande vattenledning i fastigheten, oftast i källaren eller tvättstugan." / "Det är viktigt att du som fastighetsägare vet var vattenmätaren sitter." / "Vid en vattenläcka inne i fastigheten kan vattnet stängas av med ventilen som sitter vid vattenmätaren." / "Mätarplatsen ska innehålla mätarkonsol med avstängningsventil före och efter vattenmätaren."
+- Höganäs (V45), ORDAGRANT: "Vattenmätaren sitter på inkommande vatten och är oftast placerad i tvättstuga, badrum eller i källaren där vattenanslutningen kommer in."
+- Karlstad (V44), ORDAGRANT: "Vid en läcka i huset behöver vattnet till fastigheten omedelbart stängas av. Ventilen för vattenavstängning sitter vid vattenmätaren." och "Två avstängningsventiler (en före och en efter mätaren)."
+- NSVA (V46), ORDAGRANT: "Har du fått en läcka i huset (efter vattenmätaren), stäng av vattnet med avstängningsventilerna som sitter före och efter vattenmätaren." Om gatan: "Vid behov stänger vi av vattnet vid servisventilen ute i gatan." / "Tänk på att det bara är NSVA som får manövrera servisventilen."
+- Säker Vatten (V38) 4.2.4, ORDAGRANT: "Vattenmätare ska placeras i ett rum med vattentätt golv alternativt i ett vattenmätarskåp."
+- Ordet "huvudkran" används av Folksam (V4: "Stäng av huvudvattenkran vid läckage") och If (V7: "huvudvattenkranen"); VA-huvudmännen säger "ventilen vid vattenmätaren". Ingen källa skriver "servisledningen kommer in"; Höganäs skriver "där vattenanslutningen kommer in". Sidans "där ledningen från gatan kommer in i huset" är EGEN omskrivning av V45.
+
+### 17.5 Bryta strömmen när vatten nått el (sidans "torrskodd")
+
+**Stöd för villkoret, i Elsäkerhetsverkets ord. Ingen sida om läcka inomhus hittad**; alla tre gäller översvämning (sökning på elsakerhetsverket.se 2026-10-07).
+
+- V48 (2025-03-31) och V50 (2023-08-08), ORDAGRANT, villkoret: "om möjligt koppla ifrån anläggningen, men bara om du kan undvika att utsätta dig själv för fara." (V48, punktlista) / "Om översvämningen redan är ett faktum bör du koppla ifrån anläggningen, men bara om du kan undvika att utsätta dig själv för fara." (V50)
+- V48, ORDAGRANT, annars: "utrymma, informera och spärra av området kring elanläggningen om du inte är säker på att du lyckats koppla ifrån den."
+- V49 (2026-02-03), ORDAGRANT: "Gå aldrig i vatten som kan vara strömförande!" och om elcentralen: "det kan uppstå en farlig situation om denna hamnar under vatten och du inte kan bryta strömmen utan att riskera ditt eget liv."
+- V50, ORDAGRANT: "Observera också att inkommande serviskabel från elnätet kan förbli strömförande även om du lyckats koppla ifrån din anläggning."
+- Elsäkerhetsverket säger alltså inte "torrskodd". Deras villkor: **bara om du kan undvika att utsätta dig själv för fara**; annars utrymma, informera, spärra av.
+- **Källorna säger olika:** MSVA (V47, VA-huvudman, inte elmyndighet), ORDAGRANT: "Stäng av vattnet vid vattenmätaren och bryt strömmen då vattnet kan bli strömförande." Utan villkor. Elsäkerhetsverket väger tyngre i elfrågan.
+
+### 17.6 Numret till skadeanmälan på bolagets webbplats eller i appen
+
+**Stöd hos LF för webb och app som anmälningsväg; numret står hos Folksam.**
+
+- LF (V10, omdirigeras till `/stockholm/...`), bekräftat 2026-10-07, ORDAGRANT: "Du anmäler mindre vattenskador enklast på vår webbplats, i Mina sidor eller appen." och "Är skadan stor är det bättre att du kontaktar oss på telefon." **Numret står inte på sidan**; den länkar till en kontaktsida.
+- Folksam (V5), ORDAGRANT (se 2.1, läst samma dag, inte om): "Anmäl skadan så fort det är möjligt." Telefon vid allvarlig skada: "0771- 950 950". Folksam (V4), ORDAGRANT: "Anmäler du enkelt skadan direkt på vår webb via en av länkarna ovan." och "Du kan följa din skada på Mina sidor." V4 nämner ingen app och inget nummer.
+- If (V7): webbanmälan (<https://anmal-skada.if.se/property?claimType=waterdamage>); ORDAGRANT: "När du har gjort din anmälan kommer en handläggare att kontakta dig på telefon eller via mejl." Inget nummer och ingen app nämnda på sidan.
+- EGEN: "numret hittar du på bolagets webbplats" har stöd (Folksam V5 visar det; LF hänvisar till sin kontaktsida). "i appen" har stöd bara som anmälningsväg hos LF, inte som plats för numret.
+
+### 17.7 Sidor som inte gick att läsa (tillägg)
+
+- roxx.se-länkarna till Vattenskadecentrums checklistor (från tips-och-rad): "Runtime Error". Samma filer hämtades från vattenskadecentrum.se (V40).
+- NSVA <https://nsva.se/vatten-och-avlopp/din-vattenmatare/sa-kontrollerar-du-avstangningsventilerna>: 404; nya adressen lästes (17.3).
+- Danderyds faktablad om mätarbyte 2027 (PDF): gav HTML, inte PDF; inte läst.
+- Dina Försäkringar och Moderna: ingen sida om vattenskada hittad i sökningen; inte lästa.

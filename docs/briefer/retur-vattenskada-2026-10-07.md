@@ -417,3 +417,27 @@ Kvar med avsikt:
 - "veckor" mot betongens "mer än hundra dygn": hundra dygn gäller den porösaste betongen i ett laboratorieförsök; inledningen säger "veckor eller månader".
 
 Godkännandet väntar på SEO:s kontroll mot checklistan (steg 5).
+
+## Korrektur, varv 4
+
+Läst: listpunkt 1, 2 och 6 under "Den första timmen efter läckan" (rad 96, 97, 101), källraden under självrisktabellen (rad 136) och stycket på rad 193. Bara grammatik, meningsbyggnad och idiom.
+
+| Rad | Felaktig lydelse | Rättad lydelse | Fel |
+|---|---|---|---|
+| 97 | "Diskmaskinen och tvättmaskinen ska ha en egen avstängningsventil som är lätt att komma åt, enligt branschreglerna från Säker Vatten, så läcker det där börjar du med den om den finns." | "Enligt branschreglerna från Säker Vatten ska diskmaskinen och tvättmaskinen ha var sin avstängningsventil som är lätt att komma åt. Läcker det från någon av dem börjar du med den ventilen, om den finns." | numerus och syftning: "en egen" ventil för två maskiner läses som en gemensam, "där" och "den" pekar inte tydligt på en maskin och en ventil, och meningen kedjar regel och handling med "så" |
+| 136 | "samma självrisk för alla läckage utom frysning" | "samma självrisk för alla läckage utom dem som beror på frysning" | ihoptryckt: frysning är inget läckage, så "utom" saknar sitt led |
+| 193 | "så fråga bolaget om den när du anmäler skadan." | "så fråga bolaget om hyran när du anmäler skadan." | syftning: "den" kan peka på maskinen lika väl som på hyran |
+| 193 | "eftersom tre veckors hyra är ungefär hälften av vad en kondensavfuktare för källaren kostar att köpa, omkring 6 000 kronor i september 2026." | "eftersom tre veckors hyra är ungefär hälften av vad en kondensavfuktare för källaren kostar att köpa. I september 2026 kostade en omkring 6 000 kronor." | meningsbyggnad: priset hänger löst efter verbet som en apposition utan led att fästa vid |
+
+Rad 96: inga fel. "det" i "om det har nått ett eluttag" syftar tydligt på vattnet, och citatet från Elsäkerhetsverket är korrekt infogat. Rad 101: inga fel.
+
+Antal fel: 4. Med de rättningarna är de fem ställena korrekt svenska. Ett nytt varv behövs inte.
+
+## Hantverkaren, rättning efter SEO, affiliate och källtillägget
+
+- Listan för första timmen har nu källa för varje råd (faktabladet avsnitt 17). Punkt 1 använder Elsäkerhetsverkets villkor i stället för "torrskodd". Punkt 2 bygger på Säker Vattens branschregler 4.2.2 och 4.3.1 för ventilerna vid disk- och tvättmaskin och på Lilla Edet och Tingsryd för ventilen vid vattenmätaren. "Ofta" och "medsols tills det tar stopp" är strukna, eftersom inget stöd hittades och vridriktningen kan vara fel för en kulventil. Punkt 6 säger det Länsförsäkringar säger om webben, appen och telefonen. Uppsala Vatten har strukits ur kallor, och Säker Vatten, Lilla Edet, Tingsryd och Elsäkerhetsverkets sida om översvämning har lagts till.
+- Affiliate: butiken och modellen är strukna. Meningen säger nu att en kondensavfuktare för källaren kostade omkring 6 000 kronor i september 2026, och den länkar till /luftavfuktare/. Uthyrarnas poster i kallor står utan url, med uthyrare, vad som hyrs och läsdatum.
+- SEO: fotnoten om Länsförsäkringars självrisk står i källraden under självrisktabellen.
+- Korrekturens varv 4, fyra rader, är rättade med korrekturens lydelse.
+
+Godkänd av hantverkaren 2026-10-07. Ändrat sedan läsarens varv 3 (betyg 4): punkt 1, 2 och 6 i listan för första timmen, källraden under självrisktabellen, meningen om köppriset, posterna för uthyrarna i kallor, och två meningar i varv 3 (rad 109 och 119), alla korrekturlästa.
