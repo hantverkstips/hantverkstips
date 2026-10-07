@@ -421,3 +421,7 @@ Läsarens betyg 4 gäller versionen före korrekturens två varv och de sju punk
 SEO godkände sidan med två ändringar, och båda är gjorda. seoTitle är nu "Fuktskada på vägg, golv och tak". Den andra meningen i description är ett påstående: "Tecknen syns på vägg, golv och tak, och försäkringen ersätter sällan det som en fuktkontroll hittar." (153 tecken). bildAlt läggs till när skissen och etiketterna finns och ska innehålla "fuktskada". `npm run kontrollera`: 0 fel.
 
 Godkänd av hantverkaren 2026-10-07. Ändrat efter läsarens varv 2: korrekturens 43 plus 4 rader med korrekturens lydelse, de fyra nya punkterna från läsaren, sju punkträttningar, och seoTitle och description efter SEO.
+
+## Huvudbilden
+
+Skissen fukt/fuktskada.svg är godkänd mot förslaget. Etiketterna "först", "senare" och "till sist" anger inga tider, och det är avsiktligt, eftersom ingen källa säger hur fort det går. "3 av 10 hem" bygger på Boverkets sida Din hälsa kan påverkas av fukt och mögel (faktabladet 11.2, MG K7), där det står "Fuktskador finns i cirka tre av tio hem". Samma tal står i brödtexten under "Hur fukt blir en skada" och i bildtexten, och där med "cirka". bildAlt har 115 tecken och innehåller "fuktskada". Bildkommentaren i frontmattern är borttagen. `npm run kontrollera`: 0 fel och 0 varningar.
