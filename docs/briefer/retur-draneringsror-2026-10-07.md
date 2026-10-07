@@ -454,3 +454,37 @@ Inte rättat, med skäl: ett enkelt test för jordarten (ingen källa i faktabla
 Korrektur: alla 19 fel i varv 1 rättade med korrekturens lydelse, och elva smakfrågor. Felet i varv 2 (rad 118, "belägga") rättat. Därefter en egen rättelse i sak: "Duken under bädden är den enda punkt där källorna går isär" blev "Om duken under bädden går källorna isär", eftersom källorna också går isär om strumpan.
 
 Godkänd av hantverkaren 2026-10-08. Ändrat efter läsaren: omskriven brödtext i varv 1, kortsvar, kalkyl, skiva i kronor, livslängd och länkar i varv 2. Ändrat efter korrekturen: 20 fel och elva smakfrågor. Läsarens betyg på den godkända versionen: 4.
+
+## Hantverkaren, efter SEO:s beslut 2026-10-08
+
+Brunnsrubriken bytt från "Brunnarna i slingans högsta och lägsta punkt" till "Dräneringsbrunnen hör till den lägsta punkten och spolbrunnen till den högsta", så att "dräneringsbrunn" står i rubriken (fukt-6-F.md avsnitt 6). Rubriken har ett verb och följer ordningen i SEO:s förslag. Ingen annan ändring i brödtexten. Kontrollen ger 0 fel och 0 varningar med sidan räknad som publicerad. Godkännandet ovan står kvar.
+
+## Korrektur, varv 3
+
+Läst: kortsvarets andra stycke (rad 13), bildAlt (rad 17), bildtext (rad 18) och brunnsrubriken (rad 112), var och en i sitt sammanhang. Inget annat på sidan är läst om.
+
+### Fel
+
+| Rad | Felaktig lydelse | Rättad lydelse | Fel |
+|---|---|---|---|
+| 13 | "I silt och lera tar du ett rör med strumpa, och där och på en lös botten lägger du duken även under stenen." | "I silt och lera tar du ett rör med strumpa. Där, och där botten är lös, lägger du duken även under stenen." | Ihoptryckt. "där och på en lös botten" sätter ett platsadverb och en prepositionsfras sida vid sida med "och", så läsaren får stanna och reda ut vad "där" pekar på. |
+| 18 | "och fiberduken går på sidorna av stenbädden och ovanpå." | "och fiberduken går längs stenbäddens sidor och över den." | Meningsbyggnad. "ovanpå" hänger löst efter "av stenbädden" och får inget eget led; "på sidorna av" ligger dessutom nära engelskans "on the sides of". |
+| 112 | "## Dräneringsbrunnen hör till den lägsta punkten och spolbrunnen till den högsta" | "## Dräneringsbrunnen sitter i den lägsta punkten och spolbrunnen i den högsta" (eller "hör hemma i ... och spolbrunnen i ...") | Idiom. "höra till" betyder vara en del av eller tillhöra, inte att något har sin plats någonstans. För plats säger man "hör hemma i" eller "sitter i", och brödtexten under säger själv "I den högsta sitter en spolbrunn". |
+
+### Smakfrågor
+
+Inte fel, men en van skribent hade troligen valt annorlunda.
+
+| Rad | Lydelse | Förslag | Kommentar |
+|---|---|---|---|
+| 17 | "Dräneringsrör i makadam under grundsulan" | "Dräneringsrör i makadam nedanför grundsulan" eller "bredvid och under grundsulans nivå" | "under grundsulan" kan läsas som rakt under sulan, medan bildtexten säger att röret ligger med underkanten lägre än sulans underkant. Kortfattat får inte bli fel; kontrollera mot bilden. |
+| 17 | "och huset uppifrån med två brunnar" | "och huset sett uppifrån med två brunnar" | Bildtexten säger "sett uppifrån"; samma ord i båda gör altet lättare att läsa. Uppräkning utan verb är normalt i alt-text. |
+| 18 | "med underkanten under grundsulans underkant" | Godtagbart som det står. | Upprepningen "underkant ... underkant" är exakt och svår att undvika; nämns bara för att den syns. |
+| 18 | "Nere till höger är huset sett uppifrån" | "Nere till höger syns huset uppifrån" | Ger samma verb som meningen före ("Till höger syns"). |
+| 112 | "den lägsta punkten" | "slingans lägsta punkt" | Rubriken står före den mening som förklarar slingan, så "den lägsta punkten" saknar något att peka på för den som skummar rubrikerna. Kan krocka med SEO:s beslut om rubriken; det avgör inte korrekturen. |
+
+**Summa:** 3 fel och 5 smakfrågor. Bildtexten i övrigt och syftningen "där den ligger lägst" (slingan) är korrekta och stämmer med kortsvarets tredje stycke. När de tre felen är rättade behövs inget varv till.
+
+## Hantverkaren, skissen och kortsvaret 2026-10-08
+
+YAML-kommentarerna med bildförslaget är borttagna. bildAlt och bildtext är skrivna som fält efter den godkända skissen (grund/draneringsror.svg). Bildtexten säger att duken går längs stenbäddens sidor och över den. Andra stycket i kortSvar säger nu fiberduk på sidorna och ovanpå i sand och grus, och duk även under stenen i silt, lera och på lös botten, som tabellen och dranera-hus. Korrekturen varv 3 hittade 3 fel, och alla är rättade med korrekturens lydelse. Rubriken blev "Dräneringsbrunnen sitter i slingans lägsta punkt och spolbrunnen i den högsta". Den har fortfarande "dräneringsbrunn" först, som SEO beslutade. Två smakfrågor i bildAlt är införda: "lägre än grundsulan" och "huset sett uppifrån". Kontrollen ger 0 fel och 0 varningar med sidan räknad som publicerad. Godkännandet står kvar.
