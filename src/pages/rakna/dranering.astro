@@ -30,6 +30,8 @@ import {
   DJUP_PASLAG_PER_M,
   FUKTUTREDNING_KR,
   KAN_HALLA_AR,
+  OMDRANERING_FRAN_AR,
+  OMDRANERING_TILL_AR,
   raknaDranering,
   REGN_LITER,
   REGN_MM,
@@ -135,6 +137,7 @@ const TEJP_TEXT: Record<DraneringIndata['tejptest'], string> = {
 const titel = 'Dränering, kostnad per meter och om du behöver gräva';
 
 /** Källorna bakom antagandetabellen, samlade så att raderna inte glider isär. */
+const KONSUMENTERNAS_DRANERING = 'https://www.konsumenternas.se/forsakringar/boendeforsakringar/villaforsakringar/skadeforebyggande-tips/';
 const VILLAAGARNA =
   'https://www.villaagarna.se/radgivning-och-tips/utomhus/grund/maste-du-dranera-huset/';
 const BRABYGGARE = 'https://www.brabyggare.se/info/vad-kostar-dranering-av-hus-2026/';
@@ -320,7 +323,14 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
   },
   {
     storhet: 'Dräneringens livslängd',
-    varde: `Upp till ${KAN_HALLA_AR}${HART}år`,
+    varde: `${OMDRANERING_FRAN_AR} till ${OMDRANERING_TILL_AR}${HART}år`,
+    grund: 'Källa',
+    stod: 'Konsumenternas, beroende på marken kan en omdränering behövas efter 15 till 40 år',
+    url: KONSUMENTERNAS_DRANERING,
+  },
+  {
+    storhet: 'Längst, oinredd källare',
+    varde: `${KAN_HALLA_AR}${HART}år`,
     grund: 'Källa',
     stod: 'Villaägarna, en gammal dränering kan fungera i femtio år om källaren bara används som källare',
     url: VILLAAGARNA,

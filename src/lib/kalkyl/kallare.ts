@@ -143,6 +143,17 @@ export const HYGROMETER_DYGN = 7;
 export const KAN_HALLA_AR = 50;
 
 /**
+ * När en dränering kan behöva göras om, beroende på markförhållandena.
+ * Källa: Konsumenternas Försäkringsbyrå, skadeförebyggande tips: "beroende på
+ * markförhållnaden kan det behövas en omdränering efter 15 - 40 år". Samma
+ * spann som guiden /grund/dranera-hus/ (faktablad guider-dranera-hus.md,
+ * kompletteringen 2026-10-07, avsnitt B).
+ * https://www.konsumenternas.se/forsakringar/boendeforsakringar/villaforsakringar/skadeforebyggande-tips/
+ */
+export const OMDRANERING_FRAN_AR = 15;
+export const OMDRANERING_TILL_AR = 40;
+
+/**
  * De tre talen ur kostnadstabellen i /fukt/fukt-i-kallaren/. Avfuktaren är
  * Wood's SW39FW hos Proffsmagasinet, läst 16 september 2026. Fuktkontrollen är
  * saneringsföretaget Ocabs eget listpris för ett källarutrymme. Dräneringen är
@@ -598,7 +609,8 @@ export function bedomKallare(i: KallareIndata): KallareResultat {
     });
     atgarda.push({
       steg: 'atgarda',
-      text: 'Håller källaren 15 grader eller mer i augusti och september räcker en kondensavfuktare. Mellan 10 och 15 grader tappar maskinen det mesta av sin kapacitet, och går källaren under 10 grader en längre period avfrostar kylslingan i stället för att fälla ut vatten. Då ska du ha en sorptionsavfuktare, som torkar luften med ett fuktsugande hjul i stället för med kyla.',
+      /* Juli och augusti: uteluften bär mest vatten då, SMHI:s mätdata medel 1997–2025 (faktablad guider-fukt-i-kallaren.md A3, tillägg 2026-10-07). Samma månader som /fukt/fukt-i-kallaren/. */
+      text: 'Håller källaren 15 grader eller mer i juli och augusti räcker en kondensavfuktare. Mellan 10 och 15 grader tappar maskinen det mesta av sin kapacitet, och går källaren under 10 grader en längre period avfrostar kylslingan i stället för att fälla ut vatten. Då ska du ha en sorptionsavfuktare, som torkar luften med ett fuktsugande hjul i stället för med kyla.',
       kalla: 'Guiden om fukt i källaren, och sidan om sorptionsavfuktare',
     });
   }

@@ -328,6 +328,17 @@ export const ROT_GRUNDANDE_ANDEL = 0.6;
 export const KAN_HALLA_AR = 50;
 
 /**
+ * När en dränering kan behöva göras om, beroende på markförhållandena.
+ * Källa: Konsumenternas Försäkringsbyrå, skadeförebyggande tips: "beroende på
+ * markförhållnaden kan det behövas en omdränering efter 15 - 40 år". Samma
+ * spann som guiden /grund/dranera-hus/ (faktablad guider-dranera-hus.md,
+ * kompletteringen 2026-10-07, avsnitt B).
+ * https://www.konsumenternas.se/forsakringar/boendeforsakringar/villaforsakringar/skadeforebyggande-tips/
+ */
+export const OMDRANERING_FRAN_AR = 15;
+export const OMDRANERING_TILL_AR = 40;
+
+/**
  * Åldern där markfukt i tejptestet gör det motiverat att gräva. Källa för
  * storleken: Husgrunder, en dränering äldre än 25 till 30 år bör utvärderas.
  * Branschens spann för teknisk livslängd går från 20 år (GarBo) till 50

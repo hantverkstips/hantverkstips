@@ -29,6 +29,8 @@ import {
   HYGROMETER_DYGN,
   HYGROSTAT_RF,
   KAN_HALLA_AR,
+  OMDRANERING_FRAN_AR,
+  OMDRANERING_TILL_AR,
   KONDENS_MANAD_FRAN,
   KONDENS_MANAD_TILL,
   KRITISK_RF,
@@ -105,6 +107,7 @@ const BOVERKET_FUKTTILLSTAND =
 const BOVERKET_KALLARVAGG =
   'https://www.boverket.se/sv/byggande/forebygg-fel-brister-skador/risker-byggande/risker-fuktskador/fuktrisker-for-grund/fuktrisker-med-kallare/risk-med-fuktintrangning-kallarvagg/';
 const POLYGON = 'https://www.polygongroup.com/sv-SE/Nyheter/fukttransport/';
+const KONSUMENTERNAS_DRANERING = 'https://www.konsumenternas.se/forsakringar/boendeforsakringar/villaforsakringar/skadeforebyggande-tips/';
 const VILLAAGARNA = 'https://www.villaagarna.se/radgivning-och-tips/utomhus/grund/maste-du-dranera-huset/';
 const GDS = 'https://gds.se/hus/inomhusklimat/fukt-i-kallare';
 const MALARE =
@@ -217,7 +220,14 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
   },
   {
     storhet: 'Dräneringens livslängd',
-    varde: `Upp till ${KAN_HALLA_AR} år`,
+    varde: `${OMDRANERING_FRAN_AR} till ${OMDRANERING_TILL_AR} år`,
+    grund: 'Källa',
+    stod: 'Konsumenternas, beroende på marken kan en omdränering behövas efter 15 till 40 år',
+    url: KONSUMENTERNAS_DRANERING,
+  },
+  {
+    storhet: 'Längst, oinredd källare',
+    varde: `${KAN_HALLA_AR} år`,
     grund: 'Källa',
     stod: 'Villaägarna, en gammal dränering kan fungera i femtio år om källaren bara används som källare',
     url: VILLAAGARNA,
