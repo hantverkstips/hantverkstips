@@ -61,11 +61,12 @@ const visa = verktyg.length > 0 || material.length > 0;
           <h3 class="mt-8 mb-2 font-sans text-h3 lg:text-h3-lg">Verktyg</h3>
           {/*
             Namnet och varför-raden får sina klasser från listan, inte på varje
-            rad (spec-skal-budget-2026-09-28 avsnitt 15.3). Selektorn går via
+            rad (spec-skal-budget-2026-09-28 avsnitt 15.3). Klasserna står som
+            .behov-verktyg och .behov-material i global.css sedan 2026-10-08. Selektorn går via
             radens första div, så att prisstycket bredvid knappen inte träffas.
             m-0 behövs inte: preflight nollar marginalen på p.
           */}
-          <ul class="m-0 p-0 list-none [&_li>div:first-child>p]:text-brod [&_li>div:first-child>p:first-child]:font-bold [&_li>div:first-child>p:first-child]:lg:text-brod-lg [&_li>div:first-child>p:first-child]:text-blyerts [&_li>div:first-child>p+p]:mt-1 [&_li>div:first-child>p+p]:text-blyerts-2">
+          <ul class="behov-verktyg">
             {verktygsrader.map((r, i) => (
               <li
                 class:list={[
@@ -109,7 +110,7 @@ const visa = verktyg.length > 0 || material.length > 0;
       {material.length > 0 && (
         <>
           <h3 class="mt-8 mb-2 font-sans text-h3 lg:text-h3-lg">Material</h3>
-          <ul class="m-0 p-0 list-none [&_p]:text-brod [&_p:first-child]:font-bold [&_p:first-child]:lg:text-brod-lg [&_p:first-child]:text-blyerts [&_p+p]:mt-1 [&_p+p]:text-blyerts-2">
+          <ul class="behov-material">
             {material.map((m, i) => (
               <li class:list={['py-4', i > 0 && 'border-t border-linje']}>
                 <p>{m.namn}</p>

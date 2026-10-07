@@ -1588,7 +1588,8 @@ body {
     komponent inne i brödtexten annars skulle få .prosa a:s understrykning.
   */
   .lank,
-  .prosa .lank {
+  .prosa .lank,
+  .kallor a {
     color: var(--color-penna);
     text-decoration-line: underline;
     text-decoration-thickness: 1px;
@@ -1596,7 +1597,8 @@ body {
   }
   @media (hover: hover) {
     .lank:hover,
-    .prosa .lank:hover {
+    .prosa .lank:hover,
+    .kallor a:hover {
       text-decoration-thickness: 2px;
     }
   }
@@ -2109,6 +2111,29 @@ body {
       display: block;
       min-height: 0;
     }
+  }
+
+  /*
+    Det här behöver du: listorna Verktyg och Material. Namnet i fetstil, varför-
+    raden under i blyerts-2. Var arbiträra varianter på varje lista, en gång här
+    sedan 2026-10-08 (dranera-hus låg 300 byte under budgeten). Verktygsraden
+    går via radens första div, så att prisstycket bredvid knappen inte träffas.
+  */
+  .behov-verktyg,
+  .behov-material {
+    @apply m-0 p-0 list-none;
+  }
+  .behov-verktyg li > div:first-child > p,
+  .behov-material p {
+    @apply text-brod;
+  }
+  .behov-verktyg li > div:first-child > p:first-child,
+  .behov-material p:first-child {
+    @apply font-bold lg:text-brod-lg text-blyerts;
+  }
+  .behov-verktyg li > div:first-child > p + p,
+  .behov-material p + p {
+    @apply mt-1 text-blyerts-2;
   }
 
   /* Källor sist i textspalten: numrerad lista i 14 px blyerts-2. */

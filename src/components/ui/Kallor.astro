@@ -2,6 +2,8 @@
 /**
  * Källor sist i textspalten: H2 "Källor" i 22 px utan pennstreck och den
  * numrerade listan. Delas av artikelmallen, testsidan och jämförelsen.
+ * Länkarna får .lank-utseendet från .kallor a i global.css, utan klass på
+ * varje länk (spec-skal-budget-2026-09-28, dranera-hus 2026-10-08).
  * Spec: docs/DESIGN.md avsnitt 6 (Källor), docs/briefer/spec-designlyft-d-2026-10-02.md 1.
  */
 interface Props {
@@ -19,7 +21,7 @@ const { kallor } = Astro.props;
         {kallor.map((k) => (
           <li>
             {k.url ? (
-              <a href={k.url} rel="nofollow" class="lank">
+              <a href={k.url} rel="nofollow">
                 {k.titel}
               </a>
             ) : (
