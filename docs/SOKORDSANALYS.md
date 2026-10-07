@@ -926,7 +926,7 @@ En sida per avsikt. Volymen är huvudfras plus de sidofraser sidan äger, efter 
 | `/fukt/fukt-i-krypgrund/` | problemguide | fukt i krypgrund 260 (= fuktig krypgrund) | 1 220 | luftfuktighet krypgrund 220, mögel i krypgrund 110, fuktmätare och hygrometer krypgrund 220, ventilation 110, gränsvärde 40, köpa hus 40, besiktning 50 | 4 | sep | utkast i startlista 5, **sidofraser läggs till före publicering** |
 | `/fukt/torpargrund/` | problemguide | torpargrund fukt 110 (= fuktig torpargrund) | 370 | avfuktare torpargrund 140, ventilera torpargrund 90, krypgrund vs torpargrund 20 | ej läst | sep | ny |
 | `/fukt/fukt-pa-vinden/` | problemguide | fukt på vinden 110 | 570 | ventilation på vinden 260, kondens på vinden 30, köpa hus med mögel på vinden 30, fuktmätare vind 40 | ej läst | nov | ny |
-| `/fukt/mogel-pa-vinden/` | problemguide | mögel på vinden 90 | 460 | svartmögel på vinden 90, mögelsanering vind 200 med pris, mögel på råspont 30 (+250 %), mögel på kallvind 30 | ej läst | mar | ny |
+| `/fukt/mogel-pa-vinden/` | problemguide | mögel på vinden 90 | 460 | svartmögel på vinden 90, mögelsanering vind 110 och mögelsanering vind pris 90 (200 tillsammans), mögel på råspont 30 (+250 %), mögel på kallvind 30 | ej läst | mar | ny |
 
 #### Mätning, 15 580 i månaden
 
@@ -992,7 +992,7 @@ En sida per avsikt. Volymen är huvudfras plus de sidofraser sidan äger, efter 
 
 **Avfuktarna per rum och typ.** Kategorisidan `/luftavfuktare/` tar det nakna ordet "avfuktare" (9 900) och "luftavfuktare" (5 400) som huvudfras. Det liknar beslutet om krysslasern i avsnitt 11: det nakna ordet är fem till elva gånger större än "bäst i test", och sidan äger hela avsikten, även om realistisk placering på ordet är fyra till åtta. Köpguiderna per plats får två nya: vinden och tvättstugan. Badrummet får ingen avfuktarguide; "avfuktare badrum" (370) äger badrumsfläktens sida, eftersom svaret där är fläkten och inte en avfuktare. Torpargrunden får ingen egen avfuktarsida; "avfuktare torpargrund" (140) står på torpargrundens sida med länk till krypgrundsguiden. `/fukt/fuktslukare/` är kunskapssidan om den billiga burken och varför den sällan räcker, och den länkar till köpguiderna.
 
-**Tjänsteorden är avsnitt, inte sidor.** Fuktbesiktning 90, fuktkontroll 160, fuktsanering 50, mögelsanering 410, mögelhund 170, mögelbesiktning 90, krypgrund besiktning 50, mögelsanering vind 200. Ingen av dem är stor nog och SERP:en ägs av dem som säljer tjänsten. De blir H2 på `/fukt/fuktskada/`, `/fukt/mogel-i-huset/`, `/fukt/fukt-i-krypgrund/` och `/fukt/mogel-pa-vinden/` med tre saker: vad det kostar med källa och datum, när det behövs, och vad läsaren mäter själv först. Försäkringsfraserna (fuktskada försäkring, vattenskada försäkring, mögel försäkring, fukt i krypgrund försäkring) blir avsnitt på samma sätt, utom "vattenskada försäkring" (260), som bär sidan `/fukt/vattenskada/` tillsammans med att hyra en avfuktare (260).
+**Tjänsteorden är avsnitt, inte sidor.** Fuktbesiktning 90, fuktkontroll 160, fuktsanering 50, mögelsanering 410, mögelhund 170, mögelbesiktning 90, krypgrund besiktning 50, mögelsanering vind 110 (200 med "mögelsanering vind pris"). Ingen av dem är stor nog och SERP:en ägs av dem som säljer tjänsten. De blir H2 på `/fukt/fuktskada/`, `/fukt/mogel-i-huset/`, `/fukt/fukt-i-krypgrund/` och `/fukt/mogel-pa-vinden/` med tre saker: vad det kostar med källa och datum, när det behövs, och vad läsaren mäter själv först. Försäkringsfraserna (fuktskada försäkring, vattenskada försäkring, mögel försäkring, fukt i krypgrund försäkring) blir avsnitt på samma sätt, utom "vattenskada försäkring" (260), som bär sidan `/fukt/vattenskada/` tillsammans med att hyra en avfuktare (260).
 
 **Radon är med, med två sidor.** Gruppen är 16 490, näst störst efter luftfuktighet, och fraslistan kallade den en kant. Radon hör till inomhusklimatet och kommer in genom samma grund och ventilation som fukten, och SERP:en splittras i tre avsikter. `/fukt/radon/` tar det breda ordet och gränsvärdena (vinnbarhet 2, men ingen i topp 5 har mätregeln, kostnaden och alla nivåer med författning), `/fukt/radonsug/` tar åtgärden (vinnbarhet 4). Båda är YMYL och bygger bara på SSM, Boverket och Folkhälsomyndigheten.
 
@@ -1051,7 +1051,7 @@ Säsongsordning: vinterbenet först, och det som toppar i november ska vara inde
 | D5 | `/fukt/torpargrund/` | 370 | ej läst | problemguide | sep | nej | Sista krypgrundssidan, binder ihop A och krypgrundsguiderna |
 | **E** | **Februari** | | | | | | |
 | E1 | `/fukt/radonsug/` | 1 150 | 4 | kunskap | mar | nej | Saneringsfirmor med priser utan källa i topp 3 |
-| E2 | `/fukt/mogel-pa-vinden/` | 460 | ej läst | problemguide | mar | nej | Råspont +250 %, mögelsanering vind 200 |
+| E2 | `/fukt/mogel-pa-vinden/` | 460 | ej läst | problemguide | mar | nej | Råspont +250 %, mögelsanering vind 110 (200 med "mögelsanering vind pris") |
 | E3 | `/fukt/fuktskada/` | 1 600 | ej läst | kunskap | apr (1 300) | nej | Tecken per yta, fuktkontroll vid husköp, försäkringen |
 | E4 | `/fukt/vattenskada/` | 960 | ej läst | kunskap | sep | nej | Torka ut efter läckan, hyra avfuktare, vad försäkringen ersätter |
 | E5 | `/fukt/fuktmatning-betong/` | 1 020 | ej läst | kunskap, expert | mar | nej | Proffssidan: RF i betong före golv och tätskikt |

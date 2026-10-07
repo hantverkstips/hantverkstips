@@ -145,3 +145,27 @@ Det ettan har som vi måste behålla eller överträffa: orsaken i klartext, och
 - **Hypoklorit** står inte som råd. Om metoden nämns står det att källorna säger emot varandra.
 - **Firmornas priser** står inte som "kostar".
 - **Länkar i Faq-svar** fungerar inte.
+
+---
+
+## Kontroll efter skrivningen, 2026-10-07
+
+SEO och GEO-agenten har läst `src/content/guider/fukt/mogel-pa-vinden.mdx` (utkast) mot punkt 1 till 12. **Godkänd av SEO och GEO**, med två små ändringar.
+
+- **Metadata.** seoTitle "Mögel på vinden, sanera eller låta vara" (39 tecken) och description (153 tecken) är godkända. H1 "Svarta fläckar på råsponten behöver inte alltid saneras" delar inte de tre första orden med title och börjar inte med "Mögel och fukt".
+- **H2 4 "Blästra ytan eller byt brädorna" är godkänd.** Metoden är vad läsaren väljer, och rubriken säger det rakare än checklistans förslag. "mögelsanering vind" (110) och "pris" (90) bärs av H2 5, "Mögelsanering av vinden kostar från 10 000 kronor". Det räcker, eftersom frasen står i naturlig form och priset är det läsaren söker.
+- **Volymerna** är rätade ut i SOKORDSANALYS 12.4, 12.5 och 12.7. "mögelsanering vind" är 110, "mögelsanering vind pris" är 90, och 200 är de två tillsammans. Sidan äger 460.
+- **Bättre än ettan 1 till 4 är uppfyllda.**
+  1. Folkhälsomyndighetens mening om antimögelmedel står ordagrant.
+  2. Metodtabellen har kolumnerna "Vad försöken visar" och "Mitt råd" och tre källor av rang (RISE SBUF 13897, IVL och Lunds universitet, SP 2006:43). Den är bättre än checklistan begärde, eftersom varje metod står mot ett försök och inte mot en åsikt.
+  3. Beslutsstödet står i H2 3 och bygger på fuktkvoten och SWESIAQ.
+  4. Firmornas priser står med datum och som deras uppgift. Optihus pris behövs inte, eftersom två firmor räcker.
+- **Länkarna ut** är åtta. Fukt på vinden länkas en gång, och det räcker. Räknaren länkas med `lage=luft&rum=vind`. Faq-svaren har inga länkar. Sidan har inga produkter och inget reklamband.
+- **Strukturerad data.** `Article`, `BreadcrumbList` och `FAQPage` med svar i ren text. Canonical sätts av bygget. Förslaget till `bildAlt` ska ha "mögel" och "vinden" när bilden kommer.
+
+**Ändras:**
+
+1. **"svartmögel på vinden" (90, lika stor som huvudfrasen) ska stå ordagrant en gång**, i kortSvar eller i första stycket under H2 "Mögel på råspont, blånad eller röta". Rad 99, "Svarta prickar på vinden kallas gärna svartmögel", ligger nära. Hantverkaren formulerar, till exempel så här: "Det som kallas svartmögel på vinden är i SP:s prov vanliga mögelsvampar som Cladosporium". Rubriken behöver inte ändras.
+2. **KortSvar, "Mögel på en kallvind sprids ändå sällan ner i rummen":** lägg till källan i meningen, "enligt SWESIAQ". Det är stycket AI-svaren lyfter, och påståendet har bara källa längre ner (rad 120). Samma regel som för självdragssidan.
+
+Inlänkarna läggs när E publiceras, enligt fukt-6-E.md avsnitt 2.
