@@ -166,21 +166,25 @@ export function produktForval(specs: Record<string, unknown> | null | undefined)
  * ------------------------------------------------------------------ */
 
 /**
- * Platserna som har ett förval, `?plats=kallare`. Luftfuktare, radonsug
- * och tvätt väntar på underlag och får en rad här när talet finns; ingen effekt
- * gissas. Spec: docs/briefer/spec-elkostnad-forval-2026-09-30.md avsnitt 7.
+ * Platserna som har ett förval, `?plats=kallare`. Luftfuktare och tvätt väntar
+ * på underlag och får en rad här när talet finns; ingen effekt gissas.
+ * Spec: docs/briefer/spec-elkostnad-forval-2026-09-30.md avsnitt 7.
+ * radonsug: docs/briefer/spec-elkostnad-radonsug-2026-10-07.md.
  */
-export type Plats = 'kallare' | 'krypgrund' | 'vind' | 'garage';
+export type Plats = 'kallare' | 'krypgrund' | 'vind' | 'garage' | 'radonsug';
 
 export interface PlatsForval {
   /** Maskinens namn, som i köpguiden för platsen. */
   maskin: string;
-  typ: 'kondens' | 'sorption';
+  /** flakt är radonsugens fläkt: inget provklimat, och den står inte i tabellen över avfuktare. */
+  typ: 'kondens' | 'sorption' | 'flakt';
   /** Märkeffekten i watt vid villkoret. */
   effektW: number;
-  /** Tillverkarens provklimat för effekten. */
-  villkor: { tempC: number; rf: number };
+  /** Tillverkarens provklimat för effekten. Saknas för en fläkt. */
+  villkor?: { tempC: number; rf: number };
   timmarPerDygn: number;
+  /** Antal dagar, när platsen ska räknas på annat än STANDARD:s dagar. */
+  dagar?: number;
 }
 
 /**
@@ -239,10 +243,36 @@ export const FORVAL_PER_PLATS: Record<Plats, PlatsForval> = {
     villkor: { tempC: 30, rf: 80 },
     timmarPerDygn: 8,
   },
+  /*
+   * Källa: Corroventa, Radon Extractor RS 400, produktsida (läst 2026-10-07),
+   * "Normal consumption 10-25 W".
+   * https://www.corroventa.com/produkt/radon-extractor-rs-400/
+   * (`faktablad/kunskap-radonsug.md` avsnitt 4.1 och 4.3).
+   * Källa: tillverkarens "The installation is designed and constructed for
+   * continuous operation", Corroventa, RS 400 Operation and maintenance
+   * instructions (2012), därav 24 timmar per dygn och 365 dagar
+   * (`faktablad/kunskap-radonsug.md` avsnitt 1.4).
+   * ANTAGANDE: den övre gränsen, 25 W, väljs ur spannet 10-25 W.
+   */
+  radonsug: {
+    maskin: 'Corroventa RS 400',
+    typ: 'flakt',
+    effektW: 25,
+    timmarPerDygn: 24,
+    dagar: DAGAR_PER_AR,
+  },
 };
 
 /** Platserna i tabellens ordning. */
 export const PLATSER = Object.keys(FORVAL_PER_PLATS) as Plats[];
+
+/** Platserna med en avfuktare, alltså allt utom radonsugens fläkt. */
+export type Avfuktarplats = Exclude<Plats, 'radonsug'>;
+
+/** Platserna i tabellen "elen per avfuktare": allt utom fläktar. */
+export const AVFUKTARPLATSER = PLATSER.filter(
+  (p): p is Avfuktarplats => FORVAL_PER_PLATS[p].typ !== 'flakt',
+);
 
 /** plats ur adressen, eller null när den saknas eller är okänd. */
 export function platsFranQuery(q: URLSearchParams): Plats | null {
@@ -252,7 +282,7 @@ export function platsFranQuery(q: URLSearchParams): Plats | null {
 
 /**
  * Standardvärdena med förvalen inlagda. Effekten: produktens, sedan platsens,
- * sist STANDARD. Gångtiden: platsens, sedan STANDARD.
+ * sist STANDARD. Gångtiden och dagarna: platsens, sedan STANDARD.
  */
 export function standardMedForval(forval: ProduktForval, plats: Plats | null = null): ElkostnadIndata {
   const p = plats === null ? null : FORVAL_PER_PLATS[plats];
@@ -260,6 +290,7 @@ export function standardMedForval(forval: ProduktForval, plats: Plats | null = n
     ...STANDARD,
     effektW: forval.effektW ?? p?.effektW ?? STANDARD.effektW,
     timmarPerDygn: p?.timmarPerDygn ?? STANDARD.timmarPerDygn,
+    dagar: p?.dagar ?? STANDARD.dagar,
   };
 }
 
@@ -582,8 +613,9 @@ export function formVarden(i: ElkostnadIndata): {
  * dess effekt som `produktForval`. En `effekt` i samma förval vinner.
  * Spec: docs/briefer/spec-elkostnad-forval-2026-09-30.md avsnitt 1.
  *
- * `plats=kallare` (krypgrund, garage) ger platsens effekt och gångtid ur
- * FORVAL_PER_PLATS; en okänd plats ger fel (avsnitt 7).
+ * `plats=kallare` (krypgrund, vind, garage, radonsug) ger platsens effekt,
+ * gångtid och, för radonsugen, dagar ur FORVAL_PER_PLATS; en okänd plats ger
+ * fel (avsnitt 7).
  */
 export function forvalFranAdress(
   forval: string,

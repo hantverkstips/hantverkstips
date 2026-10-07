@@ -22,9 +22,9 @@ import { antalOrd, formateraPris, formateraTal } from '../../lib/format';
 import { artikelUrl, kategoriUrl, publicerade } from '../../lib/innehall';
 import { tillKortArtikel, tillKortKategori, type KortData } from '../../lib/kort';
 import {
+  AVFUKTARPLATSER,
   FORVAL_PER_PLATS,
   gorInteText,
-  PLATSER,
   platsFranQuery,
   produktForval,
   produktSlugFranQuery,
@@ -40,8 +40,8 @@ import {
   TVATT_TEST,
   typFranQuery,
   type ElkostnadIndata,
+  type Avfuktarplats,
   type ElkostnadResultat,
-  type Plats,
   type TvattIndata,
   type TvattMetod,
   type TvattResultat,
@@ -82,7 +82,9 @@ const fel = resultat.status === 'ogiltig' ? resultat.fel : {};
 const visat: ElkostnadResultat = resultat.status === 'ogiltig' ? raknaElkostnad(standard) : resultat;
 const visatIndata: ElkostnadIndata = resultat.status === 'ogiltig' ? standard : indata;
 /* Vid golvvärme aldrig avfuktarens text om hygrostaten (gorInteText). */
-const gorInte = visat.status === 'ok' ? gorInteText(visat, typ) : null;
+/* En fläkt som ska gå dygnet runt (radonsugen) har ingen hygrostat, så rutan utgår. */
+const arFlakt = plats !== null && FORVAL_PER_PLATS[plats].typ === 'flakt';
+const gorInte = visat.status === 'ok' && !arFlakt ? gorInteText(visat, typ) : null;
 
 /*
  * Tvättläget, ?typ=tvatt (docs/briefer/spec-elkostnad-forval-2026-09-30.md
@@ -157,9 +159,24 @@ if (produktSlug !== null) {
 function platsRad(maskin: string, effektW: number, villkorTemp: number, villkorRf: number): string {
   return `Jag räknar på ${maskin}, som drar ${talText(effektW)} W när luften håller ${talText(villkorTemp)} grader och ${talText(villkorRf)} procent luftfuktighet. Har du egna tal, skriv in dem i stället.`;
 }
+/**
+ * E1 för en fläkt (typ flakt, radonsugen): vilken fläkt och vilken effekt räkningen
+ * bygger på, utan provklimat. Platshållarna {maskin}, {effekt} (W, utan enhet)
+ * och {timmar} (per dygn, med ordet inräknat som i KLARTEXT: "24 timmar").
+ */
+const E1_FLAKT =
+  'Jag räknar på radonsugen {maskin}, som drar upp till {effekt} W i normal drift enligt tillverkaren, och låter den gå {timmar} om dygnet. Har du egna tal, skriv in dem i stället.'; // elkostnad.e1.flakt
+function platsRadFlakt(maskin: string, effektW: number, timmar: number): string {
+  return E1_FLAKT.replace('{maskin}', maskin)
+    .replace('{effekt}', talText(effektW))
+    .replace('{timmar}', antalOrd(timmar, 'timme', 'timmar'));
+}
 if (plats !== null && produktSlug === null) {
   const p = FORVAL_PER_PLATS[plats];
-  produktRad = platsRad(p.maskin, p.effektW, p.villkor.tempC, p.villkor.rf);
+  produktRad =
+    p.typ === 'flakt' || p.villkor === undefined
+      ? platsRadFlakt(p.maskin, p.effektW, p.timmarPerDygn)
+      : platsRad(p.maskin, p.effektW, p.villkor.tempC, p.villkor.rf);
 }
 /* Tvättläget räknar inte på någon maskin, så raden står inte där. */
 if (tvattLage) produktRad = null;
@@ -310,6 +327,18 @@ const tal =
       }
     : null;
 
+/**
+ * Raden under beskedet vid plats=radonsug: vad radonsugen kostar per år och att
+ * den ska gå dygnet runt. Platshållarna {kwh} (kWh per år) och {kr} (kronor per
+ * år, med "kr").
+ */
+const BESKED_RADONSUG =
+  'En radonsug ska gå dygnet runt hela året. Med talen i formuläret drar den {kwh} kWh och kostar {kr} på ett år.'; // elkostnad.besked.radonsug
+const beskedRadonsug =
+  plats === 'radonsug' && !tvattLage && tal
+    ? BESKED_RADONSUG.replace('{kwh}', tal.kwhPerAr).replace('{kr}', tal.krPerAr)
+    : null;
+
 /* E8: högst 44 tecken med "el" och "avfuktare" (SEO:s checklista raknare-elkostnad-forval.md). */
 const titel = 'Vad drar avfuktaren i el per år?';
 
@@ -325,7 +354,8 @@ const ELTABELL_INGRESS = {
   ankare: 'en sorptionsavfuktare',
   efter: ' rätt maskin.',
 };
-const PLATS_KORT: Record<Plats, string> = { kallare: 'Källare', krypgrund: 'Krypgrund', vind: 'Kallvind', garage: 'Garage' };
+/* Bara avfuktarplatserna: tabellen byggs av AVFUKTARPLATSER och visar inte radonsugen. */
+const PLATS_KORT: Record<Avfuktarplats, string> = { kallare: 'Källare', krypgrund: 'Krypgrund', vind: 'Kallvind', garage: 'Garage' };
 const ELTABELL_HORN = 'Plats och maskin';
 const ELTABELL_CAPTION = 'Avfuktarens effekt, provklimat, el per dygn och kostnad per år för varje plats';
 /** E7: källorna till effekterna, 8 timmar per dygn och elpriset med perioden. */
@@ -334,7 +364,7 @@ function eltabellKallrad(period: string, elpris: string): string {
 }
 /** Talen med högst två decimaler och utan nollor på slutet: 2,56, 2,8, 2,2. */
 const kortTal = (n: number): string => String(Math.round(n * 100) / 100).replace('.', ',');
-const eltabell = PLATSER.map((p) => {
+const eltabell = AVFUKTARPLATSER.map((p) => {
   const f = FORVAL_PER_PLATS[p];
   const r = raknaElkostnad({
     ...STANDARD,
@@ -355,7 +385,16 @@ const ELTABELL_KLASS =
   'w-full border-collapse text-liten tabular-nums [&_th]:px-1 [&_td]:px-1 [&_th]:py-2 [&_td]:py-2 [&_th]:text-left [&_th]:align-top [&_td]:align-top [&_thead_th+th]:text-right [&_td]:text-right [&_tbody_th]:[font-weight:inherit] [&_tr]:border-b [&_tr]:border-linje [&_th]:text-blyerts-2 [&_td]:text-blyerts [&_thead_th]:text-etikett [&_thead_th]:uppercase';
 
 /** Antagandena i tabellen under "Så räknar vi". Samma tal som konstanterna i kalkylen. */
-const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande'; stod: string; url?: string }[] = [
+const radonsug = FORVAL_PER_PLATS.radonsug;
+const antaganden: {
+  storhet: string;
+  varde: string;
+  grund: 'Källa' | 'Antagande';
+  stod: string;
+  url?: string;
+  /** En andra märkning i samma cell, som radonsugens 24 timmar. */
+  och?: { grund: 'Källa' | 'Antagande'; stod: string };
+}[] = [
   {
     storhet: 'Elpriset, om du inte skriver ett eget',
     varde: `${formateraTal(standard.elprisKrPerKwh, 2)} kr per kWh`,
@@ -380,6 +419,18 @@ const antaganden: { storhet: string; varde: string; grund: 'Källa' | 'Antagande
     varde: '365 dagar',
     grund: 'Antagande',
     stod: 'Jag bortser från skottår. Skillnaden är under tre promille och drunknar i osäkerheten i gångtiden',
+  },
+  /*
+   * Radonsugens förval (spec-elkostnad-radonsug-2026-10-07). Källans titel och
+   * adress ordagrant ur faktabladet kunskap-radonsug.md avsnitt 11 och 4.1.
+   */
+  {
+    storhet: 'Radonsugens effekt och gångtid', // elkostnad.antagande.radonsug
+    varde: `${talText(radonsug.effektW)} W i ${antalOrd(radonsug.timmarPerDygn, 'timme', 'timmar')} per dygn`,
+    grund: 'Källa',
+    stod: 'Corroventa, Radon Extractor RS 400, produktsida (läst 2026-10-07)',
+    url: 'https://www.corroventa.com/produkt/radon-extractor-rs-400/',
+    och: { grund: 'Antagande', stod: antalOrd(radonsug.timmarPerDygn, 'timme', 'timmar') },
   },
 ];
 
@@ -531,6 +582,7 @@ for (const href of LAS_VIDARE) {
               <p class="font-bold">
                 Räkna med {tal.krPerPeriod} för {tal.dagar}, och {tal.krPerAr} om året.
               </p>
+              {beskedRadonsug && <p>{beskedRadonsug}</p>}
               <p>Det är en övre gräns, för jag räknar med att maskinen drar full effekt varje minut den går.</p>
             </div>
           </>
@@ -689,6 +741,7 @@ for (const href of LAS_VIDARE) {
                     ) : (
                       a.stod
                     )}
+                    {a.och && <> {a.och.grund}. {a.och.stod}</>}
                   </td>
                 </tr>
               ))
@@ -773,7 +826,7 @@ for (const href of LAS_VIDARE) {
                       </th>
                       <td>{r.f.effektW}</td>
                       {/* Hårda mellanslag som i format.ts, så att "70 %" inte bryts isär. */}
-                      <td>{`${r.f.villkor.tempC} °C, ${r.f.villkor.rf} %`}</td>
+                      <td>{r.f.villkor && `${r.f.villkor.tempC} °C, ${r.f.villkor.rf} %`}</td>
                       <td>{r.kwhPerDygn}</td>
                       <td>{r.krPerAr}</td>
                     </tr>

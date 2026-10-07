@@ -350,7 +350,7 @@ test('förval: nyckellistan innehåller produkt', () => {
  * och 7.5). Kontrolltalen är specens tabell i 7.1: 8 h per dygn, 365 dagar och
  * 2,40 kr per kWh.
  */
-import { FORVAL_PER_PLATS, platsFranQuery } from '../src/lib/kalkyl/elkostnad.ts';
+import { AVFUKTARPLATSER, FORVAL_PER_PLATS, platsFranQuery } from '../src/lib/kalkyl/elkostnad.ts';
 
 const PLATS_KONTROLL = {
   kallare: { effektW: 320, kwhPerDygn: 2.56, kwhPerAr: 934.4, krPerAr: 2242.56 },
@@ -360,7 +360,8 @@ const PLATS_KONTROLL = {
 };
 
 test('plats: varje plats ger förvalet och kontrolltalen i 7.1', () => {
-  assert.deepEqual(Object.keys(FORVAL_PER_PLATS), Object.keys(PLATS_KONTROLL));
+  assert.deepEqual(AVFUKTARPLATSER, Object.keys(PLATS_KONTROLL));
+  assert.deepEqual(Object.keys(FORVAL_PER_PLATS), [...Object.keys(PLATS_KONTROLL), 'radonsug']);
   for (const [plats, k] of Object.entries(PLATS_KONTROLL)) {
     const q = new URLSearchParams(`plats=${plats}&dagar=365`);
     assert.equal(platsFranQuery(q), plats);
@@ -390,20 +391,57 @@ test('plats: effekt och timmar i adressen vinner över platsen', () => {
   assert.equal(tolkaQuery(new URLSearchParams('plats=krypgrund&produkt=woods-mdk21'), { effektW: 275 }).indata.effektW, 275);
 });
 
-test('plats: radonsug ger inget förval i tolkaQuery och fel i forvalFranAdress', () => {
+/*
+ * Radonsugen (docs/briefer/spec-elkostnad-radonsug-2026-10-07.md): Corroventa
+ * RS 400 på 25 W, 24 timmar, 365 dagar. Kontrolltalen ur faktabladet
+ * kunskap-radonsug.md 4.3: 0,6 kWh per dygn, 219 kWh och 525,60 kr per år.
+ */
+test('plats: radonsug ger 25 W, 24 timmar och 365 dagar, 219 kWh och 525,6 kr', () => {
   const q = new URLSearchParams('plats=radonsug');
-  assert.equal(platsFranQuery(q), null);
-  assert.equal(tolkaQuery(q).indata.effektW, EL_STANDARD.effektW);
-  assert.equal(tolkaQuery(q).indata.timmarPerDygn, EL_STANDARD.timmarPerDygn);
-  assert.equal(forvalFranAdress('plats=radonsug').status, 'fel');
+  assert.equal(platsFranQuery(q), 'radonsug');
+  const { indata, harIndata } = tolkaQuery(q);
+  assert.equal(harIndata, true);
+  assert.equal(indata.effektW, 25);
+  assert.equal(indata.timmarPerDygn, 24);
+  assert.equal(indata.dagar, 365);
+  assert.equal(indata.elprisKrPerKwh, 2.4);
+  const r = raknaElkostnad(indata);
+  assert.equal(r.status, 'ok');
+  assert.ok(Math.abs(r.kwhPerDygn - 0.6) < 1e-9, `kWh per dygn ${r.kwhPerDygn}`);
+  assert.ok(Math.abs(r.kwhPerPeriod - 219) < 1e-9, `kWh för perioden ${r.kwhPerPeriod}`);
+  assert.ok(Math.abs(r.kwhPerAr - 219) < 1e-9, `kWh per år ${r.kwhPerAr}`);
+  assert.ok(Math.abs(r.krPerPeriod - 525.6) < 1e-6, `kr för perioden ${r.krPerPeriod}`);
+  assert.ok(Math.abs(r.krPerAr - 525.6) < 1e-6, `kr per år ${r.krPerAr}`);
+  // Samma i Kalkylator, forval="plats=radonsug".
+  const f = forvalFranAdress('plats=radonsug');
+  assert.equal(f.status, 'ok');
+  assert.equal(f.plats, 'radonsug');
+  assert.equal(f.indata.effektW, 25);
+  assert.equal(f.indata.timmarPerDygn, 24);
+  assert.equal(f.indata.dagar, 365);
+  // Platser utan egna dagar behåller STANDARD:s.
+  assert.equal(tolkaQuery(new URLSearchParams('plats=kallare')).indata.dagar, EL_STANDARD.dagar);
+});
+
+test('plats: en effekt i adressen vinner över radonsugens förval', () => {
+  assert.equal(tolkaQuery(new URLSearchParams('plats=radonsug&effekt=60')).indata.effektW, 60);
+  assert.equal(forvalFranAdress('plats=radonsug&effekt=60').indata.effektW, 60);
+  assert.equal(tolkaQuery(new URLSearchParams('plats=radonsug&dagar=30')).indata.dagar, 30);
+});
+
+test('plats: tabellen över avfuktare har inte radonsugen', () => {
+  assert.ok(!AVFUKTARPLATSER.includes('radonsug'));
+  assert.equal(FORVAL_PER_PLATS.radonsug.typ, 'flakt');
+  assert.equal(FORVAL_PER_PLATS.radonsug.villkor, undefined);
 });
 
 test('plats: nyckellistan har plats', () => {
   assert.ok(FORVAL_NYCKLAR.includes('plats'));
 });
 
-test('plats: FORVAL_PER_PLATS har villkor på varje rad', () => {
-  for (const [plats, p] of Object.entries(FORVAL_PER_PLATS)) {
+test('plats: FORVAL_PER_PLATS har villkor på varje avfuktare', () => {
+  for (const plats of AVFUKTARPLATSER) {
+    const p = FORVAL_PER_PLATS[plats];
     assert.ok(Number.isFinite(p.villkor.tempC), plats);
     assert.ok(Number.isFinite(p.villkor.rf), plats);
     assert.ok(p.maskin.length > 0, plats);
