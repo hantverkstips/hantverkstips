@@ -420,7 +420,7 @@ const klartext =
     : '';
 
 /** Läs vidare: artiklarna som artikelkort, räknaren med registrets namn som på hubben. */
-const LAS_VIDARE = ['/grund/dranera-hus/', '/fukt/fukt-i-kallaren/', '/fukt/avfuktare-kallare/', '/rakna/daggpunkt/'];
+const LAS_VIDARE = ['/grund/dranera-hus/', '/grund/draneringsror/', '/fukt/fukt-i-kallaren/', '/fukt/avfuktare-kallare/', '/rakna/daggpunkt/'];
 const artiklar = [...(await publicerade('guider')), ...(await publicerade('kunskap'))];
 const lasVidare: KortData[] = LAS_VIDARE.flatMap((href): KortData[] => {
   const e = artiklar.find((a) => artikelUrl(a) === href);
@@ -619,7 +619,7 @@ const lasVidare: KortData[] = LAS_VIDARE.flatMap((href): KortData[] => {
         djup och berg, så att räkna påslaget fullt ut i båda ändarna vore att ta samma svårighet två gånger.
       </li>
       <li class="mb-2">
-        Materialet läggs på med 300 till 900 kr per löpmeter vid normalt djup. Det följer djupet rakt av, för
+        <a href="/grund/draneringsror/" class={LANK_KLASS}>Materialet</a> läggs på med 300 till 900 kr per löpmeter vid normalt djup. Det följer djupet rakt av, för
         dubbelt så djup schakt kräver dubbelt så hög skiva mot väggen.
       </li>
       <li class="mb-2">
