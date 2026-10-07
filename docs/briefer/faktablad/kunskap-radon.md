@@ -12,7 +12,7 @@ Beställt av hantverkaren 2026-09-30. Skrivet 2026-09-30 av underlag. Underlag t
 ## 1. SSM:s metodbeskrivning för bostäder (2026)
 
 **Källa:** Strålsäkerhetsmyndigheten, *Metodbeskrivning. Mätning av radon i bostäder*, "Datum: Augusti 2026", ISSN 2000-0456, 20 s.
-PDF: <https://www.stralsakerhetsmyndigheten.se/globalassets/publikationer/metodbeskrivning--matning-av-radon-i-bostader.pdf> (HTTP 200, application/pdf, läst ordagrant med pdftotext 2026-09-30).
+PDF: <https://www.stralsakerhetsmyndigheten.se/globalassets/publikationer/metodbeskrivning--matning-av-radon-i-bostader-pdf> (HTTP 200, application/pdf, läst ordagrant med pdftotext 2026-09-30). Adressen bytt 2026-10-07: SSM har flyttat PDF:en; den nya adressen svarar HTTP 200, application/pdf (kontrollerad 2026-10-07).
 Publikationssida: <https://www.stralsakerhetsmyndigheten.se/publikationer/handbocker-och-metodbeskrivningar/metodbeskrivning-matning-radon-bostader-2026/>, "Utgivningsdatum: 2026-09-04", länkar till samma PDF. Läst 2026-09-30.
 
 Det gemensamma faktabladets 8.3 ("gick inte att läsa") är därmed löst. Den gamla `contentassets`-adressen är inte längre den som SSM länkar till.
@@ -386,7 +386,7 @@ Oförändrade från SEO-checklistan avsnitt 9. Inget nytt här.
 ```yaml
 kallor:
   - titel: Strålsäkerhetsmyndigheten, Metodbeskrivning. Mätning av radon i bostäder (augusti 2026, tillämpas från 1 oktober 2026)
-    url: https://www.stralsakerhetsmyndigheten.se/globalassets/publikationer/metodbeskrivning--matning-av-radon-i-bostader.pdf
+    url: https://www.stralsakerhetsmyndigheten.se/globalassets/publikationer/metodbeskrivning--matning-av-radon-i-bostader-pdf
   - titel: Strålsäkerhetsmyndigheten, publikationssida för metodbeskrivningen (utgiven 2026-09-04)
     url: https://www.stralsakerhetsmyndigheten.se/publikationer/handbocker-och-metodbeskrivningar/metodbeskrivning-matning-radon-bostader-2026/
   - titel: Strålskyddsförordning (2018:506), 3 kap. 6 §, t.o.m. SFS 2026:1336 (läst 2026-09-30)
