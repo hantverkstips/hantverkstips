@@ -47,8 +47,17 @@ Sida: `src/content/guider/fukt/fukt-i-kallaren.mdx`, publicerad. Checklista: `do
 
 ## Kvar i underlaget, inte rättat
 
-- Tabellraden "En mörk fläck i hörnet bakom en hylla … Kondens" och förklaringen under tabellen ("kondens mot en kall punkt där luften aldrig rör sig") saknar källa, enligt faktabladet D rad 72 och 76.
+- (Löst 2026-10-08, se nedan.) Tabellraden om fläcken bakom hyllan saknade källa.
 - I faktabladet står Optihus fortfarande som källa för geosmin (rad 82), och den egna mätserien beskrivs som pågående (rad 71).
 - BETSI:s 8 procent för källare är inte använt, eftersom tabell 1.6 inte är kontrollerad med ögonen.
 
-Godkänd av hantverkaren 2026-10-08. Ändrat efter läsaren (varv 1 och 2) och korrekturen enligt ovan, och de gamla påståendena utan källa är rättade på koordinatorns uppdrag.
+## Efter SEO:s kontroll 2026-10-08
+
+- H2 "Sommar och vinter ger olika luftfuktighet i källaren" är flyttad så att den står direkt efter "Läckage kommer med regnet". Markfukt, kondens och läckage står nu i följd.
+- Rubrik A heter nu "Mögellukten kommer före fläcken". B och C behåller "i källaren".
+- Raden om den mörka fläcken bakom hyllan har fått källa. Underlagsarbetaren hittade SWESIAQ, "6. Vad vet man om fukt- och mögelskador?" (uppdaterad 2024-09-20), ordagrant: det blir ofta över 70 till 75 procent RF "bakom möbler som står tätt mot (dåligt isolerade) ytterväggar". Faktabladet har fått avsnitt G. Förklaringen under tabellen säger nu att väggen bakom hyllan blir kallare och att luftfuktigheten där ofta blir så hög att mögel kan växa. "Där luften aldrig rör sig" är struket, eftersom källan förklarar det med kyla. SWESIAQ presenteras här första gången på sidan. Källan står i `kallor`.
+- Månadsrättelsen: tabellraden om imma på rören säger nu "i juli och augusti" i stället för juli till september. `forVem` på rad 14 och i produktkortet säger "juli och augusti". I `kategorier/luftavfuktare.md` rad 63 står "juli och augusti, när uteluften bär som mest vatten", med `uppdaterad: 2026-10-08`.
+- Korrekturen på de omskrivna meningarna hittade 0 grammatikfel och gav två putsningar, som båda är gjorda.
+- `npm run kontrollera`: 0 fel, 0 varningar.
+
+Godkänd av hantverkaren 2026-10-08. Ändrat efter läsaren (varv 1 och 2), korrekturen och SEO:s tre beslut enligt ovan, och de gamla påståendena utan källa är rättade på koordinatorns uppdrag.

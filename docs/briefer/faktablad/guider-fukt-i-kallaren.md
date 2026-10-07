@@ -464,3 +464,13 @@ Villaägarna "Måste du dränera huset?" och TräGuiden Mikroorganismer står re
 **Inte nådda:**
 - Boverket, "Risker med fukt från uteluft i krypgrund" (<https://www.boverket.se/sv/byggande/forebygg-fel-brister-skador/risker/risker-fuktskador/fuktrisker-for-grund/krypgrund/risk-med-fukt-fran-uteluft-i-krypgrund/>): curl gav en sida utan artikeltexten (troligen ändrad adress). Sökmotorns utdrag används inte.
 - SMHI:s stationsdiagram (A2.1 figur 44, A2.4): bilder, värdena inte läsbara som text.
+
+### G. Tillägg 2026-10-08: kall yta bakom möbler
+
+- **Källa (ORDAGRANT, PDF-texten läst och extraherad):** SWESIAQ, "6. Vad vet man om fukt- och mögelskador?", <https://swesiaq.se/onewebmedia/Dokument/6.%20Vad%20vet%20man%20om%20fukt-%20och%20m%C3%B6gelskador.pdf>, "Uppdaterad 240920" (2024-09-20), läst 2026-10-08. Avsnitt 2, "Vanliga orsaker till att luftfuktigheten blir för hög":
+  > "Om den relativa luftfuktigheten i inomhusluften under längre tider (mer än någon vecka) ligger över 70-75 % RF är det stor risk för mikrobiell (mögel/bakterier) påväxt på olika material. Men i svenska innemiljöer är det mycket ovanligt med så hög luftfuktighet i utrymmen där människor vistas längre tider. Däremot händer detta ganska ofta på kallare ställen som i källarutrymmen, i krypgrunder, i kalla vindsutrymmen eller bakom möbler som står tätt mot (dåligt isolerade) ytterväggar eller kanske i dåligt ventilerade våtrum."
+- Samma avsnitt, nästa stycke (ORDAGRANT): "När luften kyls ner ökar den relativa luftfuktigheten."
+- **Vad källan bär:** att det bakom möbler tätt mot dåligt isolerade ytterväggar ofta blir över 70–75 % RF med stor risk för mögel, och att det beror på att stället är kallare. Källare nämns i samma mening.
+- **Vad källan inte bär:** att luften "inte rör sig" där (orsaken anges som kyla, inte stillastående luft), "några grader kallare" (inget tal) och "där börjar möglet". Ordet hylla finns inte; "möbler" gör det. Ingen källa av rang hittad för luftspalt eller avstånd från väggen.
+- Ersätter "Saknas" i B4 (rad om hyllor mot ytterväggen) och D (rad 72, 76, 131) i den del som gäller kall yta och mögelrisk.
+- **Sökt utan träff av rang:** folkhalsomyndigheten.se, boverket.se, traguiden.se, villaagarna.se på möbler/yttervägg/luftspalt/kall yta; Fuktcentrum LTH FuktFakta 2014 (handlar om luftspalt i fasad, inte möbler). Träffar som inte är källor: byggahus.se (forum), deye.com (tillverkare/säljare).

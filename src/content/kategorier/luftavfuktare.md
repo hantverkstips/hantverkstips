@@ -52,7 +52,7 @@ val:
 kopguide: /fukt/avfuktare-kallare/
 kalkylator: avfuktare
 forfattare: christian
-uppdaterad: 2026-10-07
+uppdaterad: 2026-10-08
 # Indexerad sedan 2026-09-16 kväll, när köpknapparna började svara (secret key i Vercel).
 utkast: false
 ---
@@ -60,7 +60,7 @@ utkast: false
 
 ## Så väljer du
 
-Avfuktare och luftavfuktare är två ord för samma maskin, och vilken sort du behöver hänger mest på temperaturen i utrymmet under de fuktiga månaderna. I en källare är det augusti och september. Håller det 15 grader eller mer räcker en kondensavfuktare, som kyler luften så att vattnet fälls ut. Är det kallare än 10 grader behövs i stället en maskin som torkar luften med ett material som suger åt sig fukt, och skillnaden mellan de två förklarar jag i [sorptionsavfuktare mot kondens](/fukt/sorptionsavfuktare/). Storleken tar du först när typen är bestämd.
+Avfuktare och luftavfuktare är två ord för samma maskin, och vilken sort du behöver hänger mest på temperaturen i utrymmet under de fuktiga månaderna. I en källare är det juli och augusti, när uteluften bär som mest vatten. Håller det 15 grader eller mer räcker en kondensavfuktare, som kyler luften så att vattnet fälls ut. Är det kallare än 10 grader behövs i stället en maskin som torkar luften med ett material som suger åt sig fukt, och skillnaden mellan de två förklarar jag i [sorptionsavfuktare mot kondens](/fukt/sorptionsavfuktare/). Storleken tar du först när typen är bestämd.
 
 Mellan 10 och 15 grader får en kondensmaskin ut betydligt mindre vatten än lådan lovar, och återförsäljaren Ljungby Fuktkontroll skriver att den behöver 15 grader för att göra ett bra jobb. Är källaren nästan uppe i 15 grader räcker ändå en kondensmaskin, men är den en bit under skulle jag välja sorption.
 
