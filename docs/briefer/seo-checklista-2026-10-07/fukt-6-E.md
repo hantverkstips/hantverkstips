@@ -111,3 +111,18 @@ De två platssidorna behåller sina H2, eftersom de äger egna fraser. `/fukt/fu
 De här två ersätter raden för `fukt-i-krypgrund.mdx` i tabellen i avsnitt 2, och en ny inlänk från fukt-pa-vinden kommer till.
 
 **Mönstret i title och description:** beslutet står i `fuktskada.md`, under kontrollen efter skrivningen. På E-sidorna har högst två seoTitle i formen "Ämne, A och B", och ingen description har "Se …" som andra mening. De publicerade sidorna rörs inte nu.
+
+## 7. Syskonbeslut från E5, 2026-10-07
+
+Görs av hantverkaren som lägger inlänkarna, i samma commit som omgång E publiceras. `/fukt/fuktmatning-betong/` är sajtens referens för fuktgränser i betong och för orden fuktspärr och ångspärr.
+
+1. **Var plastfolien slutar räcka: 90 procent, inte 95.** Golvbranschens "Trägolv på golvvärme" (2022) och Kährs läggningsanvisning 2021-05 anger 90 procent. 95 procent kommer från Kährs äldre anvisning (Woodloc 2G, 2017).
+   - `src/content/guider/golv/lagga-klickgolv.mdx`: Varning-rutan på rad 125 och 126, "Över 95 procent relativ fuktighet hjälper ingen folie", ändras till 90 procent med Kährs 2021 och Golvbranschen 2022 som källa. Lägg till en länk till `/fukt/fuktmatning-betong/` på "mäts i ett borrhål" (avsnitt 2).
+   - `src/content/guider/grund/inreda-kallare.mdx` rad 131 och 144: 95 ändras till 90, och källan blir Kährs 2021 och Golvbranschen 2022. Behåll Kährs 60 procent för träbjälklag, som gäller fortfarande. Läs om det i Golvbranschen 2022.
+2. **Fuktspärr och ångspärr.** Sökordet "fuktspärr" används som vardagsord för plastfolien, och det ordet står kvar på syskonsidorna, också i rubrikerna, eftersom läsaren söker på det. Där en sida beskriver folien läggs Golvbranschens ord till första gången:
+   - `src/content/guider/golv/lagga-klickgolv.mdx` rad 111: "Fuktspärren, som också kallas ångspärr, är en plastfolie …" ändras till att plastfolien som de flesta kallar fuktspärr heter ångspärr hos Golvbranschen. Golvbranschen använder ordet fuktspärr för en luftspaltsmatta. Länk till `/fukt/fuktmatning-betong/` på ordet.
+   - `src/content/guider/golv/golv-i-kallare.mdx` H2 "Klickgolv läggs alltid på en fuktspärr": rubriken står kvar. Första meningen säger vilken sort tillverkaren kräver, plastfolie eller luftspaltsmatta.
+   - Talen och tabellerna ändras inte av det här, bara ordvalet första gången.
+3. **Limmat trägolv i golv i källaren:** `src/content/guider/golv/golv-i-kallare.mdx` rad 74, "Limmat trägolv | 85 till 90 %", ändras till "65, 85 eller 90 %, beroende på limmet", med Golvbranschen (mars 2026) som källa. Det är samma tal som på E5. Tabellens källrad länkar till `/fukt/fuktmatning-betong/` för hela tabellen.
+
+Efter ändringarna ska inget tal för fukt i betong skilja sig mellan E5, golv i källaren, lägga klickgolv och inreda källare. Kontrollen läser de fyra sidorna mot varandra innan omgången pushas.

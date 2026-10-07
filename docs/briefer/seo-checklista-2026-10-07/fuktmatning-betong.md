@@ -153,3 +153,26 @@ Det ettan har som vi måste behålla eller överträffa: instrumenten med pris, 
 - **Indikerande mätare** får aldrig låta som en RBK-mätning.
 - **Uttorkningstider** står inte utan källa.
 - **Länkar i Faq-svar** fungerar inte.
+
+---
+
+## Kontroll efter skrivningen, 2026-10-07
+
+SEO och GEO-agenten har läst `src/content/kunskap/fukt/fuktmatning-betong.mdx` (utkast, cirka 2 700 ord, expert) mot punkt 1 till 12. **Godkänd av SEO och GEO**, med två ändringar.
+
+- **Metadata.** seoTitle "Fuktmätning i betong före golv och tätskikt" (43 tecken, utan kommamönstret), H1 och description (155) är godkända.
+- **Hantverkarens avvikelser är godkända:**
+  - H2 "Vilken fukt ditt golv tål i betongen" står först. Det är husägarens fråga.
+  - Mätdjupstabellen står sist i RBK-avsnittet.
+  - Fuktsäkerhetsprojekteringen (med ByggaF) och byggfukten ligger i H2:n om uttorkningen.
+  - "fuktmätare betong" bärs av H2 "Fuktmätare för betong visar bara de översta centimetrarna".
+- **Gränstabellen** har en källa per rad och tre nivåer för limmat trägolv. Den är mer fullständig än tabellen på golv i källaren och blir därför sajtens referens för "fukt i betong gränsvärden". Golv i källaren rättas mot den, se fukt-6-E.md avsnitt 6.
+- **Rättelse av checklistan:** Forbo-adressen gäller limmad linoleum. Talen för folie, 0,2 mm och 60 procent kommer från Golvbranschens "Trägolv på golvvärme" (2022). Faktabladet har rätt, och checklistans punkt 11 ska läsas så.
+- **Bättre än ettan 1, 3 och 4 är uppfyllda.** Mätdjupen kommer ur RBK:s manual med exempel och undantag, gränserna har en källa per rad, och fuktspärr skiljs från ångspärr. Krav 2 är uppfyllt när ändring 1 nedan är gjord.
+- **Länkarna ut** är fem, varav golv i källaren i två olika H2. Faq-svaren har inga länkar. Sidan har inga produkter, enligt affiliates beslut.
+- **Strukturerad data.** `Article`, `BreadcrumbList` och `FAQPage` med svar i ren text. Canonical sätts av bygget.
+
+**Ändras:**
+
+1. **Uttaget prov saknas** (Bättre än ettan 2). Skriv en mening i RBK-avsnittet om att RF i ett uttaget prov inte längre används vid RBK-mätning i betong (manualen, Flik 2, v7). Det är svaret på forumens råd att borra ut en kärna och skicka den på analys.
+2. **"fuktspärr golv" (170, sidans näst största fras) ska stå i en rubrik.** Sidan reder ut ordet, och därför ska det stå där läsaren letar. Exempel: "Fuktspärr eller ångspärr under ett flytande golv". Brödtexten förklarar sedan Golvbranschens skillnad mellan folie (ångspärr) och luftspaltsmatta (fuktspärr). Hantverkaren formulerar.
