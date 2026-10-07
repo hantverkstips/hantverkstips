@@ -146,7 +146,7 @@ TräGuiden, konstruktionsexempel (nybygge, T3):
 Cellplast under bjälklaget:
 - T1, bildtext 4: "Ett sätt att åstadkomma ett fuktsäkert bottenbjälklag av trä vid en uteluftsventilerad krypgrund är att värmeisolera undersidan av bjälklaget. Värmeisolerande blindbotten kan utföras av till exempel cellplastskivor. Kravet på skydd mot genomtrampning under arbete måste beaktas och kan uppfyllas på olika sätt."
 - F2 s. 20–21: "Med värmeisolering av cellplast eller mineralull på undersidan av bjälklaget skyddas träet mot direkt exponering mot krypgrunden."
-- F2 s. 24: materialet under ska vara "fuktbeständigt och mögelresistent"; rekommendationslistan: "Träbjälklag skyddas på undersidan med en värmeisolering som är okänslig för fukt".
+- F2 s. 25–26: materialet under ska vara "fuktbeständigt och mögelresistent"; rekommendationslistan: "Träbjälklag skyddas på undersidan med en värmeisolering som är okänslig för fukt".
 - SB1 s. 48 (arbetsgruppens svar, med Elmroth och Harderup LTH, Samuelsson SP): punkt "5. Cellplast som blindbotten" bland de viktigaste åtgärderna.
 - FJ (**SÄLJER**): "Cellplast är ett bra val vid tilläggsisolering av krypgrunder, då den är både vindtät, okänslig för fukt och mögel. Cellplastskivorna kan skruvas direkt i befintliga golvreglar." Ingen tjocklek eller skruvtyp anges.
 - Tjocklek för cellplast under bjälklag: **saknas** i källor av rang. SB1 s. 30 ger 50–60 mm "isolering under bjälklaget" utan material. Forumtal (80–120 mm, 50–100 mm) används inte.
@@ -178,7 +178,7 @@ Forskning, med tal:
 - SB1 s. 55, råd 5.2: "Genom att placera isolering på underkant bjälklag förbättrar man klimatet för träbalkarna." / "Motsvarande mängd som placeras på undersidan ska isoleringen mellan balkarna reduceras med." Råd 5.3: "En ökning av isolermängden i bjälklaget leder till en försämring av kryprumsklimatet."
 - S1, åtgärd B4: "Ett sätt att höja temperaturen på undersidan av bjälklaget är att förse det med en värmeisolering mot kryprummet. Detta minskar risken för hög RF här, men har ingen positiv (utan snarare negativ) inverkan på övriga delar av kryprummet. Man måste alltså bland annat vara speciellt omsorgsfull vid utformningen av anslutningen mellan grundmur och bjälklag."
 - F2 s. 20–21: tjockare bjälklagsisolering ger "ett kallare kryprum varvid den relativa fuktigheten särskilt sommartid blir mycket hög. I vissa fall kan ett minskat värmeflöde till grunden även leda till tjälskador i grunden, speciellt vid utåtgående hörn."
-- F2 s. 24: "En del av värmeisoleringen i bjälklaget bör alltid placeras under träbalkar och annat trämaterial för att skydda träet mot direkt exponering mot kryprumsluften."
+- F2 s. 25–26: "En del av värmeisoleringen i bjälklaget bör alltid placeras under träbalkar och annat trämaterial för att skydda träet mot direkt exponering mot kryprumsluften."
 
 Branschorganisation och tillverkare:
 - T1: "Fuktförhållandena för trämaterial på bjälklagets undersida förbättras om undersidan värmeisoleras." / "Bottenbjälklaget kan även fuktskyddas genom att en del av värmeisoleringen i bottenbjälklaget placeras på blindbottens undersida."
@@ -212,13 +212,13 @@ Tät isolering (cellplast) under träet, fuktfälla eller skydd:
 - SB2 s. 3: referenshuset hade "riskklimat under en sammanhängande tvåmånadersperiod (mitten av juni till mitten av augusti)" 2004; de isolerade grunderna hade 2005 "en sammanhängande period av minst 14 dagar med riskklimat (i juli)".
 - SB2 s. 29, slutsats: "Trots värmeisolering och noggrant utförda arbeten medför klimatet i samtliga studerade krypgrunder en risk för påväxt på framförallt organiskt material." Gäller nyproduktion; rapporten avråder från båda lösningarna där.
 - SB2 s. 3: "Värmeisolering i grunden medför en måttlig extrakostnad för projekten med cirka 20% dyrare grundläggning." (nybygge)
-- F2 s. 24, inneluftsventilerad grund: "Marken och kantbalkarna ska isoleras, inte bjälklaget." / "Om bjälklaget däremot värmeisoleras för mycket kan den relativa fuktigheten i grunden bli alltför hög."
+- F2 s. 25–26, inneluftsventilerad grund: "Marken och kantbalkarna ska isoleras, inte bjälklaget." / "Om bjälklaget däremot värmeisoleras för mycket kan den relativa fuktigheten i grunden bli alltför hög."
 - Fuktcentrum B&T 5/01 (Svensson): markisolering gav "ingen eller låg risk" (redan i `guider-fukt-i-krypgrund.md` 6). Resultaten för tilläggsisolering av bjälklaget står bara i rapporten TVBH-3038, inte läst.
 
 Kombinationer:
 - T1: "Klimatet i en uteluftsventilerad krypgrund kan dock förbättras genom att värmeisoleringen fördelas så att en mindre del av bjälklagsisoleringen förläggs på marken."
 - T1: "Klimatet i kryputrymmet kan förbättras genom att en del av den totala tjockleken värmeisolering, 50–100 mm, placeras på marken."
-- SB1 råd 5.2 och F2 s. 24 listar båda åtgärderna: en del under bjälkarna för träets skull, mark och kantbalk för grundens skull.
+- SB1 råd 5.2 och F2 s. 25–26 listar båda åtgärderna: en del under bjälkarna för träets skull, mark och kantbalk för grundens skull.
 - BE: "Kan det bli problem med att tjälen går ner under grundläggningsdjupet om det blir kallare? Överväg i så fall att isolera delvis på marken." (redan på sidan rad 141)
 - **EGEN**: ingen källa ställer underifrån och marken som antingen eller. Underifrån skyddar träet i bjälklaget; marken värmer grunden.
 
@@ -322,6 +322,43 @@ Det sidan **inte** har och som K3 belägger: att isolering under träet gör bj�
 4. Sidan rad 176 ("Marken får andas i kanten", efter GDS) och R2 ("plastfolie som avslutas en bit från grundmuren") mot F2 s. 21: den äldre rekommendationen att släppa plasten 10–15 cm från grundbalkarna ger "upp till 10 procent av markytan" utan folie och "kan medföra ett betydande fukttillskott från marken". Sidan rad 152 säger plast "över hela markytan". F2 väger tyngst.
 5. Fri höjd: sidan rad 27 "kanske 0,6 meter", rad 200 "under en halvmeter går inte". R2 "minst 500 mm", T1 "minst 600 mm", SB1 "lite mer än en halvmeter" är vanligt. Halvmetersgränsen på rad 200 har ingen egen källa på sidan.
 6. GDS-datum: sidan visar i dag "21 september 2026"; vår källista och underlaget säger 2026-02-02. Troligen uppdaterad.
-7. `guider-torpargrund.md` 6b återger F2 s. 24:s rekommendationslista men hoppar över punkten "Träbjälklag skyddas på undersidan med en värmeisolering som är okänslig för fukt".
+7. `guider-torpargrund.md` 6b återger F2 s. 25–26:s rekommendationslista men hoppar över punkten "Träbjälklag skyddas på undersidan med en värmeisolering som är okänslig för fukt".
 8. SB1 s. 30–31: "sänkning av RF-nivån med ca 5 %" när isoleringen ökar från 12 till 40 cm. Ordet går emot sammanhanget. Använd inte talet.
 9. BE har nytt datum sedan underlaget 2026-09-19: "Senast ändrad 15 juni 2026". Citaten som står på sidan finns kvar ordagrant.
+
+### K10. Cellplast mot folie, 2026-10-08
+
+Beställd av hantverkaren 2026-10-08. Fråga: stänger en isolerskiva av cellplast under träbjälklaget in fukt som en plastfolie under ullen? (a) ånggenomsläpplighet/ångmotstånd hos EPS/XPS mot folie, (b) skivan håller träet varmare och därmed torrare. Allt läst 2026-10-08, pdf:erna hämtade och genomsökta i fulltext. Sidnummer = tryckt sidnummer.
+
+Nya källor i detta avsnitt:
+
+| Kod | Källa | Rang | Adress | Datum |
+|---|---|---|---|---|
+| F4 | Sikander, SP, "Fuktsäkrare krypgrund" (uppföljning Bo92, Örebro), Bygg & teknik 8/04 s. 36–38 | forskningsinstitut (nu RISE) | <https://www.fuktcentrum.lth.se/fileadmin/fuktcentrum/Publikationer/Bygg-Teknik/8_04_36.pdf> | 2004 |
+| FM | Fuktcentrum LTH, "Myt eller Fakta - Krypgrund är en fuktsäker grundläggning?" | universitet | <https://www.fuktcentrum.lth.se/index.php?id=42897> | sidan daterad 2015-11-06 (först i FuktFakta nr 3, juni 2010) |
+
+**(b) Varmare trä, torrare trä: stöd finns.**
+- F2 s. 21 (Elmroth m.fl., Bygg & teknik 5/02), ordagrant: "Riskerna för skador på själva träbjälklaget kan minskas genom relativt enkla åtgärder. Med värmeisolering av cellplast eller mineralull på undersidan av bjälklaget skyddas träet mot direkt exponering mot krypgrunden. Detta leder till högre temperatur i golvreglar, vilket gör dem torrare varför risken för fuktskador minskar." Starkast: nämner cellplast och säger att reglarna blir varmare och torrare.
+- SB1 s. 30: "Träet hamnar då i en något högre temperatur och motsvarande lägre RF." (material anges inte; redan i K3)
+- SB1 s. 55, råd 5.2: "Genom att placera isolering på underkant bjälklag förbättrar man klimatet för träbalkarna." (redan i K3)
+- T1: "Fuktförhållandena för trämaterial på bjälklagets undersida förbättras om undersidan värmeisoleras." (redan i K3; säger inte varför)
+- S1 s. 13, B4: "Ett sätt att höja temperaturen på undersidan av bjälklaget är att förse det med en värmeisolering mot kryprummet. Detta minskar risken för hög RF här" (material anges inte)
+- R2 (tillverkare, mineralull): "Träet hamnar i en högre temperatur och motsvarande lägre relativ fuktighet." (redan i K3)
+- Varför blindbotten är utsatt utan isolering: FM: "Luften kyls av och den relativa fuktigheten stiger, ofta till mättnad och det kan ske kondensutfall både på blindbotten och på markytan." F4 s. 36: "Kondensation kan uppstå på kalla ytor. Bland annat har blindbotten oftast en kall yta eftersom marken är kall och påverkar blindbottens temperatur (strålning)."
+- **Saknas**: ingen källa säger uttryckligen att kondensen hamnar på skivans undersida i stället för mot träet, eller att det inte kondenserar på skivans insida (mellan skiva och trä). Att den kalla ytan flyttas från träet till skivans undersida är **EGEN** slutsats av F2 s. 21, FM och F4 s. 36.
+
+**(a) Ånggenomsläpplighet hos cellplast mot folie under bjälklaget: inget stöd hittat.** Ingen av källorna jämför cellplastens ångmotstånd med folie under ett bjälklag. Där källorna talar om cellplastens ångtäthet gäller det **marken**, och de beskriver cellplast som ångtät, inte öppen:
+- SB1 s. 13: "Markfukt i ångfas förhindras med ett ångtätt skikt i kombination med värmeisolering eller eventuellt enbart med en ångtät värmeisolering av cellplast."
+- SB1 s. 51, fråga 18 (cellplast i stället för plastfolie på marken): "Man bör kunna ersätta plastfolien med cellplast med förskjutna skarvar alternativt med not och spont."
+- F2 s. 22: "Det kapillärbrytande skiktet kan också vara av plastfolie eller cellplast som även minskar markavdunstningen."
+- F4 s. 36 (om markisolering, efter Padt 2004): "Lägst risk fås om diffusionsöppna isolermaterial väljs. En diffusionstät isolering hindrar fuktflödet från krypgrundsluften till marken sommartid".
+- Följd: ett argument på sidan om att cellplast "släpper igenom" ånga bättre än folie har **ingen källa** och går emot hur SB1 och F4 beskriver materialet. Det argument som håller är (b), temperaturen.
+
+**Kombinationen folie i bjälklaget och cellplast under, i källor av rang:**
+- SB1 s. 48, arbetsgruppens lista över de viktigaste åtgärderna, ordagrant: "5. Cellplast som blindbotten" och "6. Plastfolie alternativt aluminiumfolie i bjälklaget (utförs som en extra säkerhetsåtgärd för att undvika att lukt transporteras upp i bostaden)." Båda rekommenderas i samma lista; ingen risk med kombinationen nämns.
+- S1 s. 12 nämner som princip att göra "bjälklaget gas- och diffusionstätt" för att hålla lukt borta från bostaden (inte en rekommendation om material under bjälklaget).
+- Ingen källa räknar eller mäter fukt inne i bjälklaget med ångspärr ovanpå och cellplast under (samma som K3).
+
+**Sökt utan träff för (a) eller uttryckligt (b) om kondens mot skivans insida:** SB1 hela rapporten (56 s., fulltext: ånggenomsläpp, ångmotstånd, ångtät, diffusion, cellplast, kondens, uttorkning); F2 s. 20–22, 25–26; S1 s. 12–14, 16; F4 s. 36–38; Fuktcentrum 5/01 s. 22 (<https://www.fuktcentrum.lth.se/fileadmin/fuktcentrum/Publikationer/Bygg-Teknik/5_01_22.pdf>, nämner bara blindbotten av 15 mm mineralullsskivor i ett skadefall); FM; FuktFakta nr 3 juni 2010 (<https://www.fuktcentrum.lth.se/fileadmin/fuktcentrum/PDF-filer/FuktFakta100610_2.pdf>, bara ingress); T1; T3 (nämner bara mineralull, 50 mm fasadskiva, inget om ånga). TräGuidens systersidor till T3 (".../golvbjalkar-konstruktionsvirke/fukt/" och ".../luft-och-angtathet/") ger 404.
+
+**Avvikelse, sidnummer i F2:** artikeln står på tryckta s. 20, 21, 22, 25 och 26 (s. 23–24 finns inte i pdf:en). Det som K2, K3 och K9 kallar "F2 s. 25–26" står på s. 25 ("fuktbeständigt och mögelresistent", "En del av värmeisoleringen … bör alltid placeras under träbalkar") och s. 26 (rekommendationslistan, "Träbjälklag skyddas på undersidan med en värmeisolering som är okänslig för fukt"). Citaten är ordagranna; bara sidnumret är fel. K0:s "s. 20–24" bör vara "s. 20–22, 25–26".

@@ -490,3 +490,29 @@ Läsaren varv 4 gav hela sidan 4. Inte rättat:
 - Mönstren "först", "där nere" och "står i [länk]" över hela sidan.
 
 Godkänd av hantverkaren 2026-10-08: hela sidan enligt listan ovan, kontrollen grön, läsaren 4, korrekturen 0 fel.
+
+## Korrektur, varv 7
+
+Lästa: description, hela kortSvar, stycket "Själv skulle jag ta skivor av cellplast" (rad 163) och Faq-svaret om bjälklaget eller marken (rad 233).
+
+| Rad | Felaktig lydelse | Rättad lydelse | Fel |
+|---|---|---|---|
+| 4 | Isolera krypgrunden underifrån i bjälklaget eller på marken, med U-värden och besparing i kronor. | Isolera krypgrunden, i bjälklaget underifrån eller på marken, med U-värden och besparing i kronor. | syftning ("underifrån" gäller bara bjälklaget men läses som om det gällde båda) |
+| 11 | Ligger den över **75 procent relativ luftfuktighet** ska fukten bort först. | Ligger den över **75 procent** ska fukten bort först. | ord för mycket ("den" är redan luftfuktigheten, så det står "luftfuktigheten ligger över 75 procent relativ luftfuktighet") |
+| 15 | Isoleringen kommer efter allt som tar bort fukten, som att leda bort vattnet utifrån, lägga markplast och vid behov sätta in en avfuktare. | Isoleringen kommer efter allt som tar bort fukten: att leda bort vattnet utifrån, lägga markplast och vid behov sätta in en avfuktare. | meningsbyggnad ("allt som ... som att" ger två "som" i rad, och "som att" gör en hel lista till exempel) |
+| 163 | SBUF-rapporten har både cellplast som blindbotten och plastfolie i bjälklaget med bland sina råd. | Bland SBUF-rapportens råd finns både cellplast som blindbotten och plastfolie i bjälklaget. | ordföljd (partikeln "med" hamnar långt från "har" och läses först som preposition till "bjälklaget") |
+| 233 | men kräver en grund som håller sig under 75 procent relativ luftfuktighet på sommaren | men kräver att luftfuktigheten i grunden håller sig under 75 procent på sommaren | ihoptryckt (det är luften, inte grunden, som håller sig under 75 procent) |
+
+Övrigt i de lästa styckena är korrekt: "Bakom skivan får bjälkarna högre temperatur och blir därför torrare, skriver Fuktcentrum." är en hel mening med riktig ordföljd, och Faq-svarets inledning "Marken om grunden är fuktig, bjälklaget om den är torr." är en godtagbar elliptisk svarsform.
+
+Antal fel: 5. Inget är grovt, men raderna 15, 163 och 233 bör rättas innan sidan räknas som klar; rad 4 och 11 rör låsta fält och avgörs av SEO.
+
+## Hantverkaren, källkrav och SEO:s ändringar 2026-10-08
+
+- Cellplaststycket: förklaringen som var märkt som Christians förståelse, om folie mot isolerande skiva, är struken. I stället står Fuktcentrums uttryckliga skäl (Bygg & teknik 5/02 s. 21: högre temperatur i golvreglarna gör dem torrare) och att SBUF 11148 s. 48 har både cellplast som blindbotten och plastfolie i bjälklaget bland sina råd. Underlaget finns i faktabladet K10.
+- Faq 2: "redan" är struken, och avfuktaren är med, så svaret stämmer med steg 6.
+- kortSvar: "Isoleringen är alltid sista steget" är ersatt med att isoleringen kommer efter allt som tar bort fukten.
+- description (149 tecken) innehåller nu "underifrån" och mätningen först.
+- Korrektur varv 7: rad 4, 15, 163 och 233 är rättade med korrekturens lydelse. Rad 11 är inte rättad. Storheten "75 procent relativ luftfuktighet" ska enligt ROST.md avsnitt 4 alltid stå utskriven i kort svar.
+
+Godkänd av hantverkaren 2026-10-08: cellplaststycket, Faq 2, kortSvar och description, kontrollen utan fel på sidan.
