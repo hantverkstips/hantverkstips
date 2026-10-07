@@ -104,3 +104,22 @@ Sidan var godkänd mot ettan när den publicerades. Utbyggnaden ska klara de tre
 - **Betongens RF** ägs av `/fukt/fuktmatning-betong/`.
 - **Hantverkaren skriver inte om** befintliga H2, tabeller eller Faq. Namnbytet i A är den enda ändringen i befintlig text, utöver länkar och en mening.
 - **Länkar i Faq-svar** fungerar inte.
+
+---
+
+## Kontroll efter utbyggnaden, 2026-10-08
+
+SEO och GEO-agenten har läst `src/content/guider/fukt/fukt-i-kallaren.mdx` (commit 83151ee lokalt) mot punkt 1 till 12. **Godkänd av SEO och GEO**, med tre ändringar som är små i omfång.
+
+- **Fraserna sitter där checklistan ville.** A "Mögellukt i källaren kommer före fläcken", B "Mögel i källaren sitter bakom väggen och under mattan" och C "Sommar och vinter ger olika luftfuktighet i källaren" bär mögellukt, mögel i källaren och luftfuktighet i källaren. Title, description och H1 är orörda.
+- **Bättre än ettan 1 till 3 är uppfyllda.** C har en tabell över årstiderna ur SMHI:s data, märkt som egen räkning, och länkar till daggpunktsräknaren i stället för att bädda in den. B skiljer mögel från salt och röta med TräGuidens gränser. A länkar till mögellukten.
+- **Rättelserna i gammal text godkänns.** Alla har källa: vädringsrådet mot SMHI:s timtal, 17,2 g/m³, Villaägarnas citat i sin helhet, "juli och augusti", luktens spridning med SWESIAQ och faktarutan utan det påstående som saknade källa. Det är sakrättelser och ingen omskrivning.
+- **Länkarna** går till 20 olika sidor. `/fukt/mogel-i-huset/` står två gånger med olika ankare, och det godkänns. Faq-svaren har inga länkar.
+
+**Ändras:**
+
+1. **Flytta C efter "Läckage kommer med regnet".** Läsaren har rätt. Markfukt, kondens och läckage är sidans tre orsaker och ska stå i följd. C handlar om att mäta och om årstiderna och leder naturligt över till lukten och möglet. Ordningen blir: … Kondens · Läckage · Sommar och vinter … · Mögellukt … · Mögel i källaren … · Prislappen … Placeringen har ingen betydelse för sökningen, men den spelar roll för läsaren.
+2. **Fem av tio H2 innehåller "i källaren".** Det är för många och låter som en mall. A blir "Mögellukten kommer före fläcken". Sidan handlar om källaren, så frasen "mögellukt i källare" (170) bärs av rubriken tillsammans med sidans ämne. B och C behåller "i källaren", eftersom de bär de största nya fraserna (260 och 320). Markfukt och kondens är publicerade rubriker och rörs inte.
+3. **Tabellraden "En mörk fläck i hörnet bakom en hylla" saknar källa.** Ge den en källa för att kalla ytor bakom möbler mot yttervägg får kondens, till exempel Boverket eller TräGuiden om den kallaste ytan. Hittas ingen källa ska raden märkas som egen bedömning i källraden under tabellen.
+
+**Före publiceringen:** produktkortets `forVem` säger "augusti och september", men texten säger nu "juli och augusti". Affiliate rättar kortet i samma commit, så att sidan inte säger två saker.
