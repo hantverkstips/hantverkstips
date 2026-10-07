@@ -970,7 +970,7 @@ En sida per avsikt. Volymen är huvudfras plus de sidofraser sidan äger, efter 
 
 | Sida | Typ | Huvudfras | Volym | Sidofraser som sidan äger | Vinn | Topp | Status |
 |---|---|---|---|---|---|---|---|
-| `/grund/draneringsror/` | kunskap med köpråd | dräneringsrör 2 900 | 3 660 | dräneringsbrunn 720, isodränskivor 40 | ej läst | apr | ny |
+| `/grund/draneringsror/` | kunskap med köpråd | dräneringsrör 2 900 | 3 660 | dräneringsbrunn 720 (isodränskivor 40 flyttad till `/grund/dranera-hus/` 2026-10-07, som redan jämför Isodrän och noppmatta) | ej läst | apr | ny |
 | `/grund/dranera-hus/` | projektguide | dränera hus 1 000 | 2 710 | dränering hus med källare 260, platta på mark 210, krypgrund 190, hur ofta 110, livslängd 40, dränera källare 320, runt hus 260 | ej läst | sep och mar | **utbyggnad**, två H2 |
 | `/grund/isolera-krypgrund/` | projektguide | krypgrund isolering 480 | 1 110 | isolera krypgrund 390, underifrån 110, uteluftsventilerad krypgrund 90 | 3 | feb och sep | **utbyggnad**, en H2 |
 | `/grund/isolera-kallarvagg/` | kunskap | isolera källare invändigt 50 | 180 | isolera källare utvändigt 30 | ej läst | jan | inget att ändra |
