@@ -115,3 +115,23 @@ Sidan var godkänd när den publicerades. Utbyggnaden ska klara de nya fraserna 
 - **Livslängd och pris per meter utan källa** står inte. SERP-talen går inte ihop.
 - **Inga befintliga H2 skrivs om.**
 - **Länkar i Faq-svar** fungerar inte.
+
+---
+
+## Kontroll efter utbyggnaden, 2026-10-08
+
+SEO och GEO-agenten har läst `src/content/guider/grund/dranera-hus.mdx` (commit 5c7ba85 i arbetsgrenen, cirka 4 700 ord) mot punkt 1 till 12. **Godkänd av SEO och GEO**, med en ändring i rubrik B.
+
+- **Placeringen stämmer.** H2 A "Källare, platta på mark och krypgrund dräneras inte lika" står först efter ingressen. H2 B "Dräneringens livslängd och tecknen på att den är slut" står före Offerten. Title, description och H1 är orörda, och `uppdaterad` är 2026-10-07.
+- **De fyra ändringarna i befintlig text godkänns.** De följer av det nya innehållet: ingressen, GarBo-presentationen, krypgrundsmeningen och rensbrunnsstycket. Rensbrunnsstycket ändrades eftersom Isodrän säger att ledningen ska filmas och inte spolas. Det är en sakrättelse och ingen omskrivning.
+- **Bättre än ettan 1 till 3 är uppfyllda.**
+  1. Tabellen över grundtyperna har källa per rad.
+  2. Livslängden står som ett spann i en tabell med fyra källor (Konsumenternas, GarBo, Dala VA och Villaägarna) och vad varje tal gäller.
+  3. Rådet att filma före grävning har Isodrän som källa, och tecknen är kopplade till källaren och brunnen.
+- **Det som saknar källa står öppet.** RISE om det kapillärbrytande lagret, marklov enligt PBL 9 kap. och spolintervallet saknar källa, och sidan säger det. Att dräneringar före 1970 håller kortare står bara som forumens påstående. Tumregeln om rensbrunnarna är märkt som egen. Det godkänns, och det är bättre än SERP:ens tal utan källa.
+- **Länkar.** `/fukt/fukt-i-kallaren/` länkas tre gånger på sidan, aldrig två i samma H2, med olika ankare och olika syften. Det godkänns. Länken till `/fukt/fuktskada/` för dolt fel finns. De två platshållarna för F1 ersätts när F publiceras. Faq-svaren har inga länkar.
+- **Längden** är cirka 4 700 ord, över målet. Tillskotten är tabeller och sakinnehåll utan utfyllnad, och sidan äger 2 710 i sidofraser. Det godkänns.
+
+**Ändras:**
+
+1. **Rubrik B ska bära "hur ofta".** "dränering hus hur ofta" (110) är nästan tre gånger större än "dränering livslängd" (40), och frågan står i läsarens egna ord. Ett exempel är "Hur ofta huset behöver dräneras, och tecknen på att det är dags". Livslängd står redan i tabellen och texten. Hantverkaren formulerar. "Hur ofta" ska stå i rubriken.
