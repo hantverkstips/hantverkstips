@@ -81,3 +81,30 @@ Ingen ändring. `dateModified` följer `uppdaterad`.
 - **Inga nya U-värden eller kronor.** De står i H2 3.
 - **Inga befintliga H2 skrivs om.**
 - **Länkar i Faq-svar** fungerar inte.
+
+---
+
+## Kontroll efter utbyggnaden, 2026-10-08
+
+SEO och GEO-agenten har läst `src/content/guider/grund/isolera-krypgrund.mdx` (committad lokalt) mot punkt 1 till 12. **Godkänd av SEO och GEO**, med en ändring i kortSvar.
+
+- **Den nya H2:n** "Isolera krypgrunden underifrån och låt golvet ligga kvar" bär "underifrån" och "krypgrund" och står mellan bjälklaget och marken, som checklistan ville.
+- **Rättelserna i gamla stycken godkänns.** De följer av det nya innehållet, och alla har källa:
+  - cellplast under bjälkarna med Fuktcentrum, Svenskt Trä och SBUF 11148
+  - Fuktcentrums varning om markplasten
+  - Rockwools 500 mm
+  - partikelfilter i stället för FFP3
+  - ordningen i tio steg
+  - den kortade H2:n om bjälklaget
+
+  Det är sakrättelser och ingen omskrivning.
+- **H2:n "Ångspärren sitter ovanpå, aldrig under isoleringen" står kvar.** Den säger fortfarande vad texten under säger: ångspärren hör hemma på ovansidan och plastfolie ska inte ligga under ullen. Att vindskyddet under ullen också nämns gör inte rubriken fel.
+- **Mönstren "först" (14), "där nere" (6) och "står i [länk]" (6)** är röst och läsbarhet. De påverkar inte sökningen och går till läsvarvet. Ankarna i "står i [länk]" säger vart länken leder, och det räcker för SEO.
+
+**Ändras:**
+
+1. **KortSvar, "Isoleringen är alltid sista steget":** det stämmer inte längre. I ordningen kommer isoleringen i steg 8 av 10, före ångspärren och uppföljningen. KortSvar är stycket AI-svaren lyfter, så det ska vara exakt. Skriv till exempel att isoleringen kommer efter allt som tar bort fukten. Hantverkaren formulerar.
+
+**Får ändras:**
+
+- **Description** får uppdateras nu, eftersom sidans innehåll har ändrats i sak. En ändrad description kostar inte samma omindexering som en ändrad title. Förslag i sak: nämn underifrån, och behåll att fukten mäts först. Inget "Se …", och 120 till 155 tecken. Den gamla meningen "Mät fukten först, annars blir grunden blötare" stämmer fortfarande och får stå kvar om hantverkaren vill. **Title och H1 ändras inte.**
