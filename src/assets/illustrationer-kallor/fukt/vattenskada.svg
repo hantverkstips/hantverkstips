@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Vattenskada under diskbänken i genomskärning, med vattnet under golvet och en avfuktare som torkar.">
+  <!-- Anteckningsboken, samma hand som fuktskada.svg. Kök i genomskärning: vägg, överskåp, bänkskiva med ho och
+       blandare, skåpet under diskbänken med vattenlås och vattenledning med en koppling som droppar. Flytande golv
+       (parkett på underlagsmatta) på skrafferad betong; vattnet ligger som ett vågigt band mellan mattan och betongen
+       från skåpet och in under golvet. Fläkt på golvet med en blyertspil längs golvytan, avfuktare (låda med galler).
+       Pennan pekar på läckan, enda pennsaken. Rutan uppe till höger: ledningen in genom väggen, ventil, vattenmätare,
+       ventil, blyerts. Ingen markering, inga tal, inga människor. Handskrift i Caveat 500, konverteras till banor.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2 1,25: betongen -->
+  <path d="M48,290l7,-7M70,290l7,-7M92,290l7,-7M114,290l7,-7M356,290l7,-7M378,290l7,-7M400,290l7,-7M422,290l7,-7M444,290l7,-7M466,290l7,-7M488,290l7,-7M510,290l7,-7M532,290l7,-7M554,290l7,-7M576,290l7,-7M59,312l7,-7M81,312l7,-7M103,312l7,-7M125,312l7,-7M345,312l7,-7M367,312l7,-7M389,312l7,-7M411,312l7,-7M433,312l7,-7M455,312l7,-7M477,312l7,-7M499,312l7,-7M521,312l7,-7M543,312l7,-7M565,312l7,-7M587,312l7,-7M48,334l7,-7M70,334l7,-7M92,334l7,-7M114,334l7,-7M136,334l7,-7M158,334l7,-7M180,334l7,-7M202,334l7,-7M224,334l7,-7M246,334l7,-7M268,334l7,-7M290,334l7,-7M312,334l7,-7M334,334l7,-7M356,334l7,-7M378,334l7,-7M400,334l7,-7M422,334l7,-7M444,334l7,-7M466,334l7,-7M488,334l7,-7M510,334l7,-7M532,334l7,-7M554,334l7,-7M576,334l7,-7" fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round"/>
+  <!-- Papperslapp bakom etiketten i betongen -->
+  <rect x="138" y="280" width="208" height="30" fill="#f5efe3"/>
+  <!-- Blyerts-2 1,5: rutan -->
+  <path d="M433,14 Q514,15.5 595,14 M433,136 Q514,134.5 595,136 M436,11 Q437.5,75 436,139 M592,11 Q590.5,75 592,139" fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Blyerts 2: köket, golvet, ledningen, dropparna, fläkten, luftpilen, avfuktaren, mätaren med ventilerna, ledaren -->
+  <path d="M58,238 Q327,235.5 596,238 M58,250 Q327,252 596,250 M58,256 Q327,254 596,256 M44,268 Q321,270.5 598,268 M44,344 Q321,342 598,344 M128,239 Q127.8,244 128,249 M246,239 Q245.8,244 246,249 M364,239 Q363.8,244 364,249 M482,239 Q481.8,244 482,249 M50,12 Q51.5,140 50,268 M58,12 Q56.5,125 58,238 M56,26 Q131,27 206,26 M56,88 Q131,87 206,88 M204,24 Q203.5,57 204,90 M131,28 Q131.4,57 131,86 M120,60 v8 M142,60 v8 M52,130 Q68,130.5 84,130 M160,130 Q188,129.4 216,130 M52,140 Q68,139.5 84,140 M160,140 Q188,140.6 216,140 M214,128 Q213.8,135 214,142 M84,130 Q82,166 92,168 Q122,171 152,168 Q162,166 160,130 M180,130 Q181,114 179,102 Q178,94 170,94 Q160,94 154,96 L154,104 M174,130 Q180,130.2 186,130 M62,140 Q63.2,189.5 62,239 M204,140 Q202.8,189.5 204,239 M62,226 Q133,224.8 204,226 M118,169 V186 Q118,198 108,198 Q98,198 98,186 V178 Q78,176.5 58,178 M174,226 Q172.5,212 174,198 M180,226 Q181.5,212 180,198 M174,186 Q172.5,164 174,141 M180,186 Q181.5,164 180,141 M168,186 Q177,186.3 186,186 M168,198 Q177,197.7 186,198 M168,185 Q167.8,192 168,199 M186,185 Q186.2,192 186,199 M190,204 Q195,212 190,215 Q185,212 190,204 M190,218 Q194.5,225 190,228 Q185.5,225 190,218 M322,184 a19,19 0 1 1 -0.1,0 M322,203 q-8,-8 0,-13 M322,203 q8,8 0,13 M322,203 q8,-7 13,1 M322,203 q-8,7 -13,-1 M322,222 Q321.8,229.5 322,237 M306,237 Q322,236.7 338,237 M298,229 Q262,226 214,230 M222.2,224.3 L214,230 L223,234.3 M390,158 Q419,157.2 448,158 M390,234 Q419,234.8 448,234 M392,156 Q391,196 392,236 M446,156 Q447,196 446,236 M400,170 Q419,170.3 438,170 M400,178 Q419,178.3 438,178 M400,186 Q419,186.3 438,186 M400,194 Q419,194.3 438,194 M398,234 v3 M440,234 v3 M456,18 Q457,74 456,130 M464,18 Q463,74 464,130 M440,64 Q457,64.4 474,64 M440,70 Q457,69.6 474,70 M474,58 L490,76 L490,58 L474,76 Z M482,67 V50 M476,50 H488 M490,64 Q498,64.3 506,64 M490,70 Q498,69.7 506,70 M506,52 Q525,51.5 544,52 M506,84 Q525,84.5 544,84 M506,50 Q505.7,68 506,86 M544,50 Q544.3,68 544,86 M525,59 a9,9 0 1 1 -0.1,0 M525,68 L530,63 M544,64 Q551,64.3 558,64 M544,70 Q551,69.7 558,70 M558,58 L574,76 L574,58 L558,76 Z M566,67 V50 M560,50 H572 M574,64 Q581,64.3 588,64 M574,70 Q581,69.7 588,70 M262,282 Q263,274 262,266" fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Blyerts 1,8: vattnet under golvet -->
+  <path d="M62,259.5 Q66,255.3 70,259.5 Q74,263.7 78,259.5 Q82,255.3 86,259.5 Q90,263.7 94,259.5 Q98,255.3 102,259.5 Q106,263.7 110,259.5 Q114,255.3 118,259.5 Q122,263.7 126,259.5 Q130,255.3 134,259.5 Q138,263.7 142,259.5 Q146,255.3 150,259.5 Q154,263.7 158,259.5 Q162,255.3 166,259.5 Q170,263.7 174,259.5 Q178,255.3 182,259.5 Q186,263.7 190,259.5 Q194,255.3 198,259.5 Q202,263.7 206,259.5 Q210,255.3 214,259.5 Q218,263.7 222,259.5 Q226,255.3 230,259.5 Q234,263.7 238,259.5 Q242,255.3 246,259.5 Q250,263.7 254,259.5 Q258,255.3 262,259.5 Q266,263.7 270,259.5 Q274,255.3 278,259.5 Q282,263.7 286,259.5 Q290,255.3 294,259.5 Q298,263.7 302,259.5 Q306,255.3 310,259.5 Q314,263.7 318,259.5 Q322,255.8 326,259.5 Q330,262.5 334,259.5 Q338,257.1 342,259.5 Q346,261.2 350,259.5 Q354,258.5 358,259.5 Q360,259.8 362,259.5 M66,265 Q70,269.2 74,265 Q78,260.8 82,265 Q86,269.2 90,265 Q94,260.8 98,265 Q102,269.2 106,265 Q110,260.8 114,265 Q118,269.2 122,265 Q126,260.8 130,265 Q134,269.2 138,265 Q142,260.8 146,265 Q150,269.2 154,265 Q158,260.8 162,265 Q166,269.2 170,265 Q174,260.8 178,265 Q182,269.2 186,265 Q190,260.8 194,265 Q198,269.2 202,265 Q206,260.8 210,265 Q214,269.2 218,265 Q222,260.8 226,265 Q230,269.2 234,265 Q238,260.8 242,265 Q246,269.2 250,265 Q254,260.8 258,265 Q262,269.2 266,265 Q270,260.8 274,265 Q278,269.2 282,265 Q286,260.8 290,265 Q294,269.2 298,265 Q302,260.8 306,265 Q310,268.9 314,265 Q318,261.8 322,265 Q326,267.5 330,265 Q334,263.2 338,265 Q342,266.2 346,265 Q349,264.5 352,265" fill="none" stroke="#2a2521" stroke-width="1.8" stroke-linecap="round"/>
+  <!-- Snickarpenna: pilen till läckan -->
+  <path d="M232,166 Q214,170 192,190 M195.3,179.5 L192,190 L202.7,187.7" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="238" y="168">läckan</text>
+    <text x="150" y="303">vatten under golvet</text>
+    <text x="470" y="120">huvudkranen</text>
+  </g>
+</svg>

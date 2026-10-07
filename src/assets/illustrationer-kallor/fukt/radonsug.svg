@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Radonsug i ett hus på platta i genomskärning, med röret från suggropen under golvet till fläkten på fasaden.">
+  <!-- Anteckningsboken, samma hand som radon-vagar.svg. Enplanshus på platta i genomskärning, skrafferat gruslager
+       under plattan (snedstreck framåt) och mark under det (snedstreck bakåt). Suggrop mitt under plattan, röret upp
+       längs innerväggen, under bjälklaget och ut genom ytterväggen till fläkten på fasaden, en bit ovanför fönstret,
+       inte över taket. Markluftens pilar i blyerts i gruset mot gropen. Pennan pekar på suggropen, enda pennsaken.
+       Rutan uppe till höger: radonbrunn i tomten, lodrätt rör ner i grus med fläkt ovanpå, blyerts.
+       Ingen markering, inga mått. Handskrift i Caveat 500, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2 1,25: gruset, marken, plattan och gruset i rutan -->
+  <path d="M60,264l7,-7M82,264l7,-7M104,264l7,-7M126,264l7,-7M148,264l7,-7M170,264l7,-7M192,264l7,-7M258,264l7,-7M280,264l7,-7M302,264l7,-7M324,264l7,-7M346,264l7,-7M368,264l7,-7M71,286l7,-7M93,286l7,-7M115,286l7,-7M137,286l7,-7M159,286l7,-7M181,286l7,-7M247,286l7,-7M269,286l7,-7M291,286l7,-7M313,286l7,-7M335,286l7,-7M357,286l7,-7M379,286l7,-7M44,259l7,7M44,303l7,7M44,347l7,7M400,259l7,7M422,259l7,7M444,259l7,7M466,259l7,7M488,259l7,7M510,259l7,7M532,259l7,7M554,259l7,7M576,259l7,7M411,281l7,7M433,281l7,7M455,281l7,7M477,281l7,7M499,281l7,7M521,281l7,7M543,281l7,7M565,281l7,7M587,281l7,7M400,303l7,7M422,303l7,7M444,303l7,7M466,303l7,7M488,303l7,7M510,303l7,7M532,303l7,7M554,303l7,7M576,303l7,7M411,325l7,7M433,325l7,7M455,325l7,7M477,325l7,7M499,325l7,7M521,325l7,7M543,325l7,7M565,325l7,7M587,325l7,7M400,347l7,7M422,347l7,7M444,347l7,7M466,347l7,7M488,347l7,7M510,347l7,7M532,347l7,7M554,347l7,7M576,347l7,7M56,297l7,7M78,297l7,7M100,297l7,7M122,297l7,7M144,297l7,7M166,297l7,7M188,297l7,7M210,297l7,7M232,297l7,7M254,297l7,7M276,297l7,7M298,297l7,7M320,297l7,7M342,297l7,7M364,297l7,7M386,297l7,7M67,319l7,7M89,319l7,7M111,319l7,7M133,319l7,7M155,319l7,7M177,319l7,7M199,319l7,7M221,319l7,7M243,319l7,7M353,319l7,7M375,319l7,7M56,341l7,7M78,341l7,7M100,341l7,7M122,341l7,7M144,341l7,7M166,341l7,7M188,341l7,7M210,341l7,7M232,341l7,7M364,341l7,7M386,341l7,7M66,249l7,-7M88,249l7,-7M110,249l7,-7M132,249l7,-7M154,249l7,-7M176,249l7,-7M198,249l7,-7M242,249l7,-7M264,249l7,-7M286,249l7,-7M308,249l7,-7M330,249l7,-7M352,249l7,-7M374,249l7,-7M448,126l7,-7M470,126l7,-7M492,126l7,-7M514,126l7,-7M536,126l7,-7M459,148l7,-7M481,148l7,-7M503,148l7,-7M525,148l7,-7M448,170l7,-7M470,170l7,-7M492,170l7,-7M514,170l7,-7M536,170l7,-7M459,192l7,-7M481,192l7,-7M503,192l7,-7M525,192l7,-7" fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round"/>
+  <!-- Blyerts-2 1,5: rutan -->
+  <path d="M439,12 Q517,13.5 595,12 M439,196 Q517,194.5 595,196 M442,9 Q443.5,104 442,199 M592,9 Q590.5,104 592,199" fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Blyerts 2: huset, plattan, gruslagret, röret, gropen, fläktarna, markluftens pilar, radonbrunnen -->
+  <path d="M42,252 Q51,252.4 60,252 M392,252 Q495,250.5 598,252 M56,252 Q55.5,272 56,292 M54,290 Q226,292 398,290 M396,252 Q396.5,272 396,292 M58,238 Q140,236 222,238 M230,238 Q312,240 394,238 M58,252 Q140,253.5 222,252 M230,252 Q312,250.5 394,252 M60,236 Q59.7,245 60,254 M392,236 Q392.3,245 392,254 M66,115 Q68,176.5 66,238 M78,124 Q76,181 78,238 M374,124 Q373.3,135 374,146 M374,154 Q374.8,176 374,198 M374,230 Q373.8,234 374,238 M386,115 Q386.9,130.5 386,146 M386,154 Q385.2,176 386,198 M386,230 Q386.2,234 386,238 M370,198 Q380,198.3 390,198 M370,230 Q381,229.7 392,230 M378,200 Q377.5,214 378,228 M382,200 Q382.5,214 382,228 M63,118 Q226,115.5 389,118 M78,124 Q226,126 374,124 M46,129 Q135.2,86.2 226,47 M226,47 Q315.2,89.8 406,129 M58,132 Q141.4,92.6 226,56 M226,56 Q309.4,95.4 394,132 M46,129 Q52,130.7 58,132 M406,129 Q400,130.7 394,132 M236,124 Q235.3,135 236,146 M236,154 Q237.2,196 236,238 M244,124 Q244.7,135 244,146 M244,154 Q242.8,196 244,238 M222,262 Q220.5,205 222,154 Q222,146 230,146 Q305,143.5 388,146 M230,262 Q231.5,205 230,154 Q305,156.5 388,154 M220,262 H232 M205,253 Q203,276 217,280 Q226,283 235,280 Q249,276 247,253 M388,134 Q387.6,150 388,166 M386,136 Q403,135.4 420,136 M418,134 Q418.4,150 418,166 M386,164 Q403,164.6 420,164 M403,141 a9,9 0 1 1 -0.1,0 M403,150 q-6,-6 0,-9 M403,150 q6,6 0,9 M403,150 q6,-5 9,1 M403,150 q-6,5 -9,-1 M82,272 Q118,270 154,271 M146.1,275.3 L154,271 L146.3,266.3 M162,271 Q181,270 199,270 M191.2,274.5 L199,270 L191.2,265.5 M370,272 Q334,270 298,271 M305.7,266.3 L298,271 L305.9,275.3 M290,271 Q271,270 253,270 M260.8,265.5 L253,270 L260.8,274.5 M446,112 Q502,113 558,112 M570,112 Q579,111.5 588,112 M558,80 Q559.5,133 558,186 M570,80 Q568.5,133 570,186 M546,52 Q564,51.4 582,52 M546,80 Q564,80.6 582,80 M548,50 Q547.6,66 548,82 M580,50 Q580.4,66 580,82 M564,57 a9,9 0 1 1 -0.1,0 M564,66 q-6,-6 0,-9 M564,66 q6,6 0,9 M564,66 q6,-5 9,1 M564,66 q-6,5 -9,-1" fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Snickarpenna: pilen till suggropen -->
+  <path d="M300,316 Q292,290 254,281 M264.5,277.8 L254,281 L262,288.5" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="268" y="340">suggrop</text>
+    <text x="390" y="188">fläkt</text>
+    <text x="452" y="40">radonbrunn</text>
+  </g>
+</svg>

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Snitt genom en betongplatta på cellplast med borrhålet för fuktmätning ner till 0,4 gånger tjockleken.">
+  <!-- Anteckningsboken, skiss för /kunskap/fuktmatning-betong/. Betongplatta på cellplast i snitt, ritad stor:
+       plattan 110 hög (H), cellplasten under med korta vågiga streck, brott till höger. Borrhålet med mätrör, lock
+       och givare ner till exakt 0,4 × H (44). Måttbygel blyerts-2 från ytan till hålets botten, gul markering bakom
+       nyckeltalet 0,4 × H; en andra bygel till vänster för hela tjockleken H. Torkpilar i blyerts bara uppåt, inga
+       pilar mot cellplasten. Snickarpennan pekar på givaren, enda pennsaken.
+       Rutan uppe till höger: ett bjälklag (72 högt) som torkar åt båda hållen, pilar upp och ner, med mätrör och givare i hålet ner till
+       0,2 × H (14,4); bygeln utanför högra kanten med etiketten ovanför. Blyerts, ingen markering.
+       Handskrift i Caveat 500, 24 px, konverteras till banor vid bygget.
+       Tokens: papper #f5efe3, linje #c9bca3, blyerts #2a2521, blyerts-2 #625a50, penna #ad3519, tumstock #e8b830 -->
+  <defs>
+    <pattern id="linjerat" width="48" height="24" patternUnits="userSpaceOnUse">
+      <rect width="48" height="24" fill="#f5efe3"/>
+      <path d="M0,23.5 H48" stroke="#c9bca3" stroke-width="0.75" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="600" height="360" fill="url(#linjerat)"/>
+  <path d="M40,0 V360" stroke="#ad3519" stroke-width="0.75" stroke-opacity="0.35" fill="none"/>
+
+  <!-- Blyerts-2 1,25: skraffering i betongen och cellplastens vågor -->
+  <path d="M90,201l7,-7M112,201l7,-7M134,201l7,-7M156,201l7,-7M178,201l7,-7M200,201l7,-7M222,201l7,-7M244,201l7,-7M266,201l7,-7M288,201l7,-7M310,201l7,-7M332,201l7,-7M354,201l7,-7M398,201l7,-7M442,201l7,-7M464,201l7,-7M101,223l7,-7M123,223l7,-7M145,223l7,-7M167,223l7,-7M189,223l7,-7M211,223l7,-7M233,223l7,-7M255,223l7,-7M277,223l7,-7M299,223l7,-7M321,223l7,-7M343,223l7,-7M365,223l7,-7M90,245l7,-7M112,245l7,-7M134,245l7,-7M156,245l7,-7M178,245l7,-7M200,245l7,-7M222,245l7,-7M244,245l7,-7M266,245l7,-7M288,245l7,-7M310,245l7,-7M332,245l7,-7M354,245l7,-7M376,245l7,-7M398,245l7,-7M420,245l7,-7M442,245l7,-7M464,245l7,-7M101,267l7,-7M123,267l7,-7M145,267l7,-7M167,267l7,-7M189,267l7,-7M211,267l7,-7M233,267l7,-7M255,267l7,-7M277,267l7,-7M299,267l7,-7M321,267l7,-7M343,267l7,-7M365,267l7,-7M387,267l7,-7M409,267l7,-7M431,267l7,-7M453,267l7,-7M90,289l7,-7M112,289l7,-7M134,289l7,-7M156,289l7,-7M178,289l7,-7M200,289l7,-7M222,289l7,-7M244,289l7,-7M266,289l7,-7M288,289l7,-7M310,289l7,-7M332,289l7,-7M354,289l7,-7M376,289l7,-7M398,289l7,-7M420,289l7,-7M442,289l7,-7M464,289l7,-7M400,64l7,-7M422,64l7,-7M444,64l7,-7M466,64l7,-7M411,86l7,-7M433,86l7,-7M455,86l7,-7M477,86l7,-7M499,86l7,-7M400,108l7,-7M422,108l7,-7M444,108l7,-7M466,108l7,-7M488,108l7,-7M510,108l7,-7" fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round"/>
+  <path d="M90,304q3,-4 6,0t6,0M110,304q3,-4 6,0t6,0M130,304q3,-4 6,0t6,0M150,304q3,-4 6,0t6,0M170,304q3,-4 6,0t6,0M190,304q3,-4 6,0t6,0M210,304q3,-4 6,0t6,0M230,304q3,-4 6,0t6,0M250,304q3,-4 6,0t6,0M270,304q3,-4 6,0t6,0M290,304q3,-4 6,0t6,0M310,304q3,-4 6,0t6,0M330,304q3,-4 6,0t6,0M350,304q3,-4 6,0t6,0M370,304q3,-4 6,0t6,0M390,304q3,-4 6,0t6,0M410,304q3,-4 6,0t6,0M430,304q3,-4 6,0t6,0M450,304q3,-4 6,0t6,0M100,316q3,-4 6,0t6,0M120,316q3,-4 6,0t6,0M140,316q3,-4 6,0t6,0M160,316q3,-4 6,0t6,0M180,316q3,-4 6,0t6,0M200,316q3,-4 6,0t6,0M220,316q3,-4 6,0t6,0M240,316q3,-4 6,0t6,0M260,316q3,-4 6,0t6,0M280,316q3,-4 6,0t6,0M300,316q3,-4 6,0t6,0M320,316q3,-4 6,0t6,0M340,316q3,-4 6,0t6,0M360,316q3,-4 6,0t6,0M380,316q3,-4 6,0t6,0M400,316q3,-4 6,0t6,0M420,316q3,-4 6,0t6,0M440,316q3,-4 6,0t6,0M460,316q3,-4 6,0t6,0M90,328q3,-4 6,0t6,0M110,328q3,-4 6,0t6,0M130,328q3,-4 6,0t6,0M150,328q3,-4 6,0t6,0M170,328q3,-4 6,0t6,0M190,328q3,-4 6,0t6,0M210,328q3,-4 6,0t6,0M230,328q3,-4 6,0t6,0M250,328q3,-4 6,0t6,0M270,328q3,-4 6,0t6,0M290,328q3,-4 6,0t6,0M310,328q3,-4 6,0t6,0M330,328q3,-4 6,0t6,0M350,328q3,-4 6,0t6,0M370,328q3,-4 6,0t6,0M390,328q3,-4 6,0t6,0M410,328q3,-4 6,0t6,0M430,328q3,-4 6,0t6,0M450,328q3,-4 6,0t6,0" fill="none" stroke="#625a50" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Blyerts-2 1,5: rutans ram och måttbyglarna -->
+  <path d="M377,9 Q485,10.3 593,9 M377,153 Q485,151.7 593,153 M380,6 Q378.8,81 380,156 M590,6 Q591.2,81 590,156" fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M492,180 Q502,180.2 512,180 M431,224 Q471.5,223.7 512,224 M505,176 Q504,202 505,228 M501,184 l8,-8 M501,228 l8,-8 M62,180 Q70,179.8 78,180 M62,290 Q70,290.2 78,290 M68,176 Q69.2,235 68,294 M64,184 l8,-8 M64,294 l8,-8 M528,46 Q537.5,45.8 547,46 M500,60.4 Q523.5,60.6 547,60.4 M540,42 Q540.4,53.2 540,64.4 M536,50 l8,-8 M536,64.4 l8,-8" fill="none" stroke="#625a50" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Blyerts 2: plattan, cellplasten, hålet med mätrör och givare, torkpilarna, bjälklaget i rutan -->
+  <path d="M81,180 Q285.5,175.1 490,180 M81,290 Q285.5,294.9 490,290 M81,336 Q285.5,331.1 490,336 M84,177 Q82.7,258 84,339 M488,177 Q494,200 486,220 Q480,242 491,264 Q497,290 487,308 Q482,328 489,339 M413,178 Q414,202 413,226 M427,178 Q426,202 427,226 M411,224 Q420,223.5 429,224 M417,170 Q416.4,191.5 417,213 M423,170 Q423.6,191.5 423,213 M412,170 Q420,169 428,170 M413,165 Q420,164 427,165 M412,165 V171 M428,165 V171 M415,213 Q420,212.4 425,213 V221 Q420,221.6 415,221 Z M150,172 Q153,147 150,122 M144.5,131.5 L150,122 M155.5,131.5 L150,122 M230,172 Q233,147 230,122 M224.5,131.5 L230,122 M235.5,131.5 L230,122 M310,172 Q313,147 310,122 M304.5,131.5 L310,122 M315.5,131.5 L310,122 M391,46 Q459,47.6 527,46 M391,118 Q459,116.4 527,118 M394,43 Q392.4,82 394,121 M524,43 Q525.6,82 524,121 M482,44 Q481.4,53.2 482,62.4 M498,44 Q498.6,53.2 498,62.4 M480,60.4 Q490,61 500,60.4 M487,37 Q487.3,45 487,53 M493,37 Q492.7,45 493,53 M482,37 Q490,36 498,37 M483,32 Q490,31 497,32 M482,32 V38 M498,32 V38 M485.5,53 Q490,52.5 494.5,53 V59 Q490,59.5 485.5,59 Z M418,42 Q420,28 418,14 M413.5,21.8 L418,14 M422.5,21.8 L418,14 M418,122 Q416,133 418,144 M422.5,136.2 L418,144 M413.5,136.2 L418,144 M452,42 Q454,28 452,14 M447.5,21.8 L452,14 M456.5,21.8 L452,14 M452,122 Q450,133 452,144 M456.5,136.2 L452,144 M447.5,136.2 L452,144" fill="none" stroke="#2a2521" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Tumstock bakom nyckeltalet -->
+  <rect x="511" y="185" width="72" height="28" fill="#e8b830" fill-opacity="0.65" transform="rotate(-1.5 547 199)"/>
+
+  <!-- Snickarpenna: pilen mot givaren -->
+  <path d="M348,124 Q352,200 410,218 M401.9,209.2 L410,218 M398.3,220.7 L410,218" fill="none" stroke="#ad3519" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Handskrift (Caveat) -->
+  <g font-family="'Caveat', 'Segoe Print', cursive" font-weight="500" font-size="24" fill="#2a2521">
+    <text x="547" y="207" text-anchor="middle">0,4 × H</text>
+    <text x="48" y="243" fill="#625a50">H</text>
+    <text x="230" y="108" text-anchor="middle">torkar bara uppåt</text>
+    <text x="540" y="31" text-anchor="middle">0,2 × H</text>
+  </g>
+</svg>
