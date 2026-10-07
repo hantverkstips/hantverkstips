@@ -122,3 +122,25 @@ Det ettan har som vi måste behålla eller överträffa: ett prisintervall, och 
 - **Radonsugen i krypgrunden** får inte låta som en avfuktare. Krypgrundens fukt ägs av krypgrundssidorna.
 - **Inget råd om att installera sugen själv** utan källa. Elanslutningen följer samma lagrum som badrumsfläkten (Elsäkerhetsverket).
 - **Länkar i Faq-svar** fungerar inte.
+
+---
+
+## Kontroll efter skrivningen, 2026-10-07
+
+SEO och GEO-agenten har läst `src/content/kunskap/fukt/radonsug.mdx` (utkast, cirka 2 300 ord med Faq) mot punkt 1 till 12. **Godkänd av SEO och GEO**, med en liten ändring.
+
+- **Metadata.** seoTitle "Radonsug och vad en radonsanering kostar" (40 tecken) är godkänd. Den bär "radonsanering" och bryter kommamönstret enligt beslutet i `fuktskada.md`. H1 "En radonsug håller markradonet kvar under golvet" delar inte de tre första orden med title. Description (152 tecken) är godkänd, med firmornas pris märkt som deras och påstående som andra mening.
+- **Bättre än ettan 1 till 4 är uppfyllda.**
+  1. Ingressen säger referensnivån med strålskyddsförordningen (2018:506) och åtgärden efter källa (mark, blåbetong, brunn) med SSM som källa. Det räcker, eftersom radonsidan har resten och länkas därifrån. H2 1 får strykas.
+  2. Typtabellen finns. Smalrör står i en mening efter tabellen, eftersom ingen källa säger var metoden passar. Det är rätt.
+  3. Elen står med SCB:s elpris och länk till `/rakna/elkostnad/?plats=radonsug`.
+  4. Kontrollen är delad i två H2, "Huset du köper har redan en radonsug" och "Halten kan krypa upp igen efter några år". Det godkänns. Den första fångar en egen avsikt (husköp), och den andra har SSI 2002:10 om beständigheten.
+- **Rotavdraget och bidraget** har källor: Skatteverket och förordningen 2018:158. "Folkhälsomyndighetens rekommendation" förekommer inte.
+- **Länkarna ut** är sju: radon i ingressen och i kontrollen (olika H2), fukt i källaren, självdrag, fukt i krypgrund, rotavdraget och elkostnaden. Faq-svaren har inga länkar. Inga produkter och inget reklamband, enligt affiliates beslut.
+- **Strukturerad data.** `Article`, `BreadcrumbList` och `FAQPage` med svar i ren text. Canonical sätts av bygget. När bilden kommer ska `bildAlt` ha "radonsug" och vara högst 125 tecken.
+
+**Ändras:**
+
+1. **"radon åtgärder" (110)** står inte i någon form. När H2 1 ströks försvann platsen. Skriv in "åtgärder mot radon" en gång, i ingressen eller i första meningen under H2 "Tätningen kommer först". Ett exempel: "Av alla åtgärder mot radon från marken är tätningen den första." Hantverkaren formulerar.
+
+**Inlänkar:** underlagets förslag stämmer med fukt-6-E.md avsnitt 2: `radon.mdx` rad 182 (ankare "en radonsug"), `sjalvdrag.mdx` rad 137 och `fukt-i-kallaren.mdx` rad 209. De läggs när E publiceras.
