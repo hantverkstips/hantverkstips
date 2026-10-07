@@ -86,3 +86,24 @@ Ingen ändring utöver det affiliate gör med korten och priserna. Reklambandet 
 - **Krypgrunden och torpargrunden** ägs av sina sidor.
 - **Inga befintliga H2 skrivs om**, utöver namnbytet i A.
 - **Länkar i Faq-svar** fungerar inte.
+
+---
+
+## Kontroll efter utbyggnaden, 2026-10-08
+
+SEO och GEO-agenten har läst `src/content/guider/fukt/avfuktare-garage.mdx` (committad lokalt) mot punkt 1 till 12. **Godkänd av SEO och GEO.** En sak får läggas till om det finns källa, och ett kort har ett villkor.
+
+- **Namnbytet A** till "Tätning eller ventilation i garaget" bär "ventilation i garage". Texten under står kvar.
+- **H2 B, "Avfuktare i förrådet och sommarstugan, men inte i jordkällaren", godkänns.** De tre platserna står i rubriken, och den säger det viktigaste beskedet direkt: jordkällaren ska vara fuktig. Länsstyrelsen i Västra Götaland är källan för jordkällarens klimat och luftning, vilket är rätt rang. Grundvärmen i den kalla stugan har Konsumenternas Försäkringsbyrå som källa, och mögellukten länkas.
+- **750 ord mot 350 till 550 godkänns.** Läsaren behövde storleken, ventilerna i stugan och jordkällarens luftning. Inget av det är utfyllnad.
+- **Acetecs cirka 4 liter vid 5 grader är struket.** Det är rätt, eftersom sidans Faq säger att ingen tillverkare anger liter i kylan. Sidan säger nu samma sak överallt.
+- **"ventilation jordkällare" längst ner på sidan** godkänns. Ordet står i rubriken och i ett eget stycke, och Google indexerar stycken. Title, kortSvar och Faq handlar om garaget, och så ska det vara, eftersom garaget är sidans avsikt.
+
+**Får läggas till:**
+
+1. **Under "Tätning eller ventilation i garaget"** nämner texten bara vädring och inga ventiler. Om faktabladet har en källa för ventiler i ett garage (var de sitter, hög och låg), får en eller två meningar läggas till under rubriken. Låsningen av texten hävs för just det. Finns ingen källa står texten som den är, och rubriken räcker för frasen.
+
+**Villkor:**
+
+- **Kortet för Fresh D-800** var inte med i checklistan, som sa att inga nya kort skulle stå i H2 B. Det står kvar om **affiliate har godkänt det**: kortet gäller ett ouppvärmt förråd på cirka 10 kvm, bedömningen är märkt som hantverkarens, och kortets svaghet säger att Fresh inte anger liter vid låg temperatur. Utan affiliates godkännande tas kortet bort före publiceringen.
+- **Inlänken från `/luftavfuktare/`** läggs i samma commit som F publiceras, enligt fukt-6-F.md avsnitt 2.
