@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Genomskärning av den färdiga schakten längs en källarvägg. Från muren och utåt sitter fuktskyddet mot grundmuren, sedan makadam runt dräneringsröret med fiberduken streckad omkring, och överst återfyllning med en tydlig gräns upp mot den finkorniga jorden närmast markytan. Ett mått mellan grundsulans underkant och rörets underkant visar 100 mm.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="600" height="360" role="img" aria-label="Genomskärning av den färdiga schakten längs en källarvägg. Från muren och utåt sitter fuktskyddet mot grundmuren, sedan makadam runt dräneringsröret med fiberduken streckad ovanpå och utanför, och överst återfyllning med en tydlig gräns upp mot den finkorniga jorden närmast markytan. Ett mått mellan grundsulans underkant och rörets underkant visar 100 mm.">
   <!-- Anteckningsboken. Blyertsskiss på linjerat papper, huvudbild till /grund/dranera-hus/.
        Den visar något annat än verktygsskissen src/assets/illustrationer/rakna/dranering.svg,
        som visar hela husets snitt med schaktdjupet. Den här är inzoomad på schakten och visar
@@ -74,8 +74,8 @@
     <circle cx="386" cy="240" r="3"/>
   </g>
 
-  <!-- Blyerts-2 streckat långt: fiberduken över, utanför och under makadamen -->
-  <path d="M434,240 Q326,246 220,252 Q216,288 220,316 Q326,320 428,316" fill="none" stroke="#625a50" stroke-width="1.5" stroke-dasharray="13 5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Blyerts-2 streckat långt: fiberduken över och utanför makadamen. Ingen duk under på fast botten i sand och grus (Isodrän), rättat 2026-10-08 -->
+  <path d="M434,240 Q326,246 220,252 Q216,288 220,316" fill="none" stroke="#625a50" stroke-width="1.5" stroke-dasharray="13 5" stroke-linecap="round" stroke-linejoin="round"/>
 
   <!-- Blyerts-2: måttet mellan grundsulans underkant och rörets underkant, med korta hjälplinjer -->
   <g fill="none" stroke="#625a50" stroke-width="1.25" stroke-dasharray="5 5">
