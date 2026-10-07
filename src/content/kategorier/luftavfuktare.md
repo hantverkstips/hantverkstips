@@ -52,7 +52,7 @@ val:
 kopguide: /fukt/avfuktare-kallare/
 kalkylator: avfuktare
 forfattare: christian
-uppdaterad: 2026-10-04
+uppdaterad: 2026-10-07
 # Indexerad sedan 2026-09-16 kväll, när köpknapparna började svara (secret key i Vercel).
 utkast: false
 ---
@@ -73,6 +73,8 @@ Storleken räknar du ut från ytan, takhöjden och den luftfuktighet du mäter i
 Är utrymmet en krypgrund dimensionerar du efter golvytan och inte efter volymen, med tabellen i [avfuktare till krypgrunden](/fukt/avfuktare-krypgrund/). En kallvind är på vintern så kall att bara en sorptionsmaskin klarar den, och en [avfuktare på kallvinden](/fukt/avfuktare-vind/) behövs först när vinden är tätad mot bostaden och ändå är för fuktig. Ett garage får dessutom fukt genom porten och med bilen, och om det värms eller inte spelar roll för valet av maskin. Läs om [vilken maskin ett kallt eller ett uppvärmt garage behöver](/fukt/avfuktare-garage/). En [avfuktare i tvättstugan](/fukt/avfuktare-tvattstuga/) har ett annat jobb än de andra, eftersom den ska torka tvätten och inte bara hålla rummet torrt. Vill du först veta var fukten kommer ifrån hittar du svaret bland [guiderna om fukt](/fukt/).
 
 Till en lägenhet eller ett sovrum, där det är varmt, räcker en liten kondensavfuktare. Vill du ha en tyst maskin jämför du raden för ljudnivå i tabellen, men flera tillverkare anger den inte, och då vet du inte hur det låter. Ska du bara hålla en garderob eller ett skåp torrt kan en [fuktslukare med salt](/fukt/fuktslukare/) räcka, men till ett helt rum tar den upp för lite.
+
+Är behovet tillfälligt kan du [hyra en avfuktare efter en vattenskada](/fukt/vattenskada/) i stället för att köpa en.
 
 I en husvagn eller en båt gäller samma gränser vid 10 och 15 grader som i en källare. Maskiner för just dem har jag inte granskat, och inte heller vägghängda maskiner eller maskiner med en pump som lyfter vattnet i slang upp till ett avlopp.
 

@@ -54,7 +54,7 @@ val:
     svaghet: "Bosch anger noggrannheten som ±4 % utan att säga vad procenten avser, så när talet ska avgöra om virket kan byggas in är en mätare med stift säkrare."
 kalkylator: fuktkvot
 forfattare: christian
-uppdaterad: 2026-10-04
+uppdaterad: 2026-10-07
 utkast: false
 ---
 
@@ -119,7 +119,7 @@ Tillverkarna anger ofta en snävare noggrannhet, men TräGuiden räknar med att 
 
 ## Betong mäts med en givare i ett borrhål
 
-Testo 606-1 har visserligen en kurva för betong, men fukten i ett betonggolv bedöms på ett annat sätt. Den mäts som luftens relativa fuktighet i ett borrat hål, med en givare och inte med stift. Instrumenten för det är en annan sort än de här. Sidorna om fukt i källargolvet och i resten av huset hittar du [ordnade efter var i huset fukten sitter](/fukt/).
+Testo 606-1 har visserligen en kurva för betong, men [fukten i ett betonggolv](/fukt/fuktmatning-betong/) bedöms på ett annat sätt. Den mäts som luftens relativa fuktighet i ett borrat hål, med en givare och inte med stift, och en sådan givare är en annan sort än mätarna här. Vill du hellre veta var fukten i källaren eller på vinden kommer ifrån, börjar du med [fukten i huset plats för plats](/fukt/).
 
 ## Det senaste oberoende testet är från 2012
 
