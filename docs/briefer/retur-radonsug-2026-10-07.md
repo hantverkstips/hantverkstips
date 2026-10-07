@@ -652,3 +652,9 @@ Medvetet kvar, eftersom källorna saknas: vad man tätar med, hålets storlek ut
 Koordinatorns besked om omgång E: seoTitle är "Radonsug och vad en radonsanering kostar" (40 tecken), inte formen "Ämne, A och B". Descriptionens andra mening är ett påstående: "Firmorna tar från 20 000 kronor, och den drar el för några hundra kronor om året." (152 tecken).
 
 Godkänd av hantverkaren 2026-10-07: helt omskriven brödtext efter läsarens varv 1, rättningar efter varv 2 och 3, 17 korrekturrättningar, ny seoTitle och description. Steg 5, SEO:s kontroll mot checklistan, återstår.
+
+## Hantverkaren, efter SEO:s kontroll
+
+SEO bad att "åtgärder mot radon" skulle stå ordagrant en gång. Första stycket under "Tätningen kommer först" slutar nu med "Täta dem före alla andra åtgärder mot radon." i stället för "Täta dem först, före allt annat." Ingen annan mening är ändrad. `npm run kontrollera` ger 0 fel.
+
+Godkänd av hantverkaren 2026-10-07: ändringen ovan, efter SEO:s godkännande.
