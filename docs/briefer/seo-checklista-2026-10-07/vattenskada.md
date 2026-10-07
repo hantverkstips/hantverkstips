@@ -129,3 +129,34 @@ Det ettan har som vi måste behålla eller överträffa: konkreta exempel på va
 - **Inga råd om att riva** innan bolaget har sett skadan.
 - **Uttorkningstider** står inte utan källa.
 - **Länkar i Faq-svar** fungerar inte.
+
+---
+
+## Kontroll efter skrivningen, 2026-10-07
+
+SEO och GEO-agenten har läst `src/content/kunskap/fukt/vattenskada.mdx` (utkast) mot punkt 1 till 12. **Godkänd av SEO och GEO.** Texten behöver inte ändras. En fotnot i självriskstabellen rekommenderas.
+
+- **Metadata.** seoTitle "Vattenskada och vad försäkringen ersätter" (41 tecken) bär huvudfrasens båda ord och har inte kommamönstret. Description (148) och H1 är godkända.
+- **"vattenskada försäkring" i H2.** Frasen bärs av title och av H2 "Försäkringen gäller vatten som kommer plötsligt", och det räcker. Titeln bär båda orden, H2:n bär avsikten och kortSvar säger vad villaförsäkringen ersätter. Ordet "vattenskada" behöver inte tvingas in i H2:n.
+- **Sidofraserna.** "hyra avfuktare" bärs av H2 "Hyr avfuktaren om du torkar själv". Uttorkningen och golvet bärs av H2 "Uttorkningen efter en vattenskada tar veckor". Parkett står i brödtexten.
+- **Bättre än ettan 1 till 4 är uppfyllda.**
+  1. Den första timmen står i ordning.
+  2. Försäkringens gränser står med Boverkets mening ordagrant, och självrisken och åldersavdraget per bolag med villkorens datum. Det är bättre än checklistan krävde.
+  3. Hyrpriserna har uthyrare och läsdatum.
+  4. Torktiden har Länsförsäkringars 3 till 10 veckor som deras uppgift, och beskedet att fukten måste mätas.
+- **Länsförsäkringars 3 000 kr för läckage genom tätskiktet: bekräftat.** Villkoret VH25 F.2.2 säger "Vid skada av annan anledning än frysning är självrisken 3 000 kronor". Läckage genom tätskiktet är en sådan skada. Undantaget gäller badrum som inte följer branschreglerna, och det står redan i stycket ovanför tabellen. Rekommenderad fotnot under tabellen: "Länsförsäkringar har samma självrisk för alla läckage utom frysning."
+- **TrygghetsVakten 189 kr:** det som syns på sidan gäller. Checklistans "179 och 189" kom ur sökverktygets sammanfattning och ska inte följas.
+- **Djuplänken `/rakna/elkostnad/?effekt=640&timmar=24&dagar=21`** fungerar. `dagar` tar ett tal mellan 1 och 3 650, och `effekt` och `timmar` läses direkt. Effekten 640 W ligger i DH5:s intervall, 630 till 1 300 W.
+- **Länkarna ut** är sju, plus två kommentarer som väntar på E3 och E5. Faq-svaren har inga länkar.
+- **Strukturerad data.** `Article`, `BreadcrumbList` och `FAQPage` med svar i ren text. Canonical sätts av bygget.
+
+**Inlänkar** (fukt-6-E.md avsnitt 2):
+
+- `/fukt/mogel-i-huset/`: länken läggs i H3 "Villaförsäkringen", på "ett läckage" i meningen "Mögel efter ett läckage som försäkringen gäller för …". Den läggs inte ovanför Faq:n. Meningen handlar om just läckaget, och stycket ovanför Faq:n handlar om bostadsrätten.
+- `/luftavfuktare/`, under Så väljer du.
+- `/fukt/fuktskada/` rad 96, platshållaren på E3.
+
+**Utanför sidan, två saker:**
+
+1. **`src/content/guider/fukt/svartmogel-badrum.mdx` rad 38:** adressen till Vattenskaderapporten 2025 byts till version 2. Talen är oförändrade. Görs i samma commit som E publiceras.
+2. **`/rakna/elkostnad/#byggflakten`:** meningen om elen vid uttorkning saknar källa. Den går till UX, som antingen ger den en källa eller stryker den. Den stoppar inte E.
