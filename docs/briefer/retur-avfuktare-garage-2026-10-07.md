@@ -370,3 +370,20 @@ En anmärkning som inte är ett fel: "som räknaren räknar med" (rad 173) uppre
 ## Hantverkaren, 2026-10-07
 
 Godkänd av hantverkaren. Ändrat i `src/content/guider/fukt/avfuktare-garage.mdx`: H2 "Täta porten eller ventilera" heter nu "Tätning eller ventilation i garaget" (texten under orörd), ny H2 "Avfuktare i förrådet och sommarstugan, men inte i jordkällaren" före Faq, nytt kort `fresh-d800` i `produkter` och i texten enligt affiliatebeslutet men avgränsat till förråd på omkring 10 kvm, fem nya källor (SP Kalla vindar, Konsumenternas Försäkringsbyrå, Länsförsäkringar Blekinge, TräGuiden mikroorganismer, Länsstyrelsen Västra Götaland), `uppdaterad: 2026-10-07`. Läsaren: varv 1 sidan 3 och avsnittet 2, varv 2 3,5 och 3, varv 3 3,5 och 3,5, varv 4 sidan 4 och avsnittet 4. Varv 4:s citerade meningar rättade (syftning D-800, termostaten, "ändå", "några få grader", stugans ventiler med avfuktare, storlek under 5 grader som i garaget, "håller med", kondensmeningen, torpargrundsmeningen). Korrektur varv 1 elva rader rättade med föreslagen lydelse, varv 2 noll fel, plus förslaget "utgår från". `npm run kontrollera` 0 fel. Kvar utanför uppdraget: texten under garagets ventilations-H2, Faq och title nämner bara garaget (SEO avgör).
+
+## Korrektur, varv 3
+
+Läst: rad 163, de två sista meningarna, och rad 173, meningen om Fresh, med styckena runt dem.
+
+| Rad | Felaktig lydelse | Rättad lydelse | Fel |
+|---|---|---|---|
+| 173 | "Fresh anger inget tal vid lägre temperatur, så att den räcker till 10 kvm på hösten och våren är min bedömning, ..." | "Fresh anger inget tal vid lägre temperatur. Att maskinen räcker till 10 kvm på hösten och våren är därför min bedömning, och hur mycket den tar ut en kall vinterdag vet jag inte." | meningsbyggnad ("så att den räcker" läses först som "för att den ska räcka", och läsaren måste börja om när "är min bedömning" kommer) |
+| 173 | "så att den räcker till 10 kvm" | "Att maskinen räcker till 10 kvm" | syftning ("den" pekar närmast på "temperatur" eller tillverkaren Fresh, samma fel som rättades i varv 1) |
+
+Båda raderna gäller samma mening och rättas med den lydelse som står på första raden. När "maskinen" står i första ledet pekar "den" i "hur mycket den tar ut" rätt.
+
+Rad 163 är korrekt. "Har garaget ventiler stänger du dem medan avfuktaren går" har samma byggnad som meningen om glipor före, och "dem" pekar entydigt på ventilerna. I "i bruksanvisningen till MDK21, där tilluften utifrån ska minimeras" pekar "där" på bruksanvisningen, och "minimeras" är bruksanvisningens eget ord.
+
+**Antal fel: 2**, båda i samma mening på rad 173. När den meningen är rättad är de nya meningarna korrekt svenska.
+
+Tillägg 2026-10-07, hantverkaren: kortvillkoret från affiliate (6 liter vid 27 grader, inget tal vid lägre temperatur, inget löfte en kall vinterdag) står i meningen före kortet; två meningar om ventiler i garaget med Wood's MDK21-bruksanvisning som källa; korrektur varv 3 rättad med föreslagen lydelse. Godkänd av hantverkaren.
