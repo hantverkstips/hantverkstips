@@ -406,3 +406,93 @@ Mycoteam (Q14) och Leadhive (Q18) står inte i listan: Mycoteam är ett norskt f
 - **Via WebFetch, inte curl:** Skatteverket (curl: "Connection was reset"); Öst Vent & Isolering (sidan renderas med JavaScript).
 - **Inte nådda:** smahusskadenamnden.se, mögelsorter på vinden (403, blockerad); Hemnet, Mögel på vinden (2020, 403); naringsliv.net (403); SINTEF prosjektrapport 396 (HTML i stället för PDF); Ocabs adress /tjanster/fuktkontroll-vind/ (404, rätt adress är /vindsutrymme-fuktkontroll/); Konsumenternas /vad-ersatts-inte/ och /villaforsakringar/dolda-fel/ (404).
 - **Inte sökt:** Mycometer, sandblästrings- och sodablästringsfirmor, SP Rapport 2006:22 (Johansson, Mikroorganismer i byggnader) och SP Rapport 2003:17 (Mögel på nytt och begagnat byggnadsvirke), som RISE och SP hänvisar till.
+
+---
+
+## 14. Komplettering 2026-10-07: rot och andningsskydd
+
+Allt nedan läst 2026-10-07 med curl (HTTP/1.1; anslutningen höll den här gången). Citaten är ordagranna ur sidornas HTML. Där tidigare avsnitt bygger på WebFetch-återgivning av Skatteverket (12 punkt 15) gäller citaten här.
+
+### 14.1 Skatteverket, rotavdrag
+
+**Källor**
+- S1. Skatteverket, "Ger arbetet rätt till rotavdrag?" (privat). https://www.skatteverket.se/privat/fastigheterochbostad/rotarbeteochrutarbete/gerarbetetratttillrotavdrag.106.5c1163881590be297b5899d.html. DC.Date.Modified 2026-09-24. Läst 2026-10-07.
+- S2. Skatteverket, "Ger arbetet rätt till rotavdrag?" (företag). https://www.skatteverket.se/foretag/skatterochavdrag/rotochrut/gerarbetetratttillrotavdrag.4.5c1163881590be297b5173bf.html. DC.Date.Modified 2026-09-24. Läst 2026-10-07. Småhuslistan är ordagrant densamma som i S1 (jämförd rad för rad).
+- S3. Skatteverket, "Så fungerar rotavdraget" (privat). https://www.skatteverket.se/privat/fastigheterochbostad/rotarbeteochrutarbete/safungerarrotavdraget.4.5947400c11f47f7f9dd80004014.html. DC.Date.Modified 2026-09-22. Läst 2026-10-07. Det är sidan med exempel på rotarbeten.
+- S4. Skatteverket, "Så fungerar rotavdraget för företag". https://www.skatteverket.se/foretag/skatterochavdrag/rotochrut/safungerarrotavdraget.4.2ef18e6a125660db8b080002709.html. DC.Date.Modified 2026-10-07. Läst 2026-10-07. Exempellistan är densamma som i S3.
+
+**(a) Mögel, mögelsanering, sanering av fukt- eller mögelskador**
+- S1 och S2: **nämns inte.** Ordet "mögel" finns inte på sidorna. "Sanera" finns bara i "sanera asbest och radon i samband med byggarbete".
+- S3 och S4 nämner mögel en gång, under rengöring som kan vara rotarbete: "Även viss rengöring kan räknas som rotarbete, till exempel: [...] rengöra altaner med avancerad utrustning, för att ta bort mögel och inför målning". Gäller altaner, inte vind, råspont eller takstolar.
+
+**(b) Reparation och underhåll, tak**
+- S3, definition: "Rotarbeten är arbeten som görs för att förbättra en bostad. Dessa förbättringar kan bestå av att bygga om och bygga till bostaden. Rotarbete kan också vara reparation och underhåll, då bostaden återställs till, eller bibehålls i, ursprungligt skick."
+- S1, Småhus, "Bygg – reparera och underhålla", krav: "Arbetet ska utföras i bostaden som köparen äger eller på tomten i nära anslutning till bostaden." och "Om bostaden är yngre än fem år får arbetet endast syfta till att återställa byggnaden till det skick den var i från början. Om material byts ska det nya vara likvärdigt med det gamla."
+- S1, Småhus, "Rotavdrag ges för att" (hela listan):
+  - "slipa och byta golv, tak och väggmaterial, läs även under Målning och tapetsering"
+  - "sätta kakel och klinker"
+  - "byta och reparera köksluckor, dörrar, dörrlås, dörrhandtag och fönsterbleck, läs även om fönster under Glas och plåt"
+  - "byta och reparera fasader, hängrännor och takpannor, läs även om rengöring av takpannor med mera under Rengöring"
+  - "reparera och underhålla entrétrappor, balkonger och altaner samt tillhörande räcken, förutsatt att de är ihopbyggda med huset"
+  - "sanera asbest och radon i samband med byggarbete"
+  - "reparera på grund av skadedjur"
+  - "montera och montera ner byggnadsställningar i samband med rotarbete."
+- S1, Småhus, "Glas och plåt": "reparera, rengöra eller byta ut plåttak, hängrännor och stuprör."
+- S1, Småhus, "Rengöring", rotavdrag ges för att: "rengöra altandäck, fasader, tak, takpannor, hängrännor och solceller".
+- S1, Småhus, "Bygga om och bygga till", rotavdrag ges för att: "riva väggar och bygga om planlösningen i ett hus samt arbeta med tilläggsisolering".
+- **Underlagstak, råspont, takbeläggning, takomläggning: nämns inte** i S1–S4 (sökt på "råspont", "underlagstak", "takbelägg", "takomlägg"). Yttertakets material nämns bara som "takpannor" och "plåttak". Om "tak" i "slipa och byta golv, tak och väggmaterial" avser innertak eller yttertak säger sidan inte.
+- S1, Bostadsrätt, inget avdrag för att: "arbeta på gemensamma ytor, till exempel tak, fasader, trapphus och entréer" och "tilläggsisolera".
+- S1, Ägarlägenhet, inget avdrag för att: "arbeta på delar av byggnaden som samfälligheten ansvarar för, till exempel fasaden och yttertaket".
+
+**(c) Skadedjur, asbest, radon, fuktmätning** (S1, Småhus)
+- Rotavdrag ges för att: "sanera asbest och radon i samband med byggarbete" och "reparera på grund av skadedjur".
+- Inget avdrag ges för att: "göra energideklarationer eller mäta fukt, radon och asbest" och "bekämpa skadedjur."
+- Under VVS (småhus), inget avdrag för att: "göra energideklarationer och fuktmätningar."
+- Bostadsrätt, inget avdrag för att: "göra energideklarationer eller mäta fukt, radon eller asbest" och "bekämpa skadedjur."
+
+**(d) Ställningstagande, fråga och svar, rättslig vägledning**
+- Sökning på skatteverket.se (sökfunktionen /funktioner/sok/, 2026-10-07):
+  - "mögelsanering": "Din sökning på mögelsanering gav tyvärr ingen träff."
+  - "mögel rotavdrag": 4 träffar, alla "Så fungerar rotavdraget/rutavdraget" (privat och företag). Träffen på rotsidorna beror på altanraden under (a).
+  - "mögel": 5 träffar, de fyra ovan och momssidan "Y – Tjänster med anknytning till byggsektorn som omfattas av omvänd skattskyldighet" (DC.Date.Modified 2023-12-21): "Ytbehandling, byggnader och anläggningar" / "Kan omfattas" / "Avser t.ex. vattenavvisande behandling, rost-, klotter- och brandskyddsbehandling och annan behandling för att förebygga uppkomsten av alger, svamp och mögel." Gäller omvänd byggmoms, inte rot.
+- **Ställningstagande eller fråga och svar om mögelsanering och rot: saknas** i det som går att söka på skatteverket.se.
+- **Rättslig vägledning (www4.skatteverket.se/rattsligvagledning): inte nådd.** curl och WebFetch fick båda "Request Rejected". Sökmotor: inget om mögel och rot.
+- **Skatterättsnämnden och HFD om mögelsanering: inget hittat** (sökmotor). Träffarna gällde annat (bl.a. HFD 2018 not 2, ej läst, inte om mögel enligt utdraget).
+
+**Övrigt ur S3**
+- "Företaget får dra av högst 30 procent av arbetskostnaden på fakturan. Material och resekostnader i samband med arbetet ger inte rätt till avdrag."
+
+**Det som går att belägga:** Skatteverket listar varken mögelsanering eller byte av råspont/underlagstak. Närmast ligger "byta och reparera fasader, hängrännor och takpannor", definitionen "reparation och underhåll, då bostaden återställs till, eller bibehålls i, ursprungligt skick" och "rengöra [...] tak". Att mögelsanering på vind ger rot står inte hos Skatteverket; bara firmor säger det (12 punkt 11).
+
+### 14.2 Andningsskydd vid mögelsanering
+
+**Källor**
+- A1. Arbetsmiljöverket, "Mögel, organiskt damm, toxiner och andra mikrobiologiska hälsorisker". https://www.av.se/halsa-och-sakerhet/kemiska-risker/risker-for-vissa-amnen-produkter-och-verksamheter/mogel-organiskt-damm-toxiner-och-andra-mikrobiologiska-halsorisker. Senast uppdaterad 2025-01-17. Läst 2026-10-07.
+- A2. Arbetsmiljöverket, "Andningsskydd". https://www.av.se/halsa-och-sakerhet/personlig-skyddsutrustning/andningsskydd/. Senast uppdaterad 2025-01-16. Läst 2026-10-07.
+- A3. AFS 2023:10 om risker i arbetsmiljön, konsoliderad ("Ändringar införda till och med: AFS 2025:1"). Samma pdf som i avsnitt 2. Läst 2026-10-07.
+- A4. AFS 2023:11 om arbetsutrustning och personlig skyddsutrustning – säker användning, konsoliderad ("Ändrad: t.o.m. AFS 2024:4"). https://www.av.se/globalassets/filer/publikationer/foreskrifter/konsoliderade-foreskrifter/arbetsutrustning-och-personlig-skyddsutrustning-saker-anvandning-afs2023-11-konsoliderad.pdf. Läst 2026-10-07.
+- A5. Folkhälsomyndigheten, FoHMFS 2014:14, allmänna råd om fukt och mikroorganismer. https://www.fohm.se/contentassets/26ea6c0d999742c0a5351c63e70cb0ce/fohmfs-2014-14.pdf. Läst 2026-10-07.
+- A6. 1177, "Mögelallergi". https://www.1177.se/sjukdomar--besvar/allergier-och-overkanslighet/mogelallergi/. Senast uppdaterad 2024-05-06. Läst 2026-10-07.
+
+**Svar: ingen myndighetskälla anger filterklass (P2, P3, FFP2 eller FFP3) för mögelsanering.**
+
+**Vad som står**
+- A1 nämner inte andningsskydd eller filter. Den listar "Hus och lägenheter som saneras eller rivs" med "Risk: Mögelpåverkan, organiskt damm, toxiner från mögel". Åtgärdsordningen: "Avlägsna källan till riskerna helt." / "Vidta tekniska och organisatoriska åtgärder för att minimera risken om det inte går att avlägsna källan." / "Använd personlig skyddsutrustning när övriga åtgärder inte går att tillämpa eller är otillräckliga." Hänvisar till AFS 2023:10.
+- A2, enda raden om mikroorganismer: "Om du använder partikelfilter som skydd mot mikroorganismer och enzymer är det lämpligt att kassera partikelfiltren efter varje användning." Filterklass nämns bara vid täthetsprovning: "Lägsta tillåtna värde beror andningsskyddets filterklassning, exempelvis om det har ett P3-filter." Det är ett exempel, inte ett krav för mögel. Om filtrerande halvmasker: "De ger endast skydd mot partiklar och vattenaerosoler."
+- A3, 11 kap. (smittrisker): "I 7 kap. finns bestämmelser om allergier och toxiska effekter som orsakas av mögelsporer och kemiska ämnen som frisätts från mikroorganismer." 7 kap. definierar kemisk riskkälla så att den omfattar "mögelsporer och kemiska ämnen som frisätts från mikroorganismer". 7 kap. 13 § (åtgärdstrappan), sista steget: "7. Använda personlig skyddsutrustning." 7 kap. 14 §: "Arbetsgivaren ska vidta åtgärder så att inandningsluften, så långt det är möjligt, är fri från damm, gas, rök och andra luftföroreningar." Ingen filterklass i hela AFS 2023:10 (sökt "P1", "P2", "P3", "FFP", "filterklass", "partikelfilter").
+- A4, 15 kap. 9 §: "Arbetsgivaren ska se till att andningsskydd är individuellt utprovade. Om man väljer tätsittande andningsskydd, ska arbetsgivaren se till att tätheten provas individuellt med en lämplig kvantitativ eller kvalitativ metod, för att säkerställa att andningsskyddet har den förväntade skyddseffekten." 15 kap. 13 §, allmänna råd: "När arbetet är fysiskt krävande eller tar längre tid än två timmar bör fläktmatat andningsskydd eller en andningsapparat med extern tillförsel av luft användas." Ingen filterklass, inget om mögel eller mikroorganismer (samma sökord som ovan plus "mögel", "mikroorganism", "biologisk").
+- A5: inget om andningsskydd, skyddsutrustning eller filter.
+- A6: inget om andningsskydd, sanering eller filter.
+- A1–A4 gäller arbetsgivare och arbetstagare. Ingen av källorna ger råd till en privatperson som sanerar själv.
+
+**Sökt utan träff på filterklass för mögel**
+- av.se: A1 och A2. Sajtens sökfunktion gav för "mögel andningsskydd", "partikelfilter", "P3" och "mögelsanering" bara en ofiltrerad lista (2 789 träffar; resultaten renderas med JavaScript) och gick inte att använda. Sökmotor med site:av.se: inga av.se-träffar.
+- AFS 2023:10 och AFS 2023:11, hela texten.
+- Folkhälsomyndigheten: FoHMFS 2014:14 och sökmotor.
+- 1177: Mögelallergi och sökmotor.
+- Butiker och tillverkare (Jula, Ahlsell, 3M) säljer P3-filter i sökträffarna. De är inte källa här.
+
+### 14.3 Inte nådda
+
+- Skatteverkets rättsliga vägledning: "Request Rejected" med curl och WebFetch.
+- av.se:s sökfunktion: går inte att söka i utan JavaScript.

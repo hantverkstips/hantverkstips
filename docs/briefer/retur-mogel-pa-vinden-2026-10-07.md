@@ -363,3 +363,17 @@ Sidan är utkast (`utkast: true`) i `src/content/guider/fukt/mogel-pa-vinden.mdx
 Kvar som läsaren tog upp och som jag låter stå: andningsskyddet saknar filterklass, eftersom ingen källa av rang anger en (faktabladet M28); råden om partikelfilter är mina och står utan källa.
 
 `npm run kontrollera`: 0 fel för sidan, en väntad varning om inlänk (kommer när kommentaren på `fukt-pa-vinden.mdx` rad 84 blir en länk). Godkännanderaden skriver jag när SEO:s kontroll mot checklistan finns.
+
+## Hantverkaren, sista varvet
+
+Rättat efter koordinatorn, SEO:s beslut och underlagets komplettering (faktabladet avsnitt 14):
+
+- Rotavdraget: min tolkning är struken. Stycket säger nu bara det Skatteverket skriver: 30 procent av arbetskostnaden, reparation och underhåll till ursprungligt skick, att mögelsanering inte finns i listan, vad listan tar med (asbest och radon vid byggarbete, reparation efter skadedjur) och vad som inte ger avdrag (fuktmätning, bekämpa skadedjur), och rådet att fråga Skatteverket. Två Skatteverkssidor med ändringsdatum i `kallor`.
+- Andningsskydd: "partikelfilter" utan klass står kvar, med en mening om att ingen myndighet anger filterklass mot mögel och Arbetsmiljöverkets råd att kassera filter efter användning mot mikroorganismer. Arbetsmiljöverkets sida om andningsskydd i `kallor`.
+- "svartmögel på vinden" står ordagrant sist i första stycket under H2 "Mögel på råspont, blånad eller röta". Det senare stycket om svarta prickar är omskrivet så att SP-fyndet inte står två gånger.
+- kortSvar: "enligt föreningen SWESIAQ" i meningen om att möglet sällan sprids ner.
+- description: andra meningen är ett påstående ("På torr spont kan möglet ofta sitta kvar, och ska det bort håller torris eller nya brädor."), 155 tecken.
+
+`npm run kontrollera` med utkast tillfälligt false: 0 fel, en varning om inlänk som försvinner när kommentaren på `fukt-pa-vinden.mdx` rad 84 blir länk. Satt tillbaka till `utkast: true`.
+
+Godkänd av hantverkaren 2026-10-07. Ändrat sedan läsarens varv 2: rättningarna efter varv 2, korrekturens 24 rader, rot- och andningsskyddsstyckena, svartmögelmeningen, SWESIAQ i kortSvar och description.
