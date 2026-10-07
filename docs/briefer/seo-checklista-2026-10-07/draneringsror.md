@@ -120,3 +120,27 @@ Det ettan har som vi måste behålla eller överträffa: dimensioner och teknisk
 - **Fall och livslängd utan källa** (5 till 10 mm per meter, 25 till 50 år) står inte.
 - **Inget tal får skilja sig från dranera-hus**, till exempel diametern eller makadamfraktionen.
 - **Länkar i Faq-svar** fungerar inte.
+
+---
+
+## Kontroll efter skrivningen, 2026-10-08
+
+SEO och GEO-agenten har läst `src/content/kunskap/grund/draneringsror.mdx` (utkast, cirka 2 700 ord) mot punkt 1 till 12. **Godkänd av SEO och GEO**, med en rubrikändring.
+
+- **Metadata.** seoTitle "Dräneringsrör och brunnar till husgrunden" (41 tecken) följer titelregeln. H1 "Vilket rör ska ligga runt grunden när du dränerar?" är en fråga och delar inte de tre första orden med title. Description (inom 155) är ett påstående med tal.
+- **Bättre än ettan 1 till 4 är uppfyllda:**
+  1. Tabellen över rörtyperna har data från Wavin och Pipelife.
+  2. Valet av strumpa beror på jordarten och har källa.
+  3. Brunnarna har placering.
+  4. Pristabellen har butik och datum, och överslaget gäller ett vanligt hus.
+- **KortSvar** är citerbar, med 110 mm, Pipelife som källa och regeln för strumpa per jordart.
+- **Svevias prislista i `kallor`** godkänns. Den är källa för makadamens volymvikt, ett tal från den som säljer stenen, och står som en täkts prislista, inte som en myndighet. Kontrollen varnar inte.
+- **Länkarna** till dranera-hus står i H2 2, 3 och 5, i olika H2 och med olika ankare. Räknaren står som Verktygskort, ett per sida. Fukt i källaren och hubben länkas. Faq-svaren har inga länkar.
+- **Inga kort och inget reklamband**, enligt affiliates besked D1.
+- **Strukturerad data.** `Article`, `BreadcrumbList` och `FAQPage` med svar i ren text. Canonical sätts av bygget.
+
+**Ändras:**
+
+1. **"dräneringsbrunn" (720, sidans näst största fras) ska stå i rubriken.** I dag står den varken i "Brunnarna i slingans högsta och lägsta punkt" eller som ordet. Ett exempel: "Dräneringsbrunn och spolbrunn i slingans lägsta och högsta punkt". Hantverkaren formulerar. "dräneringsbrunn" ska stå i rubriken, och "spolbrunn" får stå där.
+
+Krockarna med dranera-hus avgörs i fukt-6-F.md avsnitt 6.

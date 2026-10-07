@@ -74,3 +74,28 @@ F1 är den enda nya sidan. Den ska ha minst två inlänkar från innehållsfiler
 
 - **Dag 12 i indexeringsplanen** begärs av Christian i den här ordningen: `/grund/draneringsror/` (topp i april), `/grund/dranera-hus/`, `/fukt/fukt-i-kallaren/`, `/grund/isolera-krypgrund/`, `/fukt/avfuktare-garage/`, `/grund/` och `/fukt/`. De två sista är hubbar som begärs om.
 - **Startlista 6 är klar efter F.** Startlista 7 skrivs när Search Console har två månaders data för omgång A till E.
+
+## 6. Krockar mellan F1 och F2, beslut 2026-10-08
+
+F1 äger materialet: rörtyp, dimension, strumpa och duk efter jordart, brunnar och pris. F2 äger arbetet: schakt, djup, fall, bädd, återfyllning och vattnets väg. Där sidorna säger olika gäller ägarens källa. Den andra sidan kortar och länkar. F2:s hantverkare gör ändringarna i samma commit som F publiceras.
+
+1. **Fallet.** Fallet ägs av F2 och står kvar där, men "knappt hälften av vad tillverkaren kräver" om 3 mm per meter ska bort. Wavin anger själv minst 3 ‰, alltså 3 mm per meter, och Isodrän anger 5 mm per meter. Skriv båda med namn. F2 får behålla sitt råd att lägga 5 mm per meter, men som Isodräns krav och Christians val, inte som "tillverkaren". F1 nämner inte fallet utöver länken.
+2. **Fiberduken i schaktbotten.** Steg 4 i F2, "lägg fiberduk i schaktbotten", går emot Isodräns avrådan på fast botten. Valet av duk beror på jordarten och ägs av F1. F2 ändrar steg 4 så att det följer F1: ingen duk under stenen i sand och grus, duk runt hela stenbädden i silt och lera. Isodrän anges som källa, och steget länkar till F1:s H2 "Med strumpa eller utan".
+3. **Dubbletterna i F2:s H2 "Röret, stenen och duken".** Isodräns duk, strumpan som försäkring och "ta det grövre" står i dag på båda sidorna. F2 behåller det som hör till arbetet: makadamfraktionen 8 till 16 mm och bädden under och över röret. Valet av rör, strumpa och duk kortas till två meningar med länk till F1, på platsen för den första platshållaren. Rubriken står kvar.
+4. **Dimensionen.** F2:s materiallista "90 eller 110 mm" ändras till 110 mm, med Pipelife som källa, samma som F1. Gör Det Själv-uppgiften om 70 mm som minsta mått får stå kvar som deras uppgift, om den behövs i texten.
+
+Efter ändringarna ska inget tal för rör, duk, fall eller dimension skilja sig mellan F1 och F2. Kontrollen läser de två sidorna mot varandra innan omgången pushas.
+
+## 7. Villkor för att publicera F1 till F5 i en commit
+
+1. **Rättelserna från kontrollerna är gjorda:**
+   - **F1:** "dräneringsbrunn" står i brunnsrubriken.
+   - **F2:** "hur ofta" står i rubrik B, och krockarna 1 till 4 ovan är rättade.
+   - **F3:** C står efter läckaget, A heter "Mögellukten kommer före fläcken", hyllraden har källa eller är märkt som egen bedömning, och affiliate har rättat produktkortets `forVem` till juli och augusti.
+   - **F4:** kortSvar är rättat, och description är uppdaterad om hantverkaren vill.
+   - **F5:** meningarna om garageventiler är tillagda om det finns källa. Fresh D-800-kortet står bara om affiliate har godkänt det.
+2. **Platshållarna är ersatta.** Det gäller främst de två för F1 på F2.
+3. **Inlänkarna i avsnitt 2 ligger i samma commit.** F1 har minst två inlänkar från innehållsfiler (F2 och fukt i källaren), och länken från `/rakna/dranering/` lägger UX.
+4. **`utkast: false` på F1**, och `uppdaterad` är satt på de fyra utbyggnaderna.
+5. **Bygget.** `npm run kontrollera` ger 0 fel, `npm run build` är grönt i ren kopia, och budgeten är grön. Inget pushas före det.
+6. **Efter publiceringen** för SEO och GEO in dag 12 i indexeringsplanen och status F i 12.7. Med det är startlista 6 klar.
