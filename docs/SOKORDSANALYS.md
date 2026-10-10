@@ -1270,6 +1270,18 @@ Inga nya fuktsidor skrivs innan Search Console har data. Det här gäller under 
 
    `/luftfuktare/` som kategorisida omprövas av affiliate i augusti 2027. Volymerna hämtas igen i Keyword Planner före startlista 7, med september 2026 till augusti 2027 som period.
 
+#### Nästa hub: Altan och uteplats, beslut 2026-10-10
+
+**Altan och uteplats fylls ut härnäst.** Verktyg och maskiner kommer som tvåa. Fem skäl:
+
+1. **Säsongen.** Altanfraserna toppar i april och maj. Sidorna ska skrivas i december till februari och vara indexerade i mars, så volymerna behövs nu. Ingen annan pelare har en så skarp vårtopp som inte redan är täckt: taket har tio sidor, och grunden fick sina i omgång F.
+2. **Sidorna räcker inte för att bära huben.** Huben har fem artiklar (bygga altan, trädäck på mark, trallskruv, bygglov altan och reglar avstånd) och fyra räknare. Fraserna har bara mätts i körning 1, och bara de största: bygga altan och trallskruv, 3 600 vardera, bygglov altan och trädäck, cirka 1 000 vardera. Fem sidor som INNEHALLSARKITEKTUR avsnitt 2 planerar finns inte än: plintar eller markskruv, välja trall, vad kostar altan, olja och underhåll, altanräcke. Lägg till verktygen för altanbygget.
+3. **Affiliatevärdet.** Altanbygget är den naturliga vägen till de dyra kategorierna i AFFILIATE.md avsnitt 3: kap- och gersåg (1 500 till 11 000 kr, högst ordervärde), skruvdragare och slagskruvdragare (1 500 till 5 000 kr) och laser ute. Det sker genom köpguider och resonemang, inte genom en produktsida utan sammanhang. Kunskapen ska vara majoriteten (skillen seo-och-geo avsnitt 1), och altanen ger den.
+4. **Inlänkar som väntar.** Räknarna för altan, trall och bygglov finns redan och länkas från hela pelaren. Ett köp av trallskruv eller kapsåg leder till sidor om material och verktyg som inte finns.
+5. **Verktyg är tvåa och inte etta.** Huben är utkast med en sida (krysslasern), och vinnbarheten på de nakna produktorden är 2 (kap och gersåg, lasermätare). Christian köper inga instrument, så allt blir granskning på datablad. Verktyg tas efter altanen, när altanens köpguider kan bära kategorisidorna med inlänkar och sammanhang.
+
+Sökordslistan för körning 5 står i `docs/briefer/sokord-altan-2026-10-10.md`: 565 fraser i 12 grupper, 22 dubbletter mot körning 1 till 4 strukna. Christian hämtar volymerna i Keyword Planner och sparar exporten som `docs/data/keyword-stats-2026-10-10-altan.csv`, uppdelad i -1 till -3 om den körs i omgångar. Därefter blir körning 5 ett eget avsnitt med en klusterplan och en startlista 7 för Altan. Startlista 7 för fukt, med läckagebrytaren och det Search Console visar, kommer efter den eller samtidigt.
+
 #### Omgång F, planen som den skrevs 2026-10-07
 
 Klustret är inte färdigt förrän F är publicerad. F är en ny sida och fyra utbyggnader, och tre av de fem ligger i pelaren Grund. Den tar källaren och grunden före vårtoppen för dränering (april) och före sommarkondensen i källaren. Ordningen ovan gäller.
